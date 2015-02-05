@@ -1,0 +1,32 @@
+PODS:
+  - Alamofire (1.1.4)
+  - FMDB (2.3):
+    - FMDB/standard (= 2.3)
+  - FMDB/common (2.3)
+  - FMDB/standard (2.3):
+    - FMDB/common
+  - GRMustache (7.3.0):
+    - JRSwizzle (~> 1.0)
+  - JRSwizzle (1.0)
+  - Mapbox-iOS-SDK (1.6.0):
+    - FMDB (= 2.3)
+    - GRMustache (= 7.3.0)
+    - SMCalloutView (= 2.0)
+  - SMCalloutView (2.0)
+  - SwiftyJSON (2.1.3)
+
+DEPENDENCIES:
+  - Alamofire
+  - Mapbox-iOS-SDK
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  Alamofire: 524225da382071ee3e6d0badd0ee4b4dc36740de
+  FMDB: 31ec26773c7f7b7890a6038235a1f2bbd933a7cb
+  GRMustache: efecd3b603f0a7a99cf6bdf3998782ee0c465726
+  JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
+  Mapbox-iOS-SDK: 189a35013e100f1464cd2f9f6c489d6326fbb927
+  SMCalloutView: c1906604d47c058400ade5c9d52ab98aa77b7e76
+  SwiftyJSON: 48be7490a3989a58a3f511cd54167f0a2b466e76
+
+COCOAPODS: 0.36.0.beta.2
