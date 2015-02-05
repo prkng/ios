@@ -6,9 +6,10 @@
 //  Copyright (c) 2015 PRKNG. All rights reserved.
 //
 
-//#ifndef prkng_ios_prkng_Bridging_Header_h
-//#define prkng_ios_prkng_Bridging_Header_h
-//
-//
-//#endif
+#ifndef prkng_ios_prkng_Bridging_Header_h
+#define prkng_ios_prkng_Bridging_Header_h
+
+#import <UIKit/UIKit.h>
 #import "Mapbox.h"
+
+#endif

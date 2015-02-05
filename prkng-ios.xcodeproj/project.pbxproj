@@ -8,8 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		1B2B01FD888B590CA3C23E23 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 560176CD81AA8CAFD9BBA679 /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		BF0BC98F1A83E0CA0042FE0B /* libMapbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF0BC98D1A83E0CA0042FE0B /* libMapbox.a */; };
+		BF0BC9901A83E0CA0042FE0B /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BF0BC98E1A83E0CA0042FE0B /* Mapbox.bundle */; };
+		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
+		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
+		BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1701A83D364005F4054 /* libsqlite3.dylib */; };
+		BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1721A83D36F005F4054 /* libz.dylib */; };
 		BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */; };
-		BFC7648F1A7644AC008F2B26 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7648E1A7644AC008F2B26 /* ViewController.swift */; };
 		BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC764931A7644AC008F2B26 /* Images.xcassets */; };
 		BFC764A31A7644AC008F2B26 /* prkng_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */; };
 		BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */; };
@@ -29,10 +34,71 @@
 /* Begin PBXFileReference section */
 		560176CD81AA8CAFD9BBA679 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C2F65DCF265862A367CC888 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		BF0BC9551A83E0CA0042FE0B /* Mapbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mapbox.h; sourceTree = "<group>"; };
+		BF0BC9561A83E0CA0042FE0B /* RMAbstractMercatorTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAbstractMercatorTileSource.h; sourceTree = "<group>"; };
+		BF0BC9571A83E0CA0042FE0B /* RMAbstractWebMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAbstractWebMapSource.h; sourceTree = "<group>"; };
+		BF0BC9581A83E0CA0042FE0B /* RMAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAnnotation.h; sourceTree = "<group>"; };
+		BF0BC9591A83E0CA0042FE0B /* RMAttributionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAttributionViewController.h; sourceTree = "<group>"; };
+		BF0BC95A1A83E0CA0042FE0B /* RMBingSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMBingSource.h; sourceTree = "<group>"; };
+		BF0BC95B1A83E0CA0042FE0B /* RMCacheObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCacheObject.h; sourceTree = "<group>"; };
+		BF0BC95C1A83E0CA0042FE0B /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCircle.h; sourceTree = "<group>"; };
+		BF0BC95D1A83E0CA0042FE0B /* RMCircleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCircleAnnotation.h; sourceTree = "<group>"; };
+		BF0BC95E1A83E0CA0042FE0B /* RMCompositeSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCompositeSource.h; sourceTree = "<group>"; };
+		BF0BC95F1A83E0CA0042FE0B /* RMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMConfiguration.h; sourceTree = "<group>"; };
+		BF0BC9601A83E0CA0042FE0B /* RMCoordinateGridSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCoordinateGridSource.h; sourceTree = "<group>"; };
+		BF0BC9611A83E0CA0042FE0B /* RMDatabaseCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDatabaseCache.h; sourceTree = "<group>"; };
+		BF0BC9621A83E0CA0042FE0B /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
+		BF0BC9631A83E0CA0042FE0B /* RMFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFoundation.h; sourceTree = "<group>"; };
+		BF0BC9641A83E0CA0042FE0B /* RMFractalTileProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFractalTileProjection.h; sourceTree = "<group>"; };
+		BF0BC9651A83E0CA0042FE0B /* RMGenericMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGenericMapSource.h; sourceTree = "<group>"; };
+		BF0BC9661A83E0CA0042FE0B /* RMGlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGlobalConstants.h; sourceTree = "<group>"; };
+		BF0BC9671A83E0CA0042FE0B /* RMGreatCircleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGreatCircleAnnotation.h; sourceTree = "<group>"; };
+		BF0BC9681A83E0CA0042FE0B /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
+		BF0BC9691A83E0CA0042FE0B /* RMLoadingTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMLoadingTileView.h; sourceTree = "<group>"; };
+		BF0BC96A1A83E0CA0042FE0B /* RMMapboxSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapboxSource.h; sourceTree = "<group>"; };
+		BF0BC96B1A83E0CA0042FE0B /* RMMapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapLayer.h; sourceTree = "<group>"; };
+		BF0BC96C1A83E0CA0042FE0B /* RMMapOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapOverlayView.h; sourceTree = "<group>"; };
+		BF0BC96D1A83E0CA0042FE0B /* RMMapQuestOpenAerialSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapQuestOpenAerialSource.h; sourceTree = "<group>"; };
+		BF0BC96E1A83E0CA0042FE0B /* RMMapQuestOSMSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapQuestOSMSource.h; sourceTree = "<group>"; };
+		BF0BC96F1A83E0CA0042FE0B /* RMMapScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapScrollView.h; sourceTree = "<group>"; };
+		BF0BC9701A83E0CA0042FE0B /* RMMapTiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapTiledLayerView.h; sourceTree = "<group>"; };
+		BF0BC9711A83E0CA0042FE0B /* RMMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapView.h; sourceTree = "<group>"; };
+		BF0BC9721A83E0CA0042FE0B /* RMMapViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapViewDelegate.h; sourceTree = "<group>"; };
+		BF0BC9731A83E0CA0042FE0B /* RMMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMarker.h; sourceTree = "<group>"; };
+		BF0BC9741A83E0CA0042FE0B /* RMMBTilesSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMBTilesSource.h; sourceTree = "<group>"; };
+		BF0BC9751A83E0CA0042FE0B /* RMMemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMemoryCache.h; sourceTree = "<group>"; };
+		BF0BC9761A83E0CA0042FE0B /* RMNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMNotifications.h; sourceTree = "<group>"; };
+		BF0BC9771A83E0CA0042FE0B /* RMOpenCycleMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenCycleMapSource.h; sourceTree = "<group>"; };
+		BF0BC9781A83E0CA0042FE0B /* RMOpenSeaMapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenSeaMapLayer.h; sourceTree = "<group>"; };
+		BF0BC9791A83E0CA0042FE0B /* RMOpenSeaMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenSeaMapSource.h; sourceTree = "<group>"; };
+		BF0BC97A1A83E0CA0042FE0B /* RMOpenStreetMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenStreetMapSource.h; sourceTree = "<group>"; };
+		BF0BC97B1A83E0CA0042FE0B /* RMPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPixel.h; sourceTree = "<group>"; };
+		BF0BC97C1A83E0CA0042FE0B /* RMPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPointAnnotation.h; sourceTree = "<group>"; };
+		BF0BC97D1A83E0CA0042FE0B /* RMPolygonAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPolygonAnnotation.h; sourceTree = "<group>"; };
+		BF0BC97E1A83E0CA0042FE0B /* RMPolylineAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPolylineAnnotation.h; sourceTree = "<group>"; };
+		BF0BC97F1A83E0CA0042FE0B /* RMProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMProjection.h; sourceTree = "<group>"; };
+		BF0BC9801A83E0CA0042FE0B /* RMQuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMQuadTree.h; sourceTree = "<group>"; };
+		BF0BC9811A83E0CA0042FE0B /* RMShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMShape.h; sourceTree = "<group>"; };
+		BF0BC9821A83E0CA0042FE0B /* RMShapeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMShapeAnnotation.h; sourceTree = "<group>"; };
+		BF0BC9831A83E0CA0042FE0B /* RMStaticMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStaticMapView.h; sourceTree = "<group>"; };
+		BF0BC9841A83E0CA0042FE0B /* RMTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTile.h; sourceTree = "<group>"; };
+		BF0BC9851A83E0CA0042FE0B /* RMTileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileCache.h; sourceTree = "<group>"; };
+		BF0BC9861A83E0CA0042FE0B /* RMTileCacheDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileCacheDownloadOperation.h; sourceTree = "<group>"; };
+		BF0BC9871A83E0CA0042FE0B /* RMTileImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileImage.h; sourceTree = "<group>"; };
+		BF0BC9881A83E0CA0042FE0B /* RMTileMillSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileMillSource.h; sourceTree = "<group>"; };
+		BF0BC9891A83E0CA0042FE0B /* RMTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileSource.h; sourceTree = "<group>"; };
+		BF0BC98A1A83E0CA0042FE0B /* RMTileSourcesContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileSourcesContainer.h; sourceTree = "<group>"; };
+		BF0BC98B1A83E0CA0042FE0B /* RMUserLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserLocation.h; sourceTree = "<group>"; };
+		BF0BC98C1A83E0CA0042FE0B /* RMUserTrackingBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserTrackingBarButtonItem.h; sourceTree = "<group>"; };
+		BF0BC98D1A83E0CA0042FE0B /* libMapbox.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMapbox.a; sourceTree = "<group>"; };
+		BF0BC98E1A83E0CA0042FE0B /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
+		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BFA8D1701A83D364005F4054 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		BFA8D1721A83D36F005F4054 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BFC764871A7644AC008F2B26 /* prkng-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "prkng-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC7648B1A7644AC008F2B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BFC7648E1A7644AC008F2B26 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BFC764931A7644AC008F2B26 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		BFC7649C1A7644AC008F2B26 /* prkng-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "prkng-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC764A11A7644AC008F2B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -48,6 +114,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF0BC98F1A83E0CA0042FE0B /* libMapbox.a in Frameworks */,
+				BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */,
+				BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */,
+				BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */,
+				BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */,
 				1B2B01FD888B590CA3C23E23 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,6 +136,10 @@
 		14ED3BF3E75A844F19A53B43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BFA8D1721A83D36F005F4054 /* libz.dylib */,
+				BFA8D1701A83D364005F4054 /* libsqlite3.dylib */,
+				BFA8D16E1A83D356005F4054 /* QuartzCore.framework */,
+				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
 				560176CD81AA8CAFD9BBA679 /* Pods.framework */,
 			);
 			name = Frameworks;
@@ -95,11 +170,85 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
+		BF0BC9531A83E0CA0042FE0B /* Mapbox */ = {
+			isa = PBXGroup;
+			children = (
+				BF0BC9541A83E0CA0042FE0B /* Headers */,
+				BF0BC98D1A83E0CA0042FE0B /* libMapbox.a */,
+				BF0BC98E1A83E0CA0042FE0B /* Mapbox.bundle */,
+			);
+			path = Mapbox;
+			sourceTree = "<group>";
+		};
+		BF0BC9541A83E0CA0042FE0B /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				BF0BC9551A83E0CA0042FE0B /* Mapbox.h */,
+				BF0BC9561A83E0CA0042FE0B /* RMAbstractMercatorTileSource.h */,
+				BF0BC9571A83E0CA0042FE0B /* RMAbstractWebMapSource.h */,
+				BF0BC9581A83E0CA0042FE0B /* RMAnnotation.h */,
+				BF0BC9591A83E0CA0042FE0B /* RMAttributionViewController.h */,
+				BF0BC95A1A83E0CA0042FE0B /* RMBingSource.h */,
+				BF0BC95B1A83E0CA0042FE0B /* RMCacheObject.h */,
+				BF0BC95C1A83E0CA0042FE0B /* RMCircle.h */,
+				BF0BC95D1A83E0CA0042FE0B /* RMCircleAnnotation.h */,
+				BF0BC95E1A83E0CA0042FE0B /* RMCompositeSource.h */,
+				BF0BC95F1A83E0CA0042FE0B /* RMConfiguration.h */,
+				BF0BC9601A83E0CA0042FE0B /* RMCoordinateGridSource.h */,
+				BF0BC9611A83E0CA0042FE0B /* RMDatabaseCache.h */,
+				BF0BC9621A83E0CA0042FE0B /* RMDBMapSource.h */,
+				BF0BC9631A83E0CA0042FE0B /* RMFoundation.h */,
+				BF0BC9641A83E0CA0042FE0B /* RMFractalTileProjection.h */,
+				BF0BC9651A83E0CA0042FE0B /* RMGenericMapSource.h */,
+				BF0BC9661A83E0CA0042FE0B /* RMGlobalConstants.h */,
+				BF0BC9671A83E0CA0042FE0B /* RMGreatCircleAnnotation.h */,
+				BF0BC9681A83E0CA0042FE0B /* RMInteractiveSource.h */,
+				BF0BC9691A83E0CA0042FE0B /* RMLoadingTileView.h */,
+				BF0BC96A1A83E0CA0042FE0B /* RMMapboxSource.h */,
+				BF0BC96B1A83E0CA0042FE0B /* RMMapLayer.h */,
+				BF0BC96C1A83E0CA0042FE0B /* RMMapOverlayView.h */,
+				BF0BC96D1A83E0CA0042FE0B /* RMMapQuestOpenAerialSource.h */,
+				BF0BC96E1A83E0CA0042FE0B /* RMMapQuestOSMSource.h */,
+				BF0BC96F1A83E0CA0042FE0B /* RMMapScrollView.h */,
+				BF0BC9701A83E0CA0042FE0B /* RMMapTiledLayerView.h */,
+				BF0BC9711A83E0CA0042FE0B /* RMMapView.h */,
+				BF0BC9721A83E0CA0042FE0B /* RMMapViewDelegate.h */,
+				BF0BC9731A83E0CA0042FE0B /* RMMarker.h */,
+				BF0BC9741A83E0CA0042FE0B /* RMMBTilesSource.h */,
+				BF0BC9751A83E0CA0042FE0B /* RMMemoryCache.h */,
+				BF0BC9761A83E0CA0042FE0B /* RMNotifications.h */,
+				BF0BC9771A83E0CA0042FE0B /* RMOpenCycleMapSource.h */,
+				BF0BC9781A83E0CA0042FE0B /* RMOpenSeaMapLayer.h */,
+				BF0BC9791A83E0CA0042FE0B /* RMOpenSeaMapSource.h */,
+				BF0BC97A1A83E0CA0042FE0B /* RMOpenStreetMapSource.h */,
+				BF0BC97B1A83E0CA0042FE0B /* RMPixel.h */,
+				BF0BC97C1A83E0CA0042FE0B /* RMPointAnnotation.h */,
+				BF0BC97D1A83E0CA0042FE0B /* RMPolygonAnnotation.h */,
+				BF0BC97E1A83E0CA0042FE0B /* RMPolylineAnnotation.h */,
+				BF0BC97F1A83E0CA0042FE0B /* RMProjection.h */,
+				BF0BC9801A83E0CA0042FE0B /* RMQuadTree.h */,
+				BF0BC9811A83E0CA0042FE0B /* RMShape.h */,
+				BF0BC9821A83E0CA0042FE0B /* RMShapeAnnotation.h */,
+				BF0BC9831A83E0CA0042FE0B /* RMStaticMapView.h */,
+				BF0BC9841A83E0CA0042FE0B /* RMTile.h */,
+				BF0BC9851A83E0CA0042FE0B /* RMTileCache.h */,
+				BF0BC9861A83E0CA0042FE0B /* RMTileCacheDownloadOperation.h */,
+				BF0BC9871A83E0CA0042FE0B /* RMTileImage.h */,
+				BF0BC9881A83E0CA0042FE0B /* RMTileMillSource.h */,
+				BF0BC9891A83E0CA0042FE0B /* RMTileSource.h */,
+				BF0BC98A1A83E0CA0042FE0B /* RMTileSourcesContainer.h */,
+				BF0BC98B1A83E0CA0042FE0B /* RMUserLocation.h */,
+				BF0BC98C1A83E0CA0042FE0B /* RMUserTrackingBarButtonItem.h */,
+			);
+			path = Headers;
+			sourceTree = "<group>";
+		};
 		BFC7647E1A7644AC008F2B26 = {
 			isa = PBXGroup;
 			children = (
 				BFFD300A1A83B4AB006582A1 /* prkng-Bridging-Header.h */,
 				BFC764891A7644AC008F2B26 /* prkng-ios */,
+				BF0BC9531A83E0CA0042FE0B /* Mapbox */,
 				BFC7649F1A7644AC008F2B26 /* prkng-iosTests */,
 				BFC764881A7644AC008F2B26 /* Products */,
 				661808C7844AA7FD06F95E91 /* Pods */,
@@ -120,7 +269,6 @@
 			isa = PBXGroup;
 			children = (
 				BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */,
-				BFC7648E1A7644AC008F2B26 /* ViewController.swift */,
 				BF0B47221A7E903900E94B3C /* Model */,
 				BF0B47231A7E905F00E94B3C /* View Controllers */,
 				BFC764931A7644AC008F2B26 /* Images.xcassets */,
@@ -214,7 +362,7 @@
 				TargetAttributes = {
 					BFC764861A7644AC008F2B26 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = C5D4VBGZS9;
+						DevelopmentTeam = KURFZF6D8V;
 					};
 					BFC7649B1A7644AC008F2B26 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -246,6 +394,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF0BC9901A83E0CA0042FE0B /* Mapbox.bundle in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,7 +461,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFC7648F1A7644AC008F2B26 /* ViewController.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */,
@@ -419,15 +567,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9C2F65DCF265862A367CC888 /* Pods.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = NO;
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Mapbox",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "prkng-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/cagdas/Dev/ios/prkng-ios/prkng-Bridging-Header.h";
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Debug;
 		};
@@ -435,15 +592,24 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F9D586C3C47F4689DC9342EA /* Pods.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = NO;
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Mapbox",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "prkng-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/cagdas/Dev/ios/prkng-ios/prkng-Bridging-Header.h";
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Release;
 		};

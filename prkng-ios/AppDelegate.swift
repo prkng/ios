@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Snap
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        RMConfiguration.sharedInstance().accessToken = "pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA"
         self.loadInitialViewController()
         return true
     }
@@ -45,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func loadInitialViewController () {
     
-        var viewController : ViewController = ViewController()
+        var viewController : MapViewController = MapViewController()
         window!.rootViewController = viewController
         window!.makeKeyAndVisible()
         
