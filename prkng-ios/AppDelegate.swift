@@ -8,6 +8,7 @@
 
 import UIKit
 import Snap
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,7 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         RMConfiguration.sharedInstance().accessToken = "pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA"
-        self.loadInitialViewController()
+        
+        Crashlytics.startWithAPIKey("0a552ed905e273700bb769724c451c706ceb78cb")
+        configureGlobals()
+        loadInitialViewController()
         return true
     }
 
@@ -43,6 +47,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func configureGlobals () {
+        UIApplication.sharedApplication().statusBarHidden = true
     }
     
     func loadInitialViewController () {

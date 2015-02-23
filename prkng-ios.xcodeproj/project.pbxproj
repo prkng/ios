@@ -17,8 +17,13 @@
 		BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */; };
 		BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC764931A7644AC008F2B26 /* Images.xcassets */; };
 		BFC764A31A7644AC008F2B26 /* prkng_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */; };
+		BFDC2ED91A990A9E002B783A /* Alamofire-SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFDC2ED81A990A9E002B783A /* Alamofire-SwiftyJSON.swift */; };
+		BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF22C01A85122D000380DA /* Crashlytics.framework */; };
 		BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */; };
 		BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB791A839F6A00B77F2E /* MapViewController.swift */; };
+		BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */; };
+		BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956681A8E59DF00C2C117 /* APIUtility.swift */; };
+		BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,8 +108,13 @@
 		BFC7649C1A7644AC008F2B26 /* prkng-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "prkng-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC764A11A7644AC008F2B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prkng_iosTests.swift; sourceTree = "<group>"; };
+		BFDC2ED81A990A9E002B783A /* Alamofire-SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire-SwiftyJSON.swift"; sourceTree = "<group>"; };
+		BFDF22C01A85122D000380DA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
 		BFE1AB791A839F6A00B77F2E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingSpot.swift; sourceTree = "<group>"; };
+		BFE956681A8E59DF00C2C117 /* APIUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIUtility.swift; sourceTree = "<group>"; };
+		BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotOperations.swift; sourceTree = "<group>"; };
 		BFFD300A1A83B4AB006582A1 /* prkng-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "prkng-Bridging-Header.h"; sourceTree = "<group>"; };
 		F9D586C3C47F4689DC9342EA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -120,6 +130,7 @@
 				BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */,
 				BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */,
 				1B2B01FD888B590CA3C23E23 /* Pods.framework in Frameworks */,
+				BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +147,7 @@
 		14ED3BF3E75A844F19A53B43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BFDF22C01A85122D000380DA /* Crashlytics.framework */,
 				BFA8D1721A83D36F005F4054 /* libz.dylib */,
 				BFA8D1701A83D364005F4054 /* libsqlite3.dylib */,
 				BFA8D16E1A83D356005F4054 /* QuartzCore.framework */,
@@ -157,6 +169,7 @@
 		BF0B47221A7E903900E94B3C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -268,6 +281,7 @@
 		BFC764891A7644AC008F2B26 /* prkng-ios */ = {
 			isa = PBXGroup;
 			children = (
+				BFE956651A8E4B7D00C2C117 /* API */,
 				BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */,
 				BF0B47221A7E903900E94B3C /* Model */,
 				BF0B47231A7E905F00E94B3C /* View Controllers */,
@@ -310,6 +324,16 @@
 			path = Map;
 			sourceTree = "<group>";
 		};
+		BFE956651A8E4B7D00C2C117 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				BFE956681A8E59DF00C2C117 /* APIUtility.swift */,
+				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
+				BFDC2ED81A990A9E002B783A /* Alamofire-SwiftyJSON.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -323,6 +347,7 @@
 				BFC764851A7644AC008F2B26 /* Resources */,
 				2E7FD5EEADEDBD7A87725693 /* Embed Pods Frameworks */,
 				FA788295854BC5EFCB269831 /* Copy Pods Resources */,
+				BFDF22BF1A8511E2000380DA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -424,6 +449,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BFDF22BF1A8511E2000380DA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 0a552ed905e273700bb769724c451c706ceb78cb 55ae8884944b326951fc667a5f4d9dbe77103580fc564745f9309f428b2fb29a";
+		};
 		F19853C443D55A8B000B355C /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -461,8 +499,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFDC2ED91A990A9E002B783A /* Alamofire-SwiftyJSON.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
+				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
+				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
+				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -573,6 +615,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -598,6 +644,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

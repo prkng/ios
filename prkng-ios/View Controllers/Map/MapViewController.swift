@@ -15,9 +15,9 @@ class MapViewController: AbstractViewController {
     
     override init () {
 
-        let source = RMMapboxSource(mapID: "cagdas.l4ob5af0")
+        let source = RMMapboxSource(mapID: "arnaudspuhler.l54pj66f")
         mapView = RMMapView(frame: CGRectMake(0,0,100,100), andTilesource: source)
-        mapView.zoom = 16
+        mapView.zoom = 10
         mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 45.521743896993634, longitude: -73.564453125)
         
         super.init(nibName:nil, bundle:nil)
@@ -36,6 +36,8 @@ class MapViewController: AbstractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        73.58/45.548?radius=300&checkin=2015-04-22T10:00&duration=1
+        SpotOperations.findSpots(-73.58, longitude: 45.548)
         // Do any additional setup after loading the view.
     }
 
