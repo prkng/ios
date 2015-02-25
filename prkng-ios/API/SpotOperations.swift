@@ -23,6 +23,13 @@ class SpotOperations: NSObject {
             (request, response, json, error) in
             
             
+            var spotJsons : Array<JSON> = json["features"].arrayValue
+            var spots = Array<ParkingSpot>();
+            for spotJson in spotJsons {
+                spots.append(ParkingSpot(json: spotJson))
+            }
+            
+            
             
             
 //            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -45,11 +52,6 @@ class SpotOperations: NSObject {
 //            
             
             
-//            if(JSON as? Array<Dictionary>) {
-//                
-//            } else if (JSON as? Dictionary) {
-//                
-//            }
             
         }
     }

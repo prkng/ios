@@ -7,19 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF3F4F031A9CEBC000D254D4 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F021A9CEBC000D254D4 /* SwiftyJSON.swift */; };
-		BF3F4F071A9CEC5700D254D4 /* Alamofire-SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F061A9CEC5700D254D4 /* Alamofire-SwiftyJSON.swift */; };
-		BF3F4F091A9CEC5C00D254D4 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F081A9CEC5C00D254D4 /* Alamofire.swift */; };
-		BF3F4F131A9CED9C00D254D4 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F0A1A9CED9C00D254D4 /* Constraint.swift */; };
-		BF3F4F141A9CED9C00D254D4 /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F0B1A9CED9C00D254D4 /* ConstraintAttributes.swift */; };
-		BF3F4F151A9CED9C00D254D4 /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F0C1A9CED9C00D254D4 /* ConstraintItem.swift */; };
-		BF3F4F161A9CED9C00D254D4 /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F0D1A9CED9C00D254D4 /* ConstraintMaker.swift */; };
-		BF3F4F171A9CED9C00D254D4 /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F0E1A9CED9C00D254D4 /* ConstraintRelation.swift */; };
-		BF3F4F181A9CED9C00D254D4 /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F0F1A9CED9C00D254D4 /* EdgeInsets.swift */; };
-		BF3F4F191A9CED9C00D254D4 /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F101A9CED9C00D254D4 /* LayoutConstraint.swift */; };
-		BF3F4F1A1A9CED9C00D254D4 /* View+Snap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3F4F121A9CED9C00D254D4 /* View+Snap.swift */; };
-		BF3F4F581A9CEEC900D254D4 /* libMapbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF3F4F561A9CEEC900D254D4 /* libMapbox.a */; };
-		BF3F4F591A9CEEC900D254D4 /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BF3F4F571A9CEEC900D254D4 /* Mapbox.bundle */; };
 		BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF72984A1A9C8C5D00B8F4AE /* ParkingRule.swift */; };
 		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
 		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
@@ -35,6 +22,19 @@
 		BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */; };
 		BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956681A8E59DF00C2C117 /* APIUtility.swift */; };
 		BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */; };
+		BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */; };
+		BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A581A9E2E76001F063E /* Alamofire.swift */; };
+		BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9A1A9E2E81001F063E /* Constraint.swift */; };
+		BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9B1A9E2E81001F063E /* ConstraintAttributes.swift */; };
+		BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9C1A9E2E81001F063E /* ConstraintItem.swift */; };
+		BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9D1A9E2E81001F063E /* ConstraintMaker.swift */; };
+		BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9E1A9E2E81001F063E /* ConstraintRelation.swift */; };
+		BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9F1A9E2E81001F063E /* EdgeInsets.swift */; };
+		BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AA01A9E2E81001F063E /* LayoutConstraint.swift */; };
+		BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AA21A9E2E81001F063E /* View+Snap.swift */; };
+		BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */; };
+		BFEA6AEA1A9E2EE5001F063E /* libMapbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEA6AE81A9E2EE5001F063E /* libMapbox.a */; };
+		BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BFEA6AE91A9E2EE5001F063E /* Mapbox.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,76 +48,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		BF3F4F021A9CEBC000D254D4 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
-		BF3F4F061A9CEC5700D254D4 /* Alamofire-SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire-SwiftyJSON.swift"; sourceTree = "<group>"; };
-		BF3F4F081A9CEC5C00D254D4 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
-		BF3F4F0A1A9CED9C00D254D4 /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
-		BF3F4F0B1A9CED9C00D254D4 /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
-		BF3F4F0C1A9CED9C00D254D4 /* ConstraintItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintItem.swift; sourceTree = "<group>"; };
-		BF3F4F0D1A9CED9C00D254D4 /* ConstraintMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintMaker.swift; sourceTree = "<group>"; };
-		BF3F4F0E1A9CED9C00D254D4 /* ConstraintRelation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintRelation.swift; sourceTree = "<group>"; };
-		BF3F4F0F1A9CED9C00D254D4 /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
-		BF3F4F101A9CED9C00D254D4 /* LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutConstraint.swift; sourceTree = "<group>"; };
-		BF3F4F111A9CED9C00D254D4 /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
-		BF3F4F121A9CED9C00D254D4 /* View+Snap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Snap.swift"; sourceTree = "<group>"; };
-		BF3F4F1E1A9CEEC900D254D4 /* Mapbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mapbox.h; sourceTree = "<group>"; };
-		BF3F4F1F1A9CEEC900D254D4 /* RMAbstractMercatorTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAbstractMercatorTileSource.h; sourceTree = "<group>"; };
-		BF3F4F201A9CEEC900D254D4 /* RMAbstractWebMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAbstractWebMapSource.h; sourceTree = "<group>"; };
-		BF3F4F211A9CEEC900D254D4 /* RMAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAnnotation.h; sourceTree = "<group>"; };
-		BF3F4F221A9CEEC900D254D4 /* RMAttributionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAttributionViewController.h; sourceTree = "<group>"; };
-		BF3F4F231A9CEEC900D254D4 /* RMBingSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMBingSource.h; sourceTree = "<group>"; };
-		BF3F4F241A9CEEC900D254D4 /* RMCacheObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCacheObject.h; sourceTree = "<group>"; };
-		BF3F4F251A9CEEC900D254D4 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCircle.h; sourceTree = "<group>"; };
-		BF3F4F261A9CEEC900D254D4 /* RMCircleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCircleAnnotation.h; sourceTree = "<group>"; };
-		BF3F4F271A9CEEC900D254D4 /* RMCompositeSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCompositeSource.h; sourceTree = "<group>"; };
-		BF3F4F281A9CEEC900D254D4 /* RMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMConfiguration.h; sourceTree = "<group>"; };
-		BF3F4F291A9CEEC900D254D4 /* RMCoordinateGridSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCoordinateGridSource.h; sourceTree = "<group>"; };
-		BF3F4F2A1A9CEEC900D254D4 /* RMDatabaseCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDatabaseCache.h; sourceTree = "<group>"; };
-		BF3F4F2B1A9CEEC900D254D4 /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
-		BF3F4F2C1A9CEEC900D254D4 /* RMFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFoundation.h; sourceTree = "<group>"; };
-		BF3F4F2D1A9CEEC900D254D4 /* RMFractalTileProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFractalTileProjection.h; sourceTree = "<group>"; };
-		BF3F4F2E1A9CEEC900D254D4 /* RMGenericMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGenericMapSource.h; sourceTree = "<group>"; };
-		BF3F4F2F1A9CEEC900D254D4 /* RMGlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGlobalConstants.h; sourceTree = "<group>"; };
-		BF3F4F301A9CEEC900D254D4 /* RMGreatCircleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGreatCircleAnnotation.h; sourceTree = "<group>"; };
-		BF3F4F311A9CEEC900D254D4 /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
-		BF3F4F321A9CEEC900D254D4 /* RMLoadingTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMLoadingTileView.h; sourceTree = "<group>"; };
-		BF3F4F331A9CEEC900D254D4 /* RMMapboxSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapboxSource.h; sourceTree = "<group>"; };
-		BF3F4F341A9CEEC900D254D4 /* RMMapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapLayer.h; sourceTree = "<group>"; };
-		BF3F4F351A9CEEC900D254D4 /* RMMapOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapOverlayView.h; sourceTree = "<group>"; };
-		BF3F4F361A9CEEC900D254D4 /* RMMapQuestOpenAerialSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapQuestOpenAerialSource.h; sourceTree = "<group>"; };
-		BF3F4F371A9CEEC900D254D4 /* RMMapQuestOSMSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapQuestOSMSource.h; sourceTree = "<group>"; };
-		BF3F4F381A9CEEC900D254D4 /* RMMapScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapScrollView.h; sourceTree = "<group>"; };
-		BF3F4F391A9CEEC900D254D4 /* RMMapTiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapTiledLayerView.h; sourceTree = "<group>"; };
-		BF3F4F3A1A9CEEC900D254D4 /* RMMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapView.h; sourceTree = "<group>"; };
-		BF3F4F3B1A9CEEC900D254D4 /* RMMapViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapViewDelegate.h; sourceTree = "<group>"; };
-		BF3F4F3C1A9CEEC900D254D4 /* RMMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMarker.h; sourceTree = "<group>"; };
-		BF3F4F3D1A9CEEC900D254D4 /* RMMBTilesSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMBTilesSource.h; sourceTree = "<group>"; };
-		BF3F4F3E1A9CEEC900D254D4 /* RMMemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMemoryCache.h; sourceTree = "<group>"; };
-		BF3F4F3F1A9CEEC900D254D4 /* RMNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMNotifications.h; sourceTree = "<group>"; };
-		BF3F4F401A9CEEC900D254D4 /* RMOpenCycleMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenCycleMapSource.h; sourceTree = "<group>"; };
-		BF3F4F411A9CEEC900D254D4 /* RMOpenSeaMapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenSeaMapLayer.h; sourceTree = "<group>"; };
-		BF3F4F421A9CEEC900D254D4 /* RMOpenSeaMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenSeaMapSource.h; sourceTree = "<group>"; };
-		BF3F4F431A9CEEC900D254D4 /* RMOpenStreetMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenStreetMapSource.h; sourceTree = "<group>"; };
-		BF3F4F441A9CEEC900D254D4 /* RMPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPixel.h; sourceTree = "<group>"; };
-		BF3F4F451A9CEEC900D254D4 /* RMPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPointAnnotation.h; sourceTree = "<group>"; };
-		BF3F4F461A9CEEC900D254D4 /* RMPolygonAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPolygonAnnotation.h; sourceTree = "<group>"; };
-		BF3F4F471A9CEEC900D254D4 /* RMPolylineAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPolylineAnnotation.h; sourceTree = "<group>"; };
-		BF3F4F481A9CEEC900D254D4 /* RMProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMProjection.h; sourceTree = "<group>"; };
-		BF3F4F491A9CEEC900D254D4 /* RMQuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMQuadTree.h; sourceTree = "<group>"; };
-		BF3F4F4A1A9CEEC900D254D4 /* RMShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMShape.h; sourceTree = "<group>"; };
-		BF3F4F4B1A9CEEC900D254D4 /* RMShapeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMShapeAnnotation.h; sourceTree = "<group>"; };
-		BF3F4F4C1A9CEEC900D254D4 /* RMStaticMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStaticMapView.h; sourceTree = "<group>"; };
-		BF3F4F4D1A9CEEC900D254D4 /* RMTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTile.h; sourceTree = "<group>"; };
-		BF3F4F4E1A9CEEC900D254D4 /* RMTileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileCache.h; sourceTree = "<group>"; };
-		BF3F4F4F1A9CEEC900D254D4 /* RMTileCacheDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileCacheDownloadOperation.h; sourceTree = "<group>"; };
-		BF3F4F501A9CEEC900D254D4 /* RMTileImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileImage.h; sourceTree = "<group>"; };
-		BF3F4F511A9CEEC900D254D4 /* RMTileMillSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileMillSource.h; sourceTree = "<group>"; };
-		BF3F4F521A9CEEC900D254D4 /* RMTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileSource.h; sourceTree = "<group>"; };
-		BF3F4F531A9CEEC900D254D4 /* RMTileSourcesContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileSourcesContainer.h; sourceTree = "<group>"; };
-		BF3F4F541A9CEEC900D254D4 /* RMUserLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserLocation.h; sourceTree = "<group>"; };
-		BF3F4F551A9CEEC900D254D4 /* RMUserTrackingBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserTrackingBarButtonItem.h; sourceTree = "<group>"; };
-		BF3F4F561A9CEEC900D254D4 /* libMapbox.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMapbox.a; sourceTree = "<group>"; };
-		BF3F4F571A9CEEC900D254D4 /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
 		BF72984A1A9C8C5D00B8F4AE /* ParkingRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingRule.swift; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -137,6 +67,76 @@
 		BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingSpot.swift; sourceTree = "<group>"; };
 		BFE956681A8E59DF00C2C117 /* APIUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIUtility.swift; sourceTree = "<group>"; };
 		BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotOperations.swift; sourceTree = "<group>"; };
+		BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire-SwiftyJSON.swift"; sourceTree = "<group>"; };
+		BFEA6A581A9E2E76001F063E /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
+		BFEA6A9A1A9E2E81001F063E /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		BFEA6A9B1A9E2E81001F063E /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
+		BFEA6A9C1A9E2E81001F063E /* ConstraintItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintItem.swift; sourceTree = "<group>"; };
+		BFEA6A9D1A9E2E81001F063E /* ConstraintMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintMaker.swift; sourceTree = "<group>"; };
+		BFEA6A9E1A9E2E81001F063E /* ConstraintRelation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintRelation.swift; sourceTree = "<group>"; };
+		BFEA6A9F1A9E2E81001F063E /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
+		BFEA6AA01A9E2E81001F063E /* LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutConstraint.swift; sourceTree = "<group>"; };
+		BFEA6AA11A9E2E81001F063E /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
+		BFEA6AA21A9E2E81001F063E /* View+Snap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Snap.swift"; sourceTree = "<group>"; };
+		BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		BFEA6AB01A9E2EE5001F063E /* Mapbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mapbox.h; sourceTree = "<group>"; };
+		BFEA6AB11A9E2EE5001F063E /* RMAbstractMercatorTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAbstractMercatorTileSource.h; sourceTree = "<group>"; };
+		BFEA6AB21A9E2EE5001F063E /* RMAbstractWebMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAbstractWebMapSource.h; sourceTree = "<group>"; };
+		BFEA6AB31A9E2EE5001F063E /* RMAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAnnotation.h; sourceTree = "<group>"; };
+		BFEA6AB41A9E2EE5001F063E /* RMAttributionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMAttributionViewController.h; sourceTree = "<group>"; };
+		BFEA6AB51A9E2EE5001F063E /* RMBingSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMBingSource.h; sourceTree = "<group>"; };
+		BFEA6AB61A9E2EE5001F063E /* RMCacheObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCacheObject.h; sourceTree = "<group>"; };
+		BFEA6AB71A9E2EE5001F063E /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCircle.h; sourceTree = "<group>"; };
+		BFEA6AB81A9E2EE5001F063E /* RMCircleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCircleAnnotation.h; sourceTree = "<group>"; };
+		BFEA6AB91A9E2EE5001F063E /* RMCompositeSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCompositeSource.h; sourceTree = "<group>"; };
+		BFEA6ABA1A9E2EE5001F063E /* RMConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMConfiguration.h; sourceTree = "<group>"; };
+		BFEA6ABB1A9E2EE5001F063E /* RMCoordinateGridSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMCoordinateGridSource.h; sourceTree = "<group>"; };
+		BFEA6ABC1A9E2EE5001F063E /* RMDatabaseCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDatabaseCache.h; sourceTree = "<group>"; };
+		BFEA6ABD1A9E2EE5001F063E /* RMDBMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMDBMapSource.h; sourceTree = "<group>"; };
+		BFEA6ABE1A9E2EE5001F063E /* RMFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFoundation.h; sourceTree = "<group>"; };
+		BFEA6ABF1A9E2EE5001F063E /* RMFractalTileProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMFractalTileProjection.h; sourceTree = "<group>"; };
+		BFEA6AC01A9E2EE5001F063E /* RMGenericMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGenericMapSource.h; sourceTree = "<group>"; };
+		BFEA6AC11A9E2EE5001F063E /* RMGlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGlobalConstants.h; sourceTree = "<group>"; };
+		BFEA6AC21A9E2EE5001F063E /* RMGreatCircleAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMGreatCircleAnnotation.h; sourceTree = "<group>"; };
+		BFEA6AC31A9E2EE5001F063E /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
+		BFEA6AC41A9E2EE5001F063E /* RMLoadingTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMLoadingTileView.h; sourceTree = "<group>"; };
+		BFEA6AC51A9E2EE5001F063E /* RMMapboxSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapboxSource.h; sourceTree = "<group>"; };
+		BFEA6AC61A9E2EE5001F063E /* RMMapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapLayer.h; sourceTree = "<group>"; };
+		BFEA6AC71A9E2EE5001F063E /* RMMapOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapOverlayView.h; sourceTree = "<group>"; };
+		BFEA6AC81A9E2EE5001F063E /* RMMapQuestOpenAerialSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapQuestOpenAerialSource.h; sourceTree = "<group>"; };
+		BFEA6AC91A9E2EE5001F063E /* RMMapQuestOSMSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapQuestOSMSource.h; sourceTree = "<group>"; };
+		BFEA6ACA1A9E2EE5001F063E /* RMMapScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapScrollView.h; sourceTree = "<group>"; };
+		BFEA6ACB1A9E2EE5001F063E /* RMMapTiledLayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapTiledLayerView.h; sourceTree = "<group>"; };
+		BFEA6ACC1A9E2EE5001F063E /* RMMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapView.h; sourceTree = "<group>"; };
+		BFEA6ACD1A9E2EE5001F063E /* RMMapViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapViewDelegate.h; sourceTree = "<group>"; };
+		BFEA6ACE1A9E2EE5001F063E /* RMMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMarker.h; sourceTree = "<group>"; };
+		BFEA6ACF1A9E2EE5001F063E /* RMMBTilesSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMBTilesSource.h; sourceTree = "<group>"; };
+		BFEA6AD01A9E2EE5001F063E /* RMMemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMemoryCache.h; sourceTree = "<group>"; };
+		BFEA6AD11A9E2EE5001F063E /* RMNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMNotifications.h; sourceTree = "<group>"; };
+		BFEA6AD21A9E2EE5001F063E /* RMOpenCycleMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenCycleMapSource.h; sourceTree = "<group>"; };
+		BFEA6AD31A9E2EE5001F063E /* RMOpenSeaMapLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenSeaMapLayer.h; sourceTree = "<group>"; };
+		BFEA6AD41A9E2EE5001F063E /* RMOpenSeaMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenSeaMapSource.h; sourceTree = "<group>"; };
+		BFEA6AD51A9E2EE5001F063E /* RMOpenStreetMapSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMOpenStreetMapSource.h; sourceTree = "<group>"; };
+		BFEA6AD61A9E2EE5001F063E /* RMPixel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPixel.h; sourceTree = "<group>"; };
+		BFEA6AD71A9E2EE5001F063E /* RMPointAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPointAnnotation.h; sourceTree = "<group>"; };
+		BFEA6AD81A9E2EE5001F063E /* RMPolygonAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPolygonAnnotation.h; sourceTree = "<group>"; };
+		BFEA6AD91A9E2EE5001F063E /* RMPolylineAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPolylineAnnotation.h; sourceTree = "<group>"; };
+		BFEA6ADA1A9E2EE5001F063E /* RMProjection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMProjection.h; sourceTree = "<group>"; };
+		BFEA6ADB1A9E2EE5001F063E /* RMQuadTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMQuadTree.h; sourceTree = "<group>"; };
+		BFEA6ADC1A9E2EE5001F063E /* RMShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMShape.h; sourceTree = "<group>"; };
+		BFEA6ADD1A9E2EE5001F063E /* RMShapeAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMShapeAnnotation.h; sourceTree = "<group>"; };
+		BFEA6ADE1A9E2EE5001F063E /* RMStaticMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMStaticMapView.h; sourceTree = "<group>"; };
+		BFEA6ADF1A9E2EE5001F063E /* RMTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTile.h; sourceTree = "<group>"; };
+		BFEA6AE01A9E2EE5001F063E /* RMTileCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileCache.h; sourceTree = "<group>"; };
+		BFEA6AE11A9E2EE5001F063E /* RMTileCacheDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileCacheDownloadOperation.h; sourceTree = "<group>"; };
+		BFEA6AE21A9E2EE5001F063E /* RMTileImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileImage.h; sourceTree = "<group>"; };
+		BFEA6AE31A9E2EE5001F063E /* RMTileMillSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileMillSource.h; sourceTree = "<group>"; };
+		BFEA6AE41A9E2EE5001F063E /* RMTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileSource.h; sourceTree = "<group>"; };
+		BFEA6AE51A9E2EE5001F063E /* RMTileSourcesContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileSourcesContainer.h; sourceTree = "<group>"; };
+		BFEA6AE61A9E2EE5001F063E /* RMUserLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserLocation.h; sourceTree = "<group>"; };
+		BFEA6AE71A9E2EE5001F063E /* RMUserTrackingBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserTrackingBarButtonItem.h; sourceTree = "<group>"; };
+		BFEA6AE81A9E2EE5001F063E /* libMapbox.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMapbox.a; sourceTree = "<group>"; };
+		BFEA6AE91A9E2EE5001F063E /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
 		BFFD300A1A83B4AB006582A1 /* prkng-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "prkng-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,7 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3F4F581A9CEEC900D254D4 /* libMapbox.a in Frameworks */,
+				BFEA6AEA1A9E2EE5001F063E /* libMapbox.a in Frameworks */,
 				BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */,
 				BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */,
 				BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */,
@@ -195,123 +195,6 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
-		BF3F4EC81A9CEA1100D254D4 /* Third Party Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				BF3F4F1C1A9CEEC900D254D4 /* Mapbox */,
-				BF3F4F051A9CEBCF00D254D4 /* Snap */,
-				BF3F4F041A9CEBC700D254D4 /* Alamofire */,
-				BF3F4F011A9CEB6200D254D4 /* SwiftyJSON */,
-			);
-			path = "Third Party Libraries";
-			sourceTree = "<group>";
-		};
-		BF3F4F011A9CEB6200D254D4 /* SwiftyJSON */ = {
-			isa = PBXGroup;
-			children = (
-				BF3F4F021A9CEBC000D254D4 /* SwiftyJSON.swift */,
-			);
-			path = SwiftyJSON;
-			sourceTree = "<group>";
-		};
-		BF3F4F041A9CEBC700D254D4 /* Alamofire */ = {
-			isa = PBXGroup;
-			children = (
-				BF3F4F081A9CEC5C00D254D4 /* Alamofire.swift */,
-				BF3F4F061A9CEC5700D254D4 /* Alamofire-SwiftyJSON.swift */,
-			);
-			path = Alamofire;
-			sourceTree = "<group>";
-		};
-		BF3F4F051A9CEBCF00D254D4 /* Snap */ = {
-			isa = PBXGroup;
-			children = (
-				BF3F4F0A1A9CED9C00D254D4 /* Constraint.swift */,
-				BF3F4F0B1A9CED9C00D254D4 /* ConstraintAttributes.swift */,
-				BF3F4F0C1A9CED9C00D254D4 /* ConstraintItem.swift */,
-				BF3F4F0D1A9CED9C00D254D4 /* ConstraintMaker.swift */,
-				BF3F4F0E1A9CED9C00D254D4 /* ConstraintRelation.swift */,
-				BF3F4F0F1A9CED9C00D254D4 /* EdgeInsets.swift */,
-				BF3F4F101A9CED9C00D254D4 /* LayoutConstraint.swift */,
-				BF3F4F111A9CED9C00D254D4 /* Snap.h */,
-				BF3F4F121A9CED9C00D254D4 /* View+Snap.swift */,
-			);
-			path = Snap;
-			sourceTree = "<group>";
-		};
-		BF3F4F1C1A9CEEC900D254D4 /* Mapbox */ = {
-			isa = PBXGroup;
-			children = (
-				BF3F4F1D1A9CEEC900D254D4 /* Headers */,
-				BF3F4F561A9CEEC900D254D4 /* libMapbox.a */,
-				BF3F4F571A9CEEC900D254D4 /* Mapbox.bundle */,
-			);
-			path = Mapbox;
-			sourceTree = "<group>";
-		};
-		BF3F4F1D1A9CEEC900D254D4 /* Headers */ = {
-			isa = PBXGroup;
-			children = (
-				BF3F4F1E1A9CEEC900D254D4 /* Mapbox.h */,
-				BF3F4F1F1A9CEEC900D254D4 /* RMAbstractMercatorTileSource.h */,
-				BF3F4F201A9CEEC900D254D4 /* RMAbstractWebMapSource.h */,
-				BF3F4F211A9CEEC900D254D4 /* RMAnnotation.h */,
-				BF3F4F221A9CEEC900D254D4 /* RMAttributionViewController.h */,
-				BF3F4F231A9CEEC900D254D4 /* RMBingSource.h */,
-				BF3F4F241A9CEEC900D254D4 /* RMCacheObject.h */,
-				BF3F4F251A9CEEC900D254D4 /* RMCircle.h */,
-				BF3F4F261A9CEEC900D254D4 /* RMCircleAnnotation.h */,
-				BF3F4F271A9CEEC900D254D4 /* RMCompositeSource.h */,
-				BF3F4F281A9CEEC900D254D4 /* RMConfiguration.h */,
-				BF3F4F291A9CEEC900D254D4 /* RMCoordinateGridSource.h */,
-				BF3F4F2A1A9CEEC900D254D4 /* RMDatabaseCache.h */,
-				BF3F4F2B1A9CEEC900D254D4 /* RMDBMapSource.h */,
-				BF3F4F2C1A9CEEC900D254D4 /* RMFoundation.h */,
-				BF3F4F2D1A9CEEC900D254D4 /* RMFractalTileProjection.h */,
-				BF3F4F2E1A9CEEC900D254D4 /* RMGenericMapSource.h */,
-				BF3F4F2F1A9CEEC900D254D4 /* RMGlobalConstants.h */,
-				BF3F4F301A9CEEC900D254D4 /* RMGreatCircleAnnotation.h */,
-				BF3F4F311A9CEEC900D254D4 /* RMInteractiveSource.h */,
-				BF3F4F321A9CEEC900D254D4 /* RMLoadingTileView.h */,
-				BF3F4F331A9CEEC900D254D4 /* RMMapboxSource.h */,
-				BF3F4F341A9CEEC900D254D4 /* RMMapLayer.h */,
-				BF3F4F351A9CEEC900D254D4 /* RMMapOverlayView.h */,
-				BF3F4F361A9CEEC900D254D4 /* RMMapQuestOpenAerialSource.h */,
-				BF3F4F371A9CEEC900D254D4 /* RMMapQuestOSMSource.h */,
-				BF3F4F381A9CEEC900D254D4 /* RMMapScrollView.h */,
-				BF3F4F391A9CEEC900D254D4 /* RMMapTiledLayerView.h */,
-				BF3F4F3A1A9CEEC900D254D4 /* RMMapView.h */,
-				BF3F4F3B1A9CEEC900D254D4 /* RMMapViewDelegate.h */,
-				BF3F4F3C1A9CEEC900D254D4 /* RMMarker.h */,
-				BF3F4F3D1A9CEEC900D254D4 /* RMMBTilesSource.h */,
-				BF3F4F3E1A9CEEC900D254D4 /* RMMemoryCache.h */,
-				BF3F4F3F1A9CEEC900D254D4 /* RMNotifications.h */,
-				BF3F4F401A9CEEC900D254D4 /* RMOpenCycleMapSource.h */,
-				BF3F4F411A9CEEC900D254D4 /* RMOpenSeaMapLayer.h */,
-				BF3F4F421A9CEEC900D254D4 /* RMOpenSeaMapSource.h */,
-				BF3F4F431A9CEEC900D254D4 /* RMOpenStreetMapSource.h */,
-				BF3F4F441A9CEEC900D254D4 /* RMPixel.h */,
-				BF3F4F451A9CEEC900D254D4 /* RMPointAnnotation.h */,
-				BF3F4F461A9CEEC900D254D4 /* RMPolygonAnnotation.h */,
-				BF3F4F471A9CEEC900D254D4 /* RMPolylineAnnotation.h */,
-				BF3F4F481A9CEEC900D254D4 /* RMProjection.h */,
-				BF3F4F491A9CEEC900D254D4 /* RMQuadTree.h */,
-				BF3F4F4A1A9CEEC900D254D4 /* RMShape.h */,
-				BF3F4F4B1A9CEEC900D254D4 /* RMShapeAnnotation.h */,
-				BF3F4F4C1A9CEEC900D254D4 /* RMStaticMapView.h */,
-				BF3F4F4D1A9CEEC900D254D4 /* RMTile.h */,
-				BF3F4F4E1A9CEEC900D254D4 /* RMTileCache.h */,
-				BF3F4F4F1A9CEEC900D254D4 /* RMTileCacheDownloadOperation.h */,
-				BF3F4F501A9CEEC900D254D4 /* RMTileImage.h */,
-				BF3F4F511A9CEEC900D254D4 /* RMTileMillSource.h */,
-				BF3F4F521A9CEEC900D254D4 /* RMTileSource.h */,
-				BF3F4F531A9CEEC900D254D4 /* RMTileSourcesContainer.h */,
-				BF3F4F541A9CEEC900D254D4 /* RMUserLocation.h */,
-				BF3F4F551A9CEEC900D254D4 /* RMUserTrackingBarButtonItem.h */,
-			);
-			path = Headers;
-			sourceTree = "<group>";
-		};
 		BFC7647E1A7644AC008F2B26 = {
 			isa = PBXGroup;
 			children = (
@@ -339,8 +222,8 @@
 				BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */,
 				BF0B47221A7E903900E94B3C /* Model */,
 				BF0B47231A7E905F00E94B3C /* View Controllers */,
-				BF3F4EC81A9CEA1100D254D4 /* Third Party Libraries */,
 				BFC764931A7644AC008F2B26 /* Images.xcassets */,
+				BFEA6A4E1A9E2D10001F063E /* Libraries */,
 				BFC7648A1A7644AC008F2B26 /* Supporting Files */,
 			);
 			path = "prkng-ios";
@@ -386,6 +269,123 @@
 				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				BFEA6AAE1A9E2EE5001F063E /* Mapbox */,
+				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
+				BFEA6A991A9E2E81001F063E /* Snap */,
+				BFEA6A561A9E2E76001F063E /* Alamofire */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		BFEA6A561A9E2E76001F063E /* Alamofire */ = {
+			isa = PBXGroup;
+			children = (
+				BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */,
+				BFEA6A581A9E2E76001F063E /* Alamofire.swift */,
+			);
+			path = Alamofire;
+			sourceTree = "<group>";
+		};
+		BFEA6A991A9E2E81001F063E /* Snap */ = {
+			isa = PBXGroup;
+			children = (
+				BFEA6A9A1A9E2E81001F063E /* Constraint.swift */,
+				BFEA6A9B1A9E2E81001F063E /* ConstraintAttributes.swift */,
+				BFEA6A9C1A9E2E81001F063E /* ConstraintItem.swift */,
+				BFEA6A9D1A9E2E81001F063E /* ConstraintMaker.swift */,
+				BFEA6A9E1A9E2E81001F063E /* ConstraintRelation.swift */,
+				BFEA6A9F1A9E2E81001F063E /* EdgeInsets.swift */,
+				BFEA6AA01A9E2E81001F063E /* LayoutConstraint.swift */,
+				BFEA6AA11A9E2E81001F063E /* Snap.h */,
+				BFEA6AA21A9E2E81001F063E /* View+Snap.swift */,
+			);
+			path = Snap;
+			sourceTree = "<group>";
+		};
+		BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */ = {
+			isa = PBXGroup;
+			children = (
+				BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */,
+			);
+			path = SwiftyJSON;
+			sourceTree = "<group>";
+		};
+		BFEA6AAE1A9E2EE5001F063E /* Mapbox */ = {
+			isa = PBXGroup;
+			children = (
+				BFEA6AAF1A9E2EE5001F063E /* Headers */,
+				BFEA6AE81A9E2EE5001F063E /* libMapbox.a */,
+				BFEA6AE91A9E2EE5001F063E /* Mapbox.bundle */,
+			);
+			path = Mapbox;
+			sourceTree = "<group>";
+		};
+		BFEA6AAF1A9E2EE5001F063E /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				BFEA6AB01A9E2EE5001F063E /* Mapbox.h */,
+				BFEA6AB11A9E2EE5001F063E /* RMAbstractMercatorTileSource.h */,
+				BFEA6AB21A9E2EE5001F063E /* RMAbstractWebMapSource.h */,
+				BFEA6AB31A9E2EE5001F063E /* RMAnnotation.h */,
+				BFEA6AB41A9E2EE5001F063E /* RMAttributionViewController.h */,
+				BFEA6AB51A9E2EE5001F063E /* RMBingSource.h */,
+				BFEA6AB61A9E2EE5001F063E /* RMCacheObject.h */,
+				BFEA6AB71A9E2EE5001F063E /* RMCircle.h */,
+				BFEA6AB81A9E2EE5001F063E /* RMCircleAnnotation.h */,
+				BFEA6AB91A9E2EE5001F063E /* RMCompositeSource.h */,
+				BFEA6ABA1A9E2EE5001F063E /* RMConfiguration.h */,
+				BFEA6ABB1A9E2EE5001F063E /* RMCoordinateGridSource.h */,
+				BFEA6ABC1A9E2EE5001F063E /* RMDatabaseCache.h */,
+				BFEA6ABD1A9E2EE5001F063E /* RMDBMapSource.h */,
+				BFEA6ABE1A9E2EE5001F063E /* RMFoundation.h */,
+				BFEA6ABF1A9E2EE5001F063E /* RMFractalTileProjection.h */,
+				BFEA6AC01A9E2EE5001F063E /* RMGenericMapSource.h */,
+				BFEA6AC11A9E2EE5001F063E /* RMGlobalConstants.h */,
+				BFEA6AC21A9E2EE5001F063E /* RMGreatCircleAnnotation.h */,
+				BFEA6AC31A9E2EE5001F063E /* RMInteractiveSource.h */,
+				BFEA6AC41A9E2EE5001F063E /* RMLoadingTileView.h */,
+				BFEA6AC51A9E2EE5001F063E /* RMMapboxSource.h */,
+				BFEA6AC61A9E2EE5001F063E /* RMMapLayer.h */,
+				BFEA6AC71A9E2EE5001F063E /* RMMapOverlayView.h */,
+				BFEA6AC81A9E2EE5001F063E /* RMMapQuestOpenAerialSource.h */,
+				BFEA6AC91A9E2EE5001F063E /* RMMapQuestOSMSource.h */,
+				BFEA6ACA1A9E2EE5001F063E /* RMMapScrollView.h */,
+				BFEA6ACB1A9E2EE5001F063E /* RMMapTiledLayerView.h */,
+				BFEA6ACC1A9E2EE5001F063E /* RMMapView.h */,
+				BFEA6ACD1A9E2EE5001F063E /* RMMapViewDelegate.h */,
+				BFEA6ACE1A9E2EE5001F063E /* RMMarker.h */,
+				BFEA6ACF1A9E2EE5001F063E /* RMMBTilesSource.h */,
+				BFEA6AD01A9E2EE5001F063E /* RMMemoryCache.h */,
+				BFEA6AD11A9E2EE5001F063E /* RMNotifications.h */,
+				BFEA6AD21A9E2EE5001F063E /* RMOpenCycleMapSource.h */,
+				BFEA6AD31A9E2EE5001F063E /* RMOpenSeaMapLayer.h */,
+				BFEA6AD41A9E2EE5001F063E /* RMOpenSeaMapSource.h */,
+				BFEA6AD51A9E2EE5001F063E /* RMOpenStreetMapSource.h */,
+				BFEA6AD61A9E2EE5001F063E /* RMPixel.h */,
+				BFEA6AD71A9E2EE5001F063E /* RMPointAnnotation.h */,
+				BFEA6AD81A9E2EE5001F063E /* RMPolygonAnnotation.h */,
+				BFEA6AD91A9E2EE5001F063E /* RMPolylineAnnotation.h */,
+				BFEA6ADA1A9E2EE5001F063E /* RMProjection.h */,
+				BFEA6ADB1A9E2EE5001F063E /* RMQuadTree.h */,
+				BFEA6ADC1A9E2EE5001F063E /* RMShape.h */,
+				BFEA6ADD1A9E2EE5001F063E /* RMShapeAnnotation.h */,
+				BFEA6ADE1A9E2EE5001F063E /* RMStaticMapView.h */,
+				BFEA6ADF1A9E2EE5001F063E /* RMTile.h */,
+				BFEA6AE01A9E2EE5001F063E /* RMTileCache.h */,
+				BFEA6AE11A9E2EE5001F063E /* RMTileCacheDownloadOperation.h */,
+				BFEA6AE21A9E2EE5001F063E /* RMTileImage.h */,
+				BFEA6AE31A9E2EE5001F063E /* RMTileMillSource.h */,
+				BFEA6AE41A9E2EE5001F063E /* RMTileSource.h */,
+				BFEA6AE51A9E2EE5001F063E /* RMTileSourcesContainer.h */,
+				BFEA6AE61A9E2EE5001F063E /* RMUserLocation.h */,
+				BFEA6AE71A9E2EE5001F063E /* RMUserTrackingBarButtonItem.h */,
+			);
+			path = Headers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -470,7 +470,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3F4F591A9CEEC900D254D4 /* Mapbox.bundle in Resources */,
+				BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,24 +505,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3F4F131A9CED9C00D254D4 /* Constraint.swift in Sources */,
+				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
+				BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */,
+				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
+				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
-				BF3F4F031A9CEBC000D254D4 /* SwiftyJSON.swift in Sources */,
-				BF3F4F1A1A9CED9C00D254D4 /* View+Snap.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
-				BF3F4F071A9CEC5700D254D4 /* Alamofire-SwiftyJSON.swift in Sources */,
-				BF3F4F171A9CED9C00D254D4 /* ConstraintRelation.swift in Sources */,
-				BF3F4F091A9CEC5C00D254D4 /* Alamofire.swift in Sources */,
-				BF3F4F151A9CED9C00D254D4 /* ConstraintItem.swift in Sources */,
+				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
+				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
+				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
+				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
+				BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
-				BF3F4F161A9CED9C00D254D4 /* ConstraintMaker.swift in Sources */,
+				BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */,
+				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
-				BF3F4F191A9CED9C00D254D4 /* LayoutConstraint.swift in Sources */,
-				BF3F4F181A9CED9C00D254D4 /* EdgeInsets.swift in Sources */,
-				BF3F4F141A9CED9C00D254D4 /* ConstraintAttributes.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -641,19 +641,16 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Mapbox",
-					"$(PROJECT_DIR)/Mapbox/prkng-ios/Third",
-					Party,
-					Libraries/Mapbox,
-					"$(PROJECT_DIR)/prkng-ios/Third",
-					Party,
-					Libraries/Mapbox,
+					"Libraries/**",
+					"${PROJECT_PATH}/Libraries/**",
+					"$(PROJECT_DIR)/prkng-ios/Libraries/Alamofire/Mapbox",
+					"$(PROJECT_DIR)/prkng-ios/Libraries/Mapbox",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/cagdas/Dev/ios/prkng-ios/prkng-Bridging-Header.h";
-				USER_HEADER_SEARCH_PATHS = "Pods/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
 		};
@@ -675,19 +672,16 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Mapbox",
-					"$(PROJECT_DIR)/Mapbox/prkng-ios/Third",
-					Party,
-					Libraries/Mapbox,
-					"$(PROJECT_DIR)/prkng-ios/Third",
-					Party,
-					Libraries/Mapbox,
+					"Libraries/**",
+					"${PROJECT_PATH}/Libraries/**",
+					"$(PROJECT_DIR)/prkng-ios/Libraries/Alamofire/Mapbox",
+					"$(PROJECT_DIR)/prkng-ios/Libraries/Mapbox",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/cagdas/Dev/ios/prkng-ios/prkng-Bridging-Header.h";
-				USER_HEADER_SEARCH_PATHS = "Pods/**";
+				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;
 		};

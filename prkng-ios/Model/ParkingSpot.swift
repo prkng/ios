@@ -77,11 +77,9 @@ class ParkingSpot: NSObject {
     var duration : Int
     
     init(json : JSON) {
+        
       code = json["code"].stringValue
-
       rules = Array<ParkingRule>()
-        
-        
       descText = json["description"].stringValue
         
       maxParkingTime = json["time_max_parking"].intValue
