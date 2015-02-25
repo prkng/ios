@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import AlamoFire
-import SwiftyJSON
 
 class SpotOperations: NSObject {
     
@@ -21,7 +19,7 @@ class SpotOperations: NSObject {
         
         var url = APIUtility.APIConstants.rootURLString + "slots/\(latitude)/\(longitude)";
         
-        Alamofire.request(.GET, url).responseSwiftyJSON() {
+        request(.GET, url).responseSwiftyJSON() {
             (request, response, json, error) in
             
             

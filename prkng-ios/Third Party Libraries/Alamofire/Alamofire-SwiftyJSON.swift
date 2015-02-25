@@ -8,9 +8,6 @@
 
 import Foundation
 
-import Alamofire
-import SwiftyJSON
-
 // MARK: - Request for Swift JSON
 
 extension Request {
@@ -22,7 +19,7 @@ extension Request {
     
     :returns: The request.
     */
-    public func responseSwiftyJSON(completionHandler: (NSURLRequest, NSHTTPURLResponse?, SwiftyJSON.JSON, NSError?) -> Void) -> Self {
+    public func responseSwiftyJSON(completionHandler: (NSURLRequest, NSHTTPURLResponse?, JSON, NSError?) -> Void) -> Self {
         return responseSwiftyJSON(queue:nil, options:NSJSONReadingOptions.AllowFragments, completionHandler:completionHandler)
     }
     
@@ -45,7 +42,7 @@ extension Request {
                 if error != nil || object == nil{
                     responseJSON = JSON.nullJSON
                 } else {
-                    responseJSON = SwiftyJSON.JSON(object!)
+                    responseJSON = JSON(object!)
                 }
                 
                 dispatch_async(queue ?? dispatch_get_main_queue(), {

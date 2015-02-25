@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Snap
 import Crashlytics
 
 @UIApplicationMain

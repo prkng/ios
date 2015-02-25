@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyJSON
 
 class ParkingSpot: NSObject {
 
@@ -71,14 +70,22 @@ class ParkingSpot: NSObject {
 //    
     
     var code : String
-    var days : Array<JSON>
+    var rules : Array<ParkingRule>
     var descText : String
     
+    var maxParkingTime : Int
+    var duration : Int
     
     init(json : JSON) {
       code = json["code"].stringValue
-      days = json["days"].arrayValue
+
+      rules = Array<ParkingRule>()
+        
+        
       descText = json["description"].stringValue
+        
+      maxParkingTime = json["time_max_parking"].intValue
+      duration = json["duration"].intValue
       
     }
 }
