@@ -19,6 +19,7 @@
 		BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF22C01A85122D000380DA /* Crashlytics.framework */; };
 		BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */; };
 		BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB791A839F6A00B77F2E /* MapViewController.swift */; };
+		BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */; };
 		BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */; };
 		BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956681A8E59DF00C2C117 /* APIUtility.swift */; };
 		BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */; };
@@ -64,6 +65,7 @@
 		BFDF22C01A85122D000380DA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
 		BFE1AB791A839F6A00B77F2E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor-Hex.swift"; sourceTree = "<group>"; };
 		BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingSpot.swift; sourceTree = "<group>"; };
 		BFE956681A8E59DF00C2C117 /* APIUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIUtility.swift; sourceTree = "<group>"; };
 		BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotOperations.swift; sourceTree = "<group>"; };
@@ -218,8 +220,9 @@
 		BFC764891A7644AC008F2B26 /* prkng-ios */ = {
 			isa = PBXGroup;
 			children = (
-				BFE956651A8E4B7D00C2C117 /* API */,
 				BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */,
+				BFE3ABB71A9F5BC400734BBE /* Tools */,
+				BFE956651A8E4B7D00C2C117 /* API */,
 				BF0B47221A7E903900E94B3C /* Model */,
 				BF0B47231A7E905F00E94B3C /* View Controllers */,
 				BFC764931A7644AC008F2B26 /* Images.xcassets */,
@@ -260,6 +263,14 @@
 				BFE1AB791A839F6A00B77F2E /* MapViewController.swift */,
 			);
 			path = Map;
+			sourceTree = "<group>";
+		};
+		BFE3ABB71A9F5BC400734BBE /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		BFE956651A8E4B7D00C2C117 /* API */ = {
@@ -512,6 +523,7 @@
 				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
+				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
 				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
 				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,

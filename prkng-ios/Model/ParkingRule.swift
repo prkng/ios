@@ -9,10 +9,23 @@
 import UIKit
 
 class ParkingRule: NSObject {
-    
-    init(json : JSON) {
-        
+
+    var restrictionType: String
+    var code: String
+    var maxParkingTime: Int
+    var seasonEnd: String
+    var desc: String
+
+
+    init(json: JSON) {
+
+        restrictionType = json["restricty_type"].stringValue
+        code = json["code"].stringValue
+        maxParkingTime = json["time_max_parking"].intValue
+        seasonEnd = json["season_end"].stringValue
+        desc = json["description"].stringValue
+
     }
 
-   
+
 }

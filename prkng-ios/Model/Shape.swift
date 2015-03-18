@@ -9,22 +9,21 @@
 import UIKit
 
 class Shape: NSObject {
-    
-    var coordinates : Array<CLLocationCoordinate2D>
-    
-    init(json:JSON) {
-        
-        coordinates = Array<CLLocationCoordinate2D>()
-        
-        var jsonCoordinates : Array<JSON> = json["coordinates"].arrayValue
-        
+
+    var type: String
+    var coordinates: Array<CLLocation>
+
+    init(json: JSON) {
+
+        type = json["type"].stringValue
+
+        coordinates = Array<CLLocation>()
+        var jsonCoordinates: Array<JSON> = json["coordinates"].arrayValue
         for jsonCoordinate in jsonCoordinates {
-        
-            var coordinate = CLLocationCoordinate2DMake(jsonCoordinate[0].doubleValue, jsonCoordinate[1].doubleValue)
+            var coordinate = CLLocation(latitude: jsonCoordinate[1].doubleValue, longitude: jsonCoordinate[0].doubleValue)
             coordinates.append(coordinate)
-            
         }
-        
+
     }
-   
+
 }

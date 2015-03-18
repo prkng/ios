@@ -9,7 +9,7 @@
 import UIKit
 
 class APIUtility: NSObject {
-    
+
     struct APIConstants {
 #if DEBUG
         static let rootURLString = "http://ks29236.kimsufi.com:5000/"
@@ -17,10 +17,10 @@ class APIUtility: NSObject {
         static let rootURLString = "http://ks29236.kimsufi.com:5000/"
 #endif
     }
-    
-    
-    class func rootURL () -> String {
+
+
+    class func rootURL() -> String {
         return APIConstants.rootURLString;
     }
-   
+
 }

@@ -17,6 +17,12 @@ DerivedData
 *.ipa
 *.xcuserstate
 *.xcworkspace
+.idea/
+
+# CocoaPods
+Pods
+.gradle
+
 
 # CocoaPods
 #
