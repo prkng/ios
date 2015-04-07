@@ -16,21 +16,23 @@ class ParkingSpot: NSObject {
     var maxParkingTime: Int
     var duration: Int
     var buttonLocation: CLLocation
-    var rules: Array<ParkingRule>
+    var rules: ParkingRule
     var line: Shape
 
     init(json: JSON) {
 
         identifier = json["id"].stringValue
         code = json["code"].stringValue
-        desc = json["description"].stringValue
+        desc = json["properties"]["rules"][0]["description"].stringValue
         maxParkingTime = json["time_max_parking"].intValue
         duration = json["duration"].intValue
         buttonLocation = CLLocation(latitude: json["properties"]["button_location"]["lat"].doubleValue, longitude: json["properties"]["button_location"]["long"].doubleValue)
-        rules = Array<ParkingRule>()
-        for ruleJson in json["properties"]["rules"].arrayValue {
-            rules.append(ParkingRule(json: ruleJson))
-        }
+        
+        rules = ParkingRule(json: json["properties"]["rules"][0])
+        
+//        for ruleJson in json["properties"]["rules"] {
+//            rules.append(ParkingRule(json: ruleJson))
+//        }
 
         line = Shape(json: json["geometry"])
     }

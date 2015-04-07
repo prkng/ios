@@ -1,0 +1,16 @@
+/* 
+  Localizable.strings
+  prkng-ios
+
+  Created by Cagdas Altinkaya on 01/04/15.
+  Copyright (c) 2015 PRKNG. All rights reserved.
+*/
+
+
+
+
+// Spot details
+"spot_available_for" = "AVAILABLE\nFOR";
+"schedule_authorized" = "AUTHORIZED";
+"schedule_limited" = "LIMITED";
+"schedule_forbidden" = "FORBIDDEN";

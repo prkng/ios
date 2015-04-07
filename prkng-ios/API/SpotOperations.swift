@@ -17,7 +17,9 @@ class SpotOperations: NSObject {
     class func findSpots(location: CLLocationCoordinate2D, completion: ((spots:Array<ParkingSpot>) -> Void)) {
 
         var url = APIUtility.APIConstants.rootURLString + "slots"
-        var params = ["latitude": location.latitude, "longitude": location.longitude]
+        var params = ["latitude": location.latitude,
+            "longitude": location.longitude,
+            "radius" : 100]
 
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in

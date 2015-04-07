@@ -52,11 +52,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func configureGlobals() {
         UIApplication.sharedApplication().statusBarHidden = true
+        
+        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.anthracite1], forState: UIControlState.Normal )
+        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.red2], forState: UIControlState.Selected)
+        UITabBar.appearance().backgroundImage = UIImage()
+        UITabBar.appearance().backgroundColor = Styles.Colors.stone
+
     }
 
     func loadInitialViewController() {
-        var viewController: MapViewController = MapViewController()
-        window!.rootViewController = viewController
+
+        var vc1: UIViewController = UIViewController()
+        vc1.tabBarItem = UITabBarItem(title: NSLocalizedString("SEARCH", comment: "comment"), image: UIImage(named: "tabbar_search")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal), selectedImage: UIImage(named: "tabbar_search_active")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal))
+        vc1.tabBarItem.setTitlePositionAdjustment(UIOffsetMake(0, -5.0))
+        vc1.view.backgroundColor = UIColor.whiteColor()
+
+        var mapViewController: MapViewController = MapViewController()
+        var navigationController2 : UINavigationController = UINavigationController(rootViewController: mapViewController)
+        navigationController2.navigationBarHidden = true
+
+        var vc2: UIViewController = UIViewController()
+        vc2.tabBarItem = UITabBarItem(title: NSLocalizedString("MY CAR", comment: "comment"), image: UIImage(named: "tabbar_mycar")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal), selectedImage: UIImage(named: "tabbar_mycar_active")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal))
+        vc2.tabBarItem.setTitlePositionAdjustment(UIOffsetMake(0, -5.0))
+
+        vc2.view.backgroundColor = UIColor.whiteColor()
+        
+        var vc3: UIViewController = UIViewController()
+        vc3.tabBarItem = UITabBarItem(title: NSLocalizedString("SETTINGS", comment: "comment"), image: UIImage(named: "tabbar_here")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal), selectedImage: UIImage(named: "tabbar_here_active")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal))
+        vc3.tabBarItem.setTitlePositionAdjustment(UIOffsetMake(0, -5.0))
+
+        vc3.view.backgroundColor = UIColor.whiteColor()
+
+        var tabbarController: PrkTabBarController = PrkTabBarController()
+
+        tabbarController.viewControllers = [vc1, navigationController2, vc2, vc3]
+        
+        tabbarController.selectedIndex = 1;
+
+        window!.rootViewController = tabbarController
         window!.makeKeyAndVisible()
     }
 }
