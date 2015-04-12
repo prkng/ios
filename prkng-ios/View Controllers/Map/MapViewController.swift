@@ -17,21 +17,28 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
     var selectedSpot: ParkingSpot?
     var detailView: SpotDetailView
     
+    var spotDetailConstraint : Constraint?
     
-    override init() {
-
+    convenience init() {
+        self.init(nibName: nil, bundle: nil)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         let source = RMMapboxSource(mapID: "arnaudspuhler.l54pj66f")
         mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: source)
         mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 45.548, longitude: -73.58)
         detailView = SpotDetailView()
         spots = []
         allAnnotations = []
-
+        
         super.init(nibName: nil, bundle: nil)
-
+        
         self.tabBarItem = UITabBarItem(title: NSLocalizedString("HERE", comment: "comment"), image: UIImage(named: "tabbar_here")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal), selectedImage: UIImage(named: "tabbar_here_active")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal))
         self.tabBarItem.setTitlePositionAdjustment(UIOffsetMake(0, -5.0))
+    }
 
+    required init(coder aDecoder: NSCoder) {
+        fatalError("NSCoding not supported")
     }
 
     override func loadView() {
@@ -52,7 +59,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
 
         detailView.snp_makeConstraints {
             (make) -> () in
-            make.bottom.equalTo(self.view)
+            self.spotDetailConstraint = make.bottom.equalTo(self.view).with.offset(180)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(150)
@@ -87,9 +94,9 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
         }
 
         var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
-        var annotationType = userInfo!["type"] as String
-        var selected = userInfo!["selected"] as Bool
-        var spot = userInfo!["spot"] as ParkingSpot
+        var annotationType = userInfo!["type"] as! String
+        var selected = userInfo!["selected"] as! Bool
+        var spot = userInfo!["spot"] as! ParkingSpot
 
         switch annotationType {
 
@@ -141,6 +148,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
             return
         }
         NSLog("afterMapMove")
+
+        hideSpotDetails()
         self.selectedSpot = nil
         updateAnnotations()
     }
@@ -158,7 +167,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
         }
         
         var userInfo: [String:AnyObject]? = (annotation as RMAnnotation).userInfo as? [String:AnyObject]
-        var spot = userInfo!["spot"] as ParkingSpot?
+        var spot = userInfo!["spot"] as! ParkingSpot?
         
         
         if spot == nil {
@@ -168,9 +177,11 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
         var annotations = findAnnotations(spot!.identifier)
         removeAnnotations(annotations)
         addAnnotation(self.mapView, spot: spot!, selected: true)
-        self.detailView.titleLabel.text = spot?.desc
+        self.detailView.titleLabel.text = spot?.name
 
         selectedSpot = spot
+        
+        showSpotDetails()
 
     }
 
@@ -184,11 +195,11 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
         return {
             (annotation1: AnyObject!, annotation2: AnyObject!) -> (NSComparisonResult) in
 
-            var userInfo1: [String:AnyObject]? = (annotation1 as RMAnnotation).userInfo as? [String:AnyObject]
-            var type1 = userInfo1!["type"] as String
+            var userInfo1: [String:AnyObject]? = (annotation1 as! RMAnnotation).userInfo as? [String:AnyObject]
+            var type1 = userInfo1!["type"] as! String
 
-            var userInfo2: [String:AnyObject]? = (annotation2 as RMAnnotation).userInfo as? [String:AnyObject]
-            var type2 = userInfo2!["type"] as String
+            var userInfo2: [String:AnyObject]? = (annotation2 as! RMAnnotation).userInfo as? [String:AnyObject]
+            var type2 = userInfo2!["type"] as! String
 
 
             if (type1 == "button" && type2 == "line") {
@@ -250,7 +261,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
         for annotation in allAnnotations {
 
             var userInfo: [String:AnyObject]? = (annotation as RMAnnotation).userInfo as? [String:AnyObject]
-            var spot = userInfo!["spot"] as ParkingSpot
+            var spot = userInfo!["spot"] as! ParkingSpot
 
             if spot.identifier == identifier {
                 foundAnnotations.append(annotation)
@@ -268,13 +279,13 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
         for ann in self.allAnnotations {
             
             var userInfo: [String:AnyObject]? = (ann as RMAnnotation).userInfo as? [String:AnyObject]
-            var spot = userInfo!["spot"] as ParkingSpot
+            var spot = userInfo!["spot"] as! ParkingSpot
             
             var found : Bool = false
             for delAnn in annotations {
                 
                 var delUserInfo: [String:AnyObject]? = (delAnn as RMAnnotation).userInfo as? [String:AnyObject]
-                var delSpot = delUserInfo!["spot"] as ParkingSpot
+                var delSpot = delUserInfo!["spot"] as! ParkingSpot
                 
                 if delSpot.identifier == spot.identifier {
                     found = true
@@ -307,11 +318,38 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, SpotDetailVi
     }
 
 
-    func showSpotDetails (completed : () -> ()?) {
+    func showSpotDetails (completed : ()) {
+        
+        detailView.snp_remakeConstraints {
+            (make) -> () in
+            self.spotDetailConstraint = make.bottom.equalTo(self.view).with.offset(0)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(150)
+        }
+
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.detailView.layoutIfNeeded()
+        });
         
     }
     
-    func hideSpotDetails (completed : () -> ()?) {
+    
+    func hideSpotDetails (completed : () ) {
+        
+        detailView.snp_remakeConstraints {
+            (make) -> () in
+            self.spotDetailConstraint = make.bottom.equalTo(self.view).with.offset(180)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(150)
+        }
+
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.detailView.layoutIfNeeded()
+        });
         
     }
     

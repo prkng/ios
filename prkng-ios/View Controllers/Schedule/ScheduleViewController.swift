@@ -14,6 +14,7 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
     var headerView : ScheduleHeaderView
     var collectionView : UICollectionView
     var collectionViewLayout : ScheduleCollectionViewLayout
+    var dayIndicator : ScheduleDayIndicatorView
     
     let scheduleCollectionViewCellIdentifier : String = "ScheduleCollectionViewCell"
     
@@ -22,9 +23,15 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
         collectionViewLayout = ScheduleCollectionViewLayout()
         collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: collectionViewLayout)
         self.spot = spot
+        dayIndicator = ScheduleDayIndicatorView()
+        
         super.init(nibName: nil, bundle: nil)
         
         collectionViewLayout.delegate = self
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("NSCoding not supported")
     }
     
     override func loadView() {
@@ -60,6 +67,9 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
         headerView.layer.shadowOpacity = 0.2
         headerView.layer.shadowRadius = 0.5
         
+        dayIndicator.setDays(["M", "T", "W", "T", "F", "S", "S"])
+        self.view.addSubview(self.dayIndicator)
+        
     }
     
     func setupConstraints () {
@@ -68,7 +78,7 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
             make.top.equalTo(self.headerView.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.view)
+            make.bottom.equalTo(self.dayIndicator.snp_top)
         }
        
         headerView.snp_makeConstraints { (make) -> () in
@@ -77,15 +87,21 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
             make.right.equalTo(self.view)
             make.height.equalTo(150)
         }
+        
+        dayIndicator.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(50)
+        }
     }
     
     func updateHeaderValues () {
-        headerView.titleLabel.text = spot.desc
+        headerView.titleLabel.text = spot.name
     }
 
     
     // UICollectionViewDataSource
-    
     
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 7; //days in a week
@@ -100,9 +116,16 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        var cell : ScheduleCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(scheduleCollectionViewCellIdentifier, forIndexPath: indexPath) as ScheduleCollectionViewCell
+        var cell : ScheduleCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(scheduleCollectionViewCellIdentifier, forIndexPath: indexPath) as! ScheduleCollectionViewCell
         
         cell.backgroundColor = Styles.Colors.red2
+        
+        
+        var startF : Float = spot.rules.agenda[indexPath.section][0]
+        var endF : Float = spot.rules.agenda[indexPath.section][1]
+        
+        cell.setHours( ScheduleCellModel(startF: startF, endF: endF))       
+        
         
         return cell;
     }
@@ -118,7 +141,7 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        var kMaxIndex : CGFloat  = 23;
+        var kMaxIndex : CGFloat  = 7;
         var kCellWidth : CGFloat = self.view.frame.size.width / 3
         
         var targetX : CGFloat = scrollView.contentOffset.x + velocity.x * 60.0;
@@ -130,17 +153,14 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
             targetIndex = kMaxIndex;
         }
         
-        targetContentOffset.put(targetIndex * kCellWidth)
-        
-//        targetContentOffset->x = targetIndex * (kCellWidth + kCellSpacing);
+        targetContentOffset.memory.x = targetIndex * (self.view.frame.size.width / 3.0)
     }
 
     
     
     //
     
-    func modelForItemAtIndexPath(indexpath : NSIndexPath) -> ScheduleCellModel {
-        
+    func modelForItemAtIndexPath(indexpath : NSIndexPath) -> ScheduleCellModel {     
         
         var startF : Float = spot.rules.agenda[indexpath.section][0]
         var endF : Float = spot.rules.agenda[indexpath.section][1]
@@ -149,7 +169,7 @@ class ScheduleViewController: AbstractViewController, UICollectionViewDataSource
     }
     
     func contentSizeForCollectionView () -> CGSize {
-        return CGSize(width: self.view.frame.size.width * 7.0 / 3.0 , height: self.view.frame.size.height - 152.0)
+        return CGSize(width: self.view.frame.size.width * 7.0 / 3.0 , height: self.view.frame.size.height - 202.0)
     }
 
 }
@@ -200,8 +220,7 @@ class ScheduleCellModel {
        
         
         startTime = nf.stringFromNumber(startTm)! + ":" + startMinutes
-        
-        
+
         
         if(endF > 12) {
             endTimeAmPm = "PM"
@@ -219,10 +238,6 @@ class ScheduleCellModel {
             endMinutes = nf.stringFromNumber(diffEnd * 60)!
         }
         endTime = nf.stringFromNumber(endTm)! + ":" + endMinutes
-        
-        
-        
-        
         
         
     }

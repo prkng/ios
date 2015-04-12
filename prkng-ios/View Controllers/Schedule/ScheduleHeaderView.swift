@@ -22,9 +22,10 @@ class ScheduleHeaderView: UIView {
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
-    override convenience init() {
+    convenience init() {
         self.init(frame: CGRectZero)
     }
+    
     
     override init(frame: CGRect) {
         
@@ -154,7 +155,7 @@ class InfoView: UIView {
         var didSetupSubviews: Bool
         var didSetupConstraints: Bool
         
-        override convenience init() {
+        convenience init() {
             self.init(frame: CGRectZero)
         }
         

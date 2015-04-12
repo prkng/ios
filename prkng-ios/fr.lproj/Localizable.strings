@@ -10,4 +10,7 @@
 
 
 // Spot details
-"available_for" = "LE_AVAILABLE\nFOR";
+"spot_available_for" = "DISPONIBLE\nPOUR";
+"schedule_authorized" = "AUTORISé";
+"schedule_limited" = "LIMITé";
+"schedule_forbidden" = "INTERDIT";

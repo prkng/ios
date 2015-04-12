@@ -12,6 +12,7 @@ class ParkingSpot: NSObject {
 
     var identifier: String
     var code: String
+    var name : String
     var desc: String
     var maxParkingTime: Int
     var duration: Int
@@ -23,6 +24,7 @@ class ParkingSpot: NSObject {
 
         identifier = json["id"].stringValue
         code = json["code"].stringValue
+        name = json["properties"]["rules"][0]["address"].stringValue
         desc = json["properties"]["rules"][0]["description"].stringValue
         maxParkingTime = json["time_max_parking"].intValue
         duration = json["duration"].intValue

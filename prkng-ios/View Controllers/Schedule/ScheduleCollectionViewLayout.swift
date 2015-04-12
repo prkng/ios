@@ -43,6 +43,11 @@ class ScheduleCollectionViewLayout: UICollectionViewLayout {
                 var w : Double = xIncrement
                 var h : Double = yIncrement * model.heightMultiplier!
                 
+                if (model.heightMultiplier < 2.0) {
+                    h = yIncrement * 2.0;
+                }
+    
+                
                 var cellFrame = CGRect(x: x, y: y, width: w, height: h)
                 
                 

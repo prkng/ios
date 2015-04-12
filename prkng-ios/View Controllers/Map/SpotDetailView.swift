@@ -24,7 +24,7 @@ class SpotDetailView: UIView {
     
     var delegate : SpotDetailViewDelegate?
     
-    override convenience init() {
+    convenience init() {
         self.init(frame: CGRectZero)
     }
 

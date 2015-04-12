@@ -96,4 +96,12 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
         didSetupConstraints = true
         
     }
+    
+    
+    func setHours (model : ScheduleCellModel) {
+        startTimeLabel.text = model.startTime
+        startAmPmLabel.text = model.startTimeAmPm
+        endTimeLabel.text = model.endTime
+        endAmPmLabel.text = model.endTimeAmPm
+    }
 }

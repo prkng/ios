@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SpotOperations: NSObject {
+class SpotOperations {
 
     class func getSpot(identifier: NSString) {
 
@@ -20,7 +20,7 @@ class SpotOperations: NSObject {
         var params = ["latitude": location.latitude,
             "longitude": location.longitude,
             "radius" : 100]
-
+        
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             var spotJsons: Array<JSON> = json["features"].arrayValue

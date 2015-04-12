@@ -9,6 +9,8 @@
 import UIKit
 
 class PrkTabBarController: UITabBarController {
+    
+    var mapViewSnapShot : UIImage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
