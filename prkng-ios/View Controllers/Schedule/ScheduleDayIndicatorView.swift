@@ -12,6 +12,13 @@ class ScheduleDayIndicatorView: UIView {
 
     var labels : Array<UILabel>
     
+    var indicator : UIView
+    
+    var indicatorXConstraint : Constraint?
+    
+    var minX : CGFloat?
+    var maxX : CGFloat?
+    
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
@@ -23,7 +30,9 @@ class ScheduleDayIndicatorView: UIView {
         didSetupSubviews = false
         didSetupConstraints = false
         labels = []
+        indicator = UIView()
         super.init(frame: frame)
+
         
         setupSubviews()
         self.setNeedsUpdateConstraints()
@@ -42,6 +51,15 @@ class ScheduleDayIndicatorView: UIView {
         super.updateConstraints()
     }
     
+    override func layoutSubviews() {
+        
+        if (minX == nil || maxX == nil) {
+            minX = 6.0 //TODO
+            maxX = self.bounds.size.width - 150.0 - 6.0 - 6.0
+        }
+        
+        super.layoutSubviews()
+    }
     
     func setupSubviews () {
         
@@ -53,6 +71,11 @@ class ScheduleDayIndicatorView: UIView {
             labels.append(label)
         }
         
+        indicator.layer.borderWidth = 1.0
+        indicator.layer.cornerRadius = 13.0
+        indicator.layer.borderColor = UIColor.whiteColor().CGColor
+        indicator.clipsToBounds = true
+        addSubview(indicator)
         
     }
     
@@ -74,6 +97,13 @@ class ScheduleDayIndicatorView: UIView {
             
         }
         
+        indicator.snp_makeConstraints { (make) -> () in
+            self.indicatorXConstraint = make.left.equalTo(self).with.offset(6)
+            make.height.equalTo(26)
+            make.width.equalTo(150)
+            make.centerY.equalTo(self).with.offset(-1)
+        }
+        
     }
     
     func setDays (days : Array<String>) {
@@ -82,9 +112,7 @@ class ScheduleDayIndicatorView: UIView {
         for day in days {
             labels[i++].text = day
         }
-        
     }
-    
     
     func dayLabel () -> UILabel {
         var label : UILabel = UILabel()
@@ -92,6 +120,21 @@ class ScheduleDayIndicatorView: UIView {
         label.textColor = Styles.Colors.cream1
         label.textAlignment = NSTextAlignment.Center
         return label
+    }
+    
+    
+    func setPositionRatio (ratio : CGFloat) {
+        
+        var offset : CGFloat = ((maxX! - minX!) * ratio) + minX!
+        self.indicatorXConstraint?.offset(offset)
+        
+        indicator.snp_remakeConstraints { (make) -> () in
+            self.indicatorXConstraint = make.left.equalTo(self).with.offset(offset)
+            make.height.equalTo(26)
+            make.width.equalTo(150)
+            make.centerY.equalTo(self).with.offset(-1)
+        }
+        
     }
     
     

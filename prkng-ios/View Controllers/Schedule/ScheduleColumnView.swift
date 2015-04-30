@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ScheduleColumnView: UICollectionReusableView {
+class ScheduleColumnView: UIView {
     
     var titleLabel : UILabel
     private var titleContainerView : UIView
@@ -29,10 +29,21 @@ class ScheduleColumnView: UICollectionReusableView {
         verticalSeperator = UIView()
         super.init(frame: frame)
         
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
     }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
+    }
+    
+    override func updateConstraints() {
+        
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        
+        super.updateConstraints()
     }
 
     private func setupSubviews() {
@@ -49,6 +60,7 @@ class ScheduleColumnView: UICollectionReusableView {
         horizontalSeperator.backgroundColor = Styles.Colors.beige1
         addSubview(horizontalSeperator)
         
+        didSetupSubviews = true
     }
     
     private func setupConstraints () {
@@ -72,12 +84,13 @@ class ScheduleColumnView: UICollectionReusableView {
         }
         
         horizontalSeperator.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleContainerView.snp_bottom)
+            make.top.equalTo(self)
             make.bottom.equalTo(self)
             make.right.equalTo(self)
             make.width.equalTo(0.5)
         }
         
+        didSetupConstraints = true
     }
     
     func setActive (active: Bool) {
@@ -85,7 +98,11 @@ class ScheduleColumnView: UICollectionReusableView {
         if(active) {
             self.backgroundColor = Styles.Colors.cream1
         } else {
-            self.backgroundColor = Styles.Colors.stone
+            self.backgroundColor = Styles.Colors.cream2
         }
+    }
+    
+    func setTitle(title : String) {
+        self.titleLabel.text = title
     }
 }

@@ -67,6 +67,7 @@ class ScheduleHeaderView: UIView {
         
         titleLabel.font = Styles.FontFaces.light(27)
         titleLabel.textColor = Styles.Colors.cream1
+        titleLabel.textAlignment = NSTextAlignment.Center
         topContainer.addSubview(titleLabel)
         
         topContainer.addSubview(scheduleButton)

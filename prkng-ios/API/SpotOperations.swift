@@ -14,12 +14,34 @@ class SpotOperations {
 
     }
 
-    class func findSpots(location: CLLocationCoordinate2D, completion: ((spots:Array<ParkingSpot>) -> Void)) {
+    class func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, completion: ((spots:Array<ParkingSpot>) -> Void)) {
 
-        var url = APIUtility.APIConstants.rootURLString + "slots"
+        let url = APIUtility.APIConstants.rootURLString + "slots"
+        
+        let radiusStr = NSString(format: "%.0f", radius)
+        
+        
         var params = ["latitude": location.latitude,
             "longitude": location.longitude,
-            "radius" : 100]
+            "radius" : radiusStr
+        ]
+        
+        
+        
+        if(duration != nil) {
+            let durationStr = NSString(format: "%.0f", duration!)
+            params["duration"] = durationStr
+        }
+        
+        if(checkinTime != nil) {
+            let formatter = NSDateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
+            formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+            formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+            params["checkinTime"] = formatter.stringFromDate(checkinTime!)
+        }
+        
+
         
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -36,5 +58,7 @@ class SpotOperations {
 
         }
     }
+    
+    
 
 }

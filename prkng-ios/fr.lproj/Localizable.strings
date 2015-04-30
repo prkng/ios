@@ -7,10 +7,21 @@
 */
 
 
-
+"tabbar_search" = "SEARCH";
+"tabbar_here" = "HERE";
+"tabbar_mycar" = "MY CAR";
+"tabbar_settings" = "SETTINGS";
 
 // Spot details
-"spot_available_for" = "DISPONIBLE\nPOUR";
-"schedule_authorized" = "AUTORISé";
-"schedule_limited" = "LIMITé";
-"schedule_forbidden" = "INTERDIT";
+
+"spot_available_for" = "AVAILABLE\nFOR";
+"schedule_authorized" = "AUTHORIZED";
+"schedule_limited" = "LIMITED";
+"schedule_forbidden" = "FORBIDDEN";
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";

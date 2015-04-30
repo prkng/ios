@@ -8,15 +8,32 @@
 
 import UIKit
 
-class ScheduleCollectionViewCell: UICollectionViewCell {
+class ScheduleItemView : UIView {
     
     var startTimeLabel : UILabel
     var startAmPmLabel : UILabel
     var endTimeLabel : UILabel
     var endAmPmLabel : UILabel
+    var rightSeperator : UIView
     
-    var didsetupSubviews : Bool
-    var didSetupConstraints : Bool
+    var limited : Bool
+    
+    private var didsetupSubviews : Bool
+    private var didSetupConstraints : Bool
+    
+    convenience init(model : ScheduleItemModel) {
+        self.init(frame:CGRectZero)
+        
+        self.startTimeLabel.text = model.startTime
+        self.startAmPmLabel.text = model.startTimeAmPm
+        self.endTimeLabel.text = model.endTime
+        self.endAmPmLabel.text = model.endTimeAmPm
+        self.limited = model.limited
+    }
+    
+    convenience init() {
+        self.init(frame:CGRectZero)
+    }
     
      override init(frame: CGRect) {
         
@@ -24,9 +41,12 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
         startAmPmLabel = UILabel()
         endTimeLabel = UILabel()
         endAmPmLabel = UILabel()
+        rightSeperator = UIView()
         
         didsetupSubviews = false
         didSetupConstraints = false
+        
+        limited =  false
         
         super.init(frame: frame)
         
@@ -49,21 +69,38 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
     
     func setupSubviews () {
         
+        if(limited) {
+            self.backgroundColor = Styles.Colors.midnight1
+        } else {
+            self.backgroundColor = Styles.Colors.red2
+        }
+        
         startTimeLabel.font = Styles.FontFaces.regular(17)
         startTimeLabel.textColor = Styles.Colors.cream1
-        self.contentView.addSubview(startTimeLabel)
+        startTimeLabel.adjustsFontSizeToFitWidth = true
+        startTimeLabel.numberOfLines = 1
+        self.addSubview(startTimeLabel)
         
         startAmPmLabel.font = Styles.FontFaces.light(17)
         startAmPmLabel.textColor = Styles.Colors.cream1
-        self.contentView.addSubview(startAmPmLabel)
+        startAmPmLabel.adjustsFontSizeToFitWidth = true
+        startAmPmLabel.numberOfLines = 1
+        self.addSubview(startAmPmLabel)
         
         endTimeLabel.font = Styles.FontFaces.regular(17)
         endTimeLabel.textColor = Styles.Colors.cream1
-        self.contentView.addSubview(endTimeLabel)
+        endTimeLabel.adjustsFontSizeToFitWidth = true
+        endTimeLabel.numberOfLines = 1
+        self.addSubview(endTimeLabel)
         
         endAmPmLabel.font = Styles.FontFaces.light(17)
         endAmPmLabel.textColor = Styles.Colors.cream1
-        self.contentView.addSubview(endAmPmLabel)
+        endAmPmLabel.adjustsFontSizeToFitWidth = true
+        endAmPmLabel.numberOfLines = 1
+        self.addSubview(endAmPmLabel)
+        
+        rightSeperator.backgroundColor = Styles.Colors.red1
+        self.addSubview(rightSeperator)
         
         didsetupSubviews = true
     }
@@ -72,8 +109,9 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
     func setupConstraints () {        
         
         startTimeLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.contentView.snp_centerY)
-            make.centerX.equalTo(self.contentView).with.offset(-20)
+            make.top.greaterThanOrEqualTo(self.snp_top)
+            make.bottom.equalTo(self.snp_centerY)
+            make.centerX.equalTo(self).with.offset(-20)
         }
         
         startAmPmLabel.snp_makeConstraints { (make) -> () in
@@ -83,8 +121,9 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
         }
         
         endTimeLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.contentView.snp_centerY)
-            make.centerX.equalTo(self.contentView).with.offset(-20)
+            make.top.equalTo(self.snp_centerY)
+            make.centerX.equalTo(self).with.offset(-20)
+            make.bottom.lessThanOrEqualTo(self.snp_bottom)
         }
         
         endAmPmLabel.snp_makeConstraints { (make) -> () in
@@ -93,12 +132,19 @@ class ScheduleCollectionViewCell: UICollectionViewCell {
             make.bottom.equalTo(self.endTimeLabel)
         }
         
+        rightSeperator.snp_makeConstraints { (make) -> () in
+            make.right.equalTo(self)
+            make.top.equalTo(self)
+            make.bottom.equalTo(self)
+            make.width.equalTo(0.5)
+        }
+        
         didSetupConstraints = true
         
     }
     
     
-    func setHours (model : ScheduleCellModel) {
+    func setHours (model : ScheduleItemModel) {
         startTimeLabel.text = model.startTime
         startAmPmLabel.text = model.startTimeAmPm
         endTimeLabel.text = model.endTime
