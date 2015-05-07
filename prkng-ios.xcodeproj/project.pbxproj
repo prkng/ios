@@ -33,12 +33,15 @@
 		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
 		BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1701A83D364005F4054 /* libsqlite3.dylib */; };
 		BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1721A83D36F005F4054 /* libz.dylib */; };
+		BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB0958E1AFA498A007F1D16 /* LoginViewController.swift */; };
 		BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */; };
 		BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC764931A7644AC008F2B26 /* Images.xcassets */; };
 		BFC764A31A7644AC008F2B26 /* prkng_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */; };
 		BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFCD56301AB99A5F008406E8 /* IntroLight.otf */; };
 		BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFCD56311AB99A5F008406E8 /* IntroRegular.otf */; };
 		BFD0101C1AC1C73600C59B28 /* PrkTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD0101B1AC1C73600C59B28 /* PrkTabController.swift */; };
+		BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C21AF2E83700789022 /* Settings.swift */; };
+		BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C41AF2F09E00789022 /* DateUtil.swift */; };
 		BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD9CB681A9C942300BFA836 /* Shape.swift */; };
 		BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF22C01A85122D000380DA /* Crashlytics.framework */; };
 		BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */; };
@@ -101,6 +104,7 @@
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BFA8D1701A83D364005F4054 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		BFA8D1721A83D36F005F4054 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		BFB0958E1AFA498A007F1D16 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		BFC764871A7644AC008F2B26 /* prkng-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "prkng-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC7648B1A7644AC008F2B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 		BFCD56301AB99A5F008406E8 /* IntroLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroLight.otf; sourceTree = "<group>"; };
 		BFCD56311AB99A5F008406E8 /* IntroRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroRegular.otf; sourceTree = "<group>"; };
 		BFD0101B1AC1C73600C59B28 /* PrkTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabController.swift; sourceTree = "<group>"; };
+		BFD6B6C21AF2E83700789022 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		BFD6B6C41AF2F09E00789022 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		BFD9CB681A9C942300BFA836 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
 		BFDF22C01A85122D000380DA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
@@ -245,6 +251,7 @@
 		BF0B47231A7E905F00E94B3C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BFB0958D1AFA3F79007F1D16 /* Login */,
 				BF522FC51AE59B65001DB93E /* Intro */,
 				BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */,
 				BF7170B01AE42DBF00B922CA /* Settings */,
@@ -298,6 +305,14 @@
 				BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */,
 			);
 			path = "Common Views";
+			sourceTree = "<group>";
+		};
+		BFB0958D1AFA3F79007F1D16 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				BFB0958E1AFA498A007F1D16 /* LoginViewController.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		BFC7647E1A7644AC008F2B26 = {
@@ -399,6 +414,8 @@
 				BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */,
 				BF3A9F8E1AC1BA7400D6BD99 /* Styles.swift */,
 				BF1055941ACED50500413F16 /* ViewFactory.swift */,
+				BFD6B6C21AF2E83700789022 /* Settings.swift */,
+				BFD6B6C41AF2F09E00789022 /* DateUtil.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -665,9 +682,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
+				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
+				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
 				BF2A40A71AC468450055D785 /* SpotDetailView.swift in Sources */,
 				BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */,
@@ -680,6 +699,7 @@
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
+				BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */,
 				BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */,
 				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,

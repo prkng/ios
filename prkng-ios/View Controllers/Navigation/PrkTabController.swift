@@ -22,6 +22,8 @@ class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDe
     var searchViewController : SearchViewController?
     var hereViewController : HereViewController
     
+    var settingsViewController : SettingsViewController?
+    
     var activeViewController : AbstractViewController
     
     var switchingMainView : Bool
@@ -166,8 +168,16 @@ class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDe
             return;
         }
         
-        selectedTab = PrkTab.Settings
-        self.tabBar.updateSelected()
+        if(settingsViewController == nil) {
+            settingsViewController = SettingsViewController()
+        }
+        
+        switchActiveViewController(settingsViewController!, completion: { (finished) -> Void in
+            self.selectedTab = PrkTab.Settings
+            self.tabBar.updateSelected()
+        })
+        
+
         
     }
     
@@ -177,6 +187,8 @@ class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDe
         if switchingMainView {
             return
         }
+        
+        mapViewController.updateMapCenterIfNecessary()
         
         switchingMainView = true
         newViewController.view.alpha = 0.0;
@@ -232,9 +244,17 @@ class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDe
     
     // SearchViewControllerDelegate
     
+    func setSearchParameters(time : NSDate?, duration : Float?) {
+        mapViewController.searchCheckinDate = time
+        mapViewController.searchDuration = duration
+    }
+
+    
     func displaySearchResults(results : Array<SearchResult>) {
         mapViewController.displaySearchResults(results)
     }
+    
+    
     
 
 }

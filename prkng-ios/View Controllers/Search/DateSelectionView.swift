@@ -120,9 +120,6 @@ class DateSelectionView: UIView {
             bottomContainer.addSubview(b)
         }
         
-        deselectAll()
-        selectedDay = currentDay()
-        
         didSetupSubviews = true
     }
     
@@ -183,13 +180,12 @@ class DateSelectionView: UIView {
     
     
     func selectToday () {
-        selectedDay = currentDay()
+        selectedDay = DateUtil.dayIndexOfTheWeek()
     }
     
     func selectTomorrow () {
         
-        
-        let day = currentDay()
+        let day = DateUtil.dayIndexOfTheWeek()
         
         if (day == 6) {
             selectedDay = 0
@@ -228,7 +224,7 @@ class DateSelectionView: UIView {
             
             deselectAll()
             
-            let day = currentDay()
+            let day = DateUtil.dayIndexOfTheWeek()
             
             if (day == selectedDay) {
                 todayButton.selected = true
@@ -242,13 +238,6 @@ class DateSelectionView: UIView {
     }
     
     
-    func currentDay () -> Int {
-        let todayDate = NSDate()
-        let myCalendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
-        let myComponents = myCalendar?.components(.WeekdayCalendarUnit, fromDate: todayDate)
-        let weekDay = myComponents?.weekday
-        return (weekDay! - 1)
-    }
     
     
 }

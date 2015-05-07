@@ -14,7 +14,13 @@ class SelectionControl: UIControl {
     var didSetupConstraints: Bool
     
     var titles : Array<String>
+    
+    var buttonContainers : Array<UIView>
     var buttons : Array<SelectionButton>
+    
+    var selectedIndex : Int
+    
+    var buttonSize : CGSize
     
     convenience init(titles : Array<String>) {
         self.init(frame:CGRectZero)
@@ -24,8 +30,11 @@ class SelectionControl: UIControl {
     override init(frame: CGRect) {
         titles = []
         buttons = []
+        buttonContainers = []
         didSetupSubviews = false
         didSetupConstraints = true
+        buttonSize = CGSizeMake(110, 26) // Default
+        selectedIndex = 0
         super.init(frame: frame)
     }
     
@@ -55,10 +64,22 @@ class SelectionControl: UIControl {
     
     func setupSubviews() {
         
-        for title in titles {
-            buttons.append(SelectionButton())
-        }
+        var index : Int = 0
         
+        for title in titles {
+            
+            let buttonContainer = UIView()
+            addSubview(buttonContainer)
+            buttonContainers.append(buttonContainer)
+            
+            let button = SelectionButton(title:title, index : index)
+            button.layer.cornerRadius =  self.buttonSize.height / 2.0
+            button.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
+            buttonContainer.addSubview(button)
+            buttons.append(button)
+            
+            index++
+        }        
         
         didSetupSubviews = true
     }
@@ -69,20 +90,56 @@ class SelectionControl: UIControl {
             
             buttons[0].snp_makeConstraints({ (make) -> () in
                 make.center.equalTo(self)
+                make.size.equalTo(self.buttonSize)
             })
             
         } else if (buttons.count > 1) {
             
+            
+            for index in 0...buttons.count-1 {
+                
+                let multiplier : Float = 2.0 * Float(index + 1) / (Float(buttons.count + 1) )  // MAGIC =)
+                NSLog("multiplier : %f", multiplier)
+                
+                buttonContainers[index].snp_makeConstraints({ (make) -> () in
+                    make.width.equalTo(self).multipliedBy(1.0 / Float(self.buttons.count))
+                    make.height.equalTo(self)
+                    make.centerX.equalTo(self).multipliedBy(multiplier)
+                    make.top.equalTo(self)
+                    make.bottom.equalTo(self)
+                })
+
+                
+                buttons[index].snp_makeConstraints({ (make) -> () in
+                    make.center.equalTo(self.buttonContainers[index])
+                    make.size.equalTo(self.buttonSize)
+                })
+                
+            }
             
             
             
             
         }
         
-        
-        
-        // TODO
         didSetupConstraints = true
+    }
+    
+    private func deselectAll () {
+        
+        for button in buttons {
+            button.selected = false
+        }
+        
+    }
+    
+    
+    func selectOption (sender : SelectionButton) {
+        
+        deselectAll()
+        selectedIndex = sender.index
+        sender.selected = true
+        
     }
     
     
@@ -94,17 +151,25 @@ class SelectionButton: UIControl {
     var titleLabel : UILabel
     var title : String?
     
+    var index : Int
     
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
     
+    convenience init (title : String, index: Int) {
+        self.init(frame:CGRectZero)
+        self.title = title
+    }
+    
     override init(frame: CGRect) {
         
         titleLabel = UILabel()
+        index = -1
         
         didSetupSubviews = false
         didSetupConstraints = true
+        
         
         super.init(frame: frame)
     }

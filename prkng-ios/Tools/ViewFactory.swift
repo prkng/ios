@@ -18,4 +18,15 @@ class ViewFactory {
     }
     
 
+    class func hugeButton () -> UIButton {
+        
+        let hugeButton = UIButton()
+        hugeButton.titleLabel?.font = Styles.FontFaces.light(31)
+        hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
+        hugeButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
+        hugeButton.backgroundColor = Styles.Colors.cream1
+        
+        return hugeButton
+    }
+    
 }

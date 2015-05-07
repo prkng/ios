@@ -63,7 +63,7 @@ class SearchOperations {
         
         var url = "http://nominatim.openstreetmap.org/search"
         
-        var params  = ["format" : "json", "state" : "Quebec", "city" : "Montreal", "country" : "Canada", "street" : streetname]
+        var params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity(), "country" : "Canada", "street" : streetname]
         
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in

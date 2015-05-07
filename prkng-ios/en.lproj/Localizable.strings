@@ -33,6 +33,7 @@
 "sunday" = "Sunday";
 
 
-
+"arrival" = "ARRIVAL";
+"departure" = "DEPARTURE";
 
 "search_step1_copy" = "move the map or\ntype your destination";

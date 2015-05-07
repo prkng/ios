@@ -14,11 +14,14 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     
 //    var effectView : UIVisualEffectView
     var containerView : UIView
+    var containerColorView : UIView
     var markerIcon : UIImageView
     var textLabel : UILabel
     var searchField : UITextField
     var dateSelectionView : DateSelectionView
+    var durationSelectionView : DurationSelectionView
     var downButton : UIButton
+    var searchButton : UIButton
     
     var searchStep : SearchStep
     
@@ -27,12 +30,16 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 //        var blur:UIBlurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
 //        effectView = UIVisualEffectView (effect: blur)
         containerView = TouchForwardingView()
+        containerColorView = UIView()
         markerIcon = UIImageView()
         textLabel = UILabel()
         searchField = UITextField()
         downButton = UIButton()
         dateSelectionView = DateSelectionView()
+        durationSelectionView = DurationSelectionView()
+        searchButton = ViewFactory.hugeButton()
         searchStep = SearchStep.ONE
+
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -54,6 +61,12 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     }
     
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.dateSelectionView.selectToday()
+    }
+    
+    
     
     func setupViews () {
         
@@ -62,11 +75,18 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 //        effectView.userInteractionEnabled = false
 //        view.addSubview(effectView)
         
-        var midnight1 = UIColor(rgba: "#435059E6")
-        containerView.backgroundColor = midnight1
+
+
         view.addSubview(containerView)
         
+        var midnight1 = UIColor(rgba: "#435059E6")
+        containerColorView.backgroundColor = midnight1
+        containerColorView.userInteractionEnabled = false
+        containerView.addSubview(containerColorView)
+        
         markerIcon.image = UIImage(named: "btn_pin_search")
+        markerIcon.contentMode = UIViewContentMode.Center
+        markerIcon.userInteractionEnabled = false
         containerView.addSubview(markerIcon)
         
         textLabel.font = Styles.FontFaces.light(27)
@@ -75,7 +95,6 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         textLabel.text = NSLocalizedString("search_step1_copy",comment:"")
         textLabel.textAlignment = NSTextAlignment.Center
         containerView.addSubview(textLabel)
-        
         
         searchField.backgroundColor = Styles.Colors.cream2
         searchField.layer.borderWidth = 1
@@ -91,8 +110,17 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         dateSelectionView.hidden = true
         containerView.addSubview(dateSelectionView)
         
+        durationSelectionView.hidden = true
+        containerView.addSubview(durationSelectionView)
+
+        
+        searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        searchButton.setTitle(NSLocalizedString("search", comment : ""), forState: UIControlState.Normal)
+        searchButton.hidden = true
+        containerView.addSubview(searchButton)
+        
         downButton.setImage(UIImage(named: "btn_next"), forState: UIControlState.Normal)
-        downButton.addTarget(self, action: "transformToStepThree", forControlEvents: UIControlEvents.TouchUpInside)
+        downButton.addTarget(self, action: "nextStep", forControlEvents: UIControlEvents.TouchUpInside)
         containerView.addSubview(downButton)
     }
     
@@ -104,6 +132,10 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         containerView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.view)
+        }
+        
+        containerColorView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.containerView)
         }
         
         markerIcon.snp_makeConstraints { (make) -> () in
@@ -132,11 +164,25 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             make.top.equalTo(self.searchField.snp_bottom).with.offset(12)
         }
         
+        durationSelectionView.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.searchButton.snp_top)
+            make.left.equalTo(self.containerView)
+            make.right.equalTo(self.containerView)
+            make.height.equalTo(185)
+        }
+        
         downButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(60, 60))
             make.bottom.equalTo(self.containerView).with.offset(-20)
             make.centerX.equalTo(self.containerView)
 
+        }
+        
+        searchButton.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.containerView)
+            make.left.equalTo(self.containerView)
+            make.right.equalTo(self.containerView)
+            make.height.equalTo(90)
         }
         
     }
@@ -158,7 +204,9 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         
-        transformToStepTwo()
+        if (self.searchStep == SearchStep.ONE) {
+            transformToStepTwo()
+        }
         return true
     }
     
@@ -198,15 +246,21 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.containerView.backgroundColor = UIColor.clearColor()
             self.searchField.layoutIfNeeded()
             self.markerIcon.layoutIfNeeded()
             self.textLabel.alpha = 0
             self.dateSelectionView.alpha = 0
+            self.containerColorView.alpha = 1.0
+            self.downButton.alpha = 1.0
             
             }) { (complete) -> Void in
                 self.searchStep = SearchStep.TWO
                 self.dateSelectionView.hidden = true
+                self.durationSelectionView.hidden = true
+                self.searchButton.hidden = true
+                self.containerColorView.hidden = true
+                self.downButton.hidden = false
+                self.textLabel.hidden = true
         }
         
     }
@@ -226,11 +280,11 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         markerIcon.snp_remakeConstraints { (make) -> () in
             make.centerX.equalTo(self.containerView)
-            make.bottom.equalTo(self.searchField.snp_top).with.offset(-34)
-            make.size.equalTo(CGSizeMake(49, 60))
+            make.top.equalTo(self.containerView)
+            make.bottom.equalTo(self.searchField.snp_top)
         }
         
-        dateSelectionView.snp_makeConstraints { (make) -> () in
+        dateSelectionView.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
             make.height.equalTo(110)
@@ -240,15 +294,21 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         dateSelectionView.alpha = 0.0
         dateSelectionView.hidden = false
+        self.containerColorView.hidden = false
+
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
             self.searchField.layoutIfNeeded()
             self.markerIcon.layoutIfNeeded()
             self.dateSelectionView.layoutIfNeeded()
             self.dateSelectionView.alpha = 1.0
+            self.containerColorView.alpha = 1.0
             
             }) { (complete) -> Void in
                 self.searchStep = SearchStep.THREE
+                self.textLabel.hidden = true
+                self.downButton.hidden = false
+
         }
         
         
@@ -257,8 +317,91 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     
     func transformToStepFour () {
         
+        if (searchStep == SearchStep.FOUR) {
+            return
+        }
+    
+        
+        dateSelectionView.snp_remakeConstraints { (make) -> () in
+            make.bottom.equalTo(self.durationSelectionView.snp_top)
+            make.left.equalTo(self.containerView)
+            make.right.equalTo(self.containerView)
+            make.height.equalTo(110)
+        }
+        
+        searchField.snp_remakeConstraints { (make) -> () in
+            make.bottom.equalTo(self.dateSelectionView.snp_top).with.offset(-12)
+            make.height.equalTo(60)
+            make.left.equalTo(self.containerView).with.offset(12)
+            make.right.equalTo(self.containerView).with.offset(-12)
+        }
+        
+        
+        markerIcon.snp_remakeConstraints { (make) -> () in
+            make.centerX.equalTo(self.containerView)
+            make.top.equalTo(self.containerView)
+            make.bottom.equalTo(self.searchField.snp_top)
+        }
+        
+        
+        self.durationSelectionView.alpha = 0.0
+        self.searchButton.alpha = 0.0
+        
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+           
+            self.containerView.layoutIfNeeded()
+            self.durationSelectionView.alpha = 1.0
+            self.downButton.alpha = 0.0
+            self.searchButton.alpha = 1.0
+            
+            }) { (complete) -> Void in
+                self.searchStep = SearchStep.FOUR
+                self.downButton.hidden = true
+                self.searchButton.hidden = false
+                self.durationSelectionView.hidden = false
+        }
+        
+        
+        
+    }
+    
+    
+    func nextStep() {
+        
+        switch(searchStep) {
+            
+        case SearchStep.ONE, SearchStep.TWO:
+            transformToStepThree()
+            break
+            
+            
+        case SearchStep.THREE:
+            transformToStepFour()
+            break
+            
+        default:
+            break
+            
+        }
+        
     }
 
+    
+    func searchButtonTapped() {
+        
+        transformToStepTwo()
+        
+        delegate?.setSearchParameters(NSDate(), duration: 1)
+        searchField.endEditing(false)
+        
+        SearchOperations.searchByStreetName(searchField.text, completion: { (results) -> Void in
+            
+            self.markerIcon.hidden = true
+            self.delegate!.displaySearchResults(results)
+            
+        })
+        
+    }
 
 
     
@@ -266,6 +409,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 
 protocol SearchViewControllerDelegate {
     
+    func setSearchParameters(time : NSDate?, duration : Float?)
     func displaySearchResults(results : Array<SearchResult>)
     
 }

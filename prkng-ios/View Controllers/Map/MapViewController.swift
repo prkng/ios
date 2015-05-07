@@ -22,6 +22,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     var radius : Float
     var updateInProgress : Bool
     
+    var del_previousSelectedCity : String //FIXME
+    
     
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
@@ -33,7 +35,16 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         let source = RMMapboxSource(mapID: "arnaudspuhler.l54pj66f")
         mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: source)
-        mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 45.548, longitude: -73.58)
+        
+        del_previousSelectedCity = Settings.selectedCity()
+
+        if ("Montreal" == del_previousSelectedCity) {
+            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 45.548, longitude: -73.58)
+        } else {
+            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 46.806569, longitude: -71.242904)
+        }
+        
+        
         mapView.showLogoBug = false;
         mapView.hideAttribution = true;
         spots = []
@@ -69,6 +80,22 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         self.mapView.userTrackingMode = RMUserTrackingModeFollow;
         updateAnnotations()
+        
+    }
+    
+
+    func updateMapCenterIfNecessary () {
+        
+        if(self.del_previousSelectedCity == Settings.selectedCity()) {
+            return
+        }
+        
+        del_previousSelectedCity = Settings.selectedCity()
+        if ("Montreal" == Settings.selectedCity()) {
+            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 45.548, longitude: -73.58)
+        } else {
+            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 46.806569, longitude: -71.242904)
+        }
         
     }
     
@@ -455,12 +482,29 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     func displaySearchResults(results: Array<SearchResult>) {
         
         mapView.zoom = 17
+        
+        if (results.count == 0) {
+            let alert = UIAlertView()
+            alert.title = "No results found"
+            alert.message = "We couldn't find anything matching those criterias"
+            alert.addButtonWithTitle("Okay")
+            alert.show()
+            return
+        }
+        
         mapView.centerCoordinate = results[0].location.coordinate
         
         searchAnnotations = []
+
+        lineAnnotations = []
+        centerButtonAnnotations = []
+        mapView.removeAllAnnotations()
+        
         for result in results {
             addSearchResultMarker(result)
         }
+        
+        updateAnnotations()
         
     }
     
