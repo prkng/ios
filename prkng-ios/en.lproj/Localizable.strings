@@ -6,7 +6,18 @@
   Copyright (c) 2015 PRKNG. All rights reserved.
 */
 
+"park_now" = "PARK NOW";
+"take_the_tour" = "take the tour!";
 
+
+"sign_up" = "SIGN UP";
+"login_with" = "LOGIN WITH";
+"login" = "login";
+"step" = "step";
+"your_email" = "YOUR EMAIL";
+"your_password" = "YOUR PASSWORD";
+"confirm_your_password" = "YOUR PASSWORD";
+"forgot_password_text" = "FORGOT YOUR PASSWORD?";
 
 
 "tabbar_search" = "SEARCH";
@@ -14,16 +25,17 @@
 "tabbar_mycar" = "MY CAR";
 "tabbar_settings" = "SETTINGS";
 
-// Spot details
+// Search
+"search_step1_copy" = "move the map or\ntype your destination";
 
+
+// Spot details
 "spot_available_for" = "AVAILABLE\nFOR";
 "schedule_authorized" = "AUTHORIZED";
 "schedule_limited" = "LIMITED";
 "schedule_forbidden" = "FORBIDDEN";
 
-
 // Days
-
 "monday" = "Monday";
 "tuesday" = "Tuesday";
 "wednesday" = "Wednesday";
@@ -32,8 +44,8 @@
 "saturday" = "Saturday";
 "sunday" = "Sunday";
 
-
 "arrival" = "ARRIVAL";
 "departure" = "DEPARTURE";
 
-"search_step1_copy" = "move the map or\ntype your destination";
+
+

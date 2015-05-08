@@ -12,9 +12,9 @@ class APIUtility: NSObject {
 
     struct APIConstants {
 #if DEBUG
-        static let rootURLString = "http://ks29236.kimsufi.com:5000/"
+        static let rootURLString = "http://54.144.3.236/"
 #else
-        static let rootURLString = "http://ks29236.kimsufi.com:5000/"
+        static let rootURLString = "http://54.144.3.236/"
 #endif
     }
 

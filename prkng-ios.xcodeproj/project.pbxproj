@@ -10,8 +10,13 @@
 		BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
 		BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055961ACF100500413F16 /* ScheduleItemView.swift */; };
+		BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1C2B581AFCBBA00070085A /* AuthUtility.swift */; };
+		BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */; };
+		BF1C2B5E1AFCDA180070085A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1C2B5D1AFCDA180070085A /* String.swift */; };
+		BF1C2B601AFCDF8A0070085A /* IQKeyboardManager in Resources */ = {isa = PBXBuildFile; fileRef = BF1C2B5F1AFCDF8A0070085A /* IQKeyboardManager */; };
 		BF2A40A51AC465770055D785 /* default.gpx in Resources */ = {isa = PBXBuildFile; fileRef = BF2A40A41AC465770055D785 /* default.gpx */; };
 		BF2A40A71AC468450055D785 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A40A61AC468450055D785 /* SpotDetailView.swift */; };
+		BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */; };
 		BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A9F8E1AC1BA7400D6BD99 /* Styles.swift */; };
 		BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4567FD1AD842B9006D7C23 /* ScheduleColumnView.swift */; };
 		BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4567FF1AD85722006D7C23 /* SearchOperations.swift */; };
@@ -39,7 +44,7 @@
 		BFC764A31A7644AC008F2B26 /* prkng_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */; };
 		BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFCD56301AB99A5F008406E8 /* IntroLight.otf */; };
 		BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFCD56311AB99A5F008406E8 /* IntroRegular.otf */; };
-		BFD0101C1AC1C73600C59B28 /* PrkTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD0101B1AC1C73600C59B28 /* PrkTabController.swift */; };
+		BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD0101B1AC1C73600C59B28 /* TabController.swift */; };
 		BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C21AF2E83700789022 /* Settings.swift */; };
 		BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C41AF2F09E00789022 /* DateUtil.swift */; };
 		BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD9CB681A9C942300BFA836 /* Shape.swift */; };
@@ -65,6 +70,11 @@
 		BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BFEA6AE91A9E2EE5001F063E /* Mapbox.bundle */; };
 		BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BFF568E91ACC62CA0018F62F /* Localizable.strings */; };
 		BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF568EC1ACDCC1B0018F62F /* ScheduleViewController.swift */; };
+		BFFDE4611AFB829B0035DF54 /* LoginMethodSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFDE4601AFB829B0035DF54 /* LoginMethodSelectionView.swift */; };
+		BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFDE4621AFBA4380035DF54 /* LoginEmailViewController.swift */; };
+		BFFDE4651AFBA48D0035DF54 /* RegisterEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFDE4641AFBA48D0035DF54 /* RegisterEmailViewController.swift */; };
+		BFFDE4671AFBA4A50035DF54 /* LoginFacebookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFDE4661AFBA4A50035DF54 /* LoginFacebookViewController.swift */; };
+		BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFDE4681AFBA76E0035DF54 /* FirstUseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,8 +91,13 @@
 		BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		BF1055961ACF100500413F16 /* ScheduleItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleItemView.swift; sourceTree = "<group>"; };
+		BF1C2B581AFCBBA00070085A /* AuthUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUtility.swift; sourceTree = "<group>"; };
+		BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserOperations.swift; sourceTree = "<group>"; };
+		BF1C2B5D1AFCDA180070085A /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		BF1C2B5F1AFCDF8A0070085A /* IQKeyboardManager */ = {isa = PBXFileReference; lastKnownFileType = folder; path = IQKeyboardManager; sourceTree = "<group>"; };
 		BF2A40A41AC465770055D785 /* default.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = default.gpx; sourceTree = "<group>"; };
 		BF2A40A61AC468450055D785 /* SpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
+		BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
 		BF3A9F8E1AC1BA7400D6BD99 /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		BF4567FD1AD842B9006D7C23 /* ScheduleColumnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleColumnView.swift; sourceTree = "<group>"; };
 		BF4567FF1AD85722006D7C23 /* SearchOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOperations.swift; sourceTree = "<group>"; };
@@ -114,7 +129,7 @@
 		BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prkng_iosTests.swift; sourceTree = "<group>"; };
 		BFCD56301AB99A5F008406E8 /* IntroLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroLight.otf; sourceTree = "<group>"; };
 		BFCD56311AB99A5F008406E8 /* IntroRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroRegular.otf; sourceTree = "<group>"; };
-		BFD0101B1AC1C73600C59B28 /* PrkTabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabController.swift; sourceTree = "<group>"; };
+		BFD0101B1AC1C73600C59B28 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		BFD6B6C21AF2E83700789022 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFD6B6C41AF2F09E00789022 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		BFD9CB681A9C942300BFA836 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
@@ -199,6 +214,11 @@
 		BFF568EA1ACC62D40018F62F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BFF568EC1ACDCC1B0018F62F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		BFFD300A1A83B4AB006582A1 /* prkng-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "prkng-Bridging-Header.h"; sourceTree = "<group>"; };
+		BFFDE4601AFB829B0035DF54 /* LoginMethodSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginMethodSelectionView.swift; sourceTree = "<group>"; };
+		BFFDE4621AFBA4380035DF54 /* LoginEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEmailViewController.swift; sourceTree = "<group>"; };
+		BFFDE4641AFBA48D0035DF54 /* RegisterEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterEmailViewController.swift; sourceTree = "<group>"; };
+		BFFDE4661AFBA4A50035DF54 /* LoginFacebookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFacebookViewController.swift; sourceTree = "<group>"; };
+		BFFDE4681AFBA76E0035DF54 /* FirstUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstUseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,9 +284,19 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
+		BF1C2B5C1AFCD9F10070085A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BF1C2B5D1AFCDA180070085A /* String.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		BF522FC51AE59B65001DB93E /* Intro */ = {
 			isa = PBXGroup;
 			children = (
+				BFFDE4681AFBA76E0035DF54 /* FirstUseViewController.swift */,
+				BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -311,6 +341,10 @@
 			isa = PBXGroup;
 			children = (
 				BFB0958E1AFA498A007F1D16 /* LoginViewController.swift */,
+				BFFDE4601AFB829B0035DF54 /* LoginMethodSelectionView.swift */,
+				BFFDE4621AFBA4380035DF54 /* LoginEmailViewController.swift */,
+				BFFDE4641AFBA48D0035DF54 /* RegisterEmailViewController.swift */,
+				BFFDE4661AFBA4A50035DF54 /* LoginFacebookViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -391,7 +425,7 @@
 		BFD0101A1AC1C5A100C59B28 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				BFD0101B1AC1C73600C59B28 /* PrkTabController.swift */,
+				BFD0101B1AC1C73600C59B28 /* TabController.swift */,
 				BF7170A91AE3B59300B922CA /* PrkTabBar.swift */,
 				BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */,
 				BF7170AD1AE3F04D00B922CA /* TouchForwardingView.swift */,
@@ -411,6 +445,7 @@
 		BFE3ABB71A9F5BC400734BBE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				BF1C2B5C1AFCD9F10070085A /* Extensions */,
 				BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */,
 				BF3A9F8E1AC1BA7400D6BD99 /* Styles.swift */,
 				BF1055941ACED50500413F16 /* ViewFactory.swift */,
@@ -424,8 +459,10 @@
 			isa = PBXGroup;
 			children = (
 				BFE956681A8E59DF00C2C117 /* APIUtility.swift */,
+				BF1C2B581AFCBBA00070085A /* AuthUtility.swift */,
 				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
 				BF4567FF1AD85722006D7C23 /* SearchOperations.swift */,
+				BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -433,6 +470,7 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				BF1C2B5F1AFCDF8A0070085A /* IQKeyboardManager */,
 				BFEA6AAE1A9E2EE5001F063E /* Mapbox */,
 				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
 				BFEA6A991A9E2E81001F063E /* Snap */,
@@ -644,6 +682,7 @@
 			files = (
 				BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
+				BF1C2B601AFCDF8A0070085A /* IQKeyboardManager in Resources */,
 				BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */,
 				BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
@@ -687,11 +726,15 @@
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
+				BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */,
 				BF2A40A71AC468450055D785 /* SpotDetailView.swift in Sources */,
 				BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */,
+				BFFDE4651AFBA48D0035DF54 /* RegisterEmailViewController.swift in Sources */,
+				BFFDE4611AFB829B0035DF54 /* LoginMethodSelectionView.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */,
 				BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */,
 				BF7170B41AE4303D00B922CA /* HereViewController.swift in Sources */,
+				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
 				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
@@ -703,11 +746,14 @@
 				BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */,
 				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,
+				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,
 				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
+				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
+				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
 				BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */,
 				BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
@@ -715,13 +761,15 @@
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
 				BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */,
+				BFFDE4671AFBA4A50035DF54 /* LoginFacebookViewController.swift in Sources */,
 				BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */,
 				BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */,
 				BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */,
-				BFD0101C1AC1C73600C59B28 /* PrkTabController.swift in Sources */,
+				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
 				BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */,
 				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
+				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */,
 				BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */,

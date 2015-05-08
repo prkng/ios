@@ -62,9 +62,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func loadInitialViewController() {
 
-        var tabbarController: PrkTabController = PrkTabController()
-
-        window!.rootViewController = tabbarController
+        if (Settings.firstUse()) {
+            window!.rootViewController = FirstUseViewController()
+        } else {
+            window!.rootViewController = TabController()
+        }
+        
         window!.makeKeyAndVisible()
     }
 }

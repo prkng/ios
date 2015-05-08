@@ -8,17 +8,33 @@
 
 import UIKit
 
-class ViewFactory {
+struct ViewFactory {
+    
+    
+    // MARK: Buttons
 
-    class func scheduleButton () -> UIButton {
+    static func scheduleButton () -> UIButton {
         var scheduleButton : UIButton =  UIButton()
         scheduleButton.setImage(UIImage(named: "btn_schedule"), forState: UIControlState.Normal)
         scheduleButton.setImage(UIImage(named: "btn_schedule_active"), forState: UIControlState.Highlighted)
         return scheduleButton
     }
     
+    
+    static func redRoundedButton () -> UIButton {
+        
+        let button = UIButton ()
+        button.titleLabel?.font = Styles.FontFaces.light(12)
+        button.setTitleColor(Styles.Colors.beige1, forState: UIControlState.Normal)
+        button.setTitleColor(Styles.Colors.beige2, forState: UIControlState.Highlighted)
+        button.layer.cornerRadius = 14
+        button.backgroundColor = Styles.Colors.red2
+        button.clipsToBounds = true
+        return button
+    }
+    
 
-    class func hugeButton () -> UIButton {
+    static func hugeButton () -> UIButton {
         
         let hugeButton = UIButton()
         hugeButton.titleLabel?.font = Styles.FontFaces.light(31)
@@ -28,5 +44,42 @@ class ViewFactory {
         
         return hugeButton
     }
+    
+    static func transparentRoundedButton () -> UIButton {
+        let button = UIButton ()
+        button.titleLabel?.font = Styles.FontFaces.light(12)
+        button.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
+        button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
+        button.layer.cornerRadius = 14
+        button.layer.borderColor = Styles.Colors.beige1.CGColor
+        button.layer.borderWidth = 1
+        button.backgroundColor = UIColor.clearColor()
+        button.clipsToBounds = true
+        return button
+    }
+    
+    
+    // MARK: Labels
+    
+    static func formLabel() -> UILabel {
+        let label = UILabel()
+        label.font = Styles.FontFaces.light(12)
+        label.textColor = Styles.Colors.stone
+        label.textAlignment = NSTextAlignment.Center
+        return label
+    }
+    
+    
+    // MARK: TextFields
+    
+    static func formTextField() -> UITextField {
+        let textField = UITextField()
+        textField.font = Styles.FontFaces.light(27)
+        textField.backgroundColor = UIColor.clearColor()
+        textField.textColor = Styles.Colors.anthracite1
+        textField.textAlignment = NSTextAlignment.Center
+        return textField
+    }
+    
     
 }

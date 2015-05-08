@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate {
+class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate {
     
     var selectedTab : PrkTab
     
@@ -65,8 +65,18 @@ class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDe
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        
+        if (Settings.firstUse()) {
+            presentViewController(IntroViewController(), animated: false, completion: { () -> Void in
+            })
+        }
     }
     
     func setupViews() {
@@ -177,8 +187,6 @@ class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDe
             self.tabBar.updateSelected()
         })
         
-
-        
     }
     
     
@@ -217,6 +225,13 @@ class PrkTabController: UIViewController, PrkTabBarDelegate, MapViewControllerDe
     
     func updateTabBar() {
         
+    }
+    
+    func showLoginViewController ()  {
+        let loginViewController = LoginViewController()
+        presentViewController(loginViewController, animated: true) { () -> Void in
+            
+        }
     }
     
     
