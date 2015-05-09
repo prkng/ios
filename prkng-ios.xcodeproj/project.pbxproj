@@ -13,7 +13,6 @@
 		BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1C2B581AFCBBA00070085A /* AuthUtility.swift */; };
 		BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */; };
 		BF1C2B5E1AFCDA180070085A /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1C2B5D1AFCDA180070085A /* String.swift */; };
-		BF1C2B601AFCDF8A0070085A /* IQKeyboardManager in Resources */ = {isa = PBXBuildFile; fileRef = BF1C2B5F1AFCDF8A0070085A /* IQKeyboardManager */; };
 		BF2A40A51AC465770055D785 /* default.gpx in Resources */ = {isa = PBXBuildFile; fileRef = BF2A40A41AC465770055D785 /* default.gpx */; };
 		BF2A40A71AC468450055D785 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A40A61AC468450055D785 /* SpotDetailView.swift */; };
 		BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */; };
@@ -94,7 +93,6 @@
 		BF1C2B581AFCBBA00070085A /* AuthUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUtility.swift; sourceTree = "<group>"; };
 		BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserOperations.swift; sourceTree = "<group>"; };
 		BF1C2B5D1AFCDA180070085A /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		BF1C2B5F1AFCDF8A0070085A /* IQKeyboardManager */ = {isa = PBXFileReference; lastKnownFileType = folder; path = IQKeyboardManager; sourceTree = "<group>"; };
 		BF2A40A41AC465770055D785 /* default.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = default.gpx; sourceTree = "<group>"; };
 		BF2A40A61AC468450055D785 /* SpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
 		BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
@@ -470,7 +468,6 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				BF1C2B5F1AFCDF8A0070085A /* IQKeyboardManager */,
 				BFEA6AAE1A9E2EE5001F063E /* Mapbox */,
 				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
 				BFEA6A991A9E2E81001F063E /* Snap */,
@@ -682,7 +679,6 @@
 			files = (
 				BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
-				BF1C2B601AFCDF8A0070085A /* IQKeyboardManager in Resources */,
 				BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */,
 				BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
