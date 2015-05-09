@@ -33,6 +33,14 @@
 		BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B061AF15DAF00E42DE8 /* DayButton.swift */; };
 		BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B081AF214D800E42DE8 /* DurationSelectionView.swift */; };
 		BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */; };
+		BFA648F31AFE36E2008C3665 /* Categories in Resources */ = {isa = PBXBuildFile; fileRef = BFA648E81AFE36E2008C3665 /* Categories */; };
+		BFA648F41AFE36E2008C3665 /* Constants in Resources */ = {isa = PBXBuildFile; fileRef = BFA648E91AFE36E2008C3665 /* Constants */; };
+		BFA648F51AFE36E2008C3665 /* IQKeyboardManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BFA648EB1AFE36E2008C3665 /* IQKeyboardManager.m */; };
+		BFA648F61AFE36E2008C3665 /* IQKeyboardReturnKeyHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = BFA648ED1AFE36E2008C3665 /* IQKeyboardReturnKeyHandler.m */; };
+		BFA648F71AFE36E2008C3665 /* IQSegmentedNextPrevious in Resources */ = {isa = PBXBuildFile; fileRef = BFA648EE1AFE36E2008C3665 /* IQSegmentedNextPrevious */; };
+		BFA648F81AFE36E2008C3665 /* IQTextView in Resources */ = {isa = PBXBuildFile; fileRef = BFA648EF1AFE36E2008C3665 /* IQTextView */; };
+		BFA648F91AFE36E2008C3665 /* IQToolbar in Resources */ = {isa = PBXBuildFile; fileRef = BFA648F01AFE36E2008C3665 /* IQToolbar */; };
+		BFA648FA1AFE36E2008C3665 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = BFA648F21AFE36E2008C3665 /* Resources */; };
 		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
 		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
 		BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1701A83D364005F4054 /* libsqlite3.dylib */; };
@@ -113,6 +121,17 @@
 		BF899B061AF15DAF00E42DE8 /* DayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayButton.swift; sourceTree = "<group>"; };
 		BF899B081AF214D800E42DE8 /* DurationSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationSelectionView.swift; sourceTree = "<group>"; };
 		BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionControl.swift; sourceTree = "<group>"; };
+		BFA648E81AFE36E2008C3665 /* Categories */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Categories; sourceTree = "<group>"; };
+		BFA648E91AFE36E2008C3665 /* Constants */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Constants; sourceTree = "<group>"; };
+		BFA648EA1AFE36E2008C3665 /* IQKeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardManager.h; sourceTree = "<group>"; };
+		BFA648EB1AFE36E2008C3665 /* IQKeyboardManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQKeyboardManager.m; sourceTree = "<group>"; };
+		BFA648EC1AFE36E2008C3665 /* IQKeyboardReturnKeyHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQKeyboardReturnKeyHandler.h; sourceTree = "<group>"; };
+		BFA648ED1AFE36E2008C3665 /* IQKeyboardReturnKeyHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQKeyboardReturnKeyHandler.m; sourceTree = "<group>"; };
+		BFA648EE1AFE36E2008C3665 /* IQSegmentedNextPrevious */ = {isa = PBXFileReference; lastKnownFileType = folder; path = IQSegmentedNextPrevious; sourceTree = "<group>"; };
+		BFA648EF1AFE36E2008C3665 /* IQTextView */ = {isa = PBXFileReference; lastKnownFileType = folder; path = IQTextView; sourceTree = "<group>"; };
+		BFA648F01AFE36E2008C3665 /* IQToolbar */ = {isa = PBXFileReference; lastKnownFileType = folder; path = IQToolbar; sourceTree = "<group>"; };
+		BFA648F11AFE36E2008C3665 /* KeyboardManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardManager.h; sourceTree = "<group>"; };
+		BFA648F21AFE36E2008C3665 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BFA8D1701A83D364005F4054 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -335,6 +354,24 @@
 			path = "Common Views";
 			sourceTree = "<group>";
 		};
+		BFA648E71AFE36B8008C3665 /* IQKeyboardManager */ = {
+			isa = PBXGroup;
+			children = (
+				BFA648E81AFE36E2008C3665 /* Categories */,
+				BFA648E91AFE36E2008C3665 /* Constants */,
+				BFA648EA1AFE36E2008C3665 /* IQKeyboardManager.h */,
+				BFA648EB1AFE36E2008C3665 /* IQKeyboardManager.m */,
+				BFA648EC1AFE36E2008C3665 /* IQKeyboardReturnKeyHandler.h */,
+				BFA648ED1AFE36E2008C3665 /* IQKeyboardReturnKeyHandler.m */,
+				BFA648EE1AFE36E2008C3665 /* IQSegmentedNextPrevious */,
+				BFA648EF1AFE36E2008C3665 /* IQTextView */,
+				BFA648F01AFE36E2008C3665 /* IQToolbar */,
+				BFA648F11AFE36E2008C3665 /* KeyboardManager.h */,
+				BFA648F21AFE36E2008C3665 /* Resources */,
+			);
+			path = IQKeyboardManager;
+			sourceTree = "<group>";
+		};
 		BFB0958D1AFA3F79007F1D16 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -468,6 +505,7 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				BFA648E71AFE36B8008C3665 /* IQKeyboardManager */,
 				BFEA6AAE1A9E2EE5001F063E /* Mapbox */,
 				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
 				BFEA6A991A9E2E81001F063E /* Snap */,
@@ -677,11 +715,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFA648F31AFE36E2008C3665 /* Categories in Resources */,
+				BFA648F71AFE36E2008C3665 /* IQSegmentedNextPrevious in Resources */,
 				BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
+				BFA648F81AFE36E2008C3665 /* IQTextView in Resources */,
 				BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */,
 				BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */,
+				BFA648F91AFE36E2008C3665 /* IQToolbar in Resources */,
+				BFA648FA1AFE36E2008C3665 /* Resources in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
+				BFA648F41AFE36E2008C3665 /* Constants in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -717,6 +761,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
+				BFA648F61AFE36E2008C3665 /* IQKeyboardReturnKeyHandler.m in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
@@ -731,6 +776,7 @@
 				BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */,
 				BF7170B41AE4303D00B922CA /* HereViewController.swift in Sources */,
 				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
+				BFA648F51AFE36E2008C3665 /* IQKeyboardManager.m in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
 				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
