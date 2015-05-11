@@ -16,9 +16,27 @@
 "step" = "step";
 "your_email" = "YOUR EMAIL";
 "your_password" = "YOUR PASSWORD";
-"confirm_your_password" = "YOUR PASSWORD";
+"confirm_your_password" = "CONFIRM YOUR PASSWORD";
 "forgot_password_text" = "FORGOT YOUR PASSWORD?";
+"invalid_email" = "Please enter a valid email address.";
+"password_short" = "Make sure your password includes at least 6 characters.";
+"password_mismatch" = "Passwords do not match.";
 
+
+"your_name" = "your name";
+"your_gender" = "your gender";
+"your_birth_year" = "your birth year";
+
+"invalid_name" = "Please enter your name";
+
+
+
+"minutes_short" = "min";
+
+"notifications" = "notifications";
+
+"edit_profile" = "edit profile";
+"change_my_city" = "change my city";
 
 "tabbar_search" = "SEARCH";
 "tabbar_here" = "HERE";
@@ -34,6 +52,10 @@
 "schedule_authorized" = "AUTHORIZED";
 "schedule_limited" = "LIMITED";
 "schedule_forbidden" = "FORBIDDEN";
+
+"first_checkin_title" = "Here we are !";
+"first_checkin_subtitle" = "This is your first check-in.";
+"first_checkin_text" = "Keep in mind the data is provided by the city, so it’s always good to double check. Please, keep an eye open, we are not responsible for your tickets.";
 
 // Days
 "monday" = "Monday";

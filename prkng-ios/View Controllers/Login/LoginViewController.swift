@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: AbstractViewController, LoginMethodSelectionViewDelegate, LoginEmailViewControllerDelegate {
+class LoginViewController: AbstractViewController, LoginMethodSelectionViewDelegate, LoginEmailViewControllerDelegate, LoginExternalViewControllerDelegate, RegisterEmailViewControllerDelegate {
     
     var backgroundImageView : UIImageView
     var logoView : UIImageView
@@ -16,6 +16,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     
     var loginEmailViewController : LoginEmailViewController?
     var registerEmailViewController : RegisterEmailViewController?
+    var loginExternalViewController : LoginExternalViewController?
     
     var selectedMethod : LoginMethod?
     
@@ -91,6 +92,40 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             return
         }
         
+        self.methodSelectionView.userInteractionEnabled = false
+        
+        let login =  FBSDKLoginManager()
+        let permissions = ["email", "public_profile"]
+        login.logInWithReadPermissions(permissions, handler: { (result, error) -> Void in
+            
+            if (error != nil) {
+                // Process error
+            } else if (result.isCancelled) {
+                // Handle cancellations
+                
+                let alertView = UIAlertView(title: "", message: "Facebook Login cancelled", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
+                alertView.alertViewStyle = .Default
+                alertView.show()
+                
+                
+            } else {
+
+                self.methodSelectionView.userInteractionEnabled = false
+                
+                UserOperations.loginWithFacebook(FBSDKAccessToken.currentAccessToken().tokenString, completion: { (user, apiKey) -> Void in
+                    
+                    AuthUtility.saveUser(user)
+                    AuthUtility.saveAuthToken(apiKey)
+
+                    self.displayExternalInfo(user)
+                    
+                })
+            }
+            
+        })
+                
+        selectedMethod = LoginMethod.Facebook
+        
     }
     
     func loginGoogleSelected() {
@@ -99,7 +134,9 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             return
         }
         
-        
+
+                
+        selectedMethod = LoginMethod.Google
         
     }
     
@@ -142,6 +179,40 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         selectedMethod = LoginMethod.Email
     }
     
+    func displayExternalInfo(user: User) {
+        
+        loginExternalViewController = LoginExternalViewController(usr : user)
+        loginExternalViewController!.delegate = self
+//        loginExternalViewController!.delegate = self
+        self.addChildViewController(loginExternalViewController!)
+        self.view.insertSubview(loginExternalViewController!.view, belowSubview: methodSelectionView)
+        loginExternalViewController!.didMoveToParentViewController(self)
+        
+        
+        loginExternalViewController!.view.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.methodSelectionView.snp_bottom)
+            make.centerX.equalTo(self.view)
+            make.size.equalTo(self.view).with.offset(CGSizeMake(0, -125))
+        }
+        self.loginExternalViewController!.view.layoutIfNeeded()
+        
+        
+        methodSelectionView.snp_remakeConstraints { (make) -> () in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.top.equalTo(self.view)
+            make.height.equalTo(125)
+        }
+        
+        
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }) { (finished) -> Void in
+                
+        }
+        
+    }
+    
     
     // MARK: LoginEmailViewControllerDelegate
     
@@ -149,17 +220,18 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     func signUp() {
         
         registerEmailViewController = RegisterEmailViewController()
-        //        registerEmailViewController.delegate = self
+        registerEmailViewController!.delegate = self
         self.addChildViewController(registerEmailViewController!)
         self.view.insertSubview(registerEmailViewController!.view, belowSubview: loginEmailViewController!.view)
         registerEmailViewController!.didMoveToParentViewController(self)
+
         
         
         registerEmailViewController!.view.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.loginEmailViewController!.view.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(self.view).with.offset(-225)
+            make.height.equalTo(self.view).with.offset(-125)
         }
         
         registerEmailViewController!.view.layoutIfNeeded()
@@ -172,7 +244,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.bottom.equalTo(self.methodSelectionView)
         }
         
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
             self.view.layoutIfNeeded()
             
             }) { (completed) -> Void in
@@ -181,7 +253,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                     make.top.equalTo(self.methodSelectionView.snp_bottom)
                     make.left.equalTo(self.view)
                     make.right.equalTo(self.view)
-                    make.height.equalTo(self.view).with.offset(-225)
+                    make.height.equalTo(self.view).with.offset(-125)
                 }
                 
                 self.loginEmailViewController!.view.removeFromSuperview()
@@ -193,10 +265,33 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
     }
     
-    func login(email: String, password: String) -> String? {
-        return ""
+    func didLogin() {
+        dismiss()
+    }
+    
+    // MARK: LoginExternalViewControllerDelegate
+    func didLoginExternal() {
+        dismiss()
+    }
+    
+    // MARK: RegisterEmailViewControllerDelegate
+    func didRegister() {
+        dismiss()
     }
     
     
-    
+    func dismiss() {
+        
+        Settings.setFirstUsePassed(true)
+        
+        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+            
+            let window: UIWindow = (UIApplication.sharedApplication().delegate as! AppDelegate).window!
+            let tabController = TabController()
+            
+            window.rootViewController = tabController
+            window.makeKeyWindow()
+            
+        })
+    }
 }

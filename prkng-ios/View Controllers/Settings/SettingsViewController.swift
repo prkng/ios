@@ -85,6 +85,7 @@ class SettingsViewController: AbstractViewController {
         view.addSubview(notificationContainer)
         
         aboutButton.setTitle(NSLocalizedString("about", comment : ""), forState: UIControlState.Normal)
+        aboutButton.addTarget(self, action: "aboutButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(aboutButton)
         
     }
@@ -136,6 +137,14 @@ class SettingsViewController: AbstractViewController {
             make.centerY.equalTo(self.cityContainer)
         }
         
+    }
+    
+    func aboutButtonTapped() {
+    
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(AuthUtility.USER_KEY)
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(AuthUtility.AUTH_TOKEN_KEY)
+        
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     

@@ -46,13 +46,16 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     
     override func loadView() {
         self.view = UIView()
+        
         setupViews()
         setupConstraints()
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+
         
         selectedTab = PrkTab.Here
         hereViewController.willMoveToParentViewController(self)
@@ -65,19 +68,13 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        
-        if (Settings.firstUse()) {
-            presentViewController(IntroViewController(), animated: false, completion: { () -> Void in
-            })
-        }
-    }
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//    }
+//    
+//    override func viewDidAppear(animated: Bool) {
+//        super.viewDidAppear(animated)
+//    }
     
     func setupViews() {
         

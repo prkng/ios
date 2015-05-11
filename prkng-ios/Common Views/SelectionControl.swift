@@ -21,6 +21,13 @@ class SelectionControl: UIControl {
     var selectedIndex : Int
     
     var buttonSize : CGSize
+    var borderColor : UIColor?
+    var selectedBorderColor : UIColor?
+    var textColor : UIColor?
+    var selectedTextColor : UIColor?
+    var buttonBackgroundColor : UIColor?
+    var selectedButtonBackgroundColor : UIColor?
+    var font : UIFont?
     
     convenience init(titles : Array<String>) {
         self.init(frame:CGRectZero)
@@ -73,6 +80,35 @@ class SelectionControl: UIControl {
             buttonContainers.append(buttonContainer)
             
             let button = SelectionButton(title:title, index : index)
+            
+            if borderColor != nil {
+                button.borderColor = borderColor!
+            }
+            
+            if selectedBorderColor != nil {
+                button.selectedBorderColor = selectedBorderColor!
+            }
+            
+            if textColor != nil  {
+                button.textColor = textColor!
+            }
+            
+            if selectedTextColor != nil {
+                button.selectedTextColor = selectedTextColor!
+            }
+            
+            if buttonBackgroundColor != nil {
+                button.buttonBackgroundColor = buttonBackgroundColor!
+            }
+            
+            if selectedButtonBackgroundColor != nil {
+                button.selectedButtonBackgroundColor = selectedButtonBackgroundColor!
+            }
+            
+            if font != nil {
+                button.font = font!
+            }
+            
             button.layer.cornerRadius =  self.buttonSize.height / 2.0
             button.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
             buttonContainer.addSubview(button)
@@ -156,6 +192,14 @@ class SelectionButton: UIControl {
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
+    var font : UIFont
+    var borderColor : UIColor
+    var selectedBorderColor : UIColor
+    var textColor : UIColor
+    var selectedTextColor : UIColor
+    var buttonBackgroundColor : UIColor
+    var selectedButtonBackgroundColor : UIColor
+    
     
     convenience init (title : String, index: Int) {
         self.init(frame:CGRectZero)
@@ -163,6 +207,14 @@ class SelectionButton: UIControl {
     }
     
     override init(frame: CGRect) {
+        
+        font = Styles.FontFaces.light(12)
+        textColor = Styles.Colors.stone
+        selectedTextColor = Styles.Colors.stone
+        borderColor = Styles.Colors.stone
+        selectedBorderColor =  Styles.Colors.red2
+        buttonBackgroundColor = UIColor.clearColor()
+        selectedButtonBackgroundColor = Styles.Colors.red2
         
         titleLabel = UILabel()
         index = -1
@@ -203,12 +255,13 @@ class SelectionButton: UIControl {
         
         backgroundColor = UIColor.clearColor()
         layer.borderWidth = 1
-        layer.borderColor = Styles.Colors.stone.CGColor
+        layer.borderColor = borderColor.CGColor
         
         titleLabel.text = title
-        titleLabel.font = Styles.FontFaces.light(12)
+        titleLabel.font = font
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.textColor = Styles.Colors.stone
+        titleLabel.textColor = textColor
+
         selected = false
         addSubview(titleLabel)
         
@@ -231,11 +284,13 @@ class SelectionButton: UIControl {
         didSet {
             
             if(selected) {
-                backgroundColor = Styles.Colors.red2
-                layer.borderColor = Styles.Colors.red2.CGColor
+                backgroundColor = selectedButtonBackgroundColor
+                layer.borderColor = selectedBorderColor.CGColor
+                titleLabel.textColor = selectedTextColor
             } else {
-                backgroundColor = UIColor.clearColor()
-                layer.borderColor = Styles.Colors.stone.CGColor
+                backgroundColor = buttonBackgroundColor
+                layer.borderColor = borderColor.CGColor
+                titleLabel.textColor = textColor
             }
             
         }

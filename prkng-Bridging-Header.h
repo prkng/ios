@@ -11,5 +11,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Mapbox.h"
+#import "IQKeyboardManager.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 #endif

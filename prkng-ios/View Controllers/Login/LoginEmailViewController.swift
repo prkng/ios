@@ -12,6 +12,10 @@ class LoginEmailViewController: AbstractViewController {
     
     var signupButton : UIButton
     
+    
+    var scrollView : UIScrollView
+    var scrollContentView : UIView
+    
     var formContainer : UIView
     var emailLabel : UILabel
     var emailTextField : UITextField
@@ -28,6 +32,8 @@ class LoginEmailViewController: AbstractViewController {
         
         signupButton = ViewFactory.transparentRoundedButton()
         
+        scrollView = UIScrollView()
+        scrollContentView  = UIView()
         formContainer = UIView()
         emailLabel = ViewFactory.formLabel()
         emailTextField = ViewFactory.formTextField()
@@ -66,15 +72,19 @@ class LoginEmailViewController: AbstractViewController {
         
         view.backgroundColor = Styles.Colors.midnight2
         
+        view.addSubview(scrollView)
+        scrollView.addSubview(scrollContentView)
+        
         signupButton.setTitle("sign_up".localizedString, forState: UIControlState.Normal)
         signupButton.addTarget(self, action:"signUpButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(signupButton)
+        scrollContentView.addSubview(signupButton)
         
-        view.addSubview(formContainer)
+        scrollContentView.addSubview(formContainer)
         
         emailLabel.text = "your_email".localizedString
         formContainer.addSubview(emailLabel)
         
+        emailTextField.keyboardType = UIKeyboardType.EmailAddress
         formContainer.addSubview(emailTextField)
         
         passwordLabel.text = "your_password".localizedString
@@ -91,22 +101,39 @@ class LoginEmailViewController: AbstractViewController {
         view.addSubview(forgotPasswordButton)
         
         loginButton.setTitle("login".localizedString, forState: UIControlState.Normal)
+        loginButton.addTarget(self, action: "loginButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(loginButton)
         
     }
     
     func setupConstraints () {
         
+        scrollView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.loginButton.snp_top)
+        }
+    
+        
+        scrollContentView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.scrollView)
+            // login selection + login button = 225
+            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height - 225))
+        }
+        
+        
         signupButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(30)
+            make.top.equalTo(self.scrollContentView).with.offset(30)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(70, 26))
         }
         
         formContainer.snp_makeConstraints { (make) -> () in
-            make.centerY.equalTo(self.view).with.offset(-50)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
+            make.top.greaterThanOrEqualTo(self.scrollContentView).with.offset(64)
+            make.centerY.greaterThanOrEqualTo(self.scrollContentView)
+            make.left.equalTo(self.scrollContentView)
+            make.right.equalTo(self.scrollContentView)
             make.height.equalTo(180)
         }
         
@@ -121,14 +148,13 @@ class LoginEmailViewController: AbstractViewController {
         emailTextField.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.formContainer).with.offset(10)
             make.right.equalTo(self.formContainer).with.offset(-10)
-            make.top.equalTo(self.emailLabel.snp_bottom)
+            make.top.equalTo(self.emailLabel)
             make.centerX.equalTo(self.formContainer)
             make.height.equalTo(71)
         }
         
-        
         passwordLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.passwordTextField.snp_top)
+            make.top.equalTo(self.passwordTextField)
             make.centerX.equalTo(self.formContainer)
             make.height.equalTo(17)
         }
@@ -162,6 +188,22 @@ class LoginEmailViewController: AbstractViewController {
         self.delegate!.signUp()
     }
     
+    func loginButtonTapped() {
+        
+        UserOperations.login(emailTextField.text, password: passwordTextField.text) { (user, apiKey) -> Void in
+            
+            AuthUtility.saveUser(user)
+            AuthUtility.saveAuthToken(apiKey)
+            
+            if self.delegate != nil {
+                self.delegate!.didLogin()
+            }
+
+            
+        }
+        
+    }
+    
 }
 
 
@@ -169,6 +211,6 @@ class LoginEmailViewController: AbstractViewController {
 protocol LoginEmailViewControllerDelegate {
     
     func signUp()
-    func login(email : String, password : String) -> String?
+    func didLogin()
     
 }

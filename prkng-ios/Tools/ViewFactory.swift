@@ -78,6 +78,7 @@ struct ViewFactory {
         textField.backgroundColor = UIColor.clearColor()
         textField.textColor = Styles.Colors.anthracite1
         textField.textAlignment = NSTextAlignment.Center
+        textField.autocorrectionType = UITextAutocorrectionType.No
         return textField
     }
     

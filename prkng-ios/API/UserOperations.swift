@@ -8,6 +8,68 @@
 
 import UIKit
 
-class UserOperations {
+struct UserOperations {
+    
+    
+    static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User, apiKey : String) -> Void) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "register"
+        
+        let params = ["email" : email, "name" : name, "password" : password, "gender" : gender, "birthYear" : birthYear]
+        
+        request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            let user = User(json: json)
+            let apiKey = json["apikey"].stringValue
+            
+            completion(user: user, apiKey: apiKey)
+            
+        }
+        
+    }
+    
+    
+    static func login (email : String, password: String, completion : (user : User, apiKey : String) -> Void) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "register"
+        
+        let params = ["email" : email,  "password" : password]
+        
+        request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            if (error != nil) {
+            
+            let user = User(json: json)
+            let apiKey = json["apikey"].stringValue
+            
+            completion(user: user, apiKey: apiKey)
+            }
+            
+        }
+        
+    }
+
+    
+    
+    static func loginWithFacebook (accessToken: String, completion : (user : User, apiKey : String) -> Void) {
+    
+        let url = APIUtility.APIConstants.rootURLString + "login/facebook"
+
+        let params = ["access_token" : accessToken]        
+       
+        request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            let user = User(json: json)
+            let apiKey = json["apikey"].stringValue
+            
+            completion(user: user, apiKey: apiKey)
+            
+        }
+
+        
+    }
    
 }

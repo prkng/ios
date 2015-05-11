@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loadInitialViewController()
 
 
-        return true
+        return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -44,11 +44,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        FBSDKAppEvents.activateApp()
     }
+    
 
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    
+    // MARK: Helper
 
     func configureGlobals() {
         UIApplication.sharedApplication().statusBarHidden = true
@@ -62,7 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func loadInitialViewController() {
 
-        if (Settings.firstUse()) {
+        if (Settings.firstUse() || AuthUtility.getUser() == nil) {
             window!.rootViewController = FirstUseViewController()
         } else {
             window!.rootViewController = TabController()
@@ -70,5 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window!.makeKeyAndVisible()
     }
+
 }
 

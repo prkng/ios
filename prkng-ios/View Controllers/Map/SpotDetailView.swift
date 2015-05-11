@@ -12,7 +12,6 @@ class SpotDetailView: UIView {
 
     var topContainer: UIView
     var titleLabel: UILabel
-    var checkinButton: UIButton
 
     var bottomContainer: UIView
     var availableTextLabel: UILabel
@@ -32,7 +31,6 @@ class SpotDetailView: UIView {
 
         topContainer = UIView()
         titleLabel = UILabel()
-        checkinButton = UIButton()
         bottomContainer = UIView()
         availableTextLabel = UILabel()
         availableTimeLabel = UILabel()
@@ -66,9 +64,6 @@ class SpotDetailView: UIView {
     func setupSubviews() {
         topContainer.backgroundColor = Styles.Colors.stone
         addSubview(topContainer)
-
-        checkinButton.setImage(UIImage(named: "btn_checkin_active"), forState: UIControlState.Normal)
-        topContainer.addSubview(checkinButton)
 
         titleLabel.font = Styles.FontFaces.light(27)
         titleLabel.textColor = Styles.Colors.petrol2
@@ -107,13 +102,6 @@ class SpotDetailView: UIView {
             make.left.equalTo(self)
             make.right.equalTo(self)
             make.height.equalTo(90)
-        }
-
-        checkinButton.snp_makeConstraints {
-            (make) -> () in
-            make.centerY.equalTo(self.topContainer.snp_top)
-            make.centerX.equalTo(self.topContainer)
-            make.size.equalTo(CGSizeMake(60, 60))
         }
 
         titleLabel.snp_makeConstraints {
