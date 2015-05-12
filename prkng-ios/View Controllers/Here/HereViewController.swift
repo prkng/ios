@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate  {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, CLLocationManagerDelegate {
 
     var scheduleViewController : ScheduleViewController?
     var detailView: SpotDetailView
@@ -19,10 +19,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     var activeSpot : ParkingSpot?
     
+    var locationManager : CLLocationManager
+    
     init() {
-        
         detailView = SpotDetailView()
         checkinButton = UIButton()
+        locationManager = CLLocationManager()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,6 +36,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         self.view = TouchForwardingView()
         setupViews()
         setupConstraints()
+    }
+    
+    override func viewDidLoad() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
     }
 
     
@@ -277,6 +286,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.view.layoutIfNeeded()
         });
+        
+    }
+    
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
     }
     

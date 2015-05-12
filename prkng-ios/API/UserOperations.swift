@@ -30,7 +30,7 @@ struct UserOperations {
     }
     
     
-    static func login (email : String, password: String, completion : (user : User, apiKey : String) -> Void) {
+    static func login (email : String, password: String, completion : (user : User?, apiKey : String?) -> Void) {
         
         let url = APIUtility.APIConstants.rootURLString + "register"
         
@@ -45,6 +45,9 @@ struct UserOperations {
             let apiKey = json["apikey"].stringValue
             
             completion(user: user, apiKey: apiKey)
+                
+            } else {
+                completion(user: nil, apiKey : nil)
             }
             
         }

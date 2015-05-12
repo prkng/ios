@@ -192,8 +192,10 @@ class LoginEmailViewController: AbstractViewController {
         
         UserOperations.login(emailTextField.text, password: passwordTextField.text) { (user, apiKey) -> Void in
             
-            AuthUtility.saveUser(user)
-            AuthUtility.saveAuthToken(apiKey)
+            if (user != nil) {
+                AuthUtility.saveUser(user!)
+                AuthUtility.saveAuthToken(apiKey!)
+            }
             
             if self.delegate != nil {
                 self.delegate!.didLogin()
