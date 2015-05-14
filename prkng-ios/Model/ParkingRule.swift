@@ -15,7 +15,7 @@ class ParkingRule: NSObject {
     var maxParkingTime: Int
     var seasonEnd: String
     var desc: String
-    var agenda : Array<Array<Float>>
+    var agenda : Array<TimePeriod?>
 
 
     init(json: JSON) {
@@ -30,73 +30,113 @@ class ParkingRule: NSObject {
         
         agenda = Array()
         
+        
+        
+        // MONDAY
+        
         var mon : Array<Float> = Array()
         var monStart : Float? = agendaJson["1"][0][0].float
         var monEnd : Float? = agendaJson["1"][0][1].float
+        
+        var monTimePeriod : TimePeriod? = nil
+        
         if monStart != nil && monEnd != nil  {
-            mon.append(monStart!)
-            mon.append(monEnd!)
+            monTimePeriod = TimePeriod(startTime: monStart!, endTime: monEnd!)
         }
-        agenda.append(mon)
+        agenda.append(monTimePeriod)
     
-    
+        // TUESDAY
+        
         var tue : Array<Float> = Array()
         var tueStart : Float? = agendaJson["2"][0][0].float
         var tueEnd : Float? = agendaJson["2"][0][1].float
+        
+        var tueTimePeriod : TimePeriod? = nil
+        
         if tueStart != nil && tueEnd != nil  {
-            tue.append(tueStart!)
-            tue.append(tueEnd!)
+            tueTimePeriod = TimePeriod(startTime: tueStart!, endTime: tueEnd!)
         }
-        agenda.append(tue)
+        agenda.append(tueTimePeriod)
+        
+        // WEDNESDAY
         
         var wed : Array<Float> = Array()
         var wedStart : Float? = agendaJson["3"][0][0].float
         var wedEnd : Float? = agendaJson["3"][0][1].float
+        
+        var wedTimePeriod : TimePeriod? = nil
+        
         if wedStart != nil && wedEnd != nil  {
-            wed.append(wedStart!)
-            wed.append(wedEnd!)
+            wedTimePeriod = TimePeriod(startTime: wedStart!, endTime: wedEnd!)
         }
-        agenda.append(wed)
+        agenda.append(wedTimePeriod)
+        
+        // THURSDAY
         
         var thu : Array<Float> = Array()
         var thuStart : Float? = agendaJson["4"][0][0].float
         var thuEnd : Float? = agendaJson["4"][0][1].float
+        
+        var thuTimePeriod : TimePeriod? = nil
+        
         if thuStart != nil && thuEnd != nil  {
-            thu.append(thuStart!)
-            thu.append(thuEnd!)
+            thuTimePeriod = TimePeriod(startTime: thuStart!, endTime: thuEnd!)
         }
-        agenda.append(thu)
+        agenda.append(thuTimePeriod)
+        
+        // FRIDAY
         
         var fri : Array<Float> = Array()
         var friStart : Float? = agendaJson["5"][0][0].float
         var friEnd : Float? = agendaJson["5"][0][1].float
+        
+        var friTimePeriod : TimePeriod? = nil
+        
         if friStart != nil && friEnd != nil  {
-            fri.append(friStart!)
-            fri.append(friEnd!)
+            friTimePeriod = TimePeriod(startTime: friStart!, endTime: friEnd!)
         }
-        agenda.append(fri)
+        agenda.append(friTimePeriod)
+        
+        
+        // SATURDAY
         
         var sat : Array<Float> = Array()
         var satStart : Float? = agendaJson["6"][0][0].float
         var satEnd : Float? = agendaJson["6"][0][1].float
+        
+        var satTimePeriod : TimePeriod? = nil
+        
         if satStart != nil && satEnd != nil  {
-            sat.append(satStart!)
-            sat.append(satEnd!)
+            satTimePeriod = TimePeriod(startTime: satStart!, endTime: satEnd!)
         }
-        agenda.append(sat)
+        agenda.append(satTimePeriod)
+        
+        
+        // SUNDAY
         
         var sun : Array<Float> = Array()
         var sunStart : Float? = agendaJson["7"][0][0].float
         var sunEnd : Float? = agendaJson["7"][0][1].float
+        
+        var sunTimePeriod : TimePeriod? = nil
+        
         if sunStart != nil && sunEnd != nil  {
-            sun.append(sunStart!)
-            sun.append(sunEnd!)
+            sunTimePeriod = TimePeriod(startTime: sunStart!, endTime: sunEnd!)
         }
-        agenda.append(sun)
-        
-        
-
+        agenda.append(sunTimePeriod)
     }
 
 
+}
+
+
+class TimePeriod {
+    var start : Float
+    var end : Float
+    
+    init (startTime : Float, endTime : Float) {
+        start = startTime
+        end = endTime
+    }
+    
 }

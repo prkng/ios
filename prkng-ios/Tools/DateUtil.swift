@@ -32,7 +32,7 @@ class DateUtil {
         let hour = components.hour
         let minutes = components.minute
         
-        return Float(hour % 12) + (Float(minutes) / 60.0)
+        return Float(hour % 24) + (Float(minutes) / 60.0)
     
     }
     

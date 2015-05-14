@@ -87,7 +87,6 @@ class ScheduleHeaderView: UIView {
         forbiddenView.detailLabel.text = NSLocalizedString("schedule_forbidden",comment:"")
         bottomContainer.addSubview(forbiddenView)
         
-        
         didSetupSubviews = true
     }
     
@@ -167,7 +166,6 @@ class InfoView: UIView {
             
             dotView = UIView()
             detailLabel = UILabel()
-            
            
             super.init(frame: frame)
             
@@ -184,7 +182,6 @@ class InfoView: UIView {
             if(!self.didSetupConstraints) {
                 setupConstraints()
             }
-            
             super.updateConstraints()
         }
         

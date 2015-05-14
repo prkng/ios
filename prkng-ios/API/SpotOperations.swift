@@ -9,13 +9,13 @@
 import UIKit
 
 class SpotOperations {
-
+    
     class func getSpot(identifier: NSString) {
-
+        
     }
-
+    
     class func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, completion: ((spots:Array<ParkingSpot>) -> Void)) {
-
+        
         let url = APIUtility.APIConstants.rootURLString + "slots"
         
         let radiusStr = NSString(format: "%.0f", radius)
@@ -33,15 +33,24 @@ class SpotOperations {
             params["duration"] = durationStr
         }
         
-        if(checkinTime != nil) {
-            let formatter = NSDateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
-            formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-            formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-            params["checkinTime"] = formatter.stringFromDate(checkinTime!)
+        
+        
+        var time : NSDate
+        
+        if (checkinTime == nil) {
+            time = NSDate()
+        } else {
+            time = checkinTime!
         }
         
-
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
+        formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        params["checkinTime"] = formatter.stringFromDate(time)
+        
+        
+        
         
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -50,15 +59,15 @@ class SpotOperations {
             for spotJson in spotJsons {
                 spots.append(ParkingSpot(json: spotJson))
             }
-
+            
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
                 completion(spots: spots)
             })
-
+            
         }
     }
     
     
-
+    
 }

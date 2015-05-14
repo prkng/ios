@@ -46,15 +46,13 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         COLUMN_HEADER_HEIGHT = 45.0
         ITEM_HOUR_HEIGHT = (CONTENTVIEW_HEIGHT - COLUMN_HEADER_HEIGHT) / 24.0
         
-        NSLog("item_hour_height : %f", ITEM_HOUR_HEIGHT)
-        
         super.init(nibName: nil, bundle: nil)
         
         var index = 0
-        for arr in spot.rules.agenda {
-            if (arr.count > 0) {
-                var startF : CGFloat = CGFloat(spot.rules.agenda[index][0])
-                var endF : CGFloat = CGFloat(spot.rules.agenda[index][1])
+        for period in spot.rules.agenda {
+            if (period != nil) {
+                var startF : CGFloat = CGFloat(period!.start)
+                var endF : CGFloat = CGFloat(period!.end)
                 self.scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : index, limited: false))
             }
             ++index
@@ -176,9 +174,9 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     
     func updateValues () {
         headerView.titleLabel.text = spot.name
-        dayIndicator.setDays(["M", "T", "W", "T", "F", "S", "S"])
+        dayIndicator.setDays(sortedDays())
         
-        var columnTitles = ["TODAY", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+        var columnTitles = sortedColumnTitles()
         var index = 0
         for columnView in columnViews {
             columnView.setTitle(columnTitles[index++])
@@ -220,6 +218,82 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     func dismiss () {
         self.delegate!.hideScheduleView()
     }
+    
+    
+    // Helper
+    
+    func sortedDays() -> Array<String> {
+        var array : Array<String> = []
+        
+        var days : Array<String> = []
+        
+        days.append("monday".localizedString.uppercaseString[0])
+        days.append("tuesday".localizedString.uppercaseString[0])
+        days.append("wednesday".localizedString.uppercaseString[0])
+        days.append("thursday".localizedString.uppercaseString[0])
+        days.append("friday".localizedString.uppercaseString[0])
+        days.append("saturday".localizedString.uppercaseString[0])
+        days.append("sunday".localizedString.uppercaseString[0])
+        
+        let today = DateUtil.dayIndexOfTheWeek()
+        
+        for var i = today; i < 7; ++i {
+            array.append(days[i])
+        }
+        
+        for var j = 0; j < today; ++j {
+            array.append(days[j])
+        }
+        
+        
+        return array
+    }
+    
+    
+    func sortedAgenda() -> Array<TimePeriod?>{
+        var array : Array<TimePeriod?> = []
+        
+        let today = DateUtil.dayIndexOfTheWeek()
+        
+        for var i = today; i < 7; ++i {
+            array.append(spot.rules.agenda[i])
+        }
+        
+        for var j = 0; j < today; ++j {
+            array.append(spot.rules.agenda[j])
+        }
+        
+        return array
+    }
+    
+    func sortedColumnTitles() -> Array<String> {
+        var array : Array<String> = []
+        
+        var days : Array<String> = []
+        
+        days.append("monday".localizedString.uppercaseString[0...2])
+        days.append("tuesday".localizedString.uppercaseString[0...2])
+        days.append("wednesday".localizedString.uppercaseString[0...2])
+        days.append("thursday".localizedString.uppercaseString[0...2])
+        days.append("friday".localizedString.uppercaseString[0...2])
+        days.append("saturday".localizedString.uppercaseString[0...2])
+        days.append("sunday".localizedString.uppercaseString[0...2])
+        
+        let today = DateUtil.dayIndexOfTheWeek()
+        
+        for var i = today; i < 7; ++i {
+            array.append(days[i])
+        }
+        
+        for var j = 0; j < today; ++j {
+            array.append(days[j])
+        }
+        
+        array[0] = "today".localizedString.uppercaseString
+        
+        return array
+    }
+
 
     
 }
@@ -279,7 +353,7 @@ class ScheduleItemModel {
             startMinutes = nf.stringFromNumber(diffStart * 60)!
         }
        
-        startTime = nf.stringFromNumber(startTm)! + ":" + startMinutes
+        startTime = nf.stringFromNumber(floor(startTm))! + ":" + startMinutes
 
         
         if(endF > 12) {
@@ -297,10 +371,11 @@ class ScheduleItemModel {
         if (diffStart > 0) {
             endMinutes = nf.stringFromNumber(diffEnd * 60)!
         }
-        endTime = nf.stringFromNumber(endTm)! + ":" + endMinutes
+        endTime = nf.stringFromNumber(floor(endTm))! + ":" + endMinutes
         
         
     }
+
     
 }
 
