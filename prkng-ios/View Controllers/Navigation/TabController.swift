@@ -61,20 +61,13 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         hereViewController.willMoveToParentViewController(self)
         addChildViewController(hereViewController)
         containerView.addSubview(hereViewController.view)
+        tabBar.updateSelected()
         
         hereViewController.view.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.containerView)
         }
         
     }
-    
-//    override func viewWillAppear(animated: Bool) {
-//        super.viewWillAppear(animated)
-//    }
-//    
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//    }
     
     func setupViews() {
         
@@ -133,7 +126,10 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         
         searchViewController!.markerIcon.hidden = false
         mapViewController.mapView.zoom = 17
-
+        mapViewController.trackUserButton.hidden = true
+        mapViewController.mapView.showsUserLocation = false
+        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+        
         
         switchActiveViewController(searchViewController!, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Search
@@ -150,6 +146,8 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         
         mapViewController.clearSearchResults()
         mapViewController.mapView.zoom = 20
+        mapViewController.mapView.showsUserLocation = true
+        mapViewController.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
         
         switchActiveViewController(hereViewController, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Here
@@ -165,6 +163,9 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
             return;
         }
         
+        mapViewController.mapView.showsUserLocation = false
+        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+        
         selectedTab = PrkTab.MyCar
         self.tabBar.updateSelected()
         
@@ -178,6 +179,9 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         if(settingsViewController == nil) {
             settingsViewController = SettingsViewController()
         }
+        
+        mapViewController.mapView.showsUserLocation = false
+        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
         
         switchActiveViewController(settingsViewController!, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Settings
@@ -241,6 +245,8 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
             SearchOperations.getStreetName(center.coordinate, completion: { (result) -> Void in
                 searchViewController?.showStreetName(result)
             })
+        } else if (selectedTab == PrkTab.Here) {
+            hereViewController.hideSpotDetails()
         }
         
     }
@@ -251,6 +257,10 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         loadHereTab()
         hereViewController.showSpotDetails()
         
+    }
+    
+    func shouldShowUserTrackingButton() -> Bool {
+        return selectedTab == PrkTab.Here
     }
     
     

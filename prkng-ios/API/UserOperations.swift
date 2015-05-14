@@ -74,5 +74,25 @@ struct UserOperations {
 
         
     }
+    
+    
+    static func loginWithGoogle(accessToken: String, completion : (user : User, apiKey : String) -> Void) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "login/google"
+        
+        let params = ["access_token" : accessToken]
+        
+        request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            let user = User(json: json)
+            let apiKey = json["apikey"].stringValue
+            
+            completion(user: user, apiKey: apiKey)
+            
+        }
+        
+        
+    }
    
 }

@@ -53,7 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        
+        if (url.scheme?.lowercaseString == "fb1043720578978201") {
+            return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        } else  {
+            return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
+        }        
     }
     
     

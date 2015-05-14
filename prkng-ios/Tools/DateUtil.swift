@@ -27,6 +27,7 @@ class DateUtil {
     class func hourFloatRepresentation () -> Float {   // Example : 10:30 -> 10.5
         let date = NSDate()
         let calendar = NSCalendar.currentCalendar()
+        calendar.locale = NSLocale(localeIdentifier: "en_GB")        
         let components = calendar.components(.CalendarUnitHour | .CalendarUnitMinute, fromDate: date)
         let hour = components.hour
         let minutes = components.minute

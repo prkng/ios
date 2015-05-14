@@ -38,4 +38,44 @@ class ParkingSpot: NSObject {
 
         line = Shape(json: json["geometry"])
     }
+    
+    
+    
+    func availableHourString() -> String{
+        
+        
+        var day = DateUtil.dayIndexOfTheWeek()
+        
+        var hour : Float = DateUtil.hourFloatRepresentation()
+        
+        var dayAgenda = self.rules.agenda[day]
+        
+        if (dayAgenda.count > 0) {
+            
+            if(dayAgenda[0] > hour) {
+                
+                let available : Float = dayAgenda[0] - hour
+                
+                let availableHour = Int(floorf(available))
+                
+                let availableMin = available - Float(availableHour)
+                
+                var minStr : String = "\(Int(floorf(availableMin * 60.0)))"
+                
+                if (count(minStr) == 1) {
+                    minStr += "0"
+                }
+                
+                return "\(availableHour)" + ":" + minStr
+                
+            } else if (dayAgenda[1] > hour) {
+                return "00:00"
+            }
+            
+        } else {
+            return "24:00+"
+        }
+        
+        return ""
+    }
 }

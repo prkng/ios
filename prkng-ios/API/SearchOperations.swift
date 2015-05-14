@@ -39,9 +39,9 @@ class SearchOperations {
         var url = "http://nominatim.openstreetmap.org/reverse"
         
         
-        var params  = ["lat": location.latitude, "lon": location.longitude, "format" : "json"]
+        var params  = ["lat": "\(location.latitude)", "lon": "\(location.longitude)", "format" : "json"]
         
-        request(.GET, url, parameters: params as! [String : AnyObject]).responseSwiftyJSON() {
+        request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             var street : String = json["address"]["road"].stringValue

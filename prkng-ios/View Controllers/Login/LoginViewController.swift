@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: AbstractViewController, LoginMethodSelectionViewDelegate, LoginEmailViewControllerDelegate, LoginExternalViewControllerDelegate, RegisterEmailViewControllerDelegate {
+class LoginViewController: AbstractViewController, LoginMethodSelectionViewDelegate, LoginEmailViewControllerDelegate, LoginExternalViewControllerDelegate, RegisterEmailViewControllerDelegate, GPPSignInDelegate {
     
     var backgroundImageView : UIImageView
     var logoView : UIImageView
@@ -19,6 +19,8 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     var loginExternalViewController : LoginExternalViewController?
     
     var selectedMethod : LoginMethod?
+    
+    var googleSignIn : GPPSignIn?
     
     init() {
         backgroundImageView = UIImageView()
@@ -134,7 +136,13 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             return
         }
         
-
+        googleSignIn = GPPSignIn.sharedInstance()
+        googleSignIn?.shouldFetchGooglePlusUser = true
+        googleSignIn?.clientID = "632562278503-4c9tkt6hsk8qm2c70b3cjom7vjq7158k.apps.googleusercontent.com"
+        googleSignIn?.scopes = [kGTLAuthScopePlusLogin, kGTLAuthScopePlusMe, kGTLAuthScopePlusUserinfoEmail, kGTLAuthScopePlusUserinfoProfile]
+        googleSignIn?.delegate = self
+        googleSignIn?.authenticate()
+        
                 
         selectedMethod = LoginMethod.Google
         
@@ -183,7 +191,6 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
         loginExternalViewController = LoginExternalViewController(usr : user)
         loginExternalViewController!.delegate = self
-//        loginExternalViewController!.delegate = self
         self.addChildViewController(loginExternalViewController!)
         self.view.insertSubview(loginExternalViewController!.view, belowSubview: methodSelectionView)
         loginExternalViewController!.didMoveToParentViewController(self)
@@ -213,9 +220,27 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
     }
     
+    // MARK: GPPSignInDelegate
+    
+    func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
+        println(auth)
+        
+        self.methodSelectionView.userInteractionEnabled = false
+        
+        UserOperations.loginWithGoogle(auth.accessToken, completion: { (user, apiKey) -> Void in
+            AuthUtility.saveUser(user)
+            AuthUtility.saveAuthToken(apiKey)            
+            self.displayExternalInfo(user)
+        })
+    }
+    
+    func didDisconnectWithError(error: NSError!) {
+        
+    }
+    
+    
     
     // MARK: LoginEmailViewControllerDelegate
-    
     
     func signUp() {
         

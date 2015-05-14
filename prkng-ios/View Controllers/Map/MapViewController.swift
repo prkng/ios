@@ -11,6 +11,8 @@ import Foundation
 
 class MapViewController: AbstractViewController, RMMapViewDelegate {
     
+    let mapSource = "arnaudspuhler.l54pj66f"
+    
     var delegate: MapViewControllerDelegate?
     
     var mapView: RMMapView
@@ -22,8 +24,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     var radius : Float
     var updateInProgress : Bool
     
-    var del_previousSelectedCity : String //FIXME
-    
+    var trackUserButton : UIButton
     
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
@@ -33,18 +34,18 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        let source = RMMapboxSource(mapID: "arnaudspuhler.l54pj66f")
-        mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: source)
         
-        del_previousSelectedCity = Settings.selectedCity()
-
-        if ("Montreal" == del_previousSelectedCity) {
-            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 45.548, longitude: -73.58)
+        if let source = RMMapboxSource(mapID: mapSource) {
+            mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: source)
         } else {
-            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 46.806569, longitude: -71.242904)
+            let offlineSourcePath = NSBundle.mainBundle().pathForResource("OfflineMap", ofType: "json")
+            let offlineSource = RMMapboxSource(tileJSON: String(contentsOfFile: offlineSourcePath!, encoding: NSUTF8StringEncoding, error: nil))
+            mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: offlineSource)
         }
         
+        mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
         
+        mapView.tintColor = Styles.Colors.red2
         mapView.showLogoBug = false;
         mapView.hideAttribution = true;
         spots = []
@@ -53,6 +54,9 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         searchAnnotations = []
         radius = 100
         updateInProgress = false
+        
+        trackUserButton = UIButton()
+        
         super.init(nibName: nil, bundle: nil)
         
     }
@@ -62,14 +66,23 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     }
     
     override func loadView() {
-        self.view = UIView()
-        self.view.addSubview(mapView)
+        view = UIView()
+        view.addSubview(mapView)
         mapView.delegate = self
         
-        mapView.snp_makeConstraints {
-            make in
+        trackUserButton.setImage(UIImage(named: "track_user"), forState: UIControlState.Normal)
+        trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(trackUserButton)
+        
+        mapView.snp_makeConstraints {  (make) -> () in
             make.edges.equalTo(self.view)
-            return
+        }
+        
+        
+        trackUserButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSizeMake(36, 36))
+            make.left.equalTo(self.view).with.offset(30)
+            make.bottom.equalTo(self.view).with.offset(-30)
         }
         
         
@@ -78,24 +91,24 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mapView.userTrackingMode = RMUserTrackingModeFollow;
+        self.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
         updateAnnotations()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
+        
+        if (mapView.tileSource == nil) {
+            if let source = RMMapboxSource(mapID: mapSource) {
+                mapView.tileSource = source
+            }
+        }
     }
     
 
     func updateMapCenterIfNecessary () {
         
-        if(self.del_previousSelectedCity == Settings.selectedCity()) {
-            return
-        }
-        
-        del_previousSelectedCity = Settings.selectedCity()
-        if ("Montreal" == Settings.selectedCity()) {
-            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 45.548, longitude: -73.58)
-        } else {
-            mapView.centerCoordinate = CLLocationCoordinate2D(latitude: 46.806569, longitude: -71.242904)
-        }
         
     }
     
@@ -103,7 +116,10 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     func mapView(mapView: RMMapView!, layerForAnnotation annotation: RMAnnotation!) -> RMMapLayer! {
         
         if (annotation.isUserLocationAnnotation) {
-            return nil
+            
+            var marker = RMMarker(UIImage: UIImage(named: "cursor_you"))
+            marker.canShowCallout = false
+            return marker
         }
         
         var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
@@ -164,6 +180,20 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             return nil
             
         }
+    }
+    
+    func beforeMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
+        
+        
+        if (mapView.userTrackingMode.value == 2 ) { //RMUserTrackingModeFollowWithHeading
+            self.trackUserButton.hidden = true
+        } else {
+            self.trackUserButton.hidden = (delegate != nil && !delegate!.shouldShowUserTrackingButton())
+            self.mapView.userTrackingMode = RMUserTrackingModeNone
+        }
+        
+    
+        
     }
     
     func afterMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
@@ -284,6 +314,14 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
 //        
 //        
 //    }
+    
+    // MARK: Helper Methods
+    
+    func trackUserButtonTapped () {
+        
+        self.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
+        self.trackUserButton.hidden = true
+    }
     
     
     func updateAnnotations() {
@@ -465,10 +503,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         }
 
         self.centerButtonAnnotations = tempCenterButtonAnnotations
-        
-        
-        
-        
+
         self.mapView.removeAnnotations(annotations)
         
     }
@@ -520,5 +555,7 @@ protocol MapViewControllerDelegate {
     func mapDidMove(center: CLLocation)
     
     func didSelectSpot(spot: ParkingSpot)
+    
+    func shouldShowUserTrackingButton() -> Bool
     
 }

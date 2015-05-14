@@ -1,0 +1,33 @@
+{
+    "attribution": "<a href=\"https://www.mapbox.com/about/maps/\" target=\"_blank\">&copy; Mapbox &copy; OpenStreetMap</a> <a class=\"mapbox-improve-map\" href=\"https://www.mapbox.com/map-feedback/\" target=\"_blank\">Improve this map</a>",
+    "autoscale": true,
+    "bounds": [
+               -180,
+               -85.0511,
+               180,
+               85.0511
+               ],
+    "center": [
+               -73.58919382095337,
+               45.51742143528529,
+               17
+               ],
+    "data": [
+             "http://a.tiles.mapbox.com/v3/arnaudspuhler.l54pj66f/markers.geojsonp"
+             ],
+    "dataset": "16b0ba21e8a285dd0a1b86d6131c288f",
+    "description": "Map for the prkng app. Zoom x14 - x19",
+    "embed": "http://a.tiles.mapbox.com/v3/arnaudspuhler.l54pj66f.html",
+    "id": "arnaudspuhler.l54pj66f",
+    "maxzoom": 19,
+    "minzoom": 14,
+    "name": "prkng_map",
+    "private": true,
+    "scheme": "xyz",
+    "tilejson": "2.0.0",
+    "tiles": [
+              "http://a.tiles.mapbox.com/v3/arnaudspuhler.l54pj66f/{z}/{x}/{y}.png",
+              "http://b.tiles.mapbox.com/v3/arnaudspuhler.l54pj66f/{z}/{x}/{y}.png"
+              ],
+    "webpage": "http://a.tiles.mapbox.com/v3/arnaudspuhler.l54pj66f/page.html"
+}

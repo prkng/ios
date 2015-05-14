@@ -22,20 +22,23 @@ class ScheduleDayIndicatorView: UIView {
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
+    var indicatorWidth : CGFloat
+    
     convenience init() {
         self.init(frame: CGRectZero)
     }
     
     override init(frame: CGRect) {
         didSetupSubviews = false
-        didSetupConstraints = false
+        didSetupConstraints = true
         labels = []
         indicator = UIView()
+        indicatorWidth = 0.0
         super.init(frame: frame)
-
         
-        setupSubviews()
-        self.setNeedsUpdateConstraints()
+        for i in 0...6 {
+            labels.append(dayLabel())
+        }
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -44,6 +47,7 @@ class ScheduleDayIndicatorView: UIView {
     
     
     override func updateConstraints() {
+        
         if(!self.didSetupConstraints) {
             setupConstraints()
         }
@@ -53,9 +57,17 @@ class ScheduleDayIndicatorView: UIView {
     
     override func layoutSubviews() {
         
+        indicatorWidth = frame.width * 0.4
+        
+        if (!didSetupSubviews) {
+            setupSubviews()
+            self.setNeedsUpdateConstraints()
+        }
+        
+        
         if (minX == nil || maxX == nil) {
             minX = 6.0 //TODO
-            maxX = self.bounds.size.width - 150.0 - 6.0 - 6.0
+            maxX = self.bounds.size.width - indicatorWidth - 6.0 - 6.0
         }
         
         super.layoutSubviews()
@@ -65,10 +77,8 @@ class ScheduleDayIndicatorView: UIView {
         
         self.backgroundColor = Styles.Colors.petrol2
         
-        for i in 0...6 {
-            var label : UILabel = dayLabel()
+        for label in labels {
             addSubview(label)
-            labels.append(label)
         }
         
         indicator.layer.borderWidth = 1.0
@@ -77,6 +87,8 @@ class ScheduleDayIndicatorView: UIView {
         indicator.clipsToBounds = true
         addSubview(indicator)
         
+        didSetupSubviews = true
+        didSetupConstraints = false
     }
     
     func setupConstraints (){
@@ -100,7 +112,7 @@ class ScheduleDayIndicatorView: UIView {
         indicator.snp_makeConstraints { (make) -> () in
             self.indicatorXConstraint = make.left.equalTo(self).with.offset(6)
             make.height.equalTo(26)
-            make.width.equalTo(150)
+            make.width.equalTo(self.indicatorWidth)
             make.centerY.equalTo(self).with.offset(-1)
         }
         
@@ -131,7 +143,7 @@ class ScheduleDayIndicatorView: UIView {
         indicator.snp_remakeConstraints { (make) -> () in
             self.indicatorXConstraint = make.left.equalTo(self).with.offset(offset)
             make.height.equalTo(26)
-            make.width.equalTo(150)
+            make.width.equalTo(self.indicatorWidth)
             make.centerY.equalTo(self).with.offset(-1)
         }
         

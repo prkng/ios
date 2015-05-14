@@ -204,39 +204,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
         detailView.titleLabel.text = activeSpot?.name
         
-        var day = DateUtil.dayIndexOfTheWeek()
-        
-        var hour : Float = DateUtil.hourFloatRepresentation()
-        
-        var dayAgenda = activeSpot!.rules.agenda[day]
-        
-        if (dayAgenda.count > 0) {
-            
-            if(dayAgenda[0] > hour) {
-                
-                let available : Float = dayAgenda[0] - hour
-                
-                let availableHour = Int(floorf(available))
-                
-                let availableMin = available - Float(availableHour)
-                
-                var minStr : String = "\(Int(floorf(availableMin * 60.0)))"
-                
-                if (count(minStr) == 1) {
-                    minStr += "0"
-                }
-                
-                var availableStr = "\(availableHour)" + ":" + minStr
-                
-                detailView.availableTimeLabel.text = availableStr
-                
-            } else if (dayAgenda[1] > hour) {
-                detailView.availableTimeLabel.text = "00:00"
-            }
-            
-        } else {
-            detailView.availableTimeLabel.text = "24:00+"
-        }
+        detailView.availableTimeLabel.text = activeSpot?.availableHourString()
         
         
         detailView.snp_remakeConstraints {

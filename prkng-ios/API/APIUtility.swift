@@ -17,8 +17,7 @@ class APIUtility: NSObject {
         static let rootURLString = "http://54.144.3.236/"
 #endif
     }
-
-
+    
     class func rootURL() -> String {
         return APIConstants.rootURLString;
     }

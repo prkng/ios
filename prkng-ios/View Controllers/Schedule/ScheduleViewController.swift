@@ -155,12 +155,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             var scheduleItem = scheduleItems[itemIndex]
             var columnView = columnViews[scheduleItem.columnIndex!]
             
-            NSLog("column index : %d", scheduleItem.columnIndex!)
-            NSLog("y multiplier : %f", scheduleItem.yIndexMultiplier!)
-            NSLog("height multiplier : %f", scheduleItem.heightMultiplier!)
-
-
-            
             itemView.snp_makeConstraints({ (make) -> () in
                 make.top.equalTo(columnView).with.offset((self.ITEM_HOUR_HEIGHT * scheduleItem.yIndexMultiplier!) + self.COLUMN_HEADER_HEIGHT)
                 make.height.equalTo(self.ITEM_HOUR_HEIGHT * scheduleItem.heightMultiplier!)
@@ -177,7 +171,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             make.right.equalTo(self.view)
             make.height.equalTo(self.DAY_INDICATOR_HEIGHT)
         }
-        
         // items
     }
     
@@ -191,27 +184,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             columnView.setTitle(columnTitles[index++])
         }
     }
-
-    
-    
-    
-    // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-//    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-//        
-//        var cell : ScheduleCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier(scheduleCollectionViewCellIdentifier, forIndexPath: indexPath) as! ScheduleCollectionViewCell
-//        
-//        cell.backgroundColor = Styles.Colors.red2
-//        
-//        
-//        var startF : Float = spot.rules.agenda[indexPath.section][0]
-//        var endF : Float = spot.rules.agenda[indexPath.section][1]
-//        
-//        cell.setHours( ScheduleCellModel(startF: startF, endF: endF))       
-//        
-//        
-//        return cell;
-//    }
-    
     
     // UIScrollViewDelegate
     
@@ -233,19 +205,12 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        NSLog("content offset : %f", scrollView.contentOffset.x)
-        
         var maxOffset : Float = Float(COLUMN_SIZE * 4.0)
         var ratio : Float = 0.0
-        
-        NSLog("max offset : %f", maxOffset)
-
         
         if (scrollView.contentOffset.x != 0) {
             ratio = Float(scrollView.contentOffset.x) / maxOffset
         }
-        
-        NSLog("ratio : %f", ratio)
         
         self.dayIndicator.setPositionRatio(CGFloat(ratio))
         
@@ -284,8 +249,8 @@ class ScheduleItemModel {
         heightMultiplier = (endF - startF)
         yIndexMultiplier = startF
         
-        if(heightMultiplier < 2.5) {
-            heightMultiplier = 2.5
+        if(heightMultiplier < 4) {
+            heightMultiplier = 4
         }
         
         var startTm = startF
@@ -314,7 +279,6 @@ class ScheduleItemModel {
             startMinutes = nf.stringFromNumber(diffStart * 60)!
         }
        
-        
         startTime = nf.stringFromNumber(startTm)! + ":" + startMinutes
 
         
