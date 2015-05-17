@@ -15,11 +15,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     var checkinButton : UIButton
     
-    var checkinMessageVC : CheckinMessageViewController?
-    
     var activeSpot : ParkingSpot?
     
     var locationManager : CLLocationManager
+    
+    var delegate : HereViewControllerDelegate?
     
     init() {
         detailView = SpotDetailView()
@@ -141,6 +141,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             self.scheduleViewController!.view.layoutIfNeeded()
             }, completion: { (Bool) -> Void in
                 
+                self.scheduleViewController!.view.removeFromSuperview()
+                self.scheduleViewController!.willMoveToParentViewController(nil)
                 self.scheduleViewController!.removeFromParentViewController()
                 self.scheduleViewController = nil
         })
@@ -149,52 +151,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func checkinButtonTapped() {
         
-        if (Settings.firstCheckin()) {
-            showFirstCheckinMessage()
-            return
-        }
-        
-    }
-    
-    
-    func showFirstCheckinMessage() {
-    
-        checkinMessageVC = CheckinMessageViewController()
-        
-        self.addChildViewController(checkinMessageVC!)
-        self.view.addSubview(checkinMessageVC!.view)
-        checkinMessageVC!.didMoveToParentViewController(self)
-        
-        checkinMessageVC!.view.snp_makeConstraints({ (make) -> () in
-            make.edges.equalTo(self.view)
-        })
-        
-        let tap = UITapGestureRecognizer(target: self, action: "hideFirstCheckinMessage")
-        checkinMessageVC!.view.addGestureRecognizer(tap)
-        
-        checkinMessageVC!.view.alpha = 0.0
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.checkinMessageVC!.view.alpha = 1.0
-        })
-        
-    }
-    
-    
-    func hideFirstCheckinMessage () {
-        
-        if let checkinMessageVC = self.checkinMessageVC {
-         
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                checkinMessageVC.view.alpha = 0.0
-            }, completion: { (finished) -> Void in
-                checkinMessageVC.removeFromParentViewController()
-                checkinMessageVC.view.removeFromSuperview()
-                checkinMessageVC.didMoveToParentViewController(nil)
-                self.checkinMessageVC = nil
-            })
+        SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+                
+        SpotOperations.checkin(activeSpot!.identifier, completion: { (completed) -> Void in
             
-        }
+            Settings.saveCheckInData(self.activeSpot!, time: NSDate())
+            
+            SVProgressHUD.dismiss()
+            self.delegate?.loadMyCarTab()
+            
+        })
         
         
     }
@@ -222,8 +188,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.size.equalTo(CGSizeMake(60, 60))
         }
         
-        
-        checkinButton.enabled = true
+        checkinButton.enabled = !Settings.checkedIn()
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.view.layoutIfNeeded()
@@ -263,4 +228,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     }
     
     
+}
+
+
+protocol HereViewControllerDelegate {
+    func loadMyCarTab()
 }

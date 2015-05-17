@@ -26,13 +26,10 @@
 "your_name" = "your name";
 "your_gender" = "your gender";
 "your_birth_year" = "your birth year";
-
 "invalid_name" = "Please enter your name";
 
 
-
 "minutes_short" = "min";
-
 "notifications" = "notifications";
 
 "edit_profile" = "edit profile";
@@ -46,7 +43,6 @@
 // Search
 "search_step1_copy" = "move the map or\ntype your destination";
 
-
 // Spot details
 "spot_available_for" = "AVAILABLE\nFOR";
 "schedule_authorized" = "AUTHORIZED";
@@ -56,6 +52,13 @@
 "first_checkin_title" = "Here we are !";
 "first_checkin_subtitle" = "This is your first check-in.";
 "first_checkin_text" = "Keep in mind the data is provided by the city, so it’s always good to double check. Please, keep an eye open, we are not responsible for your tickets.";
+"no_checkin_message" = "You haven't\nchecked-in yet";
+"park_now" = "park now";
+"checked_in_message" = "you're checked-in at";
+"available_for" = "available for";
+"leave_spot" = "ciao!";
+"notifications_off" = "notifications off";
+"notifications_on" = "notifications on";
 
 // Days
 "monday" = "Monday";
@@ -68,6 +71,3 @@
 
 "arrival" = "ARRIVAL";
 "departure" = "DEPARTURE";
-
-
-

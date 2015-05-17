@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate {
+class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate {
     
     var selectedTab : PrkTab
     
@@ -62,6 +62,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         addChildViewController(hereViewController)
         containerView.addSubview(hereViewController.view)
         tabBar.updateSelected()
+        hereViewController.delegate = self
         
         hereViewController.view.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.containerView)
@@ -80,6 +81,11 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         containerView.addSubview(mapViewController.view)
         
         tabBar.delegate = self
+        tabBar.backgroundColor = Styles.Colors.stone
+        tabBar.layer.shadowColor = UIColor.blackColor().CGColor
+        tabBar.layer.shadowOffset = CGSize(width: 0, height: -0.5)
+        tabBar.layer.shadowOpacity = 0.2
+        tabBar.layer.shadowRadius = 0.5
         view.addSubview(tabBar)
     }
     
@@ -166,8 +172,22 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         mapViewController.mapView.showsUserLocation = false
         mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
         
-        selectedTab = PrkTab.MyCar
-        self.tabBar.updateSelected()
+
+        var myCarViewController : AbstractViewController?
+        
+        if (Settings.checkedIn()) {
+            myCarViewController = MyCarCheckedInViewController()
+            (myCarViewController as! MyCarCheckedInViewController).delegate = self
+        } else {
+            myCarViewController = MyCarNoCheckinViewController()
+            (myCarViewController as! MyCarNoCheckinViewController).delegate = self
+        }
+
+        
+        switchActiveViewController(myCarViewController!, completion: { (finished) -> Void in
+            self.selectedTab = PrkTab.MyCar
+            self.tabBar.updateSelected()
+        })
         
     }
     
@@ -264,7 +284,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     }
     
     
-    // SearchViewControllerDelegate
+    // MARK: SearchViewControllerDelegate
     
     func setSearchParameters(time : NSDate?, duration : Float?) {
         mapViewController.searchCheckinDate = time
@@ -276,8 +296,33 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         mapViewController.displaySearchResults(results)
     }
     
+    // MARK: MyCarNoCheckinViewControllerDelegate
     
     
+    // MARK : MyCarCheckedInViewControllerDelegate
+    
+    func reloadMyCarTab() {
+        
+        mapViewController.mapView.showsUserLocation = false
+        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+        
+        
+        var myCarViewController : AbstractViewController?
+        
+        if (Settings.checkedIn()) {
+            myCarViewController = MyCarCheckedInViewController()
+            (myCarViewController as! MyCarCheckedInViewController).delegate = self
+        } else {
+            myCarViewController = MyCarNoCheckinViewController()
+            (myCarViewController as! MyCarNoCheckinViewController).delegate = self
+        }
+        
+        switchActiveViewController(myCarViewController!, completion: { (finished) -> Void in
+            self.selectedTab = PrkTab.MyCar
+            self.tabBar.updateSelected()
+        })
+        
+    }
 
 }
 

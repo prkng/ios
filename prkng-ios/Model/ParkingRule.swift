@@ -41,7 +41,7 @@ class ParkingRule: NSObject {
         var monTimePeriod : TimePeriod? = nil
         
         if monStart != nil && monEnd != nil  {
-            monTimePeriod = TimePeriod(startTime: monStart!, endTime: monEnd!)
+            monTimePeriod = TimePeriod(startTime: Double(monStart! * 3600), endTime: Double (monEnd! * 3600))
         }
         agenda.append(monTimePeriod)
     
@@ -54,7 +54,7 @@ class ParkingRule: NSObject {
         var tueTimePeriod : TimePeriod? = nil
         
         if tueStart != nil && tueEnd != nil  {
-            tueTimePeriod = TimePeriod(startTime: tueStart!, endTime: tueEnd!)
+            tueTimePeriod = TimePeriod(startTime: Double(tueStart! * 3600), endTime: Double (tueEnd! * 3600))
         }
         agenda.append(tueTimePeriod)
         
@@ -67,7 +67,7 @@ class ParkingRule: NSObject {
         var wedTimePeriod : TimePeriod? = nil
         
         if wedStart != nil && wedEnd != nil  {
-            wedTimePeriod = TimePeriod(startTime: wedStart!, endTime: wedEnd!)
+            wedTimePeriod = TimePeriod(startTime: Double(wedStart! * 3600), endTime: Double (wedEnd! * 3600))
         }
         agenda.append(wedTimePeriod)
         
@@ -80,7 +80,7 @@ class ParkingRule: NSObject {
         var thuTimePeriod : TimePeriod? = nil
         
         if thuStart != nil && thuEnd != nil  {
-            thuTimePeriod = TimePeriod(startTime: thuStart!, endTime: thuEnd!)
+            thuTimePeriod = TimePeriod(startTime: Double(thuStart! * 3600), endTime: Double (thuEnd! * 3600))
         }
         agenda.append(thuTimePeriod)
         
@@ -93,7 +93,7 @@ class ParkingRule: NSObject {
         var friTimePeriod : TimePeriod? = nil
         
         if friStart != nil && friEnd != nil  {
-            friTimePeriod = TimePeriod(startTime: friStart!, endTime: friEnd!)
+            friTimePeriod = TimePeriod(startTime: Double(friStart! * 3600), endTime: Double (friEnd! * 3600))
         }
         agenda.append(friTimePeriod)
         
@@ -107,7 +107,7 @@ class ParkingRule: NSObject {
         var satTimePeriod : TimePeriod? = nil
         
         if satStart != nil && satEnd != nil  {
-            satTimePeriod = TimePeriod(startTime: satStart!, endTime: satEnd!)
+            satTimePeriod = TimePeriod(startTime: Double(satStart! * 3600), endTime: Double (satEnd! * 3600))
         }
         agenda.append(satTimePeriod)
         
@@ -121,7 +121,7 @@ class ParkingRule: NSObject {
         var sunTimePeriod : TimePeriod? = nil
         
         if sunStart != nil && sunEnd != nil  {
-            sunTimePeriod = TimePeriod(startTime: sunStart!, endTime: sunEnd!)
+            sunTimePeriod = TimePeriod(startTime: Double(sunStart! * 3600), endTime: Double (sunEnd! * 3600))
         }
         agenda.append(sunTimePeriod)
     }
@@ -131,10 +131,10 @@ class ParkingRule: NSObject {
 
 
 class TimePeriod {
-    var start : Float
-    var end : Float
+    var start : NSTimeInterval
+    var end : NSTimeInterval
     
-    init (startTime : Float, endTime : Float) {
+    init (startTime : Double, endTime : Double) {
         start = startTime
         end = endTime
     }

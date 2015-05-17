@@ -17,7 +17,7 @@ class ParkingSpot: NSObject {
     var maxParkingTime: Int
     var duration: Int
     var buttonLocation: CLLocation
-    var rules: ParkingRule
+    var rules: Array<ParkingRule>
     var line: Shape
 
     init(json: JSON) {
@@ -30,88 +30,181 @@ class ParkingSpot: NSObject {
         duration = json["duration"].intValue
         buttonLocation = CLLocation(latitude: json["properties"]["button_location"]["lat"].doubleValue, longitude: json["properties"]["button_location"]["long"].doubleValue)
         
-        rules = ParkingRule(json: json["properties"]["rules"][0])
+        rules = []
         
-//        for ruleJson in json["properties"]["rules"] {
-//            rules.append(ParkingRule(json: ruleJson))
-//        }
+        let ruleJsons = json["properties"]["rules"]
+        
+        for index in ruleJsons  {
+            let rule = ParkingRule(json: index.1)
+            rules.append(rule)
+        }
 
         line = Shape(json: json["geometry"])
     }
     
-    private func todaysAgenda () -> TimePeriod? {
-        let day = DateUtil.dayIndexOfTheWeek()
-        return self.rules.agenda[day]
-    }
-    
-    private func tomorrowsAgenda () -> TimePeriod?{
-        var day : Int = DateUtil.dayIndexOfTheWeek() + 1
-
-        if day > 6 {
-            day = 0
-        }
-        return self.rules.agenda[day]
-    }
-    
-    
-    func availableHourString() -> String{
-        
-        let hour  = DateUtil.hourFloatRepresentation()
-        let dayAgenda = todaysAgenda()
-        
-//        if (dayAgenda.count > 0) {
-//            
-//            if(dayAgenda[0] > hour) {
-//                
+//    private func todaysAgenda () -> TimePeriod? {
+//        let day = DateUtil.dayIndexOfTheWeek()
+//        return self.rules.agenda[day]
+//    }
+//    
+//    private func tomorrowsAgenda () -> TimePeriod?{
+//        var day : Int = DateUtil.dayIndexOfTheWeek() + 1
 //
-//                
-//            } else if (dayAgenda[1] > hour) {
-//                return "Unavailable".lowercaseString
-//            }
-//            
-//        } else {
-//            return "24:00+"
+//        if day > 6 {
+//            day = 0
 //        }
-//        
-//        return ""
+//        return self.rules.agenda[day]
+//    }
+    
+    
+    func availableTimeInterval() -> NSTimeInterval {
         
-        var availableTime : Float = -1
-
-        if (dayAgenda != nil) {
-            
-            if (hour < dayAgenda!.start) {
-                availableTime = dayAgenda!.start - hour
-            } else if (hour >= dayAgenda!.start && hour < dayAgenda!.end) {
-                // currently in the forbidden period
-                availableTime = 0
-            } else { // check next day
+        let interval = DateUtil.timeIntervalSinceDayStart()
+        
+        var smallest : Int = 24 * 3600 // time interval
+        
+        for period in todaysAgenda() {
+            if (period != nil && Int(period!.start) > Int(interval)) {
                 
-                if let tomorrowAgenda = tomorrowsAgenda() {
-                    availableTime = tomorrowAgenda.start + (24.0 - hour)
+              let diff = Int(period!.start) - Int(interval)
+                
+                if (diff < smallest) {
+                    smallest = diff
                 }
                 
             }
-            
         }
         
+        if (smallest  < 24 * 3600) {
+            return NSTimeInterval(smallest)
+        }
         
-        if (availableTime == 0 ) {
-            return "unavailable".localizedString.uppercaseString
-        } else if (availableTime == -1 || availableTime > 24.0) {
+
+        // check tomorrow
+        for period in tomorrowsAgenda() {
+            if (period != nil && Int(period!.start) > Int(interval)) {
+                
+                let diff = Int(period!.start) - Int(interval)
+                
+                if (diff < smallest) {
+                    smallest = diff
+                }
+                
+            }
+        }
+        
+        if (smallest >= 24 * 3600) {
+            return NSTimeInterval(24 * 3600)
+        }
+        
+        return NSTimeInterval((24 * 3600) - Int(interval) + smallest) // remaining time until 24:00 today + remaining time till forbidden tomorrow
+        
+
+    }
+    
+    func availableHourString() -> String{
+        
+        
+        let interval = availableTimeInterval()
+        
+        if (interval == 24 * 3600) {
             return "24:00+"
         }
         
+        let minutes  = Int((interval / 60) % 60)
+        let hours = Int((interval / 3600))
+        return  String(NSString(format: "%02ld:%02ld", hours, minutes))
+    }
+    
+    
+    func todaysAgenda () -> Array<TimePeriod?> {
         
-        let availableHour = Int(floorf(availableTime))
-        let availableMin = availableTime - Float(availableHour)
+        let weekDay = NSDate().weekday() - 1
+
+        var agenda : Array<TimePeriod?> = []
         
-        var minStr : String = "\(Int(floorf(availableMin * 60.0)))"
-        
-        if (count(minStr) == 1) {
-            minStr += "0"
+        for rule in rules {
+            agenda.append(rule.agenda[weekDay])
         }
         
-        return "\(availableHour)" + ":" + minStr
-        
+        return agenda
     }
+    
+    
+    func tomorrowsAgenda () -> Array<TimePeriod?> {
+        
+        var weekDay : Int = NSDate().weekday()
+        
+        if (weekDay == 7 ) {
+            weekDay = 0
+        }
+        
+        var agenda : Array<TimePeriod?> = []
+        
+        for rule in rules {
+            agenda.append(rule.agenda[weekDay])
+        }
+        
+        return agenda
+    }
+    
+    
+//        let hour  = DateUtil.hourFloatRepresentation()
+////        let dayAgenda = todaysAgenda()
+//        
+////        if (dayAgenda.count > 0) {
+////            
+////            if(dayAgenda[0] > hour) {
+////                
+////
+////                
+////            } else if (dayAgenda[1] > hour) {
+////                return "Unavailable".lowercaseString
+////            }
+////            
+////        } else {
+////            return "24:00+"
+////        }
+////        
+////        return ""
+//        
+//        var availableTime : Float = -1
+//
+//        if (dayAgenda != nil) {
+//            
+//            if (hour < dayAgenda!.start) {
+//                availableTime = dayAgenda!.start - hour
+//            } else if (hour >= dayAgenda!.start && hour < dayAgenda!.end) {
+//                // currently in the forbidden period
+//                availableTime = 0
+//            } else { // check next day
+//                
+//                if let tomorrowAgenda = tomorrowsAgenda() {
+//                    availableTime = tomorrowAgenda.start + (24.0 - hour)
+//                }
+//                
+//            }
+//            
+//        }
+//        
+//        
+//        if (availableTime == 0 ) {
+//            return "unavailable".localizedString.uppercaseString
+//        } else if (availableTime == -1 || availableTime > 24.0) {
+//            return "24:00+"
+//        }
+//        
+//        
+//        let availableHour = Int(floorf(availableTime))
+//        let availableMin = availableTime - Float(availableHour)
+//        
+//        var minStr : String = "\(Int(floorf(availableMin * 60.0)))"
+//        
+//        if (count(minStr) == 1) {
+//            minStr += "0"
+//        }
+//        
+//        return "\(availableHour)" + ":" + minStr
+//        
+//    }
 }

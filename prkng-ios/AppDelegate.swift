@@ -67,10 +67,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func configureGlobals() {
         UIApplication.sharedApplication().statusBarHidden = true
         
-        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.anthracite1], forState: UIControlState.Normal )
-        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.red2], forState: UIControlState.Selected)
-        UITabBar.appearance().backgroundImage = UIImage()
-        UITabBar.appearance().backgroundColor = Styles.Colors.stone
+//        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.anthracite1], forState: UIControlState.Normal )
+//        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.red2], forState: UIControlState.Selected)
+//        UITabBar.appearance().backgroundImage = UIImage()
+//        UITabBar.appearance().backgroundColor = Styles.Colors.stone
+//        
+        
+        SVProgressHUD.setRingThickness(6)
+        SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
+        SVProgressHUD.setForegroundColor(Styles.Colors.red2)
 
     }
 

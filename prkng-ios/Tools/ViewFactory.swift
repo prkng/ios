@@ -45,6 +45,17 @@ struct ViewFactory {
         return hugeButton
     }
     
+    static func hugeStoneButton () -> UIButton {
+        
+        let hugeButton = UIButton()
+        hugeButton.titleLabel?.font = Styles.FontFaces.light(31)
+        hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
+        hugeButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
+        hugeButton.backgroundColor = Styles.Colors.stone
+        
+        return hugeButton
+    }
+    
     static func transparentRoundedButton () -> UIButton {
         let button = UIButton ()
         button.titleLabel?.font = Styles.FontFaces.light(12)
@@ -69,6 +80,14 @@ struct ViewFactory {
         return label
     }
     
+    static func bigMessageLabel() -> UILabel {
+        let label = UILabel()
+        label.font = Styles.FontFaces.light(31)
+        label.textColor = Styles.Colors.cream1
+        label.textAlignment = NSTextAlignment.Center
+        label.numberOfLines = 0
+        return label
+    }
     
     // MARK: TextFields
     

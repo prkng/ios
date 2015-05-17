@@ -24,7 +24,7 @@ class DateUtil {
     }
     
     
-    class func hourFloatRepresentation () -> Float {   // Example : 10:30 -> 10.5
+    class func timeIntervalSinceDayStart () -> NSTimeInterval {   // Example : 10:30 -> 10.5 * 3600
         let date = NSDate()
         let calendar = NSCalendar.currentCalendar()
         calendar.locale = NSLocale(localeIdentifier: "en_GB")        
@@ -32,8 +32,7 @@ class DateUtil {
         let hour = components.hour
         let minutes = components.minute
         
-        return Float(hour % 24) + (Float(minutes) / 60.0)
-    
+        return NSTimeInterval((hour * 3600) + (minutes * 60))
     }
     
 }

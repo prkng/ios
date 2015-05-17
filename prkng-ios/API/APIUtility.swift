@@ -21,5 +21,20 @@ class APIUtility: NSObject {
     class func rootURL() -> String {
         return APIConstants.rootURLString;
     }
+    
+    class func authenticatedManager () -> Manager {
+        
+        var headers = Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+        headers["X-API-KEY"] = AuthUtility.authToken()
+        
+        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+        configuration.HTTPAdditionalHeaders = headers
+        
+        
+        return Manager(configuration: configuration)        
+    }
+    
+    
+
 
 }

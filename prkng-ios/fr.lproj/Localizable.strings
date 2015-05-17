@@ -7,21 +7,69 @@
 */
 
 
-"tabbar_search" = "SEARCH";
-"tabbar_here" = "HERE";
-"tabbar_mycar" = "MY CAR";
-"tabbar_settings" = "SETTINGS";
+"park_now" = "SE STATIONNER";
+"take_the_tour" = "introduction";
+
+
+"sign_up" = "INSCRIPTION";
+"login_with" = "CONNEXION AVEC";
+"login" = "connexion";
+"step" = "étape";
+"your_email" = "VOTRE EMAIL";
+"your_password" = "VOTRE MOT DE PASSE";
+"confirm_your_password" = "CONFIRMATION MOT DE PASSE";
+"forgot_password_text" = "MOT DE PASSE OUBLIÉ?";
+"invalid_email" = "Merci d’entrer une adresse valide.";
+"password_short" = "Attention, votre mot de passe doit contenir au moins 6 caractères.";
+"password_mismatch" = "Les mots de passe ne correspondent pas.";
+
+
+"your_name" = "votre nom";
+"your_gender" = "votre genre";
+"your_birth_year" = "votre année de naissance";
+"invalid_name" = "Merci d’entrer votre nom!";
+
+
+"minutes_short" = "min";
+"notifications" = "notifications";
+
+
+"edit_profile" = "votre profil";
+"change_my_city" = "votre ville";
+
+"tabbar_search" = "RECHERCHE";
+"tabbar_here" = "ALENTOUR";
+"tabbar_mycar" = "MON VÉHICULE";
+"tabbar_settings" = "PARAMÈTRES";
+
+// Search
+"search_step1_copy" = "naviguez la carte ou\nentrez votre destination";
 
 // Spot details
+"spot_available_for" = "DISPONIBLE\nPOUR";
+"schedule_authorized" = "AUTORISÉ";
+"schedule_limited" = "LIMITÉ";
+"schedule_forbidden" = "INTERDIT";
 
-"spot_available_for" = "AVAILABLE\nFOR";
-"schedule_authorized" = "AUTHORIZED";
-"schedule_limited" = "LIMITED";
-"schedule_forbidden" = "FORBIDDEN";
-"monday" = "Monday";
-"tuesday" = "Tuesday";
-"wednesday" = "Wednesday";
-"thursday" = "Thursday";
-"friday" = "Friday";
-"saturday" = "Saturday";
-"sunday" = "Sunday";
+"first_checkin_title" = "Nous y voilà!";
+"first_checkin_subtitle" = "Votre premier check-in.";
+"first_checkin_text" = "N’oubliez pas que les données sont fournies par la ville, il est donc toujours bon de vérifier une 2ème fois l’information. Malheureusement, nous me sommes pas responsables de vos contraventions.";
+
+"no_checkin_message" = "Vous n’êtes pas encore \nenregistrés.";
+"park_now" = "se stationner";
+"checked_in_message" = "vous êtes enregistrés sur";
+"leave_spot" = "ciao!";
+"notifications_off" = "notifications :non";
+"notifications_on" = "notifications : oui";
+
+// Days
+"monday" = "Lundi";
+"tuesday" = "Mardi";
+"wednesday" = "Mercredi";
+"thursday" = "Jeudi";
+"friday" = "Vendredi";
+"saturday" = "Samedi";
+"sunday" = "Dimanche";
+
+"arrival" = "ARRIVÉE";
+"departure" = "DEPART";

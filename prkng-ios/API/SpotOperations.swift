@@ -8,13 +8,29 @@
 
 import UIKit
 
-class SpotOperations {
+struct SpotOperations {
     
-    class func getSpot(identifier: NSString) {
+    static func getSpotDetails(spotId: String, completion: ((spot:ParkingSpot?) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "slot/" + spotId
+        
+        request(.GET, url, parameters: nil).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            
+            if (error == nil) {
+                completion(spot: ParkingSpot(json: json))
+            } else {
+                completion(spot:  nil)
+            }
+            
+        }
+        
         
     }
+
     
-    class func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, completion: ((spots:Array<ParkingSpot>) -> Void)) {
+    static func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, completion: ((spots:Array<ParkingSpot>) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "slots"
         
@@ -27,13 +43,11 @@ class SpotOperations {
         ]
         
         
-        
         if(duration != nil) {
             let durationStr = NSString(format: "%.0f", duration!)
             params["duration"] = durationStr
         }
-        
-        
+    
         
         var time : NSDate
         
@@ -48,7 +62,6 @@ class SpotOperations {
         formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         params["checkinTime"] = formatter.stringFromDate(time)
-        
         
         
         
@@ -68,6 +81,15 @@ class SpotOperations {
         }
     }
     
-    
+    static func checkin (spotId : String, completion: ((completed : Bool) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "slot/checkin"
+        
+        let params = ["slot_id" : spotId]
+
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
+            completion(completed: error != nil)
+        }
+    }
     
 }

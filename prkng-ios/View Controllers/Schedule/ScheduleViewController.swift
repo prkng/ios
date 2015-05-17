@@ -49,14 +49,17 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         super.init(nibName: nil, bundle: nil)
         
         var index = 0
-        for period in spot.rules.agenda {
-            if (period != nil) {
-                var startF : CGFloat = CGFloat(period!.start)
-                var endF : CGFloat = CGFloat(period!.end)
-                self.scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : index, limited: false))
-            }
-            ++index
-        }
+        
+        //FIXME
+        
+//        for period in spot.rules.agenda {
+//            if (period != nil) {
+//                var startF : CGFloat = CGFloat(period!.start)
+//                var endF : CGFloat = CGFloat(period!.end)
+//                self.scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : index, limited: false))
+//            }
+//            ++index
+//        }
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -253,15 +256,15 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     func sortedAgenda() -> Array<TimePeriod?>{
         var array : Array<TimePeriod?> = []
         
-        let today = DateUtil.dayIndexOfTheWeek()
-        
-        for var i = today; i < 7; ++i {
-            array.append(spot.rules.agenda[i])
-        }
-        
-        for var j = 0; j < today; ++j {
-            array.append(spot.rules.agenda[j])
-        }
+//        let today = DateUtil.dayIndexOfTheWeek()
+//        
+//        for var i = today; i < 7; ++i {
+//            array.append(spot.rules.agenda[i])
+//        }
+//        
+//        for var j = 0; j < today; ++j {
+//            array.append(spot.rules.agenda[j])
+//        }
         
         return array
     }
