@@ -111,6 +111,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                 
                 
             } else {
+                
 
                 self.methodSelectionView.userInteractionEnabled = false
                 
@@ -143,7 +144,6 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         googleSignIn?.delegate = self
         googleSignIn?.authenticate()
         
-                
         selectedMethod = LoginMethod.Google
         
     }
@@ -182,7 +182,6 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             }) { (finished) -> Void in
                 
         }
-        
         
         selectedMethod = LoginMethod.Email
     }
@@ -249,8 +248,6 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         self.addChildViewController(registerEmailViewController!)
         self.view.insertSubview(registerEmailViewController!.view, belowSubview: loginEmailViewController!.view)
         registerEmailViewController!.didMoveToParentViewController(self)
-
-        
         
         registerEmailViewController!.view.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.loginEmailViewController!.view.snp_bottom)

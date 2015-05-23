@@ -71,3 +71,5 @@
 
 "arrival" = "ARRIVAL";
 "departure" = "DEPARTURE";
+
+"alarm_text" = "Time to move your car.";

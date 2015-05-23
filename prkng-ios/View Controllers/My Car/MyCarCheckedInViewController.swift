@@ -210,8 +210,13 @@ class MyCarCheckedInViewController: AbstractViewController {
         
         if Settings.notificationTime() > 0 {
             Settings.setNotificationTime(0)
+            Settings.cancelAlarm()
         } else {
             Settings.setNotificationTime(30)
+//            Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))
+            let date = NSDate(timeIntervalSinceNow: 30)
+            Settings.scheduleAlarm(date)
+            
         }
         
         updateNotificationsButton()
@@ -278,8 +283,9 @@ class MyCarCheckedInViewController: AbstractViewController {
     }    
     
     func leaveButtonTapped() {
-        // TODO set alarm
+        
         Settings.saveCheckInData(nil, time: nil)
+        Settings.cancelAlarm()
         self.delegate?.reloadMyCarTab()
     }
     

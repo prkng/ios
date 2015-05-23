@@ -157,8 +157,17 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             Settings.saveCheckInData(self.activeSpot!, time: NSDate())
             
+            if (Settings.notificationTime() > 0) {
+                Settings.cancelAlarm()
+                let date = NSDate(timeIntervalSinceNow: 30)
+                Settings.scheduleAlarm(date)
+            }
+            
             SVProgressHUD.dismiss()
             self.delegate?.loadMyCarTab()
+            
+            
+
             
         })
         

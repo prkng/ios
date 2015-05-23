@@ -82,9 +82,10 @@ class ParkingSpot: NSObject {
 
         // check tomorrow
         for period in tomorrowsAgenda() {
-            if (period != nil && Int(period!.start) > Int(interval)) {
+            
+            if (period != nil && Int((24 * 3600) + period!.start) > Int(interval)) {
                 
-                let diff = Int(period!.start) - Int(interval)
+                let diff = Int((24 * 3600) + period!.start) - Int(interval)
                 
                 if (diff < smallest) {
                     smallest = diff
@@ -93,13 +94,11 @@ class ParkingSpot: NSObject {
             }
         }
         
-        if (smallest >= 24 * 3600) {
+        if (smallest > 24 * 3600) {
             return NSTimeInterval(24 * 3600)
         }
         
-        return NSTimeInterval((24 * 3600) - Int(interval) + smallest) // remaining time until 24:00 today + remaining time till forbidden tomorrow
-        
-
+        return NSTimeInterval(smallest)
     }
     
     func availableHourString() -> String{
@@ -148,63 +147,4 @@ class ParkingSpot: NSObject {
         return agenda
     }
     
-    
-//        let hour  = DateUtil.hourFloatRepresentation()
-////        let dayAgenda = todaysAgenda()
-//        
-////        if (dayAgenda.count > 0) {
-////            
-////            if(dayAgenda[0] > hour) {
-////                
-////
-////                
-////            } else if (dayAgenda[1] > hour) {
-////                return "Unavailable".lowercaseString
-////            }
-////            
-////        } else {
-////            return "24:00+"
-////        }
-////        
-////        return ""
-//        
-//        var availableTime : Float = -1
-//
-//        if (dayAgenda != nil) {
-//            
-//            if (hour < dayAgenda!.start) {
-//                availableTime = dayAgenda!.start - hour
-//            } else if (hour >= dayAgenda!.start && hour < dayAgenda!.end) {
-//                // currently in the forbidden period
-//                availableTime = 0
-//            } else { // check next day
-//                
-//                if let tomorrowAgenda = tomorrowsAgenda() {
-//                    availableTime = tomorrowAgenda.start + (24.0 - hour)
-//                }
-//                
-//            }
-//            
-//        }
-//        
-//        
-//        if (availableTime == 0 ) {
-//            return "unavailable".localizedString.uppercaseString
-//        } else if (availableTime == -1 || availableTime > 24.0) {
-//            return "24:00+"
-//        }
-//        
-//        
-//        let availableHour = Int(floorf(availableTime))
-//        let availableMin = availableTime - Float(availableHour)
-//        
-//        var minStr : String = "\(Int(floorf(availableMin * 60.0)))"
-//        
-//        if (count(minStr) == 1) {
-//            minStr += "0"
-//        }
-//        
-//        return "\(availableHour)" + ":" + minStr
-//        
-//    }
 }

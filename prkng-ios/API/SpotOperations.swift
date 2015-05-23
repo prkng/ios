@@ -63,8 +63,6 @@ struct SpotOperations {
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         params["checkinTime"] = formatter.stringFromDate(time)
         
-        
-        
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             var spotJsons: Array<JSON> = json["features"].arrayValue

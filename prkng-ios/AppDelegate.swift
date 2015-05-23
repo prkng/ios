@@ -23,6 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Crashlytics.startWithAPIKey("0a552ed905e273700bb769724c451c706ceb78cb")
         configureGlobals()
         loadInitialViewController()
+        
+        
+        // Override point for customization after application launch.
+        if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
+            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
+        }
+        else {
+            //do iOS 7 stuff, which is pretty much nothing for local notifications.
+        }
 
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -61,22 +70,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }        
     }
     
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        let alert = UIAlertView()
+        alert.message = "alarm_text".localizedString
+        alert.addButtonWithTitle("OK")
+        alert.show()
+    }
+    
     
     // MARK: Helper
 
     func configureGlobals() {
         UIApplication.sharedApplication().statusBarHidden = true
-        
-//        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.anthracite1], forState: UIControlState.Normal )
-//        UITabBarItem.appearance().setTitleTextAttributes([NSFontAttributeName: Styles.FontFaces.regular(11.0), NSForegroundColorAttributeName: Styles.Colors.red2], forState: UIControlState.Selected)
-//        UITabBar.appearance().backgroundImage = UIImage()
-//        UITabBar.appearance().backgroundColor = Styles.Colors.stone
-//        
-        
         SVProgressHUD.setRingThickness(6)
         SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
         SVProgressHUD.setForegroundColor(Styles.Colors.red2)
-
     }
 
     func loadInitialViewController() {

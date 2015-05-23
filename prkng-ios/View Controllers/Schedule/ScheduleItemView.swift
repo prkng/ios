@@ -110,7 +110,7 @@ class ScheduleItemView : UIView {
         
         startTimeLabel.snp_makeConstraints { (make) -> () in
             make.top.greaterThanOrEqualTo(self.snp_top)
-            make.bottom.equalTo(self.snp_centerY)
+            make.bottom.equalTo(self.snp_centerY).with.offset(2)
             make.centerX.equalTo(self).with.offset(-20)
         }
         
@@ -140,7 +140,6 @@ class ScheduleItemView : UIView {
         }
         
         didSetupConstraints = true
-        
     }
     
     

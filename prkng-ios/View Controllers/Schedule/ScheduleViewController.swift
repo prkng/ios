@@ -13,7 +13,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     var spot : ParkingSpot
     var delegate : ScheduleViewControllerDelegate?
     private var scheduleItems : Array<ScheduleItemModel>
-
+    
     private var headerView : ScheduleHeaderView
     private var scrollView : UIScrollView
     private var contentView : UIView
@@ -48,20 +48,21 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         
         super.init(nibName: nil, bundle: nil)
         
-        var index = 0
-        
-        //FIXME
-        
-//        for period in spot.rules.agenda {
-//            if (period != nil) {
-//                var startF : CGFloat = CGFloat(period!.start)
-//                var endF : CGFloat = CGFloat(period!.end)
-//                self.scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : index, limited: false))
-//            }
-//            ++index
-//        }
+        for dayAgenda in sortedAgenda() {
+            
+            var column : Int = 0
+            for period in dayAgenda {
+                
+                if (period != nil) {
+                    var startF : CGFloat = CGFloat(period!.start)
+                    var endF : CGFloat = CGFloat(period!.end)
+                    scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : column, limited: false))
+                }
+                ++column
+            }
+        }
     }
-
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
@@ -72,8 +73,8 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         setupViews()
         setupConstraints()
     }
-
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -153,7 +154,10 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         
         var itemIndex = 0
         for itemView in scheduleItemViews {
+            
+            
             var scheduleItem = scheduleItems[itemIndex]
+            
             var columnView = columnViews[scheduleItem.columnIndex!]
             
             itemView.snp_makeConstraints({ (make) -> () in
@@ -165,7 +169,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             
             itemIndex++;
         }
-       
+        
         dayIndicator.snp_makeConstraints { (make) -> () in
             make.bottom.equalTo(self.view)
             make.left.equalTo(self.view)
@@ -253,18 +257,25 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     }
     
     
-    func sortedAgenda() -> Array<TimePeriod?>{
-        var array : Array<TimePeriod?> = []
+    func sortedAgenda() -> Array<Array<TimePeriod?>>{
+        var array : Array<Array<TimePeriod?>> = []
         
-//        let today = DateUtil.dayIndexOfTheWeek()
-//        
-//        for var i = today; i < 7; ++i {
-//            array.append(spot.rules.agenda[i])
-//        }
-//        
-//        for var j = 0; j < today; ++j {
-//            array.append(spot.rules.agenda[j])
-//        }
+        let today = DateUtil.dayIndexOfTheWeek()
+        
+        for r in 0...(spot.rules.count - 1) {
+            
+            var dayArray : Array<TimePeriod?> = []
+            
+            for var i = today; i < 7; ++i {
+                dayArray.append(spot.rules[r].agenda[i])
+            }
+            
+            for var j = 0; j < today; ++j {
+                dayArray.append(spot.rules[r].agenda[j])
+            }
+            
+            array.append(dayArray)
+        }
         
         return array
     }
@@ -296,8 +307,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         
         return array
     }
-
-
+    
     
 }
 
@@ -323,62 +333,40 @@ class ScheduleItemModel {
         
         self.limited = limited
         
-        heightMultiplier = (endF - startF)
-        yIndexMultiplier = startF
+        heightMultiplier = (endF - startF) / 3600
+        yIndexMultiplier = startF / 3600
         
         if(heightMultiplier < 4) {
             heightMultiplier = 4
         }
         
+    
         var startTm = startF
-        var endTm = endF
-        
-        let nf = NSNumberFormatter()
-        nf.numberStyle = NSNumberFormatterStyle.DecimalStyle
-        nf.maximumIntegerDigits = 2
-        nf.minimumIntegerDigits = 2
-        nf.maximumFractionDigits = 0
-        
-        
-        if(startF > 12.0) {
+        if(startF >= 13.0 * 3600.0) {
             startTimeAmPm = "PM"
-            startTm = startF - 12
+            startTm = startF - (12 * 3600.0)
         } else {
             startTimeAmPm = "AM"
         }
+        let startHours = Int((startTm / 3600))
+        let startMinutes  = Int((startTm / 60) % 60)
+        startTime =  String(NSString(format: "%02ld:%02ld", startHours, startMinutes))
         
-        var diffStart = startTm - floor(startTm)
         
-        
-        var startMinutes : String = "00"
-        
-        if (diffStart > 0) {
-            startMinutes = nf.stringFromNumber(diffStart * 60)!
-        }
-       
-        startTime = nf.stringFromNumber(floor(startTm))! + ":" + startMinutes
-
-        
-        if(endF > 12) {
+        var endTm = endF
+        if(endF >= 13 * 3600.0) {
             endTimeAmPm = "PM"
-            endTm = endTm - 12
+            endTm = endTm - (12 * 3600.0)
         } else {
             endTimeAmPm = "AM"
         }
         
-        var diffEnd = endTm - floor(endTm)
         
-        
-        var endMinutes : String = "00"
-        
-        if (diffStart > 0) {
-            endMinutes = nf.stringFromNumber(diffEnd * 60)!
-        }
-        endTime = nf.stringFromNumber(floor(endTm))! + ":" + endMinutes
-        
-        
+        let endHours = Int((endTm / 3600))
+        let endMinutes  = Int((endTm / 60) % 60)
+        endTime =  String(NSString(format: "%02ld:%02ld", endHours, endMinutes))
     }
-
+    
     
 }
 

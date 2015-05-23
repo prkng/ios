@@ -1,10 +1,10 @@
-/* 
-  Localizable.strings
-  prkng-ios
-
-  Created by Cagdas Altinkaya on 01/04/15.
-  Copyright (c) 2015 PRKNG. All rights reserved.
-*/
+/*
+ Localizable.strings
+ prkng-ios
+ 
+ Created by Cagdas Altinkaya on 01/04/15.
+ Copyright (c) 2015 PRKNG. All rights reserved.
+ */
 
 
 "park_now" = "SE STATIONNER";
@@ -27,7 +27,7 @@
 "your_name" = "votre nom";
 "your_gender" = "votre genre";
 "your_birth_year" = "votre année de naissance";
-"invalid_name" = "Merci d’entrer votre nom!";
+"invalid_name" = "Merci d’entrer votre nom";
 
 
 "minutes_short" = "min";
@@ -38,9 +38,9 @@
 "change_my_city" = "votre ville";
 
 "tabbar_search" = "RECHERCHE";
-"tabbar_here" = "ALENTOUR";
-"tabbar_mycar" = "MON VÉHICULE";
-"tabbar_settings" = "PARAMÈTRES";
+"tabbar_here" = "ICI";
+"tabbar_mycar" = "RAPPEL";
+"tabbar_settings" = "RÉGLAGES";
 
 // Search
 "search_step1_copy" = "naviguez la carte ou\nentrez votre destination";
@@ -59,7 +59,7 @@
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes enregistrés sur";
 "leave_spot" = "ciao!";
-"notifications_off" = "notifications :non";
+"notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
 
 // Days
@@ -73,3 +73,5 @@
 
 "arrival" = "ARRIVÉE";
 "departure" = "DEPART";
+
+"alarm_text" = "Il va falloir déplacer ton véhicule!";

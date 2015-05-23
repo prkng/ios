@@ -102,4 +102,21 @@ struct Settings {
         
     }
    
+    
+    static func scheduleAlarm(time : NSDate) {
+        
+        let alarm = UILocalNotification()
+        alarm.alertBody = "alarm_text".localizedString
+        alarm.soundName = UILocalNotificationDefaultSoundName
+        alarm.fireDate = time
+        UIApplication.sharedApplication().scheduleLocalNotification(alarm)
+    }
+    
+    
+    static func cancelAlarm() {
+        for notification in UIApplication.sharedApplication().scheduledLocalNotifications {
+            UIApplication.sharedApplication().cancelLocalNotification(notification as! UILocalNotification)
+        }
+    }
+    
 }

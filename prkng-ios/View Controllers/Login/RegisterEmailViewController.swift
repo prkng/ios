@@ -51,7 +51,6 @@ class RegisterEmailViewController: AbstractViewController {
         confirmPasswordLabel = ViewFactory.formLabel()
         confirmPasswordTextField = ViewFactory.formTextField()
         
-        
         stepTwoScrollView = UIScrollView()
         stepTwoScrollContentView = UIView()
         stepTwoTitleLabel = UILabel()
@@ -411,7 +410,6 @@ class RegisterEmailViewController: AbstractViewController {
             self.view.layoutIfNeeded()
             
             }) { (finished) -> Void in
-                
                 
         }
         
