@@ -58,10 +58,10 @@ struct SpotOperations {
         }
         
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
         formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        params["checkinTime"] = formatter.stringFromDate(time)
+        params["checkin"] = formatter.stringFromDate(time)
         
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
