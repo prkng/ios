@@ -57,6 +57,8 @@
 		BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B081AF214D800E42DE8 /* DurationSelectionView.swift */; };
 		BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */; };
 		BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F78121B00E07800A85197 /* CheckinMessageViewController.swift */; };
+		BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C961B149BB100A635A1 /* TutorialViewController.swift */; };
+		BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */; };
 		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
 		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
 		BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1701A83D364005F4054 /* libsqlite3.dylib */; };
@@ -184,6 +186,8 @@
 		BF899B081AF214D800E42DE8 /* DurationSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationSelectionView.swift; sourceTree = "<group>"; };
 		BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionControl.swift; sourceTree = "<group>"; };
 		BF8F78121B00E07800A85197 /* CheckinMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckinMessageViewController.swift; sourceTree = "<group>"; };
+		BF982C961B149BB100A635A1 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BFA8D1701A83D364005F4054 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -365,10 +369,10 @@
 		BF0B47231A7E905F00E94B3C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */,
 				BF8F78111B00D2CF00A85197 /* My Car */,
 				BFB0958D1AFA3F79007F1D16 /* Login */,
 				BF522FC51AE59B65001DB93E /* Intro */,
-				BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */,
 				BF7170B01AE42DBF00B922CA /* Settings */,
 				BF7170AF1AE42CC300B922CA /* Here */,
 				BF779A361AD40FD100F76E0A /* Search */,
@@ -392,6 +396,8 @@
 			children = (
 				BFFDE4681AFBA76E0035DF54 /* FirstUseViewController.swift */,
 				BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */,
+				BF982C961B149BB100A635A1 /* TutorialViewController.swift */,
+				BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -842,10 +848,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */,
+				BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */,
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
-				BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */,
 				BF5E84F61B075DD400EC6AD2 /* SVProgressHUD.bundle in Resources */,
 				BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */,
 				BF3CFA1E1AFE3A08003D104D /* IQKeyboardManager.bundle in Resources */,
@@ -925,6 +931,7 @@
 				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,
 				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
+				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
 				BF3CFA261AFE3A08003D104D /* IQUIView+Hierarchy.m in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
@@ -953,6 +960,7 @@
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */,
+				BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */,
 				BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */,
 				BF7170B21AE42DDE00B922CA /* SettingsViewController.swift in Sources */,
 				BF3CFA251AFE3A08003D104D /* IQToolbar.m in Sources */,
@@ -1083,13 +1091,7 @@
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"Libraries/**",
-					"${PROJECT_PATH}/Libraries/**",
-					"$(PROJECT_DIR)/prkng-ios/Libraries/Alamofire/Mapbox",
-					"$(PROJECT_DIR)/prkng-ios/Libraries/Mapbox",
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/prkng-ios/Libraries/**";
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1115,13 +1117,7 @@
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"Libraries/**",
-					"${PROJECT_PATH}/Libraries/**",
-					"$(PROJECT_DIR)/prkng-ios/Libraries/Alamofire/Mapbox",
-					"$(PROJECT_DIR)/prkng-ios/Libraries/Mapbox",
-				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/prkng-ios/Libraries";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

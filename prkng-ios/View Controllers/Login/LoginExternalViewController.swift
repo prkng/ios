@@ -98,8 +98,7 @@ class LoginExternalViewController: AbstractViewController {
         editProfileLabel.text = "edit_profile".localizedString.uppercaseString
         scrollContentView.addSubview(editProfileLabel)
         
-        
-        nameLabel.font = Styles.FontFaces.light(31)
+        nameLabel.font = Styles.Fonts.h1
         nameLabel.textColor = Styles.Colors.cream1
         nameLabel.textAlignment = NSTextAlignment.Center
         nameLabel.text = user.name
@@ -118,7 +117,7 @@ class LoginExternalViewController: AbstractViewController {
         cityContainer.backgroundColor = Styles.Colors.red2
         scrollContentView.addSubview(cityContainer)
         
-        cityLabel.font = Styles.FontFaces.light(31)
+        cityLabel.font = Styles.Fonts.h1
         cityLabel.textColor = Styles.Colors.cream1
         cityLabel.text = Settings.selectedCity()
         cityContainer.addSubview(cityLabel)
@@ -249,7 +248,7 @@ class LoginExternalViewController: AbstractViewController {
             make.left.equalTo(self.scrollContentView)
             make.right.equalTo(self.scrollContentView)
             make.bottom.equalTo(self.scrollContentView)
-            make.height.equalTo(100)
+            make.height.equalTo(Styles.Sizes.bigButtonHeight)
         }
         
     }

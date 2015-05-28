@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "tour_illustation_04@2x.png"
+      "filename" : "btn_forward@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "tour_illustation_04@3x.png"
+      "filename" : "btn_forward@3x.png"
     }
   ],
   "info" : {

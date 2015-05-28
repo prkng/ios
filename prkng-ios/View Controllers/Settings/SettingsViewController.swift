@@ -31,7 +31,7 @@ class SettingsViewController: AbstractViewController {
         cityLabel = UILabel()
         
         notificationContainer = UIView()
-        aboutButton = ViewFactory.hugeButton()
+        aboutButton = ViewFactory.bigButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -93,7 +93,7 @@ class SettingsViewController: AbstractViewController {
     func setupConstraints () {
         
         aboutButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(75)
+            make.height.equalTo(Styles.Sizes.bigButtonHeight)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)

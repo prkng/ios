@@ -65,7 +65,7 @@ class RegisterEmailViewController: AbstractViewController {
         backButton = ViewFactory.transparentRoundedButton()
         continueButton = UIButton()
         
-        registerButton = ViewFactory.hugeButton()
+        registerButton = ViewFactory.bigButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -147,7 +147,6 @@ class RegisterEmailViewController: AbstractViewController {
         stepTwoStepLabel.textColor = Styles.Colors.red2
         stepTwoStepLabel.text = ("step".localizedString + " 2/2").uppercaseString
         stepTwoScrollContentView.addSubview(stepTwoStepLabel)
-        
         
         avatarButton.setImage(UIImage(named: "btn_upload_profile"), forState: UIControlState.Normal)
         stepTwoScrollContentView.addSubview(avatarButton)
@@ -333,7 +332,7 @@ class RegisterEmailViewController: AbstractViewController {
             make.left.equalTo(self.stepTwoScrollContentView)
             make.right.equalTo(self.stepTwoScrollContentView)
             make.bottom.equalTo(self.stepTwoScrollContentView)
-            make.height.equalTo(100)
+            make.height.equalTo(Styles.Sizes.bigButtonHeight)
         }
         
     }

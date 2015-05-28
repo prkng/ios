@@ -88,7 +88,7 @@ class FirstUseViewController: AbstractViewController {
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(100)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
     }
@@ -103,6 +103,10 @@ class FirstUseViewController: AbstractViewController {
     
     
     func tourButtonTapped() {
+        
+        self.presentViewController(TutorialViewController(), animated: true) { () -> Void in
+            
+        }
         
     }
 

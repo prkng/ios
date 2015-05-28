@@ -22,7 +22,7 @@ class MyCarNoCheckinViewController: AbstractViewController {
         logoView = UIImageView()
         messageLabel = ViewFactory.bigMessageLabel()
         parkButton = ViewFactory.hugeButton()
-        searchButton = ViewFactory.hugeButton()
+        searchButton = ViewFactory.bigButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,7 +60,6 @@ class MyCarNoCheckinViewController: AbstractViewController {
         view.addSubview(messageLabel)
         
         searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
-        searchButton.backgroundColor = Styles.Colors.stone
         searchButton.layer.shadowColor = UIColor.blackColor().CGColor
         searchButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         searchButton.layer.shadowOpacity = 0.2
@@ -69,7 +68,6 @@ class MyCarNoCheckinViewController: AbstractViewController {
         view.addSubview(searchButton)
         
         parkButton.setTitle("park_now".localizedString.lowercaseString, forState: UIControlState.Normal)
-        parkButton.backgroundColor = Styles.Colors.stone
         parkButton.layer.shadowColor = UIColor.blackColor().CGColor
         parkButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         parkButton.layer.shadowOpacity = 0.2
@@ -95,14 +93,14 @@ class MyCarNoCheckinViewController: AbstractViewController {
         
         
         parkButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(100)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.searchButton.snp_top)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
         
         searchButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(100)
+            make.height.equalTo(Styles.Sizes.bigButtonHeight)
             make.bottom.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)

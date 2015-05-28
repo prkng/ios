@@ -31,7 +31,6 @@ struct Styles {
         
         static let midnight1 = UIColor(rgba: "#435059")
         static let midnight2 = UIColor(rgba: "#3A4249")
-
         
         static let anthracite1 = UIColor(rgba: "#979797")
         static let anthracite2 = UIColor(rgba: "#929292")
@@ -60,8 +59,16 @@ struct Styles {
         
     }
     
-    struct FontSizes {
-        
+    struct Fonts {
+        static let h1 =  FontFaces.light(31)
+        static let h2 =  FontFaces.light(25)
+        static let h3 =  FontFaces.light(20)
+    }
+    
+    struct Sizes {
+        static let hugeButtonHeight = 90
+        static let bigButtonHeight = 80
+        static let searchTextFieldHeight = 50
     }
     
 }

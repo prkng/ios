@@ -37,7 +37,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         downButton = UIButton()
         dateSelectionView = DateSelectionView()
         durationSelectionView = DurationSelectionView()
-        searchButton = ViewFactory.hugeButton()
+        searchButton = ViewFactory.bigButton()
         searchStep = SearchStep.ONE
 
         super.init(nibName: nil, bundle: nil)
@@ -75,8 +75,6 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 //        effectView.userInteractionEnabled = false
 //        view.addSubview(effectView)
         
-
-
         view.addSubview(containerView)
         
         var midnight1 = UIColor(rgba: "#435059E6")
@@ -112,7 +110,6 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         durationSelectionView.hidden = true
         containerView.addSubview(durationSelectionView)
-
         
         searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         searchButton.setTitle(NSLocalizedString("search", comment : ""), forState: UIControlState.Normal)
@@ -150,12 +147,11 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         }
         
         searchField.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(60)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
             make.left.equalTo(self.containerView).with.offset(12)
             make.right.equalTo(self.containerView).with.offset(-12)
             make.bottom.equalTo(self.containerView).with.offset(-160)
         }
-        
         
         dateSelectionView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.containerView)
@@ -182,7 +178,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             make.bottom.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.height.equalTo(90)
+            make.height.equalTo(Styles.Sizes.bigButtonHeight)
         }
         
     }
@@ -233,7 +229,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         searchField.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.containerView).with.offset(40)
-            make.height.equalTo(60)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
             make.left.equalTo(self.containerView).with.offset(12)
             make.right.equalTo(self.containerView).with.offset(-12)
         }
@@ -242,7 +238,6 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             make.center.equalTo(self.containerView)
             make.size.equalTo(CGSizeMake(49, 60))
         }
-        
         
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -273,7 +268,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         searchField.snp_remakeConstraints { (make) -> () in
             make.centerY.equalTo(self.containerView)
-            make.height.equalTo(60)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
             make.left.equalTo(self.containerView).with.offset(12)
             make.right.equalTo(self.containerView).with.offset(-12)
         }
@@ -321,7 +316,6 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             return
         }
     
-        
         dateSelectionView.snp_remakeConstraints { (make) -> () in
             make.bottom.equalTo(self.durationSelectionView.snp_top)
             make.left.equalTo(self.containerView)
@@ -331,18 +325,16 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         searchField.snp_remakeConstraints { (make) -> () in
             make.bottom.equalTo(self.dateSelectionView.snp_top).with.offset(-12)
-            make.height.equalTo(60)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
             make.left.equalTo(self.containerView).with.offset(12)
             make.right.equalTo(self.containerView).with.offset(-12)
         }
-        
         
         markerIcon.snp_remakeConstraints { (make) -> () in
             make.centerX.equalTo(self.containerView)
             make.top.equalTo(self.containerView)
             make.bottom.equalTo(self.searchField.snp_top)
         }
-        
         
         self.durationSelectionView.alpha = 0.0
         self.searchButton.alpha = 0.0
@@ -402,8 +394,6 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         })
         
     }
-
-
     
 }
 

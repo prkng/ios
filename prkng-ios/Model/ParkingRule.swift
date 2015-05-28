@@ -8,11 +8,17 @@
 
 import UIKit
 
+enum RuleType {
+    case Forbidden
+    case Limited
+}
+
 class ParkingRule: NSObject {
 
+    var ruleType : RuleType
     var restrictionType: String
     var code: String
-    var maxParkingTime: Int
+    var maxParkingTime: Int?
     var seasonEnd: String
     var desc: String
     var agenda : Array<TimePeriod?>
@@ -23,6 +29,13 @@ class ParkingRule: NSObject {
         restrictionType = json["restrict_typ"].stringValue
         code = json["code"].stringValue
         maxParkingTime = json["time_max_parking"].intValue
+        
+        if(maxParkingTime != nil) {
+            RuleType = RuleType.Forbidden
+        } else {
+            RuleType = RuleType.Limited
+        }
+        
         seasonEnd = json["season_end"].stringValue
         desc = json["description"].stringValue
         

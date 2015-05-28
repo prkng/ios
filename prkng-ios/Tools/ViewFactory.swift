@@ -45,7 +45,7 @@ struct ViewFactory {
         return hugeButton
     }
     
-    static func hugeStoneButton () -> UIButton {
+    static func bigButton () -> UIButton {
         
         let hugeButton = UIButton()
         hugeButton.titleLabel?.font = Styles.FontFaces.light(31)
@@ -93,7 +93,7 @@ struct ViewFactory {
     
     static func formTextField() -> UITextField {
         let textField = UITextField()
-        textField.font = Styles.FontFaces.light(27)
+        textField.font = Styles.Fonts.h2
         textField.backgroundColor = UIColor.clearColor()
         textField.textColor = Styles.Colors.anthracite1
         textField.textAlignment = NSTextAlignment.Center

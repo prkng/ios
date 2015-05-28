@@ -159,15 +159,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             if (Settings.notificationTime() > 0) {
                 Settings.cancelAlarm()
-                let date = NSDate(timeIntervalSinceNow: 30)
-                Settings.scheduleAlarm(date)
+                Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - (30 * 60)))
             }
             
             SVProgressHUD.dismiss()
             self.delegate?.loadMyCarTab()
-            
-            
-
             
         })
         

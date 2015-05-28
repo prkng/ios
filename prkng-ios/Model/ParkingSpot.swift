@@ -41,21 +41,7 @@ class ParkingSpot: NSObject {
 
         line = Shape(json: json["geometry"])
     }
-    
-//    private func todaysAgenda () -> TimePeriod? {
-//        let day = DateUtil.dayIndexOfTheWeek()
-//        return self.rules.agenda[day]
-//    }
-//    
-//    private func tomorrowsAgenda () -> TimePeriod?{
-//        var day : Int = DateUtil.dayIndexOfTheWeek() + 1
-//
-//        if day > 6 {
-//            day = 0
-//        }
-//        return self.rules.agenda[day]
-//    }
-    
+        
     
     func availableTimeInterval() -> NSTimeInterval {
         

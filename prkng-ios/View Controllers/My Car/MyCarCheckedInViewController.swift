@@ -43,7 +43,7 @@ class MyCarCheckedInViewController: AbstractViewController {
 
         availableTitleLabel = ViewFactory.formLabel()
         availableTimeLabel = UILabel()
-        leaveButton = ViewFactory.hugeStoneButton()
+        leaveButton = ViewFactory.bigButton()
         
         notificationsButton = UIButton()
         
@@ -193,7 +193,7 @@ class MyCarCheckedInViewController: AbstractViewController {
         }
         
         leaveButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(100)
+            make.height.equalTo(Styles.Sizes.bigButtonHeight)
             make.bottom.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -213,10 +213,7 @@ class MyCarCheckedInViewController: AbstractViewController {
             Settings.cancelAlarm()
         } else {
             Settings.setNotificationTime(30)
-//            Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))
-            let date = NSDate(timeIntervalSinceNow: 30)
-            Settings.scheduleAlarm(date)
-            
+            Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))            
         }
         
         updateNotificationsButton()
