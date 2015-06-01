@@ -13,6 +13,7 @@ struct Settings {
     static let SELECTED_CITY_KEY = "prkng_selected_city"
     static let FIRST_USE_PASSED_KEY = "prkng_first_use_passed"
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
+    static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
     static let CHECKED_IN_SPOT_ID_KEY = "prkng_checked_in_spot_id"
     static let LAST_CHECKIN_TIME_KEY = "prkng_last_checkin_time"
@@ -34,6 +35,7 @@ struct Settings {
     
     static func setSelectedCity (city : String) {
         NSUserDefaults.standardUserDefaults().setObject(city, forKey: SELECTED_CITY_KEY)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }    
     
     static func firstUse() -> Bool {
@@ -48,10 +50,17 @@ struct Settings {
         return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_CHECKIN_PASSED_KEY)
     }
     
-    static func setFirstCheckinPassed(firstUsePassed : Bool)  {
-        NSUserDefaults.standardUserDefaults().setObject(firstUsePassed, forKey: FIRST_CHECKIN_PASSED_KEY)
+    static func setFirstCheckinPassed(firstCheckinPassed : Bool)  {
+        NSUserDefaults.standardUserDefaults().setObject(firstCheckinPassed, forKey: FIRST_CHECKIN_PASSED_KEY)
     }
     
+    static func firstMapUse() -> Bool {
+        return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_MAP_USE_PASSED_KEY)
+    }
+    
+    static func setFirstMapUsePassed(firstMapUsePassed : Bool)  {
+        NSUserDefaults.standardUserDefaults().setObject(firstMapUsePassed, forKey: FIRST_MAP_USE_PASSED_KEY)
+    }
     
     static func notificationTime() -> Int {
 

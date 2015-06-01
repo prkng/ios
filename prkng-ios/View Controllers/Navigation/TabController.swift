@@ -292,8 +292,8 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     }
 
     
-    func displaySearchResults(results : Array<SearchResult>) {
-        mapViewController.displaySearchResults(results)
+    func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?) {
+        mapViewController.displaySearchResults(results, checkinTime: checkinTime)
     }
     
     // MARK: MyCarNoCheckinViewControllerDelegate

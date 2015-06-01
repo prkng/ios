@@ -8,17 +8,11 @@
 
 import UIKit
 
-enum RuleType {
-    case Forbidden
-    case Limited
-}
-
 class ParkingRule: NSObject {
 
-    var ruleType : RuleType
     var restrictionType: String
     var code: String
-    var maxParkingTime: Int?
+    var maxParkingTime: Int
     var seasonEnd: String
     var desc: String
     var agenda : Array<TimePeriod?>
@@ -28,12 +22,13 @@ class ParkingRule: NSObject {
 
         restrictionType = json["restrict_typ"].stringValue
         code = json["code"].stringValue
-        maxParkingTime = json["time_max_parking"].intValue
         
-        if(maxParkingTime != nil) {
-            RuleType = RuleType.Forbidden
+        let timelimit = json["time_max_parking"].int
+        
+        if(timelimit != nil) {
+            maxParkingTime = timelimit!
         } else {
-            RuleType = RuleType.Limited
+            maxParkingTime = 0
         }
         
         seasonEnd = json["season_end"].stringValue
@@ -54,7 +49,7 @@ class ParkingRule: NSObject {
         var monTimePeriod : TimePeriod? = nil
         
         if monStart != nil && monEnd != nil  {
-            monTimePeriod = TimePeriod(startTime: Double(monStart! * 3600), endTime: Double (monEnd! * 3600))
+            monTimePeriod = TimePeriod(startTime: Double(monStart! * 3600), endTime: Double (monEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
         }
         agenda.append(monTimePeriod)
     
@@ -67,7 +62,7 @@ class ParkingRule: NSObject {
         var tueTimePeriod : TimePeriod? = nil
         
         if tueStart != nil && tueEnd != nil  {
-            tueTimePeriod = TimePeriod(startTime: Double(tueStart! * 3600), endTime: Double (tueEnd! * 3600))
+            tueTimePeriod = TimePeriod(startTime: Double(tueStart! * 3600), endTime: Double (tueEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
         }
         agenda.append(tueTimePeriod)
         
@@ -80,7 +75,7 @@ class ParkingRule: NSObject {
         var wedTimePeriod : TimePeriod? = nil
         
         if wedStart != nil && wedEnd != nil  {
-            wedTimePeriod = TimePeriod(startTime: Double(wedStart! * 3600), endTime: Double (wedEnd! * 3600))
+            wedTimePeriod = TimePeriod(startTime: Double(wedStart! * 3600), endTime: Double (wedEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
         }
         agenda.append(wedTimePeriod)
         
@@ -93,7 +88,7 @@ class ParkingRule: NSObject {
         var thuTimePeriod : TimePeriod? = nil
         
         if thuStart != nil && thuEnd != nil  {
-            thuTimePeriod = TimePeriod(startTime: Double(thuStart! * 3600), endTime: Double (thuEnd! * 3600))
+            thuTimePeriod = TimePeriod(startTime: Double(thuStart! * 3600), endTime: Double (thuEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
         }
         agenda.append(thuTimePeriod)
         
@@ -106,7 +101,7 @@ class ParkingRule: NSObject {
         var friTimePeriod : TimePeriod? = nil
         
         if friStart != nil && friEnd != nil  {
-            friTimePeriod = TimePeriod(startTime: Double(friStart! * 3600), endTime: Double (friEnd! * 3600))
+            friTimePeriod = TimePeriod(startTime: Double(friStart! * 3600), endTime: Double (friEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
         }
         agenda.append(friTimePeriod)
         
@@ -120,7 +115,7 @@ class ParkingRule: NSObject {
         var satTimePeriod : TimePeriod? = nil
         
         if satStart != nil && satEnd != nil  {
-            satTimePeriod = TimePeriod(startTime: Double(satStart! * 3600), endTime: Double (satEnd! * 3600))
+            satTimePeriod = TimePeriod(startTime: Double(satStart! * 3600), endTime: Double (satEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
         }
         agenda.append(satTimePeriod)
         
@@ -134,7 +129,7 @@ class ParkingRule: NSObject {
         var sunTimePeriod : TimePeriod? = nil
         
         if sunStart != nil && sunEnd != nil  {
-            sunTimePeriod = TimePeriod(startTime: Double(sunStart! * 3600), endTime: Double (sunEnd! * 3600))
+            sunTimePeriod = TimePeriod(startTime: Double(sunStart! * 3600), endTime: Double (sunEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
         }
         agenda.append(sunTimePeriod)
     }
@@ -146,10 +141,12 @@ class ParkingRule: NSObject {
 class TimePeriod {
     var start : NSTimeInterval
     var end : NSTimeInterval
+    var timeLimit : NSTimeInterval
     
-    init (startTime : Double, endTime : Double) {
+    init (startTime : NSTimeInterval, endTime : NSTimeInterval, maxParkingTime : NSTimeInterval) {
         start = startTime
         end = endTime
+        timeLimit = maxParkingTime
     }
     
 }

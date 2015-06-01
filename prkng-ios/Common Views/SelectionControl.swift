@@ -32,6 +32,12 @@ class SelectionControl: UIControl {
     convenience init(titles : Array<String>) {
         self.init(frame:CGRectZero)
         self.titles = titles
+        
+        var i : Int = 0
+        for title in titles {
+            buttons.append(SelectionButton(title:title, index : i++))
+        }
+        
     }
     
     override init(frame: CGRect) {
@@ -58,12 +64,14 @@ class SelectionControl: UIControl {
             self.setNeedsUpdateConstraints()
         }
         
+        selectOption(self.buttons[selectedIndex])
+        
         super.layoutSubviews()
     }
     
     override func updateConstraints() {
         
-        if(!self.didSetupConstraints) {
+        if(!didSetupConstraints) {
             setupConstraints()
         }
         super.updateConstraints()
@@ -79,7 +87,7 @@ class SelectionControl: UIControl {
             addSubview(buttonContainer)
             buttonContainers.append(buttonContainer)
             
-            let button = SelectionButton(title:title, index : index)
+            let button = buttons[index]
             
             if borderColor != nil {
                 button.borderColor = borderColor!
@@ -111,8 +119,8 @@ class SelectionControl: UIControl {
             
             button.layer.cornerRadius =  self.buttonSize.height / 2.0
             button.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
+            button.selected = (selectedIndex == index)
             buttonContainer.addSubview(button)
-            buttons.append(button)
             
             index++
         }        
@@ -204,10 +212,12 @@ class SelectionButton: UIControl {
     convenience init (title : String, index: Int) {
         self.init(frame:CGRectZero)
         self.title = title
+        self.index = index
     }
     
     override init(frame: CGRect) {
         
+        // defaults
         font = Styles.FontFaces.light(12)
         textColor = Styles.Colors.stone
         selectedTextColor = Styles.Colors.stone
@@ -261,8 +271,6 @@ class SelectionButton: UIControl {
         titleLabel.font = font
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.textColor = textColor
-
-        selected = false
         addSubview(titleLabel)
         
         didSetupSubviews = true

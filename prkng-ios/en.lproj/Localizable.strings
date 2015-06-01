@@ -9,7 +9,6 @@
 "park_now" = "PARK NOW";
 "take_the_tour" = "take the tour!";
 
-
 "sign_up" = "SIGN UP";
 "login_with" = "LOGIN WITH";
 "login" = "login";
@@ -22,12 +21,10 @@
 "password_short" = "Make sure your password includes at least 6 characters.";
 "password_mismatch" = "Passwords do not match.";
 
-
 "your_name" = "your name";
 "your_gender" = "your gender";
 "your_birth_year" = "your birth year";
 "invalid_name" = "Please enter your name";
-
 
 "minutes_short" = "min";
 "notifications" = "notifications";
@@ -72,8 +69,9 @@
 "arrival" = "ARRIVAL";
 "departure" = "DEPARTURE";
 
-"alarm_text" = "Time to move your car.";
+"max" = "max";
 
+"alarm_text" = "Time to move your car.";
 
 "tutorial_step_1" = "Sarah is having lunch with her mom in Rosemont. She’ll need to park when she gets there. See how she uses prkng!";
 "tutorial_step_2" = "Before hitting the road, she enters her destination and the duration of her outing.";
@@ -81,3 +79,10 @@
 "tutorial_step_4" = "Sarah’s a bright woman : She “checked in” so she’ll be notified to move her car before the cops do.";
 "tutorial_step_5" = "No more headaches, no more surprise tickets: join Sarah in using prkng for find your next free spot!";
 "get_started" = "GET STARTED!";
+
+"here_firstuse_title" = "How it works.";
+"here_firstuse_subtitle" = "We know it’s your first time !";
+"here_firstuse_1" = "Click any of the authorized spots to discover their availability.";
+"here_firstuse_2" = "Once you have found your spot, hit “check in” to be reminded when your car must be moved.";
+"free_spots" = "free spots";
+

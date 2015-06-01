@@ -81,7 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Helper
 
     func configureGlobals() {
-        UIApplication.sharedApplication().statusBarHidden = true
         SVProgressHUD.setRingThickness(6)
         SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
         SVProgressHUD.setForegroundColor(Styles.Colors.red2)

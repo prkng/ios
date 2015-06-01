@@ -188,6 +188,24 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
         
     }
     
+    
+    
+    func getHour() -> Int {
+        var hour : Int = pickerView.selectedRowInComponent(0)
+        var am : Bool = (pickerView.selectedRowInComponent(0) == 0)
+        
+        if (!am) {
+            hour += 12
+        }
+        
+        return hour
+        
+    }
+    
+    func getMinutes() -> Int {
+        return (pickerView.selectedRowInComponent(0) * 10)
+    }
+    
 }
 
 

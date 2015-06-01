@@ -56,7 +56,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
                 if (period != nil) {
                     var startF : CGFloat = CGFloat(period!.start)
                     var endF : CGFloat = CGFloat(period!.end)
-                    scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : column, limited: false))
+                    scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : column, limit: period!.timeLimit ))
                 }
                 ++column
             }
@@ -82,6 +82,22 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         updateValues()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        
+        // forbidden views should be on top
+        for column in columnViews {
+            for view in column.subviews {
+                if let subview =  view as? ScheduleItemView {
+                    if(!subview.limited) {
+                        column.bringSubviewToFront(subview)
+                    }
+                }
+            }
+        }
+        
+        super.viewWillLayoutSubviews()
     }
     
     func setupViews() {
@@ -325,13 +341,11 @@ class ScheduleItemModel {
     
     var columnIndex : Int?
     
-    var limited : Bool
+    var timeLimitText : String?
     
-    init (startF : CGFloat, endF : CGFloat, column : Int, limited: Bool) {
+    init (startF : CGFloat, endF : CGFloat, column : Int, limit: NSTimeInterval) {
         
         columnIndex = column
-        
-        self.limited = limited
         
         heightMultiplier = (endF - startF) / 3600
         yIndexMultiplier = startF / 3600
@@ -365,6 +379,13 @@ class ScheduleItemModel {
         let endHours = Int((endTm / 3600))
         let endMinutes  = Int((endTm / 60) % 60)
         endTime =  String(NSString(format: "%02ld:%02ld", endHours, endMinutes))
+        
+        
+        if (limit > 0) {
+            let limitHours = Int((limit / 3600))
+            let limitMinutes  = Int((limit / 60) % 60)
+            timeLimitText =  String(NSString(format: "%01ld:%02ld", limitHours, limitMinutes))
+        }
     }
     
     

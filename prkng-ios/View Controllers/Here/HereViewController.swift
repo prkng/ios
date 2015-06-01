@@ -11,6 +11,7 @@ import UIKit
 class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, CLLocationManagerDelegate {
 
     var scheduleViewController : ScheduleViewController?
+    var firstUseMessageVC : HereFirstUseViewController?
     var detailView: SpotDetailView
     
     var checkinButton : UIButton
@@ -39,12 +40,22 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     }
     
     override func viewDidLoad() {
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
-        locationManager.startUpdatingLocation()
+//        locationManager.delegate = self
+//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        locationManager.requestAlwaysAuthorization()
+//        locationManager.startUpdatingLocation()
     }
 
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if (Settings.firstMapUse()) {
+            showFirstUseMessage()
+            Settings.setFirstMapUsePassed(true)
+        }
+        
+    }
     
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
@@ -84,6 +95,46 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
+    
+    func showFirstUseMessage() {
+        
+        firstUseMessageVC = HereFirstUseViewController()
+        
+        self.addChildViewController(firstUseMessageVC!)
+        self.view.addSubview(firstUseMessageVC!.view)
+        firstUseMessageVC!.didMoveToParentViewController(self)
+        
+        firstUseMessageVC!.view.snp_makeConstraints({ (make) -> () in
+            make.edges.equalTo(self.view)
+        })
+        
+        let tap = UITapGestureRecognizer(target: self, action: "dismissFirstUseMessage")
+        firstUseMessageVC!.view.addGestureRecognizer(tap)
+        
+        firstUseMessageVC!.view.alpha = 0.0
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.firstUseMessageVC!.view.alpha = 1.0
+        })
+    }
+    
+    func dismissFirstUseMessage() {
+        
+        if let firstUseMessageVC = self.firstUseMessageVC {
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                firstUseMessageVC.view.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    firstUseMessageVC.removeFromParentViewController()
+                    firstUseMessageVC.view.removeFromSuperview()
+                    firstUseMessageVC.didMoveToParentViewController(nil)
+                    self.firstUseMessageVC = nil
+            })
+            
+        }
+        
+        
+    }
     
     func scheduleButtonTapped() {
         showScheduleView(activeSpot)
@@ -172,6 +223,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     
     func showSpotDetails (completed : ()) {
+        
+        if (activeSpot != nil) {
+            println("selected spot : " + activeSpot!.identifier)
+        }
         
         detailView.titleLabel.text = activeSpot?.name
         

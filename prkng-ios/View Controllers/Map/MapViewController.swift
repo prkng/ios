@@ -514,7 +514,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     
     
-    func displaySearchResults(results: Array<SearchResult>) {
+    func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) {
         
         mapView.zoom = 17
         
@@ -538,6 +538,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         for result in results {
             addSearchResultMarker(result)
         }
+        
+        self.searchCheckinDate = checkinTime
         
         updateAnnotations()
         

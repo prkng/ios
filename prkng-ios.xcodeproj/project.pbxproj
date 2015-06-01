@@ -57,6 +57,7 @@
 		BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B081AF214D800E42DE8 /* DurationSelectionView.swift */; };
 		BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */; };
 		BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF8F78121B00E07800A85197 /* CheckinMessageViewController.swift */; };
+		BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */; };
 		BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C961B149BB100A635A1 /* TutorialViewController.swift */; };
 		BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */; };
 		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
@@ -186,6 +187,7 @@
 		BF899B081AF214D800E42DE8 /* DurationSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DurationSelectionView.swift; sourceTree = "<group>"; };
 		BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectionControl.swift; sourceTree = "<group>"; };
 		BF8F78121B00E07800A85197 /* CheckinMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckinMessageViewController.swift; sourceTree = "<group>"; };
+		BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HereFirstUseViewController.swift; sourceTree = "<group>"; };
 		BF982C961B149BB100A635A1 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -290,8 +292,8 @@
 		BFEA6AE71A9E2EE5001F063E /* RMUserTrackingBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserTrackingBarButtonItem.h; sourceTree = "<group>"; };
 		BFEA6AE81A9E2EE5001F063E /* libMapbox.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMapbox.a; sourceTree = "<group>"; };
 		BFEA6AE91A9E2EE5001F063E /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
-		BFF568E81ACC62CA0018F62F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		BFF568EA1ACC62D40018F62F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BFF568E81ACC62CA0018F62F /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BFF568EA1ACC62D40018F62F /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BFF568EC1ACDCC1B0018F62F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		BFFD300A1A83B4AB006582A1 /* prkng-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "prkng-Bridging-Header.h"; sourceTree = "<group>"; };
 		BFFDE4601AFB829B0035DF54 /* LoginMethodSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginMethodSelectionView.swift; sourceTree = "<group>"; };
@@ -428,6 +430,7 @@
 			children = (
 				BF7170B31AE4303D00B922CA /* HereViewController.swift */,
 				BF8F78121B00E07800A85197 /* CheckinMessageViewController.swift */,
+				BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */,
 			);
 			path = Here;
 			sourceTree = "<group>";
@@ -963,6 +966,7 @@
 				BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */,
 				BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */,
 				BF7170B21AE42DDE00B922CA /* SettingsViewController.swift in Sources */,
+				BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */,
 				BF3CFA251AFE3A08003D104D /* IQToolbar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1091,12 +1095,12 @@
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/prkng-ios/Libraries/**";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/**";
 				"OTHER_LDFLAGS[arch=*]" = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/cagdas/Dev/ios/prkng-ios/prkng-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -1117,12 +1121,12 @@
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/prkng-ios/Libraries";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/**";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/cagdas/Dev/ios/prkng-ios/prkng-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;

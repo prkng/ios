@@ -149,24 +149,51 @@ class SettingsViewController: AbstractViewController {
     
     
     func prevCityButtonTapped() {
-        toggleCityTempFunctionMakeSureYouDeleteThisLaterOrItWillLookWeird()
-    }
-    
-    func nextCityButtonTapped () {
-        toggleCityTempFunctionMakeSureYouDeleteThisLaterOrItWillLookWeird()
-    }
-    
-    func toggleCityTempFunctionMakeSureYouDeleteThisLaterOrItWillLookWeird () {
         
-        if "Montreal" == Settings.selectedCity() {
-            Settings.setSelectedCity("Quebec City")
-        } else if ("Quebec City" == Settings.selectedCity()) {
-            Settings.setSelectedCity("Montreal")
+        
+        var index : Int = 0
+        for city in Settings.availableCities {
+            
+            if (Settings.selectedCity() == city) {
+                break; //found
+            }
+            index++
         }
+        
+        index -= 1 // previous
+        
+        if index < 0 {
+            index = Settings.availableCities.count - 1
+        }
+        
+        Settings.setSelectedCity(Settings.availableCities[index])
         
         cityLabel.text = Settings.selectedCity()
         
+        
     }
-
+    
+    func nextCityButtonTapped () {
+        
+        var index : Int = 0
+        for city in Settings.availableCities {
+            
+            if (Settings.selectedCity() == city) {
+                break; //found
+            }
+            index++
+        }
+        
+        index++ // get next
+        
+        if (index > Settings.availableCities.count - 1) {
+            index = 0
+        }
+        
+        Settings.setSelectedCity(Settings.availableCities[index])
+        
+        cityLabel.text = Settings.selectedCity()
+        
+    }    
     
 }

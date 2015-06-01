@@ -37,7 +37,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         downButton = UIButton()
         dateSelectionView = DateSelectionView()
         durationSelectionView = DurationSelectionView()
-        searchButton = ViewFactory.bigButton()
+        searchButton = ViewFactory.hugeButton()
         searchStep = SearchStep.ONE
 
         super.init(nibName: nil, bundle: nil)
@@ -212,7 +212,15 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         SearchOperations.searchByStreetName(textField.text, completion: { (results) -> Void in
             
             self.markerIcon.hidden = true
-            self.delegate!.displaySearchResults(results)
+            
+            
+            let weekDay = self.dateSelectionView.selectedDay
+            
+            let today = DateUtil.dayIndexOfTheWeek()
+            
+            var date : NSDate = NSDate()
+            
+            self.delegate!.displaySearchResults(results, checkinTime : date)
             
         })
         
@@ -389,7 +397,21 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         SearchOperations.searchByStreetName(searchField.text, completion: { (results) -> Void in
             
             self.markerIcon.hidden = true
-            self.delegate!.displaySearchResults(results)
+            
+            var date : NSDate = NSDate()
+            
+            var gregorian:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!;
+            var unit : NSCalendarUnit = (NSCalendarUnit.YearCalendarUnit|NSCalendarUnit.MonthCalendarUnit|NSCalendarUnit.DayCalendarUnit|NSCalendarUnit.HourCalendarUnit|NSCalendarUnit.MinuteCalendarUnit);
+            
+            var comps:NSDateComponents = gregorian.components(unit, fromDate: date);
+            
+            comps.setValue(self.durationSelectionView.getHour(), forComponent: NSCalendarUnit.HourCalendarUnit);
+            comps.setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendarUnit.MinuteCalendarUnit);
+            
+            var noon_tomorrow : NSDate = gregorian.dateFromComponents(comps)!;
+            
+            
+            self.delegate!.displaySearchResults(results, checkinTime : date)
             
         })
         
@@ -400,7 +422,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 protocol SearchViewControllerDelegate {
     
     func setSearchParameters(time : NSDate?, duration : Float?)
-    func displaySearchResults(results : Array<SearchResult>)
+    func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?)
     
 }
 

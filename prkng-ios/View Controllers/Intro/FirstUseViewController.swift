@@ -104,7 +104,10 @@ class FirstUseViewController: AbstractViewController {
     
     func tourButtonTapped() {
         
-        self.presentViewController(TutorialViewController(), animated: true) { () -> Void in
+        let tutorial = TutorialViewController()
+        tutorial.parent = self
+        
+        self.presentViewController(tutorial, animated: true) { () -> Void in
             
         }
         

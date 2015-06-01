@@ -10,6 +10,8 @@ import UIKit
 
 class ScheduleItemView : UIView {
     
+    var timeLimitLabel : UILabel
+    var maxLabel : UILabel
     var startTimeLabel : UILabel
     var startAmPmLabel : UILabel
     var endTimeLabel : UILabel
@@ -28,7 +30,15 @@ class ScheduleItemView : UIView {
         self.startAmPmLabel.text = model.startTimeAmPm
         self.endTimeLabel.text = model.endTime
         self.endAmPmLabel.text = model.endTimeAmPm
-        self.limited = model.limited
+        
+        self.limited = (model.timeLimitText != nil)
+        
+        if(limited) {
+            timeLimitLabel.text = model.timeLimitText
+        } else {
+            timeLimitLabel.hidden = true
+            maxLabel.hidden = true
+        }
     }
     
     convenience init() {
@@ -37,6 +47,9 @@ class ScheduleItemView : UIView {
     
      override init(frame: CGRect) {
         
+        timeLimitLabel = UILabel()
+        maxLabel = UILabel()
+        
         startTimeLabel = UILabel()
         startAmPmLabel = UILabel()
         endTimeLabel = UILabel()
@@ -44,22 +57,29 @@ class ScheduleItemView : UIView {
         rightSeperator = UIView()
         
         didsetupSubviews = false
-        didSetupConstraints = false
+        didSetupConstraints = true
         
         limited =  false
         
         super.init(frame: frame)
         
-        setupSubviews()
-        self.setNeedsUpdateConstraints()
     }
 
      required init(coder aDecoder: NSCoder) {
          fatalError("NSCoding not supported")
      }
     
+    override func layoutSubviews() {
+        if (!didsetupSubviews) {
+            setupSubviews()
+            self.setNeedsUpdateConstraints()
+        }
+        
+        super.layoutSubviews()
+    }
+    
     override func updateConstraints() {
-        if(!self.didSetupConstraints) {
+        if(!didSetupConstraints) {
             setupConstraints()
         }
         
@@ -69,11 +89,19 @@ class ScheduleItemView : UIView {
     
     func setupSubviews () {
         
-        if(limited) {
-            self.backgroundColor = Styles.Colors.midnight1
-        } else {
-            self.backgroundColor = Styles.Colors.red2
-        }
+        
+        timeLimitLabel.font = Styles.FontFaces.regular(17)
+        timeLimitLabel.textColor = Styles.Colors.cream1
+        timeLimitLabel.adjustsFontSizeToFitWidth = true
+        timeLimitLabel.numberOfLines = 1
+        self.addSubview(timeLimitLabel)
+        
+        maxLabel.font = Styles.FontFaces.light(17)
+        maxLabel.textColor = Styles.Colors.cream1
+        maxLabel.adjustsFontSizeToFitWidth = true
+        maxLabel.numberOfLines = 1
+        maxLabel.text = "max".localizedString.uppercaseString
+        self.addSubview(maxLabel)
         
         startTimeLabel.font = Styles.FontFaces.regular(17)
         startTimeLabel.textColor = Styles.Colors.cream1
@@ -99,14 +127,37 @@ class ScheduleItemView : UIView {
         endAmPmLabel.numberOfLines = 1
         self.addSubview(endAmPmLabel)
         
-        rightSeperator.backgroundColor = Styles.Colors.red1
         self.addSubview(rightSeperator)
         
+        if(limited) {
+            self.backgroundColor = Styles.Colors.midnight1
+            rightSeperator.backgroundColor = Styles.Colors.midnight2
+
+        } else {
+            self.backgroundColor = Styles.Colors.red2
+            rightSeperator.backgroundColor = Styles.Colors.red1
+
+        }
+        
         didsetupSubviews = true
+        didSetupConstraints = false
     }
     
     
-    func setupConstraints () {        
+    func setupConstraints () {
+        
+        timeLimitLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.snp_top)
+            make.bottom.equalTo(self.snp_centerY).with.offset(2)
+            make.centerX.equalTo(self).with.offset(-20)
+        }
+        
+        maxLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.timeLimitLabel.snp_right).with.offset(10)
+            make.top.equalTo(self.timeLimitLabel)
+            make.bottom.equalTo(self.timeLimitLabel)
+        }
+        
         
         startTimeLabel.snp_makeConstraints { (make) -> () in
             make.top.greaterThanOrEqualTo(self.snp_top)

@@ -9,7 +9,7 @@
 import UIKit
 
 class ScheduleHeaderView: UIView {
-
+    
     var topContainer : UIView
     var titleLabel : UILabel
     var scheduleButton : UIButton
@@ -51,7 +51,6 @@ class ScheduleHeaderView: UIView {
         fatalError("NSCoding not supported")
     }
     
-    
     override func updateConstraints() {
         if(!self.didSetupConstraints) {
             setupConstraints()
@@ -77,14 +76,17 @@ class ScheduleHeaderView: UIView {
         
         authorizedView.dotView.backgroundColor = Styles.Colors.cream1
         authorizedView.detailLabel.text = NSLocalizedString("schedule_authorized",comment:"")
+        limitedView.detailLabel.sizeToFit()
         bottomContainer.addSubview(authorizedView)
         
         limitedView.dotView.backgroundColor = Styles.Colors.petrol2
         limitedView.detailLabel.text = NSLocalizedString("schedule_limited",comment:"")
+        limitedView.detailLabel.sizeToFit()
         bottomContainer.addSubview(limitedView)
         
         forbiddenView.dotView.backgroundColor = Styles.Colors.red2
         forbiddenView.detailLabel.text = NSLocalizedString("schedule_forbidden",comment:"")
+        limitedView.detailLabel.sizeToFit()
         bottomContainer.addSubview(forbiddenView)
         
         didSetupSubviews = true
@@ -149,71 +151,77 @@ class ScheduleHeaderView: UIView {
 
 class InfoView: UIView {
     
-        var dotView : UIView
-        var detailLabel : UILabel
+    var dotView : UIView
+    var detailLabel : UILabel
+    
+    var didSetupSubviews: Bool
+    var didSetupConstraints: Bool
+    
+    convenience init() {
+        self.init(frame: CGRectZero)
+    }
+    
+    override init(frame: CGRect) {
         
-        var didSetupSubviews: Bool
-        var didSetupConstraints: Bool
+        didSetupSubviews = false
+        didSetupConstraints = false
         
-        convenience init() {
-            self.init(frame: CGRectZero)
+        dotView = UIView()
+        detailLabel = UILabel()
+        
+        super.init(frame: frame)
+        
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("NSCoding not supported")
+    }
+    
+    
+    override func layoutSubviews() {
+        detailLabel.sizeToFit()
+        super.layoutSubviews()
+    }
+    
+    override func updateConstraints() {
+        if(!self.didSetupConstraints) {
+            setupConstraints()
+        }
+        super.updateConstraints()
+    }
+    
+    func setupSubviews() {
+        
+        dotView.layer.cornerRadius = 5
+        dotView.clipsToBounds = true
+        addSubview(dotView)
+        
+        detailLabel.font = Styles.FontFaces.light(12)
+        detailLabel.textColor = Styles.Colors.midnight2
+        addSubview(detailLabel)
+        
+        
+        didSetupSubviews = true
+    }
+    
+    func setupConstraints() {
+        
+        dotView.snp_makeConstraints { (make) -> () in
+            make.right.equalTo(self.detailLabel.snp_left).with.offset(-10)
+            make.centerY.equalTo(self)
+            make.size.equalTo(CGSizeMake(10, 10))
         }
         
-        override init(frame: CGRect) {
-            
-            didSetupSubviews = false
-            didSetupConstraints = false
-            
-            dotView = UIView()
-            detailLabel = UILabel()
-           
-            super.init(frame: frame)
-            
-            setupSubviews()
-            self.setNeedsUpdateConstraints()
+        detailLabel.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self).with.offset(15)
+            make.centerY.equalTo(self).with.offset(2)
+            make.height.equalTo(15)
         }
         
-        required init(coder aDecoder: NSCoder) {
-            fatalError("NSCoding not supported")
-        }
-        
-        
-        override func updateConstraints() {
-            if(!self.didSetupConstraints) {
-                setupConstraints()
-            }
-            super.updateConstraints()
-        }
-        
-        func setupSubviews() {
-            
-            dotView.layer.cornerRadius = 5
-            dotView.clipsToBounds = true
-            addSubview(dotView)
-            
-            detailLabel.font = Styles.FontFaces.light(12)
-            detailLabel.textColor = Styles.Colors.midnight2
-            addSubview(detailLabel)
-            
-            
-            didSetupSubviews = true
-        }
-        
-        func setupConstraints() {
-            
-            dotView.snp_makeConstraints { (make) -> () in
-                make.right.equalTo(self.detailLabel.snp_left).with.offset(-10)
-                make.centerY.equalTo(self)
-                make.size.equalTo(CGSizeMake(10, 10))
-            }
-            
-            detailLabel.snp_makeConstraints { (make) -> () in
-                make.centerX.equalTo(self).with.offset(15)
-                make.centerY.equalTo(self).with.offset(2)
-            }
-            
-            didSetupConstraints = true
-        }
-        
+        didSetupConstraints = true
+    }
+    
     
 }

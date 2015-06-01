@@ -10,6 +10,7 @@ import UIKit
 
 class TutorialViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
+    var parent : FirstUseViewController?
     var pageViewController : UIPageViewController
     var pageControl : UIPageControl
     var nextButton : UIButton
@@ -18,11 +19,11 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     
     let pageCount = 5
     
-    let images = [ UIImage(named: "tutorial_0"),
-        UIImage(named: "tutorial_1"),
+    let images = [ UIImage(named: "tutorial_1"),
         UIImage(named: "tutorial_2"),
         UIImage(named: "tutorial_3"),
-        UIImage(named: "tutorial_4")]
+        UIImage(named: "tutorial_4"),
+        UIImage(named: "tutorial_5")]
     
     let texts = [ "tutorial_step_1".localizedString,
         "tutorial_step_2".localizedString,
@@ -130,7 +131,7 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     
     func getStartedButtonTapped() {
         dismissViewControllerAnimated(true, completion: { () -> Void in
-            
+            self.parent?.parkNowButtonTapped()
         })
     }
     

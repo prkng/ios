@@ -254,7 +254,7 @@ class LoginExternalViewController: AbstractViewController {
     }
     
     
-    func loginButtonTapped () {        
+    func loginButtonTapped () {
         
         Settings.setSelectedCity(cityLabel.text!)
         
@@ -282,25 +282,52 @@ class LoginExternalViewController: AbstractViewController {
     }
     
     func prevCityButtonTapped() {
-        toggleCityTempFunctionMakeSureYouDeleteThisLaterOrItWillLookWeird()
+        
+        
+        var index : Int = 0
+        for city in Settings.availableCities {
+            
+            if (Settings.selectedCity() == city) {
+                break; //found
+            }
+            index++
+        }
+        
+        index -= 1 // previous
+        
+        if index < 0 {
+            index = Settings.availableCities.count - 1
+        }
+        
+        Settings.setSelectedCity(Settings.availableCities[index])
+        
+        cityLabel.text = Settings.selectedCity()
+        
+        
     }
     
     func nextCityButtonTapped () {
-        toggleCityTempFunctionMakeSureYouDeleteThisLaterOrItWillLookWeird()
-    }
-    
-    func toggleCityTempFunctionMakeSureYouDeleteThisLaterOrItWillLookWeird () { //FIXME
         
-        if "Montreal" == Settings.selectedCity() {
-            Settings.setSelectedCity("Quebec City")
-        } else if ("Quebec City" == Settings.selectedCity()) {
-            Settings.setSelectedCity("Montreal")
+        var index : Int = 0
+        for city in Settings.availableCities {
+            
+            if (Settings.selectedCity() == city) {
+                break; //found
+            }
+            index++
         }
+        
+        index++ // get next
+        
+        if (index > Settings.availableCities.count - 1) {
+            index = 0
+        }
+        
+        Settings.setSelectedCity(Settings.availableCities[index])
         
         cityLabel.text = Settings.selectedCity()
         
     }
-    
     
     
 }
