@@ -72,7 +72,7 @@
 "max" = "max";
 
 "alarm_text" = "Time to move your car.";
-"time_up" = "Your time is up!"
+"time_up" = "Your time is up!";
 
 "tutorial_step_1" = "Sarah is having lunch with her mom in Rosemont. She’ll need to park when she gets there. See how she uses prkng!";
 "tutorial_step_2" = "Before hitting the road, she enters her destination and the duration of her outing.";
