@@ -9,7 +9,7 @@
 import UIKit
 
 class ParkingSpot: NSObject {
-
+    
     var identifier: String
     var code: String
     var name : String
@@ -19,9 +19,9 @@ class ParkingSpot: NSObject {
     var buttonLocation: CLLocation
     var rules: Array<ParkingRule>
     var line: Shape
-
+    
     init(json: JSON) {
-
+        
         identifier = json["id"].stringValue
         code = json["code"].stringValue
         name = json["properties"]["rules"][0]["address"].stringValue
@@ -38,10 +38,10 @@ class ParkingSpot: NSObject {
             let rule = ParkingRule(json: index.1)
             rules.append(rule)
         }
-
+        
         line = Shape(json: json["geometry"])
     }
-        
+    
     
     func availableTimeInterval() -> NSTimeInterval {
         
@@ -50,9 +50,11 @@ class ParkingSpot: NSObject {
         var smallest : Int = 24 * 3600 // time interval
         
         for period in todaysAgenda() {
+            
             if (period != nil && Int(period!.start) > Int(interval)) {
                 
-              let diff = Int(period!.start) - Int(interval)
+                // timeLimit is added for "Limited" time periods, otherwise it will always be 0
+                var diff = Int(period!.start) - Int(interval) + Int(period!.timeLimit)
                 
                 if (diff < smallest) {
                     smallest = diff
@@ -65,13 +67,13 @@ class ParkingSpot: NSObject {
             return NSTimeInterval(smallest)
         }
         
-
+        
         // check tomorrow
         for period in tomorrowsAgenda() {
             
             if (period != nil && Int((24 * 3600) + period!.start) > Int(interval)) {
                 
-                let diff = Int((24 * 3600) + period!.start) - Int(interval)
+                let diff = Int((24 * 3600) + period!.start) - Int(interval) + Int(period!.timeLimit)
                 
                 if (diff < smallest) {
                     smallest = diff
@@ -104,8 +106,8 @@ class ParkingSpot: NSObject {
     
     func todaysAgenda () -> Array<TimePeriod?> {
         
-        let weekDay = NSDate().weekday() - 1
-
+        let weekDay = DateUtil.dayIndexOfTheWeek()
+        
         var agenda : Array<TimePeriod?> = []
         
         for rule in rules {
@@ -118,7 +120,7 @@ class ParkingSpot: NSObject {
     
     func tomorrowsAgenda () -> Array<TimePeriod?> {
         
-        var weekDay : Int = NSDate().weekday()
+        var weekDay : Int = DateUtil.dayIndexOfTheWeek() + 1
         
         if (weekDay == 7 ) {
             weekDay = 0

@@ -180,9 +180,16 @@ class SelectionControl: UIControl {
     
     func selectOption (sender : SelectionButton) {
         
+        let valueChanged = selectedIndex != sender.index
+        
         deselectAll()
         selectedIndex = sender.index
         sender.selected = true
+        
+        
+        if valueChanged {
+            sendActionsForControlEvents(UIControlEvents.ValueChanged)
+        }
         
     }
     

@@ -46,19 +46,19 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
         
         mapView.tintColor = Styles.Colors.red2
-        mapView.showLogoBug = false;
-        mapView.hideAttribution = true;
+        mapView.showLogoBug = false
+        mapView.hideAttribution = true
+        mapView.zoom = 17
         spots = []
         lineAnnotations = []
         centerButtonAnnotations = []
         searchAnnotations = []
-        radius = 100
+        radius = 300
         updateInProgress = false
         
         trackUserButton = UIButton()
         
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -78,13 +78,11 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             make.edges.equalTo(self.view)
         }
         
-        
         trackUserButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(36, 36))
-            make.left.equalTo(self.view).with.offset(30)
+            make.centerX.equalTo(self.view).multipliedBy(0.33)
             make.bottom.equalTo(self.view).with.offset(-30)
         }
-        
         
     }
     
@@ -166,7 +164,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                 circle.fillColor = Styles.Colors.petrol2
             }
             
-            
             return circle
             
         case "searchResult":
@@ -191,9 +188,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             self.trackUserButton.hidden = (delegate != nil && !delegate!.shouldShowUserTrackingButton())
             self.mapView.userTrackingMode = RMUserTrackingModeNone
         }
-        
     
-        
     }
     
     func afterMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
@@ -223,6 +218,10 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     }
     
     func mapView(mapView: RMMapView!, didSelectAnnotation annotation: RMAnnotation!) {
+        
+        if (annotation.isUserLocationAnnotation) {
+            return
+        }
         
         if (selectedSpot != nil) {
             removeAnnotations(findAnnotations(selectedSpot!.identifier))
@@ -326,10 +325,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     func updateAnnotations() {
         
-        NSLog("Update annotations")
-        
         if (updateInProgress) {
-            NSLog("Update already in progress, cancelled!")
+            println("Update already in progress, cancelled!")
             return
         }
         
@@ -362,8 +359,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                         self.addSpotAnnotation(self.mapView, spot: spot, selected: false)
                     }
                     self.updateInProgress = false
-                    
-                    
                     
             })
             
@@ -509,10 +504,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     }
     
     
-    // SpotDetailViewDelegate
-    
-    
-    
+    // MARK: SpotDetailViewDelegate
     
     func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) {
         

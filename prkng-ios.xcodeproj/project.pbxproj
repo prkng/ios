@@ -124,7 +124,7 @@
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		BF1055961ACF100500413F16 /* ScheduleItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleItemView.swift; sourceTree = "<group>"; };
 		BF1C2B581AFCBBA00070085A /* AuthUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUtility.swift; sourceTree = "<group>"; };
-		BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UserOperations.swift; path = ../API/UserOperations.swift; sourceTree = "<group>"; };
+		BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserOperations.swift; sourceTree = "<group>"; };
 		BF1C2B5D1AFCDA180070085A /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		BF2891E51AFF9DFD0041B04C /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		BF2891E71AFF9ED60041B04C /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -360,7 +360,6 @@
 			children = (
 				BFD9CB681A9C942300BFA836 /* Shape.swift */,
 				BF72984A1A9C8C5D00B8F4AE /* ParkingRule.swift */,
-				BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */,
 				BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */,
 				BF4568011AD85761006D7C23 /* SearchResult.swift */,
 				BF2891E91AFFC0590041B04C /* User.swift */,
@@ -631,6 +630,7 @@
 				BF1C2B581AFCBBA00070085A /* AuthUtility.swift */,
 				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
 				BF4567FF1AD85722006D7C23 /* SearchOperations.swift */,
+				BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";

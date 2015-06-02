@@ -101,9 +101,10 @@ class MyCarCheckedInViewController: AbstractViewController {
     
     
     func setupViews () {
-        view.backgroundColor = UIColor(red: 48.0/255.0, green: 58/255.0, blue: 66/255.0, alpha: 0.9)
+
+        view.backgroundColor = UIColor(red: 48.0/255.0, green: 58/255.0, blue: 66/255.0, alpha: 0.9) //FIXME
         
-        logoView.image = UIImage(named: "tabbar_mycar_active")
+        logoView.image = UIImage(named: "icon_checkin")
         view.addSubview(logoView)
         
         activityIndicator.hidesWhenStopped = true

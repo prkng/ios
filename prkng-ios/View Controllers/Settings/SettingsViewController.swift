@@ -9,7 +9,7 @@
 import UIKit
 
 class SettingsViewController: AbstractViewController {
-   
+    
     var topContainer : UIView
     
     var cityContainer : UIView
@@ -17,7 +17,9 @@ class SettingsViewController: AbstractViewController {
     var nextCityButton : UIButton
     var cityLabel : UILabel
     
-    var notificationContainer : UIView
+    var notificationsContainer : UIView
+    var notificationsLabel : UILabel
+    var notificationSelection : SelectionControl
     
     var aboutButton : UIButton
     
@@ -30,8 +32,13 @@ class SettingsViewController: AbstractViewController {
         nextCityButton = UIButton()
         cityLabel = UILabel()
         
-        notificationContainer = UIView()
-        aboutButton = ViewFactory.bigButton()
+        notificationsContainer = UIView()
+        notificationsLabel = UILabel()
+        notificationSelection = SelectionControl(titles: ["15 " + "minutes_short".localizedString.uppercaseString,
+            "30 " + "minutes_short".localizedString.uppercaseString,
+            "off".localizedString.uppercaseString])
+        
+        aboutButton = ViewFactory.hugeButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -59,7 +66,19 @@ class SettingsViewController: AbstractViewController {
         self.cityLabel.text = Settings.selectedCity()
     }
     
-    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        // TODO find a better way
+        var i : Int = 2 // OFF
+        if (Settings.notificationTime() == 15) {
+            i = 0
+        } else if (Settings.notificationTime() == 30) {
+            i = 1
+        }
+        self.notificationSelection.selectOption(self.notificationSelection.buttons[i])
+    }
     
     func setupViews () {
         
@@ -81,8 +100,25 @@ class SettingsViewController: AbstractViewController {
         nextCityButton.addTarget(self, action: "nextCityButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         cityContainer.addSubview(nextCityButton)
         
-        notificationContainer.backgroundColor = Styles.Colors.stone
-        view.addSubview(notificationContainer)
+        notificationsContainer.backgroundColor = Styles.Colors.stone
+        view.addSubview(notificationsContainer)
+        
+        notificationsLabel.textColor = Styles.Colors.midnight2
+        notificationsLabel.font = Styles.FontFaces.light(12)
+        notificationsLabel.text = "notifications".localizedString.uppercaseString
+        notificationsLabel.textAlignment = NSTextAlignment.Center
+        notificationsContainer.addSubview(notificationsLabel)
+        
+        notificationSelection.buttonSize = CGSizeMake(90, 28)
+        notificationSelection.font = Styles.FontFaces.light(17)
+        notificationSelection.textColor = Styles.Colors.anthracite1
+        notificationSelection.selectedTextColor = Styles.Colors.cream1
+        notificationSelection.borderColor = UIColor.clearColor()
+        notificationSelection.selectedBorderColor = UIColor.clearColor()
+        notificationSelection.buttonBackgroundColor = UIColor.clearColor()
+        notificationSelection.selectedButtonBackgroundColor = Styles.Colors.red2
+        notificationSelection.addTarget(self, action: "notificationSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        notificationsContainer.addSubview(notificationSelection)
         
         aboutButton.setTitle(NSLocalizedString("about", comment : ""), forState: UIControlState.Normal)
         aboutButton.addTarget(self, action: "aboutButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -99,18 +135,31 @@ class SettingsViewController: AbstractViewController {
             make.bottom.equalTo(self.view)
         }
         
-        notificationContainer.snp_makeConstraints { (make) -> () in
+        notificationsContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(84)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.aboutButton.snp_top)
         }
         
+        notificationsLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.notificationsContainer).with.offset(10)
+            make.left.equalTo(self.notificationsContainer)
+            make.right.equalTo(self.notificationsContainer)
+        }
+        
+        notificationSelection.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.notificationsLabel.snp_bottom).with.offset(5)
+            make.bottom.equalTo(self.notificationsContainer)
+            make.left.equalTo(self.notificationsContainer).with.offset(-10)
+            make.right.equalTo(self.notificationsContainer).with.offset(10)
+        }
+        
         cityContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(60)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.notificationContainer.snp_top)
+            make.bottom.equalTo(self.notificationsContainer.snp_top)
         }
         
         topContainer.snp_makeConstraints { (make) -> () in
@@ -140,7 +189,7 @@ class SettingsViewController: AbstractViewController {
     }
     
     func aboutButtonTapped() {
-    
+        
         NSUserDefaults.standardUserDefaults().removeObjectForKey(AuthUtility.USER_KEY)
         NSUserDefaults.standardUserDefaults().removeObjectForKey(AuthUtility.AUTH_TOKEN_KEY)
         
@@ -194,6 +243,21 @@ class SettingsViewController: AbstractViewController {
         
         cityLabel.text = Settings.selectedCity()
         
-    }    
+    }
+    
+    func notificationSelectionValueChanged() {
+        switch(notificationSelection.selectedIndex) {
+        case 0:
+            Settings.setNotificationTime(15)
+            break
+        case 1:
+            Settings.setNotificationTime(30)
+            break
+        case 2 :
+            Settings.setNotificationTime(0)
+            break
+        default:break
+        }
+    }
     
 }

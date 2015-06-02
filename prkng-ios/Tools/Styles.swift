@@ -41,7 +41,9 @@ struct Styles {
         
         static let lightfx = UIColor(rgba: "#141719")
         
-        static let redTransparent = UIColor(rgba: "#A63A3A")        
+        static let redTransparent = UIColor(rgba: "#A63A3A")
+        
+        static let statusBar = UIColor(rgba: "#D1CCC980")
     }
     
     struct FontFaces {

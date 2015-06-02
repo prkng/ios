@@ -74,6 +74,7 @@
 "max" = "max";
 
 "alarm_text" = "Il va falloir déplacer ton véhicule!";
+"time_up" = "le time is up!"
 
 "tutorial_step_1" = "Sarah va bruncher avec sa mère dans Rosemont, elle cherche un stationnement près du resto où elle a rendez-vous. Voyez comment elle utilise prkng!";
 "tutorial_step_2" = "Avant de partir, elle lance une recherche pour une rue où elle pourrait se stationner proche de son rendez-vous.";

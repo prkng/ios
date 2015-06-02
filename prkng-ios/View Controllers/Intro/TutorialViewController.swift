@@ -67,7 +67,7 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
         
         for i in 0...(pageCount - 1) {
             let page = TutorialContentViewController(image: images[i]!, text: texts[i], index : i)
-            page.view.backgroundColor = ((i % 2) == 0) ? Styles.Colors.berry1 : Styles.Colors.petrol2
+            page.view.backgroundColor = ((i % 2) == 0) ? Styles.Colors.petrol2 : Styles.Colors.berry1
             contentViewControllers.append(page)
         }
         

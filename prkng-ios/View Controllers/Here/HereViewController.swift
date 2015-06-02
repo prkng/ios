@@ -14,6 +14,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     var firstUseMessageVC : HereFirstUseViewController?
     var detailView: SpotDetailView
     
+    var statusBar : UIView
+    
     var checkinButton : UIButton
     
     var activeSpot : ParkingSpot?
@@ -24,6 +26,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     init() {
         detailView = SpotDetailView()
+        statusBar = UIView()
         checkinButton = UIButton()
         locationManager = CLLocationManager()
         super.init(nibName: nil, bundle: nil)
@@ -38,14 +41,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         setupViews()
         setupConstraints()
     }
-    
-    override func viewDidLoad() {
-//        locationManager.delegate = self
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        locationManager.requestAlwaysAuthorization()
-//        locationManager.startUpdatingLocation()
-    }
-
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -67,13 +62,28 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     func setupViews () {
 
         detailView.delegate = self
-        self.view.addSubview(detailView)
+        view.addSubview(detailView)
+        
+        statusBar.backgroundColor = Styles.Colors.statusBar
+        view.addSubview(statusBar)
         
         checkinButton.setImage(UIImage(named: "btn_checkin_active"), forState: UIControlState.Normal)
         checkinButton.setImage(UIImage(named: "btn_checkin"), forState: UIControlState.Disabled)
         checkinButton.addTarget(self, action: "checkinButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         checkinButton.enabled = false
-        self.view.addSubview(checkinButton)
+        view.addSubview(checkinButton)
+        
+
+    }
+    
+    func setupConstraints() {
+        
+        statusBar.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(20)
+        }
         
         detailView.snp_makeConstraints {
             (make) -> () in
@@ -89,9 +99,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
         }
-    }
-    
-    func setupConstraints() {
+        
+
         
     }
     
@@ -150,10 +159,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             self.scheduleViewController!.view.hidden = true
             
             self.scheduleViewController!.view.snp_makeConstraints({ (make) -> () in
-                make.top.equalTo(self.view.snp_bottom);
-                make.size.equalTo(self.view);
-                make.left.equalTo(self.view);
-                make.right.equalTo(self.view);
+                make.top.equalTo(self.view.snp_bottom)
+                make.size.equalTo(self.view)
+                make.left.equalTo(self.view)
+                make.right.equalTo(self.view)
             })
             
             self.scheduleViewController!.view.layoutIfNeeded()
@@ -161,7 +170,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             self.scheduleViewController!.view.hidden = false
             self.scheduleViewController!.view.snp_remakeConstraints({ (make) -> () in
-                make.edges.equalTo(self.view);
+                make.edges.equalTo(self.view)
             })
             
             UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -178,14 +187,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     func hideScheduleView () {
         
         if(self.scheduleViewController == nil) {
-            return;
+            return
         }
         
         self.scheduleViewController!.view.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.view.snp_bottom);
-            make.size.equalTo(self.view);
-            make.left.equalTo(self.view);
-            make.right.equalTo(self.view);
+            make.top.equalTo(self.view.snp_bottom)
+            make.size.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
         }
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -252,7 +261,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.view.layoutIfNeeded()
-        });
+        })
         
     }
     
@@ -278,7 +287,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.view.layoutIfNeeded()
-        });
+        })
         
     }
     

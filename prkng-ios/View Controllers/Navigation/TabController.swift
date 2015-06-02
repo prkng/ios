@@ -329,8 +329,8 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
 
 enum PrkTab {
 //    case Search
-    case Here
     case MyCar
+    case Here
     case Settings
     case None
 }
