@@ -119,31 +119,31 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     func activeTab() -> PrkTab {
         return selectedTab
     }
-    
-    func loadSearchTab() {
-        if (selectedTab == PrkTab.Search || switchingMainView) {
-            return;
-        }
-                
-        if (searchViewController == nil) {
-            searchViewController = SearchViewController()
-            searchViewController!.delegate = self
-        }
-        
-        searchViewController!.markerIcon.hidden = false
-        mapViewController.mapView.zoom = 17
-        mapViewController.trackUserButton.hidden = true
-        mapViewController.mapView.showsUserLocation = false
-        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
-        
-        
-        switchActiveViewController(searchViewController!, completion: { (finished) -> Void in
-            self.selectedTab = PrkTab.Search
-            self.tabBar.updateSelected()
-        })
-        
-        
-    }
+//    
+//    func loadSearchTab() {
+//        if (selectedTab == PrkTab.Search || switchingMainView) {
+//            return;
+//        }
+//                
+//        if (searchViewController == nil) {
+//            searchViewController = SearchViewController()
+//            searchViewController!.delegate = self
+//        }
+//        
+//        searchViewController!.markerIcon.hidden = false
+//        mapViewController.mapView.zoom = 17
+//        mapViewController.trackUserButton.hidden = true
+//        mapViewController.mapView.showsUserLocation = false
+//        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+//        
+//        
+//        switchActiveViewController(searchViewController!, completion: { (finished) -> Void in
+//            self.selectedTab = PrkTab.Search
+//            self.tabBar.updateSelected()
+//        })
+//        
+//        
+//    }
     
     func loadHereTab() {
         if (selectedTab == PrkTab.Here || switchingMainView) {
@@ -259,15 +259,15 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     // MapViewControllerDelegate
     func mapDidMove (center : CLLocation) {
         
-        if(selectedTab == PrkTab.Search) {
-            searchViewController?.transformToStepTwo()
-            
-            SearchOperations.getStreetName(center.coordinate, completion: { (result) -> Void in
-                searchViewController?.showStreetName(result)
-            })
-        } else if (selectedTab == PrkTab.Here) {
+//        if(selectedTab == PrkTab.Search) {
+//            searchViewController?.transformToStepTwo()
+//            
+//            SearchOperations.getStreetName(center.coordinate, completion: { (result) -> Void in
+//                searchViewController?.showStreetName(result)
+//            })
+//        } else if (selectedTab == PrkTab.Here) {
             hereViewController.hideSpotDetails()
-        }
+//        }
         
     }
     
@@ -328,7 +328,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
 
 
 enum PrkTab {
-    case Search
+//    case Search
     case Here
     case MyCar
     case Settings

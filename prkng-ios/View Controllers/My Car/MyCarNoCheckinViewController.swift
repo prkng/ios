@@ -92,15 +92,25 @@ class MyCarNoCheckinViewController: AbstractViewController {
         }
         
         
+//        parkButton.snp_makeConstraints { (make) -> () in
+//            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+//            make.bottom.equalTo(self.searchButton.snp_top)
+//            make.left.equalTo(self.view)
+//            make.right.equalTo(self.view)
+//        }
+//        
+//        searchButton.snp_makeConstraints { (make) -> () in
+//            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+//            make.bottom.equalTo(self.view)
+//            make.left.equalTo(self.view)
+//            make.right.equalTo(self.view)
+//        }
+        
+        
+        // without search button
+        
         parkButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-            make.bottom.equalTo(self.searchButton.snp_top)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-        }
-        
-        searchButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
             make.bottom.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -113,9 +123,9 @@ class MyCarNoCheckinViewController: AbstractViewController {
         self.delegate?.loadHereTab()
     }
     
-    func searchButtonTapped() {
-        self.delegate?.loadSearchTab()
-    }
+//    func searchButtonTapped() {
+//        self.delegate?.loadSearchTab()
+//    }
     
     
     
@@ -124,5 +134,5 @@ class MyCarNoCheckinViewController: AbstractViewController {
 
 protocol MyCarNoCheckinViewControllerDelegate {
     func loadHereTab()
-    func loadSearchTab()
+//    func loadSearchTab()
 }

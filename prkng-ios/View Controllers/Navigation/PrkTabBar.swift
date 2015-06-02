@@ -10,7 +10,7 @@ import UIKit
 
 class PrkTabBar: UIView {
     
-    var searchButton : PrkTabBarButton
+//    var searchButton : PrkTabBarButton
     var hereButton : PrkTabBarButton
     var myCarButton : PrkTabBarButton
     var settingsButton : PrkTabBarButton
@@ -22,7 +22,7 @@ class PrkTabBar: UIView {
     
     override init(frame: CGRect) {
         
-        searchButton = PrkTabBarButton(title: NSLocalizedString("tabbar_search", comment : ""), icon: UIImage(named: "tabbar_search"), selectedIcon: UIImage(named: "tabbar_search_active"))
+//        searchButton = PrkTabBarButton(title: NSLocalizedString("tabbar_search", comment : ""), icon: UIImage(named: "tabbar_search"), selectedIcon: UIImage(named: "tabbar_search_active"))
         hereButton = PrkTabBarButton(title: NSLocalizedString("tabbar_here", comment : ""), icon: UIImage(named: "tabbar_here"), selectedIcon: UIImage(named: "tabbar_here_active"))
         myCarButton = PrkTabBarButton(title: NSLocalizedString("tabbar_mycar", comment : ""), icon: UIImage(named: "tabbar_mycar"), selectedIcon: UIImage(named: "tabbar_mycar_active"))
         settingsButton = PrkTabBarButton(title: NSLocalizedString("tabbar_settings", comment : ""), icon: UIImage(named: "tabbar_settings"), selectedIcon: UIImage(named: "tabbar_settings_active"))
@@ -49,9 +49,9 @@ class PrkTabBar: UIView {
     
     func setupSubviews() {
         
-        searchButton.addTarget(self, action: "searchButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        searchButton.selected = false
-        addSubview(searchButton)
+//        searchButton.addTarget(self, action: "searchButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+//        searchButton.selected = false
+//        addSubview(searchButton)
         
         hereButton.addTarget(self, action: "hereButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         hereButton.selected = false
@@ -70,32 +70,58 @@ class PrkTabBar: UIView {
     
     func setupConstraints() {
         
-        searchButton.snp_makeConstraints { (make) -> () in
+    
+        
+//        searchButton.snp_makeConstraints { (make) -> () in
+//            make.left.equalTo(self)
+//            make.top.equalTo(self)
+//            make.bottom.equalTo(self)
+//            make.width.equalTo(self).multipliedBy(0.25)
+//        }
+//        
+//        hereButton.snp_makeConstraints { (make) -> () in
+//            make.left.equalTo(self.searchButton.snp_right)
+//            make.top.equalTo(self)
+//            make.bottom.equalTo(self)
+//            make.width.equalTo(self).multipliedBy(0.25)
+//        }
+//        
+//        myCarButton.snp_makeConstraints { (make) -> () in
+//            make.right.equalTo(self.settingsButton.snp_left)
+//            make.top.equalTo(self)
+//            make.bottom.equalTo(self)
+//            make.width.equalTo(self).multipliedBy(0.25)
+//        }
+//        
+//        settingsButton.snp_makeConstraints { (make) -> () in
+//            make.right.equalTo(self)
+//            make.top.equalTo(self)
+//            make.bottom.equalTo(self)
+//            make.width.equalTo(self).multipliedBy(0.25)
+//        }
+//        
+        
+        // uncomment above for search button
+        
+        hereButton.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
-            make.width.equalTo(self).multipliedBy(0.25)
+            make.width.equalTo(self).multipliedBy(1.0/3.0)
         }
-        
-        hereButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.searchButton.snp_right)
-            make.top.equalTo(self)
-            make.bottom.equalTo(self)
-            make.width.equalTo(self).multipliedBy(0.25)
-        }
-        
+
         myCarButton.snp_makeConstraints { (make) -> () in
             make.right.equalTo(self.settingsButton.snp_left)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
-            make.width.equalTo(self).multipliedBy(0.25)
+            make.width.equalTo(self).multipliedBy(1.0/3.0)
         }
-        
+
         settingsButton.snp_makeConstraints { (make) -> () in
             make.right.equalTo(self)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
-            make.width.equalTo(self).multipliedBy(0.25)
+            make.width.equalTo(self).multipliedBy(1.0/3.0)
         }
         
         
@@ -104,7 +130,7 @@ class PrkTabBar: UIView {
     
     
     func deselectAll() {
-        searchButton.selected = false
+//        searchButton.selected = false
         hereButton.selected = false
         myCarButton.selected = false
         settingsButton.selected = false
@@ -116,9 +142,9 @@ class PrkTabBar: UIView {
         
         switch(self.delegate!.activeTab()) {
             
-        case PrkTab.Search :
-            searchButton.selected = true
-            break
+//        case PrkTab.Search :
+//            searchButton.selected = true
+//            break
             
         case PrkTab.Here :
             hereButton.selected = true
@@ -142,9 +168,9 @@ class PrkTabBar: UIView {
     
     func searchButtonTapped(button : PrkTabBarButton) {
         
-        if(self.delegate != nil) {
-            self.delegate!.loadSearchTab()
-        }
+//        if(self.delegate != nil) {
+//            self.delegate!.loadSearchTab()
+//        }
     }
     
     func hereButtonTapped(button : PrkTabBarButton) {
@@ -174,7 +200,7 @@ class PrkTabBar: UIView {
 
 protocol PrkTabBarDelegate {
     func activeTab() -> PrkTab
-    func loadSearchTab()
+//    func loadSearchTab()
     func loadHereTab()
     func loadMyCarTab()
     func loadSettingsTab()

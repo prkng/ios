@@ -407,10 +407,10 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             
             comps.setValue(self.durationSelectionView.getHour(), forComponent: NSCalendarUnit.HourCalendarUnit);
             comps.setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendarUnit.MinuteCalendarUnit);
+            comps.setValue(self.dateSelectionView.selectedDay, forComponent: NSCalendarUnit.WeekdayCalendarUnit)
             
-            var noon_tomorrow : NSDate = gregorian.dateFromComponents(comps)!;
-            
-            
+            date = gregorian.dateFromComponents(comps)!;
+                        
             self.delegate!.displaySearchResults(results, checkinTime : date)
             
         })
