@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class MapViewController: AbstractViewController, RMMapViewDelegate {
+class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRecognizerDelegate {
     
     let mapSource = "arnaudspuhler.l54pj66f"
     
@@ -21,6 +21,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     var centerButtonAnnotations: Array<RMAnnotation>
     var searchAnnotations: Array<RMAnnotation>
     var selectedSpot: ParkingSpot?
+    var isSelecting: Bool
     var radius : Float
     var updateInProgress : Bool
     
@@ -28,6 +29,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
+    
+    var tapRecognizer : UITapGestureRecognizer
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
@@ -49,6 +52,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         mapView.showLogoBug = false
         mapView.hideAttribution = true
         mapView.zoom = 17
+        isSelecting = false
         spots = []
         lineAnnotations = []
         centerButtonAnnotations = []
@@ -57,6 +61,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         updateInProgress = false
         
         trackUserButton = UIButton()
+        
+        tapRecognizer = UITapGestureRecognizer()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -78,12 +84,13 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             make.edges.equalTo(self.view)
         }
         
-        trackUserButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(36, 36))
-            make.centerX.equalTo(self.view).multipliedBy(0.33)
-            make.bottom.equalTo(self.view).with.offset(-30)
-        }
+        showTrackUserButton()
         
+        //attach a gesture recognizer to the mapView... so that we can register touches *around* the "button" annotations
+        var tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleCustomTapFrom:"))
+        tapRecognizer.delegate = self
+        self.mapView.addGestureRecognizer(tapRecognizer)
+
     }
     
     override func viewDidLoad() {
@@ -139,7 +146,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                 shape.lineColor = Styles.Colors.petrol2
             }
             shape.lineWidth = 4.4
-            
+
             for location in spot.line.coordinates as Array<CLLocation> {
                 shape.addLineToCoordinate(location.coordinate)
             }
@@ -148,23 +155,19 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             
             
         case "button":
-            
+
             var selected = userInfo!["selected"] as! Bool
             var spot = userInfo!["spot"] as! ParkingSpot
             
-            var circle: RMCircle = RMCircle(view: self.mapView, radiusInMeters: 2.0)
-            circle.lineWidthInPixels = 4.0
-            
-            
+            var circleImage = UIImage(named: "button_line_inactive")
+                        
             if (selected) {
-                circle.lineColor = Styles.Colors.berry1
-                circle.fillColor = Styles.Colors.red2
-            } else {
-                circle.lineColor = Styles.Colors.midnight2
-                circle.fillColor = Styles.Colors.petrol2
+                circleImage = UIImage(named: "button_line_active")
             }
             
-            return circle
+            var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
+
+            return circleMarker
             
         case "searchResult":
             
@@ -183,9 +186,9 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         
         if (mapView.userTrackingMode.value == 2 ) { //RMUserTrackingModeFollowWithHeading
-            self.trackUserButton.hidden = true
+            self.hideTrackUserButton()
         } else {
-            self.trackUserButton.hidden = (delegate != nil && !delegate!.shouldShowUserTrackingButton())
+            toggleTrackUserButton(!(delegate != nil && !delegate!.shouldShowUserTrackingButton()))
             self.mapView.userTrackingMode = RMUserTrackingModeNone
         }
     
@@ -219,9 +222,11 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     func mapView(mapView: RMMapView!, didSelectAnnotation annotation: RMAnnotation!) {
         
-        if (annotation.isUserLocationAnnotation) {
+        if (isSelecting || annotation.isUserLocationAnnotation) {
             return
         }
+        
+        isSelecting = true
         
         if (selectedSpot != nil) {
             removeAnnotations(findAnnotations(selectedSpot!.identifier))
@@ -255,6 +260,9 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             
             
         }
+        
+        isSelecting = false
+
     }
     
     func mapViewRegionDidChange(mapView: RMMapView!) {
@@ -316,10 +324,52 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     // MARK: Helper Methods
     
-    func trackUserButtonTapped () {
+    func toggleTrackUserButton(shouldShowButton: Bool) {
+        if (shouldShowButton) {
+            showTrackUserButton()
+        } else {
+            hideTrackUserButton()
+        }
+    }
+    
+    func hideTrackUserButton() {
+
+        trackUserButton.snp_updateConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(0, 0))
+            make.centerX.equalTo(self.view).multipliedBy(0.33)
+            make.bottom.equalTo(self.view).with.offset(-48)
+        }
         
+        animateTrackUserButton()
+    }
+    
+    func showTrackUserButton() {
+        
+        trackUserButton.snp_updateConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(36, 36))
+            make.centerX.equalTo(self.view).multipliedBy(0.33)
+            make.bottom.equalTo(self.view).with.offset(-30)
+        }
+        
+        animateTrackUserButton()
+    }
+    
+    func animateTrackUserButton() {
+        self.trackUserButton.setNeedsLayout()
+        UIView.animateWithDuration(0.2,
+            delay: 0,
+            options: UIViewAnimationOptions.CurveEaseInOut,
+            animations: { () -> Void in
+                self.trackUserButton.layoutIfNeeded()
+            },
+            completion: { (completed:Bool) -> Void in
+        })
+    }
+    
+    func trackUserButtonTapped () {
+
+        hideTrackUserButton()
         self.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
-        self.trackUserButton.hidden = true
     }
     
     
@@ -382,7 +432,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     func addSpotAnnotation(map: RMMapView, spot: ParkingSpot, selected: Bool) {
         
-        var annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: spot.line.coordinates[0].coordinate, andTitle: spot.identifier)
+        let coordinate = spot.line.coordinates[0].coordinate
+        var annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: spot.identifier)
         annotation.setBoundingBoxFromLocations(spot.line.coordinates)
         annotation.userInfo = ["type": "line", "spot": spot, "selected": selected]
         self.mapView.addAnnotation(annotation)
@@ -501,6 +552,49 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
 
         self.mapView.removeAnnotations(annotations)
         
+    }
+    
+    
+    // MARK: GestureRecognizer delegate methods and related
+    
+    func handleCustomTapFrom(gestureRecognizer:UITapGestureRecognizer) {
+        
+        var touchPoint = gestureRecognizer.locationInView(self.view)
+        var minimumDistance = CGFloat(Float.infinity)
+        var closestAnnotation : RMAnnotation? = nil
+        //loop through the annotations to see if we touched a line or a button
+        for annotation in lineAnnotations {
+        }
+        for annotation: RMAnnotation in self.mapView.visibleAnnotations as! [RMAnnotation] {
+            
+            if (annotation.isUserLocationAnnotation) {
+                continue
+            }
+            
+            var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
+            var annotationType = userInfo!["type"] as! String
+            
+            if (annotationType == "button") {
+                var annotationPoint = self.mapView.coordinateToPixel(annotation.coordinate)
+                let xDist = (annotationPoint.x - touchPoint.x);
+                let yDist = (annotationPoint.y - touchPoint.y);
+                let distance = sqrt((xDist * xDist) + (yDist * yDist));
+                
+                if (distance < minimumDistance) {
+                    minimumDistance = distance
+                    closestAnnotation = annotation
+                }
+            }
+        }
+        
+        if (closestAnnotation != nil && minimumDistance < 60) {
+            self.mapView.selectAnnotation(closestAnnotation, animated: true)
+        }
+        
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
     
     
