@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRecognizerDelegate {
+class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     let mapSource = "arnaudspuhler.l54pj66f"
     
@@ -29,8 +29,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRec
     
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
-    
-    var tapRecognizer : UITapGestureRecognizer
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
@@ -62,8 +60,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRec
         
         trackUserButton = UIButton()
         
-        tapRecognizer = UITapGestureRecognizer()
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -85,11 +81,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRec
         }
         
         showTrackUserButton()
-        
-        //attach a gesture recognizer to the mapView... so that we can register touches *around* the "button" annotations
-        var tapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleCustomTapFrom:"))
-        tapRecognizer.delegate = self
-        self.mapView.addGestureRecognizer(tapRecognizer)
 
     }
     
@@ -160,7 +151,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRec
             var spot = userInfo!["spot"] as! ParkingSpot
             
             var circleImage = UIImage(named: "button_line_inactive")
-                        
+            
             if (selected) {
                 circleImage = UIImage(named: "button_line_active")
             }
@@ -262,6 +253,40 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRec
         }
         
         isSelecting = false
+
+    }
+    
+    func singleTapOnMap(map: RMMapView!, at point: CGPoint) {
+        var minimumDistance = CGFloat(Float.infinity)
+        var closestAnnotation : RMAnnotation? = nil
+        //loop through the annotations to see if we touched a line or a button
+        for annotation in lineAnnotations {
+        }
+        for annotation: RMAnnotation in map.visibleAnnotations as! [RMAnnotation] {
+            
+            if (annotation.isUserLocationAnnotation) {
+                continue
+            }
+            
+            var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
+            var annotationType = userInfo!["type"] as! String
+            
+            if (annotationType == "button") {
+                var annotationPoint = map.coordinateToPixel(annotation.coordinate)
+                let xDist = (annotationPoint.x - point.x);
+                let yDist = (annotationPoint.y - point.y);
+                let distance = sqrt((xDist * xDist) + (yDist * yDist));
+                
+                if (distance < minimumDistance) {
+                    minimumDistance = distance
+                    closestAnnotation = annotation
+                }
+            }
+        }
+        
+        if (closestAnnotation != nil && minimumDistance < 60) {
+            map.selectAnnotation(closestAnnotation, animated: true)
+        }
 
     }
     
@@ -552,49 +577,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate, UIGestureRec
 
         self.mapView.removeAnnotations(annotations)
         
-    }
-    
-    
-    // MARK: GestureRecognizer delegate methods and related
-    
-    func handleCustomTapFrom(gestureRecognizer:UITapGestureRecognizer) {
-        
-        var touchPoint = gestureRecognizer.locationInView(self.view)
-        var minimumDistance = CGFloat(Float.infinity)
-        var closestAnnotation : RMAnnotation? = nil
-        //loop through the annotations to see if we touched a line or a button
-        for annotation in lineAnnotations {
-        }
-        for annotation: RMAnnotation in self.mapView.visibleAnnotations as! [RMAnnotation] {
-            
-            if (annotation.isUserLocationAnnotation) {
-                continue
-            }
-            
-            var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
-            var annotationType = userInfo!["type"] as! String
-            
-            if (annotationType == "button") {
-                var annotationPoint = self.mapView.coordinateToPixel(annotation.coordinate)
-                let xDist = (annotationPoint.x - touchPoint.x);
-                let yDist = (annotationPoint.y - touchPoint.y);
-                let distance = sqrt((xDist * xDist) + (yDist * yDist));
-                
-                if (distance < minimumDistance) {
-                    minimumDistance = distance
-                    closestAnnotation = annotation
-                }
-            }
-        }
-        
-        if (closestAnnotation != nil && minimumDistance < 60) {
-            self.mapView.selectAnnotation(closestAnnotation, animated: true)
-        }
-        
-    }
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
     }
     
     
