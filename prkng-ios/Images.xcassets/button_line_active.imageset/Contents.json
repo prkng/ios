@@ -2,8 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "button_line_active.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
