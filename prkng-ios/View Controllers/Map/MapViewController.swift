@@ -195,20 +195,18 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         
         if (mapView.userTrackingMode.value == 2 ) { //RMUserTrackingModeFollowWithHeading
-            self.trackUserButton.hidden = true
+            self.hideTrackUserButton()
         } else {
-            self.trackUserButton.hidden = (delegate != nil && !delegate!.shouldShowUserTrackingButton())
+            toggleTrackUserButton(!(delegate != nil && !delegate!.shouldShowUserTrackingButton()))
             self.mapView.userTrackingMode = RMUserTrackingModeNone
         }
-    
+        
     }
     
     func afterMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
         if !wasUserAction {
             return
-        }
-        NSLog("afterMapMove")
-        
+        }        
         self.selectedSpot = nil
         updateAnnotations()
         
@@ -217,8 +215,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
        
     
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
-        //        NSLog("afterMapZoom : %f", map.zoom)
-        
         radius = (20.0 - map.zoom) * 100
         
         if(map.zoom < 16.0) {
@@ -273,66 +269,54 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         //        NSLog("regiondidchange")
     }
     
-    
-//    func annotationSortingComparatorForMapView(mapView: RMMapView!) -> NSComparator {
-//        
-//        return {
-//            (annotation1: AnyObject!, annotation2: AnyObject!) -> (NSComparisonResult) in
-//            
-//            var userInfo1: [String:AnyObject]? = (annotation1 as! RMAnnotation).userInfo as? [String:AnyObject]
-//            var type1 = userInfo1!["type"] as! String
-//            
-//            var userInfo2: [String:AnyObject]? = (annotation2 as! RMAnnotation).userInfo as? [String:AnyObject]
-//            var type2 = userInfo2!["type"] as! String
-//            
-//            
-//            if (type1 == "button" && type2 == "line") {
-//                return NSComparisonResult.OrderedDescending
-//            } else if (type1 == "line" && type2 == "button") {
-//                return NSComparisonResult.OrderedAscending
-//            } else {
-//                return NSComparisonResult.OrderedSame
-//            }
-//            
-//            
-//        }
-//        
-//        
-//    }
-    
-    
-    // Helper Methods
-    
-    
-//    func updateMapBasedOnZoom (zoom : Float) {
-//        
-//        if (zoom <= 17.0 && zoom > 16.0) {
-//            
-//            if (centerButtonAnnotations.count > 0) {
-//                mapView.removeAnnotations(centerButtonAnnotations)
-//            }
-//            
-//        } else if(zoom <= 16.0) {
-//            
-//            if (lineAnnotations.count > 0) {
-//                mapView.removeAnnotations(lineAnnotations)
-//            }
-//            
-//            if (centerButtonAnnotations.count > 0) {
-//                mapView.removeAnnotations(centerButtonAnnotations)
-//            }
-//        }
-//        
-//        
-//    }
-    
     // MARK: Helper Methods
     
     func trackUserButtonTapped () {
-        
         self.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
-        self.trackUserButton.hidden = true
+        hideTrackUserButton()
     }
+    
+    
+    func toggleTrackUserButton(shouldShowButton: Bool) {
+        if (shouldShowButton) {
+            showTrackUserButton()
+        } else {
+            hideTrackUserButton()
+        }
+    }
+    
+    func hideTrackUserButton() {
+        
+        trackUserButton.snp_updateConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(0, 0))
+            make.centerX.equalTo(self.view).multipliedBy(0.33)
+            make.bottom.equalTo(self.view).with.offset(-48)
+        }
+        animateTrackUserButton()
+    }
+    
+    func showTrackUserButton() {
+        
+        trackUserButton.snp_updateConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(36, 36))
+            make.centerX.equalTo(self.view).multipliedBy(0.33)
+            make.bottom.equalTo(self.view).with.offset(-30)
+        }
+        animateTrackUserButton()
+    }
+    
+    func animateTrackUserButton() {
+        self.trackUserButton.setNeedsLayout()
+        UIView.animateWithDuration(0.2,
+            delay: 0,
+            options: UIViewAnimationOptions.CurveEaseInOut,
+            animations: { () -> Void in
+                self.trackUserButton.layoutIfNeeded()
+            },
+            completion: { (completed:Bool) -> Void in
+        })
+    }
+    
     
     
     func updateAnnotations() {
@@ -345,7 +329,6 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         updateInProgress = true
         
         if (mapView.zoom > 16.0) {
-            
             
             var checkinTime = searchCheckinDate
             var duration = searchDuration
@@ -371,11 +354,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                         self.addSpotAnnotation(self.mapView, spot: spot, selected: false)
                     }
                     self.updateInProgress = false
-                    
             })
             
-                
- 
         } else {
             
             mapView.removeAnnotations(lineAnnotations)
