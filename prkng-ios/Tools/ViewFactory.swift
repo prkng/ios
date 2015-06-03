@@ -20,6 +20,11 @@ struct ViewFactory {
         return scheduleButton
     }
     
+    static func mapReturnButton () -> UIButton {
+        var scheduleButton : UIButton =  UIButton()
+        scheduleButton.setImage(UIImage(named: "btn_map_return"), forState: UIControlState.Normal)
+        return scheduleButton
+    }
     
     static func redRoundedButton () -> UIButton {
         

@@ -63,7 +63,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         containerView.addSubview(hereViewController.view)
         tabBar.updateSelected()
         hereViewController.delegate = self
-        
+        hereViewController.searchDelegate = self
         hereViewController.view.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.containerView)
         }
@@ -292,7 +292,12 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
 
     
     func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?) {
+        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
         mapViewController.displaySearchResults(results, checkinTime: checkinTime)
+    }
+    
+    func clearSearchResults() {
+        mapViewController.clearSearchResults()
     }
     
     // MARK: MyCarNoCheckinViewControllerDelegate

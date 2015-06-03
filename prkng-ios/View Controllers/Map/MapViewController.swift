@@ -16,7 +16,9 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     var delegate: MapViewControllerDelegate?
     
     var mapView: RMMapView
-    var spots: Array<ParkingSpot>
+    var lastMapZoom: Float
+    var lastUserLocation: CLLocation
+    var spotIdentifiersDrawnOnMap: Array<String>
     var lineAnnotations: Array<RMAnnotation>
     var centerButtonAnnotations: Array<RMAnnotation>
     var searchAnnotations: Array<RMAnnotation>
@@ -50,8 +52,10 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         mapView.showLogoBug = false
         mapView.hideAttribution = true
         mapView.zoom = 17
+        lastMapZoom = 0
+        lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         isSelecting = false
-        spots = []
+        spotIdentifiersDrawnOnMap = []
         lineAnnotations = []
         centerButtonAnnotations = []
         searchAnnotations = []
@@ -121,13 +125,15 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
         var annotationType = userInfo!["type"] as! String
         
+        let addAnimation = annotationType
         
         switch annotationType {
             
         case "line":
             
-            var selected = userInfo!["selected"] as! Bool
-            var spot = userInfo!["spot"] as! ParkingSpot
+            let selected = userInfo!["selected"] as! Bool
+            let spot = userInfo!["spot"] as! ParkingSpot
+            let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             
             var shape = RMShape(view: mapView)
             
@@ -141,14 +147,20 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             for location in spot.line.coordinates as Array<CLLocation> {
                 shape.addLineToCoordinate(location.coordinate)
             }
+
+            if shouldAddAnimation {
+                addScaleAnimationtoView(shape)
+                spotIdentifiersDrawnOnMap.append(spot.identifier)
+            }
             
             return shape
             
             
         case "button":
 
-            var selected = userInfo!["selected"] as! Bool
-            var spot = userInfo!["spot"] as! ParkingSpot
+            let selected = userInfo!["selected"] as! Bool
+            let spot = userInfo!["spot"] as! ParkingSpot
+            let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             
             var circleImage = UIImage(named: "button_line_inactive")
             
@@ -157,6 +169,22 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             }
             
             var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
+            
+            if shouldAddAnimation {
+                addScaleAnimationtoView(circleMarker)
+                spotIdentifiersDrawnOnMap.append(spot.identifier)
+            }
+            
+            if (selected) {
+                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
+                pulseAnimation.duration = 0.7
+                pulseAnimation.fromValue = 0.95
+                pulseAnimation.toValue = 1.10
+                pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                pulseAnimation.autoreverses = true
+                pulseAnimation.repeatCount = FLT_MAX
+                circleMarker.addAnimation(pulseAnimation, forKey: nil)
+            }
 
             return circleMarker
             
@@ -203,7 +231,13 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             radius = 0
         }
         
+        if (abs(lastMapZoom - map.zoom) >= 1) {
+            spotIdentifiersDrawnOnMap = []
+        }
+        
         updateAnnotations()
+        
+        lastMapZoom = map.zoom
         
     }
     
@@ -250,6 +284,18 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         isSelecting = false
 
+    }
+    
+    func mapView(mapView: RMMapView!, didUpdateUserLocation userLocation: RMUserLocation!) {
+        //this will run too often, so only run it if we've changed by any significant amount
+        if let userCLLocation = userLocation.location {
+            let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
+            
+            if differenceInMeters > 4 {
+                updateAnnotations()
+                lastUserLocation = userCLLocation
+            }
+        }
     }
     
     func singleTapOnMap(map: RMMapView!, at point: CGPoint) {
@@ -338,6 +384,26 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         })
     }
     
+    func addScaleAnimationtoView(mapLayer: RMMapLayer) {
+        var animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        
+        animation.values = [0,1]
+        
+        animation.duration = 0.6
+        var timingFunctions: Array<CAMediaTimingFunction> = []
+        
+        for i in 0...animation.values.count {
+            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        }
+        
+        animation.timingFunctions = timingFunctions
+        animation.removedOnCompletion = true
+        
+        mapLayer.addAnimation(animation, forKey: "scale")
+        
+//        NSLog("Added a scale animation")
+    }
+
     
     func updateAnnotations() {
         
@@ -364,16 +430,41 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration!, checkinTime: checkinTime!, completion:
                 { (spots) -> Void in
                     
+                    //TODO: Optimize this section, it's likely what causes the sluggish map behaviour (in the addSpotAnnotation method)
+                    //do we really need to replace all spots? probably only the ones that are new...
+                    
+                    var startedOn = NSDate()
+                    var format = NSDateFormatter()
+                    format.dateFormat = "hh:mm:ss.SSS"
+                    NSLog("findSpots completion - started at: %@", format.stringFromDate(startedOn))
                     self.mapView.removeAnnotations(self.lineAnnotations)
                     self.lineAnnotations = []
                     
                     self.mapView.removeAnnotations(self.centerButtonAnnotations)
                     self.centerButtonAnnotations = []
                     
+                    //
+                    // spots that have left the screen need to be re-animated next time
+                    // therefore, we remove spots that have not been fetched this time around
+                    //
+                    var newSpotIDs = spots.map{(var spot: ParkingSpot) -> String in spot.identifier}
+                    self.spotIdentifiersDrawnOnMap = self.spotIdentifiersDrawnOnMap.filter({ (var spotID: String) -> Bool in
+                        contains(newSpotIDs, spotID)
+                    })
+                    
                     for spot in spots {
-                        self.addSpotAnnotation(self.mapView, spot: spot, selected: false)
+                        let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
+                        
+                        self.addSpotAnnotation(self.mapView, spot: spot, selected: selected)
                     }
                     self.updateInProgress = false
+                    
+                    var timeInterval = NSDate().timeIntervalSinceDate(startedOn)
+                    let milliseconds = CUnsignedLong(timeInterval * 1000)
+                    NSLog("findSpots completion took: " + String(milliseconds) + " milliseconds")
+                    NSLog("findSpots completion - ended at: %@", format.stringFromDate(NSDate()))
+                    
+                    
             })
             
         } else {
@@ -395,9 +486,10 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     func addSpotAnnotation(map: RMMapView, spot: ParkingSpot, selected: Bool) {
         
         let coordinate = spot.line.coordinates[0].coordinate
+        let shouldAddAnimation = !contains(self.spotIdentifiersDrawnOnMap, spot.identifier)
         var annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: spot.identifier)
         annotation.setBoundingBoxFromLocations(spot.line.coordinates)
-        annotation.userInfo = ["type": "line", "spot": spot, "selected": selected]
+        annotation.userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
         self.mapView.addAnnotation(annotation)
         lineAnnotations.append(annotation)
         
@@ -406,7 +498,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             
             var centerButton: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: spot.buttonLocation.coordinate, andTitle: spot.identifier)
             centerButton.setBoundingBoxFromLocations(spot.line.coordinates)
-            centerButton.userInfo = ["type": "button", "spot": spot, "selected": selected]
+            centerButton.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
             mapView.addAnnotation(centerButton)
             centerButtonAnnotations.append(centerButton)
             
@@ -526,8 +618,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         if (results.count == 0) {
             let alert = UIAlertView()
             alert.title = "No results found"
-            alert.message = "We couldn't find anything matching those criterias"
-            alert.addButtonWithTitle("Okay")
+            alert.message = "We couldn't find anything matching the criteria"
+            alert.addButtonWithTitle("Close")
             alert.show()
             return
         }

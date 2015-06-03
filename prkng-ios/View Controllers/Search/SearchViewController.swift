@@ -423,7 +423,7 @@ protocol SearchViewControllerDelegate {
     
     func setSearchParameters(time : NSDate?, duration : Float?)
     func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?)
-    
+    func clearSearchResults()
 }
 
 
