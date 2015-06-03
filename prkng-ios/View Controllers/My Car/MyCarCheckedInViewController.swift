@@ -204,7 +204,18 @@ class MyCarCheckedInViewController: AbstractViewController {
     
     func updateValues () {
         locationLabel.text = spot?.name
-        availableTimeLabel.text = spot?.availableHourString()
+        
+        let interval = Settings.checkInTimeRemaining()
+        
+        if (interval > 59) {
+            let minutes  = Int((interval / 60) % 60)
+            let hours = Int((interval / 3600))
+            availableTimeLabel.text = String(NSString(format: "%02ld:%02ld", hours, minutes))
+        } else {
+            availableTimeLabel.text = "time_up".localizedString
+        }
+
+        
     }
     
     func toggleNotifications () {

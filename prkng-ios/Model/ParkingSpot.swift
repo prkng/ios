@@ -51,13 +51,20 @@ class ParkingSpot: NSObject {
         
         for period in todaysAgenda() {
             
-            if (period != nil && Int(period!.start) > Int(interval)) {
+            if period != nil  {
                 
-                // timeLimit is added for "Limited" time periods, otherwise it will always be 0
-                var diff = Int(period!.start) - Int(interval) + Int(period!.timeLimit)
-                
-                if (diff < smallest) {
-                    smallest = diff
+                if (Int(period!.start) > Int(interval)) {
+                    
+                    // timeLimit is added for "Limited" time periods, otherwise it will always be 0
+                    var diff = Int(period!.start) - Int(interval) + Int(period!.timeLimit)
+                    
+                    if (diff < smallest) {
+                        smallest = diff
+                    }
+                    
+                } else if (period!.start <= interval && period!.end > interval && period!.timeLimit > 0) { // we're inside a limited time zone.
+                    // no need to check anything else
+                    return period!.timeLimit
                 }
                 
             }

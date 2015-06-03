@@ -17,6 +17,8 @@ struct Settings {
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
     static let CHECKED_IN_SPOT_ID_KEY = "prkng_checked_in_spot_id"
     static let LAST_CHECKIN_TIME_KEY = "prkng_last_checkin_time"
+    static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
+
     
     static let DEFAULT_NOTIFICATION_TIME = 30
     static let availableCities = ["Montreal", "Quebec City"]
@@ -83,15 +85,33 @@ struct Settings {
         return NSUserDefaults.standardUserDefaults().objectForKey(CHECKED_IN_SPOT_ID_KEY) != nil
     }
     
+    static func checkInTimeRemaining() -> NSTimeInterval {
+        
+        if (!checkedIn()) {
+            return NSTimeInterval(0)
+        }
+        
+        
+        let expireInterval = NSTimeInterval(NSUserDefaults.standardUserDefaults().doubleForKey(LAST_CHECKIN_EXPIRE_KEY))
+        let checkInDate = NSUserDefaults.standardUserDefaults().objectForKey(LAST_CHECKIN_TIME_KEY) as! NSDate
+        let now = NSDate()
+        
+        
+        return expireInterval - now.timeIntervalSinceDate(checkInDate)
+    }
+    
     
     static func saveCheckInData(spot : ParkingSpot?, time : NSDate?) {
         
         if (spot != nil && time != nil) {
             NSUserDefaults.standardUserDefaults().setObject(spot!.identifier, forKey: CHECKED_IN_SPOT_ID_KEY)
             NSUserDefaults.standardUserDefaults().setObject(time!, forKey: LAST_CHECKIN_TIME_KEY)
+            NSUserDefaults.standardUserDefaults().setObject(spot?.availableTimeInterval(), forKey: LAST_CHECKIN_EXPIRE_KEY)
         } else {
             NSUserDefaults.standardUserDefaults().removeObjectForKey(CHECKED_IN_SPOT_ID_KEY)
             NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_TIME_KEY)
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_EXPIRE_KEY)
+
         }
         
         NSUserDefaults.standardUserDefaults().synchronize()

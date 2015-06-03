@@ -20,15 +20,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     var activeSpot : ParkingSpot?
     
-    var locationManager : CLLocationManager
-    
     var delegate : HereViewControllerDelegate?
     
     init() {
         detailView = SpotDetailView()
         statusBar = UIView()
         checkinButton = UIButton()
-        locationManager = CLLocationManager()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,6 +37,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         self.view = TouchForwardingView()
         setupViews()
         setupConstraints()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -99,8 +101,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
         }
-        
-
         
     }
     

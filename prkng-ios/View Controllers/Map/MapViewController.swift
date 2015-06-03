@@ -150,25 +150,37 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         case "button":
             
             var selected = userInfo!["selected"] as! Bool
-            var spot = userInfo!["spot"] as! ParkingSpot
+//            var spot = userInfo!["spot"] as! ParkingSpot
+//            
+//            var circle: RMCircle = RMCircle(view: self.mapView, radiusInMeters: 2.0)
+//            circle.lineWidthInPixels = 4.0
+//            
+//            
+//            if (selected) {
+//                circle.lineColor = Styles.Colors.berry1
+//                circle.fillColor = Styles.Colors.red2
+//            } else {
+//                circle.lineColor = Styles.Colors.midnight2
+//                circle.fillColor = Styles.Colors.petrol2
+//            }
+//            
+//            return circle
             
-            var circle: RMCircle = RMCircle(view: self.mapView, radiusInMeters: 2.0)
-            circle.lineWidthInPixels = 4.0
+            var btnImage : UIImage
             
-            
-            if (selected) {
-                circle.lineColor = Styles.Colors.berry1
-                circle.fillColor = Styles.Colors.red2
+            if(selected) {
+                btnImage = UIImage(named: "button_line_active")!
             } else {
-                circle.lineColor = Styles.Colors.midnight2
-                circle.fillColor = Styles.Colors.petrol2
+                btnImage = UIImage(named: "button_line_inactive")!
             }
             
-            return circle
+            let marker = RMMarker(UIImage: btnImage)
+            marker.canShowCallout = false
+            return marker
             
         case "searchResult":
             
-            var marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
+            let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
             marker.canShowCallout = true
             return marker
             
@@ -202,7 +214,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         self.delegate?.mapDidMove(CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude))
     }
-    
+       
     
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         //        NSLog("afterMapZoom : %f", map.zoom)

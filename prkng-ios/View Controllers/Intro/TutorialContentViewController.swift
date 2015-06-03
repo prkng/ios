@@ -20,7 +20,13 @@ class TutorialContentViewController: UIViewController {
         pageIndex = index
         super.init(nibName: nil, bundle: nil)
         imageView.image = image
-        textLabel.text = text
+        
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 6.5
+        var attrString = NSMutableAttributedString(string: text)
+        attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+        textLabel.attributedText = attrString
+
 
     }
     
