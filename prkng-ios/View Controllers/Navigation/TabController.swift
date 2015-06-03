@@ -151,7 +151,6 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         }
         
         mapViewController.clearSearchResults()
-        mapViewController.mapView.zoom = 20
         mapViewController.mapView.showsUserLocation = true
         mapViewController.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
         
