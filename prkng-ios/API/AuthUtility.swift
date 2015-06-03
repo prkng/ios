@@ -18,11 +18,11 @@ struct AuthUtility {
     }
     
     static func authToken() -> String? {
-        return nil
+        return NSUserDefaults.standardUserDefaults().objectForKey(AUTH_TOKEN_KEY) as? String
     }
     
     static func saveAuthToken(token : String) {
-        
+        NSUserDefaults.standardUserDefaults().setObject(token, forKey: AUTH_TOKEN_KEY)
     }
     
     

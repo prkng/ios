@@ -5,7 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"
 version="1.1" 
 creator="gpx-poi.com">
-   <wpt lat="45.4776375889506" lon="-73.5857672824">
+   <wpt lat="45.4795855861311" lon="-73.580106237208">
        <time>2015-03-26T16:03:38Z</time>
    </wpt>
 </gpx>

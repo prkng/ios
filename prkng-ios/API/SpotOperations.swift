@@ -57,8 +57,10 @@ struct SpotOperations {
             time = checkinTime!
         }
         
+
+        
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         params["checkin"] = formatter.stringFromDate(time)
