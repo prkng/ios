@@ -49,7 +49,7 @@ class CheckinMessageViewController: UIViewController {
     
     func setupSubviews() {
         
-        view.backgroundColor = UIColor(red: 48.0/255.0, green: 58/255.0, blue: 66/255.0, alpha: 0.9)
+        view.backgroundColor = Styles.Colors.transparentBackground
         
         view.addSubview(containerView)
         

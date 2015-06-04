@@ -43,6 +43,7 @@
 		BF5E84F61B075DD400EC6AD2 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BF5E84F21B075DD400EC6AD2 /* SVProgressHUD.bundle */; };
 		BF5E84F71B075DD400EC6AD2 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84F41B075DD400EC6AD2 /* SVProgressHUD.m */; };
 		BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84F91B07B3D900EC6AD2 /* AF+Date+Extension.swift */; };
+		BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6E1D451B2083290038E358 /* ReportOverlayView.swift */; };
 		BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170A91AE3B59300B922CA /* PrkTabBar.swift */; };
 		BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */; };
 		BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170AD1AE3F04D00B922CA /* TouchForwardingView.swift */; };
@@ -101,6 +102,7 @@
 		BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */; };
 		BFEA6AEA1A9E2EE5001F063E /* libMapbox.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFEA6AE81A9E2EE5001F063E /* libMapbox.a */; };
 		BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BFEA6AE91A9E2EE5001F063E /* Mapbox.bundle */; };
+		BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */; };
 		BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BFF568E91ACC62CA0018F62F /* Localizable.strings */; };
 		BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF568EC1ACDCC1B0018F62F /* ScheduleViewController.swift */; };
 		BFFDE4611AFB829B0035DF54 /* LoginMethodSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFFDE4601AFB829B0035DF54 /* LoginMethodSelectionView.swift */; };
@@ -173,6 +175,7 @@
 		BF5E84F31B075DD400EC6AD2 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
 		BF5E84F41B075DD400EC6AD2 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
 		BF5E84F91B07B3D900EC6AD2 /* AF+Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AF+Date+Extension.swift"; sourceTree = "<group>"; };
+		BF6E1D451B2083290038E358 /* ReportOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportOverlayView.swift; sourceTree = "<group>"; };
 		BF7170A91AE3B59300B922CA /* PrkTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBar.swift; sourceTree = "<group>"; };
 		BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBarButton.swift; sourceTree = "<group>"; };
 		BF7170AD1AE3F04D00B922CA /* TouchForwardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchForwardingView.swift; sourceTree = "<group>"; };
@@ -292,6 +295,7 @@
 		BFEA6AE71A9E2EE5001F063E /* RMUserTrackingBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMUserTrackingBarButtonItem.h; sourceTree = "<group>"; };
 		BFEA6AE81A9E2EE5001F063E /* libMapbox.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMapbox.a; sourceTree = "<group>"; };
 		BFEA6AE91A9E2EE5001F063E /* Mapbox.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Mapbox.bundle; sourceTree = "<group>"; };
+		BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		BFF568E81ACC62CA0018F62F /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BFF568EA1ACC62D40018F62F /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BFF568EC1ACDCC1B0018F62F /* ScheduleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -370,6 +374,7 @@
 		BF0B47231A7E905F00E94B3C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BFEE21AA1B1F82640029BA71 /* Report */,
 				BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */,
 				BF8F78111B00D2CF00A85197 /* My Car */,
 				BFB0958D1AFA3F79007F1D16 /* Login */,
@@ -755,6 +760,15 @@
 			path = Headers;
 			sourceTree = "<group>";
 		};
+		BFEE21AA1B1F82640029BA71 /* Report */ = {
+			isa = PBXGroup;
+			children = (
+				BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */,
+				BF6E1D451B2083290038E358 /* ReportOverlayView.swift */,
+			);
+			path = Report;
+			sourceTree = "<group>";
+		};
 		BFF568EB1ACDCBF50018F62F /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
@@ -893,6 +907,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				BF3CFA281AFE3A08003D104D /* IQUIWindow+Hierarchy.m in Sources */,
@@ -933,6 +948,7 @@
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,
 				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,
 				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
+				BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
