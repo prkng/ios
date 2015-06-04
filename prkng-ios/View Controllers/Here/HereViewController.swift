@@ -98,6 +98,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchField.delegate = self
         searchField.keyboardAppearance = UIKeyboardAppearance.Dark
         searchField.keyboardType = UIKeyboardType.Default
+        searchField.autocorrectionType = UITextAutocorrectionType.No
         
         var searchFieldLeftImageView = UIImageView(image: UIImage(named: "tabbar_search_active"))
         searchFieldView.addSubview(searchFieldLeftImageView)
