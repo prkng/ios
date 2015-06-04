@@ -34,7 +34,7 @@ class ScheduleHeaderView: UIView {
         
         topContainer = UIView ()
         titleLabel = UILabel()
-        scheduleButton = ViewFactory.scheduleButton()
+        scheduleButton = ViewFactory.mapReturnButton()
         
         bottomContainer = UIView ()
         authorizedView = InfoView()

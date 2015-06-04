@@ -8,24 +8,27 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, CLLocationManagerDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
 
     var scheduleViewController : ScheduleViewController?
     var firstUseMessageVC : HereFirstUseViewController?
     var detailView: SpotDetailView
     
     var statusBar : UIView
-    
     var checkinButton : UIButton
-    
+    var searchField : UITextField
+
     var activeSpot : ParkingSpot?
     
     var delegate : HereViewControllerDelegate?
-    
+    var searchDelegate : SearchViewControllerDelegate?
+
     init() {
         detailView = SpotDetailView()
         statusBar = UIView()
         checkinButton = UIButton()
+        searchField = UITextField()
+        searchField.clearButtonMode = UITextFieldViewMode.Always
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -75,6 +78,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         checkinButton.enabled = false
         view.addSubview(checkinButton)
         
+        searchField.backgroundColor = Styles.Colors.cream2
+        searchField.layer.borderWidth = 1
+        searchField.layer.borderColor = Styles.Colors.beige1.CGColor
+        searchField.font = Styles.FontFaces.light(22)
+        searchField.textColor = Styles.Colors.midnight2
+        searchField.textAlignment = NSTextAlignment.Center
+        searchField.delegate = self
+        searchField.keyboardAppearance = UIKeyboardAppearance.Dark
+        searchField.keyboardType = UIKeyboardType.WebSearch
+        view.addSubview(searchField)
 
     }
     
@@ -100,6 +113,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.bottom.equalTo(self.view).with.offset(-20)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
+        }
+        
+        searchField.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.view).with.offset(40)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
+            make.left.equalTo(self.view).with.offset(12)
+            make.right.equalTo(self.view).with.offset(-12)
         }
         
     }
@@ -294,6 +314,33 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
+    }
+    
+    
+    // UITextFieldDelegate
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        return true
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
+        textField.endEditing(false)
+        SearchOperations.searchByStreetName(textField.text, completion: { (results) -> Void in
+            
+            let today = DateUtil.dayIndexOfTheWeek()
+            var date : NSDate = NSDate()
+            
+            self.searchDelegate!.displaySearchResults(results, checkinTime : date)
+            
+        })
+        
+        return true
+    }
+    
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        searchDelegate?.clearSearchResults()
+        return true
     }
     
     
