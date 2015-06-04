@@ -16,6 +16,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     var statusBar : UIView
     var checkinButton : UIButton
+    var searchFieldView : UIView
+    var searchButton : UIButton
     var searchField : UITextField
 
     var activeSpot : ParkingSpot?
@@ -27,6 +29,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         detailView = SpotDetailView()
         statusBar = UIView()
         checkinButton = UIButton()
+        searchFieldView = UIView()
+        searchButton = UIButton()
         searchField = UITextField()
         searchField.clearButtonMode = UITextFieldViewMode.Always
         super.init(nibName: nil, bundle: nil)
@@ -77,17 +81,30 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         checkinButton.addTarget(self, action: "checkinButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         checkinButton.enabled = false
         view.addSubview(checkinButton)
-        
-        searchField.backgroundColor = Styles.Colors.cream2
-        searchField.layer.borderWidth = 1
-        searchField.layer.borderColor = Styles.Colors.beige1.CGColor
+
+        searchFieldView.backgroundColor = Styles.Colors.red2
+        searchFieldView.layer.borderWidth = 0
+        searchFieldView.layer.cornerRadius = 18
+
+        searchButton.setImage(UIImage(named: "tabbar_search_active"), forState: UIControlState.Normal)
+        searchButton.addTarget(self, action: "transformSearchButtonIntoField", forControlEvents: UIControlEvents.TouchUpInside)
+
+        searchField.backgroundColor = Styles.Colors.red2
+        searchField.layer.borderWidth = 0
+        searchField.layer.cornerRadius = 18
         searchField.font = Styles.FontFaces.light(22)
-        searchField.textColor = Styles.Colors.midnight2
+        searchField.textColor = Styles.Colors.white
         searchField.textAlignment = NSTextAlignment.Center
         searchField.delegate = self
         searchField.keyboardAppearance = UIKeyboardAppearance.Dark
-        searchField.keyboardType = UIKeyboardType.WebSearch
-        view.addSubview(searchField)
+        searchField.keyboardType = UIKeyboardType.Default
+        
+        var searchFieldLeftImageView = UIImageView(image: UIImage(named: "tabbar_search_active"))
+        searchFieldView.addSubview(searchFieldLeftImageView)
+        searchFieldView.addSubview(searchButton)
+        searchFieldView.addSubview(searchField)
+        
+        view.addSubview(searchFieldView)
 
     }
     
@@ -115,13 +132,21 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.size.equalTo(CGSizeMake(60, 60))
         }
         
-        searchField.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(40)
-            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.view).with.offset(12)
-            make.right.equalTo(self.view).with.offset(-12)
+        searchButton.snp_makeConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(36, 36))
+            make.left.equalTo(0)
+            make.top.equalTo(0)
         }
-        
+
+        searchField.snp_makeConstraints{ (make) -> () in
+            make.left.equalTo(self.searchFieldView).offset(36)
+            make.right.equalTo(self.searchFieldView)
+            make.top.equalTo(0)
+            make.height.equalTo(36)
+        }
+
+        transformSearchFieldIntoButton()
+
     }
     
     
@@ -316,16 +341,64 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
+    func transformSearchButtonIntoField() {
+        
+        searchFieldView.snp_remakeConstraints { (make) -> () in
+            make.top.equalTo(self.view).with.offset(44)
+            make.height.equalTo(36)
+            make.left.equalTo(self.view.snp_right).multipliedBy(0.1)
+            make.right.equalTo(self.view.snp_right).multipliedBy(0.9)
+        }
+        
+        searchFieldView.setNeedsLayout()
+        
+        UIView.animateWithDuration(0.2,
+            delay: 0,
+            options: UIViewAnimationOptions.CurveEaseInOut,
+            animations: { () -> Void in
+                self.searchFieldView.layoutIfNeeded()
+            },
+            completion: { (completed:Bool) -> Void in
+                self.searchButton.hidden = true
+                self.searchField.becomeFirstResponder()
+        })
+        
+    }
+
+    func transformSearchFieldIntoButton() {
+        
+        self.searchButton.hidden = false
+        
+        searchFieldView.snp_remakeConstraints { (make) -> () in
+            make.top.equalTo(self.view).with.offset(44)
+            make.height.equalTo(36)
+            make.left.equalTo(self.view.snp_right).multipliedBy(0.1)
+            make.right.equalTo(self.view.snp_right).multipliedBy(0.1).with.offset(36)
+        }
+        
+        searchFieldView.setNeedsLayout()
+        
+        UIView.animateWithDuration(0.2,
+            delay: 0,
+            options: UIViewAnimationOptions.CurveEaseInOut,
+            animations: { () -> Void in
+                self.searchFieldView.layoutIfNeeded()
+            },
+            completion: { (completed:Bool) -> Void in
+        })
+        
+    }
+
     
     // UITextFieldDelegate
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        return true
+        return self.searchButton.hidden
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
-        textField.endEditing(false)
+        textField.endEditing(true)
         SearchOperations.searchByStreetName(textField.text, completion: { (results) -> Void in
             
             let today = DateUtil.dayIndexOfTheWeek()
@@ -338,9 +411,21 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         return true
     }
     
+    func textFieldDidEndEditing(textField: UITextField) {
+        if textField.text.isEmpty {
+            endSearch(textField)
+        }
+    }
+    
     func textFieldShouldClear(textField: UITextField) -> Bool {
-        searchDelegate?.clearSearchResults()
+        endSearch(textField)
         return true
+    }
+    
+    func endSearch(textField: UITextField) {
+        searchDelegate?.clearSearchResults()
+        transformSearchFieldIntoButton()
+        textField.endEditing(true)
     }
     
     
