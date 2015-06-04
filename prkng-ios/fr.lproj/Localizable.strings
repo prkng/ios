@@ -14,6 +14,7 @@
 "sign_up" = "INSCRIPTION";
 "login_with" = "CONNEXION AVEC";
 "login" = "connexion";
+"register" = "le register";
 "step" = "étape";
 "your_email" = "VOTRE EMAIL";
 "your_password" = "VOTRE MOT DE PASSE";
@@ -26,6 +27,8 @@
 "your_name" = "votre nom";
 "your_gender" = "votre genre";
 "your_birth_year" = "votre année de naissance";
+"male" = "le male";
+"female" = "le female";
 "invalid_name" = "Merci d’entrer votre nom";
 
 "minutes_short" = "min";
@@ -60,6 +63,8 @@
 "notifications_on" = "notifications : oui";
 
 // Days
+"today" = "le today";
+"tomorrow" = "le tomorrow";
 "monday" = "Lundi";
 "tuesday" = "Mardi";
 "wednesday" = "Mercredi";
@@ -87,3 +92,7 @@
 "here_firstuse_1" = "Cliquez sur l'un des tronçons afin de découvrir leur disponibilité.";
 "here_firstuse_2" = "Une fois votre place trouvée, appuyez sur \"check in\" pour être informé quand vous devez vous déplacer.";
 "free_spots" = "free spots";
+
+"report_title" = "REPORT AN ERROR AT";
+"report_text" = "Take a picture of the local\nregulation so we can improve\nour service";
+"report_thanks" = "THANKS FOR YOUR CONTRIBUTION !";

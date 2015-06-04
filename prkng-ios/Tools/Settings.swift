@@ -20,7 +20,7 @@ struct Settings {
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
-    static let availableCities = ["Montreal", "Quebec City"]
+    static let availableCities = ["Montréal", "Québec City"]
     
     static let iosVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
 

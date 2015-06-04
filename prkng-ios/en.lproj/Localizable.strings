@@ -12,6 +12,7 @@
 "sign_up" = "SIGN UP";
 "login_with" = "LOGIN WITH";
 "login" = "login";
+"register" = "register";
 "step" = "step";
 "your_email" = "YOUR EMAIL";
 "your_password" = "YOUR PASSWORD";
@@ -24,6 +25,8 @@
 "your_name" = "your name";
 "your_gender" = "your gender";
 "your_birth_year" = "your birth year";
+"male" = "male";
+"female" = "female";
 "invalid_name" = "Please enter your name";
 
 "minutes_short" = "min";
@@ -58,6 +61,8 @@
 "notifications_on" = "notifications on";
 
 // Days
+"today" = "today";
+"tomorrow" = "tomorrow";
 "monday" = "Monday";
 "tuesday" = "Tuesday";
 "wednesday" = "Wednesday";
