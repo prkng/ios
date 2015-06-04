@@ -94,7 +94,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchField.layer.cornerRadius = 18
         searchField.font = Styles.FontFaces.light(22)
         searchField.textColor = Styles.Colors.white
-        searchField.textAlignment = NSTextAlignment.Center
+        searchField.textAlignment = NSTextAlignment.Natural
         searchField.delegate = self
         searchField.keyboardAppearance = UIKeyboardAppearance.Dark
         searchField.keyboardType = UIKeyboardType.Default
