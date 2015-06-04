@@ -293,8 +293,7 @@ class MyCarCheckedInViewController: AbstractViewController {
     
     func leaveButtonTapped() {
         
-        Settings.saveCheckInData(nil, time: nil)
-        Settings.cancelAlarm()
+        Settings.checkOut()
         self.delegate?.reloadMyCarTab()
     }
     

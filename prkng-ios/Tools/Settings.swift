@@ -101,6 +101,10 @@ struct Settings {
         return expireInterval - now.timeIntervalSinceDate(checkInDate)
     }
     
+    static func checkOut() {
+        Settings.saveCheckInData(nil, time: nil)
+        Settings.cancelAlarm()
+    }
     
     static func saveCheckInData(spot : ParkingSpot?, time : NSDate?) {
         

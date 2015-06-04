@@ -258,7 +258,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     func checkinButtonTapped() {
         
         SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
-                
+        
+        Settings.checkOut()
+        
         SpotOperations.checkin(activeSpot!.identifier, completion: { (completed) -> Void in
             
             Settings.saveCheckInData(self.activeSpot!, time: NSDate())
@@ -303,7 +305,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.size.equalTo(CGSizeMake(60, 60))
         }
         
-        checkinButton.enabled = !Settings.checkedIn()
+        let checkedInSpotID = Settings.checkedInSpotId()
+        if (activeSpot != nil && checkedInSpotID != nil) {
+            checkinButton.enabled = checkedInSpotID != activeSpot?.identifier
+        } else {
+            checkinButton.enabled = true
+        }
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.view.layoutIfNeeded()
