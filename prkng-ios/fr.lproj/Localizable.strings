@@ -8,27 +8,27 @@
 
 
 "park_now" = "SE STATIONNER";
-"take_the_tour" = "introduction";
+"take_the_tour" = "débuter";
 
 
-"sign_up" = "INSCRIPTION";
+"sign_up" = "S'INSCRIRE";
 "login_with" = "CONNEXION AVEC";
 "login" = "connexion";
 "register" = "le register";
 "step" = "étape";
 "your_email" = "VOTRE EMAIL";
 "your_password" = "VOTRE MOT DE PASSE";
-"confirm_your_password" = "CONFIRMATION MOT DE PASSE";
+"confirm_your_password" = "CONFIRMATION DU MOT DE PASSE";
 "forgot_password_text" = "MOT DE PASSE OUBLIÉ?";
 "invalid_email" = "Merci d’entrer une adresse valide.";
 "password_short" = "Attention, votre mot de passe doit contenir au moins 6 caractères.";
 "password_mismatch" = "Les mots de passe ne correspondent pas.";
 
 "your_name" = "votre nom";
-"your_gender" = "votre genre";
+"your_gender" = "votre sexe";
 "your_birth_year" = "votre année de naissance";
-"male" = "le male";
-"female" = "le female";
+"male" = "homme";
+"female" = "femme";
 "invalid_name" = "Merci d’entrer votre nom";
 
 "minutes_short" = "min";
@@ -53,18 +53,18 @@
 
 "first_checkin_title" = "Nous y voilà!";
 "first_checkin_subtitle" = "Votre premier check-in.";
-"first_checkin_text" = "N’oubliez pas que les données sont fournies par la ville, il est donc toujours bon de vérifier une 2ème fois l’information. Malheureusement, nous me sommes pas responsables de vos contraventions.";
+"first_checkin_text" = "Prenez note que la règlementation sur rue prévaut toujours, et peut différer de notre donnée.\nGardez donc un oeil ouvert!";
 
-"no_checkin_message" = "Vous n’êtes pas encore \nenregistrés.";
+"no_checkin_message" = "Sélectionnez \nd'abord un segment";
 "park_now" = "se stationner";
-"checked_in_message" = "vous êtes enregistrés sur";
-"leave_spot" = "ciao!";
+"checked_in_message" = "vous êtes stationné sur";
+"leave_spot" = "quitter";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
 
 // Days
-"today" = "le today";
-"tomorrow" = "le tomorrow";
+"today" = "Ce jour";
+"tomorrow" = "Demain";
 "monday" = "Lundi";
 "tuesday" = "Mardi";
 "wednesday" = "Mercredi";
@@ -78,8 +78,8 @@
 
 "max" = "max";
 
-"alarm_text" = "Il va falloir déplacer ton véhicule!";
-"time_up" = "le time is up!";
+"alarm_text" = "Il est temps de déplacer votre véhicule!";
+"time_up" = "Temps écoulé!";
 
 "tutorial_step_1" = "Sarah va bruncher avec sa mère dans Rosemont, elle cherche un stationnement près du resto où elle a rendez-vous. Voyez comment elle utilise prkng!";
 "tutorial_step_2" = "Avant de partir, elle lance une recherche pour une rue où elle pourrait se stationner proche de son rendez-vous.";
@@ -89,10 +89,10 @@
 
 "here_firstuse_title" = "Comment ça marche.";
 "here_firstuse_subtitle" = "un peu d’aide pour votre première fois!";
-"here_firstuse_1" = "Cliquez sur l'un des tronçons afin de découvrir leur disponibilité.";
-"here_firstuse_2" = "Une fois votre place trouvée, appuyez sur \"check in\" pour être informé quand vous devez vous déplacer.";
-"free_spots" = "free spots";
+"here_firstuse_1" = "Sélectionez un tronçon afin \nde connaître sa disponibilité.";
+"here_firstuse_2" = "Une fois trouvée, enregistez \nvotre place afin d'être informé \nquand déplacer votre véhicule.";
+"free_spots" = "segments autorisés";
 
-"report_title" = "REPORT AN ERROR AT";
-"report_text" = "Take a picture of the local\nregulation so we can improve\nour service";
-"report_thanks" = "THANKS FOR YOUR CONTRIBUTION !";
+"report_title" = "SIGNALER UNE ERREUR SUR";
+"report_text" = "Prenez en photo le panneau \nde réglementation en vigueur \nafin d’améliorer notre service.";
+"report_thanks" = "MERCI DE VOTRE CONTRIBUTION !";
