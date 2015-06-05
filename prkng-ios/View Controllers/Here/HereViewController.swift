@@ -16,7 +16,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     var statusBar : UIView
     var checkinButton : UIButton
-    var searchFieldView : UIView
     var searchButton : UIButton
     var searchField : UITextField
 
@@ -29,7 +28,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         detailView = SpotDetailView()
         statusBar = UIView()
         checkinButton = UIButton()
-        searchFieldView = UIView()
         searchButton = UIButton()
         searchField = UITextField()
         searchField.clearButtonMode = UITextFieldViewMode.Always
@@ -82,30 +80,23 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         checkinButton.enabled = false
         view.addSubview(checkinButton)
 
-        searchFieldView.backgroundColor = Styles.Colors.red2
-        searchFieldView.layer.borderWidth = 0
-        searchFieldView.layer.cornerRadius = 18
-
         searchButton.setImage(UIImage(named: "tabbar_search_active"), forState: UIControlState.Normal)
         searchButton.addTarget(self, action: "transformSearchButtonIntoField", forControlEvents: UIControlEvents.TouchUpInside)
-
-        searchField.backgroundColor = Styles.Colors.red2
-        searchField.layer.borderWidth = 0
-        searchField.layer.cornerRadius = 18
+        view.addSubview(searchButton)
+        
+        searchField.backgroundColor = Styles.Colors.cream2
+        searchField.layer.borderWidth = 1
+        searchField.layer.borderColor = Styles.Colors.beige1.CGColor
         searchField.font = Styles.FontFaces.light(22)
-        searchField.textColor = Styles.Colors.white
+        searchField.textColor = Styles.Colors.midnight2
         searchField.textAlignment = NSTextAlignment.Natural
         searchField.delegate = self
         searchField.keyboardAppearance = UIKeyboardAppearance.Dark
         searchField.keyboardType = UIKeyboardType.Default
         searchField.autocorrectionType = UITextAutocorrectionType.No
+
         
-        var searchFieldLeftImageView = UIImageView(image: UIImage(named: "tabbar_search_active"))
-        searchFieldView.addSubview(searchFieldLeftImageView)
-        searchFieldView.addSubview(searchButton)
-        searchFieldView.addSubview(searchField)
-        
-        view.addSubview(searchFieldView)
+        view.addSubview(searchField)
 
     }
     
@@ -133,19 +124,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.size.equalTo(CGSizeMake(60, 60))
         }
         
-        searchButton.snp_makeConstraints{ (make) -> () in
-            make.size.equalTo(CGSizeMake(36, 36))
-            make.left.equalTo(0)
-            make.top.equalTo(0)
-        }
-
         searchField.snp_makeConstraints{ (make) -> () in
-            make.left.equalTo(self.searchFieldView).offset(36)
-            make.right.equalTo(self.searchFieldView)
+            make.left.equalTo(self.searchField)
+            make.right.equalTo(self.searchField)
             make.top.equalTo(0)
             make.height.equalTo(36)
         }
 
+        showSearchButton()
         transformSearchFieldIntoButton()
 
     }
@@ -351,23 +337,24 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func transformSearchButtonIntoField() {
         
-        searchFieldView.snp_remakeConstraints { (make) -> () in
+        hideSearchButton()
+        
+        searchField.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(44)
             make.height.equalTo(36)
             make.left.equalTo(self.view.snp_right).multipliedBy(0.1)
             make.right.equalTo(self.view.snp_right).multipliedBy(0.9)
         }
         
-        searchFieldView.setNeedsLayout()
+        searchField.setNeedsLayout()
         
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
-                self.searchFieldView.layoutIfNeeded()
+                self.searchField.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-                self.searchButton.hidden = true
                 self.searchField.becomeFirstResponder()
         })
         
@@ -375,22 +362,22 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     func transformSearchFieldIntoButton() {
         
-        self.searchButton.hidden = false
+        showSearchButton()
         
-        searchFieldView.snp_remakeConstraints { (make) -> () in
+        searchField.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(44)
             make.height.equalTo(36)
-            make.left.equalTo(self.view.snp_right).multipliedBy(0.1)
-            make.right.equalTo(self.view.snp_right).multipliedBy(0.1).with.offset(36)
+            make.left.equalTo(self.view.snp_right).multipliedBy(0.5)
+            make.right.equalTo(self.view.snp_right).multipliedBy(0.5)
         }
         
-        searchFieldView.setNeedsLayout()
+        searchField.setNeedsLayout()
         
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
-                self.searchFieldView.layoutIfNeeded()
+                self.searchField.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
         })
@@ -401,7 +388,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     // UITextFieldDelegate
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        return self.searchButton.hidden
+        return self.searchField.frame.size.width > 0
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -436,7 +423,40 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         textField.endEditing(true)
     }
     
+    // MARK: Helper Methods
     
+    func hideSearchButton() {
+        
+        searchButton.snp_updateConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(0, 0))
+            make.centerX.equalTo(self.view).multipliedBy(1.66)
+            make.bottom.equalTo(self.view).with.offset(-48)
+        }
+        animateSearchButton()
+    }
+    
+    func showSearchButton() {
+
+        searchButton.snp_updateConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(36, 36))
+            make.centerX.equalTo(self.view).multipliedBy(1.66)
+            make.bottom.equalTo(self.view).with.offset(-30)
+        }
+        animateSearchButton()
+    }
+    
+    func animateSearchButton() {
+        searchButton.setNeedsLayout()
+        UIView.animateWithDuration(0.2,
+            delay: 0,
+            options: UIViewAnimationOptions.CurveEaseInOut,
+            animations: { () -> Void in
+                self.searchButton.layoutIfNeeded()
+            },
+            completion: { (completed:Bool) -> Void in
+        })
+    }
+
 }
 
 
