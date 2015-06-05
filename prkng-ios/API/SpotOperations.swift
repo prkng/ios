@@ -67,12 +67,13 @@ struct SpotOperations {
         
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
-            var spotJsons: Array<JSON> = json["features"].arrayValue
-            var spots = Array<ParkingSpot>();
-            for spotJson in spotJsons {
-                spots.append(ParkingSpot(json: spotJson))
-            }
             
+            var spotJsons: Array<JSON> = json["features"].arrayValue
+            var spots = spotJsons.map({ (var spotJson) -> ParkingSpot in
+                ParkingSpot(json: spotJson)
+            })
+            
+
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
                 completion(spots: spots)

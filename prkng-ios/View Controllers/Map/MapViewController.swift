@@ -18,6 +18,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     var mapView: RMMapView
     var lastMapZoom: Float
     var lastUserLocation: CLLocation
+    var lastMapCenterCoordinate: CLLocationCoordinate2D
     var spotIdentifiersDrawnOnMap: Array<String>
     var lineAnnotations: Array<RMAnnotation>
     var centerButtonAnnotations: Array<RMAnnotation>
@@ -31,6 +32,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
+    
+    private(set) var MOVE_DELTA_IN_METERS : Double
     
     convenience init() {
         self.init(nibName: nil, bundle: nil)
@@ -54,6 +57,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         mapView.zoom = 17
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
+        lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         isSelecting = false
         spotIdentifiersDrawnOnMap = []
         lineAnnotations = []
@@ -63,6 +67,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         updateInProgress = false
         
         trackUserButton = UIButton()
+        
+        MOVE_DELTA_IN_METERS = 100
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -218,11 +224,19 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             return
         }        
         self.selectedSpot = nil
-        updateAnnotations()
+        
+        //reload if the map has moved sufficiently...
+        let lastMapCenterLocation = CLLocation(latitude: lastMapCenterCoordinate.latitude, longitude: lastMapCenterCoordinate.longitude)
+        let newMapCenterLocation = CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude)
+        let differenceInMeters = lastMapCenterLocation.distanceFromLocation(newMapCenterLocation)
+        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
+        if differenceInMeters > MOVE_DELTA_IN_METERS {
+            updateAnnotations()
+            lastMapCenterCoordinate = map.centerCoordinate
+        }
         
         self.delegate?.mapDidMove(CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude))
     }
-       
     
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         radius = (20.0 - map.zoom) * 100
@@ -291,7 +305,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         if let userCLLocation = userLocation.location {
             let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
             
-            if differenceInMeters > 4 {
+            if differenceInMeters > MOVE_DELTA_IN_METERS/10 {
                 updateAnnotations()
                 lastUserLocation = userCLLocation
             }
@@ -436,7 +450,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                     var startedOn = NSDate()
                     var format = NSDateFormatter()
                     format.dateFormat = "hh:mm:ss.SSS"
-                    NSLog("findSpots completion - started at: %@", format.stringFromDate(startedOn))
+//                    NSLog("findSpots completion - started at: %@", format.stringFromDate(startedOn))
                     self.mapView.removeAnnotations(self.lineAnnotations)
                     self.lineAnnotations = []
                     
@@ -462,7 +476,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                     var timeInterval = NSDate().timeIntervalSinceDate(startedOn)
                     let milliseconds = CUnsignedLong(timeInterval * 1000)
                     NSLog("findSpots completion took: " + String(milliseconds) + " milliseconds")
-                    NSLog("findSpots completion - ended at: %@", format.stringFromDate(NSDate()))
+//                    NSLog("findSpots completion - ended at: %@", format.stringFromDate(NSDate()))
                     
                     
             })
