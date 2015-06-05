@@ -131,7 +131,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.height.equalTo(36)
         }
 
-        showSearchButton()
+        showSearchButton(false)
         transformSearchFieldIntoButton()
 
     }
@@ -362,7 +362,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     func transformSearchFieldIntoButton() {
         
-        showSearchButton()
+        showSearchButton(true)
         
         searchField.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(44)
@@ -435,8 +435,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         animateSearchButton()
     }
     
-    func showSearchButton() {
+    func showSearchButton(forceShow: Bool) {
 
+        //only shows the button if the searchField is closed
+        
+        if self.searchField.frame.size.width > 0 && !forceShow {
+            return
+        }
+        
         searchButton.snp_updateConstraints{ (make) -> () in
             make.size.equalTo(CGSizeMake(36, 36))
             make.centerX.equalTo(self.view).multipliedBy(1.66)

@@ -268,12 +268,15 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
             hereViewController.hideSpotDetails()
 //        }
         
+        hereViewController.showSearchButton(false)
+        
     }
     
     func didSelectSpot (spot : ParkingSpot) {
         
         hereViewController.activeSpot = spot
         loadHereTab()
+        hereViewController.hideSearchButton()
         hereViewController.showSpotDetails()
         
     }
