@@ -29,6 +29,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     var updateInProgress : Bool
     
     var trackUserButton : UIButton
+    var spinner: UIActivityIndicatorView
     
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
@@ -67,6 +68,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         updateInProgress = false
         
         trackUserButton = UIButton()
+        spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.WhiteLarge)
         
         MOVE_DELTA_IN_METERS = 100
         
@@ -88,6 +90,14 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         mapView.snp_makeConstraints {  (make) -> () in
             make.edges.equalTo(self.view)
+        }
+        
+        view.addSubview(spinner)
+        spinner.hidesWhenStopped = true
+        spinner.color = Styles.Colors.red2
+        spinner.stopAnimating()
+        spinner.snp_updateConstraints{ (make) -> () in
+            make.center.equalTo(self.view)
         }
         
         showTrackUserButton()
@@ -428,6 +438,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         updateInProgress = true
         
+        spinner.startAnimating()
+        
         if (mapView.zoom > 16.0) {
             
             var checkinTime = searchCheckinDate
@@ -478,6 +490,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                     NSLog("findSpots completion took: " + String(milliseconds) + " milliseconds")
 //                    NSLog("findSpots completion - ended at: %@", format.stringFromDate(NSDate()))
                     
+                    self.spinner.stopAnimating()
+                    
                     
             })
             
@@ -490,6 +504,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             centerButtonAnnotations = []
             
             updateInProgress = false
+            
+            spinner.stopAnimating()
             
         }
         
