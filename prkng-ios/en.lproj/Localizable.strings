@@ -21,6 +21,7 @@
 "invalid_email" = "Please enter a valid email address.";
 "password_short" = "Make sure your password includes at least 6 characters.";
 "password_mismatch" = "Passwords do not match.";
+"login_error" = "Please check your email address and password and try again.";
 
 "your_name" = "your name";
 "your_gender" = "your gender";

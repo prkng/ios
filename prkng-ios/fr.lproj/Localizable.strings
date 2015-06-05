@@ -23,6 +23,7 @@
 "invalid_email" = "Merci d’entrer une adresse valide.";
 "password_short" = "Attention, votre mot de passe doit contenir au moins 6 caractères.";
 "password_mismatch" = "Les mots de passe ne correspondent pas.";
+"login_error" = "Please check your email address and password and try again.";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";

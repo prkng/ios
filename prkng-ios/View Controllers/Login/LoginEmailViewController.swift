@@ -93,7 +93,6 @@ class LoginEmailViewController: AbstractViewController {
         passwordTextField.secureTextEntry = true
         formContainer.addSubview(passwordTextField)
         
-        
         forgotPasswordButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
         forgotPasswordButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
         forgotPasswordButton.titleLabel?.font = Styles.FontFaces.light(12)
@@ -115,13 +114,11 @@ class LoginEmailViewController: AbstractViewController {
             make.bottom.equalTo(self.loginButton.snp_top)
         }
     
-        
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
             // login selection + login button = 225
             make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.size.width, UIScreen.mainScreen().bounds.size.height - 225))
         }
-        
         
         signupButton.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.scrollContentView).with.offset(30)
@@ -181,7 +178,6 @@ class LoginEmailViewController: AbstractViewController {
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
-        
     }
     
     func signUpButtonTapped() {
@@ -195,11 +191,20 @@ class LoginEmailViewController: AbstractViewController {
             if (user != nil) {
                 AuthUtility.saveUser(user!)
                 AuthUtility.saveAuthToken(apiKey!)
+                
+                if self.delegate != nil {
+                    self.delegate!.didLogin()
+                }
+
+            } else {
+                
+                let alert = UIAlertView()
+                alert.message = "login_error".localizedString
+                alert.addButtonWithTitle("OK")
+                alert.show()
+                
             }
             
-            if self.delegate != nil {
-                self.delegate!.didLogin()
-            }
 
             
         }

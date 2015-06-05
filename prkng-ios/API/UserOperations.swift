@@ -32,20 +32,17 @@ struct UserOperations {
     
     static func login (email : String, password: String, completion : (user : User?, apiKey : String?) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "register"
+        let url = APIUtility.APIConstants.rootURLString + "login/email"
         
         let params = ["email" : email,  "password" : password]
         
         request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
-            if (error != nil) {
-            
-            let user = User(json: json)
-            let apiKey = json["apikey"].stringValue
-            
-            completion(user: user, apiKey: apiKey)
-                
+            if (response?.statusCode == 200) {
+                let user = User(json: json)
+                let apiKey = json["apikey"].stringValue
+                completion(user: user, apiKey: apiKey)
             } else {
                 completion(user: nil, apiKey : nil)
             }
