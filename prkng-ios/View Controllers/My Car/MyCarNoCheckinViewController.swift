@@ -10,6 +10,8 @@ import UIKit
 
 class MyCarNoCheckinViewController: AbstractViewController {
     
+    let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
+
     var logoView : UIImageView
     var messageLabel : UILabel
 
@@ -51,7 +53,8 @@ class MyCarNoCheckinViewController: AbstractViewController {
     
 
     func setupViews () {
-        view.backgroundColor = UIColor(red: 48.0/255.0, green: 58/255.0, blue: 66/255.0, alpha: 0.9) //FIXME
+        
+        view.addSubview(backgroundImageView)
         
         logoView.image = UIImage(named: "icon_checkin")
         view.addSubview(logoView)
@@ -78,6 +81,10 @@ class MyCarNoCheckinViewController: AbstractViewController {
     }
     
     func setupConstraints () {
+        
+        backgroundImageView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
         
         logoView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(68, 68))
