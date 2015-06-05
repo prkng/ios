@@ -17,6 +17,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     var statusBar : UIView
     var checkinButton : UIButton
     var searchButton : UIButton
+    var searchFieldView : UIView
     var searchField : UITextField
 
     var activeSpot : ParkingSpot?
@@ -29,8 +30,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         statusBar = UIView()
         checkinButton = UIButton()
         searchButton = UIButton()
+        searchFieldView = UIView()
         searchField = UITextField()
-        searchField.clearButtonMode = UITextFieldViewMode.Always
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -84,9 +85,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchButton.addTarget(self, action: "transformSearchButtonIntoField", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(searchButton)
         
+        searchField.clearButtonMode = UITextFieldViewMode.Always
         searchField.backgroundColor = Styles.Colors.cream2
-        searchField.layer.borderWidth = 1
-        searchField.layer.borderColor = Styles.Colors.beige1.CGColor
         searchField.font = Styles.FontFaces.light(22)
         searchField.textColor = Styles.Colors.midnight2
         searchField.textAlignment = NSTextAlignment.Natural
@@ -94,9 +94,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchField.keyboardAppearance = UIKeyboardAppearance.Dark
         searchField.keyboardType = UIKeyboardType.Default
         searchField.autocorrectionType = UITextAutocorrectionType.No
+        searchFieldView.addSubview(searchField)
 
-        
-        view.addSubview(searchField)
+        searchFieldView.backgroundColor = Styles.Colors.cream2
+        searchFieldView.layer.borderWidth = 1
+        searchFieldView.layer.borderColor = Styles.Colors.beige1.CGColor
+
+        view.addSubview(searchFieldView)
 
     }
     
@@ -125,10 +129,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         }
         
         searchField.snp_makeConstraints{ (make) -> () in
-            make.left.equalTo(self.searchField)
-            make.right.equalTo(self.searchField)
+            make.left.equalTo(self.searchFieldView).with.offset(20)
+            make.right.equalTo(self.searchFieldView)
             make.top.equalTo(0)
-            make.height.equalTo(36)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
         }
 
         showSearchButton(false)
@@ -339,23 +343,23 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
         hideSearchButton()
         
-        searchField.snp_remakeConstraints { (make) -> () in
+        searchFieldView.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(44)
-            make.height.equalTo(36)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
             make.left.equalTo(self.view.snp_right).multipliedBy(0.1)
             make.right.equalTo(self.view.snp_right).multipliedBy(0.9)
         }
         
-        searchField.setNeedsLayout()
+        searchFieldView.setNeedsLayout()
         
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
-                self.searchField.layoutIfNeeded()
+                self.searchFieldView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-                self.searchField.becomeFirstResponder()
+                self.searchFieldView.becomeFirstResponder()
         })
         
     }
@@ -364,20 +368,20 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
         showSearchButton(true)
         
-        searchField.snp_remakeConstraints { (make) -> () in
+        searchFieldView.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(44)
-            make.height.equalTo(36)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
             make.left.equalTo(self.view.snp_right).multipliedBy(0.5)
             make.right.equalTo(self.view.snp_right).multipliedBy(0.5)
         }
         
-        searchField.setNeedsLayout()
+        searchFieldView.setNeedsLayout()
         
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
-                self.searchField.layoutIfNeeded()
+                self.searchFieldView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
         })
@@ -388,7 +392,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     // UITextFieldDelegate
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        return self.searchField.frame.size.width > 0
+        return self.searchFieldView.frame.size.width > 0
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -439,7 +443,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
         //only shows the button if the searchField is closed
         
-        if self.searchField.frame.size.width > 0 && !forceShow {
+        if self.searchFieldView.frame.size.width > 0 && !forceShow {
             return
         }
         

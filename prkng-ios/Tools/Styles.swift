@@ -72,7 +72,7 @@ struct Styles {
     struct Sizes {
         static let hugeButtonHeight = 90
         static let bigButtonHeight = 80
-        static let searchTextFieldHeight = 50
+        static let searchTextFieldHeight = 46
     }
     
 }
