@@ -21,13 +21,16 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     let previewView = UIView()
     let imageView = UIImageView()
     let captureButton = UIButton()
-    let backButon = UIButton()
-
+    let sendButton = UIButton()
+    let backButton = UIButton()
+    let cancelButton = UIButton()
+    
     let locationManager = CLLocationManager()
     var streetName : String?
     var location : CLLocation?
     var updatingLocation : Bool = false
     
+    var spotId : String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,7 +43,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         setupConstraints()
         
         // Do any additional setup after loading the view, typically from a nib.
-        captureSession.sessionPreset = AVCaptureSessionPresetHigh
+        captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         
         let devices = AVCaptureDevice.devices()
         
@@ -69,10 +72,23 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         view.addSubview(overlayView)
         
         imageView.hidden = true
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
         view.addSubview(imageView)
         
+        cancelButton.setImage(UIImage(named:"btn_back"), forState: UIControlState.Normal)
+        cancelButton.addTarget(self, action: "cancelButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(cancelButton)
+        
+        sendButton.setImage(UIImage(named:"btn_sendreport"), forState: UIControlState.Normal)
+        sendButton.addTarget(self, action: "sendButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(sendButton)
+        
+        backButton.setImage(UIImage(named:"btn_back"), forState: UIControlState.Normal)
+        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(backButton)
+        
         captureButton.setImage(UIImage(named:"btn_takeashot"), forState: UIControlState.Normal)
-        captureButton.addTarget(self, action: "captureButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        captureButton.addTarget(self, action: "sendButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(captureButton)
     }
     
@@ -90,6 +106,26 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             make.edges.equalTo(self.view)
         }
         
+        cancelButton.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.view).multipliedBy(0.33)
+            make.size.equalTo(CGSizeMake(24, 24))
+            make.bottom.equalTo(self.view).with.offset(-38.5)
+        }
+        
+        
+        sendButton.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.view)
+            make.size.equalTo(CGSizeMake(60, 60))
+            make.bottom.equalTo(self.view).with.offset(-20)
+        }
+        
+        
+        backButton.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.view).multipliedBy(0.33)
+            make.size.equalTo(CGSizeMake(24, 24))
+            make.bottom.equalTo(self.view).with.offset(-38.5)
+        }
+        
         captureButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
@@ -102,10 +138,14 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         if let device = captureDevice {
             device.lockForConfiguration(nil)
             device.focusMode = .AutoFocus
+            device.exposureMode = .ContinuousAutoExposure
+            device.flashMode = .Auto
             device.unlockForConfiguration()
         }
         
     }
+    
+    
     
     
     func beginSession() {
@@ -131,16 +171,28 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         if captureSession.canAddOutput(stillImageOutput) {
             captureSession.addOutput(stillImageOutput)
         }
-        var videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo)
         
-        if videoConnection != nil {
+        if let videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
             stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
                 { (imageDataSampleBuffer, error) -> Void in
-                    self.imageView.hidden = false
-                    self.imageView.image = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer))
+                    self.capturedImage = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer))
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.imageView.image = self.capturedImage
+                        
+                        self.imageView.hidden = false
+                        self.backButton.hidden = true
+                        self.captureButton.hidden = true
+                        
+                        self.cancelButton.hidden = false
+                        self.sendButton.hidden = false
+                    })
+                    
             }}
     }
     
+    
+    //MARK: Button Events
     
     func captureButtonTapped(sender : UIButton) {
         
@@ -148,13 +200,15 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             
             UIView.animateWithDuration(0.15, animations: { () -> Void in
                 self.overlayView.alpha = 0.0
-            }, completion: { (completed) -> Void in
-                self.overlayView.hidden = true
+                }, completion: { (completed) -> Void in
+                    self.overlayView.hidden = true
             })
             
             
         } else if capturedImage == nil {
+            
             self.takePicture()
+            
         } else {
             
         }
@@ -163,9 +217,53 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     }
     
     
-    //MARK : CLLocationManagerDelegate
+    func sendButtonTapped(sender : UIButton) {
+        
+        SVProgressHUD.showWithMaskType(.Clear)
+        
+        let resized = UIImage(named: "btn_history")! // resizeImage(capturedImage!, targetSize: CGSizeMake(768, 1024))
+        
+        let location = CLLocationCoordinate2D(latitude: 45.4795855861311, longitude: -73.580106237208)
+        
+        SpotOperations.reportParkingRule(resized, location: location, spotId: spotId, completion: { (completed) -> Void in
+            
+            if (completed) {
+                SVProgressHUD.dismiss()
+            } else {
+                let alert = UIAlertView()
+                alert.message = "report_error".localizedString
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            }
+            
+        })
+        
+    }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {        
+    func backButtonTapped(sender : UIButton) {
+        
+        
+    }
+    
+    
+    func cancelButtonTapped(sender : UIButton) {
+        
+        captureSession.startRunning()
+        
+        self.capturedImage = nil
+        self.imageView.hidden = true
+        self.backButton.hidden = false
+        self.captureButton.hidden = false
+        self.cancelButton.hidden = true
+        self.sendButton.hidden = true
+    }
+    
+    
+    
+    
+    //MARK: CLLocationManagerDelegate
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
         if streetName == nil && !updatingLocation {
             
@@ -181,6 +279,35 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             
         }
         
+    }
+    
+    
+    //MARK : Helpers
+    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        let size = image.size
+        
+        let widthRatio  = targetSize.width  / image.size.width
+        let heightRatio = targetSize.height / image.size.height
+        
+        // Figure out what our orientation is, and use that to form the rectangle
+        var newSize: CGSize
+        if(widthRatio > heightRatio) {
+            newSize = CGSizeMake(size.width * heightRatio, size.height * heightRatio)
+        } else {
+            newSize = CGSizeMake(size.width * widthRatio,  size.height * widthRatio)
+        }
+        
+        // This is the rect that we've calculated out and this is what is actually used below
+        let rect = CGRectMake(0, 0, newSize.width, newSize.height)
+        
+        // Actually do the resizing to the rect using the ImageContext stuff
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        image.drawInRect(rect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
     
 }

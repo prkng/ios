@@ -14,7 +14,7 @@
 "sign_up" = "S'INSCRIRE";
 "login_with" = "CONNEXION AVEC";
 "login" = "connexion";
-"register" = "le register";
+"register" = "le register  <==================================  FIX THIS";
 "step" = "étape";
 "your_email" = "VOTRE EMAIL";
 "your_password" = "VOTRE MOT DE PASSE";
@@ -97,3 +97,4 @@
 "report_title" = "SIGNALER UNE ERREUR SUR";
 "report_text" = "Prenez en photo le panneau \nde réglementation en vigueur \nafin d’améliorer notre service.";
 "report_thanks" = "MERCI DE VOTRE CONTRIBUTION !";
+"report_error" = "le something went le wrong, please le try again.   <==================================  FIX THIS"";

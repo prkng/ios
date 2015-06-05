@@ -97,4 +97,5 @@
 "report_title" = "REPORT AN ERROR AT";
 "report_text" = "Take a picture of the \nlocal regulation and help \nus to improve our service.";
 "report_thanks" = "THANKS FOR YOUR CONTRIBUTION !";
+"report_error" = "Something went wrong, please try again.";
 
