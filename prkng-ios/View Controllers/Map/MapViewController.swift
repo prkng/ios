@@ -251,7 +251,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         radius = (20.0 - map.zoom) * 100
         
-        if(map.zoom < 16.0) {
+        if(map.zoom < 15.0) {
             radius = 0
         }
         
@@ -441,7 +441,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         spinner.startAnimating()
         
-        if (mapView.zoom > 16.0) {
+        if (mapView.zoom > 15.0) {
             
             var checkinTime = searchCheckinDate
             var duration = searchDuration
