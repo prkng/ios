@@ -17,7 +17,6 @@ struct SpotOperations {
         request(.GET, url, parameters: nil).responseSwiftyJSON() {
             (request, response, json, error) in
             
-            
             if (error == nil) {
                 completion(spot: ParkingSpot(json: json))
             } else {
@@ -48,7 +47,6 @@ struct SpotOperations {
             params["duration"] = durationStr
         }
         
-        
         var time : NSDate
         
         if (checkinTime == nil) {
@@ -56,8 +54,6 @@ struct SpotOperations {
         } else {
             time = checkinTime!
         }
-        
-        
         
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
@@ -140,7 +136,6 @@ struct SpotOperations {
                     // Step three
                     APIUtility.authenticatedManager().request(.POST, reportUrl, parameters: reportParams).responseSwiftyJSON { (request, response, json, error) -> Void in
                         
-                        
                         if (response?.statusCode == 201) {
                             completion(completed: true)
                         } else {
@@ -148,18 +143,12 @@ struct SpotOperations {
                         }
                     }
                     
-                    
-                    
                 })
-                
-                
                 
             } else {
                     completion(completed: false)
                     return
             }
-            
-            
             
         }
         

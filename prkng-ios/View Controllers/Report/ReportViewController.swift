@@ -221,11 +221,9 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         SVProgressHUD.showWithMaskType(.Clear)
         
-        let resized = UIImage(named: "btn_history")! // resizeImage(capturedImage!, targetSize: CGSizeMake(768, 1024))
+        let resized = resizeImage(capturedImage!, targetSize: CGSizeMake(768, 1024))
         
-        let location = CLLocationCoordinate2D(latitude: 45.4795855861311, longitude: -73.580106237208)
-        
-        SpotOperations.reportParkingRule(resized, location: location, spotId: spotId, completion: { (completed) -> Void in
+        SpotOperations.reportParkingRule(resized, location: location!.coordinate, spotId: spotId, completion: { (completed) -> Void in
             
             if (completed) {
                 SVProgressHUD.dismiss()
