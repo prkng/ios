@@ -359,7 +359,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 self.searchFieldView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-                self.searchFieldView.becomeFirstResponder()
+                self.searchField.becomeFirstResponder()
         })
         
     }

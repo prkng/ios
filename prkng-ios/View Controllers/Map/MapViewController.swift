@@ -158,8 +158,13 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             } else {
                 shape.lineColor = Styles.Colors.petrol2
             }
-            shape.lineWidth = 4.4
-
+            
+            if mapView.zoom > 15.0 && mapView.zoom < 16.0 {
+                shape.lineWidth = 2.6
+            } else {
+                shape.lineWidth = 4.4
+            }
+            
             for location in spot.line.coordinates as Array<CLLocation> {
                 shape.addLineToCoordinate(location.coordinate)
             }
