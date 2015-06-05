@@ -315,7 +315,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         if let userCLLocation = userLocation.location {
             let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
             
-            if differenceInMeters > MOVE_DELTA_IN_METERS/10 {
+            if differenceInMeters > MOVE_DELTA_IN_METERS/10
+                && mapView.userTrackingMode.value == RMUserTrackingModeFollowWithHeading.value {
                 updateAnnotations()
                 lastUserLocation = userCLLocation
             }
