@@ -50,12 +50,13 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: offlineSource)
         }
         
-        mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
+        mapView.userTrackingMode = RMUserTrackingModeFollow
         
         mapView.tintColor = Styles.Colors.red2
         mapView.showLogoBug = false
         mapView.hideAttribution = true
-        mapView.zoom = 17
+        mapView.zoomingInPivotsAroundCenter = true
+        mapView.zoom = 16
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -107,14 +108,14 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
-        updateAnnotations()
+        self.mapView.userTrackingMode = RMUserTrackingModeFollow
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        
+        updateAnnotations()
+
         if (mapView.tileSource == nil) {
             if let source = RMMapboxSource(mapID: mapSource) {
                 mapView.tileSource = source
@@ -122,12 +123,9 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         }
     }
     
-
     func updateMapCenterIfNecessary () {
         
-        
     }
-    
     
     func mapView(mapView: RMMapView!, layerForAnnotation annotation: RMAnnotation!) -> RMMapLayer! {
         
@@ -183,11 +181,18 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             let spot = userInfo!["spot"] as! ParkingSpot
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             
-            var circleImage = UIImage(named: "button_line_inactive")
+            var imageName = "button_line_"
             
-            if (selected) {
-                circleImage = UIImage(named: "button_line_active")
+            if mapView.zoom < 18 {
+                imageName += "small_"
             }
+            if !selected {
+                imageName += "in"
+            }
+            
+            imageName += "active"
+            
+            var circleImage = UIImage(named: imageName)
             
             var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
             
@@ -225,7 +230,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     func beforeMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
         
         
-        if (mapView.userTrackingMode.value == 2 ) { //RMUserTrackingModeFollowWithHeading
+        if (mapView.userTrackingMode.value == RMUserTrackingModeFollow.value ) {
             self.hideTrackUserButton()
         } else {
             toggleTrackUserButton(!(delegate != nil && !delegate!.shouldShowUserTrackingButton()))
@@ -235,10 +240,8 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     }
     
     func afterMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
-        if !wasUserAction {
-            return
-        }        
-        self.selectedSpot = nil
+
+        removeSelectedAnnotationIfExists()
         
         //reload if the map has moved sufficiently...
         let lastMapCenterLocation = CLLocation(latitude: lastMapCenterCoordinate.latitude, longitude: lastMapCenterCoordinate.longitude)
@@ -278,10 +281,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         
         isSelecting = true
         
-        if (selectedSpot != nil) {
-            removeAnnotations(findAnnotations(selectedSpot!.identifier))
-            addSpotAnnotation(self.mapView, spot: selectedSpot!, selected: false)
-        }
+        removeSelectedAnnotationIfExists()
         
         var userInfo: [String:AnyObject]? = (annotation as RMAnnotation).userInfo as? [String:AnyObject]
         
@@ -321,7 +321,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
             let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
             
             if differenceInMeters > MOVE_DELTA_IN_METERS/10
-                && mapView.userTrackingMode.value == RMUserTrackingModeFollowWithHeading.value {
+                && mapView.userTrackingMode.value == RMUserTrackingModeFollow.value {
                 updateAnnotations()
                 lastUserLocation = userCLLocation
             }
@@ -362,14 +362,19 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
 
     }
     
-    func mapViewRegionDidChange(mapView: RMMapView!) {
-        //        NSLog("regiondidchange")
-    }
     
     // MARK: Helper Methods
     
+    func removeSelectedAnnotationIfExists() {
+        if (selectedSpot != nil) {
+        removeAnnotations(findAnnotations(selectedSpot!.identifier))
+            addSpotAnnotation(self.mapView, spot: selectedSpot!, selected: false)
+            selectedSpot = nil
+        }
+    }
+
     func trackUserButtonTapped () {
-        self.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
+        self.mapView.userTrackingMode = RMUserTrackingModeFollow
         hideTrackUserButton()
     }
     
@@ -530,7 +535,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         lineAnnotations.append(annotation)
         
         
-        if (mapView.zoom > 17.0) {
+        if (mapView.zoom >= 17.0) {
             
             var centerButton: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: spot.buttonLocation.coordinate, andTitle: spot.identifier)
             centerButton.setBoundingBoxFromLocations(spot.line.coordinates)

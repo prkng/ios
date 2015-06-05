@@ -152,7 +152,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         
         mapViewController.clearSearchResults()
         mapViewController.mapView.showsUserLocation = true
-        mapViewController.mapView.userTrackingMode = RMUserTrackingModeFollowWithHeading
+        mapViewController.mapView.userTrackingMode = RMUserTrackingModeFollow
         
         switchActiveViewController(hereViewController, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Here
