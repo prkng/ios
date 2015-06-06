@@ -34,9 +34,17 @@ class ParkingSpot: NSObject {
         
         let ruleJsons = json["properties"]["rules"]
         
-        for index in ruleJsons  {
-            let rule = ParkingRule(json: index.1)
-            rules.append(rule)
+        // TODO : Fix this when the data is fixed
+        for ruleJson in ruleJsons  {
+            let rule1 = ParkingRule(json: ruleJson.1, bsIndex: 0)
+            rules.append(rule1)
+            
+            
+            let rule2 = ParkingRule(json: ruleJson.1, bsIndex: 1)
+            if (!rule2.bullshitRule) {
+                rules.append(rule2)
+            }
+            
         }
         
         line = Shape(json: json["geometry"])
