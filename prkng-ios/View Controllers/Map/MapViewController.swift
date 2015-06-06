@@ -114,7 +114,11 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        updateAnnotations()
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+            Int64(1.5 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            self.updateAnnotations()
+        }
 
         if (mapView.tileSource == nil) {
             if let source = RMMapboxSource(mapID: mapSource) {
