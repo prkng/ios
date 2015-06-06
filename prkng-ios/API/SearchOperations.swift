@@ -65,6 +65,9 @@ class SearchOperations {
         
         var params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity(), "country" : "Canada", "street" : streetname]
         
+        var numberFormatter = NSNumberFormatter()
+        numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+
         request(.GET, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
@@ -76,11 +79,11 @@ class SearchOperations {
                 
                 var latStr : String = subJson["lat"].stringValue
                 
-                var lat : Double = NSNumberFormatter().numberFromString(latStr)!.doubleValue
+                var lat : Double = numberFormatter.numberFromString(latStr)!.doubleValue
                 
                 var lonStr : String = subJson["lon"].stringValue
                 
-                var lon : Double = NSNumberFormatter().numberFromString(lonStr)!.doubleValue
+                var lon : Double = numberFormatter.numberFromString(lonStr)!.doubleValue
                 
                 var location : CLLocation = CLLocation(latitude: lat, longitude: lon)
                 

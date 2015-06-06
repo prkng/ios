@@ -334,6 +334,21 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
+    func isSpotDetailsHidden() -> Bool {
+        //we know if the view is hidden based on the bottom offset, as can be seen in the two methods above
+        //make.bottom.equalTo(self.view).with.offset(180) is to hide it and 
+        //make.bottom.equalTo(self.view).with.offset(0) is to show it
+
+        for constraint: LayoutConstraint in detailView.snp_installedLayoutConstraints {
+            if constraint.firstItem.isEqual(self.detailView)
+            && (constraint.secondItem != nil && constraint.secondItem!.isEqual(self.view))
+                && Float(constraint.constant) == 180 {
+                    return true
+            }
+        }
+
+        return false
+    }
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
@@ -366,8 +381,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     func transformSearchFieldIntoButton() {
         
-        showSearchButton(true)
-        
         searchFieldView.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(44)
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
@@ -384,6 +397,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 self.searchFieldView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
+                self.showSearchButton(false)
         })
         
     }
@@ -443,8 +457,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
         //only shows the button if the searchField is closed
         
-        if self.searchFieldView.frame.size.width > 0 && !forceShow {
-            return
+        if !forceShow
+            && (self.searchFieldView.frame.size.width > 0
+                || !self.isSpotDetailsHidden()) {
+                    return
         }
         
         searchButton.snp_updateConstraints{ (make) -> () in
