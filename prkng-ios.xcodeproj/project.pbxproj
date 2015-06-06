@@ -61,6 +61,7 @@
 		BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */; };
 		BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C961B149BB100A635A1 /* TutorialViewController.swift */; };
 		BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */; };
+		BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */; };
 		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
 		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
 		BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1701A83D364005F4054 /* libsqlite3.dylib */; };
@@ -193,6 +194,7 @@
 		BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HereFirstUseViewController.swift; sourceTree = "<group>"; };
 		BF982C961B149BB100A635A1 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
+		BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarAbstractViewController.swift; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BFA8D1701A83D364005F4054 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
@@ -472,6 +474,7 @@
 			children = (
 				BF5E84EA1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift */,
 				BF5E84EC1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift */,
+				BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */,
 			);
 			path = "My Car";
 			sourceTree = "<group>";
@@ -932,6 +935,7 @@
 				BF7170B41AE4303D00B922CA /* HereViewController.swift in Sources */,
 				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
+				BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */,
 				BF3CFA271AFE3A08003D104D /* IQUIView+IQKeyboardToolbar.m in Sources */,
 				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,

@@ -8,12 +8,14 @@
 
 import UIKit
 
-class MyCarNoCheckinViewController: AbstractViewController {
+class MyCarNoCheckinViewController: MyCarAbstractViewController {
     
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
 
     var logoView : UIImageView
     var messageLabel : UILabel
+    
+    var reportButton : UIButton
 
     var parkButton : UIButton
     var searchButton : UIButton
@@ -25,7 +27,7 @@ class MyCarNoCheckinViewController: AbstractViewController {
         messageLabel = ViewFactory.bigMessageLabel()
         parkButton = ViewFactory.hugeButton()
         searchButton = ViewFactory.bigButton()
-        
+        reportButton = ViewFactory.reportButton()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -47,10 +49,7 @@ class MyCarNoCheckinViewController: AbstractViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
-
-    
 
     func setupViews () {
         
@@ -62,13 +61,16 @@ class MyCarNoCheckinViewController: AbstractViewController {
         messageLabel.text = "no_checkin_message".localizedString
         view.addSubview(messageLabel)
         
-        searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
-        searchButton.layer.shadowColor = UIColor.blackColor().CGColor
-        searchButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        searchButton.layer.shadowOpacity = 0.2
-        searchButton.layer.shadowRadius = 0.5
-        searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(searchButton)
+        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: .TouchUpInside)
+        view.addSubview(reportButton)
+        
+//        searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
+//        searchButton.layer.shadowColor = UIColor.blackColor().CGColor
+//        searchButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+//        searchButton.layer.shadowOpacity = 0.2
+//        searchButton.layer.shadowRadius = 0.5
+//        searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+//        view.addSubview(searchButton)
         
         parkButton.setTitle("park_now".localizedString.lowercaseString, forState: UIControlState.Normal)
         parkButton.layer.shadowColor = UIColor.blackColor().CGColor
@@ -77,7 +79,6 @@ class MyCarNoCheckinViewController: AbstractViewController {
         parkButton.layer.shadowRadius = 0.5
         parkButton.addTarget(self, action: "parkButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(parkButton)
-
     }
     
     func setupConstraints () {
@@ -98,6 +99,11 @@ class MyCarNoCheckinViewController: AbstractViewController {
             make.centerY.equalTo(self.view).multipliedBy(0.8)
         }
         
+        reportButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSizeMake(24, 24))
+            make.bottom.equalTo(self.parkButton.snp_top).with.offset(-20)
+            make.centerX.equalTo(self.view).multipliedBy(1.66)
+        }
         
 //        parkButton.snp_makeConstraints { (make) -> () in
 //            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
@@ -113,9 +119,7 @@ class MyCarNoCheckinViewController: AbstractViewController {
 //            make.right.equalTo(self.view)
 //        }
         
-        
         // without search button
-        
         parkButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.view)
@@ -125,7 +129,6 @@ class MyCarNoCheckinViewController: AbstractViewController {
         
     }
     
-    
     func parkButtonTapped() {
         self.delegate?.loadHereTab()
     }
@@ -134,7 +137,9 @@ class MyCarNoCheckinViewController: AbstractViewController {
 //        self.delegate?.loadSearchTab()
 //    }
     
-    
+    func reportButtonTapped(sender: UIButton) {
+        loadReportScreen(nil)
+    }
     
 }
 

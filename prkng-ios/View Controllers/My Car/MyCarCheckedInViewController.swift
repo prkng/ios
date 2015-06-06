@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyCarCheckedInViewController: AbstractViewController {
+class MyCarCheckedInViewController: MyCarAbstractViewController {
     
     var spot : ParkingSpot?
 
@@ -26,6 +26,8 @@ class MyCarCheckedInViewController: AbstractViewController {
     var availableTimeLabel : UILabel
     
     var notificationsButton : UIButton
+    
+    var reportButton : UIButton
     
 //    var shareButton : UIButton
     var leaveButton : UIButton
@@ -48,6 +50,7 @@ class MyCarCheckedInViewController: AbstractViewController {
         leaveButton = ViewFactory.bigButton()
         
         notificationsButton = UIButton()
+        reportButton = ViewFactory.reportButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -139,6 +142,9 @@ class MyCarCheckedInViewController: AbstractViewController {
         view.addSubview(notificationsButton)
         updateNotificationsButton()
         
+        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: .TouchUpInside)
+        view.addSubview(reportButton)
+        
         leaveButton.setTitle("leave_spot".localizedString.lowercaseString, forState: UIControlState.Normal)
         leaveButton.addTarget(self, action: "leaveButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(leaveButton)
@@ -197,6 +203,12 @@ class MyCarCheckedInViewController: AbstractViewController {
             make.bottom.equalTo(self.leaveButton.snp_top).with.offset(-20)
             make.size.equalTo(CGSizeMake(155, 26))
             make.centerX.equalTo(self.view)
+        }
+        
+        reportButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSizeMake(24, 24))
+            make.bottom.equalTo(self.notificationsButton)
+            make.centerX.equalTo(self.view).multipliedBy(1.66)
         }
         
         leaveButton.snp_makeConstraints { (make) -> () in
@@ -301,6 +313,10 @@ class MyCarCheckedInViewController: AbstractViewController {
         
         Settings.checkOut()
         self.delegate?.reloadMyCarTab()
+    }
+    
+    func reportButtonTapped(sender: UIButton) {
+        loadReportScreen(self.spot?.identifier)
     }
     
     

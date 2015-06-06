@@ -35,6 +35,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.clipsToBounds = true
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
         locationManager.startUpdatingLocation()
@@ -75,7 +77,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
         view.addSubview(imageView)
         
-        cancelButton.setImage(UIImage(named:"btn_back"), forState: UIControlState.Normal)
+        cancelButton.setImage(UIImage(named:"btn_report_cancel"), forState: UIControlState.Normal)
         cancelButton.addTarget(self, action: "cancelButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(cancelButton)
         
@@ -88,7 +90,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         view.addSubview(backButton)
         
         captureButton.setImage(UIImage(named:"btn_takeashot"), forState: UIControlState.Normal)
-        captureButton.addTarget(self, action: "sendButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        captureButton.addTarget(self, action: "captureButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(captureButton)
     }
     
@@ -161,7 +163,9 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewView.layer.addSublayer(previewLayer)
-        previewLayer?.frame = self.view.bounds
+        
+        let width =  self.view.frame.height * (768.0 / 1024.0)
+        previewLayer?.frame = CGRectMake((self.view.frame.width - width) / 2, 0, width, self.view.frame.height)
         captureSession.startRunning()
     }
     
@@ -173,6 +177,9 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         }
         
         if let videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
+            
+            configureDevice()
+            
             stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
                 { (imageDataSampleBuffer, error) -> Void in
                     self.capturedImage = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer))
@@ -225,9 +232,13 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         SpotOperations.reportParkingRule(resized, location: location!.coordinate, spotId: spotId, completion: { (completed) -> Void in
             
+
+            
             if (completed) {
-                SVProgressHUD.dismiss()
+                SVProgressHUD.showSuccessWithStatus("report_sent_thanks".localizedString)
+                self.navigationController?.popViewControllerAnimated(true)
             } else {
+                SVProgressHUD.dismiss()
                 let alert = UIAlertView()
                 alert.message = "report_error".localizedString
                 alert.addButtonWithTitle("OK")
@@ -239,8 +250,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     }
     
     func backButtonTapped(sender : UIButton) {
-        
-        
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     

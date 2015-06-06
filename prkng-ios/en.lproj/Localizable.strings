@@ -98,4 +98,6 @@
 "report_text" = "Take a picture of the \nlocal regulation and help \nus to improve our service.";
 "report_thanks" = "THANKS FOR YOUR CONTRIBUTION !";
 "report_error" = "Something went wrong, please try again.";
+"report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help.";
+
 

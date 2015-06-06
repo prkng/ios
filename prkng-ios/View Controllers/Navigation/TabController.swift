@@ -24,7 +24,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     
     var settingsViewController : SettingsViewController?
     
-    var activeViewController : AbstractViewController
+    var activeViewController : UIViewController
     
     var switchingMainView : Bool
     
@@ -167,10 +167,6 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
         if (selectedTab == PrkTab.MyCar || switchingMainView) {
             return;
         }
-        
-        mapViewController.mapView.showsUserLocation = false
-        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
-        
 
         var myCarViewController : AbstractViewController?
         
@@ -182,8 +178,10 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
             (myCarViewController as! MyCarNoCheckinViewController).delegate = self
         }
 
-        
-        switchActiveViewController(myCarViewController!, completion: { (finished) -> Void in
+        let navigationController = UINavigationController(rootViewController: myCarViewController!)
+        navigationController.navigationBarHidden = true        
+
+        switchActiveViewController(navigationController, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.MyCar
             self.tabBar.updateSelected()
         })
@@ -210,7 +208,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     }
     
     
-    func switchActiveViewController  (newViewController : AbstractViewController, completion : ((finished:Bool) -> Void)) {
+    func switchActiveViewController  (newViewController : UIViewController, completion : ((finished:Bool) -> Void)) {
         
         if switchingMainView {
             return

@@ -98,3 +98,5 @@
 "report_text" = "Prenez en photo le panneau \nde réglementation en vigueur \nafin d’améliorer notre service.";
 "report_thanks" = "MERCI DE VOTRE CONTRIBUTION !";
 "report_error" = "Une erreur est survenue, merci de réessayer.";
+"report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help.";
+

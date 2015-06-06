@@ -97,10 +97,6 @@ struct SpotOperations {
         // Step one, get request url
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
             
-            if (response?.statusCode != 200) {
-                completion(completed: false)
-                return
-            }
             
             if let requestUrl = json["request_url"].string {
                 

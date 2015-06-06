@@ -75,6 +75,12 @@ struct ViewFactory {
     }
     
     
+    static func reportButton () -> UIButton {
+        let button = UIButton ()
+        button.setImage(UIImage(named: "btn_report"), forState: .Normal)
+        return button
+    }
+    
     // MARK: Labels
     
     static func formLabel() -> UILabel {
