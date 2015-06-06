@@ -8,10 +8,13 @@
 
 import UIKit
 
-class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
+class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     var spot : ParkingSpot
     var delegate : ScheduleViewControllerDelegate?
+
+    private var holdGestureRecognizer: UILongPressGestureRecognizer
+    
     private var scheduleItems : Array<ScheduleItemModel>
     
     private var headerView : ScheduleHeaderView
@@ -30,6 +33,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     
     init(spot : ParkingSpot) {
         self.spot = spot
+        holdGestureRecognizer = UILongPressGestureRecognizer()
         headerView = ScheduleHeaderView()
         scrollView = UIScrollView()
         contentView = UIView()
@@ -70,6 +74,10 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     override func loadView() {
         view = UIView()
         view.backgroundColor = Styles.Colors.stone
+        holdGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("handleHoldTap:"))
+        holdGestureRecognizer.minimumPressDuration = 0
+        holdGestureRecognizer.delegate = self
+        scrollView.addGestureRecognizer(holdGestureRecognizer)
         setupViews()
         setupConstraints()
     }
@@ -85,19 +93,29 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     }
     
     override func viewWillLayoutSubviews() {
-        
+        super.viewWillLayoutSubviews()
+        customLayoutSubviews(true)
+    }
+    
+    func customLayoutSubviews(shouldPulsate: Bool) {
         // forbidden views should be on top
         for column in columnViews {
             for view in column.subviews {
                 if let subview =  view as? ScheduleItemView {
-                    if(!subview.limited) {
-                        column.bringSubviewToFront(subview)
+                    if !subview.limited {
+                        //TODO: Clean up exactly how the pulsate works. This isn't good enough...
+                        if shouldPulsate
+                            && scheduleItemViewOverlapsInColumn(subview, columnView: column) {
+                                subview.startPulsate()
+                                column.sendSubviewToBack(subview)
+                        } else {
+                            subview.stopPulsate()
+                            column.bringSubviewToFront(subview)
+                        }
                     }
                 }
             }
         }
-        
-        super.viewWillLayoutSubviews()
     }
     
     func setupViews() {
@@ -132,6 +150,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             columnViews[scheduleItem.columnIndex!].addSubview(scheduleItemView)
             scheduleItemViews.append(scheduleItemView)
         }
+        
         
     }
     
@@ -322,6 +341,33 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         array[0] = "today".localizedString.uppercaseString
         
         return array
+    }
+    
+    //MARK- Gesture recognizer delegate + other methods
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
+    func handleHoldTap(sender: UIGestureRecognizer) {
+        if sender.state == UIGestureRecognizerState.Began {
+            customLayoutSubviews(false)
+        } else if sender.state == .Ended {
+            customLayoutSubviews(true)
+        }
+    }
+
+    func scheduleItemViewOverlapsInColumn(itemView: ScheduleItemView, columnView:ScheduleColumnView) -> Bool {
+        
+        var scheduleItemViewsInColumn: [ScheduleItemView] = []
+        for view in columnView.subviews {
+            if view.isKindOfClass(ScheduleItemView) {
+                scheduleItemViewsInColumn.append(view as! ScheduleItemView)
+            }
+        }
+
+        let intersectingViews = scheduleItemViewsInColumn.filter { $0 != itemView && itemView.frame.intersects($0.frame) }
+        return intersectingViews.count > 0
     }
     
     

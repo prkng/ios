@@ -200,4 +200,41 @@ class ScheduleItemView : UIView {
         endTimeLabel.text = model.endTime
         endAmPmLabel.text = model.endTimeAmPm
     }
+    
+    func startPulsate() {
+        hideLabels()
+        
+        var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
+        pulseAnimation.duration = 0.55
+        pulseAnimation.fromValue = 0.7
+        pulseAnimation.toValue = 1
+        pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        pulseAnimation.autoreverses = true
+        pulseAnimation.repeatCount = FLT_MAX
+        self.layer.addAnimation(pulseAnimation, forKey: nil)
+    }
+    
+    func stopPulsate() {
+        self.layer.removeAllAnimations()
+        showLabels()
+    }
+    
+    private func hideLabels() {
+        timeLimitLabel.hidden = true
+//         maxLabel.hidden = true
+         startTimeLabel.hidden = true
+         startAmPmLabel.hidden = true
+         endTimeLabel.hidden = true
+         endAmPmLabel.hidden = true
+    }
+    
+    private func showLabels() {
+        timeLimitLabel.hidden = false
+//        maxLabel.hidden = false
+        startTimeLabel.hidden = false
+        startAmPmLabel.hidden = false
+        endTimeLabel.hidden = false
+        endAmPmLabel.hidden = false
+    }
+    
 }
