@@ -388,6 +388,54 @@ class ScheduleItemModel {
         }
     }
     
+    /*
+    ---(May be useful in the future)---
+    We are going to manipulate the data here to draw things in 6 hour periods.
+    There are only 4 slots:
+    0  to 6  = 0     to 21600
+    6  to 12 = 21600 to 43200
+    12 to 18 = 43200 to 64800
+    18 to 24 = 64800 to 86400
+    */
+    let SIX_HOUR_BLOCK: CGFloat = 6*60*60
+
+    private func correctStartTimeToSixHourBlock(startF : CGFloat) -> CGFloat {
+        
+        var correctedStart: CGFloat = startF
+
+        if startF < SIX_HOUR_BLOCK {
+            correctedStart = 0
+        } else if startF < SIX_HOUR_BLOCK*2 {
+            correctedStart = SIX_HOUR_BLOCK
+        } else if startF < SIX_HOUR_BLOCK*3 {
+            correctedStart = SIX_HOUR_BLOCK*2
+        } else if startF < SIX_HOUR_BLOCK*4 {
+            correctedStart = SIX_HOUR_BLOCK*3
+        }
+        
+        return correctedStart
+
+    }
+
+    private func correctEndTimeToSixHourBlock(endF : CGFloat) -> CGFloat {
+        
+        var correctedEnd: CGFloat = endF
+
+        if endF <= SIX_HOUR_BLOCK {
+            correctedEnd = SIX_HOUR_BLOCK
+        } else if endF <= SIX_HOUR_BLOCK*2 {
+            correctedEnd = SIX_HOUR_BLOCK*2
+        } else if endF <= SIX_HOUR_BLOCK*3 {
+            correctedEnd = SIX_HOUR_BLOCK*3
+        } else if endF <= SIX_HOUR_BLOCK*4 {
+            correctedEnd = SIX_HOUR_BLOCK*4
+        }
+        
+        return correctedEnd
+        
+    }
+
+    
     
 }
 

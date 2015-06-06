@@ -94,6 +94,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchField.keyboardAppearance = UIKeyboardAppearance.Dark
         searchField.keyboardType = UIKeyboardType.Default
         searchField.autocorrectionType = UITextAutocorrectionType.No
+        searchField.returnKeyType = UIReturnKeyType.Search
         searchFieldView.addSubview(searchField)
 
         searchFieldView.backgroundColor = Styles.Colors.cream2
