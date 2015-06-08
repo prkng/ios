@@ -17,5 +17,6 @@
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import "SVProgressHUD.h"
+#import "UIImageView+WebCache.h"
 
 #endif
