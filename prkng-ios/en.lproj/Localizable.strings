@@ -81,10 +81,10 @@
 "alarm_text" = "Time to move your car.";
 "time_up" = "Your time is up!";
 
-"tutorial_step_1" = "Sarah is having lunch with her mom in Rosemont. She’ll need to park when she gets there. See how she uses prkng!";
+"tutorial_step_1" = "Sarah is having lunch with her mom. She’ll need to park when she gets there. See how she uses prkng!";
 "tutorial_step_2" = "Once she arrived at destination, the \"here\" feature shows her the spots where she’s allowed to park.";
-"tutorial_step_3" = "Sarah’s a bright woman : She “checked in” so she’ll be notified to move her car before the cops do.";
-"tutorial_step_4" = "No more headaches, no more surprise tickets: join Sarah in using prkng for find your next free spot!";
+"tutorial_step_3" = "Sarah’s a bright woman : She “checks in” so she’ll be notified to move her car before the cops do.";
+"tutorial_step_4" = "No more headaches, no more surprise tickets: join Sarah in using prkng to find your next free spot!";
 "tutorial_confirm" = "GOT IT!";
 
 "here_firstuse_title" = "How it works.";
