@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CheckinMessageViewController: UIViewController {
+class CheckinMessageViewController: GAITrackedViewController {
     
     var containerView: UIView
     var imageView : UIImageView
@@ -43,6 +43,7 @@ class CheckinMessageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.screenName = "CheckinMessageViewController"
     }
     
     

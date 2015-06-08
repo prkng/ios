@@ -19,5 +19,6 @@
 #import "SVProgressHUD.h"
 #import "UIImageView+WebCache.h"
 #import "UIButton+WebCache.h"
+#import "GAI.h"
 
 #endif

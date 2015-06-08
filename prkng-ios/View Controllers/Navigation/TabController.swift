@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate {
+class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate {
     
     var selectedTab : PrkTab
     
@@ -55,7 +55,7 @@ class TabController: UIViewController, PrkTabBarDelegate, MapViewControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-
+        self.screenName = "TabController"
         
         selectedTab = PrkTab.Here
         hereViewController.willMoveToParentViewController(self)

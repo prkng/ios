@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereFirstUseViewController: UIViewController {
+class HereFirstUseViewController: GAITrackedViewController {
 
     var containerView: UIView
     
@@ -68,6 +68,7 @@ class HereFirstUseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.screenName = "HereFirstUseViewController"
     }
     
     func setupSubviews() {

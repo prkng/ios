@@ -21,6 +21,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RMConfiguration.sharedInstance().accessToken = "pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA"
 
         Crashlytics.startWithAPIKey("0a552ed905e273700bb769724c451c706ceb78cb")
+        
+        //google analytics setup...
+        // Optional: automatically send uncaught exceptions to Google Analytics.
+        GAI.sharedInstance().trackUncaughtExceptions = true
+        // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
+        GAI.sharedInstance().dispatchInterval = 20;
+        // Optional: set Logger to VERBOSE for debug information.
+        GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
+        // Initialize tracker. Replace with your tracking ID.
+        GAI.sharedInstance().trackerWithTrackingId("UA-63856349-1")
+        
         configureGlobals()
         loadInitialViewController()
         

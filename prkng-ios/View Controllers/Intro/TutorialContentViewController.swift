@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TutorialContentViewController: UIViewController {
+class TutorialContentViewController: GAITrackedViewController {
     
     var backgroundImageView : UIImageView
     var imageView : UIImageView
@@ -45,8 +45,7 @@ class TutorialContentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        self.screenName = "TutorialContentViewController"
     }
     
     override func didReceiveMemoryWarning() {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TutorialViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class TutorialViewController: GAITrackedViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     var parent : FirstUseViewController?
     var pageViewController : UIPageViewController
@@ -50,8 +50,7 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.screenName = "TutorialViewController"
     }
     
     override func didReceiveMemoryWarning() {
