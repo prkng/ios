@@ -81,8 +81,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Helper
 
     func configureGlobals() {
-        SVProgressHUD.setRingThickness(6)
-        SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
+        SVProgressHUD.setRingThickness(4)
+        SVProgressHUD.setCornerRadius(0)
+        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
         SVProgressHUD.setForegroundColor(Styles.Colors.red2)
     }
 

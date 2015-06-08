@@ -236,6 +236,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
     func sendButtonTapped(sender : UIButton) {
         
+        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
         SVProgressHUD.showWithMaskType(.Clear)
         
         let resized = resizeImage(capturedImage!, targetSize: CGSizeMake(768, 1024))
@@ -245,6 +246,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             
             
             if (completed) {
+                SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
                 SVProgressHUD.showSuccessWithStatus("report_sent_thanks".localizedString)
                 self.navigationController?.popViewControllerAnimated(true)
             } else {

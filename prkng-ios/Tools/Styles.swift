@@ -64,15 +64,25 @@ struct Styles {
     }
     
     struct Fonts {
-        static let h1 =  FontFaces.light(31)
-        static let h2 =  FontFaces.light(25)
-        static let h3 =  FontFaces.light(20)
+        
+        struct Light {
+            static let h1 =  FontFaces.light(29)
+            static let h2 =  FontFaces.light(25)
+            static let h3 =  FontFaces.light(20)
+        }
+        
+        struct Regular {
+            static let h1 =  FontFaces.regular(29)
+            static let h2 =  FontFaces.regular(25)
+            static let h3 =  FontFaces.regular(20)
+        }
     }
     
     struct Sizes {
         static let hugeButtonHeight = 90
         static let bigButtonHeight = 80
         static let searchTextFieldHeight = 46
+        static let blurRadius = 3
     }
     
 }

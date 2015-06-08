@@ -16,14 +16,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
     
     var logoView : UIImageView
     
-    var activityIndicator : UIActivityIndicatorView
-    
     var containerView : UIView
     var locationTitleLabel : UILabel
     var locationLabel : UILabel
     
     var availableTitleLabel : UILabel
-    var availableTimeLabel : UILabel
+    var availableTimeLabel : UILabel //ex: 24+
     
     var notificationsButton : UIButton
     
@@ -36,10 +34,14 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
     
     var delegate : MyCarCheckedInViewControllerDelegate?
     
+
+    private var SMALL_VERTICAL_MARGIN = 5
+    private var MEDIUM_VERTICAL_MARGIN = 10
+    private var LARGE_VERTICAL_MARGIN = 20
+
+    
     init() {
         logoView = UIImageView()
-        
-        activityIndicator = UIActivityIndicatorView()
         
         containerView = UIView()
         locationTitleLabel = ViewFactory.formLabel()
@@ -76,13 +78,14 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         
         if (spot == nil) {
             containerView.hidden = true
-            activityIndicator.startAnimating()
+            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
             
             if (Settings.checkedIn()) {
                 SpotOperations.getSpotDetails(Settings.checkedInSpotId()!, completion: { (spot) -> Void in
                     self.spot = spot
                     self.updateValues()
-                    self.activityIndicator.stopAnimating()
+                    SVProgressHUD.dismiss()
                     if (spot != nil) {
                         self.containerView.hidden = false
                     }
@@ -111,9 +114,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         
         logoView.image = UIImage(named: "icon_checkin")
         view.addSubview(logoView)
-        
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
         
         view.addSubview(containerView)
         
@@ -153,6 +153,14 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
     
     func setupConstraints () {
         
+        var smallerVerticalMargin = MEDIUM_VERTICAL_MARGIN
+        var largerVerticalMargin = LARGE_VERTICAL_MARGIN
+        
+        if UIScreen.mainScreen().bounds.size.height == 480 {
+            smallerVerticalMargin = SMALL_VERTICAL_MARGIN
+            largerVerticalMargin = MEDIUM_VERTICAL_MARGIN
+        }
+        
         backgroundImageView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.view)
         }
@@ -162,13 +170,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
             make.centerX.equalTo(self.view)
             make.centerY.equalTo(self.view).multipliedBy(0.3)
         }
-        
-        activityIndicator.snp_makeConstraints { (make) -> () in
-            make.center.equalTo(self.view)
-        }
-        
+                
         containerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.logoView.snp_bottom).with.offset(20)
+            make.top.equalTo(self.logoView.snp_bottom).with.offset(largerVerticalMargin)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
@@ -181,19 +185,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         }
 
         locationLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.locationTitleLabel.snp_bottom).with.offset(10)
+            make.top.equalTo(self.locationTitleLabel.snp_bottom).with.offset(smallerVerticalMargin)
             make.left.equalTo(self.containerView).with.offset(15)
             make.right.equalTo(self.containerView).with.offset(-15)
         }
         
         availableTitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.locationLabel.snp_bottom).with.offset(20)
+            make.top.equalTo(self.locationLabel.snp_bottom).with.offset(largerVerticalMargin)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
         
         availableTimeLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.availableTitleLabel.snp_bottom).with.offset(10)
+            make.top.equalTo(self.availableTitleLabel.snp_bottom).with.offset(smallerVerticalMargin)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
             make.bottom.equalTo(self.containerView)
@@ -201,7 +205,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         
         
         notificationsButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.leaveButton.snp_top).with.offset(-20)
+            make.bottom.equalTo(self.leaveButton.snp_top).with.offset(-largerVerticalMargin)
             make.size.equalTo(CGSizeMake(155, 26))
             make.centerX.equalTo(self.view)
         }
@@ -230,8 +234,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
             let minutes  = Int((interval / 60) % 60)
             let hours = Int((interval / 3600))
             availableTimeLabel.text = String(NSString(format: "%02ld:%02ld", hours, minutes))
+            availableTimeLabel.font = Styles.FontFaces.regular(40)
         } else {
             availableTimeLabel.text = "time_up".localizedString
+            availableTimeLabel.font = Styles.Fonts.Regular.h1
         }
 
         

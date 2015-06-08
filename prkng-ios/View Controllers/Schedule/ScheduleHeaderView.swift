@@ -64,7 +64,7 @@ class ScheduleHeaderView: UIView {
         topContainer.backgroundColor = Styles.Colors.red2
         addSubview(topContainer)
         
-        titleLabel.font = Styles.Fonts.h2
+        titleLabel.font = Styles.Fonts.Light.h2
         titleLabel.textColor = Styles.Colors.cream1
         titleLabel.textAlignment = NSTextAlignment.Center
         topContainer.addSubview(titleLabel)

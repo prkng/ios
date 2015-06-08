@@ -94,8 +94,8 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         }
 
         messageLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
+            make.left.equalTo(self.view).with.offset(30)
+            make.right.equalTo(self.view).with.offset(-30)
             make.centerY.equalTo(self.view).multipliedBy(0.8)
         }
         

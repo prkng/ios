@@ -86,8 +86,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         view.addSubview(searchButton)
         
         searchField.clearButtonMode = UITextFieldViewMode.Always
-        searchField.backgroundColor = Styles.Colors.cream2
-        searchField.font = Styles.FontFaces.light(22)
+        searchField.backgroundColor = Styles.Colors.cream1
+        searchField.font = Styles.FontFaces.light(16)
         searchField.textColor = Styles.Colors.midnight2
         searchField.textAlignment = NSTextAlignment.Natural
         searchField.delegate = self
@@ -97,9 +97,15 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchField.returnKeyType = UIReturnKeyType.Search
         searchFieldView.addSubview(searchField)
 
-        searchFieldView.backgroundColor = Styles.Colors.cream2
-        searchFieldView.layer.borderWidth = 1
+        searchFieldView.clipsToBounds = false
+        searchFieldView.layer.masksToBounds = false
+        searchFieldView.backgroundColor = Styles.Colors.cream1
+        searchFieldView.layer.borderWidth = 0
         searchFieldView.layer.borderColor = Styles.Colors.beige1.CGColor
+        searchFieldView.layer.shadowColor = Styles.Colors.beige2.CGColor
+        searchFieldView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        searchFieldView.layer.shadowRadius = CGFloat(Styles.Sizes.blurRadius)
+        searchFieldView.layer.shadowOpacity = 1
 
         view.addSubview(searchFieldView)
 
@@ -248,6 +254,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func checkinButtonTapped() {
         
+        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
         SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
         
         Settings.checkOut()
@@ -360,10 +367,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         hideSearchButton()
         
         searchFieldView.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(44)
+            make.top.equalTo(self.view).with.offset(32)
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.view.snp_right).multipliedBy(0.1)
-            make.right.equalTo(self.view.snp_right).multipliedBy(0.9)
+            make.left.equalTo(self.view).with.offset(12)
+            make.right.equalTo(self.view).with.offset(-12)
         }
         
         searchFieldView.setNeedsLayout()
@@ -383,10 +390,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     func transformSearchFieldIntoButton() {
         
         searchFieldView.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(44)
+            make.top.equalTo(self.view).with.offset(32)
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.view.snp_right).multipliedBy(0.5)
-            make.right.equalTo(self.view.snp_right).multipliedBy(0.5)
+            make.centerX.equalTo(self.view)
+            make.width.equalTo(0)
         }
         
         searchFieldView.setNeedsLayout()
