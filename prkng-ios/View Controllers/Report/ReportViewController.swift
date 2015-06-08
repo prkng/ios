@@ -178,8 +178,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         if let videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
             
-            if (captureDevice!.adjustingWhiteBalance || captureDevice!.adjustingExposure ) {
-                
+//            if (captureDevice!.adjustingWhiteBalance || captureDevice!.adjustingExposure ) {
+            
                 stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
                     { (imageDataSampleBuffer, error) -> Void in
                         
@@ -202,7 +202,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
                             
                         }
                         
-                }
+//                }
                 
             }
         }
