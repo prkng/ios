@@ -61,6 +61,8 @@
 		BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */; };
 		BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C961B149BB100A635A1 /* TutorialViewController.swift */; };
 		BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */; };
+		BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C531B25C8D600DAB393 /* Intro-Light.otf */; };
+		BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */; };
 		BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */; };
 		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
 		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
@@ -70,8 +72,6 @@
 		BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */; };
 		BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC764931A7644AC008F2B26 /* Images.xcassets */; };
 		BFC764A31A7644AC008F2B26 /* prkng_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */; };
-		BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFCD56301AB99A5F008406E8 /* IntroLight.otf */; };
-		BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFCD56311AB99A5F008406E8 /* IntroRegular.otf */; };
 		BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD0101B1AC1C73600C59B28 /* TabController.swift */; };
 		BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C21AF2E83700789022 /* Settings.swift */; };
 		BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C41AF2F09E00789022 /* DateUtil.swift */; };
@@ -194,6 +194,8 @@
 		BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HereFirstUseViewController.swift; sourceTree = "<group>"; };
 		BF982C961B149BB100A635A1 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
+		BFA69C531B25C8D600DAB393 /* Intro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Light.otf"; sourceTree = "<group>"; };
+		BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Normal.otf"; sourceTree = "<group>"; };
 		BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarAbstractViewController.swift; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -207,8 +209,6 @@
 		BFC7649C1A7644AC008F2B26 /* prkng-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "prkng-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC764A11A7644AC008F2B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prkng_iosTests.swift; sourceTree = "<group>"; };
-		BFCD56301AB99A5F008406E8 /* IntroLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroLight.otf; sourceTree = "<group>"; };
-		BFCD56311AB99A5F008406E8 /* IntroRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroRegular.otf; sourceTree = "<group>"; };
 		BFD0101B1AC1C73600C59B28 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		BFD6B6C21AF2E83700789022 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFD6B6C41AF2F09E00789022 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
@@ -592,8 +592,8 @@
 		BFCD562F1AB99A3A008406E8 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				BFCD56301AB99A5F008406E8 /* IntroLight.otf */,
-				BFCD56311AB99A5F008406E8 /* IntroRegular.otf */,
+				BFA69C531B25C8D600DAB393 /* Intro-Light.otf */,
+				BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -867,16 +867,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BFCD56321AB99A5F008406E8 /* IntroLight.otf in Resources */,
-				BFCD56331AB99A5F008406E8 /* IntroRegular.otf in Resources */,
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
 				BF5E84F61B075DD400EC6AD2 /* SVProgressHUD.bundle in Resources */,
+				BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */,
 				BFEA6AEB1A9E2EE5001F063E /* Mapbox.bundle in Resources */,
 				BF3CFA1E1AFE3A08003D104D /* IQKeyboardManager.bundle in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
+				BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

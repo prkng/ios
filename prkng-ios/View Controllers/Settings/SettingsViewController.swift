@@ -10,6 +10,8 @@ import UIKit
 
 class SettingsViewController: AbstractViewController {
     
+    var backgroundImageView : UIImageView
+    
     var topContainer : UIView
     
     var cityContainer : UIView
@@ -20,10 +22,13 @@ class SettingsViewController: AbstractViewController {
     var notificationsContainer : UIView
     var notificationsLabel : UILabel
     var notificationSelection : SelectionControl
+
     
     var aboutButton : UIButton
     
     init() {
+        
+        backgroundImageView = UIImageView()
         
         topContainer = UIView()
         
@@ -82,6 +87,10 @@ class SettingsViewController: AbstractViewController {
     
     func setupViews () {
         
+        backgroundImageView.image = UIImage(named:"bg_blue_gradient")
+        backgroundImageView.contentMode = .ScaleAspectFill
+        view.addSubview(backgroundImageView)
+        
         topContainer.backgroundColor = Styles.Colors.petrol2
         view.addSubview(topContainer)
         
@@ -127,6 +136,10 @@ class SettingsViewController: AbstractViewController {
     }
     
     func setupConstraints () {
+        
+        backgroundImageView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
         
         aboutButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.bigButtonHeight)
@@ -190,10 +203,10 @@ class SettingsViewController: AbstractViewController {
     
     func aboutButtonTapped() {
         
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(AuthUtility.USER_KEY)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(AuthUtility.AUTH_TOKEN_KEY)
+
         
-        NSUserDefaults.standardUserDefaults().synchronize()
+        
+        
     }
     
     

@@ -178,24 +178,34 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         if let videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
             
-            configureDevice()
-            
-            stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
-                { (imageDataSampleBuffer, error) -> Void in
-                    self.capturedImage = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer))
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.imageView.image = self.capturedImage
+            if (captureDevice!.adjustingWhiteBalance || captureDevice!.adjustingExposure ) {
+                
+                stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
+                    { (imageDataSampleBuffer, error) -> Void in
                         
-                        self.imageView.hidden = false
-                        self.backButton.hidden = true
-                        self.captureButton.hidden = true
+                        if error == nil {
+                            
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                
+                                self.capturedImage = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer))
+                                
+                                
+                                self.imageView.image = self.capturedImage
+                                
+                                self.imageView.hidden = false
+                                self.backButton.hidden = true
+                                self.captureButton.hidden = true
+                                
+                                self.cancelButton.hidden = false
+                                self.sendButton.hidden = false
+                            })
+                            
+                        }
                         
-                        self.cancelButton.hidden = false
-                        self.sendButton.hidden = false
-                    })
-                    
-            }}
+                }
+                
+            }
+        }
     }
     
     
@@ -232,7 +242,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         SpotOperations.reportParkingRule(resized, location: location!.coordinate, spotId: spotId, completion: { (completed) -> Void in
             
-
+            
             
             if (completed) {
                 SVProgressHUD.showSuccessWithStatus("report_sent_thanks".localizedString)

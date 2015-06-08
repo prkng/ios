@@ -50,8 +50,8 @@ struct Styles {
     
     struct FontFaces {
         
-        static let regular = "IntroRegular"
-        static let light = "IntroLight"
+        static let regular = "Intro-Normal"
+        static let light = "Intro-Light"
         
         static func regular (size : CGFloat) -> UIFont {
             return UIFont(name: regular, size: size)!

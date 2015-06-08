@@ -85,7 +85,7 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
         nextButton.addTarget(self, action: "nextButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(nextButton)
         
-        getStartedButton.setTitle("get_started".localizedString, forState: UIControlState.Normal)
+        getStartedButton.setTitle("tutorial_confirm".localizedString, forState: UIControlState.Normal)
         getStartedButton.hidden = true
         getStartedButton.addTarget(self, action: "getStartedButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(getStartedButton)

@@ -177,6 +177,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
             make.top.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
+            make.height.equalTo(20)
         }
 
         locationLabel.snp_makeConstraints { (make) -> () in

@@ -67,6 +67,11 @@ class LoginEmailViewController: AbstractViewController {
         
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    
+    
     
     func setupViews () {
         
@@ -102,7 +107,6 @@ class LoginEmailViewController: AbstractViewController {
         loginButton.setTitle("login".localizedString, forState: UIControlState.Normal)
         loginButton.addTarget(self, action: "loginButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(loginButton)
-        
     }
     
     func setupConstraints () {
@@ -123,7 +127,7 @@ class LoginEmailViewController: AbstractViewController {
         signupButton.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.scrollContentView).with.offset(30)
             make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(70, 26))
+            make.size.equalTo(CGSizeMake(90, 26))
         }
         
         formContainer.snp_makeConstraints { (make) -> () in
@@ -162,7 +166,6 @@ class LoginEmailViewController: AbstractViewController {
             make.bottom.equalTo(self.formContainer)
             make.centerX.equalTo(self.formContainer)
             make.height.equalTo(71)
-            
         }
         
         forgotPasswordButton.snp_makeConstraints { (make) -> () in
@@ -177,7 +180,6 @@ class LoginEmailViewController: AbstractViewController {
             make.right.equalTo(self.view)
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
-        
     }
     
     func signUpButtonTapped() {
@@ -197,16 +199,11 @@ class LoginEmailViewController: AbstractViewController {
                 }
 
             } else {
-                
                 let alert = UIAlertView()
                 alert.message = "login_error".localizedString
                 alert.addButtonWithTitle("OK")
                 alert.show()
-                
             }
-            
-
-            
         }
         
     }

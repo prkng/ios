@@ -49,8 +49,8 @@
 	<string>We need this permission to show the parking spots around you</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>IntroLight.otf</string>
-		<string>IntroRegular.otf</string>
+		<string>Intro-Light.otf</string>
+		<string>Intro-Normal.otf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

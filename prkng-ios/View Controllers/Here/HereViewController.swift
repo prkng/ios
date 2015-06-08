@@ -258,7 +258,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             if (Settings.notificationTime() > 0) {
                 Settings.cancelAlarm()
-                Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - (30 * 60)))
+                Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
             }
             
             SVProgressHUD.dismiss()

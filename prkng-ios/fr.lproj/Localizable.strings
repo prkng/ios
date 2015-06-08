@@ -59,6 +59,7 @@
 "no_checkin_message" = "Sélectionnez \nd'abord un segment";
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
+"available_for" = "disponible pour";
 "leave_spot" = "quitter";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
@@ -87,6 +88,8 @@
 "tutorial_step_3" = "Arrivée à destination, elle utilise le mode \"ici\" afin de vérifier la disponibilité de la super place qu'elle vient de trouver.";
 "tutorial_step_4" = "Sarah est une femme brillante: Elle a enregistré sa localisation afin d'être notifiée 30 minutes avant l'heure limite.";
 "tutorial_step_5" = "Fini les maux de tête, fini les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!";
+"tutorial_confirm" = "COMMENCER!";
+
 
 "here_firstuse_title" = "Comment ça marche.";
 "here_firstuse_subtitle" = "un peu d’aide pour votre première fois!";

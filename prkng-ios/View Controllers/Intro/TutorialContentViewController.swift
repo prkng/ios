@@ -10,11 +10,13 @@ import UIKit
 
 class TutorialContentViewController: UIViewController {
     
+    var backgroundImageView : UIImageView
     var imageView : UIImageView
     var textLabel : UILabel
     var pageIndex : Int
     
     init(image : UIImage, text : String, index : Int) {
+        backgroundImageView = UIImageView()
         imageView = UIImageView()
         textLabel = UILabel()
         pageIndex = index
@@ -53,6 +55,10 @@ class TutorialContentViewController: UIViewController {
     
     
     func setupViews() {
+        
+        backgroundImageView.contentMode = .ScaleAspectFill
+        view.addSubview(backgroundImageView)
+        
         imageView.clipsToBounds = true
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         view.addSubview(imageView)
@@ -66,6 +72,10 @@ class TutorialContentViewController: UIViewController {
     
     
     func setupConstraints () {
+        
+        backgroundImageView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
         
         imageView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(60)
