@@ -14,12 +14,14 @@ class User : NSObject {
     var gender : String
     var identifier : String
     var email : String
+    var imageUrl : String?
     
     init(json : JSON) {
         name = json["name"].stringValue
         gender = json["gender"].stringValue
         identifier = json["id"].stringValue
         email = json["email"].stringValue
+        imageUrl = json["image_url"].string
     }
     
     init(coder : NSCoder ) {
@@ -27,6 +29,7 @@ class User : NSObject {
         gender = coder.decodeObjectForKey("gender") as! String
         identifier = coder.decodeObjectForKey("identifier") as! String
         email = coder.decodeObjectForKey("email") as! String
+        imageUrl = coder.decodeObjectForKey("imageUrl") as? String
     }
     
     func encodeWithCoder (encoder : NSCoder) {
@@ -34,7 +37,11 @@ class User : NSObject {
         encoder.encodeObject(gender, forKey: "gender")
         encoder.encodeObject(identifier, forKey: "identifier")
         encoder.encodeObject(email, forKey: "email")
+        if (imageUrl != nil) {
+            encoder.encodeObject(email, forKey: "imageUrl")
+        }
     }
+    
     
    
 }

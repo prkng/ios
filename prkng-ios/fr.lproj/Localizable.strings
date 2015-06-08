@@ -24,6 +24,7 @@
 "password_short" = "Attention, votre mot de passe doit contenir au moins 6 caractères.";
 "password_mismatch" = "Les mots de passe ne correspondent pas.";
 "login_error" = "Merci de vérifier votre adresse e-mail et mot de passe, puis essayer à nouveau.";
+"logout" = "se déconnecter";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";

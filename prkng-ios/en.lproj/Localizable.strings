@@ -22,6 +22,7 @@
 "password_short" = "Make sure your password includes at least 6 characters.";
 "password_mismatch" = "Passwords do not match.";
 "login_error" = "Please check your email address and password and try again.";
+"logout" = "logout";
 
 "your_name" = "your name";
 "your_gender" = "your gender";

@@ -129,7 +129,7 @@ class SettingsViewController: AbstractViewController {
         notificationSelection.addTarget(self, action: "notificationSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
         notificationsContainer.addSubview(notificationSelection)
         
-        aboutButton.setTitle(NSLocalizedString("about", comment : ""), forState: UIControlState.Normal)
+        aboutButton.setTitle("logout".localizedString, forState: UIControlState.Normal)
         aboutButton.addTarget(self, action: "aboutButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(aboutButton)
         
@@ -204,8 +204,13 @@ class SettingsViewController: AbstractViewController {
     func aboutButtonTapped() {
         
 
+        SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
         
+        AuthUtility.saveAuthToken(nil)
+        AuthUtility.saveUser(nil)
         
+        UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+
         
     }
     

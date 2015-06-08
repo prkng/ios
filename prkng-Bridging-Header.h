@@ -18,5 +18,6 @@
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import "SVProgressHUD.h"
 #import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
 
 #endif

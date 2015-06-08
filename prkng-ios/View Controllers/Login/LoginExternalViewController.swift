@@ -92,7 +92,12 @@ class LoginExternalViewController: AbstractViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
-        avatarButton.setImage(UIImage(named: "btn_upload_profile"), forState: UIControlState.Normal)
+        if (user.imageUrl != nil) {
+            let url = NSURL(string: user.imageUrl!)
+            avatarButton.sd_setImageWithURL(url, forState: UIControlState.Normal, placeholderImage: UIImage(named: "btn_upload_profile")!)
+        }
+        avatarButton.clipsToBounds = true
+        avatarButton.layer.cornerRadius = 25.5
         scrollContentView.addSubview(avatarButton)
         
         editProfileLabel.text = "edit_profile".localizedString.uppercaseString
@@ -270,7 +275,6 @@ class LoginExternalViewController: AbstractViewController {
             break
         default:
             Settings.setNotificationTime(0)
-            
             break;
         }
         

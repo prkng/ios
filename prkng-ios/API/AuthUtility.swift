@@ -21,8 +21,13 @@ struct AuthUtility {
         return NSUserDefaults.standardUserDefaults().objectForKey(AUTH_TOKEN_KEY) as? String
     }
     
-    static func saveAuthToken(token : String) {
-        NSUserDefaults.standardUserDefaults().setObject(token, forKey: AUTH_TOKEN_KEY)
+    static func saveAuthToken(token : String?) {
+        if (token != nil) {
+            NSUserDefaults.standardUserDefaults().setObject(token, forKey: AUTH_TOKEN_KEY)
+        } else {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(AUTH_TOKEN_KEY)
+
+        }
     }
     
     
@@ -34,12 +39,14 @@ struct AuthUtility {
         return nil
     }
     
-    static func saveUser (user : User) {
+    static func saveUser (user : User?) {
         
-
-        let encodedUser = NSKeyedArchiver.archivedDataWithRootObject(user)
-        
-        NSUserDefaults.standardUserDefaults().setObject(encodedUser, forKey: USER_KEY)
+        if (user != nil) {
+            let encodedUser = NSKeyedArchiver.archivedDataWithRootObject(user!)
+            NSUserDefaults.standardUserDefaults().setObject(encodedUser, forKey: USER_KEY)
+        } else {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(USER_KEY)
+        }
         
     }
     

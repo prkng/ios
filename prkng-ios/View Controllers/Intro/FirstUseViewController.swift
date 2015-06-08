@@ -45,6 +45,11 @@ class FirstUseViewController: AbstractViewController {
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        SVProgressHUD.dismiss()
+    }
+    
     
     func setupViews () {
         
