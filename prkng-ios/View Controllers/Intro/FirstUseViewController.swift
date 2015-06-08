@@ -65,6 +65,7 @@ class FirstUseViewController: AbstractViewController {
         parkNowButton.setTitle(NSLocalizedString("park_now", comment : ""), forState: UIControlState.Normal)
         parkNowButton.addTarget(self, action: "parkNowButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(parkNowButton)
+        parkNowButton.hidden = true
         
         tourButton.setTitle(NSLocalizedString("take_the_tour", comment : ""), forState: UIControlState.Normal)
         tourButton.addTarget(self, action: "tourButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)

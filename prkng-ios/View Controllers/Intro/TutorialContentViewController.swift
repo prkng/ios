@@ -15,12 +15,13 @@ class TutorialContentViewController: UIViewController {
     var textLabel : UILabel
     var pageIndex : Int
     
-    init(image : UIImage, text : String, index : Int) {
+    init(backgroundImage : UIImage, image : UIImage, text : String, index : Int) {
         backgroundImageView = UIImageView()
         imageView = UIImageView()
         textLabel = UILabel()
         pageIndex = index
         super.init(nibName: nil, bundle: nil)
+        backgroundImageView.image = backgroundImage
         imageView.image = image
         
         var paragraphStyle = NSMutableParagraphStyle()

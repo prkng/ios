@@ -17,19 +17,17 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     var getStartedButton : UIButton
     var contentViewControllers : Array<UIViewController>
     
-    let pageCount = 5
+    let pageCount = 4
     
     let images = [ UIImage(named: "tutorial_1"),
         UIImage(named: "tutorial_2"),
         UIImage(named: "tutorial_3"),
-        UIImage(named: "tutorial_4"),
-        UIImage(named: "tutorial_5")]
+        UIImage(named: "tutorial_4")]
     
     let texts = [ "tutorial_step_1".localizedString,
         "tutorial_step_2".localizedString,
         "tutorial_step_3".localizedString,
-        "tutorial_step_4".localizedString,
-        "tutorial_step_5".localizedString]
+        "tutorial_step_4".localizedString]
     
     init() {
         pageViewController = UIPageViewController(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: nil)
@@ -66,8 +64,9 @@ class TutorialViewController: UIViewController, UIPageViewControllerDataSource, 
     func setupViews() {
         
         for i in 0...(pageCount - 1) {
-            let page = TutorialContentViewController(image: images[i]!, text: texts[i], index : i)
-            page.view.backgroundColor = ((i % 2) == 0) ? Styles.Colors.petrol2 : Styles.Colors.berry1
+            var backgroundImageName = ((i % 2) == 0) ? "bg_red_gradient" : "bg_blue_gradient"
+            var backgroundImage = UIImage(named: backgroundImageName)
+            let page = TutorialContentViewController(backgroundImage: backgroundImage!, image: images[i]!, text: texts[i], index : i)
             contentViewControllers.append(page)
         }
         

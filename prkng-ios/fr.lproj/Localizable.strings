@@ -85,10 +85,9 @@
 "time_up" = "Temps écoulé!";
 
 "tutorial_step_1" = "Sarah va bruncher avec sa mère dans Rosemont, elle cherche un stationnement près du resto où elle a rendez-vous. Voyez comment elle utilise prkng!";
-"tutorial_step_2" = "Avant de partir, elle lance une recherche pour une rue où elle pourrait se stationner proche de son rendez-vous.";
-"tutorial_step_3" = "Arrivée à destination, elle utilise le mode \"ici\" afin de vérifier la disponibilité de la super place qu'elle vient de trouver.";
-"tutorial_step_4" = "Sarah est une femme brillante: Elle a enregistré sa localisation afin d'être notifiée 30 minutes avant l'heure limite.";
-"tutorial_step_5" = "Fini les maux de tête, fini les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!";
+"tutorial_step_2" = "Arrivée à destination, elle utilise le mode \"ici\" afin de vérifier la disponibilité de la super place qu'elle vient de trouver.";
+"tutorial_step_3" = "Sarah est une femme brillante: Elle a enregistré sa localisation afin d'être notifiée 30 minutes avant l'heure limite.";
+"tutorial_step_4" = "Fini les maux de tête, fini les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!";
 "tutorial_confirm" = "COMMENCER!";
 
 
