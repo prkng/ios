@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		212F621FC6E44D31498CF230 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60C782E60281D9EE835A6FAE /* libPods-prkng-ios.a */; };
 		3E8F31A21B2621E700760E05 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F31271B2621E700760E05 /* Changelog.txt */; };
 		3E8F31C11B2621E700760E05 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F315D1B2621E700760E05 /* Readme.txt */; };
 		3E8F31C21B2621E700760E05 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F315F1B2621E700760E05 /* Changelog.txt */; };
@@ -16,6 +15,7 @@
 		3E8F31EF1B2621E700760E05 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F31A11B2621E700760E05 /* Readme.txt */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
+		98887B211776822C608CBF0F /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
 		BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055961ACF100500413F16 /* ScheduleItemView.swift */; };
@@ -115,6 +115,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
 		3E8F31271B2621E700760E05 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changelog.txt; sourceTree = "<group>"; };
 		3E8F31531B2621E700760E05 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
@@ -139,7 +140,6 @@
 		3E8F31A11B2621E700760E05 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		60C782E60281D9EE835A6FAE /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -257,7 +257,7 @@
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
 				BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */,
 				BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */,
-				212F621FC6E44D31498CF230 /* libPods-prkng-ios.a in Frameworks */,
+				98887B211776822C608CBF0F /* libPods-prkng-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +299,7 @@
 				BFA8D1701A83D364005F4054 /* libsqlite3.dylib */,
 				BFA8D16E1A83D356005F4054 /* QuartzCore.framework */,
 				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
-				60C782E60281D9EE835A6FAE /* libPods-prkng-ios.a */,
+				0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

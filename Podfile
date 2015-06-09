@@ -3,13 +3,14 @@ platform :ios, '7.0'
 
 target 'prkng-ios' do
 
-pod 'IQKeyboardManager'
+pod 'IQKeyboardManager', '3.2.4'
 pod 'Mapbox-iOS-SDK', '1.6.0'
-pod 'SDWebImage'
-pod 'SVProgressHUD', :git => 'https://github.com/TransitApp/SVProgressHUD.git'
+pod 'SDWebImage', '3.7.2'
+pod 'SVProgressHUD', :head #should eventually be '1.1.4' when it's released
 
 #the pods below should only be enabled if we move to ios 8
 #use_frameworks!
+#pod 'MapboxGL'
 #pod 'AF+Date+Helper', :git => 'https://github.com/melvitax/AFDateHelper.git'
 #pod 'SnapKit'
 #pod 'SwiftyJSON'
