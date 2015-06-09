@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Optional: set Google Analytics dispatch interval to e.g. 20 seconds.
         GAI.sharedInstance().dispatchInterval = 20;
         // Optional: set Logger to VERBOSE for debug information.
-        GAI.sharedInstance().logger.logLevel = GAILogLevel.Verbose
+        GAI.sharedInstance().logger.logLevel = GAILogLevel.Error
         // Initialize tracker. Replace with your tracking ID.
         GAI.sharedInstance().trackerWithTrackingId("UA-63856349-1")
         

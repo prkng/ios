@@ -241,7 +241,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
         let lastMapCenterLocation = CLLocation(latitude: lastMapCenterCoordinate.latitude, longitude: lastMapCenterCoordinate.longitude)
         let newMapCenterLocation = CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude)
         let differenceInMeters = lastMapCenterLocation.distanceFromLocation(newMapCenterLocation)
-        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
+//        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
         if differenceInMeters > MOVE_DELTA_IN_METERS {
             updateAnnotations()
             lastMapCenterCoordinate = map.centerCoordinate
@@ -498,7 +498,7 @@ class MapViewController: AbstractViewController, RMMapViewDelegate {
                     
                     var timeInterval = NSDate().timeIntervalSinceDate(startedOn)
                     let milliseconds = CUnsignedLong(timeInterval * 1000)
-                    NSLog("findSpots completion took: " + String(milliseconds) + " milliseconds")
+//                    NSLog("findSpots completion took: " + String(milliseconds) + " milliseconds")
 //                    NSLog("findSpots completion - ended at: %@", format.stringFromDate(NSDate()))
                     
                     SVProgressHUD.dismiss()

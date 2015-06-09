@@ -120,30 +120,31 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.height.equalTo(20)
         }
         
-        detailView.snp_makeConstraints {
-            (make) -> () in
+        detailView.snp_makeConstraints { (make) -> () in
             make.bottom.equalTo(self.view).with.offset(180)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(150)
         }
         
-        checkinButton.snp_makeConstraints {
-            (make) -> () in
+        checkinButton.snp_makeConstraints { (make) -> () in
             make.bottom.equalTo(self.view).with.offset(-20)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
         }
         
-        searchField.snp_makeConstraints{ (make) -> () in
-            make.left.equalTo(self.searchFieldView).with.offset(20)
-            make.right.equalTo(self.searchFieldView)
-            make.top.equalTo(0)
-            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
+        searchButton.snp_makeConstraints{ (make) -> () in
+            make.size.equalTo(CGSizeMake(36, 36))
+            make.centerX.equalTo(self.view).multipliedBy(1.66)
+            make.bottom.equalTo(self.view).with.offset(-30)
         }
-
-        showSearchButton(false)
-        transformSearchFieldIntoButton()
+        
+        searchFieldView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.view).with.offset(32)
+            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
+            make.centerX.equalTo(self.view)
+            make.width.equalTo(0)
+        }
 
     }
     
@@ -373,13 +374,22 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.right.equalTo(self.view).with.offset(-12)
         }
         
+        searchField.snp_remakeConstraints { (make) -> () in
+            make.left.equalTo(self.searchFieldView).with.offset(20)
+            make.right.equalTo(self.searchFieldView)
+            make.top.equalTo(self.searchFieldView)
+            make.bottom.equalTo(self.searchFieldView)
+        }
+        
         searchFieldView.setNeedsLayout()
+        searchField.setNeedsLayout()
         
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
                 self.searchFieldView.layoutIfNeeded()
+                self.searchField.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
                 self.searchField.becomeFirstResponder()
@@ -389,20 +399,30 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     func transformSearchFieldIntoButton() {
         
+        searchField.snp_removeConstraints()
+
         searchFieldView.snp_remakeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(32)
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
             make.centerX.equalTo(self.view)
             make.width.equalTo(0)
         }
+
+        searchField.snp_remakeConstraints { (make) -> () in
+            make.size.equalTo(CGSizeMake(0, 0))
+            make.top.equalTo(self.searchFieldView)
+            make.left.equalTo(self.searchFieldView)
+        }
         
         searchFieldView.setNeedsLayout()
-        
+        searchField.setNeedsLayout()
+
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
                 self.searchFieldView.layoutIfNeeded()
+                self.searchField.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
                 self.showSearchButton(false)
