@@ -44,6 +44,8 @@
 		BF7170B21AE42DDE00B922CA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170B11AE42DDE00B922CA /* SettingsViewController.swift */; };
 		BF7170B41AE4303D00B922CA /* HereViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170B31AE4303D00B922CA /* HereViewController.swift */; };
 		BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF72984A1A9C8C5D00B8F4AE /* ParkingRule.swift */; };
+		BF73AE531B289D0200F4CD79 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73AE521B289D0200F4CD79 /* EditProfileViewController.swift */; };
+		BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF73AE541B289D0E00F4CD79 /* HistoryViewController.swift */; };
 		BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF779A321AD4042E00F76E0A /* ScheduleDayIndicatorView.swift */; };
 		BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF779A371AD4100E00F76E0A /* SearchViewController.swift */; };
 		BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF899B021AF1566900E42DE8 /* DateSelectionView.swift */; };
@@ -169,6 +171,8 @@
 		BF7170B11AE42DDE00B922CA /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BF7170B31AE4303D00B922CA /* HereViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HereViewController.swift; sourceTree = "<group>"; };
 		BF72984A1A9C8C5D00B8F4AE /* ParkingRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingRule.swift; sourceTree = "<group>"; };
+		BF73AE521B289D0200F4CD79 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		BF73AE541B289D0E00F4CD79 /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		BF779A321AD4042E00F76E0A /* ScheduleDayIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleDayIndicatorView.swift; sourceTree = "<group>"; };
 		BF779A371AD4100E00F76E0A /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		BF899B021AF1566900E42DE8 /* DateSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateSelectionView.swift; sourceTree = "<group>"; };
@@ -385,6 +389,7 @@
 				BFB0958D1AFA3F79007F1D16 /* Login */,
 				BF522FC51AE59B65001DB93E /* Intro */,
 				BF7170B01AE42DBF00B922CA /* Settings */,
+				BF73AE511B289CCA00F4CD79 /* User */,
 				BF7170AF1AE42CC300B922CA /* Here */,
 				BF779A361AD40FD100F76E0A /* Search */,
 				BFF568EB1ACDCBF50018F62F /* Schedule */,
@@ -437,6 +442,15 @@
 				BF7170B11AE42DDE00B922CA /* SettingsViewController.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		BF73AE511B289CCA00F4CD79 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				BF73AE521B289D0200F4CD79 /* EditProfileViewController.swift */,
+				BF73AE541B289D0E00F4CD79 /* HistoryViewController.swift */,
+			);
+			path = User;
 			sourceTree = "<group>";
 		};
 		BF779A361AD40FD100F76E0A /* Search */ = {
@@ -866,11 +880,13 @@
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
+				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
 				BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */,
 				BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */,
+				BF73AE531B289D0200F4CD79 /* EditProfileViewController.swift in Sources */,
 				BF2891EA1AFFC0590041B04C /* User.swift in Sources */,
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,

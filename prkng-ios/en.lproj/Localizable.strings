@@ -23,6 +23,8 @@
 "password_mismatch" = "Passwords do not match.";
 "login_error" = "Please check your email address and password and try again.";
 "logout" = "logout";
+"my_profile" = "my profile";
+"my_history" = "my history";
 
 "your_name" = "your name";
 "your_gender" = "your gender";

@@ -38,7 +38,7 @@ class User : NSObject {
         encoder.encodeObject(identifier, forKey: "identifier")
         encoder.encodeObject(email, forKey: "email")
         if (imageUrl != nil) {
-            encoder.encodeObject(email, forKey: "imageUrl")
+            encoder.encodeObject(imageUrl, forKey: "imageUrl")
         }
     }
     
