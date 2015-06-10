@@ -14,6 +14,12 @@ class SettingsViewController: AbstractViewController {
     
     var topContainer : UIView
     
+    var profileButton : UIButton
+    var profileContainer : UIView
+    var profileImageView : UIImageView
+    var profileTitleLabel : UILabel
+    var profileNameLabel : UILabel
+    
     var cityContainer : UIView
     var prevCityButton : UIButton
     var nextCityButton : UIButton
@@ -23,6 +29,7 @@ class SettingsViewController: AbstractViewController {
     var notificationsLabel : UILabel
     var notificationSelection : SelectionControl
 
+    var historyButton : UIButton
     
     var aboutButton : UIButton
     
@@ -31,6 +38,14 @@ class SettingsViewController: AbstractViewController {
         backgroundImageView = UIImageView()
         
         topContainer = UIView()
+        
+        profileButton = UIButton()
+        profileContainer = UIView()
+        profileImageView = UIImageView()
+        profileTitleLabel = ViewFactory.formLabel()
+        profileNameLabel = UILabel()
+        
+        historyButton = ViewFactory.transparentRoundedButton()
         
         cityContainer = UIView()
         prevCityButton = UIButton()
@@ -93,6 +108,20 @@ class SettingsViewController: AbstractViewController {
         
         topContainer.backgroundColor = Styles.Colors.petrol2
         view.addSubview(topContainer)
+        
+        topContainer.addSubview(profileContainer)
+        
+        profileContainer.addSubview(profileImageView)
+        
+        profileContainer.addSubview(profileTitleLabel)
+        
+        profileNameLabel.font = Styles.Fonts.h1
+        profileNameLabel.textColor = Styles.Colors.cream1
+        profileContainer.addSubview(profileNameLabel)
+        
+        
+        
+        topContainer.addConstraint(profileButton)
         
         cityContainer.backgroundColor = Styles.Colors.red2
         view.addSubview(cityContainer)

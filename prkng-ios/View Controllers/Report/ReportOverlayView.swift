@@ -63,12 +63,12 @@ class ReportOverlayView: UIView {
         reportTitleLabel.text = "report_title".localizedString
         addSubview(reportTitleLabel)
         
-        streetNameLabel.font = Styles.Fonts.Light.h1
+        streetNameLabel.font = Styles.Fonts.h1
         streetNameLabel.textColor = Styles.Colors.cream1
         streetNameLabel.textAlignment = NSTextAlignment.Center
         addSubview(streetNameLabel)
         
-        textLabel.font = Styles.Fonts.Light.h3
+        textLabel.font = Styles.Fonts.h3
         textLabel.textColor = Styles.Colors.red2
         textLabel.textAlignment = NSTextAlignment.Center
         textLabel.numberOfLines = 0

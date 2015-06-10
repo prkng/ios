@@ -237,9 +237,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
             availableTimeLabel.font = Styles.FontFaces.regular(40)
         } else {
             availableTimeLabel.text = "time_up".localizedString
-            availableTimeLabel.font = Styles.Fonts.Regular.h1
+            availableTimeLabel.font = Styles.Fonts.h1r
         }
-
         
     }
     
