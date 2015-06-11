@@ -119,12 +119,13 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         
         let vc = pageViewController.viewControllers[0] as! TutorialContentViewController
 
-        let nextVC = contentViewControllers[vc.pageIndex + 1]
+        let index = vc.pageIndex >= contentViewControllers.count ? contentViewControllers.count - 1 : vc.pageIndex + 1
+        let nextVC = contentViewControllers[index]
         
         self.pageViewController.setViewControllers([nextVC], direction: UIPageViewControllerNavigationDirection.Forward, animated: true) { (completed) -> Void in
             self.updateViews()
         }
-    
+        
     }
     
     func getStartedButtonTapped() {
