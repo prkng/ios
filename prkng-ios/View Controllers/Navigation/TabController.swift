@@ -34,7 +34,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         tabBar = PrkTabBar()
         containerView = UIView()
         switchingMainView = false
-        mapViewController = MapViewController()
+        
+    let useAppleMaps = NSUserDefaults.standardUserDefaults().boolForKey("use_apple_maps")
+        mapViewController = useAppleMaps ? MKMapViewController() : RMMapViewController()
         hereViewController = HereViewController()
         activeViewController = hereViewController
         super.init(nibName: nil, bundle: nil)
@@ -134,7 +136,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //        mapViewController.mapView.zoom = 17
 //        mapViewController.trackUserButton.hidden = true
 //        mapViewController.mapView.showsUserLocation = false
-//        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+//        mapViewController.mapView.userTrackingMode = MKUserTrackingMode.None
 //        
 //        
 //        switchActiveViewController(searchViewController!, completion: { (finished) -> Void in
@@ -151,8 +153,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         }
         
         mapViewController.clearSearchResults()
-        mapViewController.mapView.showsUserLocation = true
-        mapViewController.mapView.userTrackingMode = RMUserTrackingModeFollow
+        mapViewController.showUserLocation(true)
+        mapViewController.trackUser(true)
         
         switchActiveViewController(hereViewController, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Here
@@ -197,8 +199,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             settingsViewController = SettingsViewController()
         }
         
-        mapViewController.mapView.showsUserLocation = false
-        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+        mapViewController.showUserLocation(false)
+        mapViewController.trackUser(false)
         
         switchActiveViewController(settingsViewController!, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Settings
@@ -213,8 +215,6 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         if switchingMainView {
             return
         }
-        
-        mapViewController.updateMapCenterIfNecessary()
         
         switchingMainView = true
         newViewController.view.alpha = 0.0;
@@ -293,7 +293,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
     
     func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?) {
-        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+        mapViewController.trackUser(false)
         mapViewController.displaySearchResults(results, checkinTime: checkinTime)
     }
     
@@ -308,8 +308,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func reloadMyCarTab() {
         
-        mapViewController.mapView.showsUserLocation = false
-        mapViewController.mapView.userTrackingMode = RMUserTrackingModeNone
+        mapViewController.showUserLocation(false)
+        mapViewController.trackUser(false)
         
         
         var myCarViewController : AbstractViewController?
