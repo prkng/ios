@@ -12,6 +12,11 @@ class Shape: NSObject {
 
     var type: String
     var coordinates: Array<CLLocation>
+    
+    var coordinates2D: [CLLocationCoordinate2D] { get {
+        return coordinates.map({ (var location: CLLocation) -> CLLocationCoordinate2D in
+            return location.coordinate
+    }) } }
 
     init(json: JSON) {
 

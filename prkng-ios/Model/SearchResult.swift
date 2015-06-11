@@ -8,14 +8,21 @@
 
 import UIKit
 
-class SearchResult {
+class SearchResult: NSObject, MKAnnotation {
     
     var title : String
     var location : CLLocation
     
+    var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
+
     init(title: String, location : CLLocation) {
         self.title = title
         self.location = location
+        self.userInfo = [String:AnyObject]()
     }
+    
+    //MARK- MKAnnotation
+    var coordinate: CLLocationCoordinate2D { get { return location.coordinate } }
+
    
 }

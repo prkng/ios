@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */; };
+		3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC51B2769FF00872667 /* GLKit.framework */; };
+		3E0FDAC81B276A0700872667 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC71B276A0700872667 /* ImageIO.framework */; };
+		3E0FDACA1B276A1000872667 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */; };
+		3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDACB1B276A2B00872667 /* libc++.dylib */; };
+		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
+		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E8F31A21B2621E700760E05 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F31271B2621E700760E05 /* Changelog.txt */; };
 		3E8F31C11B2621E700760E05 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F315D1B2621E700760E05 /* Readme.txt */; };
 		3E8F31C21B2621E700760E05 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F315F1B2621E700760E05 /* Changelog.txt */; };
@@ -15,6 +22,9 @@
 		3E8F31EF1B2621E700760E05 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F31A11B2621E700760E05 /* Readme.txt */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
+		3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */; };
+		3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */; };
+		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		98887B211776822C608CBF0F /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
@@ -81,7 +91,7 @@
 		BFDDF1101B03614400E8C59E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF10F1B03614400E8C59E /* CoreMotion.framework */; };
 		BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF22C01A85122D000380DA /* Crashlytics.framework */; };
 		BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */; };
-		BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB791A839F6A00B77F2E /* MapViewController.swift */; };
+		BFE1AB7A1A839F6A00B77F2E /* RMMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB791A839F6A00B77F2E /* RMMapViewController.swift */; };
 		BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */; };
 		BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */; };
 		BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956681A8E59DF00C2C117 /* APIUtility.swift */; };
@@ -119,6 +129,13 @@
 /* Begin PBXFileReference section */
 		0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
+		3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		3E0FDAC51B2769FF00872667 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		3E0FDAC71B276A0700872667 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		3E0FDACB1B276A2B00872667 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
+		3E0FDAD31B27921400872667 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E8F31271B2621E700760E05 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changelog.txt; sourceTree = "<group>"; };
 		3E8F31531B2621E700760E05 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		3E8F31541B2621E700760E05 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
@@ -142,6 +159,9 @@
 		3E8F31A11B2621E700760E05 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapViewController.swift; sourceTree = "<group>"; };
+		3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -212,7 +232,7 @@
 		BFDDF10F1B03614400E8C59E /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		BFDF22C01A85122D000380DA /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractViewController.swift; sourceTree = "<group>"; };
-		BFE1AB791A839F6A00B77F2E /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		BFE1AB791A839F6A00B77F2E /* RMMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RMMapViewController.swift; sourceTree = "<group>"; };
 		BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor-Hex.swift"; sourceTree = "<group>"; };
 		BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingSpot.swift; sourceTree = "<group>"; };
 		BFE956681A8E59DF00C2C117 /* APIUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIUtility.swift; sourceTree = "<group>"; };
@@ -245,6 +265,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */,
+				3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */,
+				BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */,
+				3E0FDACA1B276A1000872667 /* MobileCoreServices.framework in Frameworks */,
+				3E0FDAC81B276A0700872667 /* ImageIO.framework in Frameworks */,
+				3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */,
+				3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */,
 				3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */,
 				3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */,
 				BFDDF1101B03614400E8C59E /* CoreMotion.framework in Frameworks */,
@@ -257,7 +284,6 @@
 				BF2891E61AFF9DFD0041B04C /* FBSDKCoreKit.framework in Frameworks */,
 				BFDDF1081B035FDD00E8C59E /* GooglePlus.framework in Frameworks */,
 				3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */,
-				BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */,
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
 				BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */,
 				BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */,
@@ -287,6 +313,12 @@
 		14ED3BF3E75A844F19A53B43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3E0FDAD31B27921400872667 /* MapKit.framework */,
+				3E0FDACB1B276A2B00872667 /* libc++.dylib */,
+				3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */,
+				3E0FDAC71B276A0700872667 /* ImageIO.framework */,
+				3E0FDAC51B2769FF00872667 /* GLKit.framework */,
+				3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */,
 				3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */,
 				3E8F31F61B26238900760E05 /* CoreData.framework */,
 				BFDDF10F1B03614400E8C59E /* CoreMotion.framework */,
@@ -403,6 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				BF1C2B5D1AFCDA180070085A /* String.swift */,
+				3E6DCC831B28E0D500DF62E0 /* Array.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -540,6 +573,7 @@
 				BFC7648B1A7644AC008F2B26 /* Info.plist */,
 				BFF568E91ACC62CA0018F62F /* Localizable.strings */,
 				BF3069331B03B09200FB3388 /* OfflineMap.json */,
+				3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -584,7 +618,9 @@
 		BFE1AB761A839F0100B77F2E /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				BFE1AB791A839F6A00B77F2E /* MapViewController.swift */,
+				3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */,
+				BFE1AB791A839F6A00B77F2E /* RMMapViewController.swift */,
+				3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */,
 				BF2A40A61AC468450055D785 /* SpotDetailView.swift */,
 			);
 			path = Map;
@@ -734,6 +770,11 @@
 					BFC764861A7644AC008F2B26 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = KURFZF6D8V;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 					BFC7649B1A7644AC008F2B26 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -768,6 +809,7 @@
 			files = (
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				3E8F31C11B2621E700760E05 /* Readme.txt in Resources */,
+				3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
 				BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */,
@@ -847,6 +889,7 @@
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
+				3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
 				BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */,
@@ -891,6 +934,7 @@
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
+				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
 				BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */,
@@ -903,11 +947,12 @@
 				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
-				BFE1AB7A1A839F6A00B77F2E /* MapViewController.swift in Sources */,
+				BFE1AB7A1A839F6A00B77F2E /* RMMapViewController.swift in Sources */,
 				BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */,
 				BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */,
 				BF7170B21AE42DDE00B922CA /* SettingsViewController.swift in Sources */,
 				BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */,
+				3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1040,6 +1085,7 @@
 					"$(PROJECT_DIR)/**",
 					"$(PROJECT_DIR)/prkng-ios/Libraries/GoogleAnalyticsServices",
 					"$(inherited)",
+					"$(PROJECT_DIR)/prkng-ios/Libraries/MapboxGL0.3.4",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				"OTHER_LDFLAGS[arch=*]" = (
@@ -1075,6 +1121,7 @@
 					"$(PROJECT_DIR)/**",
 					"$(PROJECT_DIR)/prkng-ios/Libraries/GoogleAnalyticsServices",
 					"$(inherited)",
+					"$(PROJECT_DIR)/prkng-ios/Libraries/MapboxGL0.3.4",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

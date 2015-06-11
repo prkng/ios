@@ -8,7 +8,11 @@
 
 import UIKit
 
-class ParkingSpot: NSObject {
+func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
+class ParkingSpot: NSObject, Hashable {
     
     var identifier: String
     var code: String
@@ -19,6 +23,31 @@ class ParkingSpot: NSObject {
     var buttonLocation: CLLocation
     var rules: Array<ParkingRule>
     var line: Shape
+    
+    var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
+    
+    //MARK- MKAnnotation
+    var title: String! { get { return identifier } }
+    var subtitle: String! { get { return name } }
+//    var lineSpot: LineParkingSpot { get { return LineParkingSpot(spot: self) } }
+    var buttonSpot: ButtonParkingSpot { get { return ButtonParkingSpot(spot: self) } }
+
+    //MARK- Hashable
+    override var hashValue: Int { get { return identifier.toInt()! } }
+    
+    
+    init(spot: ParkingSpot) {
+        identifier = spot.identifier
+        code = spot.code
+        name = spot.name
+        desc = spot.desc
+        maxParkingTime = spot.maxParkingTime
+        duration = spot.duration
+        buttonLocation = spot.buttonLocation
+        rules = spot.rules
+        line = spot.line
+        userInfo = spot.userInfo
+    }
     
     init(json: JSON) {
         
@@ -48,8 +77,8 @@ class ParkingSpot: NSObject {
         }
         
         line = Shape(json: json["geometry"])
+        userInfo = [String:AnyObject]()
     }
-    
     
     func availableTimeInterval() -> NSTimeInterval {
         
@@ -151,3 +180,32 @@ class ParkingSpot: NSObject {
     }
     
 }
+
+func ==(lhs: LineParkingSpot, rhs: LineParkingSpot) -> Bool {
+    return lhs.hashValue == rhs.hashValue
+}
+
+class LineParkingSpot: MKPolyline, Hashable {
+    var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } }//to maintain backwards compatibility with mapbox
+    var parkingSpot: ParkingSpot!
+    
+    //MARK- Hashable
+    override var hashValue: Int { get { return parkingSpot.identifier.toInt()! } }
+
+//    convenience init(coordinates coords: UnsafeMutablePointer<CLLocationCoordinate2D>, count: Int, spot: ParkingSpot) {
+//        parkingSpot = spot
+//        self.init(coordinates: coords, count: count)
+//    }
+//    
+//    init(coordinates coords: UnsafeMutablePointer<CLLocationCoordinate2D>, count: Int) {
+//        super.init(coordinates: coords, count: count)
+//    }
+    override init() {
+        super.init()
+    }
+}
+
+class ButtonParkingSpot: ParkingSpot, MKAnnotation {
+    var coordinate: CLLocationCoordinate2D { get { return buttonLocation.coordinate } }
+}
+

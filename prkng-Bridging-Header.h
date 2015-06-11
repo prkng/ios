@@ -10,7 +10,8 @@
 #define prkng_ios_prkng_Bridging_Header_h
 
 #import <UIKit/UIKit.h>
-//#import <MapboxGL/MapboxGL.h>
+#import <MBXMapKit/MBXMapKit.h>
+#import <MapKit/MapKit.h>
 #import <Mapbox.h>
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
