@@ -23,11 +23,11 @@
 "password_mismatch" = "Passwords do not match.";
 "login_error" = "Please check your email address and password and try again.";
 "logout" = "logout";
-"my_profile" = "my profile";
-"my_history" = "my history";
+"my_profile" = "MY PROFILE";
+"my_history" = "MY HISTORY";
 "save" = "save";
-"new_password" = "new password";
-"new_password" = "confirm your password";
+"new_password" = "NEW PASSWORD";
+"new_password" = "CONFIRM YOUR PASSWORD";
 
 "your_name" = "your name";
 "your_gender" = "your gender";
