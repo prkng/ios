@@ -201,6 +201,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
         mapViewController.showUserLocation(false)
         mapViewController.trackUser(false)
+
+        let navigationController = UINavigationController(rootViewController: settingsViewController!)
+        navigationController.navigationBarHidden = true
         
         switchActiveViewController(settingsViewController!, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Settings

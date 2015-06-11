@@ -104,7 +104,7 @@ struct ViewFactory {
     
     static func formTextField() -> UITextField {
         let textField = UITextField()
-        textField.font = Styles.Fonts.Light.h2
+        textField.font = Styles.Fonts.h2
         textField.backgroundColor = UIColor.clearColor()
         textField.textColor = Styles.Colors.anthracite1
         textField.textAlignment = NSTextAlignment.Center

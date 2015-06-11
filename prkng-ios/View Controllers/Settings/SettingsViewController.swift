@@ -14,6 +14,12 @@ class SettingsViewController: AbstractViewController {
     
     var topContainer : UIView
     
+    var profileButton : UIButton
+    var profileContainer : UIView
+    var profileImageView : UIImageView
+    var profileTitleLabel : UILabel
+    var profileNameLabel : UILabel
+    
     var cityContainer : UIView
     var prevCityButton : UIButton
     var nextCityButton : UIButton
@@ -22,7 +28,8 @@ class SettingsViewController: AbstractViewController {
     var notificationsContainer : UIView
     var notificationsLabel : UILabel
     var notificationSelection : SelectionControl
-
+    
+    var historyButton : UIButton
     
     var aboutButton : UIButton
     
@@ -31,6 +38,14 @@ class SettingsViewController: AbstractViewController {
         backgroundImageView = UIImageView()
         
         topContainer = UIView()
+        
+        profileButton = UIButton()
+        profileContainer = UIView()
+        profileImageView = UIImageView()
+        profileTitleLabel = ViewFactory.formLabel()
+        profileNameLabel = UILabel()
+        
+        historyButton = ViewFactory.transparentRoundedButton()
         
         cityContainer = UIView()
         prevCityButton = UIButton()
@@ -83,6 +98,14 @@ class SettingsViewController: AbstractViewController {
             i = 1
         }
         self.notificationSelection.selectOption(self.notificationSelection.buttons[i])
+        
+        if let user = AuthUtility.getUser() {
+            self.profileNameLabel.text = user.name
+            if let imageUrl = user.imageUrl {
+                self.profileImageView.sd_setImageWithURL(NSURL(string: imageUrl))
+            }
+            
+        }
     }
     
     func setupViews () {
@@ -93,6 +116,25 @@ class SettingsViewController: AbstractViewController {
         
         topContainer.backgroundColor = Styles.Colors.petrol2
         view.addSubview(topContainer)
+        
+        topContainer.addSubview(profileContainer)
+        
+        profileImageView.layer.cornerRadius = 34
+        profileImageView.clipsToBounds = true
+        profileContainer.addSubview(profileImageView)
+        
+        profileTitleLabel.text = "my_profile".localizedString.uppercaseString
+        profileContainer.addSubview(profileTitleLabel)
+        
+        profileNameLabel.font = Styles.Fonts.h1
+        profileNameLabel.textColor = Styles.Colors.cream1
+        profileNameLabel.textAlignment = NSTextAlignment.Center
+        profileContainer.addSubview(profileNameLabel)
+        
+        topContainer.addSubview(profileButton)
+        
+        historyButton.setTitle("my_history".localizedString.uppercaseString, forState: .Normal)
+        topContainer.addSubview(historyButton)
         
         cityContainer.backgroundColor = Styles.Colors.red2
         view.addSubview(cityContainer)
@@ -182,6 +224,36 @@ class SettingsViewController: AbstractViewController {
             make.bottom.equalTo(self.cityContainer.snp_top)
         }
         
+        profileContainer.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.topContainer)
+            make.centerY.equalTo(self.topContainer).multipliedBy(0.8).priorityLow()
+            make.height.equalTo(150)
+            make.left.equalTo(self.topContainer).with.offset(20)
+            make.right.equalTo(self.topContainer).with.offset(-20)
+        }
+        
+        profileImageView.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.profileContainer)
+            make.top.equalTo(self.profileContainer)
+            make.size.equalTo(CGSizeMake(68, 68))
+        }
+        
+        profileTitleLabel.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.profileNameLabel.snp_top).with.offset(-3)
+            make.left.equalTo(self.profileContainer)
+            make.right.equalTo(self.profileContainer)
+        }
+        
+        profileNameLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.profileContainer)
+            make.right.equalTo(self.profileContainer)
+            make.bottom.equalTo(self.profileContainer)
+        }
+        
+        
+        profileButton.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(profileContainer)
+        }
         
         cityLabel.snp_makeConstraints { (make) -> () in
             make.center.equalTo(self.cityContainer)
@@ -199,18 +271,25 @@ class SettingsViewController: AbstractViewController {
             make.centerY.equalTo(self.cityContainer)
         }
         
+        historyButton.snp_makeConstraints { (make) -> () in
+            make.top.greaterThanOrEqualTo(self.profileContainer.snp_bottom).with.offset(5).priorityHigh()
+            make.bottom.equalTo(self.topContainer).with.offset(-15)
+            make.centerX.equalTo(self.topContainer)
+            make.size.equalTo(CGSizeMake(110, 26))
+        }
+        
     }
     
     func aboutButtonTapped() {
         
-
+        
         SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
         
         AuthUtility.saveAuthToken(nil)
         AuthUtility.saveUser(nil)
         
         UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
-
+        
         
     }
     

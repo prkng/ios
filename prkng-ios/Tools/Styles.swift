@@ -65,17 +65,13 @@ struct Styles {
     
     struct Fonts {
         
-        struct Light {
-            static let h1 =  FontFaces.light(29)
-            static let h2 =  FontFaces.light(25)
-            static let h3 =  FontFaces.light(20)
-        }
+        static let h1 =  FontFaces.light(29)
+        static let h2 =  FontFaces.light(25)
+        static let h3 =  FontFaces.light(20)
         
-        struct Regular {
-            static let h1 =  FontFaces.regular(29)
-            static let h2 =  FontFaces.regular(25)
-            static let h3 =  FontFaces.regular(20)
-        }
+        static let h1r =  FontFaces.regular(29)
+        static let h2r =  FontFaces.regular(25)
+        static let h3r =  FontFaces.regular(20)
     }
     
     struct Sizes {
