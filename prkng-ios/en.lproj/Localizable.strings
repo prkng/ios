@@ -25,6 +25,9 @@
 "logout" = "logout";
 "my_profile" = "my profile";
 "my_history" = "my history";
+"save" = "save";
+"new_password" = "new password";
+"new_password" = "confirm your password";
 
 "your_name" = "your name";
 "your_gender" = "your gender";

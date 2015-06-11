@@ -6,10 +6,8 @@
  Copyright (c) 2015 PRKNG. All rights reserved.
  */
 
-
 "park_now" = "SE STATIONNER";
 "take_the_tour" = "débuter";
-
 
 "sign_up" = "S'INSCRIRE";
 "login_with" = "CONNEXION AVEC";
@@ -27,7 +25,9 @@
 "logout" = "se déconnecter";
 "my_profile" = "Le my profile";
 "my_history" = "Le my history";
-
+"save" = "Le save";
+"new_password" = "Le new password";
+"new_password" = "Le confirm your password";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";
