@@ -27,7 +27,7 @@
 "my_history" = "MY HISTORY";
 "save" = "save";
 "new_password" = "NEW PASSWORD";
-"new_password" = "CONFIRM YOUR PASSWORD";
+"new_password_confirm" = "CONFIRM YOUR PASSWORD";
 
 "your_name" = "your name";
 "your_gender" = "your gender";

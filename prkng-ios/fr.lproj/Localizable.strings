@@ -27,7 +27,7 @@
 "my_history" = "MON HISTORIQUE";
 "save" = "enregistrer";
 "new_password" = "NOUVEAU MOT DE PASSE";
-"new_password" = "CONFIRMATION DU MOT DE PASSE";
+"new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";

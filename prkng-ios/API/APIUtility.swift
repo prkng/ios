@@ -14,7 +14,7 @@ class APIUtility: NSObject {
 #if DEBUG
         static let rootURLString = "http://54.144.3.236/"
 #else
-        static let rootURLString = "http://54.144.3.236/"
+        static let rootURLString = "https://api.prk.ng/"
 #endif
     }
     

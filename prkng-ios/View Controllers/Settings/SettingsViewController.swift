@@ -68,7 +68,7 @@ class SettingsViewController: AbstractViewController {
     }
     
     override func loadView() {
-        self.view = TouchForwardingView()
+        self.view = UIView()
         setupViews()
         setupConstraints()
     }
@@ -131,6 +131,7 @@ class SettingsViewController: AbstractViewController {
         profileNameLabel.textAlignment = NSTextAlignment.Center
         profileContainer.addSubview(profileNameLabel)
         
+        profileButton.addTarget(self, action: "profileButtonTapped:", forControlEvents: .TouchUpInside)
         topContainer.addSubview(profileButton)
         
         historyButton.setTitle("my_history".localizedString.uppercaseString, forState: .Normal)
@@ -355,6 +356,10 @@ class SettingsViewController: AbstractViewController {
             break
         default:break
         }
+    }
+    
+    func profileButtonTapped(sender: UIButton) {
+        self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
     }
     
 }

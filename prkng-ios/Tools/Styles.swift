@@ -77,8 +77,11 @@ struct Styles {
     struct Sizes {
         static let hugeButtonHeight = 90
         static let bigButtonHeight = 80
+        static let formTextFieldHeight = 71
+        static let formLabelHeight = 17
         static let searchTextFieldHeight = 46
         static let blurRadius = 3
+        static let avatarSize = CGSizeMake(68,68)
     }
     
 }
