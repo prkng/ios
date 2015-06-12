@@ -80,24 +80,47 @@ class ParkingSpot: NSObject, Hashable {
         userInfo = [String:AnyObject]()
     }
     
-    func availableHourString() -> String{
-        
+    //returns something like 29:12
+    func availableHourString() -> String {
         let interval = availableTimeInterval()
-        
-        if (interval == 24 * 3600) {
-            return "24:00+"
-        }
-        
-        let minutes  = Int((interval / 60) % 60)
-        let hours = Int((interval / 3600))
-        return  String(NSString(format: "%02ld:%02ld", hours, minutes))
+        return ParkingSpot.availableHourString(interval)
     }
     
-    //returns the closest future time that this parking spot is available until
+    static func availableHourString(interval: NSTimeInterval) -> String {
+        let minutes  = Int((interval / 60) % 60)
+        let hours = Int((interval / 3600))
+        return String(format: "%02ld:%02ld", hours, minutes)
+    }
+    
+    //returns something like Wednesday, 7:30 PM
+    func availableUntil() -> String {
+        let interval = availableTimeInterval()
+        return ParkingSpot.availableUntil(interval)
+    }
+    
+    static func availableUntil(availableTimeInterval: NSTimeInterval) -> String {
+        let dateAtStartOfNextRule = NSDate(timeIntervalSinceNow: availableTimeInterval)
+        
+        let formatter = NSDateFormatter()
+        
+        if dateAtStartOfNextRule.minute() > 0 {
+            formatter.dateFormat = "EEEE, h:mm a" //Wednesday, 7:30 PM
+        } else {
+            formatter.dateFormat = "EEEE, h a" //Wednesday, 7 PM
+        }
+        
+        let availableUntil = formatter.stringFromDate(dateAtStartOfNextRule)
+        return availableUntil
+    }
+    
     func availableTimeInterval() -> NSTimeInterval {
-
-        let secondsPerDay = 24 * 60 * 60
         let currentSecondsSinceDayStart = DateUtil.timeIntervalSinceDayStart()
+        return availableTimeInterval(currentSecondsSinceDayStart)
+    }
+
+    //returns the closest future time that this parking spot is available until
+    func availableTimeInterval(currentSecondsSinceDayStart: NSTimeInterval) -> NSTimeInterval {
+        let secondsPerDay = 24 * 60 * 60
 
         var potentialNearestRules:[SimplifiedParkingRule] = []
         var potentialPastRules:[SimplifiedParkingRule] = []
@@ -167,7 +190,6 @@ class ParkingSpot: NSObject, Hashable {
     // [ RULE1, RULE2, ETC]
     // where RULE1 is... [nil  , TIMEPERIOD, TIMEPERIOD, nil, nil, nil, nil]
     // ...which means... [today, tomorrow  , after-tom., etc, etc, etc, yesterday]
-    
     func sortedTimePeriods() -> Array<Array<TimePeriod?>>{
         var array : Array<Array<TimePeriod?>> = []
         

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyCarCheckedInViewController: MyCarAbstractViewController {
+class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate {
     
     var spot : ParkingSpot?
 
@@ -44,6 +44,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         logoView = UIImageView()
         
         containerView = UIView()
+
         locationTitleLabel = ViewFactory.formLabel()
         locationLabel = ViewFactory.bigMessageLabel()
 
@@ -65,6 +66,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         self.view = UIView()
         setupViews()
         setupConstraints()
+        
+        //add a tap gesture recognizer
+        var tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        var tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        var tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        tapRecognizer1.delegate = self
+        tapRecognizer2.delegate = self
+        tapRecognizer3.delegate = self
+        containerView.addGestureRecognizer(tapRecognizer1)
+        backgroundImageView.addGestureRecognizer(tapRecognizer2)
+        backgroundImageView.userInteractionEnabled = true
+        logoView.addGestureRecognizer(tapRecognizer3)
+        logoView.userInteractionEnabled = true
     }
     
     
@@ -231,10 +245,13 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         let interval = Settings.checkInTimeRemaining()
         
         if (interval > 59) {
-            let minutes  = Int((interval / 60) % 60)
-            let hours = Int((interval / 3600))
-            availableTimeLabel.text = String(NSString(format: "%02ld:%02ld", hours, minutes))
-            availableTimeLabel.font = Styles.FontFaces.regular(40)
+            if availableTitleLabel.text == "available_until".localizedString.uppercaseString {
+                availableTimeLabel.text = ParkingSpot.availableUntil(interval)
+                availableTimeLabel.font = Styles.Fonts.h1r
+            } else {
+                availableTimeLabel.text = ParkingSpot.availableHourString(interval)
+                availableTimeLabel.font = Styles.FontFaces.regular(40)
+            }
         } else {
             availableTimeLabel.text = "time_up".localizedString
             availableTimeLabel.font = Styles.Fonts.h1r
@@ -325,7 +342,30 @@ class MyCarCheckedInViewController: MyCarAbstractViewController {
         loadReportScreen(self.spot?.identifier)
     }
     
+    //MARK- gesture recognizer delegate
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
     
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        //toggle between available until and available for
+        var fadeAnimation = CATransition()
+        fadeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        fadeAnimation.type = kCATransitionFade
+        fadeAnimation.duration = 0.4
+        availableTitleLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
+        availableTimeLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
+        updateValues()
+        if availableTimeLabel.text != "time_up".localizedString {
+            if availableTitleLabel.text == "available_for".localizedString.uppercaseString {
+                availableTitleLabel.text = "available_until".localizedString.uppercaseString
+            } else {
+                availableTitleLabel.text = "available_for".localizedString.uppercaseString
+            }
+            updateValues()
+        }
+
+    }
 }
 
 

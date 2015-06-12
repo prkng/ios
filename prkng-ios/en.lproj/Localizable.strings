@@ -52,6 +52,7 @@
 
 // Spot details
 "spot_available_for" = "AVAILABLE\nFOR";
+"spot_available_until" = "AVAILABLE\nUNTIL";
 "schedule_authorized" = "AUTHORIZED";
 "schedule_limited" = "LIMITED";
 "schedule_forbidden" = "FORBIDDEN";
@@ -63,6 +64,7 @@
 "park_now" = "park now";
 "checked_in_message" = "you're checked-in at";
 "available_for" = "available for";
+"available_until" = "available until";
 "leave_spot" = "check out";
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";

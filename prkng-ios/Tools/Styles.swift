@@ -82,6 +82,9 @@ struct Styles {
         static let searchTextFieldHeight = 46
         static let blurRadius = 3
         static let avatarSize = CGSizeMake(68,68)
+        static let spotDetailViewHeight = 150
+        static let spotDetailViewTopPortionHeight = 90
+        static let spotDetailViewBottomPortionHeight = spotDetailViewHeight - spotDetailViewTopPortionHeight
     }
     
 }

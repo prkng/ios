@@ -124,7 +124,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.bottom.equalTo(self.view).with.offset(180)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(150)
+            make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
         }
         
         checkinButton.snp_makeConstraints { (make) -> () in
@@ -286,19 +286,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
         detailView.titleLabel.text = activeSpot?.name
         
-        detailView.availableTimeLabel.text = activeSpot?.availableHourString()
+        detailView.availableTimeLabel.text = activeSpot?.availableUntil()
         
-        
-        detailView.snp_remakeConstraints {
-            (make) -> () in
+        detailView.snp_remakeConstraints { (make) -> () in
             make.bottom.equalTo(self.view).with.offset(0)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(150)
         }
         
-        checkinButton.snp_remakeConstraints {
-            (make) -> () in
+        checkinButton.snp_remakeConstraints { (make) -> () in
             make.centerY.equalTo(self.detailView.snp_top)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
