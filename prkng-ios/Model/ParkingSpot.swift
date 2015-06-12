@@ -80,61 +80,7 @@ class ParkingSpot: NSObject, Hashable {
         userInfo = [String:AnyObject]()
     }
     
-    func availableTimeInterval() -> NSTimeInterval {
-        
-        let interval = DateUtil.timeIntervalSinceDayStart()
-        
-        var smallest : Int = 24 * 3600 // time interval
-        
-        for period in todaysAgenda() {
-            
-            if period != nil  {
-                
-                if (Int(period!.start) > Int(interval)) {
-                    
-                    // timeLimit is added for "Limited" time periods, otherwise it will always be 0
-                    var diff = Int(period!.start) - Int(interval) + Int(period!.timeLimit)
-                    
-                    if (diff < smallest) {
-                        smallest = diff
-                    }
-                    
-                } else if (period!.start <= interval && period!.end > interval && period!.timeLimit > 0) { // we're inside a limited time zone.
-                    // no need to check anything else
-                    return period!.timeLimit
-                }
-                
-            }
-        }
-        
-        if (smallest  < 24 * 3600) {
-            return NSTimeInterval(smallest)
-        }
-        
-        
-        // check tomorrow
-        for period in tomorrowsAgenda() {
-            
-            if (period != nil && Int((24 * 3600) + period!.start) > Int(interval)) {
-                
-                let diff = Int((24 * 3600) + period!.start) - Int(interval) + Int(period!.timeLimit)
-                
-                if (diff < smallest) {
-                    smallest = diff
-                }
-                
-            }
-        }
-        
-        if (smallest > 24 * 3600) {
-            return NSTimeInterval(24 * 3600)
-        }
-        
-        return NSTimeInterval(smallest)
-    }
-    
     func availableHourString() -> String{
-        
         
         let interval = availableTimeInterval()
         
@@ -147,36 +93,102 @@ class ParkingSpot: NSObject, Hashable {
         return  String(NSString(format: "%02ld:%02ld", hours, minutes))
     }
     
-    
-    func todaysAgenda () -> Array<TimePeriod?> {
+    //returns the closest future time that this parking spot is available until
+    func availableTimeInterval() -> NSTimeInterval {
+
+        let secondsPerDay = 24 * 60 * 60
+        let currentSecondsSinceDayStart = DateUtil.timeIntervalSinceDayStart()
+
+        var potentialNearestRules:[SimplifiedParkingRule] = []
+        var potentialPastRules:[SimplifiedParkingRule] = []
         
-        let weekDay = DateUtil.dayIndexOfTheWeek()
-        
-        var agenda : Array<TimePeriod?> = []
-        
-        for rule in rules {
-            agenda.append(rule.agenda[weekDay])
+        //find the closest time period per rule, then pick whichever computes to the lesser amount of time
+        for dayAgenda in sortedTimePeriods() {
+            
+            for var i = 0; i < 7; i++ {
+                if let period = dayAgenda[i] {
+                    /*the first day is special because you could be in the middle of a time max, 
+                    or there could be something in the past that needs to be taken into consideration 
+                    if there is nothing in the future (ie one restriction all week, that was earlier 
+                    today).
+                    */
+                    if i == 0 {
+                        if period.start < currentSecondsSinceDayStart && period.end < currentSecondsSinceDayStart {
+                            //this time period is completely in the past
+                            //we should save this just in case there is never anything in the next week...
+                            potentialPastRules.append(SimplifiedParkingRule(timePeriod: period, day: i))
+                        } else if period.timeLimit <= 0 && period.start < currentSecondsSinceDayStart && currentSecondsSinceDayStart < period.end {
+                            //we're in the middle of a restriction. NOTE: we should never get here, so return a -1...
+                            return -1
+                        } else if period.timeLimit  > 0 && period.start < currentSecondsSinceDayStart && currentSecondsSinceDayStart < period.end {
+                            if period.end - currentSecondsSinceDayStart <= period.timeLimit {
+                                //if there's MORE time left than the time limit, then treat it as though we AREN'T in a time max
+                                potentialPastRules.append(SimplifiedParkingRule(timePeriod: period, day: i))
+                            } else {
+                                //if there's LESS time left than the time limit, then return the time limit!
+                                return period.timeLimit
+                            }
+                        } else if currentSecondsSinceDayStart < period.start && currentSecondsSinceDayStart < period.end {
+                            //this is the next restriction. save it!
+                            potentialNearestRules.append(SimplifiedParkingRule(timePeriod: period, day: i))
+                        }
+                    } else if !contains(potentialNearestRules.map({ (var rule) -> TimePeriod in rule.timePeriod }), period) {
+                        //add this if it doesn't exist in another day
+                        potentialNearestRules.append(SimplifiedParkingRule(timePeriod: period, day: i))
+                    }
+                }
+            }
         }
         
-        return agenda
+        //ok, done with fetching all the rules. now let's find the nearest one!
+        //if there is nothing in the future, but something in the past, pick the one in the past and make the day 7
+        if potentialNearestRules.count == 0 {
+            potentialNearestRules = potentialPastRules.map { (var rule) -> SimplifiedParkingRule in
+                rule.day = 7
+                return rule
+            }
+        }
+
+        var smallestTime = Int.max
+        for rule in potentialNearestRules {
+            let realStartTime = rule.timePeriod.timeLimit > 0 ? rule.timePeriod.start + rule.timePeriod.timeLimit : rule.timePeriod.start
+            let secondsToRule = (secondsPerDay - Int(currentSecondsSinceDayStart))
+                + ((rule.day - 1) * secondsPerDay)
+                + Int(realStartTime)
+            if secondsToRule < smallestTime {
+                smallestTime = secondsToRule
+            }
+        }
+        
+        return NSTimeInterval(smallestTime)   
     }
     
+    // returns an structure that looks like...
+    // [ RULE1, RULE2, ETC]
+    // where RULE1 is... [nil  , TIMEPERIOD, TIMEPERIOD, nil, nil, nil, nil]
+    // ...which means... [today, tomorrow  , after-tom., etc, etc, etc, yesterday]
     
-    func tomorrowsAgenda () -> Array<TimePeriod?> {
+    func sortedTimePeriods() -> Array<Array<TimePeriod?>>{
+        var array : Array<Array<TimePeriod?>> = []
         
-        var weekDay : Int = DateUtil.dayIndexOfTheWeek() + 1
+        let today = DateUtil.dayIndexOfTheWeek()
         
-        if (weekDay == 7 ) {
-            weekDay = 0
+        for r in 0...(self.rules.count - 1) {
+            
+            var dayArray : Array<TimePeriod?> = []
+            
+            for var i = today; i < 7; ++i {
+                dayArray.append(self.rules[r].agenda[i])
+            }
+            
+            for var j = 0; j < today; ++j {
+                dayArray.append(self.rules[r].agenda[j])
+            }
+            
+            array.append(dayArray)
         }
         
-        var agenda : Array<TimePeriod?> = []
-        
-        for rule in rules {
-            agenda.append(rule.agenda[weekDay])
-        }
-        
-        return agenda
+        return array
     }
     
 }

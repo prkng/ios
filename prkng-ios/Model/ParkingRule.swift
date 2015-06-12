@@ -156,8 +156,14 @@ class ParkingRule: NSObject {
 
 }
 
+//a TimePeriod holds the start time and end time in seconds on that day. 
+func ==(lhs: TimePeriod, rhs: TimePeriod) -> Bool {
+    return lhs.start == rhs.start
+        && lhs.end == rhs.end
+        && lhs.timeLimit == rhs.timeLimit
+}
 
-class TimePeriod {
+class TimePeriod : Equatable {
     var start : NSTimeInterval
     var end : NSTimeInterval
     var timeLimit : NSTimeInterval
@@ -166,6 +172,17 @@ class TimePeriod {
         start = startTime
         end = endTime
         timeLimit = maxParkingTime
+    }
+}
+
+
+class SimplifiedParkingRule {
+    var timePeriod: TimePeriod
+    var day: Int //0 means today, 1 tomorrow, etc
+
+    init (timePeriod: TimePeriod, day: Int) {
+        self.timePeriod = timePeriod
+        self.day = day
     }
     
 }

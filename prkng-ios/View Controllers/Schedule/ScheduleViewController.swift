@@ -52,7 +52,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
         
         super.init(nibName: nil, bundle: nil)
         
-        for dayAgenda in sortedAgenda() {
+        for dayAgenda in spot.sortedTimePeriods() {
             
             var column : Int = 0
             for period in dayAgenda {
@@ -107,7 +107,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
                         if shouldPulsate
                             && scheduleItemViewOverlapsInColumn(subview, columnView: column) {
                                 subview.startPulsate()
-                                column.sendSubviewToBack(subview)
+                                column.bringSubviewToFront(subview)
                         } else {
                             subview.stopPulsate()
                             column.bringSubviewToFront(subview)
@@ -287,30 +287,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
             array.append(days[j])
         }
         
-        
-        return array
-    }
-    
-    
-    func sortedAgenda() -> Array<Array<TimePeriod?>>{
-        var array : Array<Array<TimePeriod?>> = []
-        
-        let today = DateUtil.dayIndexOfTheWeek()
-        
-        for r in 0...(spot.rules.count - 1) {
-            
-            var dayArray : Array<TimePeriod?> = []
-            
-            for var i = today; i < 7; ++i {
-                dayArray.append(spot.rules[r].agenda[i])
-            }
-            
-            for var j = 0; j < today; ++j {
-                dayArray.append(spot.rules[r].agenda[j])
-            }
-            
-            array.append(dayArray)
-        }
         
         return array
     }
