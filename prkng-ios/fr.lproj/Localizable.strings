@@ -28,6 +28,8 @@
 "save" = "enregistrer";
 "new_password" = "NOUVEAU MOT DE PASSE";
 "new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
+"name_empty" = "Your name can't be empty";
+"email_empty" = "Your email can't be empty";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfileViewController: AbstractViewController {
+class EditProfileViewController: AbstractViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate  {
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
     let avatarImageView = UIImageView()
     let avatarButton = UIButton()
@@ -21,6 +21,10 @@ class EditProfileViewController: AbstractViewController {
     let passwordTextField2 = ViewFactory.formTextField()
     let logoutButton = ViewFactory.transparentRoundedButton()
     let saveButton = ViewFactory.hugeButton()
+    
+    let imagePicker = UIImagePickerController()
+    
+    var selectedImage : UIImage?
     
     init() {
         
@@ -40,12 +44,11 @@ class EditProfileViewController: AbstractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        updateValues()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateValues()
     }
     
     func setupViews() {
@@ -57,6 +60,7 @@ class EditProfileViewController: AbstractViewController {
         view.addSubview(avatarImageView)
         
         avatarButton.setImage(UIImage(named:"btn_upload_profile_on_top"), forState: .Normal)
+        avatarButton.addTarget(self, action: "avatarButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(avatarButton)
         
         editProfileLabel.text = "edit_profile".localizedString.uppercaseString
@@ -84,9 +88,11 @@ class EditProfileViewController: AbstractViewController {
         view.addSubview(passwordTextField2)
         
         logoutButton.setTitle("logout".localizedString.uppercaseString, forState: .Normal)
+        logoutButton.addTarget(self, action: "logoutButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(logoutButton)
         
         saveButton.setTitle("save".localizedString, forState: .Normal)
+        saveButton.addTarget(self, action: "saveButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(saveButton)
     }
     
@@ -131,14 +137,14 @@ class EditProfileViewController: AbstractViewController {
             make.bottom.equalTo(self.passwordLabel2.snp_top).with.offset(-2)
             make.height.equalTo(Styles.Sizes.formTextFieldHeight)
         }
-
+        
         passwordLabel1.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).with.offset(20)
             make.right.equalTo(self.view).with.offset(-20)
             make.top.equalTo(self.passwordTextField1)
             make.height.equalTo(Styles.Sizes.formLabelHeight)
         }
-
+        
         emailTextField.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).with.offset(20)
             make.right.equalTo(self.view).with.offset(-20)
@@ -188,4 +194,90 @@ class EditProfileViewController: AbstractViewController {
         }
         
     }
+    
+    func avatarButtonTapped(sender : UIButton) {
+        
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
+            println("Button capture")
+            
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum;
+            imagePicker.allowsEditing = false
+            
+            self.presentViewController(imagePicker, animated: true, completion: { () -> Void in
+            })
+        }
+        
+    }
+    
+    func logoutButtonTapped(sender : UIButton) {
+        //        let alert = UIAlertView()
+        //        alert.title = "Alert"
+        //        alert.message = "Here's a message"
+        //        alert.addButtonWithTitle("cancel".localizedString)
+        //        alert.addButtonWithTitle("logout".localizedString)
+        //        alert.cancelButtonIndex = 0
+        //        alert.show()
+        
+        SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+        
+        AuthUtility.saveAuthToken(nil)
+        AuthUtility.saveUser(nil)
+        
+        UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+    }
+    
+    func saveButtonTapped(sender : UIButton) {
+        
+        if nameTextField.text == nil {
+            warnUser("name_empty".localizedString)
+            return
+        }
+        
+        if emailTextField.text == nil {
+            warnUser("email_empty".localizedString)
+            return
+        }
+        
+        
+        if passwordTextField1.text != passwordTextField2.text {
+            warnUser("password_mismatch".localizedString)
+            return
+        }
+        
+        
+        if count(passwordTextField1.text) < 6 {
+            warnUser("password_short".localizedString)
+            return
+        }
+        
+    }
+    
+    func warnUser (message: String) {
+        let alert = UIAlertView()
+        alert.message = message
+        alert.addButtonWithTitle("OK".localizedString)
+        alert.show()
+    }
+    
+    
+    // MARK: UIImagePickerControllerDelegate
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+        
+        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+        })
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+        selectedImage = image
+        self.avatarImageView.image = image
+    }
+    
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+        })
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+    }
+    
+    
+    
 }

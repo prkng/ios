@@ -91,5 +91,10 @@ struct UserOperations {
         
         
     }
+    
+    
+    static func updateUser(user : User, completion : (completed : Bool, message : String?) {
+        
+    }
    
 }
