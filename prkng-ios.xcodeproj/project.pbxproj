@@ -14,12 +14,7 @@
 		3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDACB1B276A2B00872667 /* libc++.dylib */; };
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
-		3E8F31A21B2621E700760E05 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F31271B2621E700760E05 /* Changelog.txt */; };
-		3E8F31C11B2621E700760E05 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F315D1B2621E700760E05 /* Readme.txt */; };
-		3E8F31C21B2621E700760E05 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F315F1B2621E700760E05 /* Changelog.txt */; };
-		3E8F31EC1B2621E700760E05 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F319E1B2621E700760E05 /* Readme.txt */; };
 		3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31A01B2621E700760E05 /* libGoogleAnalyticsServices.a */; };
-		3E8F31EF1B2621E700760E05 /* Readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3E8F31A11B2621E700760E05 /* Readme.txt */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */; };
@@ -808,18 +803,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
-				3E8F31C11B2621E700760E05 /* Readme.txt in Resources */,
 				3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
 				BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
-				3E8F31EC1B2621E700760E05 /* Readme.txt in Resources */,
-				3E8F31EF1B2621E700760E05 /* Readme.txt in Resources */,
 				BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */,
-				3E8F31C21B2621E700760E05 /* Changelog.txt in Resources */,
-				3E8F31A21B2621E700760E05 /* Changelog.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

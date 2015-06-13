@@ -15,8 +15,8 @@ struct ViewFactory {
 
     static func scheduleButton () -> UIButton {
         var scheduleButton : UIButton =  UIButton()
-        scheduleButton.setImage(UIImage(named: "btn_schedule"), forState: UIControlState.Normal)
-        scheduleButton.setImage(UIImage(named: "btn_schedule_active"), forState: UIControlState.Highlighted)
+        scheduleButton.setImage(UIImage(named: "btn_schedule_active"), forState: UIControlState.Normal)
+        scheduleButton.setImage(UIImage(named: "btn_schedule"), forState: UIControlState.Highlighted)
         return scheduleButton
     }
     

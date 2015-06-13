@@ -54,6 +54,7 @@
 
 // Spot details
 "spot_available_for" = "DISPONIBLE\nPOUR";
+"spot_available_until" = "DISPONIBLE\JUSQU'À";
 "schedule_authorized" = "AUTORISÉ";
 "schedule_limited" = "LIMITÉ";
 "schedule_forbidden" = "INTERDIT";
@@ -66,6 +67,7 @@
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
 "available_for" = "disponible pour";
+"available_until" = "disponible jusqu'à";
 "leave_spot" = "quitter";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
