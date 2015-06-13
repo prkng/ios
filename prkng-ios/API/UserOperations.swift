@@ -93,7 +93,7 @@ struct UserOperations {
     }
     
     
-    static func updateUser(user : User, completion : (completed : Bool, message : String?) {
+    static func updateUser(user : User, completion : (completed : Bool, message : String?) -> Void)  {
         
     }
    
