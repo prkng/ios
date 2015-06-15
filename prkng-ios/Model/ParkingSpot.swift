@@ -81,12 +81,17 @@ class ParkingSpot: NSObject, Hashable {
     }
     
     //returns something like 29:12
-    func availableHourString() -> String {
+    func availableHourString(limited: Bool) -> String {
         let interval = availableTimeInterval()
-        return ParkingSpot.availableHourString(interval)
+        return ParkingSpot.availableHourString(interval, limited: limited)
     }
     
-    static func availableHourString(interval: NSTimeInterval) -> String {
+    static func availableHourString(interval: NSTimeInterval, limited: Bool) -> String {
+        
+        if (limited && interval >= 24 * 3600) {
+            return "24:00+"
+        }
+        
         let minutes  = Int((interval / 60) % 60)
         let hours = Int((interval / 3600))
         return String(format: "%02ld:%02ld", hours, minutes)

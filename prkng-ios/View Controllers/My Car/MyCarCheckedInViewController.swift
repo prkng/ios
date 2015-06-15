@@ -247,7 +247,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             if availableTitleLabel.text == "available_until".localizedString.uppercaseString {
                 availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h1r, secondPartFont: Styles.Fonts.h3r)
             } else {
-                availableTimeLabel.attributedText = NSAttributedString(string: ParkingSpot.availableHourString(interval))
+                availableTimeLabel.attributedText = NSAttributedString(string: ParkingSpot.availableHourString(interval, limited: false))
                 availableTimeLabel.font = Styles.Fonts.h1r
             }
         } else {

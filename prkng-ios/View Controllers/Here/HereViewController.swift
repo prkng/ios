@@ -293,7 +293,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             detailView.titleLabel.text = activeSpot?.name
             
-            detailView.availableTimeLabel.text = activeSpot?.availableUntil()
+            detailView.availableTimeLabel.text = activeSpot?.availableHourString(true)
             
             let checkedInSpotID = Settings.checkedInSpotId()
             if (activeSpot != nil && checkedInSpotID != nil) {

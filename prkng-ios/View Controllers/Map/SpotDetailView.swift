@@ -77,7 +77,7 @@ class SpotDetailView: UIView {
         availableTextLabel.textColor = Styles.Colors.cream1
         availableTextLabel.textAlignment = NSTextAlignment.Center
         availableTextLabel.numberOfLines = 0
-        availableTextLabel.text = NSLocalizedString("spot_available_until", comment: "")
+        availableTextLabel.text = NSLocalizedString("spot_available_for", comment: "")
         availableTextLabel.textAlignment = NSTextAlignment.Left
         availableTextLabel.sizeToFit()
         bottomContainer.addSubview(availableTextLabel)
@@ -85,7 +85,7 @@ class SpotDetailView: UIView {
         availableTimeLabel.font = Styles.Fonts.h1r
         availableTimeLabel.adjustsFontSizeToFitWidth = true
         availableTimeLabel.textColor = Styles.Colors.cream1
-        availableTimeLabel.textAlignment = NSTextAlignment.Left
+        availableTimeLabel.textAlignment = NSTextAlignment.Center
         availableTimeLabel.text = "00:00" //FIXME
         bottomContainer.addSubview(availableTimeLabel)
 
@@ -117,23 +117,21 @@ class SpotDetailView: UIView {
             make.bottom.equalTo(self)
         }
 
-        scheduleButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSize(width: 24, height: Styles.Sizes.spotDetailViewBottomPortionHeight))// + 22))
-            make.centerY.equalTo(self.bottomContainer)
-            make.left.equalTo(self.bottomContainer).with.offset(25)
-        }
-
         availableTextLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.scheduleButton.snp_right).with.offset(12);
+            make.left.equalTo(self.bottomContainer).with.offset(25)
             make.centerY.equalTo(self.bottomContainer)
         }
         
         availableTimeLabel.snp_makeConstraints { (make) -> () in
-            make.centerY.equalTo(self.bottomContainer)
-            make.left.equalTo(self.availableTextLabel.snp_right).with.offset(12)
-            make.right.equalTo(self.bottomContainer).with.offset(-25)
+            make.center.equalTo(self.bottomContainer)
         }
         
+        scheduleButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSize(width: 24, height: Styles.Sizes.spotDetailViewBottomPortionHeight))// + 22))
+            make.centerY.equalTo(self.bottomContainer)
+            make.right.equalTo(self.bottomContainer).with.offset(-25)
+        }
+
         didSetupConstraints = true
     }
     
