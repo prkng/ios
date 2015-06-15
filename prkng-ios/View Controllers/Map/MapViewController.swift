@@ -47,7 +47,7 @@ class MapViewController: AbstractViewController {
 
 protocol MapViewControllerDelegate {
     
-    func mapDidMove(center: CLLocation)
+    func mapDidDismissSelection()
     
     func didSelectSpot(spot: ParkingSpot)
     

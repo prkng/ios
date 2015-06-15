@@ -21,7 +21,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     var searchField : UITextField
 
     var activeSpot : ParkingSpot?
-    
+    var forceShowSpotDetails: Bool
+
     var delegate : HereViewControllerDelegate?
     var searchDelegate : SearchViewControllerDelegate?
 
@@ -32,6 +33,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchButton = UIButton()
         searchFieldView = UIView()
         searchField = UITextField()
+        forceShowSpotDetails = false
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -91,7 +93,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         searchField.textColor = Styles.Colors.midnight2
         searchField.textAlignment = NSTextAlignment.Natural
         searchField.delegate = self
-        searchField.keyboardAppearance = UIKeyboardAppearance.Dark
+        searchField.keyboardAppearance = UIKeyboardAppearance.Default
         searchField.keyboardType = UIKeyboardType.Default
         searchField.autocorrectionType = UITextAutocorrectionType.No
         searchField.returnKeyType = UIReturnKeyType.Search
@@ -128,9 +130,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         }
         
         checkinButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(-20)
+            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+20)
             make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(60, 60))
+            make.size.equalTo(CGSizeMake(0, 0))
         }
         
         searchButton.snp_makeConstraints{ (make) -> () in
@@ -277,16 +279,43 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
-    
-    func showSpotDetails (completed : ()) {
-        
-        if (activeSpot != nil) {
-            println("selected spot : " + activeSpot!.identifier)
+    func updateSpotDetails(spot: ParkingSpot?) {
+
+        self.activeSpot = spot
+
+        if spot != nil {
+            
+            forceShowSpotDetails = true
+            
+            if (activeSpot != nil) {
+                println("selected spot : " + activeSpot!.identifier)
+            }
+            
+            detailView.titleLabel.text = activeSpot?.name
+            
+            detailView.availableTimeLabel.text = activeSpot?.availableUntil()
+            
+            let checkedInSpotID = Settings.checkedInSpotId()
+            if (activeSpot != nil && checkedInSpotID != nil) {
+                checkinButton.enabled = checkedInSpotID != activeSpot?.identifier
+            } else {
+                checkinButton.enabled = true
+            }
+            
+            hideSearchButton()
+            
+            showSpotDetails()
+            
+        } else {
+            self.activeSpot = nil
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
+                self.hideSpotDetails()
+            })
         }
         
-        detailView.titleLabel.text = activeSpot?.name
-        
-        detailView.availableTimeLabel.text = activeSpot?.availableUntil()
+    }
+    
+    private func showSpotDetails (completed : ()) {
         
         detailView.snp_remakeConstraints { (make) -> () in
             make.bottom.equalTo(self.view).with.offset(0)
@@ -296,48 +325,74 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         }
         
         checkinButton.snp_remakeConstraints { (make) -> () in
-            make.centerY.equalTo(self.detailView.snp_top)
+            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+20)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
         }
-        
-        let checkedInSpotID = Settings.checkedInSpotId()
-        if (activeSpot != nil && checkedInSpotID != nil) {
-            checkinButton.enabled = checkedInSpotID != activeSpot?.identifier
-        } else {
-            checkinButton.enabled = true
+
+        var animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        animation.values = [1, 1.3, 0.8, 1.1, 0.9, 1]
+        animation.duration = 0.4
+        var timingFunctions: Array<CAMediaTimingFunction> = []
+        for i in 0...animation.values.count {
+            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         }
+        animation.timingFunctions = timingFunctions
+        animation.removedOnCompletion = true
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.view.layoutIfNeeded()
+        UIView.animateWithDuration(0.1,
+            delay: 0.1,
+            options: UIViewAnimationOptions.CurveEaseInOut,
+            animations: { () -> Void in
+                self.checkinButton.layoutIfNeeded()
+            },
+            completion: { (completed: Bool) -> Void in
+                self.checkinButton.layer.addAnimation(animation, forKey: "scale")
         })
         
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.detailView.layoutIfNeeded()
+        })
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(20 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
+            self.forceShowSpotDetails = false
+        })
+
     }
     
     
-    func hideSpotDetails (completed : () ) {
+    private func hideSpotDetails (completed : () ) {
         
-        detailView.snp_remakeConstraints {
-            (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(180)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(150)
+        if (!forceShowSpotDetails) {
+            detailView.snp_remakeConstraints {
+                (make) -> () in
+                make.bottom.equalTo(self.view).with.offset(180)
+                make.left.equalTo(self.view)
+                make.right.equalTo(self.view)
+                make.height.equalTo(150)
+            }
+            
+            checkinButton.snp_remakeConstraints { (make) -> () in
+                make.bottom.equalTo(self.view).with.offset(-20)
+                make.centerX.equalTo(self.view)
+                make.size.equalTo(CGSizeMake(0, 0))
+            }
+            
+            UIView.animateWithDuration(0.2,
+                animations: { () -> Void in
+                    self.checkinButton.layoutIfNeeded()
+                    self.detailView.layoutIfNeeded()
+                },
+                completion: { (completed: Bool) -> Void in
+                    self.checkinButton.snp_remakeConstraints { (make) -> () in
+                        make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+20)
+                        make.centerX.equalTo(self.view)
+                        make.size.equalTo(CGSizeMake(0, 0))
+                    }
+                    self.showSearchButton(false)
+            })
         }
-        
-        checkinButton.snp_remakeConstraints {
-            (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(-20)
-            make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(60, 60))
-        }
-        
-        checkinButton.enabled = false
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-        })
-        
+
     }
     
     func isSpotDetailsHidden() -> Bool {

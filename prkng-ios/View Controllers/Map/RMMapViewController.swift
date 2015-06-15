@@ -50,7 +50,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.showLogoBug = false
         mapView.hideAttribution = true
         mapView.zoomingInPivotsAroundCenter = true
-        mapView.zoom = 16
+        mapView.zoom = 17
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -241,8 +241,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             updateAnnotations()
             lastMapCenterCoordinate = map.centerCoordinate
         }
-        
-        self.delegate?.mapDidMove(CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude))
+        self.delegate?.mapDidDismissSelection()
     }
     
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
@@ -263,7 +262,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     func mapView(mapView: RMMapView!, didSelectAnnotation annotation: RMAnnotation!) {
-        
+
         if (isSelecting || annotation.isUserLocationAnnotation) {
             return
         }
@@ -301,6 +300,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         
         isSelecting = false
+
+    }
+    
+    func customDeselectAnnotation() {
+        
+        removeSelectedAnnotationIfExists()
+        self.delegate?.mapDidDismissSelection()
 
     }
     
@@ -346,7 +352,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         
         if (closestAnnotation != nil && minimumDistance < 60) {
-            map.selectAnnotation(closestAnnotation, animated: true)
+            mapView.selectAnnotation(closestAnnotation, animated: true)
+        } else {
+            customDeselectAnnotation()
         }
 
     }

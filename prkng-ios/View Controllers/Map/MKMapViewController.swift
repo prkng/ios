@@ -9,11 +9,13 @@
 import UIKit
 import Foundation
 
-class MKMapViewController: MapViewController, MKMapViewDelegate {
+class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOverlayDelegate {
     
     let mapSource = "arnaudspuhler.l54pj66f"
     
     var mapView: MKMapView
+    var rasterOverlay: MBXRasterTileOverlay
+
     var lastMapZoom: CGFloat
     var lastUserLocation: CLLocation
     var lastMapCenterCoordinate: CLLocationCoordinate2D
@@ -45,6 +47,9 @@ class MKMapViewController: MapViewController, MKMapViewDelegate {
         mapView.showsPointsOfInterest = false
         
         mapView.mbx_setCenterCoordinate(mapView.centerCoordinate, zoomLevel: 16, animated: true)
+        
+        rasterOverlay = MBXRasterTileOverlay(mapID: mapSource)
+        
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -72,6 +77,8 @@ class MKMapViewController: MapViewController, MKMapViewDelegate {
         view.addSubview(mapView)
         mapView.delegate = self
         
+        rasterOverlay.delegate = self
+        mapView.addOverlay(rasterOverlay)
         trackUserButton.setImage(UIImage(named: "track_user"), forState: UIControlState.Normal)
         trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(trackUserButton)
@@ -142,7 +149,13 @@ class MKMapViewController: MapViewController, MKMapViewDelegate {
             
             return shape
             
+        } else if let tileOverlay = overlay as? MBXRasterTileOverlay {
+            // This is boilerplate code to connect mbx tile overlay layers with suitable renderers
+            //
+            var renderer = MBXRasterTileRenderer(tileOverlay: tileOverlay)
+            return renderer
         }
+        
         return nil
     }
     
@@ -164,8 +177,41 @@ class MKMapViewController: MapViewController, MKMapViewDelegate {
             searchResultView.image = UIImage(named: "pin_pointer_result")
             searchResultView.canShowCallout = true
             return searchResultView
+        } else if let mbxPointAnnotation = annotation as? MBXPointAnnotation{
+            // This is boilerplate code to connect annotations with suitable views
+            //
+            var MBXSimpleStyleReuseIdentifier = "MBXSimpleStyleReuseIdentifier"
+            var view = mapView.dequeueReusableAnnotationViewWithIdentifier(MBXSimpleStyleReuseIdentifier)
+            if (view == nil) {
+                view = MKAnnotationView(annotation: mbxPointAnnotation, reuseIdentifier: MBXSimpleStyleReuseIdentifier)
+            }
+            view.image = mbxPointAnnotation.image
+            view.canShowCallout = true
+            return view
         }
+        
         return nil
+    }
+    func tileOverlay(overlay: MBXRasterTileOverlay!, didLoadMetadata metadata: [NSObject : AnyObject]!, withError error: NSError!) {
+        // This delegate callback is for centering the map once the map metadata has been loaded
+        //
+        if error != nil {
+            NSLog("Failed to load metadata for map ID %@ - (%@)", overlay.mapID, error ?? "");
+        } else {
+            mapView.mbx_setCenterCoordinate(overlay.center, zoomLevel: UInt(overlay.centerZoom), animated: false)
+        }
+
+    }
+    
+    func tileOverlay(overlay: MBXRasterTileOverlay!, didLoadMarkers markers: [AnyObject]!, withError error: NSError!) {
+        // This delegate callback is for adding map markers to an MKMapView once all the markers for the tile overlay have loaded
+        //
+        if error != nil {
+            NSLog("Failed to load markers for map ID %@ - (%@)", overlay.mapID, error ?? "");
+        } else {
+            mapView.addAnnotations(markers)
+        }
+
     }
     
     func configureButtonViewWithAnnotation(buttonAnnotation:ButtonParkingSpot) -> MKAnnotationView {
@@ -263,7 +309,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate {
             self.lastMapCenterCoordinate = mapView.centerCoordinate
         }
         
-        self.delegate?.mapDidMove(CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude))
+        self.delegate?.mapDidDismissSelection()
         
     }
     
@@ -297,6 +343,9 @@ class MKMapViewController: MapViewController, MKMapViewDelegate {
             view.image = replacementView.image
             view.layer.removeAllAnimations()
         }
+        
+        self.delegate?.mapDidDismissSelection()
+
     }
     
     func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!) {

@@ -257,7 +257,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     
     // MapViewControllerDelegate
-    func mapDidMove (center : CLLocation) {
+    func mapDidDismissSelection() {
         
 //        if(selectedTab == PrkTab.Search) {
 //            searchViewController?.transformToStepTwo()
@@ -266,19 +266,15 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //                searchViewController?.showStreetName(result)
 //            })
 //        } else if (selectedTab == PrkTab.Here) {
-            hereViewController.hideSpotDetails()
+            hereViewController.updateSpotDetails(nil)
 //        }
-        
-        hereViewController.showSearchButton(false)
-        
+                
     }
     
     func didSelectSpot (spot : ParkingSpot) {
         
-        hereViewController.activeSpot = spot
         loadHereTab()
-        hereViewController.hideSearchButton()
-        hereViewController.showSpotDetails()
+        hereViewController.updateSpotDetails(spot)
         
     }
     
