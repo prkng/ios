@@ -73,6 +73,7 @@
 		BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */; };
 		BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC764931A7644AC008F2B26 /* Images.xcassets */; };
 		BFC764A31A7644AC008F2B26 /* prkng_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */; };
+		BFC850FA1B2F618A006383AC /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC850F91B2F618A006383AC /* ImageUtil.swift */; };
 		BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD0101B1AC1C73600C59B28 /* TabController.swift */; };
 		BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C21AF2E83700789022 /* Settings.swift */; };
 		BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C41AF2F09E00789022 /* DateUtil.swift */; };
@@ -214,6 +215,7 @@
 		BFC7649C1A7644AC008F2B26 /* prkng-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "prkng-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC764A11A7644AC008F2B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prkng_iosTests.swift; sourceTree = "<group>"; };
+		BFC850F91B2F618A006383AC /* ImageUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
 		BFD0101B1AC1C73600C59B28 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		BFD6B6C21AF2E83700789022 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFD6B6C41AF2F09E00789022 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
@@ -630,6 +632,7 @@
 				BF1055941ACED50500413F16 /* ViewFactory.swift */,
 				BFD6B6C21AF2E83700789022 /* Settings.swift */,
 				BFD6B6C41AF2F09E00789022 /* DateUtil.swift */,
+				BFC850F91B2F618A006383AC /* ImageUtil.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -924,6 +927,7 @@
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
+				BFC850FA1B2F618A006383AC /* ImageUtil.swift in Sources */,
 				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,

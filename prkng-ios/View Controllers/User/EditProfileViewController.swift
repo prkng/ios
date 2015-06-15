@@ -246,11 +246,43 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         }
         
         
-        if count(passwordTextField1.text) < 6 {
+        if count(passwordTextField1.text) < 6 && count(passwordTextField1.text) > 0 {
             warnUser("password_short".localizedString)
             return
         }
         
+        SVProgressHUD.showWithMaskType(.Clear)
+        
+        let user = AuthUtility.getUser()!
+        
+        user.name = nameTextField.text
+        user.email = emailTextField.text
+        
+        var newPassword : String = passwordTextField1.text
+        
+        if let image = selectedImage {
+
+            UserOperations.uploadAvatar(image, completion: { (completed, imageUrl) -> Void in
+                self.updateUserAndGoBack(user, password: newPassword, imageUrl: imageUrl)
+            })
+            
+            
+        } else {
+            
+            updateUserAndGoBack(user, password: newPassword, imageUrl: nil)
+            
+        }
+        
+    }
+
+
+    func updateUserAndGoBack(user : User, password: String?, imageUrl : String?) {
+        
+        UserOperations.updateUser(user, newPassword: password, imageUrl: imageUrl, completion: { (completed, user, message) -> Void in
+            AuthUtility.saveUser(user)
+            SVProgressHUD.showSuccessWithStatus("profile_updated_message".localizedString)
+            self.navigationController?.popViewControllerAnimated(true)
+        })
     }
     
     func warnUser (message: String) {

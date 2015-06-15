@@ -50,15 +50,15 @@ struct UserOperations {
         }
         
     }
-
+    
     
     
     static func loginWithFacebook (accessToken: String, completion : (user : User, apiKey : String) -> Void) {
-    
+        
         let url = APIUtility.APIConstants.rootURLString + "login/facebook"
-
-        let params = ["access_token" : accessToken]        
-       
+        
+        let params = ["access_token" : accessToken]
+        
         request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
@@ -68,7 +68,7 @@ struct UserOperations {
             completion(user: user, apiKey: apiKey)
             
         }
-
+        
         
     }
     
@@ -93,16 +93,97 @@ struct UserOperations {
     }
     
     
-    static func updateUser(user : User, newPassword : String?, completion : (completed : Bool, message : String?) -> Void)  {
+    static func updateUser(user : User, newPassword : String?, imageUrl : String?, completion : (completed : Bool, user : User?, message : String?) -> Void)  {
         
-        let url = APIUtility.APIConstants.rootURLString + "slot/checkin"
-        var params : [String : AnyObject] = []
+        let url = APIUtility.APIConstants.rootURLString + "user/profile"
+        var params : [String : AnyObject] = ["name" : user.name,
+            "email" : user.email,
+            "gender" : user.gender
+        ]
         
         
+        if let password = newPassword {
+            params["password"] = password
+        }
         
-        APIUtility.authenticatedManager().request(.PUT, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
-            completion(completed: error != nil)
+        if let url = imageUrl {
+            params["image_url"] = url
+        }
+        
+        
+        APIUtility.authenticatedManager().request(.PUT, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            let user = User(json: json)
+            completion(completed: true, user: user, message: nil)
+            
         }
     }
-   
+    
+    
+    static func getUserDetails(completion : ((user : User?) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "user/profile"
+        
+        APIUtility.authenticatedManager().request(.GET, url, parameters: nil).responseSwiftyJSON { (request, response, json, error) -> Void in
+            
+            if (response?.statusCode != 200) {
+                
+                let user = User(json: json)
+                completion(user: user)
+                
+            } else {
+                completion(user:nil)
+            }
+            
+            
+        }
+    }
+    
+    
+    static func uploadAvatar (image : UIImage, completion: ((completed : Bool, imageUrl : String?) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "image"
+        let params = ["image_type" : "avatar",
+            "file_name" : "avatar.jpg"]
+        
+        // Step one, get request url
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
+            
+            
+            if let requestUrl = json["request_url"].string {
+                
+                let accessUrl = json["access_url"].stringValue
+                
+                let data = UIImageJPEGRepresentation(image, 0.8)
+                
+                var headers = Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+                headers["Content-Type"] = "image/jpeg"
+                let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+                configuration.HTTPAdditionalHeaders = headers
+                let manager = Manager(configuration: configuration)
+                
+                // Step two, PUT the image to the request url
+                manager.upload(.PUT, requestUrl, data : data).responseSwiftyJSON({ (request, response, json, error) -> Void in
+                    
+                    if (response?.statusCode != 200) {
+                        completion(completed: false, imageUrl : nil)
+                        return
+                    }
+                    
+                    completion(completed: true, imageUrl: accessUrl)
+                    
+                    
+                })
+                
+            } else {
+                completion(completed: false, imageUrl : nil)
+                return
+            }
+            
+        }
+        
+        
+    }
+    
 }

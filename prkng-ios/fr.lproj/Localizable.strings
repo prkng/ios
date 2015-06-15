@@ -28,8 +28,9 @@
 "save" = "enregistrer";
 "new_password" = "NOUVEAU MOT DE PASSE";
 "new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
-"name_empty" = "Your name can't be empty";
-"email_empty" = "Your email can't be empty";
+"name_empty" = "Your name can't be empty                                                          FIXME FIXME FIXME";
+"email_empty" = "Your email can't be empty                                                        FIXME FIXME FIXME";
+"profile_updated_message" = "Your profile was successfully updated.                               FIXME FIXME FIXME";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";
@@ -108,5 +109,5 @@
 "report_text" = "Prenez en photo le panneau \nde réglementation en vigueur \nafin d’améliorer notre service.";
 "report_thanks" = "MERCI DE VOTRE CONTRIBUTION !";
 "report_error" = "Une erreur est survenue, merci de réessayer.";
-"report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help.";
+"report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help.            FIXME FIXME FIXME";
 

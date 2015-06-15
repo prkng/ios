@@ -30,6 +30,7 @@
 "new_password_confirm" = "CONFIRM YOUR PASSWORD";
 "name_empty" = "Your name can't be empty";
 "email_empty" = "Your email can't be empty";
+"profile_updated_message" = "Your profile was successfully updated.";
 
 "your_name" = "your name";
 "your_gender" = "your gender";
