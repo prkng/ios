@@ -93,8 +93,16 @@ struct UserOperations {
     }
     
     
-    static func updateUser(user : User, completion : (completed : Bool, message : String?) -> Void)  {
+    static func updateUser(user : User, newPassword : String?, completion : (completed : Bool, message : String?) -> Void)  {
         
+        let url = APIUtility.APIConstants.rootURLString + "slot/checkin"
+        var params : [String : AnyObject] = []
+        
+        
+        
+        APIUtility.authenticatedManager().request(.PUT, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
+            completion(completed: error != nil)
+        }
     }
    
 }
