@@ -112,6 +112,33 @@ class ParkingSpot: NSObject, Hashable {
         let availableUntil = formatter.stringFromDate(dateAtStartOfNextRule)
         return availableUntil
     }
+
+    static func availableUntilAttributed(availableTimeInterval: NSTimeInterval, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+        let dateAtStartOfNextRule = NSDate(timeIntervalSinceNow: availableTimeInterval)
+        
+        let formatter = NSDateFormatter()
+        
+        if dateAtStartOfNextRule.minute() > 0 {
+            formatter.dateFormat = "EEEE, h:mm " //Wednesday, 7:30
+        } else {
+            formatter.dateFormat = "EEEE, h " //Wednesday, 7
+        }
+        
+        let firstPart = formatter.stringFromDate(dateAtStartOfNextRule)
+
+        formatter.dateFormat = "a" //PM
+        
+        let secondPart = formatter.stringFromDate(dateAtStartOfNextRule)
+        
+        let firstPartAttrs = [NSFontAttributeName: firstPartFont]
+        var attributedString = NSMutableAttributedString(string: firstPart, attributes: firstPartAttrs)
+        
+        let secondPartAttrs = [NSFontAttributeName: secondPartFont]
+        attributedString.appendAttributedString(NSMutableAttributedString(string: secondPart, attributes: secondPartAttrs))
+
+        return attributedString
+    }
+
     
     func availableTimeInterval() -> NSTimeInterval {
         let currentSecondsSinceDayStart = DateUtil.timeIntervalSinceDayStart()

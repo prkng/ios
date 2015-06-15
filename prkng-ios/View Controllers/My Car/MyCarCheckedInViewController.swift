@@ -137,10 +137,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         locationLabel.text = "PRKNG"
         containerView.addSubview(locationLabel)
         
-        availableTitleLabel.text = "available_for".localizedString.uppercaseString
+        setDefaultTimeDisplay()
         containerView.addSubview(availableTitleLabel)
         
-        availableTimeLabel.font = Styles.FontFaces.regular(40)
         availableTimeLabel.textColor = Styles.Colors.red2
         availableTimeLabel.text = "0:00"
         availableTimeLabel.textAlignment = NSTextAlignment.Center
@@ -246,14 +245,13 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         if (interval > 59) {
             if availableTitleLabel.text == "available_until".localizedString.uppercaseString {
-                availableTimeLabel.text = ParkingSpot.availableUntil(interval)
-                availableTimeLabel.font = Styles.Fonts.h1r
+                availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h1r, secondPartFont: Styles.Fonts.h3r)
             } else {
-                availableTimeLabel.text = ParkingSpot.availableHourString(interval)
-                availableTimeLabel.font = Styles.FontFaces.regular(40)
+                availableTimeLabel.attributedText = NSAttributedString(string: ParkingSpot.availableHourString(interval))
+                availableTimeLabel.font = Styles.Fonts.h1r
             }
         } else {
-            availableTimeLabel.text = "time_up".localizedString
+            availableTimeLabel.attributedText = NSAttributedString(string: "time_up".localizedString)
             availableTimeLabel.font = Styles.Fonts.h1r
         }
         
@@ -342,12 +340,20 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         loadReportScreen(self.spot?.identifier)
     }
     
-    //MARK- gesture recognizer delegate
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+    func setDefaultTimeDisplay() {
+        
+        let interval = Settings.checkInTimeRemaining()
+        
+        if (interval > 2*60*60) { // greater than 2 hours = show available until... by default
+            availableTitleLabel.text = "available_until".localizedString.uppercaseString
+        } else {
+            availableTitleLabel.text = "available_for".localizedString.uppercaseString
+        }
+        
+        updateValues()
     }
     
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+    func toggleTimeDisplay() {
         //toggle between available until and available for
         var fadeAnimation = CATransition()
         fadeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -355,7 +361,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         fadeAnimation.duration = 0.4
         availableTitleLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
         availableTimeLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
+        
+        //update values just in case we've run out of time since the last tap...
         updateValues()
+        
         if availableTimeLabel.text != "time_up".localizedString {
             if availableTitleLabel.text == "available_for".localizedString.uppercaseString {
                 availableTitleLabel.text = "available_until".localizedString.uppercaseString
@@ -364,7 +373,16 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             }
             updateValues()
         }
-
+        
+    }
+    
+    //MARK- gesture recognizer delegate
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        toggleTimeDisplay()
     }
 }
 
