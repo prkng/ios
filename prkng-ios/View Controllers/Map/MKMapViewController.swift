@@ -15,7 +15,8 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     
     var mapView: MKMapView
     var rasterOverlay: MBXRasterTileOverlay
-
+    var kmlParser: KMLParser
+    
     var lastMapZoom: CGFloat
     var lastUserLocation: CLLocation
     var lastMapCenterCoordinate: CLLocationCoordinate2D
@@ -37,7 +38,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-        let styleURL = NSBundle.mainBundle().URLForResource("mapbox-street", withExtension: "json")
         
         mapView = MKMapView(frame: CGRectMake(0, 0, 100, 100))
         
@@ -48,7 +48,8 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         
         mapView.mbx_setCenterCoordinate(mapView.centerCoordinate, zoomLevel: 16, animated: true)
         
-        rasterOverlay = MBXRasterTileOverlay(mapID: mapSource)
+        rasterOverlay = MBXRasterTileOverlay(mapID: mapSource, includeMetadata: false, includeMarkers: false)
+        kmlParser = KMLParser()
         
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
@@ -79,6 +80,54 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         
         rasterOverlay.delegate = self
         mapView.addOverlay(rasterOverlay)
+        
+        // Locate the path to the route.kml file in the application's bundle
+        // and parse it with the KMLParser.
+        if let kmlPath = NSBundle.mainBundle().pathForResource("parking_availability", ofType: "kml") {
+            var kmlUrl = NSURL(fileURLWithPath: kmlPath)
+            kmlParser = KMLParser(URL: kmlUrl)
+            kmlParser.parseKML()
+            
+            var interiorPolygons: [MKPolygon] = []
+
+            
+            if let overlays = kmlParser.overlays as? [MKPolygon] {
+                var interiorPolygons: [MKPolygon] = overlays
+//                for polygon in overlays {
+//                    
+//                    //get useable data from the polygon
+//                    var coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(polygon.pointCount)
+//                    polygon.getCoordinates(coordsPointer, range: NSMakeRange(0, polygon.pointCount))
+//                    var locations: [CLLocation] = []
+//                    for i in 0..<polygon.pointCount {
+//                        let coord = coordsPointer[i]
+//                        locations.append(CLLocation(latitude: coord.latitude, longitude: coord.longitude))
+//                    }
+//                    
+//                    var interiorPolygon = RMPolygonAnnotation(mapView: mapView, points: locations)
+//                    interiorPolygons.append(interiorPolygon)
+//                }
+                
+                var worldCorners: [CLLocation] = [
+                    CLLocation(latitude: 85, longitude: -179),
+                    CLLocation(latitude: 85, longitude: 179),
+                    CLLocation(latitude: -85, longitude: 179),
+                    CLLocation(latitude: -85, longitude: -179),
+                    CLLocation(latitude: 85, longitude: -179)]
+                
+                var coordinatesPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(worldCorners.count)
+
+                var polygon = MKPolygon(coordinates: coordinatesPointer, count: worldCorners.count, interiorPolygons: interiorPolygons)
+                
+//                annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": interiorPolygons]
+//                annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
+//                annotation.lineColor = Styles.Colors.red1
+//                annotation.lineWidth = 4.0
+                mapView.addOverlay(polygon)
+            }
+        }
+
+        
         trackUserButton.setImage(UIImage(named: "track_user"), forState: UIControlState.Normal)
         trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(trackUserButton)
@@ -154,6 +203,12 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             //
             var renderer = MBXRasterTileRenderer(tileOverlay: tileOverlay)
             return renderer
+        } else if let polygon = overlay as? MKPolygon {
+            var shape = MKPolygonRenderer(polygon: polygon)
+            shape.strokeColor = Styles.Colors.red2
+            var red = Styles.Colors.red2
+            shape.fillColor = red.colorWithAlphaComponent(0.5)
+            return shape
         }
         
         return nil
@@ -192,6 +247,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         
         return nil
     }
+        
     func tileOverlay(overlay: MBXRasterTileOverlay!, didLoadMetadata metadata: [NSObject : AnyObject]!, withError error: NSError!) {
         // This delegate callback is for centering the map once the map metadata has been loaded
         //
@@ -282,7 +338,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         //the following used to happen after a zoom
         self.radius = (20.0 - mapView.mbx_zoomLevel()) * 100
         
-        if(mapView.mbx_zoomLevel() < 15.0) {
+        if(mapView.mbx_zoomLevel() <= 15.0) {
             self.radius = 0
         }
         

@@ -14,6 +14,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     let mapSource = "arnaudspuhler.l54pj66f"
         
     var mapView: RMMapView
+    var kmlParser: KMLParser
+    var kmlAnnotations: [RMPolygonAnnotation]
     var lastMapZoom: Float
     var lastUserLocation: CLLocation
     var lastMapCenterCoordinate: CLLocationCoordinate2D
@@ -51,6 +53,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.hideAttribution = true
         mapView.zoomingInPivotsAroundCenter = true
         mapView.zoom = 17
+        mapView.maxZoom = 19
+        mapView.minZoom = 12
+        kmlParser = KMLParser()
+        kmlAnnotations = []
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -77,6 +83,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         view = UIView()
         view.addSubview(mapView)
         mapView.delegate = self
+        
+        addCityOverlays()
         
         trackUserButton.setImage(UIImage(named: "track_user"), forState: UIControlState.Normal)
         trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -247,7 +255,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         radius = (20.0 - map.zoom) * 100
         
-        if(map.zoom < 15.0) {
+        if(map.zoom <= 15.0) {
             radius = 0
         }
         
@@ -331,7 +339,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         for annotation: RMAnnotation in map.visibleAnnotations as! [RMAnnotation] {
             
-            if (annotation.isUserLocationAnnotation) {
+            if (annotation.isUserLocationAnnotation || annotation.isKindOfClass(RMPolygonAnnotation)) {
                 continue
             }
             
@@ -652,6 +660,64 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
+    func removeAllAnnotations() {
+        self.mapView.removeAllAnnotations()
+        addCityOverlays()
+    }
+    
+    
+    func addCityOverlays() {
+        // Locate the path to the route.kml file in the application's bundle
+        // and parse it with the KMLParser.
+        var interiorPolygons: [RMPolygonAnnotation] = []
+        var fileNames = ["montreal_parking_availability"]//, "quebec_city_parking_availability"]
+
+        for fileName in fileNames {
+            if let kmlPath = NSBundle.mainBundle().pathForResource(fileName, ofType: "kml") {
+                var kmlUrl = NSURL(fileURLWithPath: kmlPath)
+                kmlParser = KMLParser(URL: kmlUrl)
+                kmlParser.parseKML()
+                
+                if let overlays = kmlParser.overlays as? [MKPolygon] {
+                    for polygon in overlays {
+                        
+                        //get useable data from the polygon
+                        var coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(polygon.pointCount)
+                        polygon.getCoordinates(coordsPointer, range: NSMakeRange(0, polygon.pointCount))
+                        var locations: [CLLocation] = []
+                        for i in 0..<polygon.pointCount {
+                            let coord = coordsPointer[i]
+                            locations.append(CLLocation(latitude: coord.latitude, longitude: coord.longitude))
+                        }
+                        
+                        var interiorPolygon = RMPolygonAnnotation(mapView: mapView, points: locations)
+                        
+                        interiorPolygon.lineColor = Styles.Colors.red1
+                        interiorPolygon.lineWidth = 4.0
+                        mapView.addAnnotation(interiorPolygon)
+                        
+                        interiorPolygons.append(interiorPolygon)
+                    }
+                }
+            }
+        }
+        
+//        MKMapRectWorld.size.height
+//        var worldCorners: [CLLocation] = [
+//            CLLocation(latitude: 85, longitude: -179),
+//            CLLocation(latitude: 85, longitude: 179),
+//            CLLocation(latitude: -85, longitude: 179),
+//            CLLocation(latitude: -85, longitude: -179),
+//            CLLocation(latitude: 85, longitude: -179)]
+//        var annotation = RMPolygonAnnotation(mapView: mapView, points: worldCorners, interiorPolygons: interiorPolygons)
+//        annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": interiorPolygons]
+//        annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
+//        annotation.lineColor = Styles.Colors.red1
+//        annotation.lineWidth = 4.0
+//        kmlAnnotations.append(annotation)
+//        mapView.addAnnotations(kmlAnnotations)
+        
+    }
     
     // MARK: SpotDetailViewDelegate
     
@@ -674,7 +740,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
         lineAnnotations = []
         centerButtonAnnotations = []
-        mapView.removeAllAnnotations()
+        
+        removeAllAnnotations()
         
         for result in results {
             addSearchResultMarker(result)
