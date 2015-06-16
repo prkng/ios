@@ -86,6 +86,23 @@ struct SpotOperations {
         }
     }
     
+    static func getCheckins(completion : ((checkins : Array<Checkin>?) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "slot/checkin"
+        
+        APIUtility.authenticatedManager().request(.GET, url, parameters: nil).responseSwiftyJSON { (request, response, json, error) -> Void in
+            
+            var checkinJsons: Array<JSON> = json.arrayValue
+            var checkins = checkinJsons.map({ (var checkinJson) -> Checkin in
+                Checkin(json: checkinJson)
+            })
+            
+            completion(checkins: checkins)
+            
+        }
+        
+    }
+    
     static func reportParkingRule (image : UIImage, location : CLLocationCoordinate2D, spotId: String?, completion: ((completed : Bool) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "image"

@@ -135,6 +135,7 @@ class SettingsViewController: AbstractViewController {
         topContainer.addSubview(profileButton)
         
         historyButton.setTitle("my_history".localizedString.uppercaseString, forState: .Normal)
+        historyButton.addTarget(self, action: "historyButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         topContainer.addSubview(historyButton)
         
         cityContainer.backgroundColor = Styles.Colors.red2
@@ -281,12 +282,12 @@ class SettingsViewController: AbstractViewController {
         
     }
     
+    
+    func historyButtonTapped() {
+        self.navigationController?.pushViewController(HistoryViewController(), animated: true)
+    }
+    
     func aboutButtonTapped() {
-        
-        
-
-        
-        
     }
     
     

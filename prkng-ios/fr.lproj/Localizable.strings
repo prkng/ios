@@ -25,6 +25,7 @@
 "logout" = "se déconnecter";
 "my_profile" = "MON COMPTE";
 "my_history" = "MON HISTORIQUE";
+"history" = "le history                                                            FIXME FIXME FIXME";
 "save" = "enregistrer";
 "new_password" = "NOUVEAU MOT DE PASSE";
 "new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
@@ -72,6 +73,7 @@
 "leave_spot" = "quitter";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
+"off" = "non";
 
 // Days
 "today" = "Ce jour";

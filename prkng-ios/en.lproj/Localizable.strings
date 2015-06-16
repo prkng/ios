@@ -25,6 +25,7 @@
 "logout" = "logout";
 "my_profile" = "MY PROFILE";
 "my_history" = "MY HISTORY";
+"history" = "history";
 "save" = "save";
 "new_password" = "NEW PASSWORD";
 "new_password_confirm" = "CONFIRM YOUR PASSWORD";
@@ -71,6 +72,7 @@
 "leave_spot" = "check out";
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
+"off" = "off";
 
 // Days
 "today" = "Today";

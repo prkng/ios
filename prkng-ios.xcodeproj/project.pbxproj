@@ -42,6 +42,9 @@
 		BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84EA1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift */; };
 		BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84EC1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift */; };
 		BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84F91B07B3D900EC6AD2 /* AF+Date+Extension.swift */; };
+		BF6981B21B30701600E0EF62 /* Checkin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6981B11B30701600E0EF62 /* Checkin.swift */; };
+		BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6981B31B307DE200E0EF62 /* HistoryTableViewCell.swift */; };
+		BF6981B81B30800E00E0EF62 /* HistorySectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6981B71B30800E00E0EF62 /* HistorySectionTitleView.swift */; };
 		BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6E1D451B2083290038E358 /* ReportOverlayView.swift */; };
 		BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170A91AE3B59300B922CA /* PrkTabBar.swift */; };
 		BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */; };
@@ -180,6 +183,9 @@
 		BF5E84EA1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarNoCheckinViewController.swift; sourceTree = "<group>"; };
 		BF5E84EC1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarCheckedInViewController.swift; sourceTree = "<group>"; };
 		BF5E84F91B07B3D900EC6AD2 /* AF+Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AF+Date+Extension.swift"; sourceTree = "<group>"; };
+		BF6981B11B30701600E0EF62 /* Checkin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checkin.swift; sourceTree = "<group>"; };
+		BF6981B31B307DE200E0EF62 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		BF6981B71B30800E00E0EF62 /* HistorySectionTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySectionTitleView.swift; sourceTree = "<group>"; };
 		BF6E1D451B2083290038E358 /* ReportOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportOverlayView.swift; sourceTree = "<group>"; };
 		BF7170A91AE3B59300B922CA /* PrkTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBar.swift; sourceTree = "<group>"; };
 		BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBarButton.swift; sourceTree = "<group>"; };
@@ -405,6 +411,7 @@
 				BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */,
 				BF4568011AD85761006D7C23 /* SearchResult.swift */,
 				BF2891E91AFFC0590041B04C /* User.swift */,
+				BF6981B11B30701600E0EF62 /* Checkin.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -479,6 +486,8 @@
 			children = (
 				BF73AE521B289D0200F4CD79 /* EditProfileViewController.swift */,
 				BF73AE541B289D0E00F4CD79 /* HistoryViewController.swift */,
+				BF6981B31B307DE200E0EF62 /* HistoryTableViewCell.swift */,
+				BF6981B71B30800E00E0EF62 /* HistorySectionTitleView.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -897,6 +906,7 @@
 				BF7170B41AE4303D00B922CA /* HereViewController.swift in Sources */,
 				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
+				BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */,
 				BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */,
 				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
@@ -905,11 +915,13 @@
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
 				BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */,
+				BF6981B21B30701600E0EF62 /* Checkin.swift in Sources */,
 				BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */,
 				BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */,
 				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,
 				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,
+				BF6981B81B30800E00E0EF62 /* HistorySectionTitleView.swift in Sources */,
 				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
 				BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
