@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate {
+class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate, SettingsViewControllerDelegate {
     
     var selectedTab : PrkTab
     
@@ -199,6 +199,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             settingsViewController = SettingsViewController()
         }
         
+        settingsViewController?.delegate = self
+        
         mapViewController.showUserLocation(false)
         mapViewController.trackUser(false)
 
@@ -326,6 +328,14 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             self.tabBar.updateSelected()
         })
         
+    }
+    
+    // MARK: SettingsViewControllerDelegate
+    
+    func goToPreviousCheckin(checkin: Checkin) {
+        loadHereTab()
+        self.mapViewController.trackUser(false)
+        self.mapViewController.goToPreviousCheckin(checkin)
     }
 
 }

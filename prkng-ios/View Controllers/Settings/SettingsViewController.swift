@@ -33,6 +33,8 @@ class SettingsViewController: AbstractViewController {
     
     var aboutButton : UIButton
     
+    var delegate: SettingsViewControllerDelegate?
+    
     init() {
         
         backgroundImageView = UIImageView()
@@ -284,7 +286,9 @@ class SettingsViewController: AbstractViewController {
     
     
     func historyButtonTapped() {
-        self.navigationController?.pushViewController(HistoryViewController(), animated: true)
+        var historyViewController = HistoryViewController()
+        historyViewController.settingsDelegate = self.delegate
+        self.navigationController?.pushViewController(historyViewController, animated: true)
     }
     
     func aboutButtonTapped() {
@@ -358,4 +362,8 @@ class SettingsViewController: AbstractViewController {
         self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
     }
     
+}
+
+protocol SettingsViewControllerDelegate {
+    func goToPreviousCheckin(checkin: Checkin)
 }

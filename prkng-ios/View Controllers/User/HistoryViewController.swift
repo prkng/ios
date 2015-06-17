@@ -17,6 +17,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     var groupedCheckins : Dictionary<String, Array<Checkin>>?
     
+    var settingsDelegate: SettingsViewControllerDelegate?
+    
     override func loadView() {
         view = UIView()
         setupViews()
@@ -156,6 +158,13 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     //MARK: UITableViewDelegate
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let checkin = checkins![indexPath.row]
+        if settingsDelegate != nil {
+            settingsDelegate?.goToPreviousCheckin(checkin)
+        }
+        
+    }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         

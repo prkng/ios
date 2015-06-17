@@ -31,6 +31,8 @@ class MapViewController: AbstractViewController {
     func showUserLocation(shouldShow: Bool) { }
     func trackUser(shouldTrack: Bool) { }
 
+    //shows a checkin on the map as a regular marker
+    func goToPreviousCheckin(checkin: Checkin) { }
     
 
     /*

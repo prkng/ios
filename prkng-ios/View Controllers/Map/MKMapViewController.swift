@@ -15,7 +15,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     
     var mapView: MKMapView
     var rasterOverlay: MBXRasterTileOverlay
-    var kmlParser: KMLParser
     
     var lastMapZoom: CGFloat
     var lastUserLocation: CLLocation
@@ -49,8 +48,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         mapView.mbx_setCenterCoordinate(mapView.centerCoordinate, zoomLevel: 16, animated: true)
         
         rasterOverlay = MBXRasterTileOverlay(mapID: mapSource, includeMetadata: false, includeMarkers: false)
-        kmlParser = KMLParser()
-        
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -81,53 +78,8 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         rasterOverlay.delegate = self
         mapView.addOverlay(rasterOverlay)
         
-        // Locate the path to the route.kml file in the application's bundle
-        // and parse it with the KMLParser.
-        if let kmlPath = NSBundle.mainBundle().pathForResource("parking_availability", ofType: "kml") {
-            var kmlUrl = NSURL(fileURLWithPath: kmlPath)
-            kmlParser = KMLParser(URL: kmlUrl)
-            kmlParser.parseKML()
-            
-            var interiorPolygons: [MKPolygon] = []
+        addCityOverlays()
 
-            
-            if let overlays = kmlParser.overlays as? [MKPolygon] {
-                var interiorPolygons: [MKPolygon] = overlays
-//                for polygon in overlays {
-//                    
-//                    //get useable data from the polygon
-//                    var coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(polygon.pointCount)
-//                    polygon.getCoordinates(coordsPointer, range: NSMakeRange(0, polygon.pointCount))
-//                    var locations: [CLLocation] = []
-//                    for i in 0..<polygon.pointCount {
-//                        let coord = coordsPointer[i]
-//                        locations.append(CLLocation(latitude: coord.latitude, longitude: coord.longitude))
-//                    }
-//                    
-//                    var interiorPolygon = RMPolygonAnnotation(mapView: mapView, points: locations)
-//                    interiorPolygons.append(interiorPolygon)
-//                }
-                
-                var worldCorners: [CLLocation] = [
-                    CLLocation(latitude: 85, longitude: -179),
-                    CLLocation(latitude: 85, longitude: 179),
-                    CLLocation(latitude: -85, longitude: 179),
-                    CLLocation(latitude: -85, longitude: -179),
-                    CLLocation(latitude: 85, longitude: -179)]
-                
-                var coordinatesPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(worldCorners.count)
-
-                var polygon = MKPolygon(coordinates: coordinatesPointer, count: worldCorners.count, interiorPolygons: interiorPolygons)
-                
-//                annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": interiorPolygons]
-//                annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
-//                annotation.lineColor = Styles.Colors.red1
-//                annotation.lineWidth = 4.0
-                mapView.addOverlay(polygon)
-            }
-        }
-
-        
         trackUserButton.setImage(UIImage(named: "track_user"), forState: UIControlState.Normal)
         trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(trackUserButton)
@@ -164,7 +116,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
 //    func mapView(mapView: MKMapView!, viewForOverlay overlay: MKOverlay!) -> MKOverlayView! {
         if let lineOverlay = overlay as? LineParkingSpot {
-            
+
             let userInfo = lineOverlay.userInfo
             let selected = userInfo["selected"] as! Bool
             let spot = userInfo["spot"] as! ParkingSpot
@@ -181,7 +133,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
                 shape.strokeColor = Styles.Colors.petrol2
             }
             
-            if mapView.mbx_zoomLevel() > 15.0 && mapView.mbx_zoomLevel() < 16.0 {
+            if mapView.mbx_zoomLevel() >= 15.0 && mapView.mbx_zoomLevel() <= 16.0 {
                 shape.lineWidth = 2.6
             } else {
                 shape.lineWidth = 4.4
@@ -205,9 +157,9 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             return renderer
         } else if let polygon = overlay as? MKPolygon {
             var shape = MKPolygonRenderer(polygon: polygon)
-            shape.strokeColor = Styles.Colors.red2
-            var red = Styles.Colors.red2
-            shape.fillColor = red.colorWithAlphaComponent(0.5)
+            shape.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
+            shape.strokeColor = Styles.Colors.red1
+            shape.lineWidth = 4.0
             return shape
         }
         
@@ -224,9 +176,13 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
 //        }
         
         if let buttonAnnotation = annotation as? ButtonParkingSpot {
-            var buttonView: MKAnnotationView = MKAnnotationView(annotation: buttonAnnotation, reuseIdentifier: "button")
-            configureButtonView(&buttonView)
-            return buttonView
+//            var view: ButtonParkingSpotView = mapView.dequeueReusableAnnotationViewWithIdentifier("button")
+//            if (view == nil) {
+                var view = ButtonParkingSpotView(annotation: buttonAnnotation, reuseIdentifier: "button")
+//            }
+//            view.annotation = buttonAnnotation
+//            view.setup()
+            return view
         } else if let searchResultAnnotation = annotation as? SearchResult {
             var searchResultView: MKPinAnnotationView = MKPinAnnotationView(annotation: searchResultAnnotation, reuseIdentifier: "searchresult")
             searchResultView.image = UIImage(named: "pin_pointer_result")
@@ -273,50 +229,50 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     func configureButtonViewWithAnnotation(buttonAnnotation:ButtonParkingSpot) -> MKAnnotationView {
 
         var annotationView: MKAnnotationView = MKAnnotationView(annotation: buttonAnnotation, reuseIdentifier: nil)
-        configureButtonView(&annotationView)
+//        configureButtonView(&annotationView)
         return annotationView
     }
     
-    func configureButtonView(inout annotationView:MKAnnotationView) {
-        
-        let buttonAnnotation = annotationView.annotation as! ButtonParkingSpot
-        let userInfo = buttonAnnotation.userInfo
-        let selected = userInfo["selected"] as! Bool
-        let spot = userInfo["spot"] as! ParkingSpot
-        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
-        
-        if shouldAddAnimation {
-            addScaleAnimationtoView(annotationView.layer)
-            spotIdentifiersDrawnOnMap.append(spot.identifier)
-        }
-        
-        var imageName = "button_line_"
-        
-        if mapView.mbx_zoomLevel() < 18 {
-            imageName += "small_"
-        }
-        if !selected {
-            imageName += "in"
-        }
-        
-        imageName += "active"
-        
-        var circleImage = UIImage(named: imageName)
-        
-        annotationView.image = circleImage
-        
-        if (selected) {
-            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-            pulseAnimation.duration = 0.7
-            pulseAnimation.fromValue = 0.95
-            pulseAnimation.toValue = 1.10
-            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            pulseAnimation.autoreverses = true
-            pulseAnimation.repeatCount = FLT_MAX
-            annotationView.layer.addAnimation(pulseAnimation, forKey: nil)
-        }
-        
-    }
+//    func configureButtonView(inout annotationView:MKAnnotationView) {
+//        
+//        let buttonAnnotation = annotationView.annotation as! ButtonParkingSpot
+//        let userInfo = buttonAnnotation.userInfo
+//        let selected = userInfo["selected"] as! Bool
+//        let spot = userInfo["spot"] as! ParkingSpot
+//        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+//        
+//        if shouldAddAnimation {
+//            addScaleAnimationtoView(annotationView.layer)
+//            spotIdentifiersDrawnOnMap.append(spot.identifier)
+//        }
+//        
+//        var imageName = "button_line_"
+//        
+//        if mapView.mbx_zoomLevel() < 18 {
+//            imageName += "small_"
+//        }
+//        if !selected {
+//            imageName += "in"
+//        }
+//        
+//        imageName += "active"
+//        
+//        var circleImage = UIImage(named: imageName)
+//        
+//        annotationView.image = circleImage
+//        
+//        if (selected) {
+//            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
+//            pulseAnimation.duration = 0.7
+//            pulseAnimation.fromValue = 0.95
+//            pulseAnimation.toValue = 1.10
+//            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//            pulseAnimation.autoreverses = true
+//            pulseAnimation.repeatCount = FLT_MAX
+//            annotationView.layer.addAnimation(pulseAnimation, forKey: nil)
+//        }
+//        
+//    }
     
     func mapView(mapView: MKMapView!, regionWillChangeAnimated animated: Bool) {
         
@@ -368,40 +324,23 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         self.delegate?.mapDidDismissSelection()
         
     }
-    
+
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
-        if var buttonAnnotation = view.annotation as? ButtonParkingSpot {
-            buttonAnnotation.userInfo["selected"] = true
-            view.annotation = buttonAnnotation
-            var replacementView = configureButtonViewWithAnnotation(buttonAnnotation)
-            view.image = replacementView.image
-            
-            //add annotation
-            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-            pulseAnimation.duration = 0.7
-            pulseAnimation.fromValue = 0.95
-            pulseAnimation.toValue = 1.10
-            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            pulseAnimation.autoreverses = true
-            pulseAnimation.repeatCount = FLT_MAX
-            view.layer.addAnimation(pulseAnimation, forKey: nil)
-            
-            selectedSpot = buttonAnnotation
+        if var button = view as? ButtonParkingSpotView {
+            button.buttonParkingSpotAnnotation.userInfo["selected"] = true
+            button.setup()
+            selectedSpot = button.buttonParkingSpotAnnotation
             self.delegate?.didSelectSpot(selectedSpot!)
         }
     }
     
     func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
-        if var buttonAnnotation = view.annotation as? ButtonParkingSpot {
-            buttonAnnotation.userInfo["selected"] = false
-            view.annotation = buttonAnnotation
-            var replacementView = configureButtonViewWithAnnotation(buttonAnnotation)
-            view.image = replacementView.image
-            view.layer.removeAllAnimations()
+        if var button = view as? ButtonParkingSpotView {
+            button.buttonParkingSpotAnnotation.userInfo["selected"] = false
+            button.setup()
         }
         
         self.delegate?.mapDidDismissSelection()
-
     }
     
     func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!) {
@@ -643,40 +582,44 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             
         }
         
-        //remove overlays and annotations no longer on the screen
-        let visibleMapRect = self.mapView.visibleMapRect
-        
-        var nonVisibleOverlays = lineAnnotations.filter { (var line: LineParkingSpot) -> Bool in
-            !line.intersectsMapRect(visibleMapRect)
-        }
-        var visibleOverlays = lineAnnotations.filter { (var line: LineParkingSpot) -> Bool in
-            line.intersectsMapRect(visibleMapRect)
-        }
-
-        var nonVisibleAnnotations = centerButtonAnnotations.filter { (var button) -> Bool in
-            !MKMapRectContainsPoint(visibleMapRect, MKMapPointForCoordinate(button.coordinate))
-        }
-        var visibleAnnotations = centerButtonAnnotations.filter { (var button) -> Bool in
-            MKMapRectContainsPoint(visibleMapRect, MKMapPointForCoordinate(button.coordinate))
-        }
-
-        var overlaysToAdd = overlays.filter { (var line: LineParkingSpot) -> Bool in
-            !contains(visibleOverlays, line)
-        }
-        var annotationsToAdd = annotations.filter { (var button) -> Bool in
-            !contains(visibleAnnotations, button)
-        }
+//        //remove overlays and annotations no longer on the screen
+//        let visibleMapRect = self.mapView.visibleMapRect
+//        
+//        var nonVisibleOverlays = lineAnnotations.filter { (var line: LineParkingSpot) -> Bool in
+//            !line.intersectsMapRect(visibleMapRect)
+//        }
+//        var visibleOverlays = lineAnnotations.filter { (var line: LineParkingSpot) -> Bool in
+//            line.intersectsMapRect(visibleMapRect)
+//        }
+//
+//        var nonVisibleAnnotations = centerButtonAnnotations.filter { (var button) -> Bool in
+//            !MKMapRectContainsPoint(visibleMapRect, MKMapPointForCoordinate(button.coordinate))
+//        }
+//        var visibleAnnotations = centerButtonAnnotations.filter { (var button) -> Bool in
+//            MKMapRectContainsPoint(visibleMapRect, MKMapPointForCoordinate(button.coordinate))
+//        }
+//
+//        var overlaysToAdd = overlays.filter { (var line: LineParkingSpot) -> Bool in
+//            !contains(visibleOverlays, line)
+//        }
+//        var annotationsToAdd = annotations.filter { (var button) -> Bool in
+//            !contains(visibleAnnotations, button)
+//        }
 
         self.lineAnnotations = overlays
         self.centerButtonAnnotations = annotations
 
 //        //it's more efficient to do everything in the background and then only update the annotations we need, finally moving into the main thread for the actual adding
         dispatch_async(dispatch_get_main_queue(), {
-            self.mapView.removeOverlays(nonVisibleOverlays)
-            self.mapView.removeAnnotations(nonVisibleAnnotations)
-
-            self.mapView.addOverlays(overlaysToAdd)
-            self.mapView.addAnnotations(annotationsToAdd)
+//            self.mapView.removeOverlays(nonVisibleOverlays)
+//            self.mapView.removeAnnotations(nonVisibleAnnotations)
+//
+//            self.mapView.addOverlays(overlaysToAdd)
+//            self.mapView.addAnnotations(annotationsToAdd)
+            
+            self.removeAllAnnotations()
+            self.mapView.addOverlays(overlays)
+            self.mapView.addAnnotations(annotations)
         })
     }
 
@@ -780,6 +723,39 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
 //        
 //    }
     
+    func addCityOverlays() {
+        // Locate the path to the route.kml file in the application's bundle
+        // and parse it with the KMLParser.
+        var interiorPolygons: [MKPolygon] = []
+        var fileNames = ["montreal_parking_availability", "quebec_city_parking_availability"]
+        
+        for fileName in fileNames {
+            if let kmlPath = NSBundle.mainBundle().pathForResource(fileName, ofType: "kml") {
+                var kmlUrl = NSURL(fileURLWithPath: kmlPath)
+                var kmlParser = KMLParser(URL: kmlUrl)
+                kmlParser.parseKML()
+                
+                if let overlays = kmlParser.overlays as? [MKPolygon] {
+                    interiorPolygons += overlays
+                }
+            }
+        }
+        
+        var worldCorners: [MKMapPoint] = [
+            MKMapPoint(x: 0, y: 0),
+            MKMapPoint(x: MKMapSizeWorld.width, y: 0),
+            MKMapPoint(x: MKMapSizeWorld.width, y: MKMapSizeWorld.height),
+            MKMapPoint(x: 0, y: MKMapSizeWorld.height),
+            MKMapPoint(x: 0, y: 0)]
+        var worldCornersPointer = UnsafeMutablePointer<MKMapPoint>.alloc(worldCorners.count)
+        for i in 0..<worldCorners.count {
+            worldCornersPointer[i] = worldCorners[i]
+        }
+        
+        var annotation = MKPolygon(points: worldCornersPointer, count: worldCorners.count, interiorPolygons: interiorPolygons)
+        mapView.addOverlay(annotation)
+        
+    }
     
     // MARK: SpotDetailViewDelegate
     
@@ -826,12 +802,16 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         
     }
     
+    //shows a checkin on the map as a regular marker
+    override func goToPreviousCheckin(checkin: Checkin) {
+        NSLog("Can't yet go to a previous checkin in the apple map")
+    }
+
+    
     func removeAllAnnotations() {
-        //removes the user location too?
-        var annotationsToRemove = mapView.annotations
-        mapView.removeAnnotations(annotationsToRemove)
-        var overlaysToRemove = mapView.overlays
-        mapView.removeOverlays(overlaysToRemove)
+        mapView.removeAnnotations(self.centerButtonAnnotations)
+        mapView.removeAnnotations(self.searchAnnotations)
+        mapView.removeOverlays(self.lineAnnotations)
     }
     
 }
