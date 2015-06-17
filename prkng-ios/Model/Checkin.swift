@@ -34,6 +34,12 @@ class Checkin: NSObject {
         spotId = json["slot_id"].stringValue
         active = json["active"].boolValue
 
+        let created = json["created"].stringValue
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        var dateStr = created.substringToIndex(advance(created.startIndex, 19))
+        date = formatter.dateFromString(dateStr)!
     }
     
    

@@ -33,6 +33,8 @@ class HistorySectionTitleView: UIView {
     
     func setupSubviews() {
         
+        backgroundColor = Styles.Colors.midnight2
+        
         label.font = Styles.FontFaces.light(12)
         label.textColor = Styles.Colors.cream1
         addSubview(label)

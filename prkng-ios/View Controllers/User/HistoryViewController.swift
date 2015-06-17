@@ -14,8 +14,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     let titleLabel = UILabel()
     let tableView = UITableView()
     let backButton = UIButton()
-
-    var checkins : Array<Checkin>?
+    
+    var groupedCheckins : Dictionary<String, Array<Checkin>>?
     
     override func loadView() {
         view = UIView()
@@ -26,9 +26,32 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-
+        
         SpotOperations.getCheckins { (checkins) -> Void in
-            self.checkins = checkins
+            
+            self.groupedCheckins = Dictionary()
+            if let ungroupedCheckins = checkins {
+                
+                let formatter = NSDateFormatter()
+                formatter.dateFormat = "MMM yyyy"
+                
+                for checkin in ungroupedCheckins {
+                    let group = formatter.stringFromDate(checkin.date)
+                    
+                    if self.groupedCheckins![group] != nil {
+                        self.groupedCheckins![group]!.append(checkin)
+                    } else {
+                        var array : Array<Checkin> = []
+                        array.append(checkin)
+                        self.groupedCheckins![group] = array
+                    }
+                    
+                }
+                
+                
+            }
+            
+            
             self.tableView.reloadData()
         }
         
@@ -36,7 +59,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     
     func setupViews() {
-    
+        
         view.backgroundColor = Styles.Colors.midnight2
         
         view.addSubview(iconView)
@@ -77,24 +100,36 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
         }
-    
+        
     }
     
     //MARK: UITableViewDataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        
+        if groupedCheckins != nil {
+            return groupedCheckins!.count
+        }
+        
+        
+        return 0
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if let checkins = self.checkins {
-            return checkins.count
+        if let checkins = groupedCheckins {
+            
+            let key = checkins.keys.array[section]
+            if let array = checkins[key] {
+                return array.count
+            }
+            
+            
         }
         
         return 0
     }
-
+    
     let identifier = "HistoryTableViewCell"
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
@@ -104,9 +139,15 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             cell = HistoryTableViewCell(style: .Default, reuseIdentifier: identifier)
         }
         
-        let checkin = checkins![indexPath.row]
         
-        cell?.dateLabel.text = "date and stuff"
+        let key = groupedCheckins!.keys.array[indexPath.section]
+        let checkin = groupedCheckins![key]![indexPath.row]
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "EEEE, dd - hh:mm a"
+        
+        
+        cell?.dateLabel.text = formatter.stringFromDate(checkin.date).uppercaseString
         cell?.addressLabel.text = checkin.name
         
         return cell!
@@ -124,12 +165,49 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         return 60
     }
     
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
     
-    //MARK : Button Handlers
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let sectionHeader = HistorySectionTitleView()
+        sectionHeader.label.text = groupedCheckins!.keys.array[section].uppercaseString
+        return sectionHeader
+    }
+    
+    
+    //MARK: Button Handlers
     
     func backButtonTapped(sender: UIButton) {
         
     }
-
-   
+    
+    
+    //MARK: Helper
+    
+//    func addSuffixToNumber(number : Int){
+//        
+//        
+//        var suffix : String
+//        let ones = number % 10;
+//        let tens = (number/10) % 10;
+//        
+//        if (tens ==1) {
+//        suffix = "th";
+//        } else if (ones ==1){
+//        suffix = "st";
+//        } else if (ones ==2){
+//        suffix = "nd";
+//        } else if (ones ==3){
+//        suffix = "rd";
+//        } else {
+//        suffix = "th";
+//        }
+//        
+//        NSString *completeAsString = [NSString stringWithFormat:@"%d%@",number,suffix];
+//        return completeAsString;
+//    }
+    
+    
+    
 }
