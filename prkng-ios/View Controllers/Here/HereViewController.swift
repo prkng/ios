@@ -130,7 +130,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         }
         
         checkinButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+20)
+            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+30)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(0, 0))
         }
@@ -325,14 +325,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         }
         
         checkinButton.snp_remakeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+20)
+            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+30)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
         }
 
         var animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        animation.values = [1, 1.3, 0.8, 1.1, 0.9, 1]
-        animation.duration = 0.4
+        animation.values = [1.08, 0.93, 1]
+        animation.duration = 0.3
         var timingFunctions: Array<CAMediaTimingFunction> = []
         for i in 0...animation.values.count {
             timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
@@ -373,7 +373,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             }
             
             checkinButton.snp_remakeConstraints { (make) -> () in
-                make.bottom.equalTo(self.view).with.offset(-20)
+                make.bottom.equalTo(self.view).with.offset(-30)
                 make.centerX.equalTo(self.view)
                 make.size.equalTo(CGSizeMake(0, 0))
             }
@@ -385,7 +385,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 },
                 completion: { (completed: Bool) -> Void in
                     self.checkinButton.snp_remakeConstraints { (make) -> () in
-                        make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+20)
+                        make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+30)
                         make.centerX.equalTo(self.view)
                         make.size.equalTo(CGSizeMake(0, 0))
                     }
