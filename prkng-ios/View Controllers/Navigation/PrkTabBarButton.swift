@@ -74,7 +74,7 @@ class PrkTabBarButton: UIControl {
         addSubview(iconView)
         
         titleLabel.text = title
-        titleLabel.font = Styles.FontFaces.regular(11.0)
+        titleLabel.font = Styles.FontFaces.regular(9)
         titleLabel.textColor = Styles.Colors.anthracite1
         titleLabel.textAlignment = NSTextAlignment.Center
         addSubview(titleLabel)
@@ -85,14 +85,14 @@ class PrkTabBarButton: UIControl {
     func setupConstraints() {
         
         self.iconView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(36, 36))
+            make.size.equalTo(CGSizeMake(28, 28))
             make.centerX.equalTo(self)
-            make.top.equalTo(self).with.offset(9)
+            make.top.equalTo(self).with.offset(7)
         }
         
         self.titleLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self)
-            make.top.equalTo(self.iconView.snp_bottom).with.offset(7)
+            make.top.equalTo(self.iconView.snp_bottom).with.offset(3)
         }        
         
         didSetupConstraints = true

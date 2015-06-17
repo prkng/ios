@@ -104,7 +104,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(71)
+            make.height.equalTo(Styles.Sizes.tabbarHeight)
         }
         
         /// child view controllers
