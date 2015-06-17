@@ -159,10 +159,13 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     //MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        let checkin = checkins![indexPath.row]
-//        if settingsDelegate != nil {
-//            settingsDelegate?.goToPreviousCheckin(checkin)
-//        }
+        
+        let key = groupedCheckins!.keys.array[indexPath.section]
+        let checkin = groupedCheckins![key]![indexPath.row]
+        
+        if settingsDelegate != nil {
+            settingsDelegate?.goToPreviousCheckin(checkin)
+        }
         
     }
     
