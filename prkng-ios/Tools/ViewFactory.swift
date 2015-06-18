@@ -81,9 +81,23 @@ struct ViewFactory {
         return button
     }
     
-    static func aboutButton () -> UIButton {
+    static func bigTransparentButton () -> UIButton {
         let button = UIButton ()
-        
+        button.titleLabel?.font = Styles.FontFaces.light(31)
+        button.setTitleColor(Styles.Colors.cream1, forState: .Normal)
+        button.setTitleColor(Styles.Colors.anthracite1, forState: .Highlighted)
+        return button
+    }
+    
+    static func redBackButton() -> UIButton {
+        let button = UIButton ()
+        button.backgroundColor = Styles.Colors.red2
+        button.layer.cornerRadius = 13
+        button.clipsToBounds = true
+        button.titleLabel?.font = Styles.FontFaces.light(12)
+        button.setTitleColor(Styles.Colors.cream1, forState: .Normal)
+        button.setTitleColor(Styles.Colors.anthracite1, forState: .Highlighted)
+        button.setTitle("<  " + "back".localizedString.uppercaseString, forState: .Normal)
         return button
     }
     

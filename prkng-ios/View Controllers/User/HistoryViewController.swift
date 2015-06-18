@@ -10,10 +10,12 @@ import UIKit
 
 class HistoryViewController: AbstractViewController, UITableViewDataSource, UITableViewDelegate {
     
+    let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
+    
     let iconView = UIImageView(image: UIImage(named: "icon_history"))
     let titleLabel = UILabel()
     let tableView = UITableView()
-    let backButton = UIButton()
+    let backButton = ViewFactory.redBackButton()
     
     var groupedCheckins : Dictionary<String, Array<Checkin>>?
     
@@ -62,7 +64,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     func setupViews() {
         
-        view.backgroundColor = Styles.Colors.midnight2
+        backgroundImageView.contentMode = .ScaleAspectFill
+        view.addSubview(backgroundImageView)
         
         view.addSubview(iconView)
         
@@ -78,10 +81,17 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         tableView.delegate = self
         view.addSubview(tableView)
         
+        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
+        view.addSubview(backButton)
+        
     }
     
     
     func setupConstraints() {
+        
+        backgroundImageView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
         
         iconView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(48)
@@ -101,6 +111,12 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
+        }
+        
+        backButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSize(width: 80, height: 26))
+            make.centerX.equalTo(self.view)
+            make.bottom.equalTo(self.view).with.offset(-20)
         }
         
     }
@@ -191,35 +207,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     //MARK: Button Handlers
     
     func backButtonTapped(sender: UIButton) {
-        
+        self.navigationController?.popViewControllerAnimated(true)
     }
-    
-    
-    //MARK: Helper
-    
-//    func addSuffixToNumber(number : Int){
-//        
-//        
-//        var suffix : String
-//        let ones = number % 10;
-//        let tens = (number/10) % 10;
-//        
-//        if (tens ==1) {
-//        suffix = "th";
-//        } else if (ones ==1){
-//        suffix = "st";
-//        } else if (ones ==2){
-//        suffix = "nd";
-//        } else if (ones ==3){
-//        suffix = "rd";
-//        } else {
-//        suffix = "th";
-//        }
-//        
-//        NSString *completeAsString = [NSString stringWithFormat:@"%d%@",number,suffix];
-//        return completeAsString;
-//    }
-    
-    
     
 }

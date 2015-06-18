@@ -90,7 +90,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate {
         scrollView.addSubview(contentView)
         
         var anyLabel = UILabel()
-        anyLabel.text = "ALL".localizedString.uppercaseString
+        anyLabel.text = "all".localizedString.uppercaseString
         anyLabel.font = FONT
         anyLabel.textColor = Styles.Colors.white
         timeLabels.append(anyLabel)

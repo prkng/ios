@@ -70,6 +70,8 @@
 		BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */; };
 		BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C961B149BB100A635A1 /* TutorialViewController.swift */; };
 		BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */; };
+		BF9C46F51B32E30600DCF858 /* TheProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */; };
+		BF9C46F71B32F72200DCF858 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C46F61B32F72200DCF858 /* TermsViewController.swift */; };
 		BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C531B25C8D600DAB393 /* Intro-Light.otf */; };
 		BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */; };
 		BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */; };
@@ -218,6 +220,8 @@
 		BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HereFirstUseViewController.swift; sourceTree = "<group>"; };
 		BF982C961B149BB100A635A1 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
+		BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TheProjectViewController.swift; sourceTree = "<group>"; };
+		BF9C46F61B32F72200DCF858 /* TermsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
 		BFA69C531B25C8D600DAB393 /* Intro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Light.otf"; sourceTree = "<group>"; };
 		BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Normal.otf"; sourceTree = "<group>"; };
 		BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarAbstractViewController.swift; sourceTree = "<group>"; };
@@ -563,6 +567,8 @@
 			isa = PBXGroup;
 			children = (
 				BFC490921B31D24C00C43562 /* AboutViewController.swift */,
+				BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */,
+				BF9C46F61B32F72200DCF858 /* TermsViewController.swift */,
 			);
 			path = About;
 			sourceTree = "<group>";
@@ -937,6 +943,7 @@
 				BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */,
 				BFFDE4651AFBA48D0035DF54 /* RegisterEmailViewController.swift in Sources */,
 				BFFDE4611AFB829B0035DF54 /* LoginMethodSelectionView.swift in Sources */,
+				BF9C46F71B32F72200DCF858 /* TermsViewController.swift in Sources */,
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
@@ -990,6 +997,7 @@
 				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
 				3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */,
+				BF9C46F51B32E30600DCF858 /* TheProjectViewController.swift in Sources */,
 				BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */,
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,

@@ -112,4 +112,12 @@
 "report_error" = "Something went wrong, please try again.";
 "report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help.";
 
-"ALL" = "ALL";
+"about" = "about";
+"the_project" = "the project";
+"terms_conditions" = "terms & conditions";
+"share" = "share";
+"the_project_part_one" = "prkng is a service to find easily a legal parking spot. we try our best to solve traffic issue and incomprehension in north american metropole. our service is powered by Yellow Pages Group Canada. more cities are coming soon.";
+"the_project_part_two" = "Information that we collect from you, when you use the service including your name, contact details (such as telephone and mobile numbers and e-mail address), and/or other personally identifiable information (the \"personal information\") are only use for internal diagnostics and our main partners.";
+
+
+"all" = "all";

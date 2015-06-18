@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsViewController: AbstractViewController {
     
-    var backgroundImageView : UIImageView
+    let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
     
     var topContainer : UIView
     
@@ -36,8 +36,6 @@ class SettingsViewController: AbstractViewController {
     var delegate: SettingsViewControllerDelegate?
     
     init() {
-        
-        backgroundImageView = UIImageView()
         
         topContainer = UIView()
         
@@ -112,7 +110,6 @@ class SettingsViewController: AbstractViewController {
     
     func setupViews () {
         
-        backgroundImageView.image = UIImage(named:"bg_blue_gradient")
         backgroundImageView.contentMode = .ScaleAspectFill
         view.addSubview(backgroundImageView)
         
