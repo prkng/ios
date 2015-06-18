@@ -275,7 +275,7 @@ class SettingsViewController: AbstractViewController {
             make.top.greaterThanOrEqualTo(self.profileContainer.snp_bottom).with.offset(5).priorityHigh()
             make.bottom.equalTo(self.topContainer).with.offset(-15)
             make.centerX.equalTo(self.topContainer)
-            make.size.equalTo(CGSizeMake(110, 26))
+            make.size.equalTo(CGSizeMake(125, 26))
         }
         
     }

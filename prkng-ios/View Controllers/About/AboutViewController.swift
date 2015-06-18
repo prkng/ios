@@ -108,11 +108,11 @@ class AboutViewController: AbstractViewController {
     
     //MARK: Button Handlers
     func projectButtonTapped(sender: UIButton) {
-        
+        self.navigationController?.pushViewController(TheProjectViewController(), animated: true)
     }
     
     func termsButtonTapped(sender: UIButton) {
-        
+        self.navigationController?.pushViewController(TermsViewController(), animated: true)
     }
     
     func shareButtonTapped(sender: UIButton) {
