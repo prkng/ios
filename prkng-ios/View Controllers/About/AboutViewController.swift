@@ -117,6 +117,11 @@ class AboutViewController: AbstractViewController {
     
     func shareButtonTapped(sender: UIButton) {
         
+        let text = "prkng_share_copy".localizedString
+        let url = NSURL(string:"http://prk.ng/")!
+        
+        let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
+        self.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     func backButtonTapped(sender: UIButton) {

@@ -11,6 +11,7 @@ import UIKit
 class TermsViewController: AbstractViewController, UIWebViewDelegate {
     
     let backgroundImageView = UIImageView(image: UIImage(named: "bg_login"))
+    var statusBar = UIView()
     let webView = UIWebView()
     
     let termsEnglishUrl = "http://prk.ng/terms/"
@@ -48,6 +49,9 @@ class TermsViewController: AbstractViewController, UIWebViewDelegate {
         backgroundImageView.contentMode = .ScaleAspectFill
         view.addSubview(backgroundImageView)
         
+        statusBar.backgroundColor = Styles.Colors.midnight2
+        view.addSubview(statusBar)
+        
         webView.delegate = self
         webView.backgroundColor = UIColor.clearColor()
         view.addSubview(webView)
@@ -64,8 +68,18 @@ class TermsViewController: AbstractViewController, UIWebViewDelegate {
             make.edges.equalTo(self.view)
         }
         
+        statusBar.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(20)
+        }
+        
         webView.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.view)
+            make.top.equalTo(self.statusBar.snp_bottom)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.view)
         }
         
         backButton.snp_makeConstraints { (make) -> () in
