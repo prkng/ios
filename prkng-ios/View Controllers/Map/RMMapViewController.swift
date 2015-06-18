@@ -14,8 +14,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     let mapSource = "arnaudspuhler.l54pj66f"
         
     var mapView: RMMapView
-    var kmlParser: KMLParser
-    var kmlAnnotations: [RMPolygonAnnotation]
     var lastMapZoom: Float
     var lastUserLocation: CLLocation
     var lastMapCenterCoordinate: CLLocationCoordinate2D
@@ -54,9 +52,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.zoomingInPivotsAroundCenter = true
         mapView.zoom = 17
         mapView.maxZoom = 19
-        mapView.minZoom = 12
-        kmlParser = KMLParser()
-        kmlAnnotations = []
+//        mapView.minZoom = 12
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -217,6 +213,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             marker.canShowCallout = true
             return marker
             
+        case "previousCheckin":
+            let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result")) //"Button_line_active"
+            marker.canShowCallout = true
+            return marker
+
             
         default:
             return nil
@@ -661,6 +662,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     func removeAllAnnotations() {
+        
+        searchAnnotations = []
+        lineAnnotations = []
+        centerButtonAnnotations = []
         self.mapView.removeAllAnnotations()
         addCityOverlays()
     }
@@ -670,12 +675,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         // Locate the path to the route.kml file in the application's bundle
         // and parse it with the KMLParser.
         var interiorPolygons: [RMPolygonAnnotation] = []
-        var fileNames = ["montreal_parking_availability"]//, "quebec_city_parking_availability"]
+        var fileNames = ["montreal_parking_availability", "quebec_city_parking_availability"]
 
         for fileName in fileNames {
             if let kmlPath = NSBundle.mainBundle().pathForResource(fileName, ofType: "kml") {
                 var kmlUrl = NSURL(fileURLWithPath: kmlPath)
-                kmlParser = KMLParser(URL: kmlUrl)
+                var kmlParser = KMLParser(URL: kmlUrl)
                 kmlParser.parseKML()
                 
                 if let overlays = kmlParser.overlays as? [MKPolygon] {
@@ -691,31 +696,24 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                         }
                         
                         var interiorPolygon = RMPolygonAnnotation(mapView: mapView, points: locations)
-                        
-                        interiorPolygon.lineColor = Styles.Colors.red1
-                        interiorPolygon.lineWidth = 4.0
-                        mapView.addAnnotation(interiorPolygon)
-                        
                         interiorPolygons.append(interiorPolygon)
                     }
                 }
             }
         }
         
-//        MKMapRectWorld.size.height
-//        var worldCorners: [CLLocation] = [
-//            CLLocation(latitude: 85, longitude: -179),
-//            CLLocation(latitude: 85, longitude: 179),
-//            CLLocation(latitude: -85, longitude: 179),
-//            CLLocation(latitude: -85, longitude: -179),
-//            CLLocation(latitude: 85, longitude: -179)]
-//        var annotation = RMPolygonAnnotation(mapView: mapView, points: worldCorners, interiorPolygons: interiorPolygons)
-//        annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": interiorPolygons]
-//        annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
-//        annotation.lineColor = Styles.Colors.red1
-//        annotation.lineWidth = 4.0
-//        kmlAnnotations.append(annotation)
-//        mapView.addAnnotations(kmlAnnotations)
+        var worldCorners: [CLLocation] = [
+            CLLocation(latitude: 85, longitude: -179),
+            CLLocation(latitude: 85, longitude: 179),
+            CLLocation(latitude: -85, longitude: 179),
+            CLLocation(latitude: -85, longitude: -179),
+            CLLocation(latitude: 85, longitude: -179)]
+        var annotation = RMPolygonAnnotation(mapView: mapView, points: worldCorners, interiorPolygons: interiorPolygons)
+        annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": interiorPolygons]
+        annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
+        annotation.lineColor = Styles.Colors.red1
+        annotation.lineWidth = 4.0
+        mapView.addAnnotation(annotation)
         
     }
     
@@ -735,12 +733,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         
         mapView.centerCoordinate = results[0].location.coordinate
-        
-        searchAnnotations = []
 
-        lineAnnotations = []
-        centerButtonAnnotations = []
-        
         removeAllAnnotations()
         
         for result in results {
@@ -763,8 +756,19 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func trackUser(shouldTrack: Bool) {
         self.mapView.userTrackingMode = shouldTrack ? RMUserTrackingModeFollow : RMUserTrackingModeNone
-
     }
+    
+    override func goToPreviousCheckin(checkin: Checkin) {
+        var annotation = RMAnnotation(mapView: self.mapView, coordinate: checkin.location.coordinate, andTitle: checkin.name)
+        annotation.userInfo = ["type": "searchResult"]
+        mapView.zoom = 17
+        mapView.centerCoordinate = checkin.location.coordinate
+        removeAllAnnotations()
+        searchAnnotations.append(annotation)
+        self.mapView.addAnnotation(annotation)
+    }
+
+
 
     
 }

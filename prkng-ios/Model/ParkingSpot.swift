@@ -275,3 +275,73 @@ class ButtonParkingSpot: ParkingSpot, MKAnnotation {
     var coordinate: CLLocationCoordinate2D { get { return buttonLocation.coordinate } }
 }
 
+class ButtonParkingSpotView: MKAnnotationView {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    override init!(annotation: MKAnnotation!, reuseIdentifier: String!) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        setup()
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    var buttonParkingSpotAnnotation : ButtonParkingSpot!
+    
+    override var annotation: MKAnnotation! {
+        get { return buttonParkingSpotAnnotation }
+        set { if newValue == nil || newValue is ButtonParkingSpot {
+            buttonParkingSpotAnnotation = newValue as? ButtonParkingSpot
+        } else {
+            println("Incorrect annotation type for ButtonParkingSpotView")
+            }
+        }
+    }
+    
+    func setup() {
+        let userInfo = buttonParkingSpotAnnotation.userInfo
+        let selected = userInfo["selected"] as! Bool
+        let spot = userInfo["spot"] as! ParkingSpot
+        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+        
+        if shouldAddAnimation {
+//            addScaleAnimationtoView(annotationView.layer)
+//            spotIdentifiersDrawnOnMap.append(spot.identifier)
+        }
+        
+        var imageName = "button_line_"
+        
+//        if mapView.mbx_zoomLevel() < 18 {
+//            imageName += "small_"
+//        }
+        if !selected {
+            imageName += "in"
+        }
+        
+        imageName += "active"
+        
+        var circleImage = UIImage(named: imageName)
+        
+        self.image = circleImage
+        
+        if (selected) {
+            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
+            pulseAnimation.duration = 0.7
+            pulseAnimation.fromValue = 0.95
+            pulseAnimation.toValue = 1.10
+            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            pulseAnimation.autoreverses = true
+            pulseAnimation.repeatCount = FLT_MAX
+            self.layer.addAnimation(pulseAnimation, forKey: "pulse")
+        } else {
+            self.layer.removeAnimationForKey("pulse")
+        }
+
+    }
+    
+}
+

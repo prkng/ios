@@ -13,6 +13,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     var scheduleViewController : ScheduleViewController?
     var firstUseMessageVC : HereFirstUseViewController?
     var detailView: SpotDetailView
+    var timeFilterView: TimeFilterView
     
     var statusBar : UIView
     var checkinButton : UIButton
@@ -28,6 +29,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     init() {
         detailView = SpotDetailView()
+        timeFilterView = TimeFilterView()
         statusBar = UIView()
         checkinButton = UIButton()
         searchButton = UIButton()
@@ -73,6 +75,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
         detailView.delegate = self
         view.addSubview(detailView)
+        
+        view.addSubview(timeFilterView)
         
         statusBar.backgroundColor = Styles.Colors.statusBar
         view.addSubview(statusBar)
@@ -127,6 +131,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
+        }
+
+        timeFilterView.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(0)
         }
         
         checkinButton.snp_makeConstraints { (make) -> () in
@@ -433,8 +444,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.bottom.equalTo(self.searchFieldView)
         }
         
+        timeFilterView.snp_updateConstraints { (make) -> () in
+            make.height.equalTo(TimeFilterView.HEIGHT)
+        }
+        
         searchFieldView.setNeedsLayout()
         searchField.setNeedsLayout()
+        timeFilterView.setNeedsLayout()
         
         UIView.animateWithDuration(0.2,
             delay: 0,
@@ -442,9 +458,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             animations: { () -> Void in
                 self.searchFieldView.layoutIfNeeded()
                 self.searchField.layoutIfNeeded()
+                self.timeFilterView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-                self.searchField.becomeFirstResponder()
+//                self.searchField.becomeFirstResponder()
         })
         
     }
@@ -466,8 +483,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.left.equalTo(self.searchFieldView)
         }
         
+        timeFilterView.snp_updateConstraints { (make) -> () in
+            make.height.equalTo(0)
+        }
+        
         searchFieldView.setNeedsLayout()
         searchField.setNeedsLayout()
+        timeFilterView.setNeedsLayout()
 
         UIView.animateWithDuration(0.2,
             delay: 0,
@@ -475,6 +497,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             animations: { () -> Void in
                 self.searchFieldView.layoutIfNeeded()
                 self.searchField.layoutIfNeeded()
+                self.timeFilterView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
                 self.showSearchButton(false)
