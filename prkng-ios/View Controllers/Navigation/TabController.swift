@@ -215,6 +215,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     
+    func updateMapAnnotations() {
+        mapViewController.updateAnnotations()
+    }
+    
     func switchActiveViewController  (newViewController : UIViewController, completion : ((finished:Bool) -> Void)) {
         
         if switchingMainView {
@@ -282,6 +286,11 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func shouldShowUserTrackingButton() -> Bool {
         return selectedTab == PrkTab.Here
+    }
+    
+    func activeFilterDuration() -> Float? {
+        var hours = hereViewController.timeFilterView.selectedValueInHours()
+        return hours
     }
     
     

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
 
     var scheduleViewController : ScheduleViewController?
     var firstUseMessageVC : HereFirstUseViewController?
@@ -76,6 +76,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         detailView.delegate = self
         view.addSubview(detailView)
         
+        timeFilterView.delegate = self
         view.addSubview(timeFilterView)
         
         statusBar.backgroundColor = Styles.Colors.statusBar
@@ -134,7 +135,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         }
 
         timeFilterView.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view)
+            make.top.equalTo(self.view).with.offset(100)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(0)
@@ -586,9 +587,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         })
     }
 
+    
+    // MARK:TimeFilterViewDelegate
+    func filterValueWasChanged(#hours:Float?) {
+        self.delegate?.updateMapAnnotations()
+    }
+    
 }
 
 
 protocol HereViewControllerDelegate {
     func loadMyCarTab()
+    func updateMapAnnotations()
 }

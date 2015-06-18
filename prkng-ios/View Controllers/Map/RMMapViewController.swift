@@ -446,7 +446,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     
-    func updateAnnotations() {
+    override func updateAnnotations() {
         
         if (updateInProgress) {
             println("Update already in progress, cancelled!")
@@ -473,10 +473,16 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             if (duration == nil) {
-                duration = 1
+                duration = self.delegate?.activeFilterDuration()
             }
             
-            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration!, checkinTime: checkinTime!, completion:
+            if duration != nil {
+                NSLog("updating with duration: %f",duration!)
+            } else {
+                NSLog("updating with duration: nil")
+            }
+            
+            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: 1, checkinTime: checkinTime!, completion:
                 { (spots) -> Void in
                     
                     //TODO: Optimize this section, it's likely what causes the sluggish map behaviour (in the addSpotAnnotation method)
@@ -503,8 +509,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     
                     for spot in spots {
                         let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
-                        
-                        self.addSpotAnnotation(self.mapView, spot: spot, selected: selected)
+                        if spot.availableTimeInterval() >= NSTimeInterval((duration ?? 0.5) * 3600) {
+                            self.addSpotAnnotation(self.mapView, spot: spot, selected: selected)
+                        }
                     }
                     self.updateInProgress = false
                     

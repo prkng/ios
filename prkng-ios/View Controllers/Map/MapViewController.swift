@@ -30,6 +30,7 @@ class MapViewController: AbstractViewController {
     func clearSearchResults() { }
     func showUserLocation(shouldShow: Bool) { }
     func trackUser(shouldTrack: Bool) { }
+    func updateAnnotations() { }
 
     //shows a checkin on the map as a regular marker
     func goToPreviousCheckin(checkin: Checkin) { }
@@ -54,5 +55,8 @@ protocol MapViewControllerDelegate {
     func didSelectSpot(spot: ParkingSpot)
     
     func shouldShowUserTrackingButton() -> Bool
+    
+    //returns the number of hours to search for as a minimum parking duration
+    func activeFilterDuration() -> Float?
     
 }

@@ -24,6 +24,7 @@
 		3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */; };
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
 		3EBEE33E1B3213A100C7F2DE /* quebec_city_parking_availability.kml in Resources */ = {isa = PBXBuildFile; fileRef = 3EBEE33D1B3213A100C7F2DE /* quebec_city_parking_availability.kml */; };
+		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		98887B211776822C608CBF0F /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */; };
@@ -174,6 +175,7 @@
 		3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		3EBEE33D1B3213A100C7F2DE /* quebec_city_parking_availability.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = quebec_city_parking_availability.kml; sourceTree = "<group>"; };
+		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleHeaderView.swift; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 				BFD6B6C21AF2E83700789022 /* Settings.swift */,
 				BFD6B6C41AF2F09E00789022 /* DateUtil.swift */,
 				BFC850F91B2F618A006383AC /* ImageUtil.swift */,
+				3EF469B11B33753300BC87A9 /* PRKLabel.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -933,6 +936,7 @@
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
+				3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */,
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
 				3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */,
