@@ -81,6 +81,12 @@ struct ViewFactory {
         return button
     }
     
+    static func aboutButton () -> UIButton {
+        let button = UIButton ()
+        
+        return button
+    }
+    
     // MARK: Labels
     
     static func formLabel() -> UILabel {

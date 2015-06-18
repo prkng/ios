@@ -11,11 +11,11 @@ import UIKit
 class APIUtility: NSObject {
 
     struct APIConstants {
-#if DEBUG
+//#if DEBUG
         static let rootURLString = "http://54.144.3.236/"
-#else
-        static let rootURLString = "https://api.prk.ng/"
-#endif
+//#else
+//        static let rootURLString = "https://api.prk.ng/"
+//#endif
     }
     
     class func rootURL() -> String {

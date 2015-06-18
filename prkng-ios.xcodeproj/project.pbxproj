@@ -76,6 +76,7 @@
 		BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1701A83D364005F4054 /* libsqlite3.dylib */; };
 		BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D1721A83D36F005F4054 /* libz.dylib */; };
 		BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFB0958E1AFA498A007F1D16 /* LoginViewController.swift */; };
+		BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC490921B31D24C00C43562 /* AboutViewController.swift */; };
 		BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */; };
 		BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFC764931A7644AC008F2B26 /* Images.xcassets */; };
 		BFC764A31A7644AC008F2B26 /* prkng_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC764A21A7644AC008F2B26 /* prkng_iosTests.swift */; };
@@ -221,6 +222,7 @@
 		BFA8D1701A83D364005F4054 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		BFA8D1721A83D36F005F4054 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BFB0958E1AFA498A007F1D16 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		BFC490921B31D24C00C43562 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		BFC764871A7644AC008F2B26 /* prkng-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "prkng-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFC7648B1A7644AC008F2B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BFC7648C1A7644AC008F2B26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 		BF0B47231A7E905F00E94B3C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				BFC490911B31D22700C43562 /* About */,
 				BFEE21AA1B1F82640029BA71 /* Report */,
 				BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */,
 				BF8F78111B00D2CF00A85197 /* My Car */,
@@ -548,6 +551,14 @@
 				BF3CFA291AFE98E2003D104D /* LoginExternalViewController.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		BFC490911B31D22700C43562 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				BFC490921B31D24C00C43562 /* AboutViewController.swift */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 		BFC7647E1A7644AC008F2B26 = {
@@ -972,6 +983,7 @@
 				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
 				BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */,
+				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,

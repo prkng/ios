@@ -252,7 +252,6 @@ class SettingsViewController: AbstractViewController {
             make.bottom.equalTo(self.profileContainer)
         }
         
-        
         profileButton.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(profileContainer)
         }
@@ -288,6 +287,7 @@ class SettingsViewController: AbstractViewController {
     }
     
     func aboutButtonTapped() {
+        self.navigationController?.pushViewController(AboutViewController(), animated: true)
     }
     
     
