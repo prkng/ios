@@ -82,9 +82,11 @@ class SpotDetailView: UIView {
         
         topContainer.addSubview(topContainerRightView)
 
-        checkinImageView.image = UIImage(named:"btn_checkin_active")
+        checkinImageView.image = UIImage(named:"icon_checkin_pin")
         checkinImageView.contentMode = UIViewContentMode.ScaleAspectFit
         topContainerRightView.addSubview(checkinImageView)
+        checkinImageView.layer.anchorPoint = CGPointMake(0.5,1.0);
+        checkinImageView.layer.wigglewigglewiggle()
         
         checkinImageLabel.font = Styles.FontFaces.regular(10)
         checkinImageLabel.textColor = Styles.Colors.cream1
@@ -141,9 +143,9 @@ class SpotDetailView: UIView {
         }
         
         checkinImageView.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(40)
+            make.height.equalTo(24)
             make.centerX.equalTo(self.topContainerRightView)
-            make.top.equalTo(self.topContainerRightView).with.offset(5)
+            make.top.equalTo(self.topContainerRightView).with.offset(23)
         }
 
         checkinImageLabel.snp_makeConstraints { (make) -> () in

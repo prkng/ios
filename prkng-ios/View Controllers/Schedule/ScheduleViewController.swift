@@ -8,13 +8,10 @@
 
 import UIKit
 
-class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
+class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     
     var spot : ParkingSpot
     var delegate : ScheduleViewControllerDelegate?
-
-    private var holdGestureRecognizer: UILongPressGestureRecognizer
-    
     private var scheduleItems : Array<ScheduleItemModel>
     
     private var headerView : ScheduleHeaderView
@@ -33,7 +30,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
     
     init(spot : ParkingSpot) {
         self.spot = spot
-        holdGestureRecognizer = UILongPressGestureRecognizer()
         headerView = ScheduleHeaderView()
         scrollView = UIScrollView()
         contentView = UIView()
@@ -74,10 +70,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
     override func loadView() {
         view = UIView()
         view.backgroundColor = Styles.Colors.stone
-        holdGestureRecognizer = UILongPressGestureRecognizer(target: self, action: Selector("handleHoldTap:"))
-        holdGestureRecognizer.minimumPressDuration = 0
-        holdGestureRecognizer.delegate = self
-        scrollView.addGestureRecognizer(holdGestureRecognizer)
         setupViews()
         setupConstraints()
     }
@@ -93,29 +85,19 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
     }
     
     override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        customLayoutSubviews(true)
-    }
-    
-    func customLayoutSubviews(shouldPulsate: Bool) {
+        
         // forbidden views should be on top
         for column in columnViews {
             for view in column.subviews {
                 if let subview =  view as? ScheduleItemView {
-                    if !subview.limited {
-                        //TODO: Clean up exactly how the pulsate works. This isn't good enough...
-                        if shouldPulsate
-                            && scheduleItemViewOverlapsInColumn(subview, columnView: column) {
-                                subview.startPulsate()
-                                column.bringSubviewToFront(subview)
-                        } else {
-                            subview.stopPulsate()
-                            column.bringSubviewToFront(subview)
-                        }
+                    if(!subview.limited) {
+                        column.bringSubviewToFront(subview)
                     }
                 }
             }
         }
+        
+        super.viewWillLayoutSubviews()
     }
     
     func setupViews() {
@@ -129,7 +111,8 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
         headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         headerView.layer.shadowOpacity = 0.2
         headerView.layer.shadowRadius = 0.5
-        headerView.scheduleButton.addTarget(self, action: "dismiss", forControlEvents: UIControlEvents.TouchUpInside)
+        var tapRec = UITapGestureRecognizer(target: self, action: Selector("dismiss"))
+        headerView.addGestureRecognizer(tapRec)
         
         scrollView.addSubview(contentView)
         
@@ -150,7 +133,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
             columnViews[scheduleItem.columnIndex!].addSubview(scheduleItemView)
             scheduleItemViews.append(scheduleItemView)
         }
-        
         
     }
     
@@ -319,19 +301,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, UIGe
         return array
     }
     
-    //MARK- Gesture recognizer delegate + other methods
-    
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-
-    func handleHoldTap(sender: UIGestureRecognizer) {
-        if sender.state == UIGestureRecognizerState.Began {
-            customLayoutSubviews(false)
-        } else if sender.state == .Ended {
-            customLayoutSubviews(true)
-        }
-    }
 
     func scheduleItemViewOverlapsInColumn(itemView: ScheduleItemView, columnView:ScheduleColumnView) -> Bool {
         
@@ -372,9 +341,9 @@ class ScheduleItemModel {
         heightMultiplier = (endF - startF) / 3600
         yIndexMultiplier = startF / 3600
         
-        if(heightMultiplier < 4) {
-            heightMultiplier = 4
-        }
+//        if(heightMultiplier < 4) {
+//            heightMultiplier = 4
+//        }
         
     
         var startTm = startF
@@ -404,9 +373,8 @@ class ScheduleItemModel {
         
         
         if (limit > 0) {
-            let limitHours = Int((limit / 3600))
-            let limitMinutes  = Int((limit / 60) % 60)
-            timeLimitText =  String(NSString(format: "%01ld:%02ld", limitHours, limitMinutes))
+            let limitMinutes  = Int(limit / 60)
+            timeLimitText =  String(NSString(format: "%01ld",limitMinutes))
         }
     }
     

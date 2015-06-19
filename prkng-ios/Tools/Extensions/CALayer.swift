@@ -29,5 +29,17 @@ extension CALayer {
         
         //        NSLog("Added a scale animation")
     }
+    
+    func wigglewigglewiggle() {
+        
+        var animation = CABasicAnimation(keyPath: "transform.rotation")
+        animation.fromValue = M_PI / 75.0
+        animation.toValue = -M_PI / 75.0
+        animation.duration = 0.2
+        animation.autoreverses = true
+        animation.repeatCount = MAXFLOAT
+        self.addAnimation(animation, forKey: "indeterminateAnimation")
+        
+    }
 
 }

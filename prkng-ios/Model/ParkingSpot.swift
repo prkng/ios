@@ -281,9 +281,6 @@ class ButtonParkingSpot: ParkingSpot, MKAnnotation {
 }
 
 class LineParkingSpotRenderer: MKPolylineRenderer {
-    override func drawLayer(layer: CALayer!, inContext ctx: CGContext!) {
-        super.drawLayer(layer, inContext: ctx)
-    }
     
     override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext!) {
         super.drawMapRect(mapRect, zoomScale: zoomScale, inContext: context)

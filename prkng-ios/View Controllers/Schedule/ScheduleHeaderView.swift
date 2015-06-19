@@ -12,7 +12,7 @@ class ScheduleHeaderView: UIView {
     
     var topContainer : UIView
     var titleLabel : UILabel
-    var scheduleButton : UIButton
+    var scheduleImageView : UIImageView
     
     var bottomContainer : UIView
     var authorizedView : InfoView
@@ -34,7 +34,7 @@ class ScheduleHeaderView: UIView {
         
         topContainer = UIView ()
         titleLabel = UILabel()
-        scheduleButton = ViewFactory.mapReturnButton()
+        scheduleImageView = UIImageView()
         
         bottomContainer = UIView ()
         authorizedView = InfoView()
@@ -69,7 +69,9 @@ class ScheduleHeaderView: UIView {
         titleLabel.textAlignment = NSTextAlignment.Center
         topContainer.addSubview(titleLabel)
         
-        topContainer.addSubview(scheduleButton)
+        scheduleImageView.image = UIImage(named: "btn_map_return")
+        scheduleImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        topContainer.addSubview(scheduleImageView)
         
         bottomContainer.backgroundColor = Styles.Colors.stone
         addSubview(bottomContainer)
@@ -107,7 +109,7 @@ class ScheduleHeaderView: UIView {
             make.bottom.equalTo(self.topContainer).with.offset(-13)
         }
         
-        scheduleButton.snp_makeConstraints { (make) -> () in
+        scheduleImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(24, 22))
             make.right.equalTo(self.topContainer).with.offset(-32)
             make.bottom.equalTo(self.topContainer).with.offset(-18)

@@ -10,34 +10,25 @@ import UIKit
 
 class ScheduleItemView : UIView {
     
+    var imageView : UIImageView
     var timeLimitLabel : UILabel
-    var maxLabel : UILabel
-    var startTimeLabel : UILabel
-    var startAmPmLabel : UILabel
-    var endTimeLabel : UILabel
-    var endAmPmLabel : UILabel
-    var rightSeperator : UIView
-    
+
     var limited : Bool
     
-    private var didsetupSubviews : Bool
+    private var didSetupSubviews : Bool
     private var didSetupConstraints : Bool
     
     convenience init(model : ScheduleItemModel) {
         self.init(frame:CGRectZero)
         
-        self.startTimeLabel.text = model.startTime
-        self.startAmPmLabel.text = model.startTimeAmPm
-        self.endTimeLabel.text = model.endTime
-        self.endAmPmLabel.text = model.endTimeAmPm
-        
         self.limited = (model.timeLimitText != nil)
         
         if(limited) {
+            imageView.image = UIImage(named: "icon_timemax")
             timeLimitLabel.text = model.timeLimitText
         } else {
             timeLimitLabel.hidden = true
-            maxLabel.hidden = true
+            imageView.image = UIImage(named: "icon_forbidden")
         }
     }
     
@@ -48,15 +39,9 @@ class ScheduleItemView : UIView {
      override init(frame: CGRect) {
         
         timeLimitLabel = UILabel()
-        maxLabel = UILabel()
+        imageView = UIImageView()
         
-        startTimeLabel = UILabel()
-        startAmPmLabel = UILabel()
-        endTimeLabel = UILabel()
-        endAmPmLabel = UILabel()
-        rightSeperator = UIView()
-        
-        didsetupSubviews = false
+        didSetupSubviews = false
         didSetupConstraints = true
         
         limited =  false
@@ -70,7 +55,7 @@ class ScheduleItemView : UIView {
      }
     
     override func layoutSubviews() {
-        if (!didsetupSubviews) {
+        if (!didSetupSubviews) {
             setupSubviews()
             self.setNeedsUpdateConstraints()
         }
@@ -89,152 +74,45 @@ class ScheduleItemView : UIView {
     
     func setupSubviews () {
         
+        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        self.addSubview(imageView)
         
         timeLimitLabel.font = Styles.FontFaces.regular(17)
-        timeLimitLabel.textColor = Styles.Colors.cream1
+        timeLimitLabel.textAlignment = NSTextAlignment.Center
+        timeLimitLabel.textColor = Styles.Colors.white
         timeLimitLabel.adjustsFontSizeToFitWidth = true
         timeLimitLabel.numberOfLines = 1
+        timeLimitLabel.sizeToFit()
         self.addSubview(timeLimitLabel)
-        
-        maxLabel.font = Styles.FontFaces.light(17)
-        maxLabel.textColor = Styles.Colors.cream1
-        maxLabel.adjustsFontSizeToFitWidth = true
-        maxLabel.numberOfLines = 1
-        maxLabel.text = "max".localizedString.uppercaseString
-        self.addSubview(maxLabel)
-        
-        startTimeLabel.font = Styles.FontFaces.regular(17)
-        startTimeLabel.textColor = Styles.Colors.cream1
-        startTimeLabel.adjustsFontSizeToFitWidth = true
-        startTimeLabel.numberOfLines = 1
-        self.addSubview(startTimeLabel)
-        
-        startAmPmLabel.font = Styles.FontFaces.light(17)
-        startAmPmLabel.textColor = Styles.Colors.cream1
-        startAmPmLabel.adjustsFontSizeToFitWidth = true
-        startAmPmLabel.numberOfLines = 1
-        self.addSubview(startAmPmLabel)
-        
-        endTimeLabel.font = Styles.FontFaces.regular(17)
-        endTimeLabel.textColor = Styles.Colors.cream1
-        endTimeLabel.adjustsFontSizeToFitWidth = true
-        endTimeLabel.numberOfLines = 1
-        self.addSubview(endTimeLabel)
-        
-        endAmPmLabel.font = Styles.FontFaces.light(17)
-        endAmPmLabel.textColor = Styles.Colors.cream1
-        endAmPmLabel.adjustsFontSizeToFitWidth = true
-        endAmPmLabel.numberOfLines = 1
-        self.addSubview(endAmPmLabel)
-        
-        self.addSubview(rightSeperator)
         
         if(limited) {
             self.backgroundColor = Styles.Colors.midnight1
-            rightSeperator.backgroundColor = Styles.Colors.midnight2
 
         } else {
             self.backgroundColor = Styles.Colors.red2
-            rightSeperator.backgroundColor = Styles.Colors.red1
-
+            
         }
         
-        didsetupSubviews = true
+        didSetupSubviews = true
         didSetupConstraints = false
     }
     
     
     func setupConstraints () {
         
+        imageView.snp_makeConstraints { (make) -> () in
+            make.center.equalTo(self)
+            make.size.lessThanOrEqualTo(CGSize(width: 25, height: 25))
+            make.size.lessThanOrEqualTo(self).with.offset(-2)
+        }
+        
         timeLimitLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.snp_top)
-            make.bottom.equalTo(self.snp_centerY).with.offset(2)
-            make.centerX.equalTo(self).with.offset(-20)
-        }
-        
-        maxLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.timeLimitLabel.snp_right).with.offset(10)
-            make.top.equalTo(self.timeLimitLabel)
-            make.bottom.equalTo(self.timeLimitLabel)
-        }
-        
-        
-        startTimeLabel.snp_makeConstraints { (make) -> () in
-            make.top.greaterThanOrEqualTo(self.snp_top)
-            make.bottom.equalTo(self.snp_centerY).with.offset(2)
-            make.centerX.equalTo(self).with.offset(-20)
-        }
-        
-        startAmPmLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.startTimeLabel.snp_right).with.offset(10)
-            make.top.equalTo(self.startTimeLabel)
-            make.bottom.equalTo(self.startTimeLabel)
-        }
-        
-        endTimeLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.snp_centerY)
-            make.centerX.equalTo(self).with.offset(-20)
-            make.bottom.lessThanOrEqualTo(self.snp_bottom)
-        }
-        
-        endAmPmLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.endTimeLabel.snp_right).with.offset(10)
-            make.top.equalTo(self.endTimeLabel)
-            make.bottom.equalTo(self.endTimeLabel)
-        }
-        
-        rightSeperator.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self)
-            make.top.equalTo(self)
-            make.bottom.equalTo(self)
-            make.width.equalTo(0.5)
+            make.centerX.equalTo(self.imageView)
+            make.centerY.equalTo(self.imageView).with.offset(-1)
+            make.size.equalTo(CGSize(width: 17, height: 25))
         }
         
         didSetupConstraints = true
-    }
-    
-    
-    func setHours (model : ScheduleItemModel) {
-        startTimeLabel.text = model.startTime
-        startAmPmLabel.text = model.startTimeAmPm
-        endTimeLabel.text = model.endTime
-        endAmPmLabel.text = model.endTimeAmPm
-    }
-    
-    func startPulsate() {
-        hideLabels()
-        
-        var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "opacity")
-        pulseAnimation.duration = 0.55
-        pulseAnimation.fromValue = 0.7
-        pulseAnimation.toValue = 1
-        pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-        pulseAnimation.autoreverses = true
-        pulseAnimation.repeatCount = FLT_MAX
-        self.layer.addAnimation(pulseAnimation, forKey: nil)
-    }
-    
-    func stopPulsate() {
-        self.layer.removeAllAnimations()
-        showLabels()
-    }
-    
-    private func hideLabels() {
-        timeLimitLabel.hidden = true
-//         maxLabel.hidden = true
-         startTimeLabel.hidden = true
-         startAmPmLabel.hidden = true
-         endTimeLabel.hidden = true
-         endAmPmLabel.hidden = true
-    }
-    
-    private func showLabels() {
-        timeLimitLabel.hidden = false
-//        maxLabel.hidden = false
-        startTimeLabel.hidden = false
-        startAmPmLabel.hidden = false
-        endTimeLabel.hidden = false
-        endAmPmLabel.hidden = false
     }
     
 }
