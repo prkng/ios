@@ -52,7 +52,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.zoomingInPivotsAroundCenter = true
         mapView.zoom = 17
         mapView.maxZoom = 19
-//        mapView.minZoom = 12
+        mapView.minZoom = 12
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
@@ -161,7 +161,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
 
             if shouldAddAnimation {
-                addScaleAnimationtoView(shape)
+                shape.addScaleAnimation()
                 spotIdentifiersDrawnOnMap.append(spot.identifier)
             }
             
@@ -190,7 +190,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
             
             if shouldAddAnimation {
-                addScaleAnimationtoView(circleMarker)
+                circleMarker.addScaleAnimation()
                 spotIdentifiersDrawnOnMap.append(spot.identifier)
             }
             
@@ -424,27 +424,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             completion: { (completed:Bool) -> Void in
         })
     }
-    
-    func addScaleAnimationtoView(mapLayer: RMMapLayer) {
-        var animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        
-        animation.values = [0,1]
-        
-        animation.duration = 0.6
-        var timingFunctions: Array<CAMediaTimingFunction> = []
-        
-        for i in 0...animation.values.count {
-            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-        }
-        
-        animation.timingFunctions = timingFunctions
-        animation.removedOnCompletion = true
-        
-        mapLayer.addAnimation(animation, forKey: "scale")
-        
-//        NSLog("Added a scale animation")
-    }
-
     
     override func updateAnnotations() {
         

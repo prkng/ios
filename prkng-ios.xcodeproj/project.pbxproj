@@ -20,6 +20,7 @@
 		3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31A01B2621E700760E05 /* libGoogleAnalyticsServices.a */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
+		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
 		3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */; };
 		3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */; };
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
@@ -171,6 +172,7 @@
 		3E8F31A11B2621E700760E05 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapViewController.swift; sourceTree = "<group>"; };
 		3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 				BF1C2B5D1AFCDA180070085A /* String.swift */,
 				3E6DCC831B28E0D500DF62E0 /* Array.swift */,
 				3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */,
+				3E98D6BA1B346053009032AF /* CALayer.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -984,6 +987,7 @@
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
 				BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */,
 				BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */,
+				3E98D6BB1B346053009032AF /* CALayer.swift in Sources */,
 				BF73AE531B289D0200F4CD79 /* EditProfileViewController.swift in Sources */,
 				BF2891EA1AFFC0590041B04C /* User.swift in Sources */,
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,

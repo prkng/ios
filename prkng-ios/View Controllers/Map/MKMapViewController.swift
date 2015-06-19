@@ -126,7 +126,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             
             var shape = MKPolylineRenderer(polyline: lineOverlay)
 //            var shape = MKPolylineView(overlay: polyline)
-
+            shape.alpha = 0.5
             if (selected) {
                 shape.strokeColor = Styles.Colors.red2
             } else {
@@ -134,14 +134,11 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             }
             
             if mapView.mbx_zoomLevel() >= 15.0 && mapView.mbx_zoomLevel() <= 16.0 {
-                shape.lineWidth = 2.6
+                shape.lineWidth = 1.6
             } else {
-                shape.lineWidth = 4.4
+                shape.lineWidth = 3.4
             }
             
-//            for location in spot.line.coordinates as Array<CLLocation> {
-//                shape.addLineToCoordinate(location.coordinate)
-//            }
             
             if shouldAddAnimation {
 //                addScaleAnimationtoView(shape.layer)
@@ -178,7 +175,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         if let buttonAnnotation = annotation as? ButtonParkingSpot {
 //            var view: ButtonParkingSpotView = mapView.dequeueReusableAnnotationViewWithIdentifier("button")
 //            if (view == nil) {
-                var view = ButtonParkingSpotView(annotation: buttonAnnotation, reuseIdentifier: "button")
+            var view = ButtonParkingSpotView(annotation: buttonAnnotation, reuseIdentifier: "button", mbxZoomLevel: mapView.mbx_zoomLevel())
 //            }
 //            view.annotation = buttonAnnotation
 //            view.setup()
@@ -225,54 +222,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         }
 
     }
-    
-    func configureButtonViewWithAnnotation(buttonAnnotation:ButtonParkingSpot) -> MKAnnotationView {
-
-        var annotationView: MKAnnotationView = MKAnnotationView(annotation: buttonAnnotation, reuseIdentifier: nil)
-//        configureButtonView(&annotationView)
-        return annotationView
-    }
-    
-//    func configureButtonView(inout annotationView:MKAnnotationView) {
-//        
-//        let buttonAnnotation = annotationView.annotation as! ButtonParkingSpot
-//        let userInfo = buttonAnnotation.userInfo
-//        let selected = userInfo["selected"] as! Bool
-//        let spot = userInfo["spot"] as! ParkingSpot
-//        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
-//        
-//        if shouldAddAnimation {
-//            addScaleAnimationtoView(annotationView.layer)
-//            spotIdentifiersDrawnOnMap.append(spot.identifier)
-//        }
-//        
-//        var imageName = "button_line_"
-//        
-//        if mapView.mbx_zoomLevel() < 18 {
-//            imageName += "small_"
-//        }
-//        if !selected {
-//            imageName += "in"
-//        }
-//        
-//        imageName += "active"
-//        
-//        var circleImage = UIImage(named: imageName)
-//        
-//        annotationView.image = circleImage
-//        
-//        if (selected) {
-//            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-//            pulseAnimation.duration = 0.7
-//            pulseAnimation.fromValue = 0.95
-//            pulseAnimation.toValue = 1.10
-//            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//            pulseAnimation.autoreverses = true
-//            pulseAnimation.repeatCount = FLT_MAX
-//            annotationView.layer.addAnimation(pulseAnimation, forKey: nil)
-//        }
-//        
-//    }
     
     func mapView(mapView: MKMapView!, regionWillChangeAnimated animated: Bool) {
         
@@ -328,7 +277,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
         if var button = view as? ButtonParkingSpotView {
             button.buttonParkingSpotAnnotation.userInfo["selected"] = true
-            button.setup()
+            button.setup(mapView.mbx_zoomLevel())
             selectedSpot = button.buttonParkingSpotAnnotation
             self.delegate?.didSelectSpot(selectedSpot!)
         }
@@ -337,7 +286,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     func mapView(mapView: MKMapView!, didDeselectAnnotationView view: MKAnnotationView!) {
         if var button = view as? ButtonParkingSpotView {
             button.buttonParkingSpotAnnotation.userInfo["selected"] = false
-            button.setup()
+            button.setup(mapView.mbx_zoomLevel())
         }
         
         self.delegate?.mapDidDismissSelection()
@@ -448,27 +397,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             completion: { (completed:Bool) -> Void in
         })
     }
-    
-    func addScaleAnimationtoView(mapLayer: CALayer) {
-        var animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        
-        animation.values = [0,1]
-        
-        animation.duration = 0.6
-        var timingFunctions: Array<CAMediaTimingFunction> = []
-        
-        for i in 0...animation.values.count {
-            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-        }
-        
-        animation.timingFunctions = timingFunctions
-        animation.removedOnCompletion = true
-        
-        mapLayer.addAnimation(animation, forKey: "scale")
-        
-//        NSLog("Added a scale animation")
-    }
-
     
     override func updateAnnotations() {
         

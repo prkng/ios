@@ -275,15 +275,26 @@ class ButtonParkingSpot: ParkingSpot, MKAnnotation {
     var coordinate: CLLocationCoordinate2D { get { return buttonLocation.coordinate } }
 }
 
+class LineParkingSpotRenderer: MKPolylineRenderer {
+    override func drawLayer(layer: CALayer!, inContext ctx: CGContext!) {
+        super.drawLayer(layer, inContext: ctx)
+    }
+    
+    override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext!) {
+        super.drawMapRect(mapRect, zoomScale: zoomScale, inContext: context)
+    }
+    
+}
+
 class ButtonParkingSpotView: MKAnnotationView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
-    override init!(annotation: MKAnnotation!, reuseIdentifier: String!) {
+    init!(annotation: MKAnnotation!, reuseIdentifier: String!, mbxZoomLevel: CGFloat) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        setup()
+        setup(mbxZoomLevel)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -302,22 +313,22 @@ class ButtonParkingSpotView: MKAnnotationView {
         }
     }
     
-    func setup() {
+    func setup(mbxZoomLevel: CGFloat) {
         let userInfo = buttonParkingSpotAnnotation.userInfo
         let selected = userInfo["selected"] as! Bool
         let spot = userInfo["spot"] as! ParkingSpot
         let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
         
         if shouldAddAnimation {
-//            addScaleAnimationtoView(annotationView.layer)
+           self.layer.addScaleAnimation()
 //            spotIdentifiersDrawnOnMap.append(spot.identifier)
         }
         
         var imageName = "button_line_"
         
-//        if mapView.mbx_zoomLevel() < 18 {
-//            imageName += "small_"
-//        }
+        if mbxZoomLevel < 18 {
+            imageName += "small_"
+        }
         if !selected {
             imageName += "in"
         }

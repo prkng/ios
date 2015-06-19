@@ -445,9 +445,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.bottom.equalTo(self.searchFieldView)
         }
         
-        timeFilterView.snp_updateConstraints { (make) -> () in
-            make.height.equalTo(TimeFilterView.HEIGHT)
-        }
+//        timeFilterView.snp_updateConstraints { (make) -> () in
+//            make.height.equalTo(TimeFilterView.HEIGHT)
+//        }
         
         searchFieldView.setNeedsLayout()
         searchField.setNeedsLayout()
@@ -462,7 +462,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 self.timeFilterView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-//                self.searchField.becomeFirstResponder()
+                self.searchField.becomeFirstResponder()
         })
         
     }
