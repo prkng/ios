@@ -55,8 +55,8 @@
 "search_step1_copy" = "move the map or\ntype your destination";
 
 // Spot details
-"spot_available_for" = "AVAILABLE\nFOR";
-"spot_available_until" = "AVAILABLE\nUNTIL";
+"spot_available_for" = "AVAILABLE FOR";
+"spot_available_until" = "AVAILABLE UNTIL";
 "schedule_authorized" = "AUTHORIZED";
 "schedule_limited" = "LIMITED";
 "schedule_forbidden" = "FORBIDDEN";
@@ -68,7 +68,9 @@
 "park_now" = "park now";
 "checked_in_message" = "you're checked-in at";
 "available_for" = "available for";
+"for" = "for";
 "available_until" = "available until";
+"until" = "until";
 "leave_spot" = "check out";
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
@@ -121,3 +123,4 @@
 "prkng_share_copy" = "With prkng App, parking has never been this easy. Available in Montreal & Quebec!";
 
 "all" = "all";
+"check-in" = "Check-in";

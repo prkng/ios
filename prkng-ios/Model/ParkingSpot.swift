@@ -118,6 +118,11 @@ class ParkingSpot: NSObject, Hashable {
         return availableUntil
     }
 
+    func availableUntilAttributed(#firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+        let availableTimeInterval = self.availableTimeInterval()
+        return ParkingSpot.availableUntilAttributed(availableTimeInterval, firstPartFont: firstPartFont, secondPartFont: secondPartFont)
+    }
+    
     static func availableUntilAttributed(availableTimeInterval: NSTimeInterval, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         let dateAtStartOfNextRule = NSDate(timeIntervalSinceNow: availableTimeInterval)
         

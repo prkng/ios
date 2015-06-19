@@ -16,7 +16,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     var timeFilterView: TimeFilterView
     
     var statusBar : UIView
-    var checkinButton : UIButton
     var searchButton : UIButton
     var searchFieldView : UIView
     var searchField : UITextField
@@ -31,7 +30,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         detailView = SpotDetailView()
         timeFilterView = TimeFilterView()
         statusBar = UIView()
-        checkinButton = UIButton()
         searchButton = UIButton()
         searchFieldView = UIView()
         searchField = UITextField()
@@ -82,12 +80,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         statusBar.backgroundColor = Styles.Colors.statusBar
         view.addSubview(statusBar)
         
-        checkinButton.setImage(UIImage(named: "btn_checkin_active"), forState: UIControlState.Normal)
-        checkinButton.setImage(UIImage(named: "btn_checkin"), forState: UIControlState.Disabled)
-        checkinButton.addTarget(self, action: "checkinButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        checkinButton.enabled = false
-        view.addSubview(checkinButton)
-
         searchButton.setImage(UIImage(named: "tabbar_search_active"), forState: UIControlState.Normal)
         searchButton.addTarget(self, action: "transformSearchButtonIntoField", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(searchButton)
@@ -139,12 +131,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(0)
-        }
-        
-        checkinButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+30)
-            make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(0, 0))
         }
         
         searchButton.snp_makeConstraints{ (make) -> () in
@@ -203,7 +189,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
-    func scheduleButtonTapped() {
+    func topContainerTapped() {
+        checkin()
+    }
+    
+    func bottomContainerTapped() {
         showScheduleView(activeSpot)
     }
     
@@ -267,7 +257,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
-    func checkinButtonTapped() {
+    func checkin() {
+        
+        //OLD RULE FOR WHETHER WE COULD/COULDN'T CHECK-IN:
+        //            let checkedInSpotID = Settings.checkedInSpotId()
+        //            if (activeSpot != nil && checkedInSpotID != nil) {
+        //                checkinButton.enabled = checkedInSpotID != activeSpot?.identifier
+        //            } else {
+        //                checkinButton.enabled = true
+        //            }
+
         
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())
         SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
@@ -305,14 +304,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             detailView.titleLabel.text = activeSpot?.name
             
-            detailView.availableTimeLabel.text = activeSpot?.availableHourString(true)
-            
-            let checkedInSpotID = Settings.checkedInSpotId()
-            if (activeSpot != nil && checkedInSpotID != nil) {
-                checkinButton.enabled = checkedInSpotID != activeSpot?.identifier
-            } else {
-                checkinButton.enabled = true
-            }
+            detailView.availableTimeLabel.attributedText = activeSpot?.availableUntilAttributed(firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
             
             hideSearchButton()
             
@@ -336,32 +328,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
         }
         
-        checkinButton.snp_remakeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+30)
-            make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(60, 60))
-        }
-
-        var animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
-        animation.values = [1.08, 0.93, 1]
-        animation.duration = 0.3
-        var timingFunctions: Array<CAMediaTimingFunction> = []
-        for i in 0...animation.values.count {
-            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
-        }
-        animation.timingFunctions = timingFunctions
-        animation.removedOnCompletion = true
-        
-        UIView.animateWithDuration(0.1,
-            delay: 0.1,
-            options: UIViewAnimationOptions.CurveEaseInOut,
-            animations: { () -> Void in
-                self.checkinButton.layoutIfNeeded()
-            },
-            completion: { (completed: Bool) -> Void in
-                self.checkinButton.layer.addAnimation(animation, forKey: "scale")
-        })
-        
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.detailView.layoutIfNeeded()
         })
@@ -384,23 +350,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
             }
             
-            checkinButton.snp_remakeConstraints { (make) -> () in
-                make.bottom.equalTo(self.view).with.offset(-30)
-                make.centerX.equalTo(self.view)
-                make.size.equalTo(CGSizeMake(0, 0))
-            }
-            
             UIView.animateWithDuration(0.2,
                 animations: { () -> Void in
-                    self.checkinButton.layoutIfNeeded()
                     self.detailView.layoutIfNeeded()
                 },
                 completion: { (completed: Bool) -> Void in
-                    self.checkinButton.snp_remakeConstraints { (make) -> () in
-                        make.bottom.equalTo(self.view).with.offset(-Styles.Sizes.spotDetailViewHeight+30)
-                        make.centerX.equalTo(self.view)
-                        make.size.equalTo(CGSizeMake(0, 0))
-                    }
                     self.showSearchButton(false)
             })
         }
