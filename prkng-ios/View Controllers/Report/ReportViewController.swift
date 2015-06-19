@@ -32,6 +32,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
     var spotId : String?
     
+    var timer : NSTimer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -147,9 +149,6 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
     }
     
-    
-    
-    
     func beginSession() {
         
         configureDevice()
@@ -178,8 +177,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         if let videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
             
-//            if (captureDevice!.adjustingWhiteBalance || captureDevice!.adjustingExposure ) {
-            
+            if !(captureDevice!.adjustingWhiteBalance || captureDevice!.adjustingExposure ) {
+                
                 stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
                     { (imageDataSampleBuffer, error) -> Void in
                         
@@ -198,12 +197,16 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
                                 
                                 self.cancelButton.hidden = false
                                 self.sendButton.hidden = false
+                                
+                                self.timer = nil
                             })
                             
                         }
-                        
-//                }
+                }
                 
+            } else {
+                timer?.invalidate()
+                timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("takePicture"), userInfo: nil, repeats: false)
             }
         }
     }
@@ -223,13 +226,10 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             
             
         } else if capturedImage == nil {
-            
             self.takePicture()
-            
         } else {
             
         }
-        
         
     }
     
@@ -276,10 +276,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         self.sendButton.hidden = true
     }
     
-    
-    
     //MARK: CLLocationManagerDelegate
-    
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
         if streetName == nil && !updatingLocation {

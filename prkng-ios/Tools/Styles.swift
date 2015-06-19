@@ -75,7 +75,7 @@ struct Styles {
     }
     
     struct Sizes {
-        static let tabbarHeight = 56
+        static let tabbarHeight = 58
         static let hugeButtonHeight = 90
         static let bigButtonHeight = 80
         static let formTextFieldHeight = 71

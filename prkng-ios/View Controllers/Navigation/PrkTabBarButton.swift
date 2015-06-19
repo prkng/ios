@@ -85,7 +85,7 @@ class PrkTabBarButton: UIControl {
     func setupConstraints() {
         
         self.iconView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(28, 28))
+            make.size.equalTo(CGSizeMake(30, 30))
             make.centerX.equalTo(self)
             make.top.equalTo(self).with.offset(7)
         }

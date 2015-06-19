@@ -356,7 +356,10 @@ class SettingsViewController: AbstractViewController {
     }
     
     func profileButtonTapped(sender: UIButton) {
-        self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
+        
+        if (!AuthUtility.isExternalLogin()) {
+            self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
+        }
     }
     
 }

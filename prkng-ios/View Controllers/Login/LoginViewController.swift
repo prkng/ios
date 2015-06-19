@@ -112,21 +112,21 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                 
             } else {
                 
-
+                
                 self.methodSelectionView.userInteractionEnabled = false
                 
                 UserOperations.loginWithFacebook(FBSDKAccessToken.currentAccessToken().tokenString, completion: { (user, apiKey) -> Void in
                     
                     AuthUtility.saveUser(user)
                     AuthUtility.saveAuthToken(apiKey)
-
+                    
                     self.displayExternalInfo(user)
                     
                 })
             }
             
         })
-                
+        
         selectedMethod = LoginMethod.Facebook
         
     }
@@ -228,7 +228,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
         UserOperations.loginWithGoogle(auth.accessToken, completion: { (user, apiKey) -> Void in
             AuthUtility.saveUser(user)
-            AuthUtility.saveAuthToken(apiKey)            
+            AuthUtility.saveAuthToken(apiKey)
             self.displayExternalInfo(user)
         })
     }
@@ -288,16 +288,19 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     }
     
     func didLogin() {
+        AuthUtility.setExternalLogin(false)
         dismiss()
     }
     
     // MARK: LoginExternalViewControllerDelegate
     func didLoginExternal() {
+        AuthUtility.setExternalLogin(true)
         dismiss()
     }
     
     // MARK: RegisterEmailViewControllerDelegate
     func didRegister() {
+        AuthUtility.setExternalLogin(false)
         dismiss()
     }
     
