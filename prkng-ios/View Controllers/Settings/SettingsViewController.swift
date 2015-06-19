@@ -113,7 +113,6 @@ class SettingsViewController: AbstractViewController {
         backgroundImageView.contentMode = .ScaleAspectFill
         view.addSubview(backgroundImageView)
         
-        topContainer.backgroundColor = Styles.Colors.petrol2
         view.addSubview(topContainer)
         
         topContainer.addSubview(profileContainer)

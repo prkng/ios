@@ -333,7 +333,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.bottom.equalTo(self.view).with.offset(0)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(150)
+            make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
         }
         
         checkinButton.snp_remakeConstraints { (make) -> () in
@@ -381,7 +381,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 make.bottom.equalTo(self.view).with.offset(180)
                 make.left.equalTo(self.view)
                 make.right.equalTo(self.view)
-                make.height.equalTo(150)
+                make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
             }
             
             checkinButton.snp_remakeConstraints { (make) -> () in
