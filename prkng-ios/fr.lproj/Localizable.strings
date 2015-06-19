@@ -25,13 +25,13 @@
 "logout" = "se déconnecter";
 "my_profile" = "MON COMPTE";
 "my_history" = "MON HISTORIQUE";
-"history" = "le history                                                            FIXME FIXME FIXME";
+"history" = "HISTORIQUE";
 "save" = "enregistrer";
 "new_password" = "NOUVEAU MOT DE PASSE";
 "new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
-"name_empty" = "Your name can't be empty                                                          FIXME FIXME FIXME";
-"email_empty" = "Your email can't be empty                                                        FIXME FIXME FIXME";
-"profile_updated_message" = "Your profile was successfully updated.                               FIXME FIXME FIXME";
+"name_empty" = "Merci d’entrer votre nom.";
+"email_empty" = "Merci d’entrer une adresse valide.";
+"profile_updated_message" = "Votre profil a été mis-à-jour!";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";
@@ -111,13 +111,13 @@
 "report_text" = "Prenez en photo le panneau \nde réglementation en vigueur \nafin d’améliorer notre service.";
 "report_thanks" = "MERCI DE VOTRE CONTRIBUTION !";
 "report_error" = "Une erreur est survenue, merci de réessayer.";
-"report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help.            FIXME FIXME FIXME";
+"report_sent_thanks" = "Rapport envoyé, merci! Grâce à vous, notre service s'améliore.";
 
 "about" = "about";
 "the_project" = "the project";
 "terms_conditions" = "terms & conditions";
 "share" = "share";
-"prkng_share_copy" = "FIX THIS. This is the text to show while sharing. the website will url will be added to it.";
+"prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec!";
 
 
 "all" = "tout";
