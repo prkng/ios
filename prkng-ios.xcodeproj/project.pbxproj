@@ -27,7 +27,7 @@
 		3EBEE33E1B3213A100C7F2DE /* quebec_city_parking_availability.kml in Resources */ = {isa = PBXBuildFile; fileRef = 3EBEE33D1B3213A100C7F2DE /* quebec_city_parking_availability.kml */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
-		98887B211776822C608CBF0F /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */; };
+		99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
 		BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055961ACF100500413F16 /* ScheduleItemView.swift */; };
@@ -41,6 +41,13 @@
 		BF2A40A71AC468450055D785 /* SpotDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2A40A61AC468450055D785 /* SpotDetailView.swift */; };
 		BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */ = {isa = PBXBuildFile; fileRef = BF3069331B03B09200FB3388 /* OfflineMap.json */; };
 		BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */; };
+		BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3282651B3847AE002ED8DF /* MKButton.swift */; };
+		BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3282661B3847AE002ED8DF /* MKColor.swift */; };
+		BF32826E1B3847AE002ED8DF /* MKImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3282671B3847AE002ED8DF /* MKImageView.swift */; };
+		BF32826F1B3847AE002ED8DF /* MKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3282681B3847AE002ED8DF /* MKLabel.swift */; };
+		BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3282691B3847AE002ED8DF /* MKLayer.swift */; };
+		BF3282711B3847AE002ED8DF /* MKTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF32826A1B3847AE002ED8DF /* MKTableViewCell.swift */; };
+		BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF32826B1B3847AE002ED8DF /* MKTextField.swift */; };
 		BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3A9F8E1AC1BA7400D6BD99 /* Styles.swift */; };
 		BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF3CFA291AFE98E2003D104D /* LoginExternalViewController.swift */; };
 		BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4567FD1AD842B9006D7C23 /* ScheduleColumnView.swift */; };
@@ -136,7 +143,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
 		3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3E0FDAC51B2769FF00872667 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -180,6 +186,7 @@
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		BF1055961ACF100500413F16 /* ScheduleItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleItemView.swift; sourceTree = "<group>"; };
@@ -193,6 +200,13 @@
 		BF2A40A61AC468450055D785 /* SpotDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotDetailView.swift; sourceTree = "<group>"; };
 		BF3069331B03B09200FB3388 /* OfflineMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = OfflineMap.json; sourceTree = "<group>"; };
 		BF324C3E1AFBBD31007450F7 /* IntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroViewController.swift; sourceTree = "<group>"; };
+		BF3282651B3847AE002ED8DF /* MKButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKButton.swift; sourceTree = "<group>"; };
+		BF3282661B3847AE002ED8DF /* MKColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKColor.swift; sourceTree = "<group>"; };
+		BF3282671B3847AE002ED8DF /* MKImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKImageView.swift; sourceTree = "<group>"; };
+		BF3282681B3847AE002ED8DF /* MKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKLabel.swift; sourceTree = "<group>"; };
+		BF3282691B3847AE002ED8DF /* MKLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKLayer.swift; sourceTree = "<group>"; };
+		BF32826A1B3847AE002ED8DF /* MKTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTableViewCell.swift; sourceTree = "<group>"; };
+		BF32826B1B3847AE002ED8DF /* MKTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKTextField.swift; sourceTree = "<group>"; };
 		BF3A9F8E1AC1BA7400D6BD99 /* Styles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Styles.swift; sourceTree = "<group>"; };
 		BF3CFA291AFE98E2003D104D /* LoginExternalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginExternalViewController.swift; sourceTree = "<group>"; };
 		BF4567FD1AD842B9006D7C23 /* ScheduleColumnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleColumnView.swift; sourceTree = "<group>"; };
@@ -311,7 +325,7 @@
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
 				BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */,
 				BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */,
-				98887B211776822C608CBF0F /* libPods-prkng-ios.a in Frameworks */,
+				99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +373,7 @@
 				BFA8D1701A83D364005F4054 /* libsqlite3.dylib */,
 				BFA8D16E1A83D356005F4054 /* QuartzCore.framework */,
 				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
-				0B0F14F6DAB893654EF68C3C /* libPods-prkng-ios.a */,
+				A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -475,6 +489,20 @@
 				3E98D6BA1B346053009032AF /* CALayer.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		BF3282641B384732002ED8DF /* MaterialKit */ = {
+			isa = PBXGroup;
+			children = (
+				BF3282651B3847AE002ED8DF /* MKButton.swift */,
+				BF3282661B3847AE002ED8DF /* MKColor.swift */,
+				BF3282671B3847AE002ED8DF /* MKImageView.swift */,
+				BF3282681B3847AE002ED8DF /* MKLabel.swift */,
+				BF3282691B3847AE002ED8DF /* MKLayer.swift */,
+				BF32826A1B3847AE002ED8DF /* MKTableViewCell.swift */,
+				BF32826B1B3847AE002ED8DF /* MKTextField.swift */,
+			);
+			path = MaterialKit;
 			sourceTree = "<group>";
 		};
 		BF522FC51AE59B65001DB93E /* Intro */ = {
@@ -709,6 +737,7 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				BF3282641B384732002ED8DF /* MaterialKit */,
 				3E8F31251B2621E700760E05 /* GoogleAnalyticsServices */,
 				BF5E84F81B07B3A000EC6AD2 /* AFDateHelper */,
 				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
@@ -935,6 +964,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF32826F1B3847AE002ED8DF /* MKLabel.swift in Sources */,
 				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
@@ -954,12 +984,14 @@
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
+				BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */,
 				BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */,
 				BF7170B41AE4303D00B922CA /* HereViewController.swift in Sources */,
 				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
 				BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */,
 				BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */,
+				BF32826E1B3847AE002ED8DF /* MKImageView.swift in Sources */,
 				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
 				BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */,
@@ -981,6 +1013,7 @@
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
+				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,
 				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
@@ -998,6 +1031,7 @@
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
 				3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */,
+				BF3282711B3847AE002ED8DF /* MKTableViewCell.swift in Sources */,
 				BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */,
 				BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */,
 				BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */,
@@ -1009,6 +1043,8 @@
 				BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */,
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
+				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
+				BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* RMMapViewController.swift in Sources */,

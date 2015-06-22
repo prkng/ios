@@ -27,7 +27,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var reportButton : UIButton
     
-//    var shareButton : UIButton
+    var shareButton : UIButton
     var leaveButton : UIButton
     
     var checkinMessageVC : CheckinMessageViewController?
@@ -50,6 +50,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
 
         availableTitleLabel = ViewFactory.formLabel()
         availableTimeLabel = UILabel()
+        shareButton = ViewFactory.bigButton()
         leaveButton = ViewFactory.bigButton()
         
         notificationsButton = UIButton()
@@ -162,6 +163,15 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         leaveButton.addTarget(self, action: "leaveButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(leaveButton)
         
+        shareButton.setTitle("share_car_location".localizedString.lowercaseString, forState: UIControlState.Normal)
+        shareButton.addTarget(self, action: "shareButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        shareButton.setTitleColor(Styles.Colors.petrol2, forState: .Normal)
+        shareButton.layer.shadowColor = UIColor.blackColor().CGColor
+        shareButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        shareButton.layer.shadowOpacity = 0.05
+        shareButton.clipsToBounds = false
+        view.addSubview(shareButton)
+        
     }
     
     func setupConstraints () {
@@ -218,7 +228,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         
         notificationsButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.leaveButton.snp_top).with.offset(-largerVerticalMargin)
+            make.bottom.equalTo(self.shareButton.snp_top).with.offset(-largerVerticalMargin)
             make.size.equalTo(CGSizeMake(155, 26))
             make.centerX.equalTo(self.view)
         }
@@ -232,6 +242,14 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         leaveButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.bigButtonHeight)
             make.bottom.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+        }
+        
+        
+        shareButton.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.bottom.equalTo(self.leaveButton.snp_top)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
@@ -328,7 +346,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         
-    }    
+    }
+    
+    func shareButtonTapped() {
+        
+        var text : String = "share_location_copy".localizedString
+        text = text.stringByReplacingOccurrencesOfString("[street_name]", withString: spot!.name)
+        text = text.stringByReplacingOccurrencesOfString("[latitude]", withString: "\(spot!.buttonLocation.coordinate.latitude)")
+        text = text.stringByReplacingOccurrencesOfString("[longitude]", withString: "\(spot!.buttonLocation.coordinate.longitude)")
+        let url = NSURL(string:"http://prk.ng/")!
+        
+        let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
     
     func leaveButtonTapped() {
         

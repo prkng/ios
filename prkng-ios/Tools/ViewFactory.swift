@@ -39,26 +39,28 @@ struct ViewFactory {
     }
     
 
-    static func hugeButton () -> UIButton {
+    static func hugeButton () -> MKButton {
         
-        let hugeButton = UIButton()
+        let hugeButton = MKButton()
         hugeButton.titleLabel?.font = Styles.FontFaces.light(31)
         hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
         hugeButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
         hugeButton.backgroundColor = Styles.Colors.cream1
+        hugeButton.cornerRadius = 0
         
         return hugeButton
     }
     
-    static func bigButton () -> UIButton {
+    static func bigButton () -> MKButton {
         
-        let hugeButton = UIButton()
-        hugeButton.titleLabel?.font = Styles.FontFaces.light(31)
-        hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
-        hugeButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
-        hugeButton.backgroundColor = Styles.Colors.stone
+        let bigButton = MKButton()
+        bigButton.titleLabel?.font = Styles.FontFaces.light(31)
+        bigButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
+        bigButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
+        bigButton.backgroundColor = Styles.Colors.stone
+        bigButton.cornerRadius = 0
         
-        return hugeButton
+        return bigButton
     }
     
     static func transparentRoundedButton () -> UIButton {

@@ -71,10 +71,12 @@
 "for" = "for";
 "available_until" = "available until";
 "until" = "until";
+"share_car_location" = "share my location";
 "leave_spot" = "check out";
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
 "off" = "off";
+"share_location_copy" = "I parked on: [street_name], coordinates : lat:[latitude] lon:[longitude], thanks to prkng app";
 
 // Days
 "today" = "Today";

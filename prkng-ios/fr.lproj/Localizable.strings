@@ -72,10 +72,12 @@
 "for" = "pour";
 "available_for" = "disponible pour";
 "until" = "jusqu'à";
+"share_car_location" = "Le share my location";   //FIX THIS 
 "leave_spot" = "quitter";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
 "off" = "non";
+"share_location_copy" = "I parked on: [street_name], coordinates : lat:[latitude] lon:[longitude], thanks to prkng app"; //FIX THIS, leave variables in brackets the same
 
 // Days
 "today" = "Ce jour";
