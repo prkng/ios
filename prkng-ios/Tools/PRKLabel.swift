@@ -11,4 +11,5 @@ import UIKit
 class PRKLabel : UILabel {
     
     var valueTag: NSTimeInterval?
+    var scheduleTimeModel : ScheduleTimeModel?
 }

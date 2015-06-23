@@ -19,6 +19,8 @@ class ScheduleHeaderView: UIView {
     var limitedView : InfoView
     var forbiddenView : InfoView
     
+    var showsLegend : Bool
+    
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
@@ -40,6 +42,8 @@ class ScheduleHeaderView: UIView {
         authorizedView = InfoView()
         limitedView = InfoView()
         forbiddenView = InfoView()
+        
+        showsLegend = false
         
         super.init(frame: frame)
         
@@ -73,24 +77,26 @@ class ScheduleHeaderView: UIView {
         scheduleImageView.contentMode = UIViewContentMode.ScaleAspectFit
         topContainer.addSubview(scheduleImageView)
         
-        bottomContainer.backgroundColor = Styles.Colors.stone
-        addSubview(bottomContainer)
-        
-        authorizedView.dotView.backgroundColor = Styles.Colors.cream1
-        authorizedView.detailLabel.text = NSLocalizedString("schedule_authorized",comment:"")
-        limitedView.detailLabel.sizeToFit()
-        bottomContainer.addSubview(authorizedView)
-        
-        limitedView.dotView.backgroundColor = Styles.Colors.petrol2
-        limitedView.detailLabel.text = NSLocalizedString("schedule_limited",comment:"")
-        limitedView.detailLabel.sizeToFit()
-        bottomContainer.addSubview(limitedView)
-        
-        forbiddenView.dotView.backgroundColor = Styles.Colors.red2
-        forbiddenView.detailLabel.text = NSLocalizedString("schedule_forbidden",comment:"")
-        limitedView.detailLabel.sizeToFit()
-        bottomContainer.addSubview(forbiddenView)
-        
+        if showsLegend {
+            bottomContainer.backgroundColor = Styles.Colors.stone
+            addSubview(bottomContainer)
+            
+            authorizedView.dotView.backgroundColor = Styles.Colors.cream1
+            authorizedView.detailLabel.text = NSLocalizedString("schedule_authorized",comment:"")
+            limitedView.detailLabel.sizeToFit()
+            bottomContainer.addSubview(authorizedView)
+            
+            limitedView.dotView.backgroundColor = Styles.Colors.petrol2
+            limitedView.detailLabel.text = NSLocalizedString("schedule_limited",comment:"")
+            limitedView.detailLabel.sizeToFit()
+            bottomContainer.addSubview(limitedView)
+            
+            forbiddenView.dotView.backgroundColor = Styles.Colors.red2
+            forbiddenView.detailLabel.text = NSLocalizedString("schedule_forbidden",comment:"")
+            limitedView.detailLabel.sizeToFit()
+            bottomContainer.addSubview(forbiddenView)
+            
+        }
         didSetupSubviews = true
     }
     
@@ -115,35 +121,37 @@ class ScheduleHeaderView: UIView {
             make.bottom.equalTo(self.topContainer).with.offset(-18)
         }
         
-        
-        bottomContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.topContainer.snp_bottom)
-            make.left.equalTo(self)
-            make.right.equalTo(self)
-            make.height.equalTo(52)
+        if showsLegend {
+            
+            bottomContainer.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.topContainer.snp_bottom)
+                make.left.equalTo(self)
+                make.right.equalTo(self)
+                make.height.equalTo(52)
+            }
+            
+            authorizedView.snp_makeConstraints { (make) -> () in
+                make.width.equalTo(self.bottomContainer).dividedBy(3.0)
+                make.top.equalTo(self.bottomContainer)
+                make.bottom.equalTo(self.bottomContainer)
+                make.left.equalTo(self.bottomContainer)
+            }
+            
+            limitedView.snp_makeConstraints { (make) -> () in
+                make.width.equalTo(self.bottomContainer).dividedBy(3.0)
+                make.top.equalTo(self.bottomContainer)
+                make.bottom.equalTo(self.bottomContainer)
+                make.centerX.equalTo(self.bottomContainer)
+            }
+            
+            forbiddenView.snp_makeConstraints { (make) -> () in
+                make.width.equalTo(self.bottomContainer).dividedBy(3.0)
+                make.top.equalTo(self.bottomContainer)
+                make.bottom.equalTo(self.bottomContainer)
+                make.right.equalTo(self.bottomContainer)
+            }
+            
         }
-        
-        authorizedView.snp_makeConstraints { (make) -> () in
-            make.width.equalTo(self.bottomContainer).dividedBy(3.0)
-            make.top.equalTo(self.bottomContainer)
-            make.bottom.equalTo(self.bottomContainer)
-            make.left.equalTo(self.bottomContainer)
-        }
-        
-        limitedView.snp_makeConstraints { (make) -> () in
-            make.width.equalTo(self.bottomContainer).dividedBy(3.0)
-            make.top.equalTo(self.bottomContainer)
-            make.bottom.equalTo(self.bottomContainer)
-            make.centerX.equalTo(self.bottomContainer)
-        }
-        
-        forbiddenView.snp_makeConstraints { (make) -> () in
-            make.width.equalTo(self.bottomContainer).dividedBy(3.0)
-            make.top.equalTo(self.bottomContainer)
-            make.bottom.equalTo(self.bottomContainer)
-            make.right.equalTo(self.bottomContainer)
-        }
-        
         
         didSetupConstraints = true
     }
