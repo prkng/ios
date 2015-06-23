@@ -10,6 +10,7 @@ import UIKit
 
 class HistoryTableViewCell: UITableViewCell {
 
+    let dayLabel = UILabel()
     let dateLabel = UILabel()
     let addressLabel = UILabel()
     let seperator = UIView()
@@ -35,6 +36,12 @@ class HistoryTableViewCell: UITableViewCell {
     func setupSubviews() {
                 
         self.backgroundColor = Styles.Colors.stone
+        
+        dayLabel.backgroundColor = Styles.Colors.cream1
+        dayLabel.font = Styles.FontFaces.light(25)
+        dayLabel.textColor = Styles.Colors.red2
+        dayLabel.textAlignment = .Center
+        contentView.addSubview(dayLabel)
     
         dateLabel.font = Styles.FontFaces.regular(12)
         dateLabel.textColor = Styles.Colors.red2
@@ -57,8 +64,15 @@ class HistoryTableViewCell: UITableViewCell {
     
     func setupConstraints () {
         
+        dayLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.contentView)
+            make.top.equalTo(self.contentView)
+            make.bottom.equalTo(self.contentView)
+            make.width.equalTo(75)
+        }
+        
         dateLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.contentView).with.offset(25)
+            make.left.equalTo(self.dayLabel.snp_right).with.offset(15)
             make.right.equalTo(self.contentView).with.offset(-25)
             make.top.equalTo(self.contentView).with.offset(5)
             make.height.equalTo(17)            

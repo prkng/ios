@@ -33,7 +33,7 @@ class HistorySectionTitleView: UIView {
     
     func setupSubviews() {
         
-        backgroundColor = Styles.Colors.midnight2
+        backgroundColor = Styles.Colors.red2
         
         label.font = Styles.FontFaces.light(12)
         label.textColor = Styles.Colors.cream1
@@ -47,9 +47,10 @@ class HistorySectionTitleView: UIView {
     func setupConstraints () {
         
         label.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self).with.offset(25)
+            make.left.equalTo(self).with.offset(27)
             make.right.equalTo(self).with.offset(-25)
-            make.top.equalTo(self).with.offset(5)
+            make.top.equalTo(self)
+            make.bottom.equalTo(self)
         }
         
     }

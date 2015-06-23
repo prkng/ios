@@ -12,7 +12,7 @@ class AboutViewController: AbstractViewController {
 
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
     
-    let iconView = UIImageView(image: UIImage(named: "icon_history"))
+    let iconView = UIImageView(image: UIImage(named: "icon_about"))
     let titleLabel = UILabel()
     let projectButton = ViewFactory.bigTransparentButton()
     let termsButton = ViewFactory.bigTransparentButton()
