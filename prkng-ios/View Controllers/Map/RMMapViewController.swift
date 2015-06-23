@@ -335,9 +335,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func singleTapOnMap(map: RMMapView!, at point: CGPoint) {
         var minimumDistance = CGFloat(Float.infinity)
         var closestAnnotation : RMAnnotation? = nil
-        //loop through the annotations to see if we touched a line or a button
-        for annotation in lineAnnotations {
-        }
+        var loopThroughLines = mapView.zoom < 17.0
+
         for annotation: RMAnnotation in map.visibleAnnotations as! [RMAnnotation] {
             
             if (annotation.isUserLocationAnnotation || annotation.isKindOfClass(RMPolygonAnnotation)) {
@@ -346,17 +345,37 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
             var annotationType = userInfo!["type"] as! String
+
+            if annotationType == "button" {
             
-            if (annotationType == "button") {
                 var annotationPoint = map.coordinateToPixel(annotation.coordinate)
-                let xDist = (annotationPoint.x - point.x);
-                let yDist = (annotationPoint.y - point.y);
-                let distance = sqrt((xDist * xDist) + (yDist * yDist));
+                let distance = annotationPoint.distanceToPoint(point)
                 
                 if (distance < minimumDistance) {
                     minimumDistance = distance
                     closestAnnotation = annotation
                 }
+
+            } else if loopThroughLines && annotationType == "line" {
+                
+                // closest single point does not work well for lines, so instead sort all points by distance and take the first x
+                
+                let spot = userInfo!["spot"] as! ParkingSpot
+                let coordinates = spot.line.coordinates2D + [spot.buttonLocation.coordinate]
+                
+                var distances = coordinates.map{(coordinate: CLLocationCoordinate2D) -> CGFloat in
+                    let annotationPoint = map.coordinateToPixel(coordinate)
+                    let distance = annotationPoint.distanceToPoint(point)
+                    return distance
+                }
+                
+                for distance in distances {
+                    if (distance < minimumDistance) {
+                        minimumDistance = distance
+                        closestAnnotation = annotation
+                    }
+                }
+                
             }
         }
         
