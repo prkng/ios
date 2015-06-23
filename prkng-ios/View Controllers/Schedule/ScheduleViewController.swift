@@ -17,12 +17,12 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     private var headerView : ScheduleHeaderView
     private var scrollView : UIScrollView
     private var contentView : UIView
+    private var leftView : ScheduleLeftView
     private var columnViews : Array<ScheduleColumnView>
     private var scheduleItemViews : Array<ScheduleItemView>
-    private var dayIndicator : ScheduleDayIndicatorView
     
     private(set) var HEADER_HEIGHT : CGFloat
-    private(set) var DAY_INDICATOR_HEIGHT : CGFloat
+    private(set) var LEFT_VIEW_WIDTH : CGFloat
     private(set) var COLUMN_SIZE : CGFloat
     private(set) var COLUMN_HEADER_HEIGHT : CGFloat
     private(set) var CONTENTVIEW_HEIGHT : CGFloat
@@ -33,16 +33,15 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         headerView = ScheduleHeaderView()
         scrollView = UIScrollView()
         contentView = UIView()
+        leftView = ScheduleLeftView()
         scheduleItems = []
         columnViews = []
-        scheduleItems = []
         scheduleItemViews = []
-        dayIndicator = ScheduleDayIndicatorView()
         
-        HEADER_HEIGHT = 142.0
-        COLUMN_SIZE = UIScreen.mainScreen().bounds.size.width / 3.0
-        DAY_INDICATOR_HEIGHT = 50.0
-        CONTENTVIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - HEADER_HEIGHT - DAY_INDICATOR_HEIGHT - 71.0
+        HEADER_HEIGHT = 90
+        LEFT_VIEW_WIDTH = UIScreen.mainScreen().bounds.size.width * 0.16
+        COLUMN_SIZE = UIScreen.mainScreen().bounds.size.width * 0.28
+        CONTENTVIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - HEADER_HEIGHT - 71.0
         COLUMN_HEADER_HEIGHT = 45.0
         ITEM_HOUR_HEIGHT = (CONTENTVIEW_HEIGHT - COLUMN_HEADER_HEIGHT) / 24.0
         
@@ -56,11 +55,14 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
                 if (period != nil) {
                     var startF : CGFloat = CGFloat(period!.start)
                     var endF : CGFloat = CGFloat(period!.end)
-                    scheduleItems.append(ScheduleItemModel(startF: startF, endF: endF, column : column, limit: period!.timeLimit ))
+                    var scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit)
+                    scheduleItems.append(scheduleItem)
                 }
                 ++column
             }
         }
+        
+        scheduleItems = processScheduleItems(scheduleItems)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -106,6 +108,11 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         scrollView.showsHorizontalScrollIndicator = false
         self.view.addSubview(scrollView)
         
+        var scheduleTimes = ScheduleTimeModel.getScheduleTimesFromItems(scheduleItems)
+        leftView = ScheduleLeftView(model: scheduleTimes)
+        leftView.backgroundColor = Styles.Colors.cream2
+        self.view.addSubview(leftView)
+
         self.view.addSubview(headerView)
         headerView.layer.shadowColor = UIColor.blackColor().CGColor
         headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
@@ -125,9 +132,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         
         columnViews[0].setActive(true)
         
-        dayIndicator.userInteractionEnabled = false
-        view.addSubview(self.dayIndicator)
-        
         for scheduleItem in scheduleItems {
             var scheduleItemView : ScheduleItemView = ScheduleItemView(model : scheduleItem)
             columnViews[scheduleItem.columnIndex!].addSubview(scheduleItemView)
@@ -144,16 +148,35 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             make.right.equalTo(self.view)
             make.height.equalTo(self.HEADER_HEIGHT)
         }
+
+        
+        leftView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.headerView.snp_bottom)
+            make.left.equalTo(self.view)
+            make.bottom.equalTo(self.view)
+            make.width.equalTo(self.LEFT_VIEW_WIDTH)
+        }
+        
+        for label in leftView.timeLabels {
+            label.snp_makeConstraints({ (make) -> () in
+                make.left.equalTo(self.leftView)
+                make.right.equalTo(self.leftView).with.offset(-7)
+                make.centerY.equalTo(self.leftView.snp_top).with.offset((self.ITEM_HOUR_HEIGHT * label.scheduleTimeModel!.yIndexMultiplier) + (label.scheduleTimeModel!.heightOffsetInHours * self.ITEM_HOUR_HEIGHT) + self.COLUMN_HEADER_HEIGHT)
+                make.top.greaterThanOrEqualTo(self.leftView)
+                make.bottom.lessThanOrEqualTo(self.leftView)
+            })
+        }
+
         
         scrollView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.headerView.snp_bottom)
-            make.left.equalTo(self.view)
+            make.left.equalTo(self.view).with.offset(self.LEFT_VIEW_WIDTH)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
         }
         
         contentView.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(self.CONTENTVIEW_HEIGHT)
+            make.height.equalTo(self.scrollView)//CONTENTVIEW_HEIGHT)
             make.width.equalTo(self.COLUMN_SIZE * 7.0)
             make.edges.equalTo(self.scrollView)
         }
@@ -187,18 +210,10 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             itemIndex++;
         }
         
-        dayIndicator.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(self.DAY_INDICATOR_HEIGHT)
-        }
-        // items
     }
     
     func updateValues () {
         headerView.titleLabel.text = spot.name
-        dayIndicator.setDays(sortedDays())
         
         var columnTitles = sortedColumnTitles()
         var index = 0
@@ -234,10 +249,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             ratio = Float(scrollView.contentOffset.x) / maxOffset
         }
         
-        self.dayIndicator.setPositionRatio(CGFloat(ratio))
-        
     }
-    
     
     func dismiss () {
         self.delegate!.hideScheduleView()
@@ -315,12 +327,96 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         return intersectingViews.count > 0
     }
     
+    func processScheduleItems(scheduleItems: [ScheduleItemModel]) -> [ScheduleItemModel] {
+        var newScheduleItems = [ScheduleItemModel]()
+
+        for i in 0...6 {
+            var tempScheduleItems = scheduleItems.filter({ (var scheduleItem: ScheduleItemModel) -> Bool in
+                return scheduleItem.columnIndex! == i
+            }).sorted({ (var left: ScheduleItemModel, var right: ScheduleItemModel) -> Bool in
+                left.columnIndex! <= right.columnIndex!
+                && left.startInterval <= right.startInterval
+                && left.endInterval <= right.endInterval
+                && left.limit <= right.limit
+            })
+            
+            for scheduleItem in tempScheduleItems {
+                var lastScheduleItem = newScheduleItems.last
+                
+                //RULE: IF ONLY RESTRICTION, MAKE IT TALLER!
+                if tempScheduleItems.count == 1 {
+                    scheduleItem.setMinimumHeight()
+                    newScheduleItems.append(scheduleItem)
+                }
+                //RULE: MERGE CONSECUTIVE EQUAL RULES
+                else if (lastScheduleItem != nil
+                    && lastScheduleItem!.columnIndex! == scheduleItem.columnIndex!
+                    && lastScheduleItem!.endInterval >= scheduleItem.startInterval
+                    && lastScheduleItem!.limit == scheduleItem.limit) {
+                        newScheduleItems.removeLast()
+                        var newScheduleItem = ScheduleItemModel(startF: lastScheduleItem!.startInterval, endF: scheduleItem.endInterval, column : scheduleItem.columnIndex!, limitInterval: scheduleItem.limit)
+                        newScheduleItems.append(newScheduleItem)
+                }
+                //RULE: SPLIT TIME MAXES IF A RESTRICTION OVERLAPS IT
+                else if (lastScheduleItem != nil
+                    && lastScheduleItem!.columnIndex! == scheduleItem.columnIndex!
+                    && lastScheduleItem!.startInterval < scheduleItem.endInterval
+                    && lastScheduleItem!.endInterval > scheduleItem.startInterval
+                    && lastScheduleItem!.limit != scheduleItem.limit) {
+                        //now just determine which is the restriction and which is the time max
+                        var restriction: ScheduleItemModel = ScheduleItemModel()
+                        var timeMax: ScheduleItemModel = ScheduleItemModel()
+                        
+                        if lastScheduleItem!.limit > 0 { //then this is the time mac
+                            restriction = scheduleItem
+                            timeMax = lastScheduleItem!
+                            newScheduleItems.removeLast()
+                            newScheduleItems.append(restriction)
+                        } else {
+                            restriction = lastScheduleItem!
+                            timeMax = scheduleItem
+                        }
+                        
+                        if timeMax.isLongerThan(restriction) {
+                        
+                            //now split the time max...
+                            if timeMax.startInterval >= restriction.startInterval {
+                                //then just make our time max start after
+                                timeMax = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
+                                newScheduleItems.append(timeMax)
+                            } else if restriction.startInterval > timeMax.startInterval
+                                && restriction.endInterval < timeMax.endInterval {
+                                    //we have a total overlap, make 2 new time maxes
+                                    var timeMax1 = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
+                                    var timeMax2 = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
+                                    newScheduleItems.append(timeMax1)
+                                    newScheduleItems.append(timeMax2)
+                            } else if restriction.endInterval >= timeMax.endInterval {
+                                timeMax = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
+                                newScheduleItems.append(timeMax)
+                            }
+                            
+                        }
+                }
+                else {
+                    newScheduleItems.append(scheduleItem)
+                }
+
+            }
+        }
+        
+        return newScheduleItems
+    }
     
 }
 
 
 
 class ScheduleItemModel {
+    
+    var startInterval: CGFloat
+    var endInterval: CGFloat
+    var limit: NSTimeInterval
     
     var startTime : String?
     var startTimeAmPm : String?
@@ -334,18 +430,22 @@ class ScheduleItemModel {
     
     var timeLimitText : String?
     
-    init (startF : CGFloat, endF : CGFloat, column : Int, limit: NSTimeInterval) {
+    init () {
+        startInterval = 0
+        endInterval = 0
+        limit = 0
+    }
+    
+    init (startF : CGFloat, endF : CGFloat, column : Int, limitInterval: NSTimeInterval) {
         
+        startInterval = startF
+        endInterval = endF
+        limit = limitInterval
         columnIndex = column
         
         heightMultiplier = (endF - startF) / 3600
         yIndexMultiplier = startF / 3600
         
-//        if(heightMultiplier < 4) {
-//            heightMultiplier = 4
-//        }
-        
-    
         var startTm = startF
         if(startF >= 13.0 * 3600.0) {
             startTimeAmPm = "PM"
@@ -376,6 +476,48 @@ class ScheduleItemModel {
             let limitMinutes  = Int(limit / 60)
             timeLimitText =  String(NSString(format: "%01ld",limitMinutes))
         }
+    }
+    
+    func setMinimumHeight() {
+        
+        if heightMultiplier < 4
+        && ((startInterval / 3600) > 20
+            || (endInterval / 3600) > 20) {
+                return
+//                    enable the lines below if we ever fix the labels displaying correctly
+//                yIndexMultiplier = (endInterval / 3600) - 4
+//                heightMultiplier = 4
+        }
+        
+        if heightMultiplier < 4 {
+                heightMultiplier = 4
+        }
+
+    }
+    
+    func isLongerThan(otherScheduleItem: ScheduleItemModel) -> Bool {
+        let myInterval = endInterval - startInterval
+        let otherInterval = otherScheduleItem.endInterval - otherScheduleItem.startInterval
+        
+        return myInterval > otherInterval
+    }
+    
+    func topOffset() -> CGFloat {
+        let maxInterval: CGFloat = 24
+        let interval = startInterval / 3600
+        var offset = interval/maxInterval
+        return offset
+    }
+    
+    func bottomOffset() -> CGFloat {
+        let maxInterval: CGFloat = 24
+        let interval = endInterval / 3600
+        var offset = interval/maxInterval
+        return offset
+    }
+    
+    private func offset() -> CGFloat {
+        return 0
     }
     
     /*
@@ -424,11 +566,72 @@ class ScheduleItemModel {
         return correctedEnd
         
     }
-
-    
     
 }
 
+class ScheduleTimeModel {
+    
+    var timeInterval: NSTimeInterval
+    var heightOffsetInHours : CGFloat
+    var yIndexMultiplier : CGFloat { get { return CGFloat(timeInterval / 3600) } }
+    
+    init(interval: NSTimeInterval, heightOff: CGFloat) {
+        timeInterval = interval
+        self.heightOffsetInHours = heightOff
+    }
+
+    init(interval: CGFloat, heightOff: CGFloat) {
+        timeInterval = NSTimeInterval(interval)
+        self.heightOffsetInHours = heightOff
+    }
+    
+    func toString() -> String {
+        var amPm: String
+        
+        if(timeInterval >= 13.0 * 3600.0) {
+            amPm = "PM"
+        } else {
+            amPm = "AM"
+        }
+        
+        var hours = Int((timeInterval / 3600))
+        hours = hours >= 13 ? hours - 12 : hours
+        let minutes  = Int((timeInterval / 60) % 60)
+        
+        if (minutes != 0) {
+            return String(format: "%ld:%ld%@", hours, minutes, amPm)
+        } else {
+            return String(format: "%ld%@", hours, amPm)
+        }
+        
+    }
+    
+
+    static func getScheduleTimesFromItems(scheduleItems: [ScheduleItemModel]) -> [ScheduleTimeModel] {
+        //maintain a list of the start and end values
+        var allTimeValues = Set<CGFloat>()
+        var startTimeValues = [CGFloat]()
+        var endTimeValues = [CGFloat]()
+        var endTimeHeightMultipliers = [CGFloat]()
+
+        for scheduleItem in scheduleItems {
+            allTimeValues.insert(scheduleItem.startInterval)
+            allTimeValues.insert(scheduleItem.endInterval)
+            startTimeValues.append(scheduleItem.startInterval)
+            endTimeValues.append(scheduleItem.endInterval)
+            endTimeHeightMultipliers.append(scheduleItem.heightMultiplier!)
+        }
+        
+        return Array(allTimeValues).map { (var interval: CGFloat) -> ScheduleTimeModel in
+            if let index = find(endTimeValues, interval) {
+                let heightOffsetInHours = endTimeHeightMultipliers[index] - ((endTimeValues[index] - startTimeValues[index]) / 3600)
+                return ScheduleTimeModel(interval: interval, heightOff: heightOffsetInHours)
+            }
+            return ScheduleTimeModel(interval: interval, heightOff: 0)
+        }
+    }
+
+}
 
 protocol ScheduleViewControllerDelegate {
     func hideScheduleView()
