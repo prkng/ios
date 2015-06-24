@@ -138,9 +138,9 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         
         headerView.frame = CGRectMake(0, 0, screenWidth, CGFloat(HEADER_MAX_HEIGHT))
         
-        let tableViewHeight = screenHeight - CGFloat(HEADER_MIN_HEIGHT) - CGFloat(Styles.Sizes.bigButtonHeight)
+        let tableViewHeight = screenHeight - CGFloat(HEADER_MIN_HEIGHT) - CGFloat(Styles.Sizes.hugeButtonHeight)
         tableView.frame = CGRectMake(0, CGFloat(HEADER_MIN_HEIGHT), screenWidth, tableViewHeight)
-        backButton.frame = CGRectMake(0, tableViewHeight + CGFloat(HEADER_MIN_HEIGHT), screenWidth, CGFloat(Styles.Sizes.bigButtonHeight))
+        backButton.frame = CGRectMake(0, tableViewHeight + CGFloat(HEADER_MIN_HEIGHT), screenWidth, CGFloat(Styles.Sizes.hugeButtonHeight))
         
     }
     

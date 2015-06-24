@@ -332,7 +332,7 @@ class RegisterEmailViewController: AbstractViewController {
             make.left.equalTo(self.stepTwoScrollContentView)
             make.right.equalTo(self.stepTwoScrollContentView)
             make.bottom.equalTo(self.stepTwoScrollContentView)
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
     }

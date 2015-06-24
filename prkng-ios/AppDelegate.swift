@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Fabric
 import Crashlytics
 
 @UIApplicationMain
@@ -21,7 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RMConfiguration.sharedInstance().accessToken = "pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA"
         MBXMapKit.setAccessToken("pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA")
 
-        Crashlytics.startWithAPIKey("0a552ed905e273700bb769724c451c706ceb78cb")
+//        Crashlytics.startWithAPIKey("0a552ed905e273700bb769724c451c706ceb78cb")
+        Fabric.with([Crashlytics()])
         
         //google analytics setup...
         // Optional: automatically send uncaught exceptions to Google Analytics.

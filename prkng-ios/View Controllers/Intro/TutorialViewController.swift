@@ -117,15 +117,19 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     
     func nextButtonTapped() {
         
-        let vc = pageViewController.viewControllers[0] as! TutorialContentViewController
-
-        let index = vc.pageIndex >= contentViewControllers.count ? contentViewControllers.count - 1 : vc.pageIndex + 1
-        let nextVC = contentViewControllers[index]
-        
-        self.pageViewController.setViewControllers([nextVC], direction: UIPageViewControllerNavigationDirection.Forward, animated: true) { (completed) -> Void in
-            self.updateViews()
+        if pageViewController.viewControllers.count < 1 {
+            return
         }
         
+        if let vc = pageViewController.viewControllers[0] as? TutorialContentViewController {
+            
+            let index = vc.pageIndex >= contentViewControllers.count ? contentViewControllers.count - 1 : vc.pageIndex + 1
+            let nextVC = contentViewControllers[index]
+            
+            self.pageViewController.setViewControllers([nextVC], direction: UIPageViewControllerNavigationDirection.Forward, animated: true) { (completed) -> Void in
+                self.updateViews()
+            }
+        }
     }
     
     func getStartedButtonTapped() {
@@ -138,7 +142,7 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
         let vc = viewController as! TutorialContentViewController
-
+        
         if (vc.pageIndex > 0) {
             return contentViewControllers[vc.pageIndex - 1]
         }

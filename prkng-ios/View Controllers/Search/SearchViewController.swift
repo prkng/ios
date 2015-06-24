@@ -178,7 +178,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             make.bottom.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
     }

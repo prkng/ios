@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginEmailViewController: AbstractViewController {
+class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
     
     var signupButton : UIButton
     
@@ -102,10 +102,11 @@ class LoginEmailViewController: AbstractViewController {
         forgotPasswordButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
         forgotPasswordButton.titleLabel?.font = Styles.FontFaces.light(12)
         forgotPasswordButton.setTitle("forgot_password_text".localizedString, forState: UIControlState.Normal)
+        forgotPasswordButton.addTarget(self, action: "forgotPasswordButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(forgotPasswordButton)
         
         loginButton.setTitle("login".localizedString, forState: UIControlState.Normal)
-        loginButton.addTarget(self, action: "loginButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        loginButton.addTarget(self, action: "loginButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(loginButton)
     }
     
@@ -186,7 +187,7 @@ class LoginEmailViewController: AbstractViewController {
         self.delegate!.signUp()
     }
     
-    func loginButtonTapped() {
+    func loginButtonTapped(sender : UIButton) {
         
         UserOperations.login(emailTextField.text, password: passwordTextField.text) { (user, apiKey) -> Void in
             
@@ -208,6 +209,21 @@ class LoginEmailViewController: AbstractViewController {
         
     }
     
+    func forgotPasswordButtonTapped(sender : UIButton) {
+     
+        let alert = UIAlertView()
+        alert.title = "email_prompt_copy".localizedString
+        alert.addButtonWithTitle("reset_password".localizedString)
+        alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
+        alert.addButtonWithTitle("cancel".localizedString)
+        alert.delegate = self
+        alert.show()
+    }
+    
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        println("\(buttonIndex)")
+    }
 }
 
 

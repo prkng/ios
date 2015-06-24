@@ -54,6 +54,7 @@
 		BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4567FD1AD842B9006D7C23 /* ScheduleColumnView.swift */; };
 		BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4567FF1AD85722006D7C23 /* SearchOperations.swift */; };
 		BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF4568011AD85761006D7C23 /* SearchResult.swift */; };
+		BF5061C51B3AC2890010F650 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF5061C41B3AC2890010F650 /* Fabric.framework */; };
 		BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84EA1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift */; };
 		BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84EC1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift */; };
 		BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF5E84F91B07B3D900EC6AD2 /* AF+Date+Extension.swift */; };
@@ -214,6 +215,7 @@
 		BF4567FD1AD842B9006D7C23 /* ScheduleColumnView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleColumnView.swift; sourceTree = "<group>"; };
 		BF4567FF1AD85722006D7C23 /* SearchOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchOperations.swift; sourceTree = "<group>"; };
 		BF4568011AD85761006D7C23 /* SearchResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
+		BF5061C41B3AC2890010F650 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		BF5E84EA1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarNoCheckinViewController.swift; sourceTree = "<group>"; };
 		BF5E84EC1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarCheckedInViewController.swift; sourceTree = "<group>"; };
 		BF5E84F91B07B3D900EC6AD2 /* AF+Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AF+Date+Extension.swift"; sourceTree = "<group>"; };
@@ -316,6 +318,7 @@
 				3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */,
 				BFDDF1101B03614400E8C59E /* CoreMotion.framework in Frameworks */,
 				BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */,
+				BF5061C51B3AC2890010F650 /* Fabric.framework in Frameworks */,
 				BFDDF10E1B03613300E8C59E /* AssetsLibrary.framework in Frameworks */,
 				BFDDF10C1B03612D00E8C59E /* MediaPlayer.framework in Frameworks */,
 				BFDDF10A1B03612600E8C59E /* AddressBook.framework in Frameworks */,
@@ -353,6 +356,7 @@
 		14ED3BF3E75A844F19A53B43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF5061C41B3AC2890010F650 /* Fabric.framework */,
 				3E0FDAD31B27921400872667 /* MapKit.framework */,
 				3E0FDACB1B276A2B00872667 /* libc++.dylib */,
 				3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */,
@@ -958,7 +962,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "./Crashlytics.framework/run 0a552ed905e273700bb769724c451c706ceb78cb 55ae8884944b326951fc667a5f4d9dbe77103580fc564745f9309f428b2fb29a";
+			shellScript = "./Fabric.framework/run 0a552ed905e273700bb769724c451c706ceb78cb 55ae8884944b326951fc667a5f4d9dbe77103580fc564745f9309f428b2fb29a";
 		};
 /* End PBXShellScriptBuildPhase section */
 

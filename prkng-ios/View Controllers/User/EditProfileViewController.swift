@@ -107,7 +107,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
         logoutButton.snp_makeConstraints { (make) -> () in

@@ -184,7 +184,7 @@ class SettingsViewController: AbstractViewController {
         }
         
         aboutButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)

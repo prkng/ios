@@ -240,7 +240,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         leaveButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -248,7 +248,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         
         shareButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.leaveButton.snp_top)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)

@@ -253,7 +253,7 @@ class LoginExternalViewController: AbstractViewController {
             make.left.equalTo(self.scrollContentView)
             make.right.equalTo(self.scrollContentView)
             make.bottom.equalTo(self.scrollContentView)
-            make.height.equalTo(Styles.Sizes.bigButtonHeight)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
     }
