@@ -54,7 +54,7 @@ struct ViewFactory {
     static func bigButton () -> MKButton {
         
         let bigButton = MKButton()
-        bigButton.titleLabel?.font = Styles.FontFaces.light(31)
+        bigButton.titleLabel?.font = Styles.FontFaces.light(25)
         bigButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
         bigButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
         bigButton.backgroundColor = Styles.Colors.stone
