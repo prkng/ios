@@ -25,18 +25,18 @@
 "logout" = "se déconnecter";
 "my_profile" = "MON COMPTE";
 "my_history" = "MON HISTORIQUE";
-"history" = "HISTORIQUE";
+"history" = "historique";
 "save" = "enregistrer";
 "new_password" = "NOUVEAU MOT DE PASSE";
 "new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
 "name_empty" = "Merci d’entrer votre nom.";
 "email_empty" = "Merci d’entrer une adresse valide.";
 "profile_updated_message" = "Votre profil a été mis-à-jour!";
-"reset_email_copy" = "Please enter your email address"; //FIX
-"reset_password" = "Reset Password";  //FIX
-"cancel" = "Cancel";  //FIX
-"check_email_copy" = "Please check your email for instructions.";  //FIX
-"pasword_reset_error" = "Something went wrong, please try again in few minutes";  //FIX
+"reset_email_copy" = "Merci d’entrer votre adresse e-mail";
+"reset_password" = "Mot de passe oublié?";
+"cancel" = "annuler";
+"check_email_copy" = "Merci d’entrer votre adresse e-mail.";
+"pasword_reset_error" = "Quelque chose a mal tourné, merci de réessayer.";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";
@@ -77,12 +77,12 @@
 "for" = "pour";
 "available_for" = "disponible pour";
 "until" = "jusqu'à";
-"share_car_location" = "Le share my location";   //FIX THIS 
+"share_car_location" = "partager"; 
 "leave_spot" = "quitter";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
 "off" = "non";
-"share_location_copy" = "I parked on: [street_name], coordinates : lat:[latitude] lon:[longitude], thanks to prkng app"; //FIX THIS, leave variables in brackets the same
+"share_location_copy" = "Je suis parqué sur: [street_name], coordonnées: lat:[latitude] lon:[longitude], prkng app";
 
 // Days
 "today" = "Ce jour";
@@ -122,10 +122,10 @@
 "report_error" = "Une erreur est survenue, merci de réessayer.";
 "report_sent_thanks" = "Rapport envoyé, merci! Grâce à vous, notre service s'améliore.";
 
-"about" = "about";
-"the_project" = "the project";
-"terms_conditions" = "terms & conditions";
-"share" = "share";
+"about" = "à propos";
+"the_project" = "le projet";
+"terms_conditions" = "conditions d'utilisation";
+"share" = "partager";
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec!";
 
 
