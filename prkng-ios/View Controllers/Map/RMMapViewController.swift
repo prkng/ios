@@ -14,10 +14,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     let mapSource = "arnaudspuhler.l54pj66f"
         
     var mapView: RMMapView
+    var userLastChangedMap: Double
     var lastMapZoom: Float
     var lastUserLocation: CLLocation
     var lastMapCenterCoordinate: CLLocationCoordinate2D
-    var spotIdentifiersDrawnOnMap: Array<String>
+    var spotIDsDrawnOnMap: Array<String>
+    var lineSpotIDsDrawnOnMap: Array<String>
     var lineAnnotations: Array<RMAnnotation>
     var centerButtonAnnotations: Array<RMAnnotation>
     var searchAnnotations: Array<RMAnnotation>
@@ -52,12 +54,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.zoomingInPivotsAroundCenter = true
         mapView.zoom = 17
         mapView.maxZoom = 19
-        mapView.minZoom = 12
+        mapView.minZoom = 10
+        userLastChangedMap = 0
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
         lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         isSelecting = false
-        spotIdentifiersDrawnOnMap = []
+        spotIDsDrawnOnMap = []
+        lineSpotIDsDrawnOnMap = []
         lineAnnotations = []
         centerButtonAnnotations = []
         searchAnnotations = []
@@ -162,7 +166,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
             if shouldAddAnimation {
                 shape.addScaleAnimation()
-                spotIdentifiersDrawnOnMap.append(spot.identifier)
+                lineSpotIDsDrawnOnMap.append(spot.identifier)
             }
             
             return shape
@@ -191,7 +195,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             if shouldAddAnimation {
                 circleMarker.addScaleAnimation()
-                spotIdentifiersDrawnOnMap.append(spot.identifier)
+                spotIDsDrawnOnMap.append(spot.identifier)
             }
             
             if (selected) {
@@ -225,8 +229,25 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
     
+    func getTimeSinceLastMapMovement() -> NSTimeInterval {
+        let currentTime = NSDate().timeIntervalSince1970 * 1000
+        let difference = currentTime - userLastChangedMap
+        return difference
+    }
+    
+    func beforeMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
+    
+        if wasUserAction {
+            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
+        }
+    
+    }
+    
     func beforeMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
         
+        if wasUserAction {
+            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
+        }
         
         if (mapView.userTrackingMode.value == RMUserTrackingModeFollow.value ) {
             self.hideTrackUserButton()
@@ -238,35 +259,60 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     func afterMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
-
-        removeSelectedAnnotationIfExists()
         
-        //reload if the map has moved sufficiently...
-        let lastMapCenterLocation = CLLocation(latitude: lastMapCenterCoordinate.latitude, longitude: lastMapCenterCoordinate.longitude)
-        let newMapCenterLocation = CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude)
-        let differenceInMeters = lastMapCenterLocation.distanceFromLocation(newMapCenterLocation)
-//        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
-        if differenceInMeters > MOVE_DELTA_IN_METERS {
-            updateAnnotations()
-            lastMapCenterCoordinate = map.centerCoordinate
+        if wasUserAction {
+            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
         }
-        self.delegate?.mapDidDismissSelection()
+        
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+            Int64(0.31 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+
+            self.removeSelectedAnnotationIfExists()
+            
+            //reload if the map has moved sufficiently...
+            let lastMapCenterLocation = CLLocation(latitude: self.lastMapCenterCoordinate.latitude, longitude: self.lastMapCenterCoordinate.longitude)
+            let newMapCenterLocation = CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude)
+            let differenceInMeters = lastMapCenterLocation.distanceFromLocation(newMapCenterLocation)
+            //        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
+            if differenceInMeters > self.MOVE_DELTA_IN_METERS
+                && self.getTimeSinceLastMapMovement() > 300 {
+                    self.updateAnnotations()
+                    self.lastMapCenterCoordinate = map.centerCoordinate
+            }
+            self.delegate?.mapDidDismissSelection()
+            
+        }
+        
     }
     
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
-        radius = (20.0 - map.zoom) * 100
         
-        if(map.zoom <= 15.0) {
-            radius = 0
+        if wasUserAction {
+            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
+        }
+
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+            Int64(0.31 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            
+            self.radius = (20.0 - map.zoom) * 100
+            
+            if(map.zoom <= 15.0) {
+                self.radius = 0
+            }
+            
+            if (abs(self.lastMapZoom - map.zoom) >= 1) {
+                self.spotIDsDrawnOnMap = []
+            }
+            
+            if self.getTimeSinceLastMapMovement() > 300 {
+                self.updateAnnotations()
+            }
+            
+            self.lastMapZoom = map.zoom
         }
         
-        if (abs(lastMapZoom - map.zoom) >= 1) {
-            spotIdentifiersDrawnOnMap = []
-        }
-        
-        updateAnnotations()
-        
-        lastMapZoom = map.zoom
         
     }
     
@@ -324,7 +370,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if let userCLLocation = userLocation.location {
             let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
             
-            if differenceInMeters > MOVE_DELTA_IN_METERS/10
+            if differenceInMeters > MOVE_DELTA_IN_METERS/10 * 5
                 && mapView.userTrackingMode.value == RMUserTrackingModeFollow.value {
                 updateAnnotations()
                 lastUserLocation = userCLLocation
@@ -357,8 +403,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 }
 
             } else if loopThroughLines && annotationType == "line" {
-                
-                // closest single point does not work well for lines, so instead sort all points by distance and take the first x
                 
                 let spot = userInfo!["spot"] as! ParkingSpot
                 let coordinates = spot.line.coordinates2D + [spot.buttonLocation.coordinate]
@@ -399,6 +443,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     func trackUserButtonTapped () {
+        self.mapView.setZoom(17, animated: false)
         self.mapView.userTrackingMode = RMUserTrackingModeFollow
         hideTrackUserButton()
     }
@@ -453,14 +498,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         updateInProgress = true
         
-        //only show the spinner if this map is active
-        if let tabController = self.parentViewController as? TabController {
-            if tabController.activeTab() == PrkTab.Here {
-                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
-            }
-        }
-        
         if (mapView.zoom > 15.0) {
             
             var checkinTime = searchCheckinDate
@@ -483,43 +520,33 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: 1, checkinTime: checkinTime!, completion:
                 { (spots) -> Void in
                     
-                    //TODO: Optimize this section, it's likely what causes the sluggish map behaviour (in the addSpotAnnotation method)
-                    //do we really need to replace all spots? probably only the ones that are new...
-                    
-                    var startedOn = NSDate()
-                    var format = NSDateFormatter()
-                    format.dateFormat = "hh:mm:ss.SSS"
-//                    NSLog("findSpots completion - started at: %@", format.stringFromDate(startedOn))
-                    self.mapView.removeAnnotations(self.lineAnnotations)
-                    self.lineAnnotations = []
-                    
-                    self.mapView.removeAnnotations(self.centerButtonAnnotations)
-                    self.centerButtonAnnotations = []
-                    
-                    //
-                    // spots that have left the screen need to be re-animated next time
-                    // therefore, we remove spots that have not been fetched this time around
-                    //
-                    var newSpotIDs = spots.map{(var spot: ParkingSpot) -> String in spot.identifier}
-                    self.spotIdentifiersDrawnOnMap = self.spotIdentifiersDrawnOnMap.filter({ (var spotID: String) -> Bool in
-                        contains(newSpotIDs, spotID)
-                    })
-                    
-                    for spot in spots {
-                        let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
-                        if spot.availableTimeInterval() >= NSTimeInterval((duration ?? 0.5) * 3600) {
-                            self.addSpotAnnotation(self.mapView, spot: spot, selected: selected)
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        //only show the spinner if this map is active
+                        if let tabController = self.parentViewController as? TabController {
+                            if tabController.activeTab() == PrkTab.Here {
+                                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                                SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+                            }
                         }
-                    }
-                    self.updateInProgress = false
-                    
-                    var timeInterval = NSDate().timeIntervalSinceDate(startedOn)
-                    let milliseconds = CUnsignedLong(timeInterval * 1000)
-//                    NSLog("findSpots completion took: " + String(milliseconds) + " milliseconds")
-//                    NSLog("findSpots completion - ended at: %@", format.stringFromDate(NSDate()))
-                    
-                    SVProgressHUD.dismiss()
-                    
+                    })
+
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+
+                        //
+                        // spots that have left the screen need to be re-animated next time
+                        // therefore, we remove spots that have not been fetched this time around
+                        //
+                        var newSpotIDs = spots.map{(var spot: ParkingSpot) -> String in spot.identifier}
+                        self.spotIDsDrawnOnMap = self.spotIDsDrawnOnMap.filter({ (var spotID: String) -> Bool in
+                            contains(newSpotIDs, spotID)
+                        })
+                        self.lineSpotIDsDrawnOnMap = self.lineSpotIDsDrawnOnMap.filter({ (var spotID: String) -> Bool in
+                            contains(newSpotIDs, spotID)
+                        })
+
+                        self.updateSpotAnnotations(spots)
+                        
+                    })
                     
             })
             
@@ -531,38 +558,86 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             mapView.removeAnnotations(centerButtonAnnotations)
             centerButtonAnnotations = []
             
+            spotIDsDrawnOnMap = []
+            lineSpotIDsDrawnOnMap = []
+            
             updateInProgress = false
             
-            SVProgressHUD.dismiss()
-
         }
         
         
     }
     
+    func updateSpotAnnotations(spots: [ParkingSpot]) {
+        
+        let duration = self.delegate?.activeFilterDuration()
+        var tempLineAnnotations = [RMAnnotation]()
+        var tempButtonAnnotations = [RMAnnotation]()
+        
+        for spot in spots {
+            let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
+            if spot.availableTimeInterval() >= NSTimeInterval((duration ?? 0.5) * 3600) {
+                var annotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
+                tempLineAnnotations.append(annotations.0)
+                if let button = annotations.1 {
+                    tempButtonAnnotations.append(button)
+                }
+            }
+
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            
+            self.removeAllAnnotations()
+
+            self.lineAnnotations = tempLineAnnotations
+            self.centerButtonAnnotations = tempButtonAnnotations
+
+            self.mapView.addAnnotations(self.lineAnnotations)
+            self.mapView.addAnnotations(self.centerButtonAnnotations)
+            
+            SVProgressHUD.dismiss()
+            self.updateInProgress = false
+
+        })
+
+    }
     
     func addSpotAnnotation(map: RMMapView, spot: ParkingSpot, selected: Bool) {
+        annotationForSpot(map, spot: spot, selected: selected, addToMapView: true)
+    }
+    
+    func annotationForSpot(map: RMMapView, spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (RMAnnotation, RMAnnotation?) {
+        
+        var annotation: RMAnnotation
+        var centerButton: RMAnnotation?
         
         let coordinate = spot.line.coordinates[0].coordinate
-        let shouldAddAnimation = !contains(self.spotIdentifiersDrawnOnMap, spot.identifier)
-        var annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: spot.identifier)
+        let shouldAddAnimationForLine = !contains(self.lineSpotIDsDrawnOnMap, spot.identifier)
+        annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: spot.identifier)
         annotation.setBoundingBoxFromLocations(spot.line.coordinates)
-        annotation.userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
-        self.mapView.addAnnotation(annotation)
-        lineAnnotations.append(annotation)
+        annotation.userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForLine]
         
+        if addToMapView {
+            mapView.addAnnotation(annotation)
+            lineAnnotations.append(annotation)
+        }
         
         if (mapView.zoom >= 17.0) {
             
-            var centerButton: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: spot.buttonLocation.coordinate, andTitle: spot.identifier)
-            centerButton.setBoundingBoxFromLocations(spot.line.coordinates)
-            centerButton.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
-            mapView.addAnnotation(centerButton)
-            centerButtonAnnotations.append(centerButton)
+            let shouldAddAnimationForButton = !contains(self.spotIDsDrawnOnMap, spot.identifier)
+            centerButton = RMAnnotation(mapView: self.mapView, coordinate: spot.buttonLocation.coordinate, andTitle: spot.identifier)
+            centerButton!.setBoundingBoxFromLocations(spot.line.coordinates)
+            centerButton!.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForButton]
             
-        } else {
+            if addToMapView {
+                mapView.addAnnotation(centerButton!)
+                centerButtonAnnotations.append(centerButton!)
+            }
             
         }
+        
+        return (annotation, centerButton)
         
     }
     

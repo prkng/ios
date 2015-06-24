@@ -59,9 +59,9 @@ struct SpotOperations {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         params["checkin"] = formatter.stringFromDate(time)
         
-        request(.GET, url, parameters: params).responseSwiftyJSON() {
+        request(.GET, url, parameters: params).responseSwiftyJSONAsync(queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
             (request, response, json, error) in
-                       
+
             var spotJsons: Array<JSON> = json["features"].arrayValue
             var spots = spotJsons.map({ (var spotJson) -> ParkingSpot in
                 ParkingSpot(json: spotJson)

@@ -154,7 +154,6 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
         mapViewController.clearSearchResults()
         mapViewController.showUserLocation(true)
-        mapViewController.trackUser(true)
         
         switchActiveViewController(hereViewController, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.Here
