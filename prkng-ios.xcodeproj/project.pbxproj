@@ -27,6 +27,7 @@
 		3EBEE33E1B3213A100C7F2DE /* quebec_city_parking_availability.kml in Resources */ = {isa = PBXBuildFile; fileRef = 3EBEE33D1B3213A100C7F2DE /* quebec_city_parking_availability.kml */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
+		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */; };
@@ -107,7 +108,6 @@
 		BFDDF10C1B03612D00E8C59E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF10B1B03612D00E8C59E /* MediaPlayer.framework */; };
 		BFDDF10E1B03613300E8C59E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF10D1B03613300E8C59E /* AssetsLibrary.framework */; };
 		BFDDF1101B03614400E8C59E /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF10F1B03614400E8C59E /* CoreMotion.framework */; };
-		BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDF22C01A85122D000380DA /* Crashlytics.framework */; };
 		BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */; };
 		BFE1AB7A1A839F6A00B77F2E /* RMMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE1AB791A839F6A00B77F2E /* RMMapViewController.swift */; };
 		BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */; };
@@ -187,6 +187,7 @@
 		3EBEE33D1B3213A100C7F2DE /* quebec_city_parking_availability.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = quebec_city_parking_availability.kml; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
+		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -317,6 +318,7 @@
 				3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */,
 				3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */,
 				BFDDF1101B03614400E8C59E /* CoreMotion.framework in Frameworks */,
+				3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */,
 				BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */,
 				BF5061C51B3AC2890010F650 /* Fabric.framework in Frameworks */,
 				BFDDF10E1B03613300E8C59E /* AssetsLibrary.framework in Frameworks */,
@@ -329,7 +331,6 @@
 				3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */,
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
 				BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */,
-				BFDF22C11A85122D000380DA /* Crashlytics.framework in Frameworks */,
 				99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +357,7 @@
 		14ED3BF3E75A844F19A53B43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3EF969BC1B3B13B7007641AE /* Crashlytics.framework */,
 				BF5061C41B3AC2890010F650 /* Fabric.framework */,
 				3E0FDAD31B27921400872667 /* MapKit.framework */,
 				3E0FDACB1B276A2B00872667 /* libc++.dylib */,
