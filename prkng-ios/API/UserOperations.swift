@@ -186,4 +186,16 @@ struct UserOperations {
         
     }
     
+    static func resetPassword (email : String, completion : ((completed : Bool) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "/login/email/reset"
+        let params = ["email" : email]
+        
+        request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
+            
+            completion(completed: true)
+        }
+        
+    }
+    
 }

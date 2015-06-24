@@ -118,7 +118,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.loginButton.snp_top)
         }
-    
+        
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
             // login selection + login button = 225
@@ -198,7 +198,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
                 if self.delegate != nil {
                     self.delegate!.didLogin()
                 }
-
+                
             } else {
                 let alert = UIAlertView()
                 alert.message = "login_error".localizedString
@@ -210,27 +210,61 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
     }
     
     func forgotPasswordButtonTapped(sender : UIButton) {
-     
+        
         let alert = UIAlertView()
-        alert.title = "email_prompt_copy".localizedString
+        alert.title = "reset_email_copy".localizedString
         alert.addButtonWithTitle("reset_password".localizedString)
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
         alert.addButtonWithTitle("cancel".localizedString)
         alert.delegate = self
         alert.show()
+        
     }
     
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        println("\(buttonIndex)")
+        
+        if (buttonIndex == 0) {
+            
+            if let email = alertView.textFieldAtIndex(0)?.text {
+                
+                if Int(count(email)) > 4 {
+                    
+                    SVProgressHUD.showWithMaskType(.Clear)
+                    
+                    UserOperations.resetPassword(email, completion: { (completed) -> Void in
+                        
+                        SVProgressHUD.dismiss()
+                        
+                        let alert = UIAlertView()
+                        alert.message = completed ? "check_email_copy".localizedString : "pasword_reset_error".localizedString
+                        alert.addButtonWithTitle("ok".localizedString.uppercaseString)
+                        alert.show()
+                        
+                    })
+                    
+                } else {
+                    
+                    let alert = UIAlertView()
+                    alert.message = "invalid_email".localizedString
+                    alert.addButtonWithTitle("ok".localizedString.uppercaseString)
+                    alert.show()
+                    
+                }
+                
+            } else {
+                let alert = UIAlertView()
+                alert.message = "invalid_email".localizedString
+                alert.addButtonWithTitle("ok".localizedString.uppercaseString)
+                alert.show()
+            }
+            
+        }
     }
 }
 
 
-
 protocol LoginEmailViewControllerDelegate {
-    
     func signUp()
     func didLogin()
-    
 }

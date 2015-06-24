@@ -32,9 +32,11 @@
 "name_empty" = "Merci d’entrer votre nom.";
 "email_empty" = "Merci d’entrer une adresse valide.";
 "profile_updated_message" = "Votre profil a été mis-à-jour!";
-"reset_email_copy" = "Please enter your email address";
-"reset_password" = "Reset Password";
-"cancel" = "Cancel";
+"reset_email_copy" = "Please enter your email address"; //FIX
+"reset_password" = "Reset Password";  //FIX
+"cancel" = "Cancel";  //FIX
+"check_email_copy" = "Please check your email for instructions.";  //FIX
+"pasword_reset_error" = "Something went wrong, please try again in few minutes";  //FIX
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";

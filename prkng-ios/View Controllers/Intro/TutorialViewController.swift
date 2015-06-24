@@ -124,6 +124,11 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         if let vc = pageViewController.viewControllers[0] as? TutorialContentViewController {
             
             let index = vc.pageIndex >= contentViewControllers.count ? contentViewControllers.count - 1 : vc.pageIndex + 1
+            
+            if (index >= contentViewControllers.count) {
+                return
+            }
+            
             let nextVC = contentViewControllers[index]
             
             self.pageViewController.setViewControllers([nextVC], direction: UIPageViewControllerNavigationDirection.Forward, animated: true) { (completed) -> Void in

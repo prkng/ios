@@ -35,6 +35,9 @@
 "reset_email_copy" = "Please enter your email address";
 "reset_password" = "Reset Password";
 "cancel" = "Cancel";
+"check_email_copy" = "Please check your email for instructions.";
+"pasword_reset_error" = "Something went wrong, please try again in few minutes";
+
 
 "your_name" = "your name";
 "your_gender" = "your gender";
