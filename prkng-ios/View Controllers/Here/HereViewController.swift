@@ -379,7 +379,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         timeFilterView.resetValue()
         
         searchFilterView.snp_updateConstraints { (make) -> () in
-            make.height.equalTo(TimeFilterView.TOTAL_HEIGHT)
+            make.height.equalTo(SearchFilterView.TOTAL_HEIGHT)
         }
 
         timeFilterView.snp_updateConstraints { (make) -> () in
@@ -393,6 +393,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
+                //also, make the status bar transparent
+                self.statusBar.alpha = 0
+
                 self.filterButtonText = ""
                 self.filterButton.setLabelText(self.filterButtonText)
                 
@@ -426,6 +429,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
+                //also, make the status bar not transparent anymore
+                self.statusBar.alpha = 1
+
                 self.timeFilterView.layoutIfNeeded()
                 self.searchFilterView.layoutIfNeeded()
             },

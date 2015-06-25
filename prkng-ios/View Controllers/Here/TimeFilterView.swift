@@ -12,9 +12,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     
     var containerView: UIView
     
-    var titleView: UIView
-    var titleImageView: UIImageView
-    var titleLabel: UILabel
+    var timeImageView: UIImageView
     
     var scrollView: UIScrollView
     var contentView: UIView
@@ -29,24 +27,23 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
     var delegate: TimeFilterViewDelegate?
     
+    var enableSnapping : Bool
+    
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
 
     private(set) var SECONDS_PER_MINUTE : NSTimeInterval = 60
     private(set) var SECONDS_PER_HOUR : NSTimeInterval = 3600
-    static var TOTAL_HEIGHT : CGFloat = 90
-    static var TOP_VIEW_HEIGHT : CGFloat = 40
-    static var SCROLL_HEIGHT: CGFloat = TOTAL_HEIGHT - TOP_VIEW_HEIGHT
-    private(set) var WIDTH : CGFloat = 800
+    static var TOTAL_HEIGHT : CGFloat = 50
+    static var SCROLL_HEIGHT: CGFloat = 50
+    private(set) var WIDTH : CGFloat = 730
     private(set) var FONT : UIFont = Styles.FontFaces.regular(17)
     
     override init(frame: CGRect) {
 
         containerView = UIView()
 
-        titleView = UIView()
-        titleImageView = UIImageView(image: UIImage(named: "icon_time"))
-        titleLabel = UILabel()
+        timeImageView = UIImageView(image: UIImage(named: "icon_time"))
 
         scrollView = UIScrollView()
         contentView = UIView()
@@ -65,6 +62,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         topLine = UIView()
         bottomLine = UIView()
 
+        enableSnapping = false
+        
         didsetupSubviews = false
         didSetupConstraints = true
      
@@ -102,17 +101,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         self.addGestureRecognizer(tapRec)
 
         self.addSubview(containerView)
-        containerView.backgroundColor = Styles.Colors.midnight1
+        containerView.backgroundColor = Styles.Colors.petrol2
         containerView.clipsToBounds = true
-        
-        containerView.addSubview(titleView)
-        titleImageView = UIImageView(image: UIImage(named: "icon_time"))
-        titleView.addSubview(titleImageView)
-        titleLabel = UILabel()
-        titleLabel.text = "authorized_for".localizedString.uppercaseString
-        titleLabel.textColor = Styles.Colors.cream1
-        titleLabel.font = Styles.FontFaces.light(12)
-        titleView.addSubview(titleLabel)
         
         containerView.addSubview(scrollView)
         scrollView.backgroundColor = Styles.Colors.petrol2
@@ -139,6 +129,9 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             contentView.addSubview(label)
         }
         
+        timeImageView.userInteractionEnabled = false
+        containerView.addSubview(timeImageView)
+
         topLine.backgroundColor = Styles.Colors.petrol2
         self.addSubview(topLine)
 
@@ -155,29 +148,16 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             make.edges.equalTo(self)
         }
         
-        titleView.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self)
-            make.right.equalTo(self)
-            make.height.equalTo(TimeFilterView.TOP_VIEW_HEIGHT)
-            make.top.equalTo(self)
-        }
-        
-        titleImageView.snp_makeConstraints { (make) -> () in
+        timeImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 20, height: 20))
-            make.centerY.equalTo(self.titleView)
-            make.left.equalTo(self.titleView).with.offset(28.5)
-        }
-
-        titleLabel.snp_makeConstraints { (make) -> () in
-            make.centerY.equalTo(self.titleView)
-            make.left.equalTo(self.titleImageView.snp_right).with.offset(14)
-            make.right.equalTo(self.titleView).with.offset(-14)
+            make.centerY.equalTo(self.containerView)
+            make.left.equalTo(self.containerView).with.offset(28.5)
         }
         
         scrollView.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.containerView)
+            make.left.equalTo(self.containerView).with.offset(28.5 + 20 + 14)
             make.right.equalTo(self.containerView)
-            make.top.equalTo(self.titleView.snp_bottom)
+            make.top.equalTo(self.containerView)
             make.height.equalTo(TimeFilterView.SCROLL_HEIGHT)
         }
         
@@ -189,7 +169,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         var leftViewToLabel: UIView = timeLabels[0]
         timeLabels[0].snp_makeConstraints({ (make) -> () in
             make.centerY.equalTo(self.contentView)
-            make.left.equalTo(self.contentView).with.offset(175)
+            make.left.equalTo(self.contentView)
         })
         for i in 1..<timeLabels.count {
             var label = timeLabels[i]
@@ -250,8 +230,11 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     //MARK- helper functions
     
     func scrollToNearestLabel() {
-        var centerPoint = getScrollViewCenter()
-        scrollToNearestLabel(centerPoint)
+
+        if enableSnapping {
+            var centerPoint = getScrollViewCenter()
+            scrollToNearestLabel(centerPoint)
+        }
     }
     
     func scrollToNearestLabel(centerPoint: CGPoint) -> PRKLabel {
@@ -263,9 +246,11 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         var nearestLabel: PRKLabel = getNearestLabel(centerPoint, nearestLabelDistanceFromPoint: &nearestLabelDistanceFromPoint, nearestLabelDistanceFromCenter: &nearestLabelDistanceFromCenter)
         
         //now scroll this label to the center
-        if nearestLabelDistanceFromPoint > 1 {
-            let point = CGPoint(x: scrollView.contentOffset.x + nearestLabelDistanceFromCenter, y: 0)
-            scrollView.setContentOffset(point, animated: true)
+        if enableSnapping {
+            if nearestLabelDistanceFromPoint > 1 {
+                let point = CGPoint(x: scrollView.contentOffset.x + nearestLabelDistanceFromCenter, y: 0)
+                scrollView.setContentOffset(point, animated: true)
+            }
         }
         
         recolorLabels()
@@ -334,11 +319,20 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
         return contentViewCurrentCenterPoint
     }
-    
-    func recolorLabels() {
+
+    func getScrollViewLeft() -> CGPoint {
+        var visibleRect = CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y, scrollView.bounds.size.width, scrollView.bounds.size.height)
+        var contentViewCurrentLeftPoint = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
         
-        //order the labels by proximity to the center
-        var contentViewCurrentCenterPoint = getScrollViewCenter()
+        return contentViewCurrentLeftPoint
+    }
+
+    func recolorLabels() {
+
+//        //order the labels by proximity to the center
+//        var contentViewCurrentCenterPoint = getScrollViewCenter()
+
+        var contentViewCurrentCenterPoint = getScrollViewLeft()
         
         //get the label nearest to the centerPoint
         var nearestLabelDistance = CGFloat.max

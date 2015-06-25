@@ -364,5 +364,5 @@ class SettingsViewController: AbstractViewController {
 }
 
 protocol SettingsViewControllerDelegate {
-    func goToPreviousCheckin(checkin: Checkin)
+    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String)
 }

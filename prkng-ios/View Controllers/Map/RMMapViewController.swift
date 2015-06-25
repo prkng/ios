@@ -588,7 +588,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         dispatch_async(dispatch_get_main_queue(), {
             
-            self.removeAllAnnotations()
+            self.removeLinesAndButtons()
 
             self.lineAnnotations = tempLineAnnotations
             self.centerButtonAnnotations = tempButtonAnnotations
@@ -741,6 +741,15 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
+    func removeLinesAndButtons() {
+        self.mapView.removeAnnotations(self.lineAnnotations)
+        self.mapView.removeAnnotations(self.centerButtonAnnotations)
+
+        lineAnnotations = []
+        centerButtonAnnotations = []
+
+    }
+    
     func removeAllAnnotations() {
         
         searchAnnotations = []
@@ -838,11 +847,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.mapView.userTrackingMode = shouldTrack ? RMUserTrackingModeFollow : RMUserTrackingModeNone
     }
     
-    override func goToPreviousCheckin(checkin: Checkin) {
-        var annotation = RMAnnotation(mapView: self.mapView, coordinate: checkin.location.coordinate, andTitle: checkin.name)
+    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) {
+        var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
         annotation.userInfo = ["type": "searchResult"]
         mapView.zoom = 17
-        mapView.centerCoordinate = checkin.location.coordinate
+        mapView.centerCoordinate = coordinate
         removeAllAnnotations()
         searchAnnotations.append(annotation)
         self.mapView.addAnnotation(annotation)

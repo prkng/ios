@@ -205,7 +205,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         let checkin = groupedCheckins![key]![indexPath.row]
         
         if settingsDelegate != nil {
-            settingsDelegate?.goToPreviousCheckin(checkin)
+            settingsDelegate?.goToCoordinate(checkin.location.coordinate, named:checkin.name) 
         }
         
     }

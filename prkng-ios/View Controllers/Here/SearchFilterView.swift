@@ -22,7 +22,9 @@ class SearchFilterView: UIView, UITextFieldDelegate {
 
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
-    
+
+    static var TOTAL_HEIGHT : CGFloat = 90
+
     override init(frame: CGRect) {
         
         searchFieldView = UIView()

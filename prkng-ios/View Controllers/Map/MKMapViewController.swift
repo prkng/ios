@@ -741,7 +741,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     }
     
     //shows a checkin on the map as a regular marker
-    override func goToPreviousCheckin(checkin: Checkin) {
+    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) {
         NSLog("Can't yet go to a previous checkin in the apple map")
     }
 

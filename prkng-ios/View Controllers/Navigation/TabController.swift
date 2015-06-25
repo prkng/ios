@@ -338,12 +338,19 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
     }
     
+    func showSpotOnMap(spot: ParkingSpot) {
+        let coordinate = spot.buttonLocation.coordinate
+        let name = spot.name
+        goToCoordinate(coordinate, named: name)
+    }
+
+    
     // MARK: SettingsViewControllerDelegate
     
-    func goToPreviousCheckin(checkin: Checkin) {
+    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) {
         loadHereTab()
         self.mapViewController.trackUser(false)
-        self.mapViewController.goToPreviousCheckin(checkin)
+        self.mapViewController.goToCoordinate(coordinate, named:name)
     }
 
 }
