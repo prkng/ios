@@ -112,8 +112,8 @@
 
 "here_firstuse_title" = "Comment ça marche.";
 "here_firstuse_subtitle" = "un peu d’aide pour votre première fois!";
-"here_firstuse_1" = "Sélectionez un tronçon afin \nde connaître sa disponibilité.";
-"here_firstuse_2" = "Une fois trouvée, enregistez \nvotre place afin d'être informé \nquand déplacer votre véhicule.";
+"here_firstuse_1" = "Sélectionez un tronçon afin de connaître sa disponibilité.";
+"here_firstuse_2" = "Une fois trouvée, enregistez votre place afin d'être informé quand déplacer votre véhicule.";
 "free_spots" = "segments autorisés";
 
 "report_title" = "SIGNALER UNE ERREUR SUR";
