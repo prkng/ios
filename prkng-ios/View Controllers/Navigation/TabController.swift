@@ -65,7 +65,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         containerView.addSubview(hereViewController.view)
         tabBar.updateSelected()
         hereViewController.delegate = self
-        hereViewController.searchDelegate = self
+        hereViewController.searchFilterView.delegate = self
         hereViewController.view.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.containerView)
         }

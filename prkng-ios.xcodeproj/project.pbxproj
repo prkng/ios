@@ -14,6 +14,8 @@
 		3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDACB1B276A2B00872667 /* libc++.dylib */; };
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
+		3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */; };
+		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6CC9711B309B51009EA460 /* montreal_parking_availability.kml in Resources */ = {isa = PBXBuildFile; fileRef = 3E6CC9701B309B51009EA460 /* montreal_parking_availability.kml */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
@@ -153,6 +155,8 @@
 		3E0FDACB1B276A2B00872667 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		3E0FDAD31B27921400872667 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3E3199581B31D4F600CB118D /* TimeFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFilterView.swift; sourceTree = "<group>"; };
+		3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
+		3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextButton.swift; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6CC9701B309B51009EA460 /* montreal_parking_availability.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = montreal_parking_availability.kml; sourceTree = "<group>"; };
@@ -539,6 +543,7 @@
 				BF8F78121B00E07800A85197 /* CheckinMessageViewController.swift */,
 				BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */,
 				3E3199581B31D4F600CB118D /* TimeFilterView.swift */,
+				3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */,
 			);
 			path = Here;
 			sourceTree = "<group>";
@@ -726,6 +731,7 @@
 				BFD6B6C41AF2F09E00789022 /* DateUtil.swift */,
 				BFC850F91B2F618A006383AC /* ImageUtil.swift */,
 				3EF469B11B33753300BC87A9 /* PRKLabel.swift */,
+				3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1036,6 +1042,7 @@
 				3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
+				3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */,
 				BFC850FA1B2F618A006383AC /* ImageUtil.swift in Sources */,
 				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
@@ -1052,6 +1059,7 @@
 				BF9C46F51B32E30600DCF858 /* TheProjectViewController.swift in Sources */,
 				BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */,
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
+				3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */,
 				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
 				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
 				BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */,
