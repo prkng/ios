@@ -35,7 +35,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     private(set) var SECONDS_PER_MINUTE : NSTimeInterval = 60
     private(set) var SECONDS_PER_HOUR : NSTimeInterval = 3600
     static var TOTAL_HEIGHT : CGFloat = 90
-    static var SCROLL_HEIGHT: CGFloat = 50
+    static var TOP_VIEW_HEIGHT : CGFloat = 40
+    static var SCROLL_HEIGHT: CGFloat = TOTAL_HEIGHT - TOP_VIEW_HEIGHT
     private(set) var WIDTH : CGFloat = 800
     private(set) var FONT : UIFont = Styles.FontFaces.regular(17)
     
@@ -157,7 +158,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         titleView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self)
             make.right.equalTo(self)
-            make.height.equalTo(40)
+            make.height.equalTo(TimeFilterView.TOP_VIEW_HEIGHT)
             make.top.equalTo(self)
         }
         
@@ -176,9 +177,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         scrollView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.containerView)
             make.top.equalTo(self.titleView.snp_bottom)
-//            make.height.equalTo(40)
+            make.height.equalTo(TimeFilterView.SCROLL_HEIGHT)
         }
         
         contentView.snp_makeConstraints { (make) -> () in
