@@ -61,7 +61,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         titleContainer.backgroundColor = Styles.Colors.cream2
         containerView.addSubview(titleContainer)
         
-        titleLabel.font = Styles.FontFaces.light(27)
+        titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.petrol2
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.text = "first_checkin_title".localizedString

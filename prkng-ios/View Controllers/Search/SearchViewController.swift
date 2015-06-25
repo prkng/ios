@@ -87,7 +87,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         markerIcon.userInteractionEnabled = false
         containerView.addSubview(markerIcon)
         
-        textLabel.font = Styles.FontFaces.light(27)
+        textLabel.font = Styles.Fonts.h1
         textLabel.textColor = Styles.Colors.anthracite1
         textLabel.numberOfLines = 0
         textLabel.text = NSLocalizedString("search_step1_copy",comment:"")
@@ -97,7 +97,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         searchField.backgroundColor = Styles.Colors.cream2
         searchField.layer.borderWidth = 1
         searchField.layer.borderColor = Styles.Colors.beige1.CGColor
-        searchField.font = Styles.FontFaces.light(22)
+        searchField.font = Styles.Fonts.h3
         searchField.textColor = Styles.Colors.midnight2
         searchField.textAlignment = NSTextAlignment.Center
         searchField.delegate = self

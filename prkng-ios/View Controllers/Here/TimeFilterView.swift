@@ -36,8 +36,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     private(set) var SECONDS_PER_HOUR : NSTimeInterval = 3600
     static var TOTAL_HEIGHT : CGFloat = 50
     static var SCROLL_HEIGHT: CGFloat = 50
-    private(set) var WIDTH : CGFloat = 730
-    private(set) var FONT : UIFont = Styles.FontFaces.regular(17)
+    private(set) var WIDTH : CGFloat = 710
+    private(set) var FONT : UIFont = Styles.FontFaces.regular(14)
     
     override init(frame: CGRect) {
 
@@ -132,7 +132,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         timeImageView.userInteractionEnabled = false
         containerView.addSubview(timeImageView)
 
-        topLine.backgroundColor = Styles.Colors.petrol2
+        topLine.backgroundColor = Styles.Colors.petrol1
         self.addSubview(topLine)
 
         bottomLine.backgroundColor = Styles.Colors.midnight2

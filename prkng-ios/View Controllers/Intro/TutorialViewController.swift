@@ -17,6 +17,8 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     var getStartedButton : UIButton
     var contentViewControllers : Array<UIViewController>
     
+    static let PAGE_CONTROL_BOTTOM_OFFSET = 90
+    
     let pageCount = 4
     
     let images = [ UIImage(named: "tutorial_1"),
@@ -98,7 +100,7 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         
         pageControl.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(-90)
+            make.bottom.equalTo(self.view).with.offset(0 - TutorialViewController.PAGE_CONTROL_BOTTOM_OFFSET)
         }
         
         nextButton.snp_makeConstraints { (make) -> () in

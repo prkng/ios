@@ -137,7 +137,7 @@ class SpotDetailView: UIView {
         
         topContainerRightView.snp_makeConstraints { (make) -> () in
             make.centerY.equalTo(self.topContainer)
-            make.right.equalTo(self.topContainer).with.offset(-22)
+            make.right.equalTo(self.topContainer.snp_centerX).multipliedBy(1.66).with.offset(28)
             make.height.equalTo(Styles.Sizes.spotDetailViewTopPortionHeight)
             make.width.equalTo(56)
         }
@@ -145,12 +145,12 @@ class SpotDetailView: UIView {
         checkinImageView.snp_makeConstraints { (make) -> () in
             make.height.equalTo(24)
             make.centerX.equalTo(self.topContainerRightView)
-            make.top.equalTo(self.topContainerRightView).with.offset(23)
+            make.top.equalTo(self.topContainerRightView).with.offset(27)
         }
 
         checkinImageLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.topContainerRightView)
-            make.bottom.equalTo(self.topContainerRightView).with.offset(-10)
+            make.bottom.equalTo(self.topContainerRightView).with.offset(-14)
         }
         
         bottomContainer.snp_makeConstraints { (make) -> () in
@@ -162,19 +162,19 @@ class SpotDetailView: UIView {
 
         availableTextLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomContainer).with.offset(24)
-            make.top.equalTo(self.bottomContainer).with.offset(9)
+            make.top.equalTo(self.bottomContainer).with.offset(14)
         }
         
         availableTimeLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomContainer).with.offset(24)
-            make.bottom.equalTo(self.bottomContainer).with.offset(-9)
+            make.bottom.equalTo(self.bottomContainer).with.offset(-14)
             make.right.lessThanOrEqualTo(self.scheduleImageView.snp_left)
         }
         
         scheduleImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 22, height: Styles.Sizes.spotDetailViewBottomPortionHeight))// + 22))
             make.centerY.equalTo(self.bottomContainer)
-            make.right.equalTo(self.bottomContainer).with.offset(-39)
+            make.right.equalTo(self.bottomContainer.snp_centerX).multipliedBy(1.66).with.offset(11)
         }
 
         didSetupConstraints = true

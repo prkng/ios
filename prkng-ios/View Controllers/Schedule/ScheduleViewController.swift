@@ -39,7 +39,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         scheduleItemViews = []
         
         HEADER_HEIGHT = 90
-        LEFT_VIEW_WIDTH = UIScreen.mainScreen().bounds.size.width * 0.16
+        LEFT_VIEW_WIDTH = UIScreen.mainScreen().bounds.size.width * 0.18
         COLUMN_SIZE = UIScreen.mainScreen().bounds.size.width * 0.28
         CONTENTVIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - HEADER_HEIGHT - 71.0
         COLUMN_HEADER_HEIGHT = 45.0

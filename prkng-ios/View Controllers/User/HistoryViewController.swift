@@ -93,7 +93,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         headerView.clipsToBounds = true
         headerView.addSubview(iconView)
         
-        titleLabel.font = Styles.FontFaces.light(29)
+        titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.cream1
         titleLabel.textAlignment = .Center
         titleLabel.text = "history".localizedString

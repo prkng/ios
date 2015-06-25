@@ -34,7 +34,7 @@ class AboutViewController: AbstractViewController {
         
         view.addSubview(iconView)
         
-        titleLabel.font = Styles.FontFaces.light(29)
+        titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.cream1
         titleLabel.textAlignment = .Center
         titleLabel.text = "about".localizedString

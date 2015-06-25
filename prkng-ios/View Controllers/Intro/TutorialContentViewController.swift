@@ -15,6 +15,8 @@ class TutorialContentViewController: GAITrackedViewController {
     var textLabel : UILabel
     var pageIndex : Int
     
+    private var SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE = UIScreen.mainScreen().bounds.height == 480 ? 30 : 0
+    
     init(backgroundImage : UIImage, image : UIImage, text : String, index : Int) {
         backgroundImageView = UIImageView()
         imageView = UIImageView()
@@ -78,16 +80,17 @@ class TutorialContentViewController: GAITrackedViewController {
         }
         
         imageView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(60)
+            make.top.lessThanOrEqualTo(self.view).with.offset(60)
             make.left.equalTo(self.view).with.offset(35)
             make.right.equalTo(self.view).with.offset(-35)
-            make.height.equalTo(self.imageView.snp_width)
+            make.height.lessThanOrEqualTo(self.imageView.snp_width).with.offset(0 - self.SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE)
         }
         
         textLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.imageView.snp_bottom).with.offset(20)
-            make.left.equalTo(self.view).with.offset(50)
-            make.right.equalTo(self.view).with.offset(-50)
+            make.top.lessThanOrEqualTo(self.imageView.snp_bottom).with.offset(20)
+            make.left.equalTo(self.view).with.offset(40)
+            make.right.equalTo(self.view).with.offset(-40)
+            make.bottom.lessThanOrEqualTo(self.view).with.offset(-40 - TutorialViewController.PAGE_CONTROL_BOTTOM_OFFSET)
         }
         
     }

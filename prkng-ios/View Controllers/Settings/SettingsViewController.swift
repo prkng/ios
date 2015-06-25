@@ -35,6 +35,8 @@ class SettingsViewController: AbstractViewController {
     
     var delegate: SettingsViewControllerDelegate?
     
+    private(set) var CITY_CONTAINER_HEIGHT = UIScreen.mainScreen().bounds.height == 480 ? 54 : 60
+    
     init() {
         
         topContainer = UIView()
@@ -139,7 +141,7 @@ class SettingsViewController: AbstractViewController {
         cityContainer.backgroundColor = Styles.Colors.red2
         view.addSubview(cityContainer)
         
-        cityLabel.font = Styles.FontFaces.light(31)
+        cityLabel.font = Styles.Fonts.h1
         cityLabel.textColor = Styles.Colors.cream1
         cityContainer.addSubview(cityLabel)
         
@@ -211,7 +213,7 @@ class SettingsViewController: AbstractViewController {
         }
         
         cityContainer.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(60)
+            make.height.equalTo(self.CITY_CONTAINER_HEIGHT)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.notificationsContainer.snp_top)

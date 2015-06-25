@@ -38,6 +38,13 @@ class RegisterEmailViewController: AbstractViewController {
     
     var delegate : RegisterEmailViewControllerDelegate?
     
+    private var SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE: CGFloat = UIScreen.mainScreen().bounds.height == 480 ? 43 : (UIScreen.mainScreen().bounds.height == 568 ? 16 : 0)
+    private var SMALL_IPHONE_STEP_1_TOP_SPACING_DIFFERENCE: CGFloat = UIScreen.mainScreen().bounds.height <= 568 ? 12 : 0
+    private var SMALL_IPHONE_STEP_1_BOTTOM_SPACING_DIFFERENCE: CGFloat = UIScreen.mainScreen().bounds.height <= 568 ? 24 : 0
+    private var SMALL_SPACING_EXTRA: CGFloat = UIScreen.mainScreen().bounds.height == 480 ? 30 : 0
+
+    private var BIG_SPACING_EXTRA: CGFloat = UIScreen.mainScreen().bounds.height <= 568 ? 55 : 0
+
     init() {
         
         stepOneScrollView = UIScrollView()
@@ -190,12 +197,12 @@ class RegisterEmailViewController: AbstractViewController {
         
         stepOneScrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.stepOneScrollView)
-            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.width, 540))
+            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.width, 540 - (3*self.SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE + self.SMALL_IPHONE_STEP_1_TOP_SPACING_DIFFERENCE + self.SMALL_IPHONE_STEP_1_BOTTOM_SPACING_DIFFERENCE)))
         }
-        
+
         stepOneTitleLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.stepOneScrollContentView)
-            make.top.equalTo(self.stepOneScrollContentView).with.offset(40)
+            make.top.equalTo(self.stepOneScrollContentView).with.offset(40 - self.SMALL_IPHONE_STEP_1_TOP_SPACING_DIFFERENCE)
         }
         
         stepOneStepLabel.snp_makeConstraints { (make) -> () in
@@ -206,7 +213,7 @@ class RegisterEmailViewController: AbstractViewController {
         emailLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.stepOneScrollContentView).with.offset(10)
             make.right.equalTo(self.stepOneScrollContentView).with.offset(-10)
-            make.top.greaterThanOrEqualTo(self.stepOneStepLabel.snp_bottom).with.offset(60)
+            make.top.greaterThanOrEqualTo(self.stepOneStepLabel.snp_bottom).with.offset(60 - self.SMALL_IPHONE_STEP_1_BOTTOM_SPACING_DIFFERENCE)
             make.centerX.equalTo(self.stepOneScrollContentView)
             make.height.equalTo(17)
         }
@@ -214,9 +221,9 @@ class RegisterEmailViewController: AbstractViewController {
         emailTextField.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.stepOneScrollContentView).with.offset(10)
             make.right.equalTo(self.stepOneScrollContentView).with.offset(-10)
-            make.top.equalTo(self.emailLabel)
+            make.top.equalTo(self.emailLabel.snp_bottom)
             make.centerX.equalTo(self.stepOneScrollContentView)
-            make.height.equalTo(71)
+            make.height.equalTo(71 - self.SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE)
         }
         
         
@@ -227,10 +234,10 @@ class RegisterEmailViewController: AbstractViewController {
         }
         
         passwordTextField.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.passwordLabel)
+            make.top.equalTo(self.passwordLabel.snp_bottom)
             make.left.equalTo(self.stepOneScrollContentView).with.offset(10)
             make.right.equalTo(self.stepOneScrollContentView).with.offset(-10)
-            make.height.equalTo(71)
+            make.height.equalTo(71 - self.SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE)
         }
         
         confirmPasswordLabel.snp_makeConstraints { (make) -> () in
@@ -240,10 +247,10 @@ class RegisterEmailViewController: AbstractViewController {
         }
         
         confirmPasswordTextField.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.confirmPasswordLabel)
+            make.top.equalTo(self.confirmPasswordLabel.snp_bottom)
             make.left.equalTo(self.stepOneScrollContentView).with.offset(10)
             make.right.equalTo(self.stepOneScrollContentView).with.offset(-10)
-            make.height.equalTo(71)
+            make.height.equalTo(71 - self.SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE)
         }
         
         continueButton.snp_makeConstraints { (make) -> () in
@@ -263,12 +270,12 @@ class RegisterEmailViewController: AbstractViewController {
         
         stepTwoScrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.stepTwoScrollView)
-            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.width, 540))
+            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.width, 540 - (2*self.SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE + self.SMALL_IPHONE_STEP_1_TOP_SPACING_DIFFERENCE + self.SMALL_SPACING_EXTRA + self.BIG_SPACING_EXTRA)))
         }
         
         stepTwoTitleLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.stepTwoScrollContentView)
-            make.top.equalTo(self.stepTwoScrollContentView).with.offset(40)
+            make.top.equalTo(self.stepTwoScrollContentView).with.offset(40 - self.SMALL_IPHONE_STEP_1_TOP_SPACING_DIFFERENCE)
         }
         
         stepTwoStepLabel.snp_makeConstraints { (make) -> () in
@@ -276,23 +283,34 @@ class RegisterEmailViewController: AbstractViewController {
             make.top.equalTo(self.stepTwoTitleLabel.snp_bottom).with.offset(5)
         }
         
-        avatarButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.stepTwoStepLabel.snp_bottom).with.offset(19)
-            make.centerX.equalTo(self.stepTwoScrollContentView)
-            make.size.equalTo(CGSizeMake(55, 55))
-        }
-        
-        nameLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.avatarButton.snp_bottom).with.offset(16)
-            make.centerX.equalTo(self.stepTwoScrollContentView)
-            make.height.equalTo(17)
+        if UIScreen.mainScreen().bounds.height > 568 {
+            avatarButton.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.stepTwoStepLabel.snp_bottom).with.offset(19)
+                make.centerX.equalTo(self.stepTwoScrollContentView)
+                make.size.equalTo(CGSizeMake(55, 55))
+            }
+            
+            nameLabel.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.avatarButton.snp_bottom).with.offset(16)
+                make.centerX.equalTo(self.stepTwoScrollContentView)
+                make.height.equalTo(17)
+            }
+
+        } else {
+            
+            nameLabel.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.stepTwoStepLabel.snp_bottom).with.offset(16)
+                make.centerX.equalTo(self.stepTwoScrollContentView)
+                make.height.equalTo(17)
+            }
+
         }
         
         nameTextField.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.nameLabel)
+            make.top.equalTo(self.nameLabel.snp_bottom)
             make.left.equalTo(self.stepOneScrollContentView).with.offset(10)
             make.right.equalTo(self.stepOneScrollContentView).with.offset(-10)
-            make.height.equalTo(71)
+            make.height.equalTo(71 - 17 - self.SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE)
         }
         
         genderLabel.snp_makeConstraints { (make) -> () in
@@ -316,10 +334,10 @@ class RegisterEmailViewController: AbstractViewController {
         }
         
         birthYearTextField.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.birthYearLabel)
+            make.top.equalTo(self.birthYearLabel.snp_bottom)
             make.left.equalTo(self.stepOneScrollContentView).with.offset(10)
             make.right.equalTo(self.stepOneScrollContentView).with.offset(-10)
-            make.height.equalTo(71)
+            make.height.equalTo(71 - 17 - self.SMALL_IPHONE_TEXT_FIELD_SPACING_DIFFERENCE)
         }
         
         backButton.snp_makeConstraints { (make) -> () in

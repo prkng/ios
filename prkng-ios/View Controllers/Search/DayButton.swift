@@ -56,7 +56,7 @@ class DayButton: UIControl {
     func setupSubviews() {
         
         titleLabel.text = title
-        titleLabel.font = Styles.FontFaces.light(22.0)
+        titleLabel.font = Styles.Fonts.h1
         titleLabel.textAlignment = NSTextAlignment.Center
         selected = false
         addSubview(titleLabel)

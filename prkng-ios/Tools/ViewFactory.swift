@@ -42,7 +42,7 @@ struct ViewFactory {
     static func hugeButton () -> MKButton {
         
         let hugeButton = MKButton()
-        hugeButton.titleLabel?.font = Styles.FontFaces.light(31)
+        hugeButton.titleLabel?.font = Styles.Fonts.h1
         hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
         hugeButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
         hugeButton.backgroundColor = Styles.Colors.cream1
@@ -54,7 +54,7 @@ struct ViewFactory {
     static func bigButton () -> MKButton {
         
         let bigButton = MKButton()
-        bigButton.titleLabel?.font = Styles.FontFaces.light(25)
+        bigButton.titleLabel?.font = Styles.Fonts.h1
         bigButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
         bigButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
         bigButton.backgroundColor = Styles.Colors.stone
@@ -85,7 +85,7 @@ struct ViewFactory {
     
     static func bigTransparentButton () -> UIButton {
         let button = UIButton ()
-        button.titleLabel?.font = Styles.FontFaces.light(31)
+        button.titleLabel?.font = Styles.Fonts.h1
         button.setTitleColor(Styles.Colors.cream1, forState: .Normal)
         button.setTitleColor(Styles.Colors.anthracite1, forState: .Highlighted)
         return button
@@ -115,7 +115,7 @@ struct ViewFactory {
     
     static func bigMessageLabel() -> UILabel {
         let label = UILabel()
-        label.font = Styles.FontFaces.light(31)
+        label.font = Styles.Fonts.h1
         label.textColor = Styles.Colors.cream1
         label.textAlignment = NSTextAlignment.Center
         label.numberOfLines = 0
@@ -126,7 +126,7 @@ struct ViewFactory {
     
     static func formTextField() -> UITextField {
         let textField = UITextField()
-        textField.font = Styles.Fonts.h2
+        textField.font = Styles.Fonts.h3
         textField.backgroundColor = UIColor.clearColor()
         textField.textColor = Styles.Colors.anthracite1
         textField.textAlignment = NSTextAlignment.Center

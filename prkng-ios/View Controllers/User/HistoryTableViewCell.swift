@@ -38,7 +38,7 @@ class HistoryTableViewCell: UITableViewCell {
         self.backgroundColor = Styles.Colors.stone
         
         dayLabel.backgroundColor = Styles.Colors.cream1
-        dayLabel.font = Styles.FontFaces.light(25)
+        dayLabel.font = Styles.Fonts.h1
         dayLabel.textColor = Styles.Colors.red2
         dayLabel.textAlignment = .Center
         contentView.addSubview(dayLabel)
@@ -47,7 +47,7 @@ class HistoryTableViewCell: UITableViewCell {
         dateLabel.textColor = Styles.Colors.red2
         contentView.addSubview(dateLabel)
         
-        addressLabel.font = Styles.FontFaces.light(20)
+        addressLabel.font = Styles.Fonts.h3
         addressLabel.textColor = Styles.Colors.midnight2
         contentView.addSubview(addressLabel)
         

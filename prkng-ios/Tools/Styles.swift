@@ -65,25 +65,25 @@ struct Styles {
     
     struct Fonts {
         
-        static let h1 =  FontFaces.light(29)
+        static let h1 =  FontFaces.light(25)
         static let h2 =  FontFaces.light(25)
         static let h3 =  FontFaces.light(20)
         
-        static let h1r =  FontFaces.regular(29)
+        static let h1r =  FontFaces.regular(25)
         static let h2r =  FontFaces.regular(25)
         static let h3r =  FontFaces.regular(20)
     }
     
     struct Sizes {
         static let tabbarHeight = 58
-        static let hugeButtonHeight = 70
+        static let hugeButtonHeight = UIScreen.mainScreen().bounds.height == 480 ? 54 : 70
         static let formTextFieldHeight = 71
         static let formLabelHeight = 17
         static let searchTextFieldHeight = 46
         static let blurRadius = 3
         static let avatarSize = CGSizeMake(68,68)
-        static let spotDetailViewHeight = 120
-        static let spotDetailViewTopPortionHeight = 60
+        static let spotDetailViewHeight = 140
+        static let spotDetailViewTopPortionHeight = 70
         static let spotDetailViewBottomPortionHeight = spotDetailViewHeight - spotDetailViewTopPortionHeight
     }
     

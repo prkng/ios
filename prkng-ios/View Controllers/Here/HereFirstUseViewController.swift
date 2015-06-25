@@ -83,7 +83,7 @@ class HereFirstUseViewController: GAITrackedViewController {
         iconView.image = UIImage(named: "icon_howto_compass")
         containerView.addSubview(iconView)
         
-        titleLabel.font = Styles.FontFaces.light(27)
+        titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.petrol2
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.text = "here_firstuse_title".localizedString
