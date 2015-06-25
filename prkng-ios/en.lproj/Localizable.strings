@@ -133,3 +133,5 @@
 
 "all" = "all";
 "check-in" = "Check-in";
+"authorized_for" = "Authorized for";
+"search" = "Search";

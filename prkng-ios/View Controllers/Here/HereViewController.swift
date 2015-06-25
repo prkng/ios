@@ -13,26 +13,31 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     var scheduleViewController : ScheduleViewController?
     var firstUseMessageVC : HereFirstUseViewController?
     var detailView: SpotDetailView
+    
+    var searchFilterView: SearchFilterView
     var timeFilterView: TimeFilterView
+    var showingFilters: Bool
     
     var statusBar : UIView
-    var searchButton : UIButton
-    var searchFieldView : UIView
-    var searchField : UITextField
+    var filterButton : PRKTextButton
 
     var activeSpot : ParkingSpot?
     var forceShowSpotDetails: Bool
 
+    private var filterButtonImageName: String
+    private var filterButtonText: String
+    
     var delegate : HereViewControllerDelegate?
-    var searchDelegate : SearchViewControllerDelegate?
 
     init() {
         detailView = SpotDetailView()
         timeFilterView = TimeFilterView()
+        searchFilterView = SearchFilterView()
+        showingFilters = false
         statusBar = UIView()
-        searchButton = UIButton()
-        searchFieldView = UIView()
-        searchField = UITextField()
+        filterButton = PRKTextButton(image: nil, imageSize: CGSizeMake(36, 36), labelText: "")
+        filterButtonImageName = "icon_filter"
+        filterButtonText = ""
         forceShowSpotDetails = false
         super.init(nibName: nil, bundle: nil)
     }
@@ -74,40 +79,18 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         detailView.delegate = self
         view.addSubview(detailView)
         
+        view.addSubview(searchFilterView)
+
         timeFilterView.delegate = self
         view.addSubview(timeFilterView)
         
         statusBar.backgroundColor = Styles.Colors.statusBar
         view.addSubview(statusBar)
         
-        searchButton.setImage(UIImage(named: "tabbar_search_active"), forState: UIControlState.Normal)
-        searchButton.addTarget(self, action: "transformSearchButtonIntoField", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(searchButton)
+        filterButton.setImage(UIImage(named: filterButtonImageName))
+        filterButton.addTarget(self, action: "toggleFilterButton", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(filterButton)
         
-        searchField.clearButtonMode = UITextFieldViewMode.Always
-        searchField.backgroundColor = Styles.Colors.cream1
-        searchField.font = Styles.FontFaces.light(16)
-        searchField.textColor = Styles.Colors.midnight2
-        searchField.textAlignment = NSTextAlignment.Natural
-        searchField.delegate = self
-        searchField.keyboardAppearance = UIKeyboardAppearance.Default
-        searchField.keyboardType = UIKeyboardType.Default
-        searchField.autocorrectionType = UITextAutocorrectionType.No
-        searchField.returnKeyType = UIReturnKeyType.Search
-        searchFieldView.addSubview(searchField)
-
-        searchFieldView.clipsToBounds = false
-        searchFieldView.layer.masksToBounds = false
-        searchFieldView.backgroundColor = Styles.Colors.cream1
-        searchFieldView.layer.borderWidth = 0
-        searchFieldView.layer.borderColor = Styles.Colors.beige1.CGColor
-        searchFieldView.layer.shadowColor = Styles.Colors.beige2.CGColor
-        searchFieldView.layer.shadowOffset = CGSize(width: 0, height: 1)
-        searchFieldView.layer.shadowRadius = CGFloat(Styles.Sizes.blurRadius)
-        searchFieldView.layer.shadowOpacity = 1
-
-        view.addSubview(searchFieldView)
-
     }
     
     func setupConstraints() {
@@ -126,26 +109,26 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
         }
 
+        searchFilterView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(0)
+        }
+
         timeFilterView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(100)
+            make.top.equalTo(self.searchFilterView.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(0)
         }
         
-        searchButton.snp_makeConstraints{ (make) -> () in
-            make.size.equalTo(CGSizeMake(36, 36))
-            make.centerX.equalTo(self.view).multipliedBy(1.66)
+        filterButton.snp_makeConstraints{ (make) -> () in
+            make.size.greaterThanOrEqualTo(CGSizeMake(36, 36))
+            make.right.equalTo(self.view.snp_centerX).multipliedBy(1.66).with.offset(18)
             make.bottom.equalTo(self.view).with.offset(-30)
         }
         
-        searchFieldView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(32)
-            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.centerX.equalTo(self.view)
-            make.width.equalTo(0)
-        }
-
     }
     
     
@@ -306,7 +289,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             detailView.availableTimeLabel.attributedText = activeSpot?.availableUntilAttributed(firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
             
-            hideSearchButton()
+            hideFilters(alsoHideFilterButton: true)
             
             showSpotDetails()
             
@@ -355,7 +338,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                     self.detailView.layoutIfNeeded()
                 },
                 completion: { (completed: Bool) -> Void in
-                    self.showSearchButton(false)
+                    self.showFilterButton(false)
             })
         }
 
@@ -381,161 +364,130 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
-    func transformSearchButtonIntoField() {
+    func toggleFilterButton() {
         
-        hideSearchButton()
-        
-        searchFieldView.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(32)
-            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.view).with.offset(12)
-            make.right.equalTo(self.view).with.offset(-12)
+        if showingFilters {
+            hideFilters(alsoHideFilterButton: false)
+        } else {
+            showFilters()
         }
+    }
+    
+    func showFilters() {
         
-        searchField.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self.searchFieldView).with.offset(20)
-            make.right.equalTo(self.searchFieldView)
-            make.top.equalTo(self.searchFieldView)
-            make.bottom.equalTo(self.searchFieldView)
+        //whenever it's shown, reset the filter
+        timeFilterView.resetValue()
+        
+        searchFilterView.snp_updateConstraints { (make) -> () in
+            make.height.equalTo(TimeFilterView.TOTAL_HEIGHT)
         }
-        
-//        timeFilterView.snp_updateConstraints { (make) -> () in
-//            make.height.equalTo(TimeFilterView.HEIGHT)
-//        }
-        
-        searchFieldView.setNeedsLayout()
-        searchField.setNeedsLayout()
+
+        timeFilterView.snp_updateConstraints { (make) -> () in
+            make.height.equalTo(TimeFilterView.TOTAL_HEIGHT)
+        }
+
         timeFilterView.setNeedsLayout()
+        searchFilterView.setNeedsLayout()
         
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
-                self.searchFieldView.layoutIfNeeded()
-                self.searchField.layoutIfNeeded()
+                self.filterButtonText = ""
+                self.filterButton.setLabelText(self.filterButtonText)
+                
+                self.filterButtonImageName = "icon_filter_close"
+                self.filterButton.setImage(UIImage(named: self.filterButtonImageName))
+
                 self.timeFilterView.layoutIfNeeded()
+                self.searchFilterView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-                self.searchField.becomeFirstResponder()
         })
+        
+        showingFilters = true
         
     }
 
-    func transformSearchFieldIntoButton() {
+    func hideFilters(#alsoHideFilterButton: Bool) {
         
-        searchField.snp_removeConstraints()
-
-        searchFieldView.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(32)
-            make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.centerX.equalTo(self.view)
-            make.width.equalTo(0)
-        }
-
-        searchField.snp_remakeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(0, 0))
-            make.top.equalTo(self.searchFieldView)
-            make.left.equalTo(self.searchFieldView)
+        searchFilterView.snp_updateConstraints { (make) -> () in
+            make.height.equalTo(0)
         }
         
         timeFilterView.snp_updateConstraints { (make) -> () in
             make.height.equalTo(0)
         }
         
-        searchFieldView.setNeedsLayout()
-        searchField.setNeedsLayout()
         timeFilterView.setNeedsLayout()
+        searchFilterView.setNeedsLayout()
 
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
-                self.searchFieldView.layoutIfNeeded()
-                self.searchField.layoutIfNeeded()
                 self.timeFilterView.layoutIfNeeded()
+                self.searchFilterView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-                self.showSearchButton(false)
+                if alsoHideFilterButton {
+                    self.hideFilterButton()
+                } else {
+                    self.showFilterButton(false)
+                }
         })
+        
+        showingFilters = false
         
     }
 
     
-    // UITextFieldDelegate
-    
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        return self.searchFieldView.frame.size.width > 0
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        
-        textField.endEditing(true)
-        SearchOperations.searchByStreetName(textField.text, completion: { (results) -> Void in
-            
-            let today = DateUtil.dayIndexOfTheWeek()
-            var date : NSDate = NSDate()
-            
-            self.searchDelegate!.displaySearchResults(results, checkinTime : date)
-            
-        })
-        
-        return true
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        if textField.text.isEmpty {
-            endSearch(textField)
-        }
-    }
-    
-    func textFieldShouldClear(textField: UITextField) -> Bool {
-        endSearch(textField)
-        return true
-    }
-    
-    func endSearch(textField: UITextField) {
-        searchDelegate?.clearSearchResults()
-        transformSearchFieldIntoButton()
-        textField.endEditing(true)
-    }
-    
     // MARK: Helper Methods
     
-    func hideSearchButton() {
-        
-        searchButton.snp_updateConstraints{ (make) -> () in
+    func hideFilterButton() {
+
+        filterButton.snp_remakeConstraints{ (make) -> () in
             make.size.equalTo(CGSizeMake(0, 0))
             make.centerX.equalTo(self.view).multipliedBy(1.66)
             make.bottom.equalTo(self.view).with.offset(-48)
         }
-        animateSearchButton()
+        animatefilterButton()
     }
     
-    func showSearchButton(forceShow: Bool) {
+    func showFilterButton(forceShow: Bool) {
 
-        //only shows the button if the searchField is closed
-        
+        //only shows the button if the searchField is 'hidden'
         if !forceShow
-            && (self.searchFieldView.frame.size.width > 0
+            && (showingFilters
                 || !self.isSpotDetailsHidden()) {
                     return
         }
+
+        //if we have an active filter...
+        if filterButtonText == "" {
+            filterButtonImageName = "icon_filter"
+        } else {
+            filterButtonImageName = "icon_time"
+
+        }
         
-        searchButton.snp_updateConstraints{ (make) -> () in
-            make.size.equalTo(CGSizeMake(36, 36))
-            make.centerX.equalTo(self.view).multipliedBy(1.66)
+        filterButton.setImage(UIImage(named: filterButtonImageName))
+
+        filterButton.snp_remakeConstraints{ (make) -> () in
+            make.size.greaterThanOrEqualTo(CGSizeMake(36, 36))
+            make.right.equalTo(self.view.snp_centerX).multipliedBy(1.66).with.offset(18)
             make.bottom.equalTo(self.view).with.offset(-30)
         }
-        animateSearchButton()
+        animatefilterButton()
     }
     
-    func animateSearchButton() {
-        searchButton.setNeedsLayout()
+    func animatefilterButton() {
+        filterButton.setNeedsLayout()
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
             animations: { () -> Void in
-                self.searchButton.layoutIfNeeded()
+                self.filterButton.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
         })
@@ -543,8 +495,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     
     // MARK:TimeFilterViewDelegate
-    func filterValueWasChanged(#hours:Float?) {
+    func filterValueWasChanged(#hours:Float?, selectedLabelText: String) {
         self.delegate?.updateMapAnnotations()
+        filterButtonText = selectedLabelText
+        filterButton.setLabelText(selectedLabelText)
+        hideFilters(alsoHideFilterButton: false)
     }
     
 }
