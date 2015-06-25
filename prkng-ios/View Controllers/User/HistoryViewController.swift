@@ -126,7 +126,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.headerView).multipliedBy(0.75)
+            make.bottom.equalTo(self.headerView).multipliedBy(0.70)
             make.height.equalTo(34)
             make.left.equalTo(self.headerView)
             make.right.equalTo(self.headerView)

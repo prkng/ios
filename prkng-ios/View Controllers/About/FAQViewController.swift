@@ -1,21 +1,20 @@
 //
-//  TermsViewController.swift
+//  FAQViewController.swift
 //  prkng-ios
 //
-//  Created by Cagdas Altinkaya on 18/06/15.
+//  Created by Cagdas Altinkaya on 25/06/15.
 //  Copyright (c) 2015 PRKNG. All rights reserved.
 //
 
 import UIKit
 
-class TermsViewController: AbstractViewController, UIWebViewDelegate {
-    
+class FAQViewController: AbstractViewController, UIWebViewDelegate {
     let backgroundImageView = UIImageView(image: UIImage(named: "bg_login"))
     var statusBar = UIView()
     let webView = UIWebView()
     
-    let termsEnglishUrl = "http://prk.ng/terms/"
-    let termsFrenchUrl = "http://prk.ng/fr/conditions/"
+    let faqEnglishUrl = "http://prk.ng/fr/faq/"
+    let faqFrenchUrl = " http://prk.ng/faq/"
     
     let backButton = ViewFactory.hugeButton()
     
@@ -35,9 +34,9 @@ class TermsViewController: AbstractViewController, UIWebViewDelegate {
         
         var url : NSURL
         if lang == "fr" {
-            url = NSURL(string : termsFrenchUrl)!
+            url = NSURL(string : faqEnglishUrl)!
         } else {
-            url = NSURL(string : termsEnglishUrl)!
+            url = NSURL(string : faqEnglishUrl)!
         }
         SVProgressHUD.showWithMaskType(.Clear)
         webView.loadRequest(NSURLRequest(URL: url))

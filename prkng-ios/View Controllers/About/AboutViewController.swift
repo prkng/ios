@@ -14,7 +14,7 @@ class AboutViewController: AbstractViewController {
     
     let iconView = UIImageView(image: UIImage(named: "icon_about"))
     let titleLabel = UILabel()
-    let projectButton = ViewFactory.bigTransparentButton()
+    let faqButton = ViewFactory.bigTransparentButton()
     let termsButton = ViewFactory.bigTransparentButton()
     let shareButton = ViewFactory.bigTransparentButton()
     let backButton = ViewFactory.redBackButton()
@@ -40,9 +40,9 @@ class AboutViewController: AbstractViewController {
         titleLabel.text = "about".localizedString
         view.addSubview(titleLabel)
         
-        projectButton.setTitle("the_project".localizedString, forState: .Normal)
-        projectButton.addTarget(self, action: "projectButtonTapped:", forControlEvents: .TouchUpInside)
-        view.addSubview(projectButton)
+        faqButton.setTitle("faq".localizedString, forState: .Normal)
+        faqButton.addTarget(self, action: "faqButtonTapped:", forControlEvents: .TouchUpInside)
+        view.addSubview(faqButton)
 
         termsButton.setTitle("terms_conditions".localizedString, forState: .Normal)
         termsButton.addTarget(self, action: "termsButtonTapped:", forControlEvents: .TouchUpInside)
@@ -59,12 +59,14 @@ class AboutViewController: AbstractViewController {
     
     func setupConstraints() {
         
+        let viewHeight = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.tabbarHeight)
+        
         backgroundImageView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.view)
         }
         
         iconView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(48)
+            make.top.equalTo(self.view).with.offset(viewHeight * 0.14)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(68, 68))
         }
@@ -76,22 +78,22 @@ class AboutViewController: AbstractViewController {
             make.right.equalTo(self.view)
         }
         
-        projectButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(70)
+        faqButton.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(viewHeight * 0.08)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
         
         termsButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.projectButton.snp_bottom).with.offset(42)
+            make.top.equalTo(self.faqButton.snp_bottom).with.offset(viewHeight * 0.05)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
         
         shareButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.termsButton.snp_bottom).with.offset(42)
+            make.top.equalTo(self.termsButton.snp_bottom).with.offset(viewHeight * 0.08)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -107,8 +109,8 @@ class AboutViewController: AbstractViewController {
     
     
     //MARK: Button Handlers
-    func projectButtonTapped(sender: UIButton) {
-        self.navigationController?.pushViewController(TheProjectViewController(), animated: true)
+    func faqButtonTapped(sender: UIButton) {
+        self.navigationController?.pushViewController(FAQViewController(), animated: true)
     }
     
     func termsButtonTapped(sender: UIButton) {

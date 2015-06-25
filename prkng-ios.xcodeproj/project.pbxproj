@@ -63,6 +63,7 @@
 		BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6981B31B307DE200E0EF62 /* HistoryTableViewCell.swift */; };
 		BF6981B81B30800E00E0EF62 /* HistorySectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6981B71B30800E00E0EF62 /* HistorySectionTitleView.swift */; };
 		BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6E1D451B2083290038E358 /* ReportOverlayView.swift */; };
+		BF7065A21B3C3FE10029987D /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7065A11B3C3FE10029987D /* FAQViewController.swift */; };
 		BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170A91AE3B59300B922CA /* PrkTabBar.swift */; };
 		BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */; };
 		BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170AD1AE3F04D00B922CA /* TouchForwardingView.swift */; };
@@ -224,6 +225,7 @@
 		BF6981B31B307DE200E0EF62 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		BF6981B71B30800E00E0EF62 /* HistorySectionTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySectionTitleView.swift; sourceTree = "<group>"; };
 		BF6E1D451B2083290038E358 /* ReportOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportOverlayView.swift; sourceTree = "<group>"; };
+		BF7065A11B3C3FE10029987D /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		BF7170A91AE3B59300B922CA /* PrkTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBar.swift; sourceTree = "<group>"; };
 		BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBarButton.swift; sourceTree = "<group>"; };
 		BF7170AD1AE3F04D00B922CA /* TouchForwardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchForwardingView.swift; sourceTree = "<group>"; };
@@ -610,6 +612,7 @@
 				BFC490921B31D24C00C43562 /* AboutViewController.swift */,
 				BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */,
 				BF9C46F61B32F72200DCF858 /* TermsViewController.swift */,
+				BF7065A11B3C3FE10029987D /* FAQViewController.swift */,
 			);
 			path = About;
 			sourceTree = "<group>";
@@ -977,6 +980,7 @@
 				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
+				BF7065A21B3C3FE10029987D /* FAQViewController.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */,
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
