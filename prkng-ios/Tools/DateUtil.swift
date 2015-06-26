@@ -35,4 +35,14 @@ class DateUtil {
         return NSTimeInterval((hour * 3600) + (minutes * 60))
     }
     
+    class func beginningDay(date: NSDate) -> NSDate {
+        
+        let calendar = NSCalendar.currentCalendar()
+        calendar.locale = NSLocale(localeIdentifier: "en_GB")
+        let components = calendar.components(.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay, fromDate: date)
+
+        let day = calendar.dateFromComponents(components)
+
+        return day!
+    }
 }

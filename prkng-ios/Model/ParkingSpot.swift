@@ -53,7 +53,7 @@ class ParkingSpot: NSObject, Hashable {
         
         identifier = json["id"].stringValue
         code = json["code"].stringValue
-        name = json["properties"]["rules"][0]["address"].stringValue
+        name = json["properties"]["rules"][0]["address"].stringValue.abbreviatedString
         desc = json["properties"]["rules"][0]["description"].stringValue
         maxParkingTime = json["time_max_parking"].intValue
         duration = json["duration"].intValue
@@ -111,38 +111,25 @@ class ParkingSpot: NSObject, Hashable {
         
         formatter.dateFormat = getDateFormatString(dateAtStartOfNextRule)
         
-        let availableUntil = formatter.stringFromDate(dateAtStartOfNextRule)
+        var availableUntil = formatter.stringFromDate(dateAtStartOfNextRule)
+        
+        //this line is to convert aujourd hui back into aujourd'hui
+        availableUntil = availableUntil.stringByReplacingOccurrencesOfString("d h", withString: "d'h", options: NSStringCompareOptions.LiteralSearch, range: nil)
+
         return availableUntil
     }
     
     private static func getDateFormatString(date: NSDate) -> String {
         
-        let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
-        let is24Hour = testFormat?.rangeOfString("a") == nil
-        
-        var dateFormatString = "EEEE, h" //ex: Wednesday, 7
-        
-        if is24Hour {
-            dateFormatString += " 'h'"
-        }
-        
-        if date.minute() > 0 {
-            if is24Hour {
-                dateFormatString += " mm" //Wednesday, 7 h 30
-            } else {
-                dateFormatString += ":mm" //Wednesday, 7:30
-            }
-        }
-        
-        if !is24Hour {
-            dateFormatString += " a" //Wednesday, 7:30 PM
-        }
+        var dateFormatString = "EEEE, " //ex: Wednesday,
+        dateFormatString += "'" + date.timeIntervalSinceDate(DateUtil.beginningDay(date)).toString() + "'"
         
         //now make today be 'today' and tomorrow be 'tomorrow' 
         
         if date.isToday() {
             let today = "'" + "today".localizedString + "'"
             dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("EEEE", withString: today, options: NSStringCompareOptions.LiteralSearch, range: nil)
+            dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("d'h", withString: "d h", options: NSStringCompareOptions.LiteralSearch, range: nil)
         } else if date.isTomorrow() {
             let tomorrow = "'" + "tomorrow".localizedString + "'"
             dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("EEEE", withString: tomorrow, options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -168,8 +155,10 @@ class ParkingSpot: NSObject, Hashable {
         let dateFormatStringSecondPart = dateFormatStrings.count > 1 ? " a" + dateFormatStrings[1] : ""
         
         formatter.dateFormat = dateFormatStringFirstPart
-        let firstPart = formatter.stringFromDate(dateAtStartOfNextRule)
-        
+        var firstPart = formatter.stringFromDate(dateAtStartOfNextRule)
+        //this line is to convert aujourd hui back into aujourd'hui
+        firstPart = firstPart.stringByReplacingOccurrencesOfString("d h", withString: "d'h", options: NSStringCompareOptions.LiteralSearch, range: nil)
+
         formatter.dateFormat = dateFormatStringSecondPart
         let secondPart = formatter.stringFromDate(dateAtStartOfNextRule)
         

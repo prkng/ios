@@ -317,7 +317,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             array.append(days[j])
         }
         
-        array[0] = "today".localizedString.uppercaseString
+        array[0] = "this_day".localizedString.uppercaseString
         
         return array
     }
@@ -562,44 +562,6 @@ class ScheduleTimeModel {
         timeInterval = NSTimeInterval(interval)
         self.heightOffsetInHours = heightOff
     }
-    
-    func toString() -> String {
-        
-        let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
-        let is24Hour = testFormat?.rangeOfString("a") == nil
-
-        if is24Hour {
-            var hours = Int((timeInterval / 3600))
-            let minutes  = Int((timeInterval / 60) % 60)
-            
-            if (minutes != 0) {
-                return String(format: "%ldh%ld", hours, minutes)
-            } else {
-                return String(format: "%ldh", hours)
-            }
-
-        } else {
-            var amPm: String
-            
-            if(timeInterval >= 12.0 * 3600.0) {
-                amPm = "PM"
-            } else {
-                amPm = "AM"
-            }
-            
-            var hours = Int((timeInterval / 3600))
-            hours = hours >= 13 ? hours - 12 : hours
-            let minutes  = Int((timeInterval / 60) % 60)
-            
-            if (minutes != 0) {
-                return String(format: "%ld:%ld%@", hours, minutes, amPm)
-            } else {
-                return String(format: "%ld%@", hours, amPm)
-            }
-        }
-        
-    }
-    
 
     static func getScheduleTimesFromItems(scheduleItems: [ScheduleItemModel]) -> [ScheduleTimeModel] {
         //maintain a list of the start and end values

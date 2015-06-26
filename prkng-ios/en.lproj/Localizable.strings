@@ -86,6 +86,7 @@
 "share_location_copy" = "I parked on: \"[street_name]\", thanks to prkng app. http://prk.ng";
 
 // Days
+"this_day" = "Today";
 "today" = "Today";
 "tomorrow" = "Tomorrow";
 "monday" = "Monday";

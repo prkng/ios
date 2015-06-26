@@ -22,4 +22,21 @@ extension String {
     subscript (r: Range<Int>) -> String {
         return substringWithRange(Range(start: advance(startIndex, r.startIndex), end: advance(startIndex, r.endIndex)))
     }
+    
+    var abbreviatedString: String {
+        
+        var newString = self
+        
+        let path = NSBundle.mainBundle().pathForResource("Abbreviations", ofType: "strings")
+        let dictionary = NSDictionary(contentsOfFile: path!) as! Dictionary<String, String>
+        
+        for pair in dictionary {
+            let target = pair.0
+            let abbreviation = pair.1
+            newString = newString.stringByReplacingOccurrencesOfString(target, withString: abbreviation, options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
+        }
+        
+        return newString
+    }
+    
 }

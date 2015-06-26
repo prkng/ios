@@ -87,7 +87,8 @@
 "share_location_copy" = "Je suis parqué sur: \"[street_name]\", prkng app. http://prk.ng";
 
 // Days
-"today" = "Ce jour";
+"this_day" = "Ce jour";
+"today" = "Aujourd'hui";
 "tomorrow" = "Demain";
 "monday" = "Lundi";
 "tuesday" = "Mardi";
@@ -133,7 +134,7 @@
 "the_project_part_two" = "Information that we collect from you, when you use the service including your name, contact details (such as telephone and mobile numbers and e-mail address), and/or other personally identifiable information (the \"personal information\") are only use for internal diagnostics and our main partners.";
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec! http://prk.ng";
 
-"all" = "tout";
+"all" = "tous";
 "check-in" = "Check-in";
 "authorized_for" = "Autorisé pour";
 "search" = "Recherche";

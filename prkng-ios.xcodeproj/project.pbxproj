@@ -23,6 +23,8 @@
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
+		3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */; };
+		3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */; };
 		3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */; };
 		3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */; };
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
@@ -186,6 +188,8 @@
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
+		3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Abbreviations.strings; sourceTree = "<group>"; };
+		3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
 		3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapViewController.swift; sourceTree = "<group>"; };
 		3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
@@ -501,6 +505,7 @@
 				3E6DCC831B28E0D500DF62E0 /* Array.swift */,
 				3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */,
 				3E98D6BA1B346053009032AF /* CALayer.swift */,
+				3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -670,6 +675,7 @@
 				3EBEE33D1B3213A100C7F2DE /* quebec_city_parking_availability.kml */,
 				3E6CC9701B309B51009EA460 /* montreal_parking_availability.kml */,
 				3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */,
+				3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -918,6 +924,7 @@
 				BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
+				3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */,
 				BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1002,6 +1009,7 @@
 				BF9C46F71B32F72200DCF858 /* TermsViewController.swift in Sources */,
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */,
+				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
 				BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */,
 				BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */,

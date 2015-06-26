@@ -26,7 +26,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         logoView = UIImageView()
         messageLabel = ViewFactory.bigMessageLabel()
         parkButton = ViewFactory.hugeButton()
-        searchButton = ViewFactory.bigButton()
+        searchButton = ViewFactory.hugeButton()
         reportButton = ViewFactory.reportButton()
         super.init(nibName: nil, bundle: nil)
     }

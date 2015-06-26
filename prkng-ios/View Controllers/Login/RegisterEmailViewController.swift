@@ -72,7 +72,7 @@ class RegisterEmailViewController: AbstractViewController {
         backButton = ViewFactory.transparentRoundedButton()
         continueButton = UIButton()
         
-        registerButton = ViewFactory.bigButton()
+        registerButton = ViewFactory.hugeButton()
         
         super.init(nibName: nil, bundle: nil)
     }

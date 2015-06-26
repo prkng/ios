@@ -60,7 +60,7 @@ class SettingsViewController: AbstractViewController {
             "30 " + "minutes_short".localizedString.uppercaseString,
             "off".localizedString.uppercaseString])
         
-        aboutButton = ViewFactory.hugeButton()
+        aboutButton = ViewFactory.hugeCreamButton()
         
         super.init(nibName: nil, bundle: nil)
     }

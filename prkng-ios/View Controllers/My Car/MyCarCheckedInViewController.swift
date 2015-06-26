@@ -50,8 +50,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         availableTitleLabel = ViewFactory.formLabel()
         availableTimeLabel = UILabel()
-        shareButton = ViewFactory.bigButton()
-        leaveButton = ViewFactory.bigButton()
+        shareButton = ViewFactory.hugeButton()
+        leaveButton = ViewFactory.hugeButton()
         
         notificationsButton = UIButton()
         reportButton = ViewFactory.reportButton()

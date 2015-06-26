@@ -44,8 +44,8 @@ struct ViewFactory {
         let hugeButton = MKButton()
         hugeButton.titleLabel?.font = Styles.Fonts.h1
         hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
-        hugeButton.backgroundColor = Styles.Colors.cream2
-        hugeButton.backgroundLayerColor = Styles.Colors.cream2
+        hugeButton.backgroundColor = Styles.Colors.stone
+        hugeButton.backgroundLayerColor = Styles.Colors.stone
         hugeButton.rippleLayerColor = Styles.Colors.cream1
         hugeButton.rippleAniDuration = 0.35
         hugeButton.cornerRadius = 0
@@ -54,9 +54,13 @@ struct ViewFactory {
         return hugeButton
     }
     
-    static func bigButton () -> MKButton {
+    static func hugeCreamButton () -> MKButton {
         
-        return hugeButton()
+        let hugeCreamButton = hugeButton()
+        hugeCreamButton.backgroundColor = Styles.Colors.cream2
+        hugeCreamButton.backgroundLayerColor = Styles.Colors.cream2
+        
+        return hugeCreamButton
     }
     
     static func checkInButton() -> MKButton {
