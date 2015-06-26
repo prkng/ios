@@ -338,7 +338,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             (myCarViewController as! MyCarNoCheckinViewController).delegate = self
         }
         
-        switchActiveViewController(myCarViewController!, completion: { (finished) -> Void in
+        let navigationController = UINavigationController(rootViewController: myCarViewController!)
+        navigationController.navigationBarHidden = true
+        
+        switchActiveViewController(navigationController, completion: { (finished) -> Void in
             self.selectedTab = PrkTab.MyCar
             self.tabBar.updateSelected()
         })
