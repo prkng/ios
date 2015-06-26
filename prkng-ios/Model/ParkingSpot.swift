@@ -122,7 +122,7 @@ class ParkingSpot: NSObject, Hashable {
     private static func getDateFormatString(date: NSDate) -> String {
         
         var dateFormatString = "EEEE, " //ex: Wednesday,
-        dateFormatString += "'" + date.timeIntervalSinceDate(DateUtil.beginningDay(date)).toString() + "'"
+        dateFormatString += "'" + date.timeIntervalSinceDate(DateUtil.beginningDay(date)).toString(condensed: false) + "'"
         
         //now make today be 'today' and tomorrow be 'tomorrow' 
         
@@ -150,17 +150,21 @@ class ParkingSpot: NSObject, Hashable {
         
         let formatter = NSDateFormatter()
         
-        var dateFormatStrings = getDateFormatString(dateAtStartOfNextRule).componentsSeparatedByString(" a")
-        let dateFormatStringFirstPart = dateFormatStrings[0]
-        let dateFormatStringSecondPart = dateFormatStrings.count > 1 ? " a" + dateFormatStrings[1] : ""
+        var dateFormatString = getDateFormatString(dateAtStartOfNextRule)
         
-        formatter.dateFormat = dateFormatStringFirstPart
-        var firstPart = formatter.stringFromDate(dateAtStartOfNextRule)
+        formatter.dateFormat = dateFormatString
+        var formattedDate = formatter.stringFromDate(dateAtStartOfNextRule)
+        
         //this line is to convert aujourd hui back into aujourd'hui
-        firstPart = firstPart.stringByReplacingOccurrencesOfString("d h", withString: "d'h", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        formattedDate = formattedDate.stringByReplacingOccurrencesOfString("d h", withString: "d'h", options: NSStringCompareOptions.LiteralSearch, range: nil)
 
-        formatter.dateFormat = dateFormatStringSecondPart
-        let secondPart = formatter.stringFromDate(dateAtStartOfNextRule)
+        //now we split the AM/PM part out to the second part
+        var firstPart = formattedDate
+        var secondPart = ""
+        if formattedDate[count(formattedDate) - 1] == "M" {
+            firstPart = formattedDate[0...count(formattedDate) - 4]
+            secondPart = formattedDate[count(formattedDate) - 3...count(formattedDate) - 1]
+        }
         
         let firstPartAttrs = [NSFontAttributeName: firstPartFont]
         var attributedString = NSMutableAttributedString(string: firstPart, attributes: firstPartAttrs)

@@ -10,7 +10,7 @@ import UIKit
 
 extension NSTimeInterval {
     
-    func toString() -> String {
+    func toString(#condensed: Bool) -> String {
         
         let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
         let is24Hour = testFormat?.rangeOfString("a") == nil
@@ -26,12 +26,16 @@ extension NSTimeInterval {
             }
             
         } else {
-            var amPm: String
+            var amPm = ""
+            
+            if !condensed {
+                amPm = " "
+            }
             
             if(self >= 12.0 * 3600.0) {
-                amPm = "PM"
+                amPm += "PM"
             } else {
-                amPm = "AM"
+                amPm += "AM"
             }
             
             var hours = Int((self / 3600))

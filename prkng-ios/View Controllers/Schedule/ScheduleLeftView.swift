@@ -61,7 +61,7 @@ class ScheduleLeftView: UIView {
         
         for scheduleTime in scheduleTimes {
             var label = PRKLabel()
-            label.text = scheduleTime.timeInterval.toString()
+            label.text = scheduleTime.timeInterval.toString(condensed: true)
             label.font = Styles.FontFaces.light(12)
             label.textAlignment = NSTextAlignment.Right
             label.textColor = Styles.Colors.petrol2
