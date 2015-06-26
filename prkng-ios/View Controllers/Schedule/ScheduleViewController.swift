@@ -246,7 +246,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             targetIndex = kMaxIndex;
         }
         
-        targetContentOffset.memory.x = targetIndex * (self.view.frame.size.width / 3.0)
+        targetContentOffset.memory.x = targetIndex * (self.COLUMN_SIZE)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
