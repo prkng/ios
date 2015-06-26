@@ -21,6 +21,8 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     let passwordTextField2 = ViewFactory.formTextField()
     let logoutButton = ViewFactory.transparentRoundedButton()
     let saveButton = ViewFactory.hugeButton()
+    let backButton = ViewFactory.hugeButton()
+    
     
     let loginMessageLabel = UILabel()
     
@@ -55,12 +57,11 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         if (AuthUtility.loginType()! == LoginType.Email) {
             loginMessageLabel.hidden = true
         } else {
-            saveButton.setTitle("back", forState: .Normal)
             
             avatarButton.hidden = true
             editProfileLabel.hidden = true
             nameTextField.enabled = false
-            emailTextField.enabled = false
+            emailTextField.hidden = true
             passwordLabel1.hidden = true
             passwordTextField1.hidden = true
             passwordLabel2.hidden = true
@@ -97,7 +98,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         } else if (AuthUtility.loginType() == .Google){
             loginMessageLabel.text = "login_edit_message_google".localizedString
         }
-        loginMessageLabel.font = Styles.FontFaces.regular(17)
+        loginMessageLabel.font = Styles.FontFaces.light(17)
         loginMessageLabel.textColor = Styles.Colors.anthracite1
         loginMessageLabel.textAlignment = .Center
         view.addSubview(loginMessageLabel)
@@ -121,6 +122,12 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         saveButton.setTitle("save".localizedString, forState: .Normal)
         saveButton.addTarget(self, action: "saveButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(saveButton)
+        
+        backButton.setTitle("back".localizedString, forState: .Normal)
+        backButton.backgroundColor = Styles.Colors.stone
+        backButton.setTitleColor(Styles.Colors.anthracite1, forState: .Normal)
+        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
+        view.addSubview(backButton)
     }
     
     
@@ -130,11 +137,18 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.edges.equalTo(self.view)
         }
         
+        backButton.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.view)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+        }
+        
         
         saveButton.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.view)
+            make.bottom.equalTo(self.backButton.snp_top)
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
@@ -174,17 +188,17 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.height.equalTo(Styles.Sizes.formLabelHeight)
         }
         
-        loginMessageLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.passwordLabel1)
-            make.right.equalTo(self.passwordLabel1)
-            make.top.equalTo(self.passwordLabel1)
-        }
-        
         emailTextField.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).with.offset(20)
             make.right.equalTo(self.view).with.offset(-20)
             make.bottom.greaterThanOrEqualTo(self.passwordTextField1.snp_top).with.offset(-20).priorityHigh()
             make.bottom.lessThanOrEqualTo(self.view.snp_centerY).multipliedBy(0.7).priorityLow()
+        }
+        
+        loginMessageLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.emailTextField)
+            make.right.equalTo(self.emailTextField)
+            make.top.equalTo(self.emailTextField)
         }
         
         nameTextField.snp_makeConstraints { (make) -> () in
@@ -263,7 +277,6 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         }
         
         
-        
         if nameTextField.text == nil {
             warnUser("name_empty".localizedString)
             return
@@ -308,6 +321,10 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             
         }
         
+    }
+    
+    func backButtonTapped(sender : UIButton) {
+        navigationController?.popViewControllerAnimated(true)
     }
     
     

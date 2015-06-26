@@ -29,7 +29,7 @@ class FirstUseViewController: AbstractViewController {
     }
     
     override func loadView() {
-        self.view = TouchForwardingView()
+        self.view = UIView()
         setupViews()
         setupConstraints()
     }

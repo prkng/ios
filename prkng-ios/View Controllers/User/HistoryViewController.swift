@@ -22,7 +22,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     let iconView = UIImageView(image: UIImage(named: "icon_history"))
     let titleLabel = UILabel()
     let tableView = UITableView()
-    let backButton = ViewFactory.hugeButton()
+    let backButton = ViewFactory.redBackButton()
     
     var groupedCheckins : Dictionary<String, Array<Checkin>>?
     
@@ -99,7 +99,6 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         titleLabel.text = "history".localizedString
         headerView.addSubview(titleLabel)
         
-        backButton.setTitle("back".localizedString, forState: .Normal)
         backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(backButton)
         
@@ -138,9 +137,14 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         
         headerView.frame = CGRectMake(0, 0, screenWidth, CGFloat(HEADER_MAX_HEIGHT))
         
-        let tableViewHeight = screenHeight - CGFloat(HEADER_MIN_HEIGHT) - CGFloat(Styles.Sizes.hugeButtonHeight)
+        let tableViewHeight = screenHeight - CGFloat(HEADER_MIN_HEIGHT)
         tableView.frame = CGRectMake(0, CGFloat(HEADER_MIN_HEIGHT), screenWidth, tableViewHeight)
-        backButton.frame = CGRectMake(0, tableViewHeight + CGFloat(HEADER_MIN_HEIGHT), screenWidth, CGFloat(Styles.Sizes.hugeButtonHeight))
+        
+        backButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSize(width: 80, height: 26))
+            make.centerX.equalTo(self.view)
+            make.bottom.equalTo(self.view).with.offset(-20)
+        }
         
     }
     
@@ -268,6 +272,10 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             
             currentHeaderHeight = height
             iconView.alpha = CGFloat(((height - HEADER_MIN_HEIGHT) / HEADER_MAX_HEIGHT))
+            
+            if(iconView.alpha > 0.9) {
+                iconView.alpha = 1
+            }
             
             headerView.layoutIfNeeded()
         }

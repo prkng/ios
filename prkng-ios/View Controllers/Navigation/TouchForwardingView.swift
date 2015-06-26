@@ -14,9 +14,9 @@ class TouchForwardingView: UIView {
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
         var hitView = super.hitTest(point, withEvent: event)
         
-        if !(hitView is UITextField) {
-            UIApplication.sharedApplication().keyWindow?.endEditing(true)
-        }
+//        if !(hitView is UITextField) {
+//            UIApplication.sharedApplication().keyWindow?.endEditing(false)
+//        }
         
         if(hitView == self || hitView is UILabel || hitView is UIImageView) {
             return nil;
