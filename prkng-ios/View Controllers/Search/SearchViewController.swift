@@ -56,8 +56,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.screenName = "Search - General View"
     }
     
     

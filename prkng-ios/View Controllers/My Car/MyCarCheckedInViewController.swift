@@ -85,7 +85,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.screenName = "My Car - Checked in"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -166,10 +166,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         shareButton.setTitle("share_car_location".localizedString.lowercaseString, forState: UIControlState.Normal)
         shareButton.addTarget(self, action: "shareButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         shareButton.setTitleColor(Styles.Colors.petrol2, forState: .Normal)
-        shareButton.layer.shadowColor = UIColor.blackColor().CGColor
-        shareButton.layer.shadowOffset = CGSize(width: 0, height: 1)
-        shareButton.layer.shadowOpacity = 0.05
-        shareButton.clipsToBounds = false
         view.addSubview(shareButton)
         
     }
@@ -379,7 +375,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         let interval = Settings.checkInTimeRemaining()
         
-        if (interval > 2*60*60) { // greater than 2 hours = show available until... by default
+        if (interval > 2*3600) { // greater than 2 hours = show available until... by default
             availableTitleLabel.text = "available_until".localizedString.uppercaseString
         } else {
             availableTitleLabel.text = "available_for".localizedString.uppercaseString

@@ -67,6 +67,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.screenName = "Here - General View"
+    }
+    
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         NSLog("HereViewController disappeared")
@@ -287,7 +292,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             detailView.titleLabel.text = activeSpot?.name
             
-            detailView.availableTimeLabel.attributedText = activeSpot?.availableUntilAttributed(firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
+            let interval = activeSpot?.availableTimeInterval()
+            if (interval > 2*3600) { // greater than 2 hours = show available until... by default
+                detailView.availableTextLabel.text = NSLocalizedString("until", comment: "").uppercaseString
+                detailView.availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval!, firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
+            } else {
+                detailView.availableTextLabel.text = NSLocalizedString("for", comment: "").uppercaseString
+                detailView.availableTimeLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval!, font: Styles.Fonts.h2r)
+            }
             
             detailView.checkinImageView.layer.wigglewigglewiggle()
 

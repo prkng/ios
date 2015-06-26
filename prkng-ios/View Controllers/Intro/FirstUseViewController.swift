@@ -37,7 +37,7 @@ class FirstUseViewController: AbstractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.screenName = "Intro - First Use View"
     }
     
     override func viewWillAppear(animated: Bool) {

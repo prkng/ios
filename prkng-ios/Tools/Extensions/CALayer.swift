@@ -45,5 +45,29 @@ extension CALayer {
         self.addAnimation(animation, forKey: "wigglewigglewiggle")
         
     }
+    
+    func addTopBorder(width: CGFloat, color: UIColor) {
+        
+        var border = CALayer()
+        border.borderColor = color.CGColor
+        
+        border.frame = CGRect(x: 0, y: 1, width:  self.frame.size.width, height: self.frame.size.height)
+        
+        border.borderWidth = width
+        self.addSublayer(border)
+        
+    }
+
+    func addBottomBorder(width: CGFloat, color: UIColor) {
+        
+        var border = CALayer()
+        border.borderColor = color.CGColor
+        
+        border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width, height: self.frame.size.height)
+        
+        border.borderWidth = width
+        self.addSublayer(border)
+
+    }
 
 }

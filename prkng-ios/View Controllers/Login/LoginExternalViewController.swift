@@ -82,7 +82,7 @@ class LoginExternalViewController: AbstractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.screenName = "Login - Enter FB/G Credentials"
     }
     
     override func viewWillAppear(animated: Bool) {

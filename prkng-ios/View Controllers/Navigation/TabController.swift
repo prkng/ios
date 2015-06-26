@@ -57,7 +57,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.screenName = "TabController"
+        self.screenName = "Tab Bar - Controller"
         
         selectedTab = PrkTab.Here
         hereViewController.willMoveToParentViewController(self)

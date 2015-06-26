@@ -100,8 +100,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.mapView.userTrackingMode = RMUserTrackingModeFollow
+        self.screenName = "Map - General MapBox View"
     }
     
     override func viewDidAppear(animated: Bool) {

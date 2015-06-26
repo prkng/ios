@@ -47,7 +47,7 @@ class TutorialContentViewController: GAITrackedViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.screenName = "TutorialContentViewController"
+        self.screenName = "Intro - Tutorial Single Page View"
     }
     
     override func didReceiveMemoryWarning() {

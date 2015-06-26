@@ -78,8 +78,7 @@ class SettingsViewController: AbstractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
+        self.screenName = "Settings View"
     }
     
     override func viewWillAppear(animated: Bool) {

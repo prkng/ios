@@ -43,7 +43,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.screenName = "Login - First Screen"
     }
     
     override func viewWillAppear(animated: Bool) {

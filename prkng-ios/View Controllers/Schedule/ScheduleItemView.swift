@@ -128,8 +128,8 @@ class ScheduleItemView : UIView {
         
         timeLimitLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.imageView)
-            make.centerY.equalTo(self.imageView).with.offset(-1)
-            make.size.equalTo(CGSize(width: 17, height: 25))
+            make.centerY.equalTo(self.imageView).with.offset(1) //plus moves down, minus moves up
+            make.size.equalTo(CGSize(width: 15, height: 17))
         }
         
         if limited {

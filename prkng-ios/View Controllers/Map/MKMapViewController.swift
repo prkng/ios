@@ -94,8 +94,8 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.mapView.userTrackingMode = MKUserTrackingMode.Follow
+        self.screenName = "Map - General Apple View"
     }
     
     override func viewDidAppear(animated: Bool) {

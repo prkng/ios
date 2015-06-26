@@ -81,6 +81,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.screenName = "Schedule (Agenda) View"
     }
     
     override func viewWillAppear(animated: Bool) {

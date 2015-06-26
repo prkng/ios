@@ -34,6 +34,11 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         setupConstraints()
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.screenName = "User - History View"
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -271,10 +276,15 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             tableView.delegate = self
             
             currentHeaderHeight = height
-            iconView.alpha = CGFloat(((height - HEADER_MIN_HEIGHT) / HEADER_MAX_HEIGHT))
+            iconView.alpha = CGFloat((height / HEADER_MAX_HEIGHT))
             
             if(iconView.alpha > 0.9) {
                 iconView.alpha = 1
+            } else if(iconView.alpha < 0.5) {
+                iconView.alpha = iconView.alpha / 2
+            }
+            if(iconView.alpha < 0.2) {
+                iconView.alpha = 0
             }
             
             headerView.layoutIfNeeded()

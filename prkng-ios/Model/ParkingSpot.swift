@@ -96,6 +96,22 @@ class ParkingSpot: NSObject, Hashable {
         let hours = Int((interval / 3600))
         return String(format: "%02ld:%02ld", hours, minutes)
     }
+
+    //returns "30 minutes" or similar
+    func availableMinutesStringAttributed(font: UIFont) -> NSAttributedString {
+        let interval = availableTimeInterval()
+        return ParkingSpot.availableMinutesStringAttributed(interval, font: font)
+    }
+    
+    static func availableMinutesStringAttributed(interval: NSTimeInterval, font: UIFont) -> NSAttributedString {
+        let minutes  = Int(interval / 60)
+        let minutesString = String(format: "%ld minutes", minutes)
+        
+        let attrs = [NSFontAttributeName: font]
+        var attributedString = NSMutableAttributedString(string: minutesString, attributes: attrs)
+
+        return attributedString
+    }
     
     //returns something like Wednesday, 7:30 PM
     func availableUntil() -> String {

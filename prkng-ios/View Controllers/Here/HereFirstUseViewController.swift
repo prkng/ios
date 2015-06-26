@@ -68,7 +68,7 @@ class HereFirstUseViewController: GAITrackedViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.screenName = "HereFirstUseViewController"
+        self.screenName = "Here - First Use View"
     }
     
     func setupSubviews() {

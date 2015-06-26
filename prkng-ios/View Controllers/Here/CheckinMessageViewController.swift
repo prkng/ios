@@ -43,7 +43,7 @@ class CheckinMessageViewController: GAITrackedViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.screenName = "CheckinMessageViewController"
+        self.screenName = "Here - Checkin Message"
     }
     
     

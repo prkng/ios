@@ -49,7 +49,12 @@ struct ViewFactory {
         hugeButton.rippleLayerColor = Styles.Colors.cream1
         hugeButton.rippleAniDuration = 0.35
         hugeButton.cornerRadius = 0
+        hugeButton.shadowAniEnabled = false
         
+        hugeButton.layer.shadowColor = UIColor.blackColor().CGColor
+        hugeButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+        hugeButton.layer.shadowOpacity = 0.1
+        hugeButton.layer.shadowRadius = 0.5
         
         return hugeButton
     }

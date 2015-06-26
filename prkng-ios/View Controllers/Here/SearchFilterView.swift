@@ -123,14 +123,14 @@ class SearchFilterView: UIView, UITextFieldDelegate {
             make.left.equalTo(self)
             make.right.equalTo(self)
             make.top.equalTo(self)
-            make.height.equalTo(1)
+            make.height.equalTo(0.5)
         }
 
         bottomLine.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self)
             make.right.equalTo(self)
             make.bottom.equalTo(self)
-            make.height.equalTo(1)
+            make.height.equalTo(0.5)
         }
         
     }

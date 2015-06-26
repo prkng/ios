@@ -49,6 +49,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     override func viewDidLoad() {
         super.viewDidLoad()
         updateValues()
+        self.screenName = "User - Edit Profile View"
     }
     
     override func viewWillAppear(animated: Bool) {

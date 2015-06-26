@@ -44,7 +44,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        self.screenName = "My Car - Not Checked in"
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,18 +65,11 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         view.addSubview(reportButton)
         
         searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
-        searchButton.layer.shadowColor = UIColor.blackColor().CGColor
-        searchButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        searchButton.layer.shadowOpacity = 0.2
-        searchButton.layer.shadowRadius = 0.5
         searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        searchButton.setTitleColor(Styles.Colors.petrol2, forState: .Normal)
         view.addSubview(searchButton)
         
         parkButton.setTitle("park_now".localizedString.lowercaseString, forState: UIControlState.Normal)
-        parkButton.layer.shadowColor = UIColor.blackColor().CGColor
-        parkButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        parkButton.layer.shadowOpacity = 0.2
-        parkButton.layer.shadowRadius = 0.5
         parkButton.addTarget(self, action: "parkButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(parkButton)
     }
