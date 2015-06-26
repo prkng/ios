@@ -10,9 +10,11 @@ import UIKit
 
 class ScheduleItemView : UIView {
     
-    var imageView : UIImageView
-    var timeLimitLabel : UILabel
-
+    private var containerView : UIView
+    private var imageView : UIImageView
+    private var timeLimitLabel : UILabel
+    private var maxLabel : UILabel
+    
     var limited : Bool
     
     private var didSetupSubviews : Bool
@@ -38,6 +40,7 @@ class ScheduleItemView : UIView {
     
      override init(frame: CGRect) {
         
+        containerView = UIView()
         timeLimitLabel = UILabel()
         imageView = UIImageView()
         
@@ -45,7 +48,8 @@ class ScheduleItemView : UIView {
         didSetupConstraints = true
         
         limited =  false
-        
+        maxLabel = UILabel()
+
         super.init(frame: frame)
         
     }
@@ -74,8 +78,10 @@ class ScheduleItemView : UIView {
     
     func setupSubviews () {
         
+        self.addSubview(containerView)
+        
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
-        self.addSubview(imageView)
+        containerView.addSubview(imageView)
         
         timeLimitLabel.font = Styles.FontFaces.regular(17)
         timeLimitLabel.textAlignment = NSTextAlignment.Center
@@ -83,10 +89,19 @@ class ScheduleItemView : UIView {
         timeLimitLabel.adjustsFontSizeToFitWidth = true
         timeLimitLabel.numberOfLines = 1
         timeLimitLabel.sizeToFit()
-        self.addSubview(timeLimitLabel)
+        containerView.addSubview(timeLimitLabel)
+        
+        maxLabel.text = "max".localizedString.uppercaseString
+        maxLabel.font = Styles.FontFaces.regular(12)
+        maxLabel.textAlignment = NSTextAlignment.Center
+        maxLabel.textColor = Styles.Colors.white
+        maxLabel.adjustsFontSizeToFitWidth = true
+        maxLabel.numberOfLines = 1
+        maxLabel.sizeToFit()
         
         if(limited) {
             self.backgroundColor = Styles.Colors.midnight1
+            containerView.addSubview(maxLabel)
 
         } else {
             self.backgroundColor = Styles.Colors.red2
@@ -100,16 +115,28 @@ class ScheduleItemView : UIView {
     
     func setupConstraints () {
         
-        imageView.snp_makeConstraints { (make) -> () in
+        containerView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self)
             make.center.equalTo(self)
+        }
+        
+        imageView.snp_makeConstraints { (make) -> () in
+            make.center.equalTo(self.containerView)
             make.size.lessThanOrEqualTo(CGSize(width: 25, height: 25))
-            make.size.lessThanOrEqualTo(self).with.offset(-2)
+            make.size.lessThanOrEqualTo(self.containerView).with.offset(-2)
         }
         
         timeLimitLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.imageView)
             make.centerY.equalTo(self.imageView).with.offset(-1)
             make.size.equalTo(CGSize(width: 17, height: 25))
+        }
+        
+        if limited {
+            maxLabel.snp_makeConstraints({ (make) -> () in
+                make.centerX.equalTo(self.imageView)
+                make.centerY.equalTo(self.imageView).with.offset(25)
+            })
         }
         
         didSetupConstraints = true
