@@ -10,8 +10,18 @@
 
 "Street " = "St ";
 "Avenue " = "Ave ";
-"Boulevard " = "Bl ";
+"Boulevard " = "Boul ";
 "Saint-"  = "St-";
 "Saint "  = "St ";
 "Sainte-"  = "Ste-";
 "Sainte "  = "Ste ";
+
+" Ouest"  = " O";
+" Est"  = " E";
+" West"  = " W";
+" East"  = " E";
+" Nord"  = " N";
+" North"  = " N";
+" Sud"  = " S";
+" South"  = " S";
+“Avenue des Canadiens-de-Montreal" = “Ave des Habs ";
