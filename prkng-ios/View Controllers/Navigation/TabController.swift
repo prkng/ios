@@ -279,6 +279,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //            })
 //        } else if (selectedTab == PrkTab.Here) {
             hereViewController.updateSpotDetails(nil)
+            hereViewController.hideFilters(alsoHideFilterButton: false)
 //        }
                 
     }
