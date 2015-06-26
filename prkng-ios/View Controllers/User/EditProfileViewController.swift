@@ -22,6 +22,8 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     let logoutButton = ViewFactory.transparentRoundedButton()
     let saveButton = ViewFactory.hugeButton()
     
+    let loginMessageLabel = UILabel()
+    
     let imagePicker = UIImagePickerController()
     
     var selectedImage : UIImage?
@@ -49,6 +51,21 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if (AuthUtility.loginType()! == LoginType.Email) {
+            loginMessageLabel.hidden = true
+        } else {
+            saveButton.setTitle("back", forState: .Normal)
+            
+            avatarButton.hidden = true
+            editProfileLabel.hidden = true
+            nameTextField.enabled = false
+            emailTextField.enabled = false
+            passwordLabel1.hidden = true
+            passwordTextField1.hidden = true
+            passwordLabel2.hidden = true
+            passwordTextField2.hidden = true
+        }
     }
     
     func setupViews() {
@@ -74,6 +91,16 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         emailTextField.textAlignment = NSTextAlignment.Center
         emailTextField.autocorrectionType = UITextAutocorrectionType.No
         view.addSubview(emailTextField)
+        
+        if (AuthUtility.loginType() == .Facebook){
+            loginMessageLabel.text = "login_edit_message_facebook".localizedString
+        } else if (AuthUtility.loginType() == .Google){
+            loginMessageLabel.text = "login_edit_message_google".localizedString
+        }
+        loginMessageLabel.font = Styles.FontFaces.regular(17)
+        loginMessageLabel.textColor = Styles.Colors.anthracite1
+        loginMessageLabel.textAlignment = .Center
+        view.addSubview(loginMessageLabel)
         
         passwordLabel1.text = "new_password".localizedString.uppercaseString
         view.addSubview(passwordLabel1)
@@ -103,6 +130,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.edges.equalTo(self.view)
         }
         
+        
         saveButton.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -115,6 +143,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.size.equalTo(CGSizeMake(120, 26))
             make.bottom.equalTo(self.saveButton.snp_top).with.offset(-20)
         }
+        
         
         passwordTextField2.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).with.offset(20)
@@ -143,6 +172,12 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.right.equalTo(self.view).with.offset(-20)
             make.top.equalTo(self.passwordTextField1)
             make.height.equalTo(Styles.Sizes.formLabelHeight)
+        }
+        
+        loginMessageLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.passwordLabel1)
+            make.right.equalTo(self.passwordLabel1)
+            make.top.equalTo(self.passwordLabel1)
         }
         
         emailTextField.snp_makeConstraints { (make) -> () in
@@ -211,13 +246,6 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     }
     
     func logoutButtonTapped(sender : UIButton) {
-        //        let alert = UIAlertView()
-        //        alert.title = "Alert"
-        //        alert.message = "Here's a message"
-        //        alert.addButtonWithTitle("cancel".localizedString)
-        //        alert.addButtonWithTitle("logout".localizedString)
-        //        alert.cancelButtonIndex = 0
-        //        alert.show()
         
         SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
         
@@ -228,6 +256,13 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     }
     
     func saveButtonTapped(sender : UIButton) {
+        
+        if (AuthUtility.loginType()! != LoginType.Email) {
+            navigationController?.popViewControllerAnimated(true)
+            return
+        }
+        
+        
         
         if nameTextField.text == nil {
             warnUser("name_empty".localizedString)
@@ -261,7 +296,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         var newPassword : String = passwordTextField1.text
         
         if let image = selectedImage {
-
+            
             UserOperations.uploadAvatar(image, completion: { (completed, imageUrl) -> Void in
                 self.updateUserAndGoBack(user, password: newPassword, imageUrl: imageUrl)
             })
@@ -274,8 +309,8 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         }
         
     }
-
-
+    
+    
     func updateUserAndGoBack(user : User, password: String?, imageUrl : String?) {
         
         UserOperations.updateUser(user, newPassword: password, imageUrl: imageUrl, completion: { (completed, user, message) -> Void in

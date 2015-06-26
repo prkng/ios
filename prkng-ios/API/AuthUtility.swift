@@ -12,7 +12,7 @@ struct AuthUtility {
     
     static let AUTH_TOKEN_KEY = "prkng_auth_token_key"
     static let USER_KEY = "prkng_user_key"
-    static let EXTERNAL_LOGIN_KEY = "prkng_is_external_login" // Logged in with Facebook / Google
+    static let LOGIN_TYPE = "prkng_login_type" // Logged in with Facebook / Google
     
     static func loggedIn() -> Bool {
         return authToken() != nil
@@ -51,19 +51,23 @@ struct AuthUtility {
         
     }
     
-    static func setExternalLogin(external : Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(external, forKey: EXTERNAL_LOGIN_KEY)
+    static func saveLoginType(loginType : LoginType) {
+        NSUserDefaults.standardUserDefaults().setObject(loginType.rawValue, forKey: LOGIN_TYPE)
     }
     
     
-    static func isExternalLogin () -> Bool {
-        if let val = NSUserDefaults.standardUserDefaults().objectForKey(EXTERNAL_LOGIN_KEY)?.boolValue {
-            return val
+    static func loginType () -> LoginType?{
+        if let type =  NSUserDefaults.standardUserDefaults().stringForKey(LOGIN_TYPE) {
+            return LoginType(rawValue: type)
         }
         
-        return false
+        return nil
     }
     
-    
-    
+}
+
+enum LoginType : String {
+    case Facebook = "Facebook"
+    case Google = "Google"
+    case Email = "Email"
 }

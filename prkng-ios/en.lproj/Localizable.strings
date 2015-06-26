@@ -37,7 +37,8 @@
 "cancel" = "Cancel";
 "check_email_copy" = "Please check your email for instructions.";
 "pasword_reset_error" = "Something went wrong, please try again in few minutes";
-
+"login_edit_message_google" = "Logged in with Google";
+"login_edit_message_facebook" = "Logged in with Facebook";
 
 "your_name" = "your name";
 "your_gender" = "your gender";
@@ -82,7 +83,7 @@
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
 "off" = "off";
-"share_location_copy" = "I parked on: [street_name], coordinates : lat:[latitude] lon:[longitude], thanks to prkng app";
+"share_location_copy" = "I parked on: \"[street_name]\", thanks to prkng app. http://prk.ng";
 
 // Days
 "today" = "Today";

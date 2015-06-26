@@ -11,7 +11,7 @@ import UIKit
 class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate {
     
     var spot : ParkingSpot?
-
+    
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
     
     var logoView : UIImageView
@@ -34,20 +34,20 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var delegate : MyCarCheckedInViewControllerDelegate?
     
-
+    
     private var SMALL_VERTICAL_MARGIN = 5
     private var MEDIUM_VERTICAL_MARGIN = 10
     private var LARGE_VERTICAL_MARGIN = 20
-
+    
     
     init() {
         logoView = UIImageView()
         
         containerView = UIView()
-
+        
         locationTitleLabel = ViewFactory.formLabel()
         locationLabel = ViewFactory.bigMessageLabel()
-
+        
         availableTitleLabel = ViewFactory.formLabel()
         availableTimeLabel = UILabel()
         shareButton = ViewFactory.bigButton()
@@ -104,7 +104,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                     if (spot != nil) {
                         self.containerView.hidden = false
                     }
-
+                    
                 })
             }
         }
@@ -124,7 +124,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     
     func setupViews () {
-
+        
         view.addSubview(backgroundImageView)
         
         logoView.image = UIImage(named: "icon_checkin")
@@ -193,7 +193,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.centerX.equalTo(self.view)
             make.centerY.equalTo(self.view).multipliedBy(0.3)
         }
-                
+        
         containerView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.logoView.snp_bottom).with.offset(largerVerticalMargin)
             make.left.equalTo(self.view)
@@ -206,7 +206,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.right.equalTo(self.containerView)
             make.height.equalTo(20)
         }
-
+        
         locationLabel.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.locationTitleLabel.snp_bottom).with.offset(smallerVerticalMargin)
             make.left.equalTo(self.containerView).with.offset(15)
@@ -282,14 +282,14 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             Settings.cancelAlarm()
         } else {
             Settings.setNotificationTime(30)
-            Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))            
+            Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))
         }
         
         updateNotificationsButton()
     }
     
     func updateNotificationsButton() {
-     
+        
         if (Settings.notificationTime() > 0) {
             
             notificationsButton.setTitle("notifications_on".localizedString.uppercaseString, forState: UIControlState.Normal)
@@ -352,12 +352,17 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         var text : String = "share_location_copy".localizedString
         text = text.stringByReplacingOccurrencesOfString("[street_name]", withString: spot!.name)
-        text = text.stringByReplacingOccurrencesOfString("[latitude]", withString: "\(spot!.buttonLocation.coordinate.latitude)")
-        text = text.stringByReplacingOccurrencesOfString("[longitude]", withString: "\(spot!.buttonLocation.coordinate.longitude)")
-        let url = NSURL(string:"http://prk.ng/")!
+        let url = createGoogleMapsLink(spot!.buttonLocation)
         
         let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
         self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+    
+    func createGoogleMapsLink(location : CLLocation) -> NSURL {
+        let latitude = "\(spot!.buttonLocation.coordinate.latitude)"
+        let longitude = "\(spot!.buttonLocation.coordinate.longitude)"
+        let urlStr = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "&ll=" + latitude + "," + longitude + "&z=17"
+        return NSURL(string: urlStr)!
     }
     
     func leaveButtonTapped() {

@@ -120,7 +120,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                     AuthUtility.saveUser(user)
                     AuthUtility.saveAuthToken(apiKey)
                     
-                    self.displayExternalInfo(user)
+                    self.displayExternalInfo(user, loginType: .Facebook)
                     
                 })
             }
@@ -186,9 +186,9 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         selectedMethod = LoginMethod.Email
     }
     
-    func displayExternalInfo(user: User) {
+    func displayExternalInfo(user: User, loginType : LoginType) {
         
-        loginExternalViewController = LoginExternalViewController(usr : user)
+        loginExternalViewController = LoginExternalViewController(usr : user, loginType : loginType)
         loginExternalViewController!.delegate = self
         self.addChildViewController(loginExternalViewController!)
         self.view.insertSubview(loginExternalViewController!.view, belowSubview: methodSelectionView)
@@ -229,7 +229,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         UserOperations.loginWithGoogle(auth.accessToken, completion: { (user, apiKey) -> Void in
             AuthUtility.saveUser(user)
             AuthUtility.saveAuthToken(apiKey)
-            self.displayExternalInfo(user)
+            self.displayExternalInfo(user, loginType : .Google)
         })
     }
     
@@ -288,19 +288,19 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     }
     
     func didLogin() {
-        AuthUtility.setExternalLogin(false)
+        AuthUtility.saveLoginType(.Email)
         dismiss()
     }
     
     // MARK: LoginExternalViewControllerDelegate
-    func didLoginExternal() {
-        AuthUtility.setExternalLogin(true)
+    func didLoginExternal(loginType : LoginType) {
+        AuthUtility.saveLoginType(loginType)
         dismiss()
     }
     
     // MARK: RegisterEmailViewControllerDelegate
     func didRegister() {
-        AuthUtility.setExternalLogin(false)
+        AuthUtility.saveLoginType(.Email)
         dismiss()
     }
     

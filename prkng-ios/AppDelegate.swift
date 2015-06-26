@@ -103,7 +103,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func loadInitialViewController() {
 
-        if (Settings.firstUse() || AuthUtility.getUser() == nil) {
+        if (Settings.firstUse() || AuthUtility.getUser() == nil || AuthUtility.loginType() == nil) {
+            AuthUtility.saveAuthToken(nil)
+            AuthUtility.saveUser(nil)
             window!.rootViewController = FirstUseViewController()
         } else {
             window!.rootViewController = TabController()

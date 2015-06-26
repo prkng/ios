@@ -34,9 +34,13 @@ class LoginExternalViewController: AbstractViewController {
     
     var delegate : LoginExternalViewControllerDelegate?
     
-    init(usr : User) {
+    var logintype : LoginType
+    
+    init(usr : User, loginType : LoginType) {
         
         user = usr
+        
+        logintype = loginType
         
         scrollView = UIScrollView()
         scrollContentView = UIView()
@@ -58,7 +62,9 @@ class LoginExternalViewController: AbstractViewController {
             "30 " + "minutes_short".localizedString.uppercaseString,
             "off".localizedString.uppercaseString])
         
-        loginButton = ViewFactory.hugeButton()
+        
+        
+    loginButton = ViewFactory.hugeButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -280,7 +286,7 @@ class LoginExternalViewController: AbstractViewController {
         
         
         if self.delegate != nil {
-            delegate!.didLoginExternal()
+            delegate!.didLoginExternal(logintype)
         }
         
     }
@@ -338,5 +344,5 @@ class LoginExternalViewController: AbstractViewController {
 
 
 protocol LoginExternalViewControllerDelegate {
-    func didLoginExternal()
+    func didLoginExternal(loginType : LoginType)
 }
