@@ -135,7 +135,7 @@ class ParkingSpot: NSObject, Hashable {
         }
         
         if !is24Hour {
-            dateFormatString = " a" //Wednesday, 7:30 PM
+            dateFormatString += " a" //Wednesday, 7:30 PM
         }
         
         //now make today be 'today' and tomorrow be 'tomorrow' 
@@ -165,7 +165,7 @@ class ParkingSpot: NSObject, Hashable {
         
         var dateFormatStrings = getDateFormatString(dateAtStartOfNextRule).componentsSeparatedByString(" a")
         let dateFormatStringFirstPart = dateFormatStrings[0]
-        let dateFormatStringSecondPart = dateFormatStrings.count > 1 ? dateFormatStrings[1] : ""
+        let dateFormatStringSecondPart = dateFormatStrings.count > 1 ? " a" + dateFormatStrings[1] : ""
         
         formatter.dateFormat = dateFormatStringFirstPart
         let firstPart = formatter.stringFromDate(dateAtStartOfNextRule)
