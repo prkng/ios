@@ -69,7 +69,7 @@
 "schedule_forbidden" = "INTERDIT";
 
 "first_checkin_title" = "Nous y voilà!";
-"first_checkin_subtitle" = "Votre premier check-in.";
+"first_checkin_subtitle" = "Votre premier check-in";
 "first_checkin_text" = "Prenez note que la règlementation sur rue prévaut toujours, et peut différer de notre donnée.\nGardez donc un oeil ouvert!";
 
 "no_checkin_message" = "Sélectionnez \nd'abord un segment";
@@ -103,7 +103,7 @@
 
 "max" = "max";
 
-"alarm_text" = "Il est temps de déplacer votre véhicule!";
+"alarm_text" = "C'est maintenant ou jamais: déplacez votre véhicule!";
 "time_up" = "Temps écoulé!";
 
 "tutorial_step_1" = "Sarah va bruncher avec sa mère et devra se stationner près du restaurant. Voyez comment elle utilise prkng!";
@@ -113,8 +113,8 @@
 "tutorial_confirm" = "COMMENCER";
 
 
-"here_firstuse_title" = "Comment ça marche.";
-"here_firstuse_subtitle" = "un peu d’aide pour votre première fois!";
+"here_firstuse_title" = "Hé, salut!";
+"here_firstuse_subtitle" = "C'est votre première fois?";
 "here_firstuse_1" = "Sélectionez un tronçon afin de connaître sa disponibilité.";
 "here_firstuse_2" = "Une fois trouvée, enregistez votre place afin d'être informé quand déplacer votre véhicule.";
 "free_spots" = "segments autorisés";
