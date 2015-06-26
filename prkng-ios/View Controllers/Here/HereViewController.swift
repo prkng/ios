@@ -428,6 +428,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     func hideFilters(#alsoHideFilterButton: Bool) {
         
+        if alsoHideFilterButton {
+            self.hideFilterButton()
+        } else {
+            self.showFilterButton(true)
+        }
+
         searchFilterView.snp_updateConstraints { (make) -> () in
             make.height.equalTo(0)
         }
@@ -450,11 +456,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 self.searchFilterView.layoutIfNeeded()
             },
             completion: { (completed:Bool) -> Void in
-                if alsoHideFilterButton {
-                    self.hideFilterButton()
-                } else {
-                    self.showFilterButton(false)
-                }
         })
         
         showingFilters = false

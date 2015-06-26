@@ -114,8 +114,24 @@ class PRKTextButton: UIView {
     }
     
     func setImage(image: UIImage?) {
-        self.image = image
-        self.imageView.image = image
+        if self.image != image {
+            self.image = image
+            animateChangeImageTo()
+        }
+    }
+    
+    private func animateChangeImageTo() {
+        
+        var fadeAnimation = CATransition()
+        fadeAnimation.duration = 0.2
+        fadeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        fadeAnimation.type = kCATransitionFade
+        self.imageView.layer.addAnimation(fadeAnimation, forKey: "fade")
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.imageView.transform = CGAffineTransformRotate(self.imageView.transform, CGFloat(M_PI))
+            self.imageView.image = self.image
+        })
     }
     
     func addTarget(target: AnyObject?, action: Selector, forControlEvents controlEvents: UIControlEvents) {
@@ -136,6 +152,13 @@ class PRKTextButton: UIView {
                 make.centerY.equalTo(self)
             }
         }
+        
+        self.setNeedsLayout()
+
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.layoutIfNeeded()
+        })
+        
         self.labelText = text
         self.label.text = text
     }

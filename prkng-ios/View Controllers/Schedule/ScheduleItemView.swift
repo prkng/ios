@@ -25,9 +25,35 @@ class ScheduleItemView : UIView {
         
         self.limited = (model.timeLimitText != nil)
         
+        timeLimitLabel.hidden = true
+        
         if(limited) {
-            imageView.image = UIImage(named: "icon_timemax")
-            timeLimitLabel.text = model.timeLimitText
+            if let minutes = model.timeLimitText?.toInt() {
+                switch (minutes) {
+                case 15:
+                    imageView.image = UIImage(named: "icon_timemax_15")
+                    break
+                case 30:
+                    imageView.image = UIImage(named: "icon_timemax_30")
+                    break
+                case 60:
+                    imageView.image = UIImage(named: "icon_timemax_60")
+                    break
+                case 90:
+                    imageView.image = UIImage(named: "icon_timemax_90")
+                    break
+                case 120:
+                    imageView.image = UIImage(named: "icon_timemax_120")
+                    break
+                default:
+                    timeLimitLabel.text = model.timeLimitText
+                    timeLimitLabel.hidden = false
+                }
+            } else {
+                timeLimitLabel.text = model.timeLimitText
+                timeLimitLabel.hidden = false
+            }
+
         } else {
             timeLimitLabel.hidden = true
             imageView.image = UIImage(named: "icon_forbidden")
@@ -128,7 +154,7 @@ class ScheduleItemView : UIView {
         
         timeLimitLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.imageView)
-            make.centerY.equalTo(self.imageView).with.offset(1) //plus moves down, minus moves up
+            make.centerY.equalTo(self.imageView).with.offset(-1) //plus moves down, minus moves up
             make.size.equalTo(CGSize(width: 15, height: 17))
         }
         
