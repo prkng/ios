@@ -36,7 +36,7 @@
 "reset_password" = "Reset Password";
 "cancel" = "Cancel";
 "check_email_copy" = "Please check your email for instructions.";
-"pasword_reset_error" = "Something went wrong, please try again in few minutes";
+"pasword_reset_error" = "Something went wrong, please try again";
 "login_edit_message_google" = "Logged in with Google";
 "login_edit_message_facebook" = "Logged in with Facebook";
 
@@ -69,8 +69,8 @@
 "schedule_forbidden" = "FORBIDDEN";
 
 "first_checkin_title" = "Here we are!";
-"first_checkin_subtitle" = "This is your first check-in";
-"first_checkin_text" = "Keep in mind that the data may differs from the on-street regulation.\nPlease keep an eye open.";
+"first_checkin_subtitle" = "Your first check-in";
+"first_checkin_text" = "Keep in mind that the data may differs from the on-street regulation.Please keep an eye open.";
 "no_checkin_message" = "Please select \na segment first";
 "park_now" = "park now";
 "checked_in_message" = "you're checked-in at";
@@ -83,7 +83,7 @@
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
 "off" = "off";
-"share_location_copy" = "I parked on: \"[street_name]\", thanks to prkng app. http://prk.ng";
+"share_location_copy" = "I parked on: \"[street_name]\", with prkng app. http://prk.ng";
 
 // Days
 "this_day" = "Today";
@@ -102,7 +102,7 @@
 
 "max" = "max";
 
-"alarm_text" = "Time to move your car.";
+"alarm_text" = "Hey smart driver: time to move your car!";
 "time_up" = "Your time is up!";
 
 "tutorial_step_1" = "Sarah is having lunch with her mom. She’ll need to park when she gets there. See how she uses prkng!";
