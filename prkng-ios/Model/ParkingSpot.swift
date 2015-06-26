@@ -104,40 +104,73 @@ class ParkingSpot: NSObject, Hashable {
     }
     
     static func availableUntil(availableTimeInterval: NSTimeInterval) -> String {
+        
         let dateAtStartOfNextRule = NSDate(timeIntervalSinceNow: availableTimeInterval)
         
         let formatter = NSDateFormatter()
         
-        if dateAtStartOfNextRule.minute() > 0 {
-            formatter.dateFormat = "EEEE, h:mm a" //Wednesday, 7:30 PM
-        } else {
-            formatter.dateFormat = "EEEE, h a" //Wednesday, 7 PM
-        }
+        formatter.dateFormat = getDateFormatString(dateAtStartOfNextRule)
         
         let availableUntil = formatter.stringFromDate(dateAtStartOfNextRule)
         return availableUntil
     }
+    
+    private static func getDateFormatString(date: NSDate) -> String {
+        
+        let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
+        let is24Hour = testFormat?.rangeOfString("a") == nil
+        
+        var dateFormatString = "EEEE, h" //ex: Wednesday, 7
+        
+        if is24Hour {
+            dateFormatString += " 'h'"
+        }
+        
+        if date.minute() > 0 {
+            if is24Hour {
+                dateFormatString += " mm" //Wednesday, 7 h 30
+            } else {
+                dateFormatString += ":mm" //Wednesday, 7:30
+            }
+        }
+        
+        if !is24Hour {
+            dateFormatString = " a" //Wednesday, 7:30 PM
+        }
+        
+        //now make today be 'today' and tomorrow be 'tomorrow' 
+        
+        if date.isToday() {
+            let today = "'" + "today".localizedString + "'"
+            dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("EEEE", withString: today, options: NSStringCompareOptions.LiteralSearch, range: nil)
+        } else if date.isTomorrow() {
+            let tomorrow = "'" + "tomorrow".localizedString + "'"
+            dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("EEEE", withString: tomorrow, options: NSStringCompareOptions.LiteralSearch, range: nil)
+        }
 
+        return dateFormatString
+        
+    }
+    
     func availableUntilAttributed(#firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         let availableTimeInterval = self.availableTimeInterval()
         return ParkingSpot.availableUntilAttributed(availableTimeInterval, firstPartFont: firstPartFont, secondPartFont: secondPartFont)
     }
     
     static func availableUntilAttributed(availableTimeInterval: NSTimeInterval, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+        
         let dateAtStartOfNextRule = NSDate(timeIntervalSinceNow: availableTimeInterval)
         
         let formatter = NSDateFormatter()
         
-        if dateAtStartOfNextRule.minute() > 0 {
-            formatter.dateFormat = "EEEE, h:mm " //Wednesday, 7:30
-        } else {
-            formatter.dateFormat = "EEEE, h " //Wednesday, 7
-        }
+        var dateFormatStrings = getDateFormatString(dateAtStartOfNextRule).componentsSeparatedByString(" a")
+        let dateFormatStringFirstPart = dateFormatStrings[0]
+        let dateFormatStringSecondPart = dateFormatStrings.count > 1 ? dateFormatStrings[1] : ""
         
+        formatter.dateFormat = dateFormatStringFirstPart
         let firstPart = formatter.stringFromDate(dateAtStartOfNextRule)
-
-        formatter.dateFormat = "a" //PM
         
+        formatter.dateFormat = dateFormatStringSecondPart
         let secondPart = formatter.stringFromDate(dateAtStartOfNextRule)
         
         let firstPartAttrs = [NSFontAttributeName: firstPartFont]

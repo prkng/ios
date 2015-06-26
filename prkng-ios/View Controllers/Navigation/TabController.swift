@@ -152,6 +152,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             return;
         }
         
+        mapViewController.removeSelectedAnnotationIfExists()
         mapViewController.clearSearchResults()
         mapViewController.showUserLocation(true)
         
@@ -160,6 +161,12 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             self.tabBar.updateSelected()
         })
         
+    }
+    
+    func loadSearchInHereTab() {
+        loadHereTab()
+        hereViewController.showFilters()
+        hereViewController.searchFilterView.makeActive()
     }
     
     

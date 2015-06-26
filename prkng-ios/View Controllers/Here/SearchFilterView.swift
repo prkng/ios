@@ -176,5 +176,8 @@ class SearchFilterView: UIView, UITextFieldDelegate {
 
     //MARK- helper functions
     
+    func makeActive() {
+        searchField.becomeFirstResponder()
+    }
 
 }

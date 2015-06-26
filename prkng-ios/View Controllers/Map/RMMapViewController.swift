@@ -107,6 +107,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.removeSelectedAnnotationIfExists()
+        
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
             Int64(1.5 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
@@ -434,14 +436,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     // MARK: Helper Methods
     
-    func removeSelectedAnnotationIfExists() {
-        if (selectedSpot != nil) {
-        removeAnnotations(findAnnotations(selectedSpot!.identifier))
-            addSpotAnnotation(self.mapView, spot: selectedSpot!, selected: false)
-            selectedSpot = nil
-        }
-    }
-
     func trackUserButtonTapped () {
         self.mapView.setZoom(17, animated: false)
         self.mapView.userTrackingMode = RMUserTrackingModeFollow
@@ -857,6 +851,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.mapView.addAnnotation(annotation)
     }
 
+    override func removeSelectedAnnotationIfExists() {
+        if (selectedSpot != nil) {
+            removeAnnotations(findAnnotations(selectedSpot!.identifier))
+            addSpotAnnotation(self.mapView, spot: selectedSpot!, selected: false)
+            selectedSpot = nil
+        }
+    }
 
 
     

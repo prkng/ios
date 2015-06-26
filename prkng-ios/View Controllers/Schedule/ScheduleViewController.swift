@@ -15,6 +15,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     private var scheduleItems : Array<ScheduleItemModel>
     
     private var headerView : ScheduleHeaderView
+    private var headerViewButton: UIButton
     private var scrollView : UIScrollView
     private var contentView : UIView
     private var leftView : ScheduleLeftView
@@ -31,6 +32,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     init(spot : ParkingSpot) {
         self.spot = spot
         headerView = ScheduleHeaderView()
+        headerViewButton = ViewFactory.checkInButton()
         scrollView = UIScrollView()
         contentView = UIView()
         leftView = ScheduleLeftView()
@@ -118,8 +120,10 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         headerView.layer.shadowOpacity = 0.2
         headerView.layer.shadowRadius = 0.5
-        var tapRec = UITapGestureRecognizer(target: self, action: Selector("dismiss"))
-        headerView.addGestureRecognizer(tapRec)
+        headerView.userInteractionEnabled = false
+        
+        self.view.addSubview(headerViewButton)
+        headerViewButton.addTarget(self, action: "dismiss", forControlEvents: UIControlEvents.TouchUpInside)
         
         scrollView.addSubview(contentView)
         
@@ -138,6 +142,8 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             scheduleItemViews.append(scheduleItemView)
         }
         
+        self.view.sendSubviewToBack(headerViewButton)
+        
     }
     
     func setupConstraints () {
@@ -149,6 +155,9 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
             make.height.equalTo(self.HEADER_HEIGHT)
         }
 
+        headerViewButton.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.headerView)
+        }
         
         leftView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.headerView.snp_bottom)
@@ -418,11 +427,6 @@ class ScheduleItemModel {
     var endInterval: CGFloat
     var limit: NSTimeInterval
     
-    var startTime : String?
-    var startTimeAmPm : String?
-    var endTime : String?
-    var endTimeAmPm : String?
-    
     var heightMultiplier : CGFloat?
     var yIndexMultiplier : CGFloat?
     
@@ -445,32 +449,6 @@ class ScheduleItemModel {
         
         heightMultiplier = (endF - startF) / 3600
         yIndexMultiplier = startF / 3600
-        
-        var startTm = startF
-        if(startF >= 13.0 * 3600.0) {
-            startTimeAmPm = "PM"
-            startTm = startF - (12 * 3600.0)
-        } else {
-            startTimeAmPm = "AM"
-        }
-        let startHours = Int((startTm / 3600))
-        let startMinutes  = Int((startTm / 60) % 60)
-        startTime =  String(NSString(format: "%02ld:%02ld", startHours, startMinutes))
-        
-        
-        var endTm = endF
-        if(endF >= 13 * 3600.0) {
-            endTimeAmPm = "PM"
-            endTm = endTm - (12 * 3600.0)
-        } else {
-            endTimeAmPm = "AM"
-        }
-        
-        
-        let endHours = Int((endTm / 3600))
-        let endMinutes  = Int((endTm / 60) % 60)
-        endTime =  String(NSString(format: "%02ld:%02ld", endHours, endMinutes))
-        
         
         if (limit > 0) {
             let limitMinutes  = Int(limit / 60)
@@ -586,22 +564,38 @@ class ScheduleTimeModel {
     }
     
     func toString() -> String {
-        var amPm: String
         
-        if(timeInterval >= 13.0 * 3600.0) {
-            amPm = "PM"
+        let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
+        let is24Hour = testFormat?.rangeOfString("a") == nil
+
+        if is24Hour {
+            var hours = Int((timeInterval / 3600))
+            let minutes  = Int((timeInterval / 60) % 60)
+            
+            if (minutes != 0) {
+                return String(format: "%ldh%ld", hours, minutes)
+            } else {
+                return String(format: "%ldh", hours)
+            }
+
         } else {
-            amPm = "AM"
-        }
-        
-        var hours = Int((timeInterval / 3600))
-        hours = hours >= 13 ? hours - 12 : hours
-        let minutes  = Int((timeInterval / 60) % 60)
-        
-        if (minutes != 0) {
-            return String(format: "%ld:%ld%@", hours, minutes, amPm)
-        } else {
-            return String(format: "%ld%@", hours, amPm)
+            var amPm: String
+            
+            if(timeInterval >= 12.0 * 3600.0) {
+                amPm = "PM"
+            } else {
+                amPm = "AM"
+            }
+            
+            var hours = Int((timeInterval / 3600))
+            hours = hours >= 13 ? hours - 12 : hours
+            let minutes  = Int((timeInterval / 60) % 60)
+            
+            if (minutes != 0) {
+                return String(format: "%ld:%ld%@", hours, minutes, amPm)
+            } else {
+                return String(format: "%ld%@", hours, amPm)
+            }
         }
         
     }

@@ -65,7 +65,7 @@ class ScheduleHeaderView: UIView {
     
     func setupSubviews() {
         
-        topContainer.backgroundColor = Styles.Colors.red2
+//        topContainer.backgroundColor = Styles.Colors.red2
         addSubview(topContainer)
         
         titleLabel.font = Styles.Fonts.h2

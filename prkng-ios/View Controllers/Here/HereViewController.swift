@@ -289,6 +289,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             detailView.availableTimeLabel.attributedText = activeSpot?.availableUntilAttributed(firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
             
+            detailView.checkinImageView.layer.wigglewigglewiggle()
+
             hideFilters(alsoHideFilterButton: true)
             
             showSpotDetails()

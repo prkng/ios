@@ -35,6 +35,7 @@ class MapViewController: AbstractViewController {
     //shows a checkin on the map as a regular marker
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) { }
     
+    func removeSelectedAnnotationIfExists() { }
 
     /*
     // MARK: - Navigation

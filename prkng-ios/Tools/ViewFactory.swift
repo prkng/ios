@@ -44,23 +44,34 @@ struct ViewFactory {
         let hugeButton = MKButton()
         hugeButton.titleLabel?.font = Styles.Fonts.h1
         hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
-        hugeButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
-        hugeButton.backgroundColor = Styles.Colors.cream1
+        hugeButton.backgroundColor = Styles.Colors.cream2
+        hugeButton.backgroundLayerColor = Styles.Colors.cream2
+        hugeButton.rippleLayerColor = Styles.Colors.cream1
+        hugeButton.rippleAniDuration = 0.35
         hugeButton.cornerRadius = 0
+        
         
         return hugeButton
     }
     
     static func bigButton () -> MKButton {
         
-        let bigButton = MKButton()
-        bigButton.titleLabel?.font = Styles.Fonts.h1
-        bigButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
-        bigButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
-        bigButton.backgroundColor = Styles.Colors.stone
-        bigButton.cornerRadius = 0
+        return hugeButton()
+    }
+    
+    static func checkInButton() -> MKButton {
+     
+        let hugeButton = ViewFactory.hugeButton()
+        hugeButton.backgroundColor = Styles.Colors.red2
+        hugeButton.backgroundLayerColor = Styles.Colors.red2
+        hugeButton.rippleLayerColor = Styles.Colors.red1
+        return hugeButton
+    }
+    
+    static func openScheduleButton() -> MKButton {
         
-        return bigButton
+        let hugeButton = ViewFactory.hugeButton()
+        return hugeButton
     }
     
     static func transparentRoundedButton () -> UIButton {

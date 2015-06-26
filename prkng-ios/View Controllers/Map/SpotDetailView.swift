@@ -11,12 +11,14 @@ import UIKit
 class SpotDetailView: UIView {
 
     var topContainer: UIView
+    var topContainerButton: UIButton
     var titleLabel: UILabel
     var topContainerRightView: UIView
     var checkinImageView: UIImageView
     var checkinImageLabel: UILabel
 
     var bottomContainer: UIView
+    var bottomContainerButton: UIButton
     var availableTextLabel: UILabel
     var availableTimeLabel: UILabel
     var scheduleImageView: UIImageView
@@ -33,12 +35,15 @@ class SpotDetailView: UIView {
     override init(frame: CGRect) {
 
         topContainer = UIView()
+        topContainerButton = ViewFactory.checkInButton()
+
         titleLabel = UILabel()
         topContainerRightView = UIView()
         checkinImageView = UIImageView()
         checkinImageLabel = UILabel()
         
         bottomContainer = UIView()
+        bottomContainerButton = ViewFactory.openScheduleButton()
         availableTextLabel = UILabel()
         availableTimeLabel = UILabel()
         scheduleImageView = UIImageView()
@@ -70,10 +75,11 @@ class SpotDetailView: UIView {
 
     func setupSubviews() {
         
-        let topTapRec = UITapGestureRecognizer(target: self, action: Selector("topContainerTapped:"))
-        topContainer.addGestureRecognizer(topTapRec)
-        topContainer.backgroundColor = Styles.Colors.red2
+        topContainer.userInteractionEnabled = false
         addSubview(topContainer)
+
+        topContainerButton.addTarget(self, action: "topContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.addSubview(topContainerButton)
 
         titleLabel.font = Styles.Fonts.h2
         titleLabel.textColor = Styles.Colors.cream1
@@ -94,10 +100,11 @@ class SpotDetailView: UIView {
         checkinImageLabel.text = NSLocalizedString("check-in", comment: "")
         topContainerRightView.addSubview(checkinImageLabel)
         
-        let bottomTapRec = UITapGestureRecognizer(target: self, action: Selector("bottomContainerTapped:"))
-        bottomContainer.addGestureRecognizer(bottomTapRec)
-        bottomContainer.backgroundColor = Styles.Colors.stone
+        bottomContainer.userInteractionEnabled = false
         addSubview(bottomContainer)
+
+        bottomContainerButton.addTarget(self, action: "bottomContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        self.addSubview(bottomContainerButton)
 
         availableTextLabel.font = Styles.FontFaces.light(11)
         availableTextLabel.textColor = Styles.Colors.petrol2
@@ -117,6 +124,9 @@ class SpotDetailView: UIView {
         scheduleImageView.contentMode = UIViewContentMode.Center
         bottomContainer.addSubview(scheduleImageView)
 
+        self.sendSubviewToBack(topContainerButton)
+        self.sendSubviewToBack(bottomContainerButton)
+        
         didSetupSubviews = true
     }
 
@@ -127,6 +137,10 @@ class SpotDetailView: UIView {
             make.left.equalTo(self)
             make.right.equalTo(self)
             make.height.equalTo(Styles.Sizes.spotDetailViewTopPortionHeight)
+        }
+        
+        topContainerButton.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.topContainer)
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
@@ -158,6 +172,10 @@ class SpotDetailView: UIView {
             make.left.equalTo(self)
             make.right.equalTo(self)
             make.bottom.equalTo(self)
+        }
+
+        bottomContainerButton.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.bottomContainer)
         }
 
         availableTextLabel.snp_makeConstraints { (make) -> () in

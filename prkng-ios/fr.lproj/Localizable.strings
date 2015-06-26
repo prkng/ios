@@ -75,7 +75,7 @@
 "checked_in_message" = "vous êtes stationné sur";
 "available_for" = "disponible pour";
 "for" = "pour";
-"available_for" = "disponible pour";
+"available_until" = "disponible jusqu'à";
 "until" = "jusqu'à";
 "share_car_location" = "partager"; 
 "leave_spot" = "quitter";

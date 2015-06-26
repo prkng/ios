@@ -64,13 +64,13 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(reportButton)
         
-//        searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
-//        searchButton.layer.shadowColor = UIColor.blackColor().CGColor
-//        searchButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-//        searchButton.layer.shadowOpacity = 0.2
-//        searchButton.layer.shadowRadius = 0.5
-//        searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-//        view.addSubview(searchButton)
+        searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
+        searchButton.layer.shadowColor = UIColor.blackColor().CGColor
+        searchButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+        searchButton.layer.shadowOpacity = 0.2
+        searchButton.layer.shadowRadius = 0.5
+        searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(searchButton)
         
         parkButton.setTitle("park_now".localizedString.lowercaseString, forState: UIControlState.Normal)
         parkButton.layer.shadowColor = UIColor.blackColor().CGColor
@@ -105,22 +105,14 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
             make.centerX.equalTo(self.view).multipliedBy(1.66)
         }
         
-//        parkButton.snp_makeConstraints { (make) -> () in
-//            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-//            make.bottom.equalTo(self.searchButton.snp_top)
-//            make.left.equalTo(self.view)
-//            make.right.equalTo(self.view)
-//        }
-//        
-//        searchButton.snp_makeConstraints { (make) -> () in
-//            make.height.equalTo(Styles.Sizes.bigButtonHeight)
-//            make.bottom.equalTo(self.view)
-//            make.left.equalTo(self.view)
-//            make.right.equalTo(self.view)
-//        }
-        
-        // without search button
         parkButton.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+            make.bottom.equalTo(self.searchButton.snp_top)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+        }
+        
+        searchButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.view)
             make.left.equalTo(self.view)
@@ -133,9 +125,9 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         self.delegate?.loadHereTab()
     }
     
-//    func searchButtonTapped() {
-//        self.delegate?.loadSearchTab()
-//    }
+    func searchButtonTapped() {
+        self.delegate?.loadSearchInHereTab()
+    }
     
     func reportButtonTapped(sender: UIButton) {
         loadReportScreen(nil)
@@ -146,5 +138,5 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
 
 protocol MyCarNoCheckinViewControllerDelegate {
     func loadHereTab()
-//    func loadSearchTab()
+    func loadSearchInHereTab()
 }
