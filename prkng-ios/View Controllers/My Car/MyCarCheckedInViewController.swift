@@ -116,10 +116,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if (Settings.firstCheckin()) {
+//        if (Settings.firstCheckin()) {
             showFirstCheckinMessage()
             Settings.setFirstCheckinPassed(true)
-        }
+//        }
     }
     
     

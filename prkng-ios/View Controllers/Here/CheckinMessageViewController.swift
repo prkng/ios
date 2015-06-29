@@ -18,6 +18,8 @@ class CheckinMessageViewController: GAITrackedViewController {
     var textContainer : UIView
     var textLabel : UILabel
     
+    let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height / 2.0
+    
     init() {
         
         containerView = UIView()
@@ -44,8 +46,40 @@ class CheckinMessageViewController: GAITrackedViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.screenName = "Here - Checkin Message"
+        
+        
+        let translateTransform = CATransform3DMakeTranslation(0, Y_TRANSFORM, 0)
+        let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
+        let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
+        
+        containerView.layer.transform = CATransform3DConcat(CATransform3DConcat(rotateTransform, translateTransform), scaleTransform)
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+
+        let translateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerTranslationY)
+        translateAnimation.fromValue = NSNumber(float: Float(Y_TRANSFORM))
+        translateAnimation.toValue = NSNumber(float: 0)
+        translateAnimation.springBounciness = 10
+        translateAnimation.springSpeed = 12
+        
+        let rotateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerRotation)
+        rotateAnimation.fromValue = NSNumber(double: -M_PI_4)
+        rotateAnimation.toValue = NSNumber(float: 0)
+        rotateAnimation.springBounciness = 10
+        rotateAnimation.springSpeed = 3
+        
+        let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPLayerScaleXY)
+        scaleAnimation.fromValue = NSValue(CGSize: CGSize(width: 0.5, height: 0.5))
+        scaleAnimation.toValue =  NSValue(CGSize: CGSize(width: 1, height: 1))
+        scaleAnimation.duration = 0.5
+        
+        containerView.layer.pop_addAnimation(translateAnimation, forKey: "translateAnimation")
+        containerView.layer.pop_addAnimation(rotateAnimation, forKey: "rotateAnimation")
+        containerView.layer.pop_addAnimation(scaleAnimation, forKey: "scaleAnimation")
+    }
     
     
     func setupSubviews() {
