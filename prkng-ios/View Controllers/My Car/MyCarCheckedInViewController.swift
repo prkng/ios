@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate {
+class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate, POPAnimationDelegate {
     
     var spot : ParkingSpot?
     
@@ -22,11 +22,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var availableTitleLabel : UILabel
     var availableTimeLabel : UILabel //ex: 24+
-    
+
+    var smallButtonContainer : UIView
     var notificationsButton : UIButton
-    
     var reportButton : UIButton
     
+    var bigButtonContainer : UIView
     var shareButton : UIButton
     var leaveButton : UIButton
     
@@ -34,10 +35,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var delegate : MyCarCheckedInViewControllerDelegate?
     
+    private let SMALL_VERTICAL_MARGIN = 5
+    private let MEDIUM_VERTICAL_MARGIN = 10
+    private let LARGE_VERTICAL_MARGIN = 20
     
-    private var SMALL_VERTICAL_MARGIN = 5
-    private var MEDIUM_VERTICAL_MARGIN = 10
-    private var LARGE_VERTICAL_MARGIN = 20
+    private let BUTTONS_TRANSLATION_X = CGFloat(Styles.Sizes.hugeButtonHeight * 2)
     
     
     init() {
@@ -50,9 +52,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         availableTitleLabel = ViewFactory.formLabel()
         availableTimeLabel = UILabel()
+        
+        bigButtonContainer = UIView()
         shareButton = ViewFactory.hugeButton()
         leaveButton = ViewFactory.hugeButton()
         
+        smallButtonContainer = UIView()
         notificationsButton = UIButton()
         reportButton = ViewFactory.reportButton()
         
@@ -92,7 +97,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         super.viewWillAppear(animated)
         
         if (spot == nil) {
+            
+            logoView.alpha = 0
             containerView.alpha = 0
+            smallButtonContainer.alpha = 0
+            bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
+            
             
             if (!Settings.firstCheckin()) {
                 SVProgressHUD.setBackgroundColor(UIColor.clearColor())
@@ -107,6 +117,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                     self.animateAndShow()
                 }
             })
+        } else {
+            self.updateValues()
         }
     }
     
@@ -141,6 +153,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         availableTimeLabel.textAlignment = NSTextAlignment.Center
         containerView.addSubview(availableTimeLabel)
         
+        view.addSubview(smallButtonContainer)
+        
         notificationsButton.clipsToBounds = true
         notificationsButton.layer.cornerRadius = 14
         notificationsButton.layer.borderWidth = 1
@@ -148,20 +162,22 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         notificationsButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
         notificationsButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
         notificationsButton.addTarget(self, action: "toggleNotifications", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(notificationsButton)
+        smallButtonContainer.addSubview(notificationsButton)
         updateNotificationsButton()
         
         reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: .TouchUpInside)
-        view.addSubview(reportButton)
+        smallButtonContainer.addSubview(reportButton)
+        
+        view.addSubview(bigButtonContainer)
         
         leaveButton.setTitle("leave_spot".localizedString.lowercaseString, forState: UIControlState.Normal)
         leaveButton.addTarget(self, action: "leaveButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(leaveButton)
+        bigButtonContainer.addSubview(leaveButton)
         
         shareButton.setTitle("share_car_location".localizedString.lowercaseString, forState: UIControlState.Normal)
         shareButton.addTarget(self, action: "shareButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         shareButton.setTitleColor(Styles.Colors.petrol2, forState: .Normal)
-        view.addSubview(shareButton)
+        bigButtonContainer.addSubview(shareButton)
         
     }
     
@@ -217,32 +233,45 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.bottom.equalTo(self.containerView)
         }
         
+        smallButtonContainer.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.shareButton.snp_top).with.offset(-largerVerticalMargin)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(26)
+        }
         
         notificationsButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.shareButton.snp_top).with.offset(-largerVerticalMargin)
+            make.bottom.equalTo(self.smallButtonContainer)
             make.size.equalTo(CGSizeMake(155, 26))
-            make.centerX.equalTo(self.view)
+            make.centerX.equalTo(self.smallButtonContainer)
         }
         
         reportButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(24, 24))
             make.bottom.equalTo(self.notificationsButton)
-            make.centerX.equalTo(self.view).multipliedBy(1.66)
+            make.centerX.equalTo(self.smallButtonContainer).multipliedBy(1.66)
+        }
+        
+        bigButtonContainer.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.view)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight * 2)
         }
         
         leaveButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-            make.bottom.equalTo(self.view)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.bigButtonContainer)
+            make.left.equalTo(self.bigButtonContainer)
+            make.right.equalTo(self.bigButtonContainer)
         }
         
         
         shareButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.leaveButton.snp_top)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
+            make.left.equalTo(self.bigButtonContainer)
+            make.right.equalTo(self.bigButtonContainer)
         }
         
     }
@@ -419,6 +448,41 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func animateAndShow() {
         
+        let logoFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
+        logoFadeInAnimation.fromValue = NSNumber(int: 0)
+        logoFadeInAnimation.toValue = NSNumber(int: 1)
+        logoFadeInAnimation.duration = 0.3
+        logoView.layer.pop_addAnimation(logoFadeInAnimation, forKey: "logoFadeInAnimation")
+
+        
+        let logoSpringAnimation = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY)
+        logoSpringAnimation.fromValue = NSValue(CGPoint: CGPoint(x: 0.5, y: 0.5))
+        logoSpringAnimation.toValue = NSValue(CGPoint: CGPoint(x: 1, y: 1))
+        logoSpringAnimation.springBounciness = 20
+        logoView.layer.pop_addAnimation(logoSpringAnimation, forKey: "logoSpringAnimation")
+        
+        let containerFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
+        containerFadeInAnimation.fromValue = NSNumber(int: 0)
+        containerFadeInAnimation.toValue = NSNumber(int: 1)
+        containerFadeInAnimation.duration = 0.6
+        containerFadeInAnimation.beginTime = CACurrentMediaTime() + 0.15
+        containerFadeInAnimation.completionBlock = {(anim, finished) in
+            // Slide in buttons once container fully visible
+            let buttonSlideAnimation = POPBasicAnimation(propertyNamed: kPOPLayerTranslationY)
+            buttonSlideAnimation.fromValue = NSNumber(float: Float(self.BUTTONS_TRANSLATION_X))
+            buttonSlideAnimation.toValue = NSNumber(int: 0)
+            buttonSlideAnimation.duration = 0.2
+            self.bigButtonContainer.layer.pop_addAnimation(buttonSlideAnimation, forKey: "buttonSlideAnimation")
+        }
+        self.containerView.layer.pop_addAnimation(containerFadeInAnimation, forKey: "containerFadeInAnimation")
+
+        
+        let smallButtonsFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
+        smallButtonsFadeInAnimation.fromValue = NSNumber(int: 0)
+        smallButtonsFadeInAnimation.toValue = NSNumber(int: 1)
+        smallButtonsFadeInAnimation.duration = 0.3
+        smallButtonsFadeInAnimation.beginTime = CACurrentMediaTime() + 0.3
+        self.smallButtonContainer.layer.pop_addAnimation(smallButtonsFadeInAnimation, forKey: "smallButtonsFadeInAnimation")
     }
     
 }
