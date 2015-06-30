@@ -30,6 +30,9 @@ class HereFirstUseViewController: GAITrackedViewController {
     var textContainer2 : UIView
     var textLabel2 : UILabel
     
+    let X_TRANSFORM = CGFloat(100)
+    let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
+    
     init() {
 
         containerView = UIView()
@@ -69,11 +72,22 @@ class HereFirstUseViewController: GAITrackedViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.screenName = "Here - First Use View"
+        
+        let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
+        let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
+        let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
+        
+        containerView.layer.transform = CATransform3DConcat(CATransform3DConcat(rotateTransform, translateTransform), scaleTransform)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        animate()
     }
     
     func setupSubviews() {
         
-        view.backgroundColor = UIColor(red: 48.0/255.0, green: 58/255.0, blue: 66/255.0, alpha: 0.9)
+        view.backgroundColor = Styles.Colors.transparentBackground
         
         view.addSubview(containerView)
         
@@ -214,6 +228,31 @@ class HereFirstUseViewController: GAITrackedViewController {
             make.bottom.equalTo(self.textContainer2).with.offset(-22)
         }
         
+        
+    }
+    
+    func animate() {
+        
+        let translateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerTranslationXY)
+        translateAnimation.fromValue = NSValue(CGPoint: CGPoint(x: X_TRANSFORM, y: Y_TRANSFORM))
+        translateAnimation.toValue = NSValue(CGPoint: CGPoint(x: 0, y: 0))
+        translateAnimation.springBounciness = 10
+        translateAnimation.springSpeed = 12
+        
+        let rotateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerRotation)
+        rotateAnimation.fromValue = NSNumber(double: -M_PI_4)
+        rotateAnimation.toValue = NSNumber(float: 0)
+        rotateAnimation.springBounciness = 10
+        rotateAnimation.springSpeed = 3
+        
+        let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPLayerScaleXY)
+        scaleAnimation.fromValue = NSValue(CGSize: CGSize(width: 0.5, height: 0.5))
+        scaleAnimation.toValue =  NSValue(CGSize: CGSize(width: 1, height: 1))
+        scaleAnimation.duration = 0.5
+        
+        containerView.layer.pop_addAnimation(translateAnimation, forKey: "translateAnimation")
+        containerView.layer.pop_addAnimation(rotateAnimation, forKey: "rotateAnimation")
+        containerView.layer.pop_addAnimation(scaleAnimation, forKey: "scaleAnimation")
         
     }
     

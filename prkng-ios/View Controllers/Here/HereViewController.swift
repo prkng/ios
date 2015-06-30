@@ -161,14 +161,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func dismissFirstUseMessage() {
         
-        if let firstUseMessageVC = self.firstUseMessageVC {
+        if let firstUse = self.firstUseMessageVC {
             
             UIView.animateWithDuration(0.2, animations: { () -> Void in
-                firstUseMessageVC.view.alpha = 0.0
+                firstUse.view.alpha = 0.0
                 }, completion: { (finished) -> Void in
-                    firstUseMessageVC.removeFromParentViewController()
-                    firstUseMessageVC.view.removeFromSuperview()
-                    firstUseMessageVC.didMoveToParentViewController(nil)
+                    firstUse.removeFromParentViewController()
+                    firstUse.view.removeFromSuperview()
+                    firstUse.didMoveToParentViewController(nil)
                     self.firstUseMessageVC = nil
             })
             

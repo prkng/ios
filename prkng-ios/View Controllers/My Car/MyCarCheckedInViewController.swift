@@ -92,34 +92,29 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         super.viewWillAppear(animated)
         
         if (spot == nil) {
-            containerView.hidden = true
-            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+            containerView.alpha = 0
             
-            if (Settings.checkedIn()) {
-                SpotOperations.getSpotDetails(Settings.checkedInSpotId()!, completion: { (spot) -> Void in
-                    self.spot = spot
-                    self.updateValues()
-                    SVProgressHUD.dismiss()
-                    if (spot != nil) {
-                        self.containerView.hidden = false
-                    }
-                    
-                })
+            if (!Settings.firstCheckin()) {
+                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
             }
+            
+            SpotOperations.getSpotDetails(Settings.checkedInSpotId()!, completion: { (spot) -> Void in
+                self.spot = spot
+                self.updateValues()
+                SVProgressHUD.dismiss()
+                if (spot != nil) {
+                    self.animateAndShow()
+                }
+            })
         }
-        
-        
-        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-//        if (Settings.firstCheckin()) {
-            showFirstCheckinMessage()
-            Settings.setFirstCheckinPassed(true)
-//        }
+        if(Settings.firstCheckin()) {
+            NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("showFirstCheckinMessage"), userInfo: nil, repeats: false)
+        }
     }
     
     
@@ -324,6 +319,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             self.checkinMessageVC!.view.alpha = 1.0
         })
         
+        
+        Settings.setFirstCheckinPassed(true)
     }
     
     func hideFirstCheckinMessage () {
@@ -417,6 +414,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     //MARK- gesture recognizer delegate
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+    
+    
+    func animateAndShow() {
+        
     }
     
 }

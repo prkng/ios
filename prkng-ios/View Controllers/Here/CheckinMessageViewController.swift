@@ -18,7 +18,8 @@ class CheckinMessageViewController: GAITrackedViewController {
     var textContainer : UIView
     var textLabel : UILabel
     
-    let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height / 2.0
+    let X_TRANSFORM = CGFloat(100)
+    let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
     
     init() {
         
@@ -47,8 +48,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         super.viewDidLoad()
         self.screenName = "Here - Checkin Message"
         
-        
-        let translateTransform = CATransform3DMakeTranslation(0, Y_TRANSFORM, 0)
+        let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
         let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
         let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
         
@@ -57,30 +57,8 @@ class CheckinMessageViewController: GAITrackedViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-
-        let translateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerTranslationY)
-        translateAnimation.fromValue = NSNumber(float: Float(Y_TRANSFORM))
-        translateAnimation.toValue = NSNumber(float: 0)
-        translateAnimation.springBounciness = 10
-        translateAnimation.springSpeed = 12
-        
-        let rotateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerRotation)
-        rotateAnimation.fromValue = NSNumber(double: -M_PI_4)
-        rotateAnimation.toValue = NSNumber(float: 0)
-        rotateAnimation.springBounciness = 10
-        rotateAnimation.springSpeed = 3
-        
-        let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPLayerScaleXY)
-        scaleAnimation.fromValue = NSValue(CGSize: CGSize(width: 0.5, height: 0.5))
-        scaleAnimation.toValue =  NSValue(CGSize: CGSize(width: 1, height: 1))
-        scaleAnimation.duration = 0.5
-        
-        containerView.layer.pop_addAnimation(translateAnimation, forKey: "translateAnimation")
-        containerView.layer.pop_addAnimation(rotateAnimation, forKey: "rotateAnimation")
-        containerView.layer.pop_addAnimation(scaleAnimation, forKey: "scaleAnimation")
-    }
-    
+        animate()
+    }    
     
     func setupSubviews() {
         
@@ -168,8 +146,32 @@ class CheckinMessageViewController: GAITrackedViewController {
             make.right.equalTo(self.containerView).with.offset(-24)
             make.bottom.equalTo(self.containerView).with.offset(-14)
         }
+    
         
+    }
+    
+    func animate() {
+    
+        let translateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerTranslationXY)
+        translateAnimation.fromValue = NSValue(CGPoint: CGPoint(x: X_TRANSFORM, y: Y_TRANSFORM))
+        translateAnimation.toValue = NSValue(CGPoint: CGPoint(x: 0, y: 0))
+        translateAnimation.springBounciness = 10
+        translateAnimation.springSpeed = 12
         
+        let rotateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerRotation)
+        rotateAnimation.fromValue = NSNumber(double: -M_PI_4)
+        rotateAnimation.toValue = NSNumber(float: 0)
+        rotateAnimation.springBounciness = 10
+        rotateAnimation.springSpeed = 3
+        
+        let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPLayerScaleXY)
+        scaleAnimation.fromValue = NSValue(CGSize: CGSize(width: 0.5, height: 0.5))
+        scaleAnimation.toValue =  NSValue(CGSize: CGSize(width: 1, height: 1))
+        scaleAnimation.duration = 0.5
+        
+        containerView.layer.pop_addAnimation(translateAnimation, forKey: "translateAnimation")
+        containerView.layer.pop_addAnimation(rotateAnimation, forKey: "rotateAnimation")
+        containerView.layer.pop_addAnimation(scaleAnimation, forKey: "scaleAnimation")
         
     }
     
