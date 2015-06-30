@@ -70,7 +70,7 @@
 
 "first_checkin_title" = "Here we are!";
 "first_checkin_subtitle" = "Your first check-in";
-"first_checkin_text" = "Keep in mind that the data may differs from the on-street regulation.Please keep an eye open.";
+"first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation.Please keep an eye open.";
 "no_checkin_message" = "Please select \na segment first";
 "park_now" = "park now";
 "checked_in_message" = "you're checked-in at";

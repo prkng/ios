@@ -59,10 +59,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         if (Settings.firstMapUse()) {
-            showFirstUseMessage()
             Settings.setFirstMapUsePassed(true)
+            NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstUseMessage"), userInfo: nil, repeats: false)
         }
         
     }
@@ -139,6 +139,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func showFirstUseMessage() {
         
+        
         firstUseMessageVC = HereFirstUseViewController()
         
         self.addChildViewController(firstUseMessageVC!)
@@ -157,6 +158,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         UIView.animateWithDuration(0.2, animations: { () -> Void in
             self.firstUseMessageVC!.view.alpha = 1.0
         })
+        
     }
     
     func dismissFirstUseMessage() {

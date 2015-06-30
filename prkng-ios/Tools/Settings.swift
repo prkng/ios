@@ -63,6 +63,7 @@ struct Settings {
     
     static func setFirstMapUsePassed(firstMapUsePassed : Bool)  {
         NSUserDefaults.standardUserDefaults().setObject(firstMapUsePassed, forKey: FIRST_MAP_USE_PASSED_KEY)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     static func notificationTime() -> Int {
