@@ -97,12 +97,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         super.viewWillAppear(animated)
         
         if (spot == nil) {
-            
             logoView.alpha = 0
             containerView.alpha = 0
             smallButtonContainer.alpha = 0
             bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
-            
+        }
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        if (spot == nil) {
             
             if (!Settings.firstCheckin()) {
                 SVProgressHUD.setBackgroundColor(UIColor.clearColor())
@@ -115,18 +122,17 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 SVProgressHUD.dismiss()
                 if (spot != nil) {
                     self.animateAndShow()
+                    
+                    if(Settings.firstCheckin()) {
+                        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstCheckinMessage"), userInfo: nil, repeats: false)
+                    }
                 }
             })
         } else {
             self.updateValues()
         }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        if(Settings.firstCheckin()) {
-            NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("showFirstCheckinMessage"), userInfo: nil, repeats: false)
-        }
+        
+
     }
     
     
