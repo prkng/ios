@@ -310,11 +310,13 @@ class SettingsViewController: AbstractViewController {
             index = Settings.availableCities.count - 1
         }
         
+        let previousCity = Settings.selectedCity()
+        
         Settings.setSelectedCity(Settings.availableCities[index])
         
         cityLabel.text = Settings.selectedCity()
         
-        
+        delegate!.cityDidChange(fromCity: previousCity, toCity: Settings.availableCities[index])
     }
     
     func nextCityButtonTapped () {
@@ -334,10 +336,13 @@ class SettingsViewController: AbstractViewController {
             index = 0
         }
         
+        let previousCity = Settings.selectedCity()
+
         Settings.setSelectedCity(Settings.availableCities[index])
         
         cityLabel.text = Settings.selectedCity()
         
+        delegate!.cityDidChange(fromCity: previousCity, toCity: Settings.availableCities[index])
     }
     
     func notificationSelectionValueChanged() {
@@ -363,4 +368,5 @@ class SettingsViewController: AbstractViewController {
 
 protocol SettingsViewControllerDelegate {
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String)
+    func cityDidChange(#fromCity: String, toCity: String)
 }

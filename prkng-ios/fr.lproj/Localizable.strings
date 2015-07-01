@@ -137,4 +137,5 @@
 "all" = "tous";
 "check-in" = "Check-in";
 "authorized_for" = "Autorisé pour";
-"search" = "Lieu ou adresse";
+"search" = "Recherche";
+"search_bar_text" = "Lieu ou adresse";

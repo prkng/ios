@@ -363,6 +363,12 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         self.mapViewController.trackUser(false)
         self.mapViewController.goToCoordinate(coordinate, named:name)
     }
+    
+    func cityDidChange(#fromCity: String, toCity: String) {
+        if let coordinate = Settings.selectedCityPoint() {
+                self.mapViewController.goToCoordinate(coordinate, named:Settings.selectedCity(), withZoom:13)
+        }
+    }
 
 }
 

@@ -39,6 +39,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     private let MEDIUM_VERTICAL_MARGIN = 10
     private let LARGE_VERTICAL_MARGIN = 20
     
+    private var smallerVerticalMargin: Int = 0
+    private var largerVerticalMargin: Int = 0
+
     private let BUTTONS_TRANSLATION_X = CGFloat(Styles.Sizes.hugeButtonHeight * 2)
     
     
@@ -74,8 +77,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         setupConstraints()
         
         //add a tap gesture recognizer
-        var tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("toggleTimeDisplay"))
-        var tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("toggleTimeDisplay"))
+        var tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        var tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
         var tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("showSpotOnMap"))
         tapRecognizer1.delegate = self
         tapRecognizer2.delegate = self
@@ -189,8 +192,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func setupConstraints () {
         
-        var smallerVerticalMargin = MEDIUM_VERTICAL_MARGIN
-        var largerVerticalMargin = LARGE_VERTICAL_MARGIN
+        smallerVerticalMargin = MEDIUM_VERTICAL_MARGIN
+        largerVerticalMargin = LARGE_VERTICAL_MARGIN
         
         if UIScreen.mainScreen().bounds.size.height == 480 {
             smallerVerticalMargin = SMALL_VERTICAL_MARGIN
@@ -208,7 +211,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         containerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.logoView.snp_bottom).with.offset(largerVerticalMargin)
+            make.top.equalTo(self.logoView.snp_bottom).with.offset(self.largerVerticalMargin)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
@@ -221,26 +224,26 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         locationLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.locationTitleLabel.snp_bottom).with.offset(smallerVerticalMargin)
+            make.top.equalTo(self.locationTitleLabel.snp_bottom).with.offset(self.smallerVerticalMargin)
             make.left.equalTo(self.containerView).with.offset(15)
             make.right.equalTo(self.containerView).with.offset(-15)
         }
         
         availableTitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.locationLabel.snp_bottom).with.offset(largerVerticalMargin)
+            make.top.equalTo(self.locationLabel.snp_bottom).with.offset(self.largerVerticalMargin)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
         
         availableTimeLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.availableTitleLabel.snp_bottom).with.offset(smallerVerticalMargin)
+            make.top.equalTo(self.availableTitleLabel.snp_bottom).with.offset(self.smallerVerticalMargin)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
             make.bottom.equalTo(self.containerView)
         }
         
         smallButtonContainer.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.shareButton.snp_top).with.offset(-largerVerticalMargin)
+            make.bottom.equalTo(self.shareButton.snp_top).with.offset(-self.largerVerticalMargin)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(26)
@@ -443,6 +446,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         if let parkingSpot = self.spot {
             self.delegate?.showSpotOnMap(parkingSpot)
+        }
+    }
+    
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        
+        let tap = recognizer.locationInView(self.view)
+        let point = availableTitleLabel.convertPoint(availableTitleLabel.bounds.origin, toView: self.view)
+        let pointY = point.y - CGFloat(largerVerticalMargin)/2
+        
+        if tap.y > pointY {
+            toggleTimeDisplay()
+        } else {
+            showSpotOnMap()
         }
     }
     

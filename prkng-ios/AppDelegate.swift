@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //do iOS 7 stuff, which is pretty much nothing for local notifications.
         }
 
+        IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
 
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }

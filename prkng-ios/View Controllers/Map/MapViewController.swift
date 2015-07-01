@@ -33,7 +33,7 @@ class MapViewController: AbstractViewController {
     func updateAnnotations() { }
 
     //shows a checkin on the map as a regular marker
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) { }
+    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) { }
     
     func removeSelectedAnnotationIfExists() { }
 

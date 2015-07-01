@@ -36,7 +36,6 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     private(set) var SECONDS_PER_HOUR : NSTimeInterval = 3600
     static var TOTAL_HEIGHT : CGFloat = 50
     static var SCROLL_HEIGHT: CGFloat = 50
-    private(set) var WIDTH : CGFloat = 710
     private(set) var FONT : UIFont = Styles.FontFaces.regular(14)
     
     override init(frame: CGRect) {
@@ -80,6 +79,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             self.setNeedsUpdateConstraints()
         }
         
+        resizeContentViewWidth()
         scrollToNearestLabel()
         
         super.layoutSubviews()
@@ -162,7 +162,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         }
         
         contentView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSize(width: self.WIDTH, height: TimeFilterView.SCROLL_HEIGHT))
+            make.width.greaterThanOrEqualTo(self.scrollView).multipliedBy(2).with.offset(70)
+            make.height.equalTo(self.scrollView)
             make.edges.equalTo(self.scrollView)
         }
         
@@ -194,6 +195,22 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             make.height.equalTo(0.5)
         }
         
+    }
+    
+    func resizeContentViewWidth() {
+        
+        var contentViewWidth = 30 * (timeLabels.count - 2)
+        for label in timeLabels {
+            contentViewWidth += Int(label.bounds.width)
+        }
+        contentViewWidth += Int(scrollView.bounds.width)
+        
+        contentView.snp_remakeConstraints { (make) -> () in
+            make.width.greaterThanOrEqualTo(contentViewWidth)
+            make.height.equalTo(self.scrollView)
+            make.edges.equalTo(self.scrollView)
+        }
+
     }
     
     func labelTextForTimeValue(interval: NSTimeInterval) -> String {

@@ -842,10 +842,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.mapView.userTrackingMode = shouldTrack ? RMUserTrackingModeFollow : RMUserTrackingModeNone
     }
     
-    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) {
+    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) {
         var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
         annotation.userInfo = ["type": "searchResult"]
-        mapView.zoom = 17
+        mapView.zoom = zoom ?? 17
         mapView.centerCoordinate = coordinate
         removeAllAnnotations()
         searchAnnotations.append(annotation)

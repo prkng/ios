@@ -76,7 +76,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField.font = Styles.FontFaces.light(17)
         searchField.textColor = Styles.Colors.cream1
         searchField.textAlignment = NSTextAlignment.Natural
-        searchField.attributedPlaceholder = NSAttributedString(string: "search".localizedString, attributes: attributes)
+        searchField.attributedPlaceholder = NSAttributedString(string: "search_bar_text".localizedString, attributes: attributes)
         searchField.delegate = self
         searchField.keyboardAppearance = UIKeyboardAppearance.Default
         searchField.keyboardType = UIKeyboardType.Default

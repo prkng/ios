@@ -10,6 +10,11 @@ import UIKit
 
 struct Settings {
     
+    struct City {
+        static let Montreal = "Montréal"
+        static let QuebecCity = "Québec City"
+    }
+    
     static let SELECTED_CITY_KEY = "prkng_selected_city"
     static let FIRST_USE_PASSED_KEY = "prkng_first_use_passed"
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
@@ -20,7 +25,7 @@ struct Settings {
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
-    static let availableCities = ["Montréal", "Québec City"]
+    static let availableCities = [City.Montreal, City.QuebecCity]
     
     static let iosVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
 
@@ -39,7 +44,18 @@ struct Settings {
     static func setSelectedCity (city : String) {
         NSUserDefaults.standardUserDefaults().setObject(city, forKey: SELECTED_CITY_KEY)
         NSUserDefaults.standardUserDefaults().synchronize()
-    }    
+    }
+    
+    static func selectedCityPoint() -> CLLocationCoordinate2D? {
+        switch selectedCity() {
+        case City.Montreal:
+            return CLLocationCoordinate2D(latitude: 45.5016889, longitude: -73.567256)
+        case City.QuebecCity:
+            return CLLocationCoordinate2D(latitude: 46.82053904, longitude: -71.22943997)
+        default:
+            return nil
+        }
+    }
     
     static func firstUse() -> Bool {
         return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_USE_PASSED_KEY)
