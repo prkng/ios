@@ -37,15 +37,32 @@ class MapViewController: AbstractViewController {
     
     func removeSelectedAnnotationIfExists() { }
 
-    /*
-    // MARK: - Navigation
+    
+    
+    func getAndDownloadCityOverlays() -> [MKPolygon] {
+        
+        let offlineUrl = NSBundle.mainBundle().pathForResource("AvailabilityMap", ofType: "json")
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        let url = APIUtility.APIConstants.rootURLString + "areas"
+        request(.GET, url, parameters: nil).responseSwiftyJSON {
+            (request, response, json, error) in
+            
+            if response?.statusCode < 400 && error == nil {
+                var errorPointer = NSErrorPointer()
+                var jsonData = NSJSONSerialization.dataWithJSONObject(json.object, options: NSJSONWritingOptions.PrettyPrinted, error: errorPointer)
+                jsonData?.writeToFile(offlineUrl!, atomically: true)
+            }
+        }
+
+        let overlays = GeoJsonParser.overlaysFromFilePath(offlineUrl) as! [MKPolygon]
+        return overlays
+        
     }
-    */
+    
+    
+    
+
+    
 
 }
 

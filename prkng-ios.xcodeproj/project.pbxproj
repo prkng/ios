@@ -16,6 +16,8 @@
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
 		3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */; };
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
+		3E530C6E1B444FEA001309E8 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E530C6D1B444FEA001309E8 /* AvailabilityMap.json */; };
+		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6CC9711B309B51009EA460 /* montreal_parking_availability.kml in Resources */ = {isa = PBXBuildFile; fileRef = 3E6CC9701B309B51009EA460 /* montreal_parking_availability.kml */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
@@ -160,6 +162,9 @@
 		3E3199581B31D4F600CB118D /* TimeFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFilterView.swift; sourceTree = "<group>"; };
 		3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
 		3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextButton.swift; sourceTree = "<group>"; };
+		3E530C6D1B444FEA001309E8 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
+		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
+		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6CC9701B309B51009EA460 /* montreal_parking_availability.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = montreal_parking_availability.kml; sourceTree = "<group>"; };
@@ -394,6 +399,15 @@
 				A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3E530C8C1B445B93001309E8 /* GeoJsonParser */ = {
+			isa = PBXGroup;
+			children = (
+				3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */,
+				3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */,
+			);
+			path = GeoJsonParser;
 			sourceTree = "<group>";
 		};
 		3E6CC96C1B309A64009EA460 /* KMLParser */ = {
@@ -676,6 +690,7 @@
 				3E6CC9701B309B51009EA460 /* montreal_parking_availability.kml */,
 				3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */,
 				3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */,
+				3E530C6D1B444FEA001309E8 /* AvailabilityMap.json */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -731,6 +746,7 @@
 		BFE3ABB71A9F5BC400734BBE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				3E530C8C1B445B93001309E8 /* GeoJsonParser */,
 				3E6CC96C1B309A64009EA460 /* KMLParser */,
 				BF1C2B5C1AFCD9F10070085A /* Extensions */,
 				BFE3ABB81A9F5BED00734BBE /* UIColor-Hex.swift */,
@@ -920,6 +936,7 @@
 				3EBEE33E1B3213A100C7F2DE /* quebec_city_parking_availability.kml in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
+				3E530C6E1B444FEA001309E8 /* AvailabilityMap.json in Resources */,
 				3E6CC9711B309B51009EA460 /* montreal_parking_availability.kml in Resources */,
 				BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
@@ -1043,6 +1060,7 @@
 				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,
 				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,
+				3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
 				BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */,

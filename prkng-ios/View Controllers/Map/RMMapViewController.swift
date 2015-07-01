@@ -54,7 +54,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.zoomingInPivotsAroundCenter = true
         mapView.zoom = 17
         mapView.maxZoom = 19
-        mapView.minZoom = 10
+        mapView.minZoom = 9
         userLastChangedMap = 0
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
@@ -758,15 +758,16 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         // Locate the path to the route.kml file in the application's bundle
         // and parse it with the KMLParser.
         var interiorPolygons: [RMPolygonAnnotation] = []
-        var fileNames = ["montreal_parking_availability", "quebec_city_parking_availability"]
+//        var fileNames = ["montreal_parking_availability", "quebec_city_parking_availability"]
 
-        for fileName in fileNames {
-            if let kmlPath = NSBundle.mainBundle().pathForResource(fileName, ofType: "kml") {
-                var kmlUrl = NSURL(fileURLWithPath: kmlPath)
-                var kmlParser = KMLParser(URL: kmlUrl)
-                kmlParser.parseKML()
-                
-                if let overlays = kmlParser.overlays as? [MKPolygon] {
+//        for fileName in fileNames {
+//            if let kmlPath = NSBundle.mainBundle().pathForResource(fileName, ofType: "kml") {
+//                var kmlUrl = NSURL(fileURLWithPath: kmlPath)
+//                var kmlParser = KMLParser(URL: kmlUrl)
+//                kmlParser.parseKML()
+        
+//        if let overlays = kmlParser.overlays as? [MKPolygon] {
+                if let overlays = getAndDownloadCityOverlays() as? [MKPolygon] {
                     for polygon in overlays {
                         
                         //get useable data from the polygon
@@ -782,8 +783,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                         interiorPolygons.append(interiorPolygon)
                     }
                 }
-            }
-        }
+//            }
+//        }
         
         var worldCorners: [CLLocation] = [
             CLLocation(latitude: 85, longitude: -179),
