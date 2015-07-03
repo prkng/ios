@@ -10,6 +10,7 @@ pod 'SVProgressHUD', :head #should eventually be '1.1.4' when it's released
 pod 'pop', '~> 1.0'
 pod 'MBXMapKit'
 pod 'GeoJSONSerialization'
+pod 'GZIP'
 
 #the pods below should only be enabled if we move to ios 8
 #use_frameworks!

@@ -754,9 +754,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     
-    func addCityOverlays() {
+    override func addCityOverlaysCallback(polygons: [MKPolygon]) {
         
-        let polygons = getAndDownloadCityOverlays()
         let polygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(polygons, mapView: mapView)
 
         var worldCorners: [CLLocation] = [

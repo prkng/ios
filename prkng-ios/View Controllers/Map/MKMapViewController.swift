@@ -661,9 +661,9 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
 //        
 //    }
     
-    func addCityOverlays() {
+    
+    override func addCityOverlaysCallback(polygons: [MKPolygon]) {
         
-        let polygons = getAndDownloadCityOverlays()
         let interiorPolygons = MKPolygon.interiorPolygons(polygons)
         let invertedPolygon = MKPolygon.invertPolygons(polygons)
         mapView.addOverlay(invertedPolygon)

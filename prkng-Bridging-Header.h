@@ -21,7 +21,8 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/UIButton+WebCache.h>
-#import "GeoJSONSerialization/GeoJSONSerialization.h"
+#import <GeoJSONSerialization/GeoJSONSerialization.h>
+#import <GZIP/GZIP.h>
 #import "GAI.h"
 #import "KMLParser.h"
 #import "GeoJsonParser.h"

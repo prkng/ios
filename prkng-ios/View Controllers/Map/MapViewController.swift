@@ -38,29 +38,75 @@ class MapViewController: AbstractViewController {
     func removeSelectedAnnotationIfExists() { }
 
     
+    func addCityOverlays() {
+        getCityOverlays()
+    }
     
-    func getAndDownloadCityOverlays() -> [MKPolygon] {
+    func addCityOverlaysCallback(polygons: [MKPolygon]) { }
+
+    private func getCityOverlays() {
         
-//        let offlineUrl = NSBundle.mainBundle().pathForResource("AvailabilityMap", ofType: "json")
-//
-//        let url = APIUtility.APIConstants.rootURLString + "areas"
-//        request(.GET, url, parameters: nil).responseSwiftyJSON {
-//            (request, response, json, error) in
-//            
-//            if response?.statusCode < 400 && error == nil {
-//                var errorPointer = NSErrorPointer()
-//                var jsonData = NSJSONSerialization.dataWithJSONObject(json.object, options: NSJSONWritingOptions.PrettyPrinted, error: errorPointer)
-//                jsonData?.writeToFile(offlineUrl!, atomically: true)
-//            }
-//        }
-//
-//        let overlays = GeoJsonParser.overlaysFromFilePath(offlineUrl) as! [MKPolygon]
-//        return overlays
+        let url = APIUtility.APIConstants.rootURLString + "areas"
         
-        if let url = NSBundle.mainBundle().URLForResource("AvailabilityMap", withExtension: "json") {
-            var data = NSData(contentsOfURL: url)
+        let currentVersion = NSUserDefaults.standardUserDefaults().integerForKey("city_overlays_version")
+        
+        if currentVersion == 0 {
+            let offlineUrl = NSBundle.mainBundle().URLForResource("AvailabilityMap", withExtension: "json")
+            let data = NSData(contentsOfURL: offlineUrl!)
+            NSUserDefaults.standardUserDefaults().setValue(data!, forKey: "city_overlays")
+        }
+        
+        request(.GET, url, parameters: nil).responseSwiftyJSON { (request, response, json, error) -> Void in
+            
+            if response?.statusCode < 400 && error == nil && !json.isEmpty {
+                var supportedArea = SupportedArea(json: json)
+                if supportedArea.latestVersion == currentVersion {
+                    let cityOverlays = self.returnCityOverlays()
+                    self.addCityOverlaysCallback(cityOverlays)
+                } else {
+                    //download and upon successful completion set the new version
+                    self.downloadCityOverlays(supportedArea)
+                }
+            }
+            
+        }
+    }
+    
+    private func downloadCityOverlays(supportedArea: SupportedArea) {
+        
+        let url = supportedArea.versions[supportedArea.latestVersion]!["geojson_addr"]
+        request(.GET, url!, parameters: nil).response { (request, response, object, error) -> Void in
+            
+            var data = object as! NSData
+            if response?.statusCode < 400 && error == nil {
+                
+                NSUserDefaults.standardUserDefaults().setValue(supportedArea.latestVersion, forKey: "city_overlays_version")
+                
+                //if data is zipped... unzip it
+                let jsonData: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                if jsonData != nil {
+                    var errorPointer = NSErrorPointer()
+                    NSUserDefaults.standardUserDefaults().setValue(data, forKey: "city_overlays")
+                } else {
+                    //the data needs to be unzipped
+                    let uncompressedData = data.gunzippedData()!
+                    NSUserDefaults.standardUserDefaults().setValue(uncompressedData, forKey: "city_overlays")
+                }
+                
+            }
+            
+            let cityOverlays = self.returnCityOverlays()
+            self.addCityOverlaysCallback(cityOverlays)
+            
+        }
+
+    }
+    
+    private func returnCityOverlays() -> [MKPolygon] {
+        
+        if let data = NSUserDefaults.standardUserDefaults().dataForKey("city_overlays") {
             var errorPointer = NSErrorPointer()
-            var json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: errorPointer) as! [NSObject : AnyObject]
+            var json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: errorPointer) as! [NSObject : AnyObject]
             
             if let overlays = GeoJSONSerialization.shapesFromGeoJSONFeatureCollection(json, error: nil) as? [MKPolygon] {
                 return overlays

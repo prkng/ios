@@ -7,6 +7,7 @@ PODS:
   - GeoJSONSerialization (0.0.4)
   - GRMustache (7.3.0):
     - JRSwizzle (~> 1.0)
+  - GZIP (1.0.3)
   - IQKeyboardManager (3.2.4)
   - JRSwizzle (1.0)
   - Mapbox-iOS-SDK (1.6.0):
@@ -23,6 +24,7 @@ PODS:
 
 DEPENDENCIES:
   - GeoJSONSerialization
+  - GZIP
   - IQKeyboardManager (= 3.2.4)
   - Mapbox-iOS-SDK (= 1.6.0)
   - MBXMapKit
@@ -34,6 +36,7 @@ SPEC CHECKSUMS:
   FMDB: 773d79bb74226959b7e2286b1d6e0bd857c88915
   GeoJSONSerialization: 55a3d24fe9af26508e3af76873114b39b13ba479
   GRMustache: 6baee020c5644416c034f5afb1607f6219e7f753
+  GZIP: f0863fda354e8f83316508c0a2c7bbe385e39129
   IQKeyboardManager: 555b1231fefafb21b19278d7cca72986a27b748b
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   Mapbox-iOS-SDK: ee136ca5b7f853456b50dfd7a7f0e243288cf86f

@@ -30,6 +30,7 @@
 		3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */; };
 		3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */; };
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
+		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
@@ -197,6 +198,7 @@
 		3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapViewController.swift; sourceTree = "<group>"; };
 		3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
+		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
 		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 				BF4568011AD85761006D7C23 /* SearchResult.swift */,
 				BF2891E91AFFC0590041B04C /* User.swift */,
 				BF6981B11B30701600E0EF62 /* Checkin.swift */,
+				3EC55E671B472195001A1B2B /* SupportedArea.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1030,6 +1033,7 @@
 				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
 				BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */,
+				3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */,
 				BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */,
 				BF32826E1B3847AE002ED8DF /* MKImageView.swift in Sources */,
 				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
