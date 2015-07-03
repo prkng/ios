@@ -17,6 +17,7 @@ class SelectionControl: UIControl {
     
     var buttonContainers : Array<UIView>
     var buttons : Array<SelectionButton>
+    var selectionIndicator : UIView
     
     var selectedIndex : Int
     
@@ -48,6 +49,7 @@ class SelectionControl: UIControl {
         didSetupConstraints = true
         buttonSize = CGSizeMake(110, 26) // Default
         selectedIndex = 0
+        selectionIndicator = UIView()
         super.init(frame: frame)
     }
     
@@ -64,7 +66,7 @@ class SelectionControl: UIControl {
             self.setNeedsUpdateConstraints()
         }
         
-        selectOption(self.buttons[selectedIndex])
+        selectOption(self.buttons[selectedIndex], animated : true)
         
         super.layoutSubviews()
     }
@@ -80,6 +82,10 @@ class SelectionControl: UIControl {
     func setupSubviews() {
         
         var index : Int = 0
+        
+        selectionIndicator.backgroundColor = self.selectedButtonBackgroundColor
+        selectionIndicator.layer.cornerRadius =  self.buttonSize.height / 2.0
+        addSubview(selectionIndicator)
         
         for title in titles {
             
@@ -110,7 +116,7 @@ class SelectionControl: UIControl {
             }
             
             if selectedButtonBackgroundColor != nil {
-                button.selectedButtonBackgroundColor = selectedButtonBackgroundColor!
+                button.selectedButtonBackgroundColor = UIColor.clearColor() //selectedButtonBackgroundColor!
             }
             
             if font != nil {
@@ -123,7 +129,7 @@ class SelectionControl: UIControl {
             buttonContainer.addSubview(button)
             
             index++
-        }        
+        }
         
         didSetupSubviews = true
     }
@@ -152,7 +158,7 @@ class SelectionControl: UIControl {
                     make.top.equalTo(self)
                     make.bottom.equalTo(self)
                 })
-
+                
                 
                 buttons[index].snp_makeConstraints({ (make) -> () in
                     make.center.equalTo(self.buttonContainers[index])
@@ -166,6 +172,10 @@ class SelectionControl: UIControl {
             
         }
         
+        selectionIndicator.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.buttons[selectedIndex])
+        }
+        
         didSetupConstraints = true
     }
     
@@ -177,18 +187,42 @@ class SelectionControl: UIControl {
         
     }
     
-    
     func selectOption (sender : SelectionButton) {
+        selectOption(sender, animated: true)
+    }
+    
+    
+    func selectOption (sender : SelectionButton, animated: Bool) {
         
         let valueChanged = selectedIndex != sender.index
         
-        deselectAll()
-        selectedIndex = sender.index
-        sender.selected = true
-        
-        
         if valueChanged {
-            sendActionsForControlEvents(UIControlEvents.ValueChanged)
+            
+            selectedIndex = sender.index
+            deselectAll()
+            
+            selectionIndicator.snp_remakeConstraints { (make) -> () in
+                make.edges.equalTo(self.buttons[selectedIndex])
+            }
+            
+            if (animated) {
+                UIView.animateWithDuration(0.15, animations: { () -> Void in
+                    self.selectionIndicator.layoutIfNeeded()
+                    }, completion: { (completed) -> Void in
+                        sender.selected = true
+                        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                })
+            } else {
+                self.selectionIndicator.layoutIfNeeded()
+                deselectAll()
+                sender.selected = true
+                self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+            }
+            
+            
+        }  else if !animated {
+            deselectAll()
+            sender.selected = true
         }
         
     }

@@ -142,8 +142,10 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         if let device = captureDevice {
             device.lockForConfiguration(nil)
             device.focusMode = .AutoFocus
-            device.exposureMode = .ContinuousAutoExposure
-            device.flashMode = .Auto
+            device.exposureMode = .ContinuousAutoExposure            
+            if (device.isFlashModeSupported(.Auto)) {
+                device.flashMode = .Auto
+            }
             device.unlockForConfiguration()
         }
         
@@ -154,6 +156,11 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         configureDevice()
         
         var err : NSError? = nil
+        
+        if (captureDevice == nil) {
+            return
+        }
+        
         captureSession.addInput(AVCaptureDeviceInput(device: captureDevice, error: &err))
         
         if err != nil {
