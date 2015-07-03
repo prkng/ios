@@ -755,49 +755,27 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     
     func addCityOverlays() {
-        // Locate the path to the route.kml file in the application's bundle
-        // and parse it with the KMLParser.
-        var interiorPolygons: [RMPolygonAnnotation] = []
-//        var fileNames = ["montreal_parking_availability", "quebec_city_parking_availability"]
+        
+        let polygons = getAndDownloadCityOverlays()
+        let polygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(polygons, mapView: mapView)
 
-//        for fileName in fileNames {
-//            if let kmlPath = NSBundle.mainBundle().pathForResource(fileName, ofType: "kml") {
-//                var kmlUrl = NSURL(fileURLWithPath: kmlPath)
-//                var kmlParser = KMLParser(URL: kmlUrl)
-//                kmlParser.parseKML()
-        
-//        if let overlays = kmlParser.overlays as? [MKPolygon] {
-                if let overlays = getAndDownloadCityOverlays() as? [MKPolygon] {
-                    for polygon in overlays {
-                        
-                        //get useable data from the polygon
-                        var coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(polygon.pointCount)
-                        polygon.getCoordinates(coordsPointer, range: NSMakeRange(0, polygon.pointCount))
-                        var locations: [CLLocation] = []
-                        for i in 0..<polygon.pointCount {
-                            let coord = coordsPointer[i]
-                            locations.append(CLLocation(latitude: coord.latitude, longitude: coord.longitude))
-                        }
-                        
-                        var interiorPolygon = RMPolygonAnnotation(mapView: mapView, points: locations)
-                        interiorPolygons.append(interiorPolygon)
-                    }
-                }
-//            }
-//        }
-        
         var worldCorners: [CLLocation] = [
             CLLocation(latitude: 85, longitude: -179),
             CLLocation(latitude: 85, longitude: 179),
             CLLocation(latitude: -85, longitude: 179),
             CLLocation(latitude: -85, longitude: -179),
             CLLocation(latitude: 85, longitude: -179)]
-        var annotation = RMPolygonAnnotation(mapView: mapView, points: worldCorners, interiorPolygons: interiorPolygons)
-        annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": interiorPolygons]
+        var annotation = RMPolygonAnnotation(mapView: mapView, points: worldCorners, interiorPolygons: polygonAnnotations)
+        annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": polygonAnnotations]
         annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
         annotation.lineColor = Styles.Colors.red1
         annotation.lineWidth = 4.0
-        mapView.addAnnotation(annotation)
+        
+        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
+        let interiorPolygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(interiorPolygons, mapView: mapView)
+        
+        var allAnnotationsToAdd = interiorPolygonAnnotations + [annotation]
+        mapView.addAnnotations(allAnnotationsToAdd)
         
     }
     

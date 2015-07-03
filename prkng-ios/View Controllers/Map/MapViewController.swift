@@ -41,28 +41,34 @@ class MapViewController: AbstractViewController {
     
     func getAndDownloadCityOverlays() -> [MKPolygon] {
         
-        let offlineUrl = NSBundle.mainBundle().pathForResource("AvailabilityMap", ofType: "json")
-
-        let url = APIUtility.APIConstants.rootURLString + "areas"
-        request(.GET, url, parameters: nil).responseSwiftyJSON {
-            (request, response, json, error) in
+//        let offlineUrl = NSBundle.mainBundle().pathForResource("AvailabilityMap", ofType: "json")
+//
+//        let url = APIUtility.APIConstants.rootURLString + "areas"
+//        request(.GET, url, parameters: nil).responseSwiftyJSON {
+//            (request, response, json, error) in
+//            
+//            if response?.statusCode < 400 && error == nil {
+//                var errorPointer = NSErrorPointer()
+//                var jsonData = NSJSONSerialization.dataWithJSONObject(json.object, options: NSJSONWritingOptions.PrettyPrinted, error: errorPointer)
+//                jsonData?.writeToFile(offlineUrl!, atomically: true)
+//            }
+//        }
+//
+//        let overlays = GeoJsonParser.overlaysFromFilePath(offlineUrl) as! [MKPolygon]
+//        return overlays
+        
+        if let url = NSBundle.mainBundle().URLForResource("AvailabilityMap", withExtension: "json") {
+            var data = NSData(contentsOfURL: url)
+            var errorPointer = NSErrorPointer()
+            var json = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments, error: errorPointer) as! [NSObject : AnyObject]
             
-            if response?.statusCode < 400 && error == nil {
-                var errorPointer = NSErrorPointer()
-                var jsonData = NSJSONSerialization.dataWithJSONObject(json.object, options: NSJSONWritingOptions.PrettyPrinted, error: errorPointer)
-                jsonData?.writeToFile(offlineUrl!, atomically: true)
+            if let overlays = GeoJSONSerialization.shapesFromGeoJSONFeatureCollection(json, error: nil) as? [MKPolygon] {
+                return overlays
             }
         }
 
-        let overlays = GeoJsonParser.overlaysFromFilePath(offlineUrl) as! [MKPolygon]
-        return overlays
-        
+        return []
     }
-    
-    
-    
-
-    
 
 }
 

@@ -662,36 +662,12 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
 //    }
     
     func addCityOverlays() {
-        // Locate the path to the route.kml file in the application's bundle
-        // and parse it with the KMLParser.
-        var interiorPolygons: [MKPolygon] = []
-        var fileNames = ["montreal_parking_availability", "quebec_city_parking_availability"]
         
-        for fileName in fileNames {
-            if let kmlPath = NSBundle.mainBundle().pathForResource(fileName, ofType: "kml") {
-                var kmlUrl = NSURL(fileURLWithPath: kmlPath)
-                var kmlParser = KMLParser(URL: kmlUrl)
-                kmlParser.parseKML()
-                
-                if let overlays = kmlParser.overlays as? [MKPolygon] {
-                    interiorPolygons += overlays
-                }
-            }
-        }
-        
-        var worldCorners: [MKMapPoint] = [
-            MKMapPoint(x: 0, y: 0),
-            MKMapPoint(x: MKMapSizeWorld.width, y: 0),
-            MKMapPoint(x: MKMapSizeWorld.width, y: MKMapSizeWorld.height),
-            MKMapPoint(x: 0, y: MKMapSizeWorld.height),
-            MKMapPoint(x: 0, y: 0)]
-        var worldCornersPointer = UnsafeMutablePointer<MKMapPoint>.alloc(worldCorners.count)
-        for i in 0..<worldCorners.count {
-            worldCornersPointer[i] = worldCorners[i]
-        }
-        
-        var annotation = MKPolygon(points: worldCornersPointer, count: worldCorners.count, interiorPolygons: interiorPolygons)
-        mapView.addOverlay(annotation)
+        let polygons = getAndDownloadCityOverlays()
+        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
+        let invertedPolygon = MKPolygon.invertPolygons(polygons)
+        mapView.addOverlay(invertedPolygon)
+        mapView.addOverlays(interiorPolygons)
         
     }
     

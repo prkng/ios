@@ -18,4 +18,16 @@ extension Array {
         }
     }
 
+    mutating func remove <U: Equatable> (objects: [U]) {
+        for object in objects {
+            for i in stride(from: self.count-1, through: 0, by: -1) {
+                if let element = self[i] as? U {
+                    if element == object {
+                        self.removeAtIndex(i)
+                    }
+                }
+            }
+        }
+    }
+
 }
