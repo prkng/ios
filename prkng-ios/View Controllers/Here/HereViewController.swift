@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate {
 
     var scheduleViewController : ScheduleViewController?
     var firstUseMessageVC : HereFirstUseViewController?
@@ -26,6 +26,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     private var filterButtonImageName: String
     private var filterButtonText: String
+    private var verticalRec: PRKVerticalGestureRecognizer
     
     var delegate : HereViewControllerDelegate?
 
@@ -39,6 +40,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         filterButtonImageName = "icon_filter"
         filterButtonText = ""
         forceShowSpotDetails = false
+        verticalRec = PRKVerticalGestureRecognizer()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,6 +83,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func setupViews () {
 
+        verticalRec = PRKVerticalGestureRecognizer(view: detailView, superViewOfView: self.view)
+        verticalRec.delegate = self
+        
         detailView.delegate = self
         view.addSubview(detailView)
         
@@ -187,17 +192,38 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         showScheduleView(activeSpot)
     }
     
+    //MARK: PRKVerticalGestureRecognizerDelegate methods
+    func swipeDidBegin() {
+        setupScheduleView(activeSpot)
+    }
+    
+    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
+        adjustSpotDetailsWithDistanceFromBottom(-yDistanceFromBeginTap, animated: false)
+    }
+    
+    func swipeDidEndUp() {
+        animateScheduleView()
+    }
+    
+    func swipeDidEndDown() {
+        showSpotDetails()
+    }
+    
     func showScheduleView(spot : ParkingSpot?) {
+        setupScheduleView(spot)
+        animateScheduleView()
+    }
+    
+    func setupScheduleView(spot : ParkingSpot?) {
         
         if spot != nil {
-            self.scheduleViewController = ScheduleViewController(spot: spot!)
+            self.scheduleViewController = ScheduleViewController(spot: spot!, view: self.view)
             self.view.addSubview(self.scheduleViewController!.view)
             self.scheduleViewController!.willMoveToParentViewController(self)
             self.scheduleViewController!.delegate = self
-            self.scheduleViewController!.view.hidden = true
             
             self.scheduleViewController!.view.snp_makeConstraints({ (make) -> () in
-                make.top.equalTo(self.view.snp_bottom)
+                make.top.equalTo(self.detailView.snp_bottom)
                 make.size.equalTo(self.view)
                 make.left.equalTo(self.view)
                 make.right.equalTo(self.view)
@@ -205,20 +231,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             
             self.scheduleViewController!.view.layoutIfNeeded()
             
-            
-            self.scheduleViewController!.view.hidden = false
-            self.scheduleViewController!.view.snp_remakeConstraints({ (make) -> () in
-                make.edges.equalTo(self.view)
-            })
-            
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.scheduleViewController!.view.layoutIfNeeded()
-                }, completion: { (Bool) -> Void in
-                    //
-            })
-            
-            
         }
+    }
+    
+    func animateScheduleView() {
+        
+        let height = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
+        adjustSpotDetailsWithDistanceFromBottom(-height, animated: true)
+
     }
     
     
@@ -228,15 +248,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             return
         }
         
-        self.scheduleViewController!.view.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.view.snp_bottom)
-            make.size.equalTo(self.view)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
+        detailView.snp_updateConstraints {
+            (make) -> () in
+            make.bottom.equalTo(self.view).with.offset(0)
         }
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.scheduleViewController!.view.layoutIfNeeded()
+            self.view.layoutIfNeeded()
             }, completion: { (Bool) -> Void in
                 
                 self.scheduleViewController!.view.removeFromSuperview()
@@ -246,6 +264,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         })
         
     }
+    
+    func shouldAdjustTopConstraintWithOffset(distanceFromTop: CGFloat, animated: Bool) {
+        let height = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
+        let distanceFromBottom = height - distanceFromTop
+        adjustSpotDetailsWithDistanceFromBottom(-distanceFromBottom, animated: animated)
+
+    }
+
     
     func checkin() {
         
@@ -318,56 +344,44 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         
     }
     
-    private func showSpotDetails (completed : ()) {
-        
-        detailView.snp_remakeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(0)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
-        }
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.detailView.layoutIfNeeded()
-        })
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(20 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
-            self.forceShowSpotDetails = false
-        })
-
+    private func showSpotDetails() {
+        adjustSpotDetailsWithDistanceFromBottom(0, animated: true)
     }
     
-    
-    private func hideSpotDetails (completed : () ) {
+    private func hideSpotDetails() {
+        adjustSpotDetailsWithDistanceFromBottom(180, animated: true)
+    }
+
+    private func adjustSpotDetailsWithDistanceFromBottom(distance: CGFloat, animated: Bool) {
         
-        if (!forceShowSpotDetails) {
-            detailView.snp_remakeConstraints {
-                (make) -> () in
-                make.bottom.equalTo(self.view).with.offset(180)
-                make.left.equalTo(self.view)
-                make.right.equalTo(self.view)
-                make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
-            }
-            
+        detailView.snp_updateConstraints {
+            (make) -> () in
+            make.bottom.equalTo(self.view).with.offset(distance)
+        }
+        
+        if animated {
             UIView.animateWithDuration(0.2,
                 animations: { () -> Void in
-                    self.detailView.layoutIfNeeded()
+                    self.view.layoutIfNeeded()
                 },
                 completion: { (completed: Bool) -> Void in
                     self.showFilterButton(false)
             })
+        } else {
+            self.view.layoutIfNeeded()
+            self.showFilterButton(false)
         }
 
     }
     
     func isSpotDetailsHidden() -> Bool {
         //we know if the view is hidden based on the bottom offset, as can be seen in the two methods above
-        //make.bottom.equalTo(self.view).with.offset(180) is to hide it and 
+        //make.bottom.equalTo(self.view).with.offset(180) is to hide it and
         //make.bottom.equalTo(self.view).with.offset(0) is to show it
 
         for constraint: LayoutConstraint in detailView.snp_installedLayoutConstraints {
             if constraint.firstItem.isEqual(self.detailView)
-            && (constraint.secondItem != nil && constraint.secondItem!.isEqual(self.view))
+                && (constraint.secondItem != nil && constraint.secondItem!.isEqual(self.view))
                 && Float(constraint.constant) == 180 {
                     return true
             }

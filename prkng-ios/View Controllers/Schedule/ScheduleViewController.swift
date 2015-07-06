@@ -8,12 +8,13 @@
 
 import UIKit
 
-class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
+class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKVerticalGestureRecognizerDelegate {
     
     var spot : ParkingSpot
     var delegate : ScheduleViewControllerDelegate?
     private var scheduleItems : Array<ScheduleItemModel>
-    
+    private var parentView: UIView
+
     private var headerView : ScheduleHeaderView
     private var headerViewButton: UIButton
     private var scrollView : UIScrollView
@@ -22,6 +23,8 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     private var columnViews : Array<ScheduleColumnView>
     private var scheduleItemViews : Array<ScheduleItemView>
     
+    private var verticalRec: PRKVerticalGestureRecognizer
+
     private(set) var HEADER_HEIGHT : CGFloat
     private(set) var LEFT_VIEW_WIDTH : CGFloat
     private(set) var COLUMN_SIZE : CGFloat
@@ -29,8 +32,9 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
     private(set) var CONTENTVIEW_HEIGHT : CGFloat
     private(set) var ITEM_HOUR_HEIGHT : CGFloat
     
-    init(spot : ParkingSpot) {
+    init(spot: ParkingSpot, view: UIView) {
         self.spot = spot
+        self.parentView = view
         headerView = ScheduleHeaderView()
         headerViewButton = ViewFactory.checkInButton()
         scrollView = UIScrollView()
@@ -39,6 +43,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         scheduleItems = []
         columnViews = []
         scheduleItemViews = []
+        verticalRec = PRKVerticalGestureRecognizer()
         
         HEADER_HEIGHT = 90
         LEFT_VIEW_WIDTH = UIScreen.mainScreen().bounds.size.width * 0.18
@@ -125,6 +130,9 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         
         self.view.addSubview(headerViewButton)
         headerViewButton.addTarget(self, action: "dismiss", forControlEvents: UIControlEvents.TouchUpInside)
+
+        verticalRec = PRKVerticalGestureRecognizer(view: headerViewButton, superViewOfView: self.parentView)
+        verticalRec.delegate = self
         
         scrollView.addSubview(contentView)
         
@@ -418,6 +426,23 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate {
         return newScheduleItems
     }
     
+    //MARK: PRKVerticalGestureRecognizerDelegate methods
+    func swipeDidBegin() {
+        
+    }
+    
+    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
+        self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
+    }
+    
+    func swipeDidEndUp() {
+        self.delegate?.shouldAdjustTopConstraintWithOffset(0, animated: true)
+    }
+    
+    func swipeDidEndDown() {
+        self.delegate?.shouldAdjustTopConstraintWithOffset(self.view.bounds.height, animated: true)
+    }
+    
 }
 
 
@@ -592,5 +617,6 @@ class ScheduleTimeModel {
 
 protocol ScheduleViewControllerDelegate {
     func hideScheduleView()
+    func shouldAdjustTopConstraintWithOffset(distanceFromTop: CGFloat, animated: Bool)
 }
 
