@@ -74,30 +74,35 @@ class MapViewController: AbstractViewController {
     
     private func downloadCityOverlays(supportedArea: SupportedArea) {
         
-        let url = supportedArea.versions[supportedArea.latestVersion]!["geojson_addr"]
-        request(.GET, url!, parameters: nil).response { (request, response, object, error) -> Void in
-            
-            var data = object as! NSData
-            if response?.statusCode < 400 && error == nil {
+        if supportedArea.versions.count > 0 {
+            let url = supportedArea.versions[supportedArea.latestVersion]!["geojson_addr"]
+            request(.GET, url!, parameters: nil).response { (request, response, object, error) -> Void in
                 
-                NSUserDefaults.standardUserDefaults().setValue(supportedArea.latestVersion, forKey: "city_overlays_version")
-                
-                //if data is zipped... unzip it
-                let jsonData: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
-                if jsonData != nil {
-                    var errorPointer = NSErrorPointer()
-                    NSUserDefaults.standardUserDefaults().setValue(data, forKey: "city_overlays")
-                } else {
-                    //the data needs to be unzipped
-                    let uncompressedData = data.gunzippedData()!
-                    NSUserDefaults.standardUserDefaults().setValue(uncompressedData, forKey: "city_overlays")
+                var data = object as! NSData
+                if response?.statusCode < 400 && error == nil {
+                    
+                    NSUserDefaults.standardUserDefaults().setValue(supportedArea.latestVersion, forKey: "city_overlays_version")
+                    
+                    //if data is zipped... unzip it
+                    let jsonData: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: nil)
+                    if jsonData != nil {
+                        var errorPointer = NSErrorPointer()
+                        NSUserDefaults.standardUserDefaults().setValue(data, forKey: "city_overlays")
+                    } else {
+                        //the data needs to be unzipped
+                        let uncompressedData = data.gunzippedData()!
+                        NSUserDefaults.standardUserDefaults().setValue(uncompressedData, forKey: "city_overlays")
+                    }
+                    
                 }
                 
+                let cityOverlays = self.returnCityOverlays()
+                self.addCityOverlaysCallback(cityOverlays)
+                
             }
-            
+        } else {
             let cityOverlays = self.returnCityOverlays()
             self.addCityOverlaysCallback(cityOverlays)
-            
         }
 
     }
