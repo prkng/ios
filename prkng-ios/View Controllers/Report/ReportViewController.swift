@@ -173,14 +173,15 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         let width =  self.view.frame.height * (768.0 / 1024.0)
         previewLayer?.frame = CGRectMake((self.view.frame.width - width) / 2, 0, width, self.view.frame.height)
         captureSession.startRunning()
-    }
-    
-    
-    func takePicture() {
+        
         stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
         if captureSession.canAddOutput(stillImageOutput) {
             captureSession.addOutput(stillImageOutput)
         }
+    }
+    
+    
+    func takePicture() {
         
         if let videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
             
