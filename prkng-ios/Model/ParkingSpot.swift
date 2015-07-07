@@ -198,6 +198,8 @@ class ParkingSpot: NSObject, Hashable {
     }
 
     //returns the closest future time that this parking spot is available until
+    //returns -1 if we are in a restriction
+    //returns 1 week from now if there are no restrictions whatsoever
     func availableTimeInterval(currentSecondsSinceDayStart: NSTimeInterval) -> NSTimeInterval {
         let secondsPerDay = 24 * 60 * 60
 
@@ -261,6 +263,8 @@ class ParkingSpot: NSObject, Hashable {
                 smallestTime = secondsToRule
             }
         }
+        
+        smallestTime = smallestTime == Int.max ? 3600*24*7 : smallestTime
         
         return NSTimeInterval(smallestTime)   
     }

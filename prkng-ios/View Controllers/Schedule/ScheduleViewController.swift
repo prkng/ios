@@ -131,7 +131,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         self.view.addSubview(headerViewButton)
         headerViewButton.addTarget(self, action: "dismiss", forControlEvents: UIControlEvents.TouchUpInside)
 
-        verticalRec = PRKVerticalGestureRecognizer(view: headerViewButton, superViewOfView: self.parentView)
+        verticalRec = PRKVerticalGestureRecognizer(view: self.view, superViewOfView: self.parentView)
         verticalRec.delegate = self
         
         scrollView.addSubview(contentView)
@@ -440,7 +440,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     }
     
     func swipeDidEndDown() {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(self.view.bounds.height, animated: true)
+        self.delegate!.hideScheduleView()
     }
     
 }

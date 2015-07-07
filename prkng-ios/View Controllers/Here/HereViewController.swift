@@ -23,10 +23,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     var activeSpot : ParkingSpot?
     var forceShowSpotDetails: Bool
+    
+    let viewHeight = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
 
     private var filterButtonImageName: String
     private var filterButtonText: String
     private var verticalRec: PRKVerticalGestureRecognizer
+    private var isShowingSchedule: Bool
     
     var delegate : HereViewControllerDelegate?
 
@@ -41,6 +44,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
         filterButtonText = ""
         forceShowSpotDetails = false
         verticalRec = PRKVerticalGestureRecognizer()
+        isShowingSchedule = false
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -236,9 +240,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func animateScheduleView() {
         
-        let height = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
-        adjustSpotDetailsWithDistanceFromBottom(-height, animated: true)
-
+        adjustSpotDetailsWithDistanceFromBottom(-viewHeight, animated: true)
+        isShowingSchedule = true
     }
     
     
@@ -253,7 +256,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.bottom.equalTo(self.view).with.offset(0)
         }
         
+        self.scheduleViewController?.view.snp_updateConstraints({ (make) -> () in
+            make.top.equalTo(self.detailView.snp_bottom).with.offset(0)
+        })
+        
         UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.detailView.alpha = 1
             self.view.layoutIfNeeded()
             }, completion: { (Bool) -> Void in
                 
@@ -261,6 +269,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 self.scheduleViewController!.willMoveToParentViewController(nil)
                 self.scheduleViewController!.removeFromParentViewController()
                 self.scheduleViewController = nil
+                self.isShowingSchedule = false
         })
         
     }
@@ -354,22 +363,57 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
 
     private func adjustSpotDetailsWithDistanceFromBottom(distance: CGFloat, animated: Bool) {
         
-        detailView.snp_updateConstraints {
-            (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(distance)
+        let fullLayout = distance == 0 || distance == 180 || distance == viewHeight || distance == -viewHeight
+        
+        let alpha = abs(distance) / self.viewHeight
+        
+        let parallaxOffset = fullLayout ? 0 : alpha * CGFloat(Styles.Sizes.spotDetailViewHeight)
+        
+        if isShowingSchedule {
+            
+            detailView.snp_updateConstraints {
+                (make) -> () in
+                make.bottom.equalTo(self.view).with.offset(distance + parallaxOffset)
+            }
+
+            self.scheduleViewController?.view.snp_updateConstraints({ (make) -> () in
+                make.top.equalTo(self.detailView.snp_bottom).with.offset(-parallaxOffset)
+            })
+        } else {
+            
+            detailView.snp_updateConstraints {
+                (make) -> () in
+                make.bottom.equalTo(self.view).with.offset(distance)
+            }
+
+            self.scheduleViewController?.view.snp_updateConstraints({ (make) -> () in
+                make.top.equalTo(self.detailView.snp_bottom).with.offset(-2*parallaxOffset)
+            })
+        }
+
+        let changeView = { () -> () in
+            if fullLayout {
+                self.view.layoutIfNeeded()
+            } else {
+                self.view.updateConstraints()
+            }
+            if self.isShowingSchedule {
+                self.detailView.alpha = (self.viewHeight/2 - abs(distance)) / (self.viewHeight/2)
+            } else {
+                self.detailView.alpha = (self.viewHeight/3 - abs(distance)) / (self.viewHeight/3)
+            }
         }
         
         if animated {
             UIView.animateWithDuration(0.2,
                 animations: { () -> Void in
-                    self.view.layoutIfNeeded()
+                    changeView()
                 },
                 completion: { (completed: Bool) -> Void in
                     self.showFilterButton(false)
             })
         } else {
-            self.view.layoutIfNeeded()
-            self.showFilterButton(false)
+            changeView()
         }
 
     }
