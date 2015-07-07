@@ -220,7 +220,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             return marker
             
         case "previousCheckin":
-            let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result")) //"Button_line_active"
+            let marker = RMMarker(UIImage: UIImage(named: "pin_round_p")) //"Button_line_active"
             marker.canShowCallout = true
             return marker
 
@@ -821,7 +821,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) {
         var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
-        annotation.userInfo = ["type": "searchResult"]
+        annotation.userInfo = ["type": "previousCheckin"]
         mapView.zoom = zoom ?? 17
         mapView.centerCoordinate = coordinate
         removeAllAnnotations()
