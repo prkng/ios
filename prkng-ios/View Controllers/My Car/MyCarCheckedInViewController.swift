@@ -381,19 +381,31 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func shareButtonTapped() {
         
-        var text : String = "share_location_copy".localizedString
-        text = text.stringByReplacingOccurrencesOfString("[street_name]", withString: spot!.name)
-        let url = createGoogleMapsLink(spot!.buttonLocation)
-        
-        let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        createGoogleMapsLink(spot!.buttonLocation)
     }
     
-    func createGoogleMapsLink(location : CLLocation) -> NSURL {
+    func createGoogleMapsLink(location : CLLocation) {
         let latitude = "\(spot!.buttonLocation.coordinate.latitude)"
         let longitude = "\(spot!.buttonLocation.coordinate.longitude)"
-        let urlStr = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "&ll=" + latitude + "," + longitude + "&z=17"
-        return NSURL(string: urlStr)!
+        let longUrlString = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "&ll=" + latitude + "," + longitude + "&z=17"
+
+        request(Method.POST, "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBVSdiMcYO1qpJIMbcOV9ATgWpSxsGvc1M", parameters: ["longUrl": longUrlString], encoding: ParameterEncoding.JSON).responseSwiftyJSON { (request, response, json, error) -> Void in
+            if error == nil && response?.statusCode == 200 {
+                if let shortUrlString = json["id"].string {
+                    self.shareButtonTappedCompletion(shortUrlString)
+                }
+            } else {
+                self.shareButtonTappedCompletion(longUrlString)
+            }
+        }
+    }
+    
+    func shareButtonTappedCompletion(url: String) {
+        var text : String = "share_location_copy".localizedString
+        text = text.stringByReplacingOccurrencesOfString("[street_name]", withString: spot!.name)
+        text += "\n--\n" + url
+        let activityViewController = UIActivityViewController( activityItems: [text], applicationActivities: nil)
+        self.presentViewController(activityViewController, animated: true, completion: nil)
     }
     
     func leaveButtonTapped() {
