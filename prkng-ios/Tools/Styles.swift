@@ -46,6 +46,9 @@ struct Styles {
         static let statusBar = UIColor(rgba: "#D1CCC980")
         
         static let transparentBackground = UIColor(red: 48.0/255.0, green: 58/255.0, blue: 66/255.0, alpha: 0.9)
+        static let transparentWhite = UIColor.whiteColor().colorWithAlphaComponent(0.2)
+        static let transparentBlack = UIColor.blackColor().colorWithAlphaComponent(0.1)
+        
     }
     
     struct FontFaces {

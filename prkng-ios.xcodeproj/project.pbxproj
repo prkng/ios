@@ -18,6 +18,7 @@
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
+		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31A01B2621E700760E05 /* libGoogleAnalyticsServices.a */; };
@@ -38,7 +39,7 @@
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
 		99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */; };
-		BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */; };
+		BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
 		BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055961ACF100500413F16 /* ScheduleItemView.swift */; };
 		BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1C2B581AFCBBA00070085A /* AuthUtility.swift */; };
@@ -167,6 +168,7 @@
 		3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
+		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -209,7 +211,7 @@
 		3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKVerticalGestureRecognizer.swift; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleHeaderView.swift; sourceTree = "<group>"; };
+		BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		BF1055961ACF100500413F16 /* ScheduleItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleItemView.swift; sourceTree = "<group>"; };
 		BF1C2B581AFCBBA00070085A /* AuthUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthUtility.swift; sourceTree = "<group>"; };
@@ -487,6 +489,7 @@
 			isa = PBXGroup;
 			children = (
 				3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */,
+				3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */,
 			);
 			name = "Agenda List";
 			path = "Navigation/Agenda List";
@@ -847,7 +850,7 @@
 			isa = PBXGroup;
 			children = (
 				BFF568EC1ACDCC1B0018F62F /* ScheduleViewController.swift */,
-				BF1055921ACED4CD00413F16 /* ScheduleHeaderView.swift */,
+				BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */,
 				BF1055961ACF100500413F16 /* ScheduleItemView.swift */,
 				BF779A321AD4042E00F76E0A /* ScheduleDayIndicatorView.swift */,
 				BF4567FD1AD842B9006D7C23 /* ScheduleColumnView.swift */,
@@ -1040,7 +1043,7 @@
 				BFFDE4611AFB829B0035DF54 /* LoginMethodSelectionView.swift in Sources */,
 				BF9C46F71B32F72200DCF858 /* TermsViewController.swift in Sources */,
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
-				BF1055931ACED4CD00413F16 /* ScheduleHeaderView.swift in Sources */,
+				BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */,
 				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
 				BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */,
@@ -1118,6 +1121,7 @@
 				BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */,
 				3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */,
 				3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */,
+				3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

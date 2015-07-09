@@ -8,15 +8,14 @@
 
 import UIKit
 
-class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKVerticalGestureRecognizerDelegate {
+class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKVerticalGestureRecognizerDelegate, ModalHeaderViewDelegate {
     
     var spot : ParkingSpot
     var delegate : ScheduleViewControllerDelegate?
     private var scheduleItems : Array<ScheduleItemModel>
     private var parentView: UIView
 
-    private var headerView : ScheduleHeaderView
-    private var headerViewButton: UIButton
+    private var headerView : ModalHeaderView
     private var scrollView : UIScrollView
     private var contentView : UIView
     private var leftView : ScheduleLeftView
@@ -35,8 +34,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     init(spot: ParkingSpot, view: UIView) {
         self.spot = spot
         self.parentView = view
-        headerView = ScheduleHeaderView()
-        headerViewButton = ViewFactory.checkInButton()
+        headerView = ModalHeaderView()
         scrollView = UIScrollView()
         contentView = UIView()
         leftView = ScheduleLeftView()
@@ -107,15 +105,12 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         self.view.addSubview(leftView)
 
         self.view.addSubview(headerView)
+        headerView.delegate = self
         headerView.layer.shadowColor = UIColor.blackColor().CGColor
         headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         headerView.layer.shadowOpacity = 0.2
         headerView.layer.shadowRadius = 0.5
-        headerView.userInteractionEnabled = false
         
-        self.view.addSubview(headerViewButton)
-        headerViewButton.addTarget(self, action: "dismiss", forControlEvents: UIControlEvents.TouchUpInside)
-
         verticalRec = PRKVerticalGestureRecognizer(view: self.view, superViewOfView: self.parentView)
         verticalRec.delegate = self
         
@@ -136,7 +131,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
             scheduleItemViews.append(scheduleItemView)
         }
         
-        self.view.sendSubviewToBack(headerViewButton)
         
     }
     
@@ -149,10 +143,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
             make.height.equalTo(self.HEADER_HEIGHT)
         }
 
-        headerViewButton.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.headerView)
-        }
-        
         leftView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.headerView.snp_bottom)
             make.left.equalTo(self.view)
@@ -292,6 +282,17 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         self.delegate!.hideScheduleView()
     }
     
+    
+    //MARK: ModalHeaderViewDelegate
+    
+    func tappedBackButton() {
+        self.delegate!.hideScheduleView()
+    }
+    
+    func tappedRightButton() {
+        NSLog("Handle the right button tap")
+    }
+
 }
 
 //MARK: Helper class for managing and parsing schedules
