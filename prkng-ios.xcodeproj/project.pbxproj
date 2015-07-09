@@ -24,6 +24,7 @@
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
+		3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */; };
 		3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */; };
 		3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */; };
 		3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */; };
@@ -193,6 +194,7 @@
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
+		3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaListViewController.swift; sourceTree = "<group>"; };
 		3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolygon.swift; sourceTree = "<group>"; };
 		3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Abbreviations.strings; sourceTree = "<group>"; };
 		3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
@@ -481,6 +483,15 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
+		3EA3E7E31B4C6BEF000EDEF8 /* Agenda List */ = {
+			isa = PBXGroup;
+			children = (
+				3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */,
+			);
+			name = "Agenda List";
+			path = "Navigation/Agenda List";
+			sourceTree = "<group>";
+		};
 		BF0B47221A7E903900E94B3C /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -500,6 +511,7 @@
 			children = (
 				BFE1AB771A839F5800B77F2E /* AbstractViewController.swift */,
 				BFC490911B31D22700C43562 /* About */,
+				3EA3E7E31B4C6BEF000EDEF8 /* Agenda List */,
 				BFEE21AA1B1F82640029BA71 /* Report */,
 				BF8F78111B00D2CF00A85197 /* My Car */,
 				BFB0958D1AFA3F79007F1D16 /* Login */,
@@ -1007,6 +1019,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */,
 				BF32826F1B3847AE002ED8DF /* MKLabel.swift in Sources */,
 				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,

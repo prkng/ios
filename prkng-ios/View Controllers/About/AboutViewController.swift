@@ -93,7 +93,7 @@ class AboutViewController: AbstractViewController {
         }
         
         shareButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.termsButton.snp_bottom).with.offset(viewHeight * 0.08)
+            make.top.equalTo(self.termsButton.snp_bottom).with.offset(viewHeight * 0.05)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)

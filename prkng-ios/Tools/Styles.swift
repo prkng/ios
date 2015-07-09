@@ -85,6 +85,8 @@ struct Styles {
         static let spotDetailViewHeight = 140
         static let spotDetailViewTopPortionHeight = 70
         static let spotDetailViewBottomPortionHeight = spotDetailViewHeight - spotDetailViewTopPortionHeight
+        static let modalViewHeaderHeight : CGFloat = 90
+
     }
     
 }

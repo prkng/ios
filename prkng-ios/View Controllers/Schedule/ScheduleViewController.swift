@@ -25,7 +25,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     
     private var verticalRec: PRKVerticalGestureRecognizer
 
-    private(set) var HEADER_HEIGHT : CGFloat
+    private(set) var HEADER_HEIGHT : CGFloat = Styles.Sizes.modalViewHeaderHeight
     private(set) var LEFT_VIEW_WIDTH : CGFloat
     private(set) var COLUMN_SIZE : CGFloat
     private(set) var COLUMN_HEADER_HEIGHT : CGFloat
@@ -45,7 +45,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         scheduleItemViews = []
         verticalRec = PRKVerticalGestureRecognizer()
         
-        HEADER_HEIGHT = 90
         LEFT_VIEW_WIDTH = UIScreen.mainScreen().bounds.size.width * 0.18
         COLUMN_SIZE = UIScreen.mainScreen().bounds.size.width * 0.28
         CONTENTVIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - HEADER_HEIGHT - 71.0
@@ -54,22 +53,8 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         
         super.init(nibName: nil, bundle: nil)
         
-        for dayAgenda in spot.sortedTimePeriods() {
-            
-            var column : Int = 0
-            for period in dayAgenda {
-                
-                if (period != nil) {
-                    var startF : CGFloat = CGFloat(period!.start)
-                    var endF : CGFloat = CGFloat(period!.end)
-                    var scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit)
-                    scheduleItems.append(scheduleItem)
-                }
-                ++column
-            }
-        }
-        
-        scheduleItems = processScheduleItems(scheduleItems)
+        scheduleItems = ScheduleHelper.getScheduleItems(spot)
+        scheduleItems = ScheduleHelper.processScheduleItems(scheduleItems)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -233,7 +218,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     func updateValues () {
         headerView.titleLabel.text = spot.name
         
-        var columnTitles = sortedColumnTitles()
+        var columnTitles = ScheduleHelper.sortedDayAbbreviations()
         var index = 0
         for columnView in columnViews {
             columnView.setTitle(columnTitles[index++])
@@ -274,20 +259,57 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     }
     
     
-    // Helper
+    //MARK: Helper functions directly related to this view controller
     
-    func sortedDays() -> Array<String> {
+    func scheduleItemViewOverlapsInColumn(itemView: ScheduleItemView, columnView:ScheduleColumnView) -> Bool {
+        
+        var scheduleItemViewsInColumn: [ScheduleItemView] = []
+        for view in columnView.subviews {
+            if view.isKindOfClass(ScheduleItemView) {
+                scheduleItemViewsInColumn.append(view as! ScheduleItemView)
+            }
+        }
+
+        let intersectingViews = scheduleItemViewsInColumn.filter { $0 != itemView && itemView.frame.intersects($0.frame) }
+        return intersectingViews.count > 0
+    }
+    
+    
+    //MARK: PRKVerticalGestureRecognizerDelegate methods
+    func swipeDidBegin() {
+        
+    }
+    
+    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
+        self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
+    }
+    
+    func swipeDidEndUp() {
+        self.delegate?.shouldAdjustTopConstraintWithOffset(0, animated: true)
+    }
+    
+    func swipeDidEndDown() {
+        self.delegate!.hideScheduleView()
+    }
+    
+}
+
+//MARK: Helper class for managing and parsing schedules
+
+class ScheduleHelper {
+    
+    static func sortedDays() -> Array<String> {
         var array : Array<String> = []
         
         var days : Array<String> = []
         
-        days.append("monday".localizedString.uppercaseString[0])
-        days.append("tuesday".localizedString.uppercaseString[0])
-        days.append("wednesday".localizedString.uppercaseString[0])
-        days.append("thursday".localizedString.uppercaseString[0])
-        days.append("friday".localizedString.uppercaseString[0])
-        days.append("saturday".localizedString.uppercaseString[0])
-        days.append("sunday".localizedString.uppercaseString[0])
+        days.append("monday".localizedString)
+        days.append("tuesday".localizedString)
+        days.append("wednesday".localizedString)
+        days.append("thursday".localizedString)
+        days.append("friday".localizedString)
+        days.append("saturday".localizedString)
+        days.append("sunday".localizedString)
         
         let today = DateUtil.dayIndexOfTheWeek()
         
@@ -299,11 +321,13 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
             array.append(days[j])
         }
         
-        
+        array[0] = "today".localizedString
+        array[1] = "tomorrow".localizedString
+
         return array
     }
     
-    func sortedColumnTitles() -> Array<String> {
+    static func sortedDayAbbreviations() -> Array<String> {
         var array : Array<String> = []
         
         var days : Array<String> = []
@@ -331,31 +355,71 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         return array
     }
     
-
-    func scheduleItemViewOverlapsInColumn(itemView: ScheduleItemView, columnView:ScheduleColumnView) -> Bool {
+    static func getAgendaItems(spot: ParkingSpot) -> [AgendaItem] {
         
-        var scheduleItemViewsInColumn: [ScheduleItemView] = []
-        for view in columnView.subviews {
-            if view.isKindOfClass(ScheduleItemView) {
-                scheduleItemViewsInColumn.append(view as! ScheduleItemView)
+        var agendaItems = [AgendaItem]()
+        var dayIndexes = Set<Int>()
+        let agenda = spot.sortedTimePeriods()
+        for dayAgenda in agenda {
+            
+            var dayIndex : Int = 0
+            for period in dayAgenda {
+                
+                if (period != nil) {
+                    var agendaItem = AgendaItem(startTime: period!.start, endTime: period!.end, dayIndex: dayIndex, timeLimit: Int(period!.timeLimit))
+                    agendaItems.append(agendaItem)
+                    dayIndexes.insert(dayIndex)
+                }
+                ++dayIndex
             }
         }
+        
+        let notPresentDayIndexes = Set(0...6).subtract(dayIndexes)
+        for dayIndex in notPresentDayIndexes {
+            let agendaItem = AgendaItem(startTime: 0, endTime: 24*3600, dayIndex: dayIndex, timeLimit: 0)
+            agendaItems.append(agendaItem)
+        }
+        
+        agendaItems.sort { (first, second) -> Bool in
+            first.dayIndex < second.dayIndex
+        }
+        
+        return agendaItems
+    }
 
-        let intersectingViews = scheduleItemViewsInColumn.filter { $0 != itemView && itemView.frame.intersects($0.frame) }
-        return intersectingViews.count > 0
+    static func getScheduleItems(spot: ParkingSpot) -> [ScheduleItemModel] {
+
+        var scheduleItems = [ScheduleItemModel]()
+        let agenda = spot.sortedTimePeriods()
+        for dayAgenda in agenda {
+            
+            var column : Int = 0
+            for period in dayAgenda {
+                
+                if (period != nil) {
+                    var startF : CGFloat = CGFloat(period!.start)
+                    var endF : CGFloat = CGFloat(period!.end)
+                    var scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit)
+                    scheduleItems.append(scheduleItem)
+                }
+                ++column
+            }
+        }
+        
+        return scheduleItems
     }
     
-    func processScheduleItems(scheduleItems: [ScheduleItemModel]) -> [ScheduleItemModel] {
+    static func processScheduleItems(scheduleItems: [ScheduleItemModel]) -> [ScheduleItemModel] {
         var newScheduleItems = [ScheduleItemModel]()
-
+        
         for i in 0...6 {
             var tempScheduleItems = scheduleItems.filter({ (var scheduleItem: ScheduleItemModel) -> Bool in
                 return scheduleItem.columnIndex! == i
             }).sorted({ (var left: ScheduleItemModel, var right: ScheduleItemModel) -> Bool in
                 left.columnIndex! <= right.columnIndex!
-                && left.startInterval <= right.startInterval
-                && left.endInterval <= right.endInterval
-                && left.limit <= right.limit
+                    && left.startInterval <= right.startInterval
+                    && left.endInterval <= right.endInterval
+                    && left.limit <= right.limit
             })
             
             for scheduleItem in tempScheduleItems {
@@ -366,7 +430,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
                     scheduleItem.setMinimumHeight()
                     newScheduleItems.append(scheduleItem)
                 }
-                //RULE: MERGE CONSECUTIVE EQUAL RULES
+                    //RULE: MERGE CONSECUTIVE EQUAL RULES
                 else if (lastScheduleItem != nil
                     && lastScheduleItem!.columnIndex! == scheduleItem.columnIndex!
                     && lastScheduleItem!.endInterval >= scheduleItem.startInterval
@@ -375,7 +439,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
                         var newScheduleItem = ScheduleItemModel(startF: lastScheduleItem!.startInterval, endF: scheduleItem.endInterval, column : scheduleItem.columnIndex!, limitInterval: scheduleItem.limit)
                         newScheduleItems.append(newScheduleItem)
                 }
-                //RULE: SPLIT TIME MAXES IF A RESTRICTION OVERLAPS IT
+                    //RULE: SPLIT TIME MAXES IF A RESTRICTION OVERLAPS IT
                 else if (lastScheduleItem != nil
                     && lastScheduleItem!.columnIndex! == scheduleItem.columnIndex!
                     && lastScheduleItem!.startInterval < scheduleItem.endInterval
@@ -396,7 +460,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
                         }
                         
                         if timeMax.isLongerThan(restriction) {
-                        
+                            
                             //now split the time max...
                             if timeMax.startInterval >= restriction.startInterval {
                                 //then just make our time max start after
@@ -419,33 +483,14 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
                 else {
                     newScheduleItems.append(scheduleItem)
                 }
-
+                
             }
         }
         
         return newScheduleItems
     }
     
-    //MARK: PRKVerticalGestureRecognizerDelegate methods
-    func swipeDidBegin() {
-        
-    }
-    
-    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
-    }
-    
-    func swipeDidEndUp() {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(0, animated: true)
-    }
-    
-    func swipeDidEndDown() {
-        self.delegate!.hideScheduleView()
-    }
-    
 }
-
-
 
 class ScheduleItemModel {
     

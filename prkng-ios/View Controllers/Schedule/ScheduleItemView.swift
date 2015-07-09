@@ -12,8 +12,6 @@ class ScheduleItemView : UIView {
     
     private var containerView : UIView
     private var imageView : UIImageView
-    private var timeLimitLabel : UILabel
-    private var maxLabel : UILabel
     
     var limited : Bool
     
@@ -25,38 +23,11 @@ class ScheduleItemView : UIView {
         
         self.limited = (model.timeLimitText != nil)
         
-        timeLimitLabel.hidden = true
-        
         if(limited) {
-            if let minutes = model.timeLimitText?.toInt() {
-                switch (minutes) {
-                case 15:
-                    imageView.image = UIImage(named: "icon_timemax_15")
-                    break
-                case 30:
-                    imageView.image = UIImage(named: "icon_timemax_30")
-                    break
-                case 60:
-                    imageView.image = UIImage(named: "icon_timemax_60")
-                    break
-                case 90:
-                    imageView.image = UIImage(named: "icon_timemax_90")
-                    break
-                case 120:
-                    imageView.image = UIImage(named: "icon_timemax_120")
-                    break
-                default:
-                    timeLimitLabel.text = model.timeLimitText
-                    timeLimitLabel.hidden = false
-                }
-            } else {
-                timeLimitLabel.text = model.timeLimitText
-                timeLimitLabel.hidden = false
-            }
+            imageView = ViewFactory.timeMaxIcon(Int(model.limit/60), addMaxLabel: true, color: Styles.Colors.cream2)
 
         } else {
-            timeLimitLabel.hidden = true
-            imageView.image = UIImage(named: "icon_forbidden")
+            imageView = ViewFactory.forbiddenIcon(Styles.Colors.berry2)
         }
     }
     
@@ -67,14 +38,12 @@ class ScheduleItemView : UIView {
      override init(frame: CGRect) {
         
         containerView = UIView()
-        timeLimitLabel = UILabel()
         imageView = UIImageView()
         
         didSetupSubviews = false
         didSetupConstraints = true
         
         limited =  false
-        maxLabel = UILabel()
 
         super.init(frame: frame)
         
@@ -109,25 +78,8 @@ class ScheduleItemView : UIView {
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         containerView.addSubview(imageView)
         
-        timeLimitLabel.font = Styles.FontFaces.regular(17)
-        timeLimitLabel.textAlignment = NSTextAlignment.Center
-        timeLimitLabel.textColor = Styles.Colors.white
-        timeLimitLabel.adjustsFontSizeToFitWidth = true
-        timeLimitLabel.numberOfLines = 1
-        timeLimitLabel.sizeToFit()
-        containerView.addSubview(timeLimitLabel)
-        
-        maxLabel.text = "max".localizedString.uppercaseString
-        maxLabel.font = Styles.FontFaces.regular(12)
-        maxLabel.textAlignment = NSTextAlignment.Center
-        maxLabel.textColor = Styles.Colors.white
-        maxLabel.adjustsFontSizeToFitWidth = true
-        maxLabel.numberOfLines = 1
-        maxLabel.sizeToFit()
-        
         if(limited) {
             self.backgroundColor = Styles.Colors.midnight1
-            containerView.addSubview(maxLabel)
 
         } else {
             self.backgroundColor = Styles.Colors.red2
@@ -150,19 +102,6 @@ class ScheduleItemView : UIView {
             make.center.equalTo(self.containerView)
             make.size.lessThanOrEqualTo(CGSize(width: 25, height: 25))
             make.size.lessThanOrEqualTo(self.containerView).with.offset(-2)
-        }
-        
-        timeLimitLabel.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.imageView)
-            make.centerY.equalTo(self.imageView).with.offset(-1) //plus moves down, minus moves up
-            make.size.equalTo(CGSize(width: 15, height: 17))
-        }
-        
-        if limited {
-            maxLabel.snp_makeConstraints({ (make) -> () in
-                make.centerX.equalTo(self.imageView)
-                make.centerY.equalTo(self.imageView).with.offset(25)
-            })
         }
         
         didSetupConstraints = true

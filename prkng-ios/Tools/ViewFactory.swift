@@ -154,5 +154,94 @@ struct ViewFactory {
         return textField
     }
     
+    // MARK: Icons
+    
+    static func authorizedIcon(color: UIColor) -> UIImageView {
+        let image = UIImage(named: "icon_authorized")
+        let imageView = UIImageView(image: image)
+        imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.tintColor = color
+        return imageView
+    }
+    
+    static func forbiddenIcon(color: UIColor) -> UIImageView {
+        let image = UIImage(named: "icon_forbidden")
+        let imageView = UIImageView(image: image)
+        imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.tintColor = color
+        return imageView
+    }
+    
+    static func timeMaxIcon(minutes: Int, addMaxLabel: Bool, color: UIColor) -> UIImageView {
+        
+        var imageView = UIImageView()
+        var timeLimitLabel = UILabel()
+        var maxLabel = UILabel()
+        var image = UIImage(named: "icon_timemax")
+
+        if minutes > 0 {
+            switch (minutes) {
+            case 15:
+                image = UIImage(named: "icon_timemax_15")
+                break
+            case 30:
+                image = UIImage(named: "icon_timemax_30")
+                break
+            case 60:
+                image = UIImage(named: "icon_timemax_60")
+                break
+            case 90:
+                image = UIImage(named: "icon_timemax_90")
+                break
+            case 120:
+                image = UIImage(named: "icon_timemax_120")
+                break
+            default:
+                timeLimitLabel.text = String(minutes)
+                timeLimitLabel.hidden = false
+            }
+        } else {
+            timeLimitLabel.hidden = true
+        }
+        
+        imageView.image = image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.tintColor = color
+        
+        timeLimitLabel.font = Styles.FontFaces.regular(17)
+        timeLimitLabel.textAlignment = NSTextAlignment.Center
+        timeLimitLabel.textColor = color
+        timeLimitLabel.adjustsFontSizeToFitWidth = true
+        timeLimitLabel.numberOfLines = 1
+        timeLimitLabel.sizeToFit()
+        imageView.addSubview(timeLimitLabel)
+
+        maxLabel.text = "max".localizedString.uppercaseString
+        maxLabel.font = Styles.FontFaces.regular(12)
+        maxLabel.textAlignment = NSTextAlignment.Center
+        maxLabel.textColor = Styles.Colors.white
+        maxLabel.adjustsFontSizeToFitWidth = true
+        maxLabel.numberOfLines = 1
+        maxLabel.sizeToFit()
+        
+        timeLimitLabel.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(imageView)
+            make.centerY.equalTo(imageView).with.offset(-1) //plus moves down, minus moves up
+            make.size.equalTo(CGSize(width: 15, height: 17))
+        }
+        
+        if addMaxLabel {
+            imageView.addSubview(maxLabel)
+            
+            maxLabel.snp_makeConstraints({ (make) -> () in
+                make.centerX.equalTo(imageView)
+                make.centerY.equalTo(imageView).with.offset(25)
+            })
+            
+        }
+
+        return imageView
+    }
+
+    
     
 }
