@@ -8,28 +8,16 @@
 
 import UIKit
 
-class AgendaListViewController: AbstractViewController, UITableViewDataSource, UITableViewDelegate, PRKVerticalGestureRecognizerDelegate, ModalHeaderViewDelegate {
+class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSource, UITableViewDelegate {
 
-    var spot : ParkingSpot
-    var delegate : ScheduleViewControllerDelegate?
     private var agendaItems : Array<AgendaItem>
-    private var parentView: UIView
-
-    private var headerView : ModalHeaderView
     private var tableView: UITableView
-    
-    private var verticalRec: PRKVerticalGestureRecognizer
-
     private(set) var HEADER_HEIGHT : CGFloat = Styles.Sizes.modalViewHeaderHeight
 
-    init(spot: ParkingSpot, view: UIView) {
-        self.spot = spot
-        self.parentView = view
+    override init(spot: ParkingSpot, view: UIView) {
         agendaItems = []
-        headerView = ModalHeaderView()
         tableView = UITableView()
-        verticalRec = PRKVerticalGestureRecognizer()
-        super.init(nibName: nil, bundle: nil)
+        super.init(spot: spot, view: view)
         agendaItems = ScheduleHelper.getAgendaItems(spot)
     }
     
@@ -51,7 +39,6 @@ class AgendaListViewController: AbstractViewController, UITableViewDataSource, U
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        updateValues()
     }
     
     func setupViews() {
@@ -61,61 +48,18 @@ class AgendaListViewController: AbstractViewController, UITableViewDataSource, U
         tableView.dataSource = self
         self.view.addSubview(tableView)
         
-        self.view.addSubview(headerView)
-        headerView.delegate = self
-        headerView.layer.shadowColor = UIColor.blackColor().CGColor
-        headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        headerView.layer.shadowOpacity = 0.2
-        headerView.layer.shadowRadius = 0.5
-        
-        verticalRec = PRKVerticalGestureRecognizer(view: self.view, superViewOfView: self.parentView)
-        verticalRec.delegate = self
-
     }
     
     func setupConstraints() {
         
-        headerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(self.HEADER_HEIGHT)
-        }
-        
         tableView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.headerView.snp_bottom)
+            make.top.equalTo(self.view).with.offset(Styles.Sizes.modalViewHeaderHeight)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
         }
 
 
-    }
-    
-    func updateValues () {
-        headerView.titleLabel.text = spot.name
-    }
-    
-    func dismiss () {
-        self.delegate!.hideScheduleView()
-    }
-
-    
-    //MARK: PRKVerticalGestureRecognizerDelegate methods
-    func swipeDidBegin() {
-        
-    }
-    
-    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
-    }
-    
-    func swipeDidEndUp() {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(0, animated: true)
-    }
-    
-    func swipeDidEndDown() {
-        self.delegate!.hideScheduleView()
     }
     
     
@@ -161,15 +105,6 @@ class AgendaListViewController: AbstractViewController, UITableViewDataSource, U
         return 0
     }
     
-    //MARK: ModalHeaderViewDelegate
-    
-    func tappedBackButton() {
-        self.delegate!.hideScheduleView()
-    }
-    
-    func tappedRightButton() {
-        NSLog("Handle the right button tap")
-    }
     
 }
 

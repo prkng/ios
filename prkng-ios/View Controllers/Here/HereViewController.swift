@@ -8,9 +8,9 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, ScheduleViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate {
 
-    var scheduleViewController : ScheduleViewController?
+    var prkModalViewController : PRKModalViewController?
     var firstUseMessageVC : HereFirstUseViewController?
     var detailView: SpotDetailView
     
@@ -221,19 +221,19 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     func setupScheduleView(spot : ParkingSpot?) {
         
         if spot != nil {
-            self.scheduleViewController = ScheduleViewController(spot: spot!, view: self.view)
-            self.view.addSubview(self.scheduleViewController!.view)
-            self.scheduleViewController!.willMoveToParentViewController(self)
-            self.scheduleViewController!.delegate = self
+            self.prkModalViewController = PRKModalViewController(spot: spot!, view: self.view)
+            self.view.addSubview(self.prkModalViewController!.view)
+            self.prkModalViewController!.willMoveToParentViewController(self)
+            self.prkModalViewController!.delegate = self
             
-            self.scheduleViewController!.view.snp_makeConstraints({ (make) -> () in
+            self.prkModalViewController!.view.snp_makeConstraints({ (make) -> () in
                 make.top.equalTo(self.detailView.snp_bottom)
                 make.size.equalTo(self.view)
                 make.left.equalTo(self.view)
                 make.right.equalTo(self.view)
             })
             
-            self.scheduleViewController!.view.layoutIfNeeded()
+            self.prkModalViewController!.view.layoutIfNeeded()
             
         }
     }
@@ -247,7 +247,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
     
     func hideScheduleView () {
         
-        if(self.scheduleViewController == nil) {
+        if(self.prkModalViewController == nil) {
             return
         }
         
@@ -256,7 +256,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             make.bottom.equalTo(self.view).with.offset(0)
         }
         
-        self.scheduleViewController?.view.snp_updateConstraints({ (make) -> () in
+        self.prkModalViewController?.view.snp_updateConstraints({ (make) -> () in
             make.top.equalTo(self.detailView.snp_bottom).with.offset(0)
         })
         
@@ -265,10 +265,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
             self.view.layoutIfNeeded()
             }, completion: { (Bool) -> Void in
                 
-                self.scheduleViewController!.view.removeFromSuperview()
-                self.scheduleViewController!.willMoveToParentViewController(nil)
-                self.scheduleViewController!.removeFromParentViewController()
-                self.scheduleViewController = nil
+                self.prkModalViewController!.view.removeFromSuperview()
+                self.prkModalViewController!.willMoveToParentViewController(nil)
+                self.prkModalViewController!.removeFromParentViewController()
+                self.prkModalViewController = nil
                 self.isShowingSchedule = false
         })
         
@@ -376,7 +376,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 make.bottom.equalTo(self.view).with.offset(distance + parallaxOffset)
             }
 
-            self.scheduleViewController?.view.snp_updateConstraints({ (make) -> () in
+            self.prkModalViewController?.view.snp_updateConstraints({ (make) -> () in
                 make.top.equalTo(self.detailView.snp_bottom).with.offset(-parallaxOffset)
             })
         } else {
@@ -386,7 +386,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, Schedu
                 make.bottom.equalTo(self.view).with.offset(distance)
             }
 
-            self.scheduleViewController?.view.snp_updateConstraints({ (make) -> () in
+            self.prkModalViewController?.view.snp_updateConstraints({ (make) -> () in
                 make.top.equalTo(self.detailView.snp_bottom).with.offset(-2*parallaxOffset)
             })
         }

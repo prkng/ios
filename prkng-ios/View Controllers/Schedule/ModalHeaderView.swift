@@ -15,6 +15,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     private var leftImageView: UIImageView
     private var rightImageView: UIImageView
     private var materialDesignButton: UIButton
+    private var isRightImageViewRotated: Bool = false
     
     var delegate: ModalHeaderViewDelegate?
     
@@ -57,7 +58,6 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     
     func setupSubviews() {
         
-//        topContainer.backgroundColor = Styles.Colors.red2
         addSubview(topContainer)
         
         titleLabel.font = Styles.Fonts.h2
@@ -80,7 +80,6 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         tapRec.delegate = self
         materialDesignButton.addGestureRecognizer(tapRec)
 
-        
         didSetupSubviews = true
     }
     
@@ -102,20 +101,19 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         leftImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(24, 22))
-            make.centerX.equalTo(self.topContainer).multipliedBy(0.33)
+            make.left.equalTo(self.topContainer).with.offset(27)
             make.bottom.equalTo(self.topContainer).with.offset(-18)
         }
 
         rightImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(24, 22))
-            make.centerX.equalTo(self.topContainer).multipliedBy(1.66)
+            make.right.equalTo(self.topContainer).with.offset(-40)
             make.bottom.equalTo(self.topContainer).with.offset(-18)
         }
         
         materialDesignButton.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.topContainer)
         }
-        
         
         didSetupConstraints = true
     }
@@ -124,13 +122,33 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         let tap = tapRec.locationInView(self)
         let point = rightImageView.convertPoint(rightImageView.bounds.origin, toView: self)
         let distance = tap.distanceToPoint(point)
-        if distance < 30 {
+        if distance < 40 {
             self.delegate?.tappedRightButton()
         } else {
             self.delegate?.tappedBackButton()
         }
     }
     
+    func makeRightButtonList(animated: Bool) {
+
+        let duration = animated ? 0.2 : 0
+        UIView.animateWithDuration(duration, animations: {
+            self.rightImageView.transform = CGAffineTransformMakeRotation((0.0 * CGFloat(M_PI)) / 180.0)
+        })
+        
+        isRightImageViewRotated = false
+    }
+
+    func makeRightButtonColumns(animated: Bool) {
+        
+        let duration = animated ? 0.2 : 0
+        UIView.animateWithDuration(duration, animations: {
+            self.rightImageView.transform = CGAffineTransformMakeRotation((90.0 * CGFloat(M_PI)) / 180.0)
+        })
+
+        isRightImageViewRotated = true
+    }
+
 }
 
 protocol ModalHeaderViewDelegate {

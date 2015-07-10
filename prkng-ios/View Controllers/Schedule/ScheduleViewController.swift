@@ -8,48 +8,37 @@
 
 import UIKit
 
-class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKVerticalGestureRecognizerDelegate, ModalHeaderViewDelegate {
+class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate {
     
-    var spot : ParkingSpot
-    var delegate : ScheduleViewControllerDelegate?
     private var scheduleItems : Array<ScheduleItemModel>
-    private var parentView: UIView
 
-    private var headerView : ModalHeaderView
     private var scrollView : UIScrollView
     private var contentView : UIView
     private var leftView : ScheduleLeftView
     private var columnViews : Array<ScheduleColumnView>
     private var scheduleItemViews : Array<ScheduleItemView>
     
-    private var verticalRec: PRKVerticalGestureRecognizer
-
-    private(set) var HEADER_HEIGHT : CGFloat = Styles.Sizes.modalViewHeaderHeight
     private(set) var LEFT_VIEW_WIDTH : CGFloat
     private(set) var COLUMN_SIZE : CGFloat
     private(set) var COLUMN_HEADER_HEIGHT : CGFloat
     private(set) var CONTENTVIEW_HEIGHT : CGFloat
     private(set) var ITEM_HOUR_HEIGHT : CGFloat
     
-    init(spot: ParkingSpot, view: UIView) {
-        self.spot = spot
-        self.parentView = view
-        headerView = ModalHeaderView()
+    override init(spot: ParkingSpot, view: UIView) {
         scrollView = UIScrollView()
         contentView = UIView()
         leftView = ScheduleLeftView()
         scheduleItems = []
         columnViews = []
         scheduleItemViews = []
-        verticalRec = PRKVerticalGestureRecognizer()
         
         LEFT_VIEW_WIDTH = UIScreen.mainScreen().bounds.size.width * 0.18
         COLUMN_SIZE = UIScreen.mainScreen().bounds.size.width * 0.28
-        CONTENTVIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - HEADER_HEIGHT - 71.0
+        CONTENTVIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - Styles.Sizes.modalViewHeaderHeight - 71.0
         COLUMN_HEADER_HEIGHT = 45.0
         ITEM_HOUR_HEIGHT = (CONTENTVIEW_HEIGHT - COLUMN_HEADER_HEIGHT) / 24.0
         
-        super.init(nibName: nil, bundle: nil)
+        super.init(spot: spot, view: view)
         
         scheduleItems = ScheduleHelper.getScheduleItems(spot)
         scheduleItems = ScheduleHelper.processScheduleItems(scheduleItems)
@@ -104,16 +93,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         leftView.backgroundColor = Styles.Colors.cream2
         self.view.addSubview(leftView)
 
-        self.view.addSubview(headerView)
-        headerView.delegate = self
-        headerView.layer.shadowColor = UIColor.blackColor().CGColor
-        headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        headerView.layer.shadowOpacity = 0.2
-        headerView.layer.shadowRadius = 0.5
-        
-        verticalRec = PRKVerticalGestureRecognizer(view: self.view, superViewOfView: self.parentView)
-        verticalRec.delegate = self
-        
         scrollView.addSubview(contentView)
         
         for i in 0...6 {
@@ -136,15 +115,8 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     
     func setupConstraints () {
         
-        headerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(self.HEADER_HEIGHT)
-        }
-
         leftView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.headerView.snp_bottom)
+            make.top.equalTo(self.view).with.offset(Styles.Sizes.modalViewHeaderHeight)
             make.left.equalTo(self.view)
             make.bottom.equalTo(self.view)
             make.width.equalTo(self.LEFT_VIEW_WIDTH)
@@ -162,7 +134,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
 
         
         scrollView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.headerView.snp_bottom)
+            make.top.equalTo(self.view).with.offset(Styles.Sizes.modalViewHeaderHeight)
             make.left.equalTo(self.view).with.offset(self.LEFT_VIEW_WIDTH)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
@@ -206,7 +178,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     }
     
     func updateValues () {
-        headerView.titleLabel.text = spot.name
         
         var columnTitles = ScheduleHelper.sortedDayAbbreviations()
         var index = 0
@@ -243,11 +214,7 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
         }
         
     }
-    
-    func dismiss () {
-        self.delegate!.hideScheduleView()
-    }
-    
+        
     
     //MARK: Helper functions directly related to this view controller
     
@@ -265,34 +232,6 @@ class ScheduleViewController: AbstractViewController, UIScrollViewDelegate, PRKV
     }
     
     
-    //MARK: PRKVerticalGestureRecognizerDelegate methods
-    func swipeDidBegin() {
-        
-    }
-    
-    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
-    }
-    
-    func swipeDidEndUp() {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(0, animated: true)
-    }
-    
-    func swipeDidEndDown() {
-        self.delegate!.hideScheduleView()
-    }
-    
-    
-    //MARK: ModalHeaderViewDelegate
-    
-    func tappedBackButton() {
-        self.delegate!.hideScheduleView()
-    }
-    
-    func tappedRightButton() {
-        NSLog("Handle the right button tap")
-    }
-
 }
 
 //MARK: Helper class for managing and parsing schedules
@@ -660,9 +599,3 @@ class ScheduleTimeModel {
     }
 
 }
-
-protocol ScheduleViewControllerDelegate {
-    func hideScheduleView()
-    func shouldAdjustTopConstraintWithOffset(distanceFromTop: CGFloat, animated: Bool)
-}
-
