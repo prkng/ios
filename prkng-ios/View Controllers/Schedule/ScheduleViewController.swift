@@ -299,19 +299,16 @@ class ScheduleHelper {
         
         var agendaItems = [AgendaItem]()
         var dayIndexes = Set<Int>()
-        let agenda = spot.sortedTimePeriods()
-        for dayAgenda in agenda {
-            
-            var dayIndex : Int = 0
-            for period in dayAgenda {
-                
-                if (period != nil) {
-                    var agendaItem = AgendaItem(startTime: period!.start, endTime: period!.end, dayIndex: dayIndex, timeLimit: Int(period!.timeLimit))
-                    agendaItems.append(agendaItem)
-                    dayIndexes.insert(dayIndex)
-                }
-                ++dayIndex
-            }
+
+        var scheduleItems = getScheduleItems(spot)
+        scheduleItems = processScheduleItems(scheduleItems)
+        
+        //convert schedule items into agenda items
+        for scheduleItem in scheduleItems {
+            var agendaItem = AgendaItem(startTime: NSTimeInterval(scheduleItem.startInterval), endTime: NSTimeInterval(scheduleItem.endInterval), dayIndex: scheduleItem.columnIndex!, timeLimit: Int(scheduleItem.limit))
+            agendaItems.append(agendaItem)
+            dayIndexes.insert(scheduleItem.columnIndex!)
+
         }
         
         let notPresentDayIndexes = Set(0...6).subtract(dayIndexes)
