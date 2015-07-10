@@ -119,7 +119,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
             }
             
-            SpotOperations.getSpotDetails(Settings.checkedInSpotId()!, completion: { (spot) -> Void in
+            let setSpot = {(var spot: ParkingSpot?) -> () in
                 self.spot = spot
                 self.updateValues()
                 SVProgressHUD.dismiss()
@@ -130,7 +130,16 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstCheckinMessage"), userInfo: nil, repeats: false)
                     }
                 }
-            })
+            }
+            
+            if let savedSpot = Settings.checkedInSpot() {
+                setSpot(savedSpot)
+            } else {
+                SpotOperations.getSpotDetails(Settings.checkedInSpotId()!, completion: { (spot) -> Void in
+                    setSpot(spot)
+                })
+            }
+            
         } else {
             self.updateValues()
         }

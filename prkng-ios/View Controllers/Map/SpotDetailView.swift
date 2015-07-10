@@ -12,7 +12,7 @@ class SpotDetailView: UIView {
 
     var topContainer: UIView
     var topContainerButton: UIButton
-    var titleLabel: UILabel
+    var titleLabel: MarqueeLabel
     var topContainerRightView: UIView
     var checkinImageView: UIImageView
     var checkinImageLabel: UILabel
@@ -37,7 +37,7 @@ class SpotDetailView: UIView {
         topContainer = UIView()
         topContainerButton = ViewFactory.checkInButton()
 
-        titleLabel = UILabel()
+        titleLabel = MarqueeLabel()
         topContainerRightView = UIView()
         checkinImageView = UIImageView()
         checkinImageLabel = UILabel()
@@ -146,7 +146,7 @@ class SpotDetailView: UIView {
         titleLabel.snp_makeConstraints { (make) -> () in
             make.centerY.equalTo(self.topContainer)
             make.left.equalTo(self.topContainer).with.offset(24)
-            make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left)
+            make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).with.offset(-15)
         }
         
         topContainerRightView.snp_makeConstraints { (make) -> () in

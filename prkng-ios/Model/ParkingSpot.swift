@@ -14,6 +14,7 @@ func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
 
 class ParkingSpot: NSObject, Hashable {
     
+    var json: JSON
     var identifier: String
     var code: String
     var name : String
@@ -35,8 +36,8 @@ class ParkingSpot: NSObject, Hashable {
     //MARK- Hashable
     override var hashValue: Int { get { return identifier.toInt()! } }
     
-    
     init(spot: ParkingSpot) {
+        json = spot.json
         identifier = spot.identifier
         code = spot.code
         name = spot.name
@@ -51,6 +52,7 @@ class ParkingSpot: NSObject, Hashable {
     
     init(json: JSON) {
         
+        self.json = json
         identifier = json["id"].stringValue
         code = json["code"].stringValue
         name = json["properties"]["rules"][0]["address"].stringValue.abbreviatedString

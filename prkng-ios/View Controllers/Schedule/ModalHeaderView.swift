@@ -11,7 +11,7 @@ import UIKit
 class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     
     private var topContainer: UIView
-    var titleLabel: UILabel
+    var titleLabel: MarqueeLabel
     private var leftImageView: UIImageView
     private var rightImageView: UIImageView
     private var materialDesignButton: UIButton
@@ -32,7 +32,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         didSetupConstraints = false
         
         topContainer = UIView ()
-        titleLabel = UILabel()
+        titleLabel = MarqueeLabel()
         leftImageView = UIImageView()
         rightImageView = UIImageView()
         
@@ -94,8 +94,8 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         titleLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.topContainer)
-            make.left.lessThanOrEqualTo(self.leftImageView.snp_right).with.offset(10)
-            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).with.offset(-10)
+            make.left.equalTo(self.leftImageView.snp_right).with.offset(10)
+            make.right.equalTo(self.rightImageView.snp_left).with.offset(-20)
             make.bottom.equalTo(self.topContainer).with.offset(-13)
         }
         
@@ -106,7 +106,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         }
 
         rightImageView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(24, 22))
+            make.size.equalTo(CGSizeMake(20, 17))
             make.right.equalTo(self.topContainer).with.offset(-40)
             make.bottom.equalTo(self.topContainer).with.offset(-18)
         }

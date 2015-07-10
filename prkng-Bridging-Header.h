@@ -27,5 +27,6 @@
 #import "KMLParser.h"
 #import "GeoJsonParser.h"
 #import "POP.h"
+#import "MarqueeLabel.h"
 
 #endif

@@ -20,6 +20,7 @@ struct Settings {
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
+    static let CHECKED_IN_SPOT_KEY = "prkng_checked_in_spot"
     static let CHECKED_IN_SPOT_ID_KEY = "prkng_checked_in_spot_id"
     static let LAST_CHECKIN_TIME_KEY = "prkng_last_checkin_time"
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
@@ -126,10 +127,12 @@ struct Settings {
     static func saveCheckInData(spot : ParkingSpot?, time : NSDate?) {
         
         if (spot != nil && time != nil) {
+            NSUserDefaults.standardUserDefaults().setObject(spot!.json.rawData(), forKey: CHECKED_IN_SPOT_KEY)
             NSUserDefaults.standardUserDefaults().setObject(spot!.identifier, forKey: CHECKED_IN_SPOT_ID_KEY)
             NSUserDefaults.standardUserDefaults().setObject(time!, forKey: LAST_CHECKIN_TIME_KEY)
             NSUserDefaults.standardUserDefaults().setObject(spot?.availableTimeInterval(), forKey: LAST_CHECKIN_EXPIRE_KEY)
         } else {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(CHECKED_IN_SPOT_KEY)
             NSUserDefaults.standardUserDefaults().removeObjectForKey(CHECKED_IN_SPOT_ID_KEY)
             NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_TIME_KEY)
             NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_EXPIRE_KEY)
@@ -141,6 +144,14 @@ struct Settings {
     
     static func checkedInSpotId () -> String? {
         return NSUserDefaults.standardUserDefaults().stringForKey(CHECKED_IN_SPOT_ID_KEY)
+    }
+    
+    static func checkedInSpot () -> ParkingSpot? {
+        if let archivedSpot = NSUserDefaults.standardUserDefaults().objectForKey(CHECKED_IN_SPOT_KEY) as? NSData {
+            let json = JSON(data: archivedSpot)
+            return ParkingSpot(json: json)
+        }
+        return nil
     }
     
     static func lastCheckinTime() -> NSDate? {

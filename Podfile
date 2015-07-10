@@ -11,6 +11,7 @@ pod 'pop', '~> 1.0'
 pod 'MBXMapKit'
 pod 'GeoJSONSerialization'
 pod 'GZIP'
+pod 'MarqueeLabel'
 
 #the pods below should only be enabled if we move to ios 8
 #use_frameworks!
