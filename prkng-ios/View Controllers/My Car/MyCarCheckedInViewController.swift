@@ -317,10 +317,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         if Settings.notificationTime() > 0 {
             Settings.setNotificationTime(0)
-            Settings.cancelAlarm()
+            Settings.cancelNotification()
         } else {
             Settings.setNotificationTime(30)
-            Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))
+            Settings.scheduleNotification(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))
         }
         
         updateNotificationsButton()

@@ -303,8 +303,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             Settings.saveCheckInData(self.activeSpot!, time: NSDate())
             
             if (Settings.notificationTime() > 0) {
-                Settings.cancelAlarm()
-                Settings.scheduleAlarm(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
+                Settings.cancelNotification()
+                Settings.scheduleNotification(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
             }
             
             SVProgressHUD.dismiss()

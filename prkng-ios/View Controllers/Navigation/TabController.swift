@@ -34,8 +34,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         tabBar = PrkTabBar()
         containerView = UIView()
         switchingMainView = false
-        
-    let useAppleMaps = NSUserDefaults.standardUserDefaults().boolForKey("use_apple_maps")
+        let useAppleMaps = NSUserDefaults.standardUserDefaults().boolForKey("use_apple_maps")
         mapViewController = useAppleMaps ? MKMapViewController() : RMMapViewController()
         hereViewController = HereViewController()
         activeViewController = hereViewController
@@ -68,6 +67,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         hereViewController.searchFilterView.delegate = self
         hereViewController.view.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.containerView)
+        }
+        
+        if Settings.checkedIn() {
+            loadMyCarTab()
         }
         
     }
@@ -116,6 +119,16 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     
+    func handleTabBadge() {
+        
+        if Settings.hasNotificationBadge() {
+            tabBar.myCarButton.badge.hidden = false
+        } else {
+            tabBar.myCarButton.badge.hidden = true
+        }
+        
+    }
+
     // PrkTabBarDelegate
     
     func activeTab() -> PrkTab {
@@ -254,10 +267,13 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
                 completion(finished: finished)
         }
         
+        updateTabBar()
+        
     }
     
     func updateTabBar() {
         
+        handleTabBadge()
     }
     
     func showLoginViewController ()  {

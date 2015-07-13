@@ -121,7 +121,7 @@ struct Settings {
     
     static func checkOut() {
         Settings.saveCheckInData(nil, time: nil)
-        Settings.cancelAlarm()
+        Settings.cancelNotification()
     }
     
     static func saveCheckInData(spot : ParkingSpot?, time : NSDate?) {
@@ -165,20 +165,31 @@ struct Settings {
     }
    
     
-    static func scheduleAlarm(time : NSDate) {
+    static func scheduleNotification(time : NSDate) {
         
         let alarm = UILocalNotification()
         alarm.alertBody = "alarm_text".localizedString
         alarm.soundName = UILocalNotificationDefaultSoundName
         alarm.fireDate = time
+        alarm.applicationIconBadgeNumber = 1
         UIApplication.sharedApplication().scheduleLocalNotification(alarm)
+        
     }
     
     
-    static func cancelAlarm() {
+    static func cancelNotification() {
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications {
             UIApplication.sharedApplication().cancelLocalNotification(notification as! UILocalNotification)
         }
+        clearNotificationBadge()
+    }
+    
+    static func clearNotificationBadge() {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    }
+    
+    static func hasNotificationBadge() -> Bool {
+        return UIApplication.sharedApplication().applicationIconBadgeNumber != 0
     }
     
 }

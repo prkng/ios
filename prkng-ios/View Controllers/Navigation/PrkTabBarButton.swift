@@ -12,6 +12,7 @@ class PrkTabBarButton: UIControl {
    
     var iconView : UIImageView
     var titleLabel : UILabel
+    var badge : UIView
     
     var title : String?
     var defaultIcon : UIImage?
@@ -20,6 +21,7 @@ class PrkTabBarButton: UIControl {
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
+    private var BADGE_WIDTH: CGFloat = 8
     
     convenience init(title: String, icon : UIImage?, selectedIcon : UIImage?) {
         
@@ -36,6 +38,7 @@ class PrkTabBarButton: UIControl {
         
         iconView = UIImageView()
         titleLabel = UILabel()
+        badge = UIView()
         
         didSetupSubviews = false
         didSetupConstraints = true
@@ -79,6 +82,11 @@ class PrkTabBarButton: UIControl {
         titleLabel.textAlignment = NSTextAlignment.Center
         addSubview(titleLabel)
         
+        badge.hidden = true
+        badge.backgroundColor = Styles.Colors.red2
+        badge.layer.cornerRadius = BADGE_WIDTH / 2.0
+        addSubview(badge)
+        
         didSetupSubviews = true
     }
     
@@ -94,6 +102,12 @@ class PrkTabBarButton: UIControl {
             make.centerX.equalTo(self)
             make.top.equalTo(self.iconView.snp_bottom).with.offset(3)
         }        
+        
+        self.badge.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSizeMake(self.BADGE_WIDTH, self.BADGE_WIDTH))
+            make.centerX.equalTo(self)
+            make.centerY.equalTo(self.snp_bottom)
+        }
         
         didSetupConstraints = true
     }
@@ -114,8 +128,6 @@ class PrkTabBarButton: UIControl {
             
         }
     }
-    
-    
     
     
 }
