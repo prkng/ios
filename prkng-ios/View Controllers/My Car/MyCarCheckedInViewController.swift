@@ -35,6 +35,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var delegate : MyCarCheckedInViewControllerDelegate?
     
+    private var timer : NSTimer?
+    
     private let SMALL_VERTICAL_MARGIN = 5
     private let MEDIUM_VERTICAL_MARGIN = 10
     private let LARGE_VERTICAL_MARGIN = 20
@@ -309,6 +311,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         } else {
             availableTimeLabel.attributedText = NSAttributedString(string: "time_up".localizedString)
             availableTimeLabel.font = Styles.Fonts.h1r
+        }
+        
+        //update the values every 2 seconds
+        if self.timer == nil {
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "updateValues", userInfo: nil, repeats: true)
+
         }
         
     }

@@ -30,6 +30,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     private var filterButtonText: String
     private var verticalRec: PRKVerticalGestureRecognizer
     private var isShowingSchedule: Bool
+    private var timer: NSTimer?
     
     var delegate : HereViewControllerDelegate?
 
@@ -324,10 +325,27 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
     }
     
+    func updateSpotDetailsTime() {
+        
+        if self.activeSpot != nil {
+            
+            let interval = activeSpot!.availableTimeInterval()
+            
+            if (interval > 2*3600) { // greater than 2 hours = show available until... by default
+                detailView.availableTextLabel.text = NSLocalizedString("until", comment: "").uppercaseString
+                detailView.availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
+            } else {
+                detailView.availableTextLabel.text = NSLocalizedString("for", comment: "").uppercaseString
+                detailView.availableTimeLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2r)
+            }
+            
+        }
+    }
+    
     func updateSpotDetails(spot: ParkingSpot?) {
-
+        
         self.activeSpot = spot
-
+        
         if spot != nil {
             
             forceShowSpotDetails = true
@@ -337,24 +355,19 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             }
             
             detailView.titleLabel.text = activeSpot?.name
-            
-            let interval = activeSpot?.availableTimeInterval()
-            if (interval > 2*3600) { // greater than 2 hours = show available until... by default
-                detailView.availableTextLabel.text = NSLocalizedString("until", comment: "").uppercaseString
-                detailView.availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval!, firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
-            } else {
-                detailView.availableTextLabel.text = NSLocalizedString("for", comment: "").uppercaseString
-                detailView.availableTimeLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval!, font: Styles.Fonts.h2r)
-            }
-            
+            updateSpotDetailsTime()
             detailView.checkinImageView.layer.wigglewigglewiggle()
 
             hideFilters(alsoHideFilterButton: true)
             
             showSpotDetails()
             
+            self.timer?.invalidate()
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateSpotDetailsTime", userInfo: nil, repeats: true)
+            
         } else {
             self.activeSpot = nil
+            self.timer?.invalidate()
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
                 self.hideSpotDetails()
             })
