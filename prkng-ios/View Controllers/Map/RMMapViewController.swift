@@ -511,7 +511,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 NSLog("updating with duration: nil")
             }
             
-            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: 1, checkinTime: checkinTime!, completion:
+            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, completion:
                 { (spots) -> Void in
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -570,13 +570,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         for spot in spots {
             let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
-            if spot.availableTimeInterval() >= NSTimeInterval((duration ?? 0.5) * 3600) {
-                var annotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
+            var annotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
                 tempLineAnnotations.append(annotations.0)
                 if let button = annotations.1 {
                     tempButtonAnnotations.append(button)
                 }
-            }
 
         }
         
