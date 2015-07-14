@@ -598,7 +598,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 
     
     // MARK:TimeFilterViewDelegate
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String) {
+    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool) {
         self.delegate?.updateMapAnnotations()
         filterButtonText = selectedLabelText
         filterButton.setLabelText(selectedLabelText)

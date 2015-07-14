@@ -133,5 +133,6 @@ protocol MapViewControllerDelegate {
     
     //returns the number of hours to search for as a minimum parking duration
     func activeFilterDuration() -> Float?
+    func activeFilterPermit() -> Bool
     
 }

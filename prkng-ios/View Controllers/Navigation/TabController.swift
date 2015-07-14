@@ -316,6 +316,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         return hours
     }
     
+    func activeFilterPermit() -> Bool {
+        return hereViewController.timeFilterView.selectedPermitValue
+    }
+    
     
     // MARK: SearchViewControllerDelegate
     

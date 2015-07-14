@@ -506,12 +506,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             if duration != nil {
-                NSLog("updating with duration: %f",duration!)
+                NSLog("updating with duration: %f", duration!)
             } else {
                 NSLog("updating with duration: nil")
             }
             
-            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, completion:
+            let permit = self.delegate?.activeFilterPermit() ?? false
+            
+            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion:
                 { (spots) -> Void in
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in

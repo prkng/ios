@@ -17,8 +17,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     var scrollView: UIScrollView
     var contentView: UIView
 
-    var timeValues: [NSTimeInterval]
-    var timeLabels: [PRKLabel]
+    var times: [TimeFilter]
+    var selectedPermitValue: Bool
     var selectedValue: NSTimeInterval?
     var lastSelectedValue: NSTimeInterval?
     
@@ -32,11 +32,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
 
-    private(set) var SECONDS_PER_MINUTE : NSTimeInterval = 60
-    private(set) var SECONDS_PER_HOUR : NSTimeInterval = 3600
     static var TOTAL_HEIGHT : CGFloat = 50
     static var SCROLL_HEIGHT: CGFloat = 50
-    private(set) var FONT : UIFont = Styles.FontFaces.regular(14)
     
     override init(frame: CGRect) {
 
@@ -47,16 +44,18 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         scrollView = UIScrollView()
         contentView = UIView()
 
-        timeValues = [
-            30 * SECONDS_PER_MINUTE,
-            1 * SECONDS_PER_HOUR,
-            2 * SECONDS_PER_HOUR,
-            4 * SECONDS_PER_HOUR,
-            8 * SECONDS_PER_HOUR,
-            12 * SECONDS_PER_HOUR,
-            24 * SECONDS_PER_HOUR
+        selectedPermitValue = false
+        times = [
+            TimeFilter(interval: -1, labelText: "all".localizedString.uppercaseString),
+            TimeFilter(interval: 30 * TimeFilter.SECONDS_PER_MINUTE),
+            TimeFilter(interval: 1 * TimeFilter.SECONDS_PER_HOUR),
+            TimeFilter(interval: 2 * TimeFilter.SECONDS_PER_HOUR),
+            TimeFilter(interval: 4 * TimeFilter.SECONDS_PER_HOUR),
+            TimeFilter(interval: 8 * TimeFilter.SECONDS_PER_HOUR),
+            TimeFilter(interval: 12 * TimeFilter.SECONDS_PER_HOUR),
+            TimeFilter(interval: 24 * TimeFilter.SECONDS_PER_HOUR),
+            TimeFilter(interval: 24 * TimeFilter.SECONDS_PER_HOUR, labelText: "car_sharing".localizedString.uppercaseString, permit: true),
         ]
-        timeLabels = []
         
         topLine = UIView()
         bottomLine = UIView()
@@ -110,23 +109,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         scrollView.delegate = self
         scrollView.addSubview(contentView)
         
-        var anyLabel = PRKLabel()
-        anyLabel.text = "all".localizedString.uppercaseString
-        anyLabel.font = FONT
-        anyLabel.textColor = Styles.Colors.cream1
-        anyLabel.valueTag = -1
-        timeLabels.append(anyLabel)
-        contentView.addSubview(anyLabel)
-
-        for timeValue in timeValues {
-            var label = PRKLabel()
-            label.text = labelTextForTimeValue(timeValue)
-            label.font = FONT
-            label.textColor = Styles.Colors.cream1
-            label.valueTag = timeValue
-            
-            timeLabels.append(label)
-            contentView.addSubview(label)
+        for time in times {
+            contentView.addSubview(time.label)
         }
         
         timeImageView.userInteractionEnabled = false
@@ -167,13 +151,14 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             make.edges.equalTo(self.scrollView)
         }
         
-        var leftViewToLabel: UIView = timeLabels[0]
-        timeLabels[0].snp_makeConstraints({ (make) -> () in
+        times[0].label.snp_makeConstraints({ (make) -> () in
             make.centerY.equalTo(self.contentView)
             make.left.equalTo(self.contentView)
         })
-        for i in 1..<timeLabels.count {
-            var label = timeLabels[i]
+        
+        var leftViewToLabel: UIView = times[0].label
+        for i in 1..<times.count {
+            var label = times[i].label
             label.snp_makeConstraints({ (make) -> () in
                 make.centerY.equalTo(self.contentView)
                 make.left.equalTo(leftViewToLabel.snp_right).with.offset(30)
@@ -199,9 +184,12 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     
     func resizeContentViewWidth() {
         
-        var contentViewWidth = 30 * (timeLabels.count - 2)
-        for label in timeLabels {
-            contentViewWidth += Int(label.bounds.width)
+        var contentViewWidth = 30 * (times.count - 2)
+        var lastAddedWidth = 0
+        for time in times {
+            let label = time.label
+            lastAddedWidth = Int(label.bounds.width)
+            contentViewWidth += lastAddedWidth
         }
         contentViewWidth += Int(scrollView.bounds.width)
         
@@ -213,15 +201,6 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
     }
     
-    func labelTextForTimeValue(interval: NSTimeInterval) -> String {
-        if interval < 0 {
-            return ""
-        } else if interval < SECONDS_PER_HOUR {
-            return String(format: "%dMIN", Int(interval/SECONDS_PER_MINUTE))
-        } else {
-            return String(format: "%dH", Int(interval/SECONDS_PER_HOUR))
-        }
-    }
     
     //MARK- UIScrollViewDelegate
     var alreadySelected = false
@@ -243,6 +222,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             scrollToNearestLabel()
         }
     }
+    
     
     //MARK- helper functions
     
@@ -292,7 +272,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         nearestLabelDistanceFromCenter = CGFloat.max
         var nearestLabel = PRKLabel()
         
-        for label in timeLabels {
+        for time in times {
+            let label = time.label
             let distance = fromPoint.distanceToPoint(label.center)
             if distance < nearestLabelDistanceFromPoint {
                 nearestLabelDistanceFromPoint = distance
@@ -323,10 +304,14 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         
         var label = scrollToNearestLabel(point)
         
-        selectedValue = label.valueTag
+        let time = times.filter { (time) -> Bool in
+            time.label == label
+        }.first!
         
-        let selectedLabelText = labelTextForTimeValue(selectedValue!)
-        delegate?.filterValueWasChanged(hours: selectedValueInHours(), selectedLabelText: selectedLabelText)
+        selectedValue = label.valueTag
+        selectedPermitValue = time.permit
+        
+        delegate?.filterValueWasChanged(hours: selectedValueInHours(), selectedLabelText: time.labelText(), permit: time.permit)
         
     }
     
@@ -354,6 +339,10 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         //get the label nearest to the centerPoint
         var nearestLabelDistance = CGFloat.max
         var nearestLabelDifferenceFromCenter = CGFloat.max
+        
+        var timeLabels = times.map { (time) -> PRKLabel in
+            time.label
+        }
         
         for label in timeLabels {
             let distance = contentViewCurrentCenterPoint.distanceToPoint(label.center)
@@ -388,6 +377,63 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
 protocol TimeFilterViewDelegate {
     
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String)
+    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool)
     
+}
+
+class TimeFilter {
+    
+    var interval: NSTimeInterval
+    var label: PRKLabel
+    var permit: Bool
+    private var overriddenLabelText: String?
+    
+    static var SECONDS_PER_MINUTE : NSTimeInterval = 60
+    static var SECONDS_PER_HOUR : NSTimeInterval = 3600
+    static var FONT : UIFont = Styles.FontFaces.regular(14)
+
+    convenience init(interval: NSTimeInterval) {
+        self.init(interval: interval, labelText: nil)
+    }
+
+    convenience init(interval: NSTimeInterval, labelText: String?) {
+        self.init(interval: interval, labelText: nil, permit: nil)
+    }
+
+    init(interval: NSTimeInterval, labelText: String?, permit: Bool?) {
+        
+        self.interval = interval
+        self.label = PRKLabel()
+
+        if labelText != nil {
+            self.overriddenLabelText = labelText!
+        }
+        
+        if permit != nil {
+            self.permit = permit!
+        } else {
+            self.permit = false
+        }
+        
+        label.font = TimeFilter.FONT
+        label.textColor = Styles.Colors.cream1
+        label.valueTag = interval
+        label.text = self.labelText()
+        
+    }
+    
+    func labelText() -> String {
+        
+        if overriddenLabelText != nil {
+            return overriddenLabelText!
+        }
+        
+        if interval < 0 {
+            return ""
+        } else if interval < TimeFilter.SECONDS_PER_HOUR {
+            return String(format: "%dMIN", Int(interval/TimeFilter.SECONDS_PER_MINUTE))
+        } else {
+            return String(format: "%dH", Int(interval/TimeFilter.SECONDS_PER_HOUR))
+        }
+    }
 }
