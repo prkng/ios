@@ -80,7 +80,7 @@
 "available_until" = "disponible jusqu'à";
 "until" = "jusqu'à";
 "share_car_location" = "partager"; 
-"leave_spot" = "quitter";
+"leave_spot" = "check out";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
 "off" = "non";
@@ -137,5 +137,5 @@
 "all" = "tous";
 "check-in" = "Check-in";
 "authorized_for" = "Autorisé pour";
-"search" = "Recherche";
+"search" = "Rechercher";
 "search_bar_text" = "Lieu ou adresse";
