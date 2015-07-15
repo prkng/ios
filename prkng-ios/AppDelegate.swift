@@ -35,6 +35,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize tracker. Replace with your tracking ID.
         GAI.sharedInstance().trackerWithTrackingId("UA-63856349-1")
         
+        //configure cocoa lumberjack for logging
+        DDLog.addLogger(DDASLLogger.sharedInstance())
+        DDLog.addLogger(DDTTYLogger.sharedInstance())
+
+        let fileLogger = DDFileLogger()
+        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hour rolling
+        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
+        DDLog.addLogger(fileLogger)
+        let filePath = fileLogger.currentLogFileInfo().filePath
+        DDLoggerWrapper.logInfo(String(format: "log file at: %@", filePath))
+        Settings.setLogFilePath(filePath)
+
         configureGlobals()
         loadInitialViewController()
         

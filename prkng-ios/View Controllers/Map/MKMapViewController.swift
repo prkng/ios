@@ -433,19 +433,15 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             } else {
                 NSLog("updating with duration: nil")
             }
-
             
-            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: Float(radius), duration: 1, checkinTime: checkinTime!, completion:
+            let permit = self.delegate?.activeFilterPermit() ?? false
+
+            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: Float(radius), duration: duration, checkinTime: checkinTime!, permit: permit, completion:
                 { (spots) -> Void in
                     
                     //TODO: Optimize this section, it's likely what causes the sluggish map behaviour (in the addSpotAnnotation method)
                     //do we really need to replace all spots? probably only the ones that are new...
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
-                        
-                        var startedOn = NSDate()
-                        var format = NSDateFormatter()
-                        format.dateFormat = "hh:mm:ss.SSS"
-                        //                    NSLog("findSpots completion - started at: %@", format.stringFromDate(startedOn))
                         
                         //
                         // spots that have left the screen need to be re-animated next time
@@ -459,11 +455,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
                         self.updateSpotAnnotations(spots)
                         
                         self.updateInProgress = false
-                        
-                        var timeInterval = NSDate().timeIntervalSinceDate(startedOn)
-                        let milliseconds = CUnsignedLong(timeInterval * 1000)
-                        //                    NSLog("findSpots completion took: " + String(milliseconds) + " milliseconds")
-                        //                    NSLog("findSpots completion - ended at: %@", format.stringFromDate(NSDate()))
                         
                         SVProgressHUD.dismiss()
                         
@@ -497,25 +488,22 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         let zoomLevel = mapView.mbx_zoomLevel()
         
         for spot in spots {
-            if spot.availableTimeInterval() >= NSTimeInterval((self.delegate?.activeFilterDuration() ?? 0.5) * 3600) {
-                
-                let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
-                let shouldAddAnimation = !contains(self.spotIdentifiersDrawnOnMap, spot.identifier)
-                
-                var userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
-                var coordinates = spot.line.coordinates2D
-                
-                //create the proper polyline
-                var polyline = LineParkingSpot(coordinates: &coordinates, count: coordinates.count)
-                spot.userInfo = userInfo
-                polyline.parkingSpot = spot
-                overlays.append(polyline)
-                
-                if (zoomLevel >= 17.0) {
-                    var centerButton = spot.buttonSpot
-                    centerButton.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
-                    annotations.append(centerButton)
-                }
+            let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
+            let shouldAddAnimation = !contains(self.spotIdentifiersDrawnOnMap, spot.identifier)
+            
+            var userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
+            var coordinates = spot.line.coordinates2D
+            
+            //create the proper polyline
+            var polyline = LineParkingSpot(coordinates: &coordinates, count: coordinates.count)
+            spot.userInfo = userInfo
+            polyline.parkingSpot = spot
+            overlays.append(polyline)
+            
+            if (zoomLevel >= 17.0) {
+                var centerButton = spot.buttonSpot
+                centerButton.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
+                annotations.append(centerButton)
             }
             
         }

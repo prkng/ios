@@ -64,6 +64,11 @@ struct SpotOperations {
         request(.GET, url, parameters: params).responseSwiftyJSONAsync(queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
             (request, response, json, error) in
 
+            DDLoggerWrapper.logVerbose(String(format: "Request: %@", request))
+            DDLoggerWrapper.logVerbose(String(format: "Response: %@", response ?? ""))
+//            DDLoggerWrapper.logVerbose(String(format: "Json: %@", json.description))
+            DDLoggerWrapper.logVerbose(String(format: "error: %@", error ?? ""))
+            
             var spotJsons: Array<JSON> = json["features"].arrayValue
             var spots = spotJsons.map({ (var spotJson) -> ParkingSpot in
                 ParkingSpot(json: spotJson)

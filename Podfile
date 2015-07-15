@@ -12,6 +12,8 @@ pod 'MBXMapKit'
 pod 'GeoJSONSerialization'
 pod 'GZIP'
 pod 'MarqueeLabel'
+#pod 'GoogleMaps'
+pod 'CocoaLumberjack'
 
 #the pods below should only be enabled if we move to ios 8
 #use_frameworks!

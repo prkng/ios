@@ -24,6 +24,7 @@ struct Settings {
     static let CHECKED_IN_SPOT_ID_KEY = "prkng_checked_in_spot_id"
     static let LAST_CHECKIN_TIME_KEY = "prkng_last_checkin_time"
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
+    static let LOG_FILE_PATH_KEY = "prkng_last_log_file_path"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
     static let availableCities = [City.Montreal, City.QuebecCity]
@@ -190,6 +191,17 @@ struct Settings {
     
     static func hasNotificationBadge() -> Bool {
         return UIApplication.sharedApplication().applicationIconBadgeNumber != 0
+    }
+    
+    static func setLogFilePath(filePath: String) {
+        NSUserDefaults.standardUserDefaults().setObject(filePath, forKey: LOG_FILE_PATH_KEY)
+    }
+    
+    static func logFilePath() -> String? {
+        if let filePath = NSUserDefaults.standardUserDefaults().objectForKey(LOG_FILE_PATH_KEY) as? String {
+            return filePath
+        }
+        return nil
     }
     
 }

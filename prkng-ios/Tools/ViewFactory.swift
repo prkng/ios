@@ -96,13 +96,12 @@ struct ViewFactory {
         return button
     }
     
-    
-    static func reportButton () -> UIButton {
+    static func exclamationButton () -> UIButton {
         let button = UIButton ()
         button.setImage(UIImage(named: "btn_report"), forState: .Normal)
         return button
     }
-    
+
     static func bigTransparentButton () -> UIButton {
         let button = UIButton ()
         button.titleLabel?.font = Styles.Fonts.h1

@@ -23,6 +23,8 @@
 #import <SDWebImage/UIButton+WebCache.h>
 #import <GeoJSONSerialization/GeoJSONSerialization.h>
 #import <GZIP/GZIP.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
+#import "DDLoggerWrapper.h"
 #import "GAI.h"
 #import "KMLParser.h"
 #import "GeoJsonParser.h"

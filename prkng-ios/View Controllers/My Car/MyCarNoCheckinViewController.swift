@@ -27,7 +27,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         messageLabel = ViewFactory.bigMessageLabel()
         parkButton = ViewFactory.hugeButton()
         searchButton = ViewFactory.hugeButton()
-        reportButton = ViewFactory.reportButton()
+        reportButton = ViewFactory.exclamationButton()
         super.init(nibName: nil, bundle: nil)
     }
     

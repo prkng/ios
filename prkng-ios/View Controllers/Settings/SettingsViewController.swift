@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class SettingsViewController: AbstractViewController {
+class SettingsViewController: AbstractViewController, MFMailComposeViewControllerDelegate {
     
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
     
@@ -30,8 +31,9 @@ class SettingsViewController: AbstractViewController {
     var notificationSelection : SelectionControl
     
     var historyButton : UIButton
-    
     var aboutButton : UIButton
+
+    var sendLogButton : UIButton
     
     var delegate: SettingsViewControllerDelegate?
     
@@ -61,6 +63,7 @@ class SettingsViewController: AbstractViewController {
             "off".localizedString.uppercaseString])
         
         aboutButton = ViewFactory.hugeCreamButton()
+        sendLogButton = ViewFactory.exclamationButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -90,6 +93,8 @@ class SettingsViewController: AbstractViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        let debugFeaturesOn = NSUserDefaults.standardUserDefaults().boolForKey("enable_debug_features")
+        sendLogButton.hidden = !debugFeaturesOn
         
         // TODO find a better way
         var i : Int = 2 // OFF
@@ -175,6 +180,9 @@ class SettingsViewController: AbstractViewController {
         aboutButton.setTitle("about".localizedString, forState: UIControlState.Normal)
         aboutButton.addTarget(self, action: "aboutButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(aboutButton)
+        
+        sendLogButton.addTarget(self, action: "sendLogButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(sendLogButton)
         
     }
     
@@ -278,9 +286,31 @@ class SettingsViewController: AbstractViewController {
             make.size.equalTo(CGSizeMake(125, 26))
         }
         
+        sendLogButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSizeMake(24, 24))
+            make.top.equalTo(self.view).with.offset(14+20)
+            make.right.equalTo(self.view).with.offset(-20)
+        }
+
     }
     
+    func sendLogButtonTapped(sender: UIButton) {
+        var mailVC = MFMailComposeViewController()
+        mailVC.mailComposeDelegate = self
+        let udid = NSUUID().UUIDString
+        mailVC.setSubject("Support Ticket - " + udid)
+        mailVC.setToRecipients(["ant@prk.ng"])
+        if let filePath = Settings.logFilePath() {
+            let fileData = NSData(contentsOfFile: filePath)
+            mailVC.addAttachmentData(fileData, mimeType: "text", fileName: udid + ".log")
+            self.presentViewController(mailVC, animated: true, completion: nil)
+        }
+    }
     
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
+    }
+
     func historyButtonTapped() {
         var historyViewController = HistoryViewController()
         historyViewController.settingsDelegate = self.delegate

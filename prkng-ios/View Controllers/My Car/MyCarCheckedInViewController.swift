@@ -64,7 +64,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         smallButtonContainer = UIView()
         notificationsButton = UIButton()
-        reportButton = ViewFactory.reportButton()
+        reportButton = ViewFactory.exclamationButton()
         
         super.init(nibName: nil, bundle: nil)
     }
