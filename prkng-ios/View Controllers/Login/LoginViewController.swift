@@ -100,18 +100,16 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         let permissions = ["email", "public_profile"]
         login.logInWithReadPermissions(permissions, handler: { (result, error) -> Void in
             
-            if (error != nil) {
-                // Process error
-            } else if (result.isCancelled) {
-                // Handle cancellations
+            if (error != nil || result.isCancelled) {
+                // Handle errors and cancellations
                 
-                let alertView = UIAlertView(title: "", message: "Facebook Login cancelled", delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
+                self.deselectMethod()
+                
+                let alertView = UIAlertView(title: "login_error_title_facebook".localizedString , message: "login_error_message".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
                 alertView.alertViewStyle = .Default
                 alertView.show()
                 
-                
             } else {
-                
                 
                 self.methodSelectionView.userInteractionEnabled = false
                 
@@ -220,17 +218,30 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     }
     
     // MARK: GPPSignInDelegate
-    
     func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
         println(auth)
         
-        self.methodSelectionView.userInteractionEnabled = false
+        if error != nil {
+            //error!
+            deselectMethod()
+            
+            let alertView = UIAlertView(title: "login_error_title_google".localizedString , message: "login_error_message".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
+            alertView.alertViewStyle = .Default
+            alertView.show()
+            
+        } else {
+            //success!
+            self.methodSelectionView.userInteractionEnabled = false
+            
+            UserOperations.loginWithGoogle(auth.accessToken, completion: { (user, apiKey) -> Void in
+                AuthUtility.saveUser(user)
+                AuthUtility.saveAuthToken(apiKey)
+                self.displayExternalInfo(user, loginType : .Google)
+            })
+
+            
+        }
         
-        UserOperations.loginWithGoogle(auth.accessToken, completion: { (user, apiKey) -> Void in
-            AuthUtility.saveUser(user)
-            AuthUtility.saveAuthToken(apiKey)
-            self.displayExternalInfo(user, loginType : .Google)
-        })
     }
     
     func didDisconnectWithError(error: NSError!) {
@@ -318,5 +329,12 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             window.makeKeyWindow()
             
         })
+    }
+    
+    func deselectMethod() {
+        selectedMethod = nil
+        self.methodSelectionView.userInteractionEnabled = true
+        self.methodSelectionView.deselectAll()
+
     }
 }

@@ -37,8 +37,11 @@
 "cancel" = "annuler";
 "check_email_copy" = "Merci d’entrer votre adresse e-mail.";
 "pasword_reset_error" = "Quelque chose a mal tourné, merci de réessayer.";
-"login_edit_message_google" = "Logged in with Google"; //FIX
-"login_edit_message_facebook" = "Logged in with Facebook"; //FIX
+"login_edit_message_google" = "Connexion Google Réussie";
+"login_edit_message_facebook" = "Connexion Facebook Réussie";
+"login_error_title_facebook" = "Connexion Facebook Échouée";
+"login_error_title_google" = "Connexion Google Échouée";
+"login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
 
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";

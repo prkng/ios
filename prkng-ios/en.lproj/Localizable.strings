@@ -39,6 +39,9 @@
 "pasword_reset_error" = "Something went wrong, please try again";
 "login_edit_message_google" = "Logged in with Google";
 "login_edit_message_facebook" = "Logged in with Facebook";
+"login_error_title_facebook" = "Facebook Login Failed";
+"login_error_title_google" = "Google Login Failure";
+"login_error_message" = "Please try again with one of the services below.";
 
 "your_name" = "your name";
 "your_gender" = "your gender";

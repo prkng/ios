@@ -168,10 +168,8 @@ class LoginMethodSelectionView: UIView {
         }
         
     }
-    
-    // MARK : Private
-    
-    private func deselectAll () {
+        
+    func deselectAll () {
         
         selectedMethod = nil
         
