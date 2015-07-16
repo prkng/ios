@@ -82,7 +82,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(100)
+            make.height.equalTo(Styles.Sizes.methodSelectionViewHeight)
         }
         
     }
@@ -162,7 +162,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         loginEmailViewController!.view.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.methodSelectionView.snp_bottom)
             make.centerX.equalTo(self.view)
-            make.size.equalTo(self.view).with.offset(CGSizeMake(0, -125))
+            make.size.equalTo(self.view).with.offset(CGSizeMake(0, -CGFloat(Styles.Sizes.methodSelectionViewHeightCompact)))
         }
         self.loginEmailViewController!.view.layoutIfNeeded()
         
@@ -171,11 +171,12 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.top.equalTo(self.view)
-            make.height.equalTo(125)
+            make.height.equalTo(Styles.Sizes.methodSelectionViewHeightCompact)
         }
         
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
+            self.methodSelectionView.loginTitleLabel.hidden = true
             self.view.layoutIfNeeded()
             }) { (finished) -> Void in
                 
@@ -196,7 +197,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         loginExternalViewController!.view.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.methodSelectionView.snp_bottom)
             make.centerX.equalTo(self.view)
-            make.size.equalTo(self.view).with.offset(CGSizeMake(0, -125))
+            make.size.equalTo(self.view)
         }
         self.loginExternalViewController!.view.layoutIfNeeded()
         
@@ -205,7 +206,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.top.equalTo(self.view)
-            make.height.equalTo(125)
+            make.height.equalTo(0)
         }
         
         
@@ -264,7 +265,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.top.equalTo(self.loginEmailViewController!.view.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(self.view).with.offset(-125)
+            make.height.equalTo(self.view).with.offset(-CGFloat(Styles.Sizes.methodSelectionViewHeightCompact))
         }
         
         registerEmailViewController!.view.layoutIfNeeded()
@@ -286,7 +287,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                     make.top.equalTo(self.methodSelectionView.snp_bottom)
                     make.left.equalTo(self.view)
                     make.right.equalTo(self.view)
-                    make.height.equalTo(self.view).with.offset(-125)
+                    make.height.equalTo(self.view).with.offset(-Styles.Sizes.methodSelectionViewHeightCompact)
                 }
                 
                 self.loginEmailViewController!.view.removeFromSuperview()

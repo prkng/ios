@@ -13,11 +13,15 @@
 "login_with" = "LOGIN WITH";
 "login" = "login";
 "register" = "register";
+"create_an_account" = "Create an account";
 "step" = "step";
-"your_email" = "YOUR EMAIL";
-"your_password" = "YOUR PASSWORD";
+"email" = "Email";
+"password" = "Password";
+"password_confirm" = "Confirm Password";
+"your_email" = "Your email";
+"your_password" = "Your password";
 "confirm_your_password" = "CONFIRM YOUR PASSWORD";
-"forgot_password_text" = "FORGOT YOUR PASSWORD?";
+"forgot_password_text" = "FORGOT?";
 "invalid_email" = "Please enter a valid email address.";
 "password_short" = "Make sure your password includes at least 6 characters.";
 "password_mismatch" = "Passwords do not match.";
@@ -42,7 +46,11 @@
 "login_error_title_facebook" = "Facebook Login Failed";
 "login_error_title_google" = "Google Login Failure";
 "login_error_message" = "Please try again with one of the services below.";
+"register_error_title" = "Registration Error";
+"register_error_message_generic" = "Could not register at this time. Please try again later.";
+"register_error_message_user_exists" = "This user already exists. Please try again with different credentials.";
 
+"name" = "Name";
 "your_name" = "your name";
 "your_gender" = "your gender";
 "your_birth_year" = "your birth year";

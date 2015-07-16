@@ -27,6 +27,8 @@
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E9509C31B56B5DC0088E336 /* MessageUI.framework */; };
+		3E9509C61B56EE940088E336 /* PRKTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C51B56EE940088E336 /* PRKTextField.swift */; };
+		3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C91B570A6A0088E336 /* PRKInputForm.swift */; };
 		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
 		3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */; };
 		3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */; };
@@ -202,6 +204,8 @@
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E9509C31B56B5DC0088E336 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		3E9509C51B56EE940088E336 /* PRKTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextField.swift; sourceTree = "<group>"; };
+		3E9509C91B570A6A0088E336 /* PRKInputForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKInputForm.swift; sourceTree = "<group>"; };
 		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaListViewController.swift; sourceTree = "<group>"; };
 		3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolygon.swift; sourceTree = "<group>"; };
@@ -650,6 +654,8 @@
 			isa = PBXGroup;
 			children = (
 				BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */,
+				3E9509C51B56EE940088E336 /* PRKTextField.swift */,
+				3E9509C91B570A6A0088E336 /* PRKInputForm.swift */,
 			);
 			path = "Common Views";
 			sourceTree = "<group>";
@@ -1124,6 +1130,7 @@
 				3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */,
 				BFC850FA1B2F618A006383AC /* ImageUtil.swift in Sources */,
 				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,
+				3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */,
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
 				3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */,
@@ -1147,6 +1154,7 @@
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* RMMapViewController.swift in Sources */,
 				BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */,
+				3E9509C61B56EE940088E336 /* PRKTextField.swift in Sources */,
 				BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */,
 				BF7170B21AE42DDE00B922CA /* SettingsViewController.swift in Sources */,
 				BF959C831B17587900E60A09 /* HereFirstUseViewController.swift in Sources */,

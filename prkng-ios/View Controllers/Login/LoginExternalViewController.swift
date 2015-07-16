@@ -15,6 +15,7 @@ class LoginExternalViewController: AbstractViewController {
     var scrollView : UIScrollView
     var scrollContentView : UIView
     
+    var profileContainer : UIView
     var avatarButton : UIButton
     var editProfileLabel : UILabel
     var nameLabel : UILabel
@@ -36,6 +37,9 @@ class LoginExternalViewController: AbstractViewController {
     
     var logintype : LoginType
     
+    private var BOTTOM_VIEW_HEIGHT = Styles.Sizes.hugeButtonHeight + 60 + 84
+    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height
+    
     init(usr : User, loginType : LoginType) {
         
         user = usr
@@ -45,6 +49,7 @@ class LoginExternalViewController: AbstractViewController {
         scrollView = UIScrollView()
         scrollContentView = UIView()
         
+        profileContainer = UIView()
         avatarButton = UIButton()
         editProfileLabel = ViewFactory.formLabel()
         nameLabel = UILabel()
@@ -98,28 +103,30 @@ class LoginExternalViewController: AbstractViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
+        scrollContentView.addSubview(profileContainer)
+        
         if (user.imageUrl != nil) {
             let url = NSURL(string: user.imageUrl!)
             avatarButton.sd_setImageWithURL(url, forState: UIControlState.Normal, placeholderImage: UIImage(named: "btn_upload_profile")!)
         }
         avatarButton.clipsToBounds = true
         avatarButton.layer.cornerRadius = 25.5
-        scrollContentView.addSubview(avatarButton)
+        profileContainer.addSubview(avatarButton)
         
         editProfileLabel.text = "edit_profile".localizedString.uppercaseString
-        scrollContentView.addSubview(editProfileLabel)
+        profileContainer.addSubview(editProfileLabel)
         
         nameLabel.font = Styles.Fonts.h1
         nameLabel.textColor = Styles.Colors.cream1
         nameLabel.textAlignment = NSTextAlignment.Center
         nameLabel.text = user.name
-        scrollContentView.addSubview(nameLabel)
+        profileContainer.addSubview(nameLabel)
         
         emailLabel.font = Styles.FontFaces.light(17)
         emailLabel.textColor = Styles.Colors.anthracite1
         emailLabel.textAlignment = NSTextAlignment.Center
         emailLabel.text = user.email
-        scrollContentView.addSubview(emailLabel)
+        profileContainer.addSubview(emailLabel)
         
         changeCityLabel.text = "change_my_city".localizedString.uppercaseString
         changeCityLabel.textAlignment = NSTextAlignment.Center
@@ -176,33 +183,38 @@ class LoginExternalViewController: AbstractViewController {
         
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
-            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.width, 540))
+            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.width, self.USABLE_VIEW_HEIGHT))
         }
         
         
-        avatarButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.scrollContentView).with.offset(60)
+        profileContainer.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.scrollContentView)
+            make.centerY.equalTo(self.scrollContentView).with.offset(-self.BOTTOM_VIEW_HEIGHT)
+        }
+        
+        avatarButton.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.profileContainer)
+            make.centerX.equalTo(self.profileContainer)
             make.size.equalTo(CGSizeMake(55, 55))
         }
         
         editProfileLabel.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.scrollContentView)
+            make.centerX.equalTo(self.profileContainer)
             make.top.equalTo(self.avatarButton.snp_bottom).with.offset(16)
         }
         
         
         nameLabel.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.editProfileLabel.snp_bottom).with.offset(9)
-            make.left.equalTo(self.scrollContentView).with.offset(10)
-            make.right.equalTo(self.scrollContentView).with.offset(-10)
+            make.left.equalTo(self.profileContainer).with.offset(10)
+            make.right.equalTo(self.profileContainer).with.offset(-10)
         }
         
         
         emailLabel.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.nameLabel.snp_bottom).with.offset(25)
-            make.left.equalTo(self.scrollContentView).with.offset(10)
-            make.right.equalTo(self.scrollContentView).with.offset(-10)
+            make.left.equalTo(self.profileContainer).with.offset(10)
+            make.right.equalTo(self.profileContainer).with.offset(-10)
         }
         
         

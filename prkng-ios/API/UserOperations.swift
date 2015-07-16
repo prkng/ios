@@ -11,7 +11,7 @@ import UIKit
 struct UserOperations {
     
     
-    static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User, apiKey : String) -> Void) {
+    static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User?, apiKey : String?, error: NSError?) -> Void) {
         
         let url = APIUtility.APIConstants.rootURLString + "register"
         
@@ -20,11 +20,18 @@ struct UserOperations {
         request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
-            let user = User(json: json)
             let apiKey = json["apikey"].stringValue
-            
-            completion(user: user, apiKey: apiKey)
-            
+
+            if (apiKey != "") {
+                let user = User(json: json)
+                completion(user: user, apiKey: apiKey, error: nil)
+                
+            } else if (response?.statusCode == 404) {
+                completion(user: nil, apiKey: nil, error: nil)
+                
+            } else {
+                completion(user: nil, apiKey: nil, error: error)
+            }
         }
         
     }

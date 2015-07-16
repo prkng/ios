@@ -89,6 +89,9 @@ struct Styles {
         static let spotDetailViewTopPortionHeight = 70
         static let spotDetailViewBottomPortionHeight = spotDetailViewHeight - spotDetailViewTopPortionHeight
         static let modalViewHeaderHeight : CGFloat = 90
+        static let methodSelectionViewHeight = 100
+        static let methodSelectionViewHeightCompact = 80
+        static let statusBarHeight = Int(UIApplication.sharedApplication().statusBarFrame.size.height)
 
     }
     

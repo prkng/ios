@@ -13,11 +13,15 @@
 "login_with" = "CONNEXION AVEC";
 "login" = "connexion";
 "register" = "enregistrer";
+"create_an_account" = "Créez un compte";
 "step" = "étape";
-"your_email" = "VOTRE EMAIL";
-"your_password" = "VOTRE MOT DE PASSE";
+"email" = "Email";
+"password" = "Mot de passe";
+"password_confirm" = "Confirmation du mot de passe";
+"your_email" = "Votre email";
+"your_password" = "Votre mot de passe";
 "confirm_your_password" = "CONFIRMATION DU MOT DE PASSE";
-"forgot_password_text" = "MOT DE PASSE OUBLIÉ?";
+"forgot_password_text" = "OUBLIÉ?";
 "invalid_email" = "Merci d’entrer une adresse valide.";
 "password_short" = "Attention, votre mot de passe doit contenir au moins 6 caractères.";
 "password_mismatch" = "Les mots de passe ne correspondent pas.";
@@ -34,7 +38,7 @@
 "profile_updated_message" = "Votre profil a été mis-à-jour!";
 "reset_email_copy" = "Merci d’entrer votre adresse e-mail";
 "reset_password" = "Mot de passe oublié?";
-"cancel" = "annuler";
+"cancel" = "Annuler";
 "check_email_copy" = "Merci d’entrer votre adresse e-mail.";
 "pasword_reset_error" = "Quelque chose a mal tourné, merci de réessayer.";
 "login_edit_message_google" = "Connexion Google Réussie";
@@ -42,7 +46,11 @@
 "login_error_title_facebook" = "Connexion Facebook Échouée";
 "login_error_title_google" = "Connexion Google Échouée";
 "login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
+"register_error_title" = "Erreur d'enregistrement";
+"register_error_message_generic" = "Could not register at this time. Please try again later.";
+"register_error_message_user_exists" = "This user already exists. Please try again with different credentials.";
 
+"name" = "Nom";
 "your_name" = "votre nom";
 "your_gender" = "votre sexe";
 "your_birth_year" = "votre année de naissance";
