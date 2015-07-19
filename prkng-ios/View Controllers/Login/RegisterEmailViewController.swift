@@ -37,10 +37,10 @@ class RegisterEmailViewController: AbstractViewController {
     init() {
         
         let list = [
-            "name".localizedString : PRKTextFieldType.NormalNoAutocorrect,
-            "email".localizedString : PRKTextFieldType.Email,
-            "password".localizedString : PRKTextFieldType.Password,
-            "password_confirm".localizedString : PRKTextFieldType.Password,
+            ("name".localizedString, PRKTextFieldType.NormalNoAutocorrect),
+            ("email".localizedString, PRKTextFieldType.Email),
+            ("password".localizedString, PRKTextFieldType.Password),
+            ("password_confirm".localizedString, PRKTextFieldType.Password),
         ]
 
         scrollView = UIScrollView()
@@ -126,60 +126,10 @@ class RegisterEmailViewController: AbstractViewController {
         }
         
     }
-    
-    
-    func validateInput() -> Bool {
-        
-        if (count(nameText) < 2) {
-            let alert = UIAlertView()
-            alert.title = ""
-            alert.message = "invalid_name".localizedString
-            alert.addButtonWithTitle("OK")
-            alert.show()
-            
-            return false
-        }
 
-        if !emailText.isValidEmail {
-            let alert = UIAlertView()
-            alert.title = ""
-            alert.message = "invalid_email".localizedString
-            alert.addButtonWithTitle("OK")
-            alert.show()
-            
-            return false
-        }
-        
-        if (count (passwordText) < 6 || count(passwordConfirmText) < 6) {
-            
-            let alert = UIAlertView()
-            alert.title = ""
-            alert.message = "password_short".localizedString
-            alert.addButtonWithTitle("OK")
-            alert.show()
-            
-            return false
-        }
-        
-        if (passwordText != passwordConfirmText) {
-            
-            let alert = UIAlertView()
-            alert.title = ""
-            alert.message = "password_mismatch".localizedString
-            alert.addButtonWithTitle("OK")
-            alert.show()
-            
-            return false
-        }
-        
-        return true
-        
-    }
-    
-    
     func registerButtonTapped () {
         
-        if !validateInput() {
+        if !User.validateInput(nameText, emailText: emailText, passwordText: passwordText, passwordConfirmText: passwordConfirmText) {
             return
         }
         

@@ -121,9 +121,13 @@ struct UserOperations {
         APIUtility.authenticatedManager().request(.PUT, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
-            let user = User(json: json)
-            completion(completed: true, user: user, message: nil)
-            
+            let apiKey = json["apikey"].stringValue
+            if apiKey != "" {
+                let user = User(json: json)
+                completion(completed: true, user: user, message: nil)
+            } else {
+                completion(completed: false, user: nil, message: nil)
+            }
         }
     }
     

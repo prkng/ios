@@ -20,14 +20,64 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     
     private var FIELD_HEIGHT : Int = 60
     
-    convenience init(list: [String: PRKTextFieldType]) {
+    private var placeholderAttributes = [NSFontAttributeName: Styles.Fonts.h3r, NSForegroundColorAttributeName: Styles.Colors.petrol1]
+    private var textFont = Styles.Fonts.h3r
+
+    static func inputFormForRegister() -> PRKInputForm {
+        
+        let list = [
+            ("name".localizedString, PRKTextFieldType.NormalNoAutocorrect),
+            ("email".localizedString, PRKTextFieldType.Email),
+            ("password".localizedString, PRKTextFieldType.Password),
+            ("password_confirm".localizedString, PRKTextFieldType.Password),
+        ]
+        
+        let inputForm = PRKInputForm(list: list)
+        
+        return inputForm
+    }
+    
+    static func inputFormForEditProfile(nameText: String, emailText: String) -> PRKInputForm {
+        
+        let list = [
+            ("name".localizedString, PRKTextFieldType.NormalNoAutocorrect),
+            ("email".localizedString, PRKTextFieldType.Email),
+            ("password".localizedString, PRKTextFieldType.Password),
+            ("password_confirm".localizedString, PRKTextFieldType.Password),
+        ]
+        
+        var placeholderAttributes = [NSFontAttributeName: Styles.FontFaces.light(17), NSForegroundColorAttributeName: Styles.Colors.petrol1]
+        var textFont = Styles.FontFaces.light(17)
+        
+        let inputForm = PRKInputForm(list: list, placeholderAttributes: placeholderAttributes, textFont: textFont)
+
+        inputForm.cells[0].text = nameText
+        inputForm.cells[1].text = emailText
+        
+        inputForm.FIELD_HEIGHT = 40
+        
+        return inputForm
+    }
+
+    convenience init(list: [(String, PRKTextFieldType)]) {
+        self.init(list: list, placeholderAttributes: nil, textFont: nil)
+    }
+    
+    //NOTE: List of tuples is used instead of dictionary because we need the data structure used to be ordered. An ordered dictionary could be used (not built-in to swift), but would not yield any benefits in this case. 
+    convenience init(list: [(String, PRKTextFieldType)], placeholderAttributes: [String: NSObject]?, textFont: UIFont?) {
         self.init(frame: CGRectZero)
+        
+        self.placeholderAttributes = placeholderAttributes ?? self.placeholderAttributes
+        self.textFont = textFont ?? self.textFont
         
         for item in list {
             let cell = PRKTextField(placeHolder: item.0, fieldType: item.1)
             if item.1 == .PasswordWithForgotButton {
                 cell.delegate = self
             }
+            cell.placeholderAttributes = self.placeholderAttributes
+            cell.textFont = self.textFont
+            
             cells.append(cell)
         }
     }

@@ -36,6 +36,7 @@
 "name_empty" = "Merci d’entrer votre nom.";
 "email_empty" = "Merci d’entrer une adresse valide.";
 "profile_updated_message" = "Votre profil a été mis-à-jour!";
+"profile_updated_error_message" = "Your profile could not be updated at this time. Please either try again later, or with different credentials.";
 "reset_email_copy" = "Merci d’entrer votre adresse e-mail";
 "reset_password" = "Mot de passe oublié?";
 "cancel" = "Annuler";

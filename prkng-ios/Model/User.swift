@@ -43,5 +43,33 @@ class User : NSObject {
     }
     
     
+    static func validateInput(nameText: String, emailText: String, passwordText: String, passwordConfirmText: String) -> Bool {
+        
+        if (count(nameText) < 2) {
+            GeneralHelper.warnUser("invalid_name".localizedString)
+            return false
+        }
+        
+        if !emailText.isValidEmail {
+            GeneralHelper.warnUser("invalid_email".localizedString)
+            return false
+        }
+        
+        if (count (passwordText) < 6 || count(passwordConfirmText) < 6) {
+            GeneralHelper.warnUser("password_short".localizedString)
+            return false
+        }
+        
+        if (passwordText != passwordConfirmText) {
+            GeneralHelper.warnUser("password_mismatch".localizedString)
+            return false
+        }
+        
+        return true
+        
+    }
+    
+
+    
    
 }

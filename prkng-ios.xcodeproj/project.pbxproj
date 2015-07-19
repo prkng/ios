@@ -32,6 +32,7 @@
 		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
 		3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */; };
 		3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */; };
+		3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAF45191B59388D003010D6 /* GeneralHelper.swift */; };
 		3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */; };
 		3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */; };
 		3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */; };
@@ -209,6 +210,7 @@
 		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaListViewController.swift; sourceTree = "<group>"; };
 		3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolygon.swift; sourceTree = "<group>"; };
+		3EAF45191B59388D003010D6 /* GeneralHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralHelper.swift; sourceTree = "<group>"; };
 		3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Abbreviations.strings; sourceTree = "<group>"; };
 		3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
 		3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapViewController.swift; sourceTree = "<group>"; };
@@ -809,6 +811,7 @@
 				3EF469B11B33753300BC87A9 /* PRKLabel.swift */,
 				3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */,
 				3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */,
+				3EAF45191B59388D003010D6 /* GeneralHelper.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1095,6 +1098,7 @@
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
 				BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
+				3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */,
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
 				BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */,

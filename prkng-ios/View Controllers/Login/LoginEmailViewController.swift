@@ -26,8 +26,8 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
     init() {
         
         let list = [
-            "email".localizedString : PRKTextFieldType.Email,
-            "password".localizedString : PRKTextFieldType.PasswordWithForgotButton
+            ("email".localizedString, PRKTextFieldType.Email),
+            ("password".localizedString, PRKTextFieldType.PasswordWithForgotButton)
         ]
         
         topLabel = UILabel()

@@ -10,19 +10,15 @@ import UIKit
 
 class EditProfileViewController: AbstractViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate  {
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
+    let profileContainer = UIView()
     let avatarImageView = UIImageView()
     let avatarButton = UIButton()
-    let editProfileLabel = ViewFactory.formLabel()
     let nameTextField = ViewFactory.formTextField()
-    let emailTextField = UITextField()
-    let passwordLabel1 = ViewFactory.formLabel()
-    let passwordTextField1 = ViewFactory.formTextField()
-    let passwordLabel2 = ViewFactory.formLabel()
-    let passwordTextField2 = ViewFactory.formTextField()
+    let editProfileLabel = ViewFactory.formLabel()
+    var inputForm : PRKInputForm
     let logoutButton = ViewFactory.transparentRoundedButton()
     let saveButton = ViewFactory.hugeButton()
     let backButton = ViewFactory.hugeButton()
-    
     
     let loginMessageLabel = UILabel()
     
@@ -30,7 +26,29 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     
     var selectedImage : UIImage?
     
+    //2 bottom buttons, 20 point space, 26 point hight logout button, tabbar
+    private var BOTTOM_VIEW_HEIGHT = 26 + 20 + 2*Styles.Sizes.hugeButtonHeight //+ Styles.Sizes.tabbarHeight - Styles.Sizes.statusBarHeight
+
+    private var nameText: String {
+        return inputForm.textForFieldNamed("name".localizedString)
+    }
+    private var emailText: String {
+        return inputForm.textForFieldNamed("email".localizedString)
+    }
+    private var passwordText: String {
+        return inputForm.textForFieldNamed("password".localizedString)
+    }
+    private var passwordConfirmText: String {
+        return inputForm.textForFieldNamed("password_confirm".localizedString)
+    }
+
     init() {
+
+        if let user = AuthUtility.getUser() {
+            inputForm = PRKInputForm.inputFormForEditProfile(user.name, emailText: user.email)
+        } else {
+            inputForm = PRKInputForm()
+        }
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -57,16 +75,13 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         
         if (AuthUtility.loginType()! == LoginType.Email) {
             loginMessageLabel.hidden = true
+            nameTextField.hidden = true
         } else {
             
             avatarButton.hidden = true
             editProfileLabel.hidden = true
             nameTextField.enabled = false
-            emailTextField.hidden = true
-            passwordLabel1.hidden = true
-            passwordTextField1.hidden = true
-            passwordLabel2.hidden = true
-            passwordTextField2.hidden = true
+            inputForm.hidden = true
         }
     }
     
@@ -74,25 +89,21 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         
         view.addSubview(backgroundImageView)
         
+        view.addSubview(profileContainer)
+        
         avatarImageView.clipsToBounds = true
         avatarImageView.layer.cornerRadius = Styles.Sizes.avatarSize.height / 2.0
-        view.addSubview(avatarImageView)
+        profileContainer.addSubview(avatarImageView)
         
         avatarButton.setImage(UIImage(named:"btn_upload_profile_on_top"), forState: .Normal)
         avatarButton.addTarget(self, action: "avatarButtonTapped:", forControlEvents: .TouchUpInside)
-        view.addSubview(avatarButton)
+        profileContainer.addSubview(avatarButton)
         
         editProfileLabel.text = "edit_profile".localizedString.uppercaseString
-        view.addSubview(editProfileLabel)
-        
-        view.addSubview(nameTextField)
-        
-        emailTextField.font = Styles.FontFaces.light(17)
-        emailTextField.backgroundColor = UIColor.clearColor()
-        emailTextField.textColor = Styles.Colors.anthracite1
-        emailTextField.textAlignment = NSTextAlignment.Center
-        emailTextField.autocorrectionType = UITextAutocorrectionType.No
-        view.addSubview(emailTextField)
+        profileContainer.addSubview(editProfileLabel)
+        profileContainer.addSubview(nameTextField)
+
+        profileContainer.addSubview(inputForm)
         
         if (AuthUtility.loginType() == .Facebook){
             loginMessageLabel.text = "login_edit_message_facebook".localizedString
@@ -102,19 +113,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         loginMessageLabel.font = Styles.FontFaces.light(17)
         loginMessageLabel.textColor = Styles.Colors.anthracite1
         loginMessageLabel.textAlignment = .Center
-        view.addSubview(loginMessageLabel)
-        
-        passwordLabel1.text = "new_password".localizedString.uppercaseString
-        view.addSubview(passwordLabel1)
-        
-        passwordTextField1.secureTextEntry = true
-        view.addSubview(passwordTextField1)
-        
-        passwordLabel2.text = "new_password_confirm".localizedString.uppercaseString
-        view.addSubview(passwordLabel2)
-        
-        passwordTextField2.secureTextEntry = true
-        view.addSubview(passwordTextField2)
+        profileContainer.addSubview(loginMessageLabel)
         
         logoutButton.setTitle("logout".localizedString.uppercaseString, forState: .Normal)
         logoutButton.addTarget(self, action: "logoutButtonTapped:", forControlEvents: .TouchUpInside)
@@ -137,14 +136,52 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         backgroundImageView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.view)
         }
-        
-        backButton.snp_makeConstraints { (make) -> () in
+
+        let PROFILE_VIEW_HEIGHT = Int(Styles.Sizes.avatarSize.height) + Styles.Sizes.formLabelHeight + 20 + self.inputForm.height() + 20
+
+        profileContainer.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+            make.centerY.equalTo(self.view).with.offset(-self.BOTTOM_VIEW_HEIGHT/2)
+            make.height.equalTo(PROFILE_VIEW_HEIGHT)
         }
         
+        avatarImageView.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.profileContainer)
+            make.size.equalTo(Styles.Sizes.avatarSize)
+            make.top.equalTo(self.profileContainer)
+        }
+        
+        avatarButton.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.avatarImageView)
+        }
+
+        nameTextField.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.profileContainer).with.offset(20)
+            make.right.equalTo(self.profileContainer).with.offset(-20)
+            make.top.equalTo(self.editProfileLabel.snp_bottom).with.offset(10)
+            make.height.equalTo(35)
+        }
+        
+        loginMessageLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.profileContainer)
+            make.right.equalTo(self.profileContainer)
+            make.top.equalTo(self.nameTextField.snp_bottom).with.offset(2)
+        }
+
+        editProfileLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.profileContainer).with.offset(20)
+            make.right.equalTo(self.profileContainer).with.offset(-20)
+            make.top.equalTo(self.avatarImageView.snp_bottom).with.offset(20)
+            make.height.equalTo(Styles.Sizes.formLabelHeight)
+        }
+
+        inputForm.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.profileContainer)
+            make.right.equalTo(self.profileContainer)
+            make.top.equalTo(self.editProfileLabel.snp_bottom).with.offset(20)
+            make.height.greaterThanOrEqualTo(self.inputForm.height())
+        }
         
         saveButton.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view)
@@ -153,78 +190,17 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
         
+        backButton.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.view)
+            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+        }
+
         logoutButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(120, 26))
             make.bottom.equalTo(self.saveButton.snp_top).with.offset(-20)
-        }
-        
-        
-        passwordTextField2.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.bottom.lessThanOrEqualTo(self.logoutButton).with.offset(-46)
-            make.height.equalTo(Styles.Sizes.formTextFieldHeight)
-            make.bottom.greaterThanOrEqualTo(self.logoutButton).with.offset(-10).priorityHigh()
-        }
-        
-        passwordLabel2.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.top.equalTo(self.passwordTextField2)
-            make.height.equalTo(Styles.Sizes.formLabelHeight)
-        }
-        
-        passwordTextField1.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.bottom.equalTo(self.passwordLabel2.snp_top).with.offset(-2)
-            make.height.equalTo(Styles.Sizes.formTextFieldHeight)
-        }
-        
-        passwordLabel1.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.top.equalTo(self.passwordTextField1)
-            make.height.equalTo(Styles.Sizes.formLabelHeight)
-        }
-        
-        emailTextField.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.bottom.greaterThanOrEqualTo(self.passwordTextField1.snp_top).with.offset(-20).priorityHigh()
-            make.bottom.lessThanOrEqualTo(self.view.snp_centerY).multipliedBy(0.7).priorityLow()
-        }
-        
-        loginMessageLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.emailTextField)
-            make.right.equalTo(self.emailTextField)
-            make.top.equalTo(self.emailTextField)
-        }
-        
-        nameTextField.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.height.equalTo(35)
-            make.bottom.equalTo(self.emailTextField.snp_top).with.offset(-2)
-        }
-        
-        editProfileLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.bottom.equalTo(self.nameTextField.snp_top).with.offset(-2)
-            make.height.equalTo(Styles.Sizes.formLabelHeight)
-        }
-        
-        avatarImageView.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.view)
-            make.size.equalTo(Styles.Sizes.avatarSize)
-            make.bottom.equalTo(self.editProfileLabel.snp_top).with.offset(-20)
-            make.top.greaterThanOrEqualTo(self.view).with.offset(30)
-        }
-        
-        avatarButton.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.avatarImageView)
         }
         
     }
@@ -238,8 +214,6 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             }
             
             self.nameTextField.text = user.name
-            
-            self.emailTextField.text = user.email
             
         }
         
@@ -277,26 +251,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             return
         }
         
-        
-        if nameTextField.text == nil {
-            warnUser("name_empty".localizedString)
-            return
-        }
-        
-        if emailTextField.text == nil {
-            warnUser("email_empty".localizedString)
-            return
-        }
-        
-        
-        if passwordTextField1.text != passwordTextField2.text {
-            warnUser("password_mismatch".localizedString)
-            return
-        }
-        
-        
-        if count(passwordTextField1.text) < 6 && count(passwordTextField1.text) > 0 {
-            warnUser("password_short".localizedString)
+        if !User.validateInput(nameText, emailText: emailText, passwordText: passwordText, passwordConfirmText: passwordConfirmText) {
             return
         }
         
@@ -304,10 +259,10 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         
         let user = AuthUtility.getUser()!
         
-        user.name = nameTextField.text
-        user.email = emailTextField.text
+        user.name = nameText
+        user.email = emailText
         
-        var newPassword : String = passwordTextField1.text
+        var newPassword : String = passwordText
         
         if let image = selectedImage {
             
@@ -332,17 +287,17 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     func updateUserAndGoBack(user : User, password: String?, imageUrl : String?) {
         
         UserOperations.updateUser(user, newPassword: password, imageUrl: imageUrl, completion: { (completed, user, message) -> Void in
-            AuthUtility.saveUser(user)
-            SVProgressHUD.showSuccessWithStatus("profile_updated_message".localizedString)
-            self.navigationController?.popViewControllerAnimated(true)
+            if (completed) {
+                AuthUtility.saveUser(user)
+                SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
+                SVProgressHUD.showSuccessWithStatus("profile_updated_message".localizedString)
+                self.navigationController?.popViewControllerAnimated(true)
+            }
+            else {
+                SVProgressHUD.dismiss()
+                GeneralHelper.warnUser("profile_updated_error_message".localizedString)
+            }
         })
-    }
-    
-    func warnUser (message: String) {
-        let alert = UIAlertView()
-        alert.message = message
-        alert.addButtonWithTitle("OK".localizedString)
-        alert.show()
     }
     
     

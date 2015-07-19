@@ -36,6 +36,7 @@
 "name_empty" = "Your name can't be empty";
 "email_empty" = "Your email can't be empty";
 "profile_updated_message" = "Your profile was successfully updated.";
+"profile_updated_error_message" = "Your profile could not be updated at this time. Please either try again later, or with different credentials.";
 "reset_email_copy" = "Please enter your email address";
 "reset_password" = "Reset Password";
 "cancel" = "Cancel";

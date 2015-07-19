@@ -23,7 +23,12 @@ class PRKTextField: UIView, UITextFieldDelegate {
         return textField.placeholder ?? ""
     }
     var text: String {
-        return textField.text
+        get {
+            return textField.text
+        }
+        set(newValue) {
+            textField.text = newValue
+        }
     }
     
     private var didsetupSubviews : Bool
@@ -31,13 +36,17 @@ class PRKTextField: UIView, UITextFieldDelegate {
 
     internal let background_color = Styles.Colors.midnight2
     internal let text_color = Styles.Colors.cream2
-    internal let placeholder_attributes = [NSFontAttributeName: Styles.Fonts.h3r, NSForegroundColorAttributeName: Styles.Colors.petrol1]
+    var placeholderAttributes = [NSFontAttributeName: Styles.Fonts.h3r, NSForegroundColorAttributeName: Styles.Colors.petrol1]
+    var textFont = Styles.Fonts.h3r
     
     convenience init(placeHolder: String, fieldType: PRKTextFieldType) {
         
         self.init()
         self.fieldType = fieldType
         
+        self.textField.textAlignment = NSTextAlignment.Natural
+        textField.clearButtonMode = UITextFieldViewMode.Always
+
         switch fieldType {
         case .Normal:
             break
@@ -55,9 +64,14 @@ class PRKTextField: UIView, UITextFieldDelegate {
             self.textField.secureTextEntry = true
             self.forgotButton.hidden = false
             break
+        case .NotEditable:
+            self.textField.enabled = false
+            self.textField.textAlignment = NSTextAlignment.Center
+            textField.clearButtonMode = UITextFieldViewMode.Never
+            break
         }
 
-        textField.attributedPlaceholder = NSAttributedString(string: placeHolder, attributes: placeholder_attributes)
+        textField.attributedPlaceholder = NSAttributedString(string: placeHolder, attributes: placeholderAttributes)
 
     }
     
@@ -104,10 +118,8 @@ class PRKTextField: UIView, UITextFieldDelegate {
         
         textField.textColor = text_color
         textField.delegate = self
-        textField.clearButtonMode = UITextFieldViewMode.Always
-        textField.font = Styles.Fonts.h3r
+        textField.font = textFont
         textField.textColor = Styles.Colors.cream1
-        textField.textAlignment = NSTextAlignment.Natural
         textField.keyboardAppearance = UIKeyboardAppearance.Default
         textField.keyboardType = UIKeyboardType.Default
 
@@ -190,4 +202,5 @@ enum PRKTextFieldType {
     case Email
     case Password
     case PasswordWithForgotButton
+    case NotEditable
 }
