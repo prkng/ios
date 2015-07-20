@@ -45,7 +45,8 @@ class PRKTextField: UIView, UITextFieldDelegate {
         self.fieldType = fieldType
         
         self.textField.textAlignment = NSTextAlignment.Natural
-        textField.clearButtonMode = UITextFieldViewMode.Always
+        self.textField.clearButtonMode = UITextFieldViewMode.Always
+        self.textField.keyboardType = UIKeyboardType.Default
 
         switch fieldType {
         case .Normal:
@@ -121,7 +122,6 @@ class PRKTextField: UIView, UITextFieldDelegate {
         textField.font = textFont
         textField.textColor = Styles.Colors.cream1
         textField.keyboardAppearance = UIKeyboardAppearance.Default
-        textField.keyboardType = UIKeyboardType.Default
 
         forgotButton.setTitle("forgot_password_text".localizedString, forState: UIControlState.Normal)
         forgotButton.hidden = fieldType != .PasswordWithForgotButton
