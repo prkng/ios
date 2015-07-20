@@ -82,7 +82,7 @@
 
 "first_checkin_title" = "Here we are!";
 "first_checkin_subtitle" = "Your first check-in";
-"first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation.Please keep an eye open.";
+"first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation. Please keep an eye open.";
 "no_checkin_message" = "Please select \na segment first";
 "park_now" = "park now";
 "checked_in_message" = "you're checked-in at";
@@ -114,19 +114,19 @@
 
 "max" = "max";
 
-"alarm_text" = "Hey smart driver: time to move your car!";
+"alarm_text" = "Hey smart driver, time to move your car!";
 "time_up" = "Your time is up!";
 
 "tutorial_step_1" = "Sarah is having lunch with her mom. She’ll need to park when she gets there. See how she uses prkng!";
 "tutorial_step_2" = "Once arrived at her destination, the \"map\" feature shows her the spots where she’s allowed to park.";
-"tutorial_step_3" = "Sarah’s a bright woman : She “checks in” so she’ll be notified to move her car before the cops do.";
+"tutorial_step_3" = "Sarah’s a bright woman: She “checks-in” so she’ll be notified to move her car before the cops do.";
 "tutorial_step_4" = "No more headaches, no more surprise tickets: join Sarah in using prkng to find your next free spot!";
 "tutorial_confirm" = "GOT IT";
 
 "here_firstuse_title" = "How it works.";
 "here_firstuse_subtitle" = "We know it’s your first time!";
 "here_firstuse_1" = "Click any of the authorized spots to discover their availability.";
-"here_firstuse_2" = "Once you have found your spot, hit \“check in\” to be reminded when to move your car.";
+"here_firstuse_2" = "Once you have found your spot, hit \“Check-in\” to be reminded when to move your car.";
 "free_spots" = "AUTHORIZED SPOTS";
 
 
@@ -134,16 +134,16 @@
 "report_text" = "Take a picture of the \nlocal regulation and help \nus to improve our service.";
 "report_thanks" = "-";
 "report_error" = "Something went wrong, please try again.";
-"report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help.";
+"report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help!";
 
 "about" = "about";
 "the_project" = "the project";
 "terms_conditions" = "terms of use";
 "faq" = "faq";
 "share" = "share";
-"the_project_part_one" = "prkng is a service to find easily a legal parking spot. we try our best to solve traffic issue and incomprehension in north american metropole. our service is powered by Yellow Pages Group Canada. more cities are coming soon.";
-"the_project_part_two" = "Information that we collect from you, when you use the service including your name, contact details (such as telephone and mobile numbers and e-mail address), and/or other personally identifiable information (the \"personal information\") are only use for internal diagnostics and our main partners.";
-"prkng_share_copy" = "With prkng App, parking has never been this easy. Available in Montreal & Quebec!";
+"the_project_part_one" = "prkng is a service that helps you easily find an authorized parking spot. We're trying our best to solve traffic issue and parking misunderstandings in North American cities. Our service is powered by Yellow Pages Group Canada. More cities coming soon!";
+"the_project_part_two" = "Information that we collect from you while you use prkng include your name, contact details (such as phone number and e-mail address), and/or other personally identifiable information (the \"personal information\") is only used for internal diagnostics and shared with our primary partners.";
+"prkng_share_copy" = "With prkng app, parking has never been so easy. Available in Montreal & Quebec!";
 
 "all" = "all";
 "check-in" = "Check-in";

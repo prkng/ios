@@ -93,7 +93,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         textLabel.font = Styles.FontFaces.light(17)
         textLabel.textColor = Styles.Colors.petrol2
         textLabel.numberOfLines = 0
-        textLabel.textAlignment = NSTextAlignment.Left
+        textLabel.textAlignment = NSTextAlignment.Center
         textLabel.text = "first_checkin_text".localizedString
         containerView.addSubview(textLabel)
         
