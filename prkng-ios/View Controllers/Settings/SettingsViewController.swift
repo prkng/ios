@@ -103,7 +103,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         } else if (Settings.notificationTime() == 30) {
             i = 1
         }
-        self.notificationSelection.selectOption(self.notificationSelection.buttons[i], animated: false, forced: false)
+        self.notificationSelection.selectOption(self.notificationSelection.buttons[i], animated: false)
         
         if let user = AuthUtility.getUser() {
             self.profileNameLabel.text = user.name

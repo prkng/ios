@@ -66,7 +66,7 @@ class SelectionControl: UIControl {
             self.setNeedsUpdateConstraints()
         }
         
-        selectOption(self.buttons[selectedIndex], animated: true, forced: true)
+        selectOption(self.buttons[selectedIndex], animated: true)
         
         super.layoutSubviews()
     }
@@ -188,13 +188,13 @@ class SelectionControl: UIControl {
     }
     
     func selectOption (sender : SelectionButton) {
-        selectOption(sender, animated: true, forced: false)
+        selectOption(sender, animated: true)
     }
     
     
-    func selectOption (sender : SelectionButton, animated: Bool, forced: Bool) {
+    func selectOption (sender : SelectionButton, animated: Bool) {
         
-        let valueChanged = selectedIndex != sender.index || forced
+        let valueChanged = selectedIndex != sender.index
         
         if valueChanged {
             

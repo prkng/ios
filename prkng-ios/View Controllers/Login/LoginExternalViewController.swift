@@ -95,6 +95,12 @@ class LoginExternalViewController: AbstractViewController {
         
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.notificationSelection.selectOption(self.notificationSelection.buttons[0], animated: false)
+    }
+    
     
     func setupViews () {
         
