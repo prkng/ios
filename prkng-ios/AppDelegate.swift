@@ -50,6 +50,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureGlobals()
         loadInitialViewController()
         
+        //configure IQKeyboardManager
+        IQKeyboardManager.sharedManager().considerToolbarPreviousNextInViewClass(PRKInputForm)
         
         // Override point for customization after application launch.
         if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
