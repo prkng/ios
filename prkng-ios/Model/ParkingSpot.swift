@@ -8,6 +8,14 @@
 
 import UIKit
 
+enum ParkingSpotType {
+    case TimeMax
+    case Restriction
+//    case VignetteRestriction
+    case Paid
+//    case Free
+}
+
 func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
@@ -21,11 +29,25 @@ class ParkingSpot: NSObject, Hashable {
     var desc: String
     var maxParkingTime: Int
     var duration: Int
+    var isPaidSpot: Bool
     var buttonLocation: CLLocation
     var rules: Array<ParkingRule>
     var line: Shape
     
     var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
+    
+    //untested... careful when using this!
+    var currentParkingSpotType: ParkingSpotType {
+        if self.isPaidSpot {
+            return .Paid
+        }
+        if self.maxParkingTime > 0 {
+            return .TimeMax
+        } else {
+            return .Restriction
+        }
+
+    }
     
     //MARK- MKAnnotation
     var title: String! { get { return identifier } }
@@ -45,6 +67,7 @@ class ParkingSpot: NSObject, Hashable {
         maxParkingTime = spot.maxParkingTime
         duration = spot.duration
         buttonLocation = spot.buttonLocation
+        isPaidSpot = spot.isPaidSpot
         rules = spot.rules
         line = spot.line
         userInfo = spot.userInfo
@@ -60,6 +83,7 @@ class ParkingSpot: NSObject, Hashable {
         maxParkingTime = json["time_max_parking"].intValue
         duration = json["duration"].intValue
         buttonLocation = CLLocation(latitude: json["properties"]["button_location"]["lat"].doubleValue, longitude: json["properties"]["button_location"]["long"].doubleValue)
+        isPaidSpot = json["properties"]["rules"][0]["restrict_typ"].stringValue == "paid"
         
         rules = []
         
@@ -299,6 +323,7 @@ class ParkingSpot: NSObject, Hashable {
     }
     
 }
+
 
 func ==(lhs: LineParkingSpot, rhs: LineParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue

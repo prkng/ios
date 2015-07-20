@@ -12,6 +12,8 @@ class MapViewController: AbstractViewController {
 
     var delegate: MapViewControllerDelegate?
     
+    var canShowMapMessage: Bool = false
+    
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
 
@@ -131,6 +133,8 @@ protocol MapViewControllerDelegate {
     
     func shouldShowUserTrackingButton() -> Bool
     
+    func showMapMessage(message: String?)
+
     //returns the number of hours to search for as a minimum parking duration
     func activeFilterDuration() -> Float?
     func activeFilterPermit() -> Bool

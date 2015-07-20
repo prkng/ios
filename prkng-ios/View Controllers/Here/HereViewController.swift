@@ -10,18 +10,22 @@ import UIKit
 
 class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate {
 
-    var prkModalViewController : PRKModalViewController?
-    var firstUseMessageVC : HereFirstUseViewController?
+    var mapMessageView: UIView
+    var mapMessageLabel: UILabel
+    var canShowMapMessage: Bool = false
+
+    var prkModalViewController: PRKModalViewController?
+    var firstUseMessageVC: HereFirstUseViewController?
     var detailView: SpotDetailView
     
     var searchFilterView: SearchFilterView
     var timeFilterView: TimeFilterView
     var showingFilters: Bool
     
-    var statusBar : UIView
-    var filterButton : PRKTextButton
+    var statusBar: UIView
+    var filterButton: PRKTextButton
 
-    var activeSpot : ParkingSpot?
+    var activeSpot: ParkingSpot?
     var forceShowSpotDetails: Bool
     
     let viewHeight = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
@@ -39,6 +43,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         timeFilterView = TimeFilterView()
         searchFilterView = SearchFilterView()
         showingFilters = false
+        mapMessageView = UIView()
+        mapMessageLabel = UILabel()
         statusBar = UIView()
         filterButton = PRKTextButton(image: nil, imageSize: CGSizeMake(36, 36), labelText: "")
         filterButtonImageName = "icon_filter"
@@ -91,6 +97,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         verticalRec = PRKVerticalGestureRecognizer(view: detailView, superViewOfView: self.view)
         verticalRec.delegate = self
         
+        mapMessageView.backgroundColor = Styles.Colors.stone
+        view.addSubview(mapMessageView)
+        mapMessageLabel.textColor = Styles.Colors.red2
+        mapMessageLabel.font = Styles.Fonts.s1r
+        mapMessageLabel.numberOfLines = 0
+        mapMessageLabel.textAlignment = .Center
+        mapMessageView.addSubview(mapMessageLabel)
+
         detailView.delegate = self
         view.addSubview(detailView)
         
@@ -110,6 +124,19 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func setupConstraints() {
         
+        mapMessageView.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.view).with.offset(20)
+            make.right.equalTo(self.view).with.offset(-20)
+            make.top.equalTo(self.view).with.offset(20 + Styles.Sizes.statusBarHeight)
+            make.bottom.equalTo(self.mapMessageLabel).with.offset(10)
+        }
+
+        mapMessageLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.mapMessageView).with.offset(10)
+            make.left.equalTo(self.mapMessageView).with.offset(10)
+            make.right.equalTo(self.mapMessageView).with.offset(-10)
+        }
+
         statusBar.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.view)
             make.left.equalTo(self.view)

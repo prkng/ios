@@ -311,6 +311,17 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         return selectedTab == PrkTab.Here
     }
     
+    func showMapMessage(message: String?) {
+
+        if message != nil {
+            hereViewController.mapMessageLabel.text = message
+        }
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.hereViewController.mapMessageView.alpha = message == nil ? 0 : 1
+        })
+    }
+    
     func activeFilterDuration() -> Float? {
         var hours = hereViewController.timeFilterView.selectedValueInHours()
         return hours

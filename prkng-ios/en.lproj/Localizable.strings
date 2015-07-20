@@ -151,3 +151,8 @@
 "search" = "Search";
 "search_bar_text" = "Search";
 "car_sharing" = "Car Sharing";
+
+
+"map_message_too_zoomed_out" = "Zoom in to see where you're allowed to park.";
+"map_message_no_spots" = "Uh oh! There are no spots in this area.";
+"map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here. \n:(";

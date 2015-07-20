@@ -15,6 +15,8 @@ struct Styles {
         static let cream1 = UIColor(rgba: "#F9F8F7")
         static let cream2 = UIColor(rgba: "#F4F1EF")
         
+        static let curry = UIColor(rgba: "#E6AE5C")
+        
         static let stone = UIColor(rgba: "#EAE9E5")
         
         static let beige1 = UIColor(rgba: "#E5E0DA")
@@ -72,9 +74,14 @@ struct Styles {
         static let h2 =  FontFaces.light(25)
         static let h3 =  FontFaces.light(20)
         
+        static let s1 =  FontFaces.light(17)
+        
         static let h1r =  FontFaces.regular(25)
         static let h2r =  FontFaces.regular(25)
         static let h3r =  FontFaces.regular(20)
+        
+        static let s1r =  FontFaces.regular(17)
+
     }
     
     struct Sizes {
