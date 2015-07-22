@@ -8,14 +8,6 @@
 
 import UIKit
 
-enum ParkingSpotType {
-    case TimeMax
-    case Restriction
-//    case VignetteRestriction
-    case Paid
-//    case Free
-}
-
 func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
@@ -29,26 +21,12 @@ class ParkingSpot: NSObject, Hashable {
     var desc: String
     var maxParkingTime: Int
     var duration: Int
-    var isPaidSpot: Bool
     var buttonLocation: CLLocation
     var rules: Array<ParkingRule>
     var line: Shape
     
     var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
-    
-    //untested... careful when using this!
-    var currentParkingSpotType: ParkingSpotType {
-        if self.isPaidSpot {
-            return .Paid
-        }
-        if self.maxParkingTime > 0 {
-            return .TimeMax
-        } else {
-            return .Restriction
-        }
-
-    }
-    
+        
     //MARK- MKAnnotation
     var title: String! { get { return identifier } }
     var subtitle: String! { get { return name } }
@@ -67,7 +45,6 @@ class ParkingSpot: NSObject, Hashable {
         maxParkingTime = spot.maxParkingTime
         duration = spot.duration
         buttonLocation = spot.buttonLocation
-        isPaidSpot = spot.isPaidSpot
         rules = spot.rules
         line = spot.line
         userInfo = spot.userInfo
@@ -83,7 +60,6 @@ class ParkingSpot: NSObject, Hashable {
         maxParkingTime = json["time_max_parking"].intValue
         duration = json["duration"].intValue
         buttonLocation = CLLocation(latitude: json["properties"]["button_location"]["lat"].doubleValue, longitude: json["properties"]["button_location"]["long"].doubleValue)
-        isPaidSpot = json["properties"]["rules"][0]["restrict_typ"].stringValue == "paid"
         
         rules = []
         
@@ -236,7 +212,7 @@ class ParkingSpot: NSObject, Hashable {
         for dayAgenda in sortedTimePeriods() {
             
             for var i = 0; i < 7; i++ {
-                if let period = dayAgenda[i] {
+                if let period = dayAgenda.timePeriods[i] {
                     /*the first day is special because you could be in the middle of a time max, 
                     or there could be something in the past that needs to be taken into consideration 
                     if there is nothing in the future (ie one restriction all week, that was earlier 
@@ -299,29 +275,94 @@ class ParkingSpot: NSObject, Hashable {
     // [ RULE1, RULE2, ETC]
     // where RULE1 is... [nil  , TIMEPERIOD, TIMEPERIOD, nil, nil, nil, nil]
     // ...which means... [today, tomorrow  , after-tom., etc, etc, etc, yesterday]
-    func sortedTimePeriods() -> Array<Array<TimePeriod?>>{
-        var array : Array<Array<TimePeriod?>> = []
+    func sortedTimePeriods() -> Array<DayArray>{
+        var array : Array<DayArray> = []
         
         let today = DateUtil.dayIndexOfTheWeek()
         
         for r in 0...(self.rules.count - 1) {
             
-            var dayArray : Array<TimePeriod?> = []
+            var timePeriods : Array<TimePeriod?> = []
             
             for var i = today; i < 7; ++i {
-                dayArray.append(self.rules[r].agenda[i])
+                timePeriods.append(self.rules[r].agenda[i])
             }
             
             for var j = 0; j < today; ++j {
-                dayArray.append(self.rules[r].agenda[j])
+                timePeriods.append(self.rules[r].agenda[j])
             }
             
+            let dayArray = DayArray(timePeriods: timePeriods, rule: rules[r])
             array.append(dayArray)
         }
         
         return array
     }
     
+    var currentlyActiveRule: ParkingRule {
+        
+        var activeRules = [ParkingRule]()
+        
+        let today = DateUtil.dayIndexOfTheWeek()
+        let now = DateUtil.timeIntervalSinceDayStart()
+        
+        for rule in rules {
+            for i in 0...(rule.agenda.count - 1) {
+                let timePeriod = rule.agenda[i]
+                if today == i
+                    && timePeriod?.start <= now
+                    && timePeriod?.end >= now {
+                        activeRules.append(rule)
+                }
+            }
+        }
+        
+        activeRules.sort({ (first: ParkingRule, second: ParkingRule) -> Bool in
+            switch (first.ruleType, second.ruleType) {
+                
+            case (.Restriction, .Free):         return true
+            case (.Restriction, .Restriction):  return true
+            case (.Restriction, .Paid):         return true
+            case (.Restriction, .TimeMax):      return true
+                
+            case (.Paid, .Free):                return true
+            case (.Paid, .Restriction):         return false
+            case (.Paid, .Paid):                return true
+            case (.Paid, .TimeMax):             return true
+                
+            case (.TimeMax, .Free):             return true
+            case (.TimeMax, .Restriction):      return false
+            case (.TimeMax, .Paid):             return false
+            case (.TimeMax, .TimeMax):          return true
+                
+            case (.Free, .Free):                return true
+            case (.Free, .Restriction):         return false
+            case (.Free, .Paid):                return false
+            case (.Free, .TimeMax):             return false
+                
+            }
+        })
+        
+        return activeRules.first ?? ParkingRule(ruleType: ParkingRuleType.Free)
+    }
+    
+    var currentlyActiveRuleEndTime: NSTimeInterval {
+        var endTime: NSTimeInterval = 0
+        let today = DateUtil.dayIndexOfTheWeek()
+        let rule = self.currentlyActiveRule
+        //validate... just in case!
+        if rule.agenda.count >= today - 1 {
+            endTime = rule.agenda[today]?.end ?? 0
+        }
+
+        return endTime
+    }
+}
+
+struct DayArray {
+    
+    var timePeriods: Array<TimePeriod?>
+    var rule: ParkingRule
 }
 
 
@@ -392,6 +433,7 @@ class ButtonParkingSpotView: MKAnnotationView {
         let userInfo = buttonParkingSpotAnnotation.userInfo
         let selected = userInfo["selected"] as! Bool
         let spot = userInfo["spot"] as! ParkingSpot
+        let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
         let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
         
         if shouldAddAnimation {
@@ -403,6 +445,9 @@ class ButtonParkingSpotView: MKAnnotationView {
         
         if mbxZoomLevel < 18 {
             imageName += "small_"
+        }
+        if isCurrentlyPaidSpot {
+            imageName += "metered_"
         }
         if !selected {
             imageName += "in"

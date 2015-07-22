@@ -79,7 +79,7 @@ extension NSTimeInterval {
                 amPm = " "
             }
             
-            if(self >= 12.0 * 3600.0) {
+            if(self >= 12.0 * 3600.0 && self != 24.0 * 3600.0) {
                 amPm += "PM"
             } else {
                 amPm += "AM"
@@ -105,6 +105,13 @@ extension NSTimeInterval {
             
         }
         
+    }
+    
+    func untilAttributedString(firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+        
+        let attributedString = NSMutableAttributedString(string: "until".localizedString + " ", attributes: [NSFontAttributeName: firstPartFont])
+        attributedString.appendAttributedString(self.toAttributedString(condensed: true, firstPartFont: firstPartFont, secondPartFont: secondPartFont))
+        return attributedString
     }
     
 }

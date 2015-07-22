@@ -72,7 +72,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         for column in columnViews {
             for view in column.subviews {
                 if let subview =  view as? ScheduleItemView {
-                    if(!subview.limited) {
+                    if(subview.rule.ruleType == ParkingRuleType.TimeMax) {
                         column.bringSubviewToFront(subview)
                     }
                 }
@@ -305,7 +305,7 @@ class ScheduleHelper {
         
         //convert schedule items into agenda items
         for scheduleItem in scheduleItems {
-            var agendaItem = AgendaItem(startTime: NSTimeInterval(scheduleItem.startInterval), endTime: NSTimeInterval(scheduleItem.endInterval), dayIndex: scheduleItem.columnIndex!, timeLimit: Int(scheduleItem.limit))
+            var agendaItem = AgendaItem(startTime: NSTimeInterval(scheduleItem.startInterval), endTime: NSTimeInterval(scheduleItem.endInterval), dayIndex: scheduleItem.columnIndex!, timeLimit: Int(scheduleItem.limit), rule: scheduleItem.rule)
             agendaItems.append(agendaItem)
             dayIndexes.insert(scheduleItem.columnIndex!)
 
@@ -313,7 +313,7 @@ class ScheduleHelper {
         
         let notPresentDayIndexes = Set(0...6).subtract(dayIndexes)
         for dayIndex in notPresentDayIndexes {
-            let agendaItem = AgendaItem(startTime: 0, endTime: 24*3600, dayIndex: dayIndex, timeLimit: 0)
+            let agendaItem = AgendaItem(startTime: 0, endTime: 24*3600, dayIndex: dayIndex, timeLimit: 0, rule: ParkingRule(ruleType: .Free))
             agendaItems.append(agendaItem)
         }
         
@@ -331,12 +331,12 @@ class ScheduleHelper {
         for dayAgenda in agenda {
             
             var column : Int = 0
-            for period in dayAgenda {
+            for period in dayAgenda.timePeriods {
                 
                 if (period != nil) {
                     var startF : CGFloat = CGFloat(period!.start)
                     var endF : CGFloat = CGFloat(period!.end)
-                    var scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit)
+                    var scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit, rule: dayAgenda.rule)
                     scheduleItems.append(scheduleItem)
                 }
                 ++column
@@ -373,7 +373,7 @@ class ScheduleHelper {
                     && lastScheduleItem!.endInterval >= scheduleItem.startInterval
                     && lastScheduleItem!.limit == scheduleItem.limit) {
                         newScheduleItems.removeLast()
-                        var newScheduleItem = ScheduleItemModel(startF: lastScheduleItem!.startInterval, endF: scheduleItem.endInterval, column : scheduleItem.columnIndex!, limitInterval: scheduleItem.limit)
+                        var newScheduleItem = ScheduleItemModel(startF: lastScheduleItem!.startInterval, endF: scheduleItem.endInterval, column : scheduleItem.columnIndex!, limitInterval: scheduleItem.limit, rule: scheduleItem.rule)
                         newScheduleItems.append(newScheduleItem)
                 }
                     //RULE: SPLIT TIME MAXES IF A RESTRICTION OVERLAPS IT
@@ -401,17 +401,17 @@ class ScheduleHelper {
                             //now split the time max...
                             if timeMax.startInterval >= restriction.startInterval {
                                 //then just make our time max start after
-                                timeMax = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
+                                timeMax = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
                                 newScheduleItems.append(timeMax)
                             } else if restriction.startInterval > timeMax.startInterval
                                 && restriction.endInterval < timeMax.endInterval {
                                     //we have a total overlap, make 2 new time maxes
-                                    var timeMax1 = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
-                                    var timeMax2 = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
+                                    var timeMax1 = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
+                                    var timeMax2 = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
                                     newScheduleItems.append(timeMax1)
                                     newScheduleItems.append(timeMax2)
                             } else if restriction.endInterval >= timeMax.endInterval {
-                                timeMax = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit)
+                                timeMax = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
                                 newScheduleItems.append(timeMax)
                             }
                             
@@ -442,14 +442,18 @@ class ScheduleItemModel {
     
     var timeLimitText : String?
     
+    var rule: ParkingRule
+    
     init () {
         startInterval = 0
         endInterval = 0
         limit = 0
+        rule = ParkingRule(ruleType: ParkingRuleType.Free)
     }
     
-    init (startF : CGFloat, endF : CGFloat, column : Int, limitInterval: NSTimeInterval) {
+    init (startF : CGFloat, endF : CGFloat, column : Int, limitInterval: NSTimeInterval, rule: ParkingRule) {
         
+        self.rule = rule
         startInterval = startF
         endInterval = endF
         limit = limitInterval

@@ -8,23 +8,70 @@
 
 import UIKit
 
+enum ParkingRuleType: String {
+    case TimeMax = "TimeMax"
+    case Restriction = "Restriction"
+    case Paid = "Paid"
+    case Free = "Free"
+}
+
+
 class ParkingRule: NSObject {
 
     var restrictionType: String
+    var paidHourlyRate: Float
     var code: String
     var maxParkingTime: Int
     var seasonEnd: String
     var desc: String
     var agenda : Array<TimePeriod?>
     
-    
     var bullshitRule : Bool // means this rule is empty
 
+    var paidHourlyRateString: String {
+        let hourlyRate = Float(round(100*paidHourlyRate)/100)
+        return String(format: "%.2f", hourlyRate)
+    }
+    
+    private var _ruleType: ParkingRuleType?
+    var ruleType: ParkingRuleType {
+        
+        if _ruleType != nil {
+            return _ruleType!
+        }
+        
+        if bullshitRule {
+            return .Free
+        }
+        if restrictionType == "paid" {
+            return .Paid
+        }
+        if self.maxParkingTime > 0 {
+            return .TimeMax
+        } else {
+            return .Restriction
+        }
+
+    }
+    
+    init(ruleType: ParkingRuleType) {
+        _ruleType = ruleType
+        restrictionType = ""
+        code = ""
+        paidHourlyRate = 0
+        maxParkingTime = 0
+        seasonEnd = ""
+        desc = ""
+        agenda = Array()
+        bullshitRule = true
+    }
+    
     // bsIndex is a stupid parameter, because the data structure sucks. There may be two rule sets. Remove it when the data structure is fixed.
     init(json: JSON, bsIndex : Int) {
 
         restrictionType = json["restrict_typ"].stringValue
         code = json["code"].stringValue
+        paidHourlyRate = json["paid_hourly_rate"].floatValue
         
         let timelimit = json["time_max_parking"].int
         

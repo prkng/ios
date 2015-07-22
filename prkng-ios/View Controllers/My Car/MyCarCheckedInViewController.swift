@@ -24,7 +24,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     var availableTimeLabel : UILabel //ex: 24+
 
     var smallButtonContainer : UIView
-    var notificationsButton : UIButton
     var reportButton : UIButton
     
     var bigButtonContainer : UIView
@@ -63,8 +62,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         leaveButton = ViewFactory.hugeButton()
         
         smallButtonContainer = UIView()
-        notificationsButton = UIButton()
-        reportButton = ViewFactory.exclamationButton()
+        reportButton = UIButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -108,6 +106,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
         }
         
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.timer?.invalidate()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -175,17 +178,15 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         view.addSubview(smallButtonContainer)
         
-        notificationsButton.clipsToBounds = true
-        notificationsButton.layer.cornerRadius = 14
-        notificationsButton.layer.borderWidth = 1
-        notificationsButton.titleLabel?.font = Styles.FontFaces.light(12)
-        notificationsButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
-        notificationsButton.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
-        notificationsButton.addTarget(self, action: "toggleNotifications", forControlEvents: UIControlEvents.TouchUpInside)
-        smallButtonContainer.addSubview(notificationsButton)
-        updateNotificationsButton()
-        
-        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: .TouchUpInside)
+        reportButton.clipsToBounds = true
+        reportButton.layer.cornerRadius = 14
+        reportButton.layer.borderWidth = 1
+        reportButton.titleLabel?.font = Styles.FontFaces.light(12)
+        reportButton.setTitle("report_an_error".localizedString.uppercaseString, forState: UIControlState.Normal)
+        reportButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
+        reportButton.layer.borderColor = Styles.Colors.red2.CGColor
+        reportButton.backgroundColor = Styles.Colors.red2
+        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         smallButtonContainer.addSubview(reportButton)
         
         view.addSubview(bigButtonContainer)
@@ -260,16 +261,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.height.equalTo(26)
         }
         
-        notificationsButton.snp_makeConstraints { (make) -> () in
+        reportButton.snp_makeConstraints { (make) -> () in
             make.bottom.equalTo(self.smallButtonContainer)
             make.size.equalTo(CGSizeMake(155, 26))
             make.centerX.equalTo(self.smallButtonContainer)
-        }
-        
-        reportButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(24, 24))
-            make.bottom.equalTo(self.notificationsButton)
-            make.centerX.equalTo(self.smallButtonContainer).multipliedBy(1.66)
         }
         
         bigButtonContainer.snp_makeConstraints { (make) -> () in
@@ -299,18 +294,46 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func updateValues () {
         locationLabel.text = spot?.name
         
-        let interval = Settings.checkInTimeRemaining()
-        
-        if (interval > 59) {
-            if availableTitleLabel.text == "available_until".localizedString.uppercaseString {
-                availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h1r, secondPartFont: Styles.Fonts.h3r)
-            } else {
-                availableTimeLabel.attributedText = NSAttributedString(string: ParkingSpot.availableHourString(interval, limited: false))
-                availableTimeLabel.font = Styles.Fonts.h1r
+        if self.spot != nil {
+            switch self.spot!.currentlyActiveRule.ruleType {
+            case .Paid:
+                let interval = self.spot!.currentlyActiveRuleEndTime
+                logoView.image = UIImage(named: "icon_checkin_metered")
+                availableTitleLabel.text = "pay_reminder".localizedString.uppercaseString
+                
+                let smallFont = Styles.FontFaces.regular(16)
+                let bigFont = Styles.Fonts.h2r
+                
+                let attributedString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: smallFont])
+                let number = NSMutableAttributedString(string: self.spot!.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: bigFont])
+                let perHour = NSMutableAttributedString(string: "/H", attributes: [NSFontAttributeName: smallFont])
+                let space = NSMutableAttributedString(string: " • ", attributes: [NSFontAttributeName: bigFont])
+                let until = interval.untilAttributedString(bigFont, secondPartFont: smallFont)
+                
+                attributedString.appendAttributedString(number)
+                attributedString.appendAttributedString(perHour)
+                attributedString.appendAttributedString(space)
+                attributedString.appendAttributedString(until)
+                
+                availableTimeLabel.attributedText = attributedString
+                
+                break
+            default:
+                logoView.image = UIImage(named: "icon_checkin")
+                let interval = Settings.checkInTimeRemaining()
+                if (interval > 59) {
+                    if availableTitleLabel.text == "available_until".localizedString.uppercaseString {
+                        availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h1r, secondPartFont: Styles.Fonts.h3r)
+                    } else {
+                        availableTimeLabel.attributedText = NSAttributedString(string: ParkingSpot.availableHourString(interval, limited: false))
+                        availableTimeLabel.font = Styles.Fonts.h1r
+                    }
+                } else {
+                    availableTimeLabel.attributedText = NSAttributedString(string: "time_up".localizedString)
+                    availableTimeLabel.font = Styles.Fonts.h1r
+                }
+                break
             }
-        } else {
-            availableTimeLabel.attributedText = NSAttributedString(string: "time_up".localizedString)
-            availableTimeLabel.font = Styles.Fonts.h1r
         }
         
         //update the values every 2 seconds
@@ -318,37 +341,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             self.timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "updateValues", userInfo: nil, repeats: true)
 
         }
-        
-    }
-    
-    func toggleNotifications () {
-        
-        if Settings.notificationTime() > 0 {
-            Settings.setNotificationTime(0)
-            Settings.cancelNotification()
-        } else {
-            Settings.setNotificationTime(30)
-            Settings.scheduleNotification(NSDate(timeIntervalSinceNow: self.spot!.availableTimeInterval() - (30 * 60)))
-        }
-        
-        updateNotificationsButton()
-    }
-    
-    func updateNotificationsButton() {
-        
-        if (Settings.notificationTime() > 0) {
-            
-            notificationsButton.setTitle("notifications_on".localizedString.uppercaseString, forState: UIControlState.Normal)
-            notificationsButton.layer.borderColor = Styles.Colors.red2.CGColor
-            notificationsButton.backgroundColor = Styles.Colors.red2
-            
-        } else {
-            
-            notificationsButton.setTitle("notifications_off".localizedString.uppercaseString, forState: UIControlState.Normal)
-            notificationsButton.layer.borderColor = Styles.Colors.stone.CGColor
-            notificationsButton.backgroundColor = UIColor.clearColor()
-        }
-        
         
     }
     
@@ -437,14 +429,22 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func setDefaultTimeDisplay() {
         
-        let interval = Settings.checkInTimeRemaining()
-        
-        if (interval > 2*3600) { // greater than 2 hours = show available until... by default
-            availableTitleLabel.text = "available_until".localizedString.uppercaseString
-        } else {
-            availableTitleLabel.text = "available_for".localizedString.uppercaseString
+        if self.spot != nil {
+            switch self.spot!.currentlyActiveRule.ruleType {
+            case .Paid:
+                availableTitleLabel.text = "pay_reminder".localizedString.uppercaseString
+                break
+            default:
+                let interval = Settings.checkInTimeRemaining()
+                
+                if (interval > 2*3600) { // greater than 2 hours = show available until... by default
+                    availableTitleLabel.text = "available_until".localizedString.uppercaseString
+                } else {
+                    availableTitleLabel.text = "available_for".localizedString.uppercaseString
+                }
+                break
+            }
         }
-        
         updateValues()
     }
     
@@ -460,7 +460,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         //update values just in case we've run out of time since the last tap...
         updateValues()
         
-        if availableTimeLabel.text != "time_up".localizedString {
+        if availableTimeLabel.text != "time_up".localizedString
+            && availableTimeLabel.text != "pay_reminder".localizedString.uppercaseString {
             if availableTitleLabel.text == "available_for".localizedString.uppercaseString {
                 availableTitleLabel.text = "available_until".localizedString.uppercaseString
             } else {

@@ -19,8 +19,12 @@ class SpotDetailView: UIView {
 
     var bottomContainer: UIView
     var bottomContainerButton: UIButton
-    var availableTextLabel: UILabel
-    var availableTimeLabel: UILabel
+    var bottomLeftContainer: UIView
+    var bottomRightContainer: UIView
+    var leftTopLabel: UILabel
+    var leftBottomLabel: UILabel
+    var rightTopLabel: UILabel
+    var rightBottomLabel: UILabel
     var scheduleImageView: UIImageView
 
     var didSetupSubviews: Bool
@@ -44,8 +48,12 @@ class SpotDetailView: UIView {
         
         bottomContainer = UIView()
         bottomContainerButton = ViewFactory.openScheduleButton()
-        availableTextLabel = UILabel()
-        availableTimeLabel = UILabel()
+        bottomLeftContainer = UIView()
+        bottomRightContainer = UIView()
+        leftTopLabel = UILabel()
+        leftBottomLabel = UILabel()
+        rightTopLabel = UILabel()
+        rightBottomLabel = UILabel()
         scheduleImageView = UIImageView()
 
         didSetupSubviews = false
@@ -60,10 +68,6 @@ class SpotDetailView: UIView {
     required init(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
-    
-//    override func layoutSubviews() {
-//        if(!self.didSetupSubviews)
-//    }
     
     override func updateConstraints() {
         if(!self.didSetupConstraints) {
@@ -88,7 +92,6 @@ class SpotDetailView: UIView {
         
         topContainer.addSubview(topContainerRightView)
 
-        checkinImageView.image = UIImage(named:"icon_checkin_pin")
         checkinImageView.contentMode = UIViewContentMode.ScaleAspectFit
         topContainerRightView.addSubview(checkinImageView)
         checkinImageView.layer.anchorPoint = CGPointMake(0.5,1.0);
@@ -97,32 +100,48 @@ class SpotDetailView: UIView {
         checkinImageLabel.font = Styles.FontFaces.regular(10)
         checkinImageLabel.textColor = Styles.Colors.cream1
         checkinImageLabel.textAlignment = NSTextAlignment.Center
-        checkinImageLabel.text = NSLocalizedString("check-in", comment: "")
         topContainerRightView.addSubview(checkinImageLabel)
         
         bottomContainer.userInteractionEnabled = false
         addSubview(bottomContainer)
 
+        bottomLeftContainer.backgroundColor = Styles.Colors.cream1
+        bottomContainer.addSubview(bottomLeftContainer)
+        bottomContainer.addSubview(bottomRightContainer)
+        
         bottomContainerButton.addTarget(self, action: "bottomContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(bottomContainerButton)
+        
+        leftTopLabel.font = Styles.FontFaces.light(11)
+        leftTopLabel.textColor = Styles.Colors.petrol2
+        leftTopLabel.textAlignment = NSTextAlignment.Left
+        leftTopLabel.numberOfLines = 1
+        leftTopLabel.text = NSLocalizedString("hourly", comment: "").uppercaseString
+        bottomLeftContainer.addSubview(leftTopLabel)
+        
+        leftBottomLabel.font = Styles.Fonts.h1r
+        leftBottomLabel.adjustsFontSizeToFitWidth = true
+        leftBottomLabel.textColor = Styles.Colors.red2
+        leftBottomLabel.textAlignment = NSTextAlignment.Left
+        leftBottomLabel.text = "$"
+        bottomLeftContainer.addSubview(leftBottomLabel)
 
-        availableTextLabel.font = Styles.FontFaces.light(11)
-        availableTextLabel.textColor = Styles.Colors.petrol2
-        availableTextLabel.textAlignment = NSTextAlignment.Left
-        availableTextLabel.numberOfLines = 1
-        availableTextLabel.text = NSLocalizedString("until", comment: "").uppercaseString
-        bottomContainer.addSubview(availableTextLabel)
+        rightTopLabel.font = Styles.FontFaces.light(11)
+        rightTopLabel.textColor = Styles.Colors.petrol2
+        rightTopLabel.textAlignment = NSTextAlignment.Left
+        rightTopLabel.numberOfLines = 1
+        bottomRightContainer.addSubview(rightTopLabel)
 
-        availableTimeLabel.font = Styles.Fonts.h1r
-        availableTimeLabel.adjustsFontSizeToFitWidth = true
-        availableTimeLabel.textColor = Styles.Colors.petrol2
-        availableTimeLabel.textAlignment = NSTextAlignment.Left
-        availableTimeLabel.text = "00:00"
-        bottomContainer.addSubview(availableTimeLabel)
+        rightBottomLabel.font = Styles.Fonts.h1r
+        rightBottomLabel.adjustsFontSizeToFitWidth = true
+        rightBottomLabel.textColor = Styles.Colors.petrol2
+        rightBottomLabel.textAlignment = NSTextAlignment.Left
+        rightBottomLabel.text = "00:00"
+        bottomRightContainer.addSubview(rightBottomLabel)
         
         scheduleImageView.image = UIImage(named:"btn_schedule")
         scheduleImageView.contentMode = UIViewContentMode.Center
-        bottomContainer.addSubview(scheduleImageView)
+        bottomRightContainer.addSubview(scheduleImageView)
 
         self.sendSubviewToBack(topContainerButton)
         self.sendSubviewToBack(bottomContainerButton)
@@ -177,22 +196,48 @@ class SpotDetailView: UIView {
         bottomContainerButton.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.bottomContainer)
         }
-
-        availableTextLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.bottomContainer).with.offset(24)
-            make.top.equalTo(self.bottomContainer).with.offset(14)
+        
+        bottomLeftContainer.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.bottomContainer)
+            make.top.equalTo(self.bottomContainer)
+            make.bottom.equalTo(self.bottomContainer)
+            make.width.equalTo(0)
         }
         
-        availableTimeLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.bottomContainer).with.offset(24)
-            make.bottom.equalTo(self.bottomContainer).with.offset(-14)
+        leftTopLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.bottomLeftContainer).with.offset(24)
+            make.top.equalTo(self.bottomLeftContainer).with.offset(14)
+            make.right.lessThanOrEqualTo(self.bottomLeftContainer.snp_right).with.offset(-10)
+        }
+        
+        leftBottomLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.bottomLeftContainer).with.offset(24)
+            make.bottom.equalTo(self.bottomLeftContainer).with.offset(-14)
+            make.right.lessThanOrEqualTo(self.bottomLeftContainer.snp_right).with.offset(-10)
+        }
+        
+        bottomRightContainer.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.bottomLeftContainer.snp_right)
+            make.right.equalTo(self.bottomContainer)
+            make.top.equalTo(self.bottomContainer)
+            make.bottom.equalTo(self.bottomContainer)
+        }
+        
+        rightTopLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.bottomRightContainer).with.offset(24)
+            make.top.equalTo(self.bottomRightContainer).with.offset(14)
+        }
+        
+        rightBottomLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.bottomRightContainer).with.offset(24)
+            make.bottom.equalTo(self.bottomRightContainer).with.offset(-14)
             make.right.lessThanOrEqualTo(self.scheduleImageView.snp_left)
         }
         
         scheduleImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 22, height: Styles.Sizes.spotDetailViewBottomPortionHeight))// + 22))
-            make.centerY.equalTo(self.bottomContainer)
-            make.right.equalTo(self.bottomContainer.snp_centerX).multipliedBy(1.66).with.offset(11)
+            make.centerY.equalTo(self.bottomRightContainer)
+            make.right.equalTo(self.bottomRightContainer.snp_centerX).multipliedBy(1.66).with.offset(11)
         }
 
         didSetupConstraints = true

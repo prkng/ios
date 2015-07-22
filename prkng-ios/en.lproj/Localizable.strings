@@ -89,13 +89,14 @@
 "available_for" = "available for";
 "for" = "for";
 "available_until" = "available until";
-"until" = "until";
+"until" = "Until";
 "share_car_location" = "share my location";
 "leave_spot" = "check out";
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
 "off" = "off";
 "share_location_copy" = "I parked on: \"[street_name]\", with prkng app. http://prk.ng";
+"pay_reminder" = "Hey, don't forget to pay!";
 
 // Days
 "this_day" = "Today";
@@ -130,6 +131,7 @@
 "free_spots" = "AUTHORIZED SPOTS";
 
 
+"report_an_error" = "Report an Error";
 "report_title" = "REPORT AN ERROR AT";
 "report_text" = "Take a picture of the \nlocal regulation and help \nus to improve our service.";
 "report_thanks" = "-";
@@ -146,13 +148,17 @@
 "prkng_share_copy" = "With prkng app, parking has never been so easy. Available in Montreal & Quebec!";
 
 "all" = "all";
+"hourly" = "hourly";
+"metered" = "metered";
 "check-in" = "Check-in";
+"check-in-pay" = "Check-in + Pay";
 "authorized_for" = "Authorized for";
 "search" = "Search";
 "search_bar_text" = "Search";
 "car_sharing" = "Car2go";
 
-
 "map_message_too_zoomed_out" = "Zoom in to see where you're allowed to park.";
 "map_message_no_spots" = "Uh oh! There are no spots in this area.";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here. \n:(";
+"map_message_under_maintenance" = "We're currently performing maintenance on our service. Try again in a little bit!";
+"map_message_error" = "We couldn't connect you to our service, please make sure you have a good network connection, or try again a little later!";

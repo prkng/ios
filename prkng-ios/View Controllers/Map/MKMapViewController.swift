@@ -121,6 +121,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             let userInfo = lineOverlay.userInfo
             let selected = userInfo["selected"] as! Bool
             let spot = userInfo["spot"] as! ParkingSpot
+            let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
             let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
             
             var coordinates = spot.line.coordinates2D
@@ -128,8 +129,10 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             var shape = MKPolylineRenderer(polyline: lineOverlay)
 //            var shape = MKPolylineView(overlay: polyline)
             shape.alpha = 0.5
-            if (selected) {
+            if selected {
                 shape.strokeColor = Styles.Colors.red2
+            } else if isCurrentlyPaidSpot {
+                shape.strokeColor = Styles.Colors.curry
             } else {
                 shape.strokeColor = Styles.Colors.petrol2
             }
@@ -438,7 +441,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             let permit = self.delegate?.activeFilterPermit() ?? false
 
             SpotOperations.findSpots(self.mapView.centerCoordinate, radius: Float(radius), duration: duration, checkinTime: checkinTime!, permit: permit, completion:
-                { (spots, outsideServiceArea) -> Void in
+                { (spots, underMaintenance, outsideServiceArea, error) -> Void in
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         //only show the spinner if this map is active
@@ -448,7 +451,11 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
                                 SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
                                 
                                 if self.canShowMapMessage {
-                                    if outsideServiceArea {
+                                    if error {
+                                        self.delegate?.showMapMessage("map_message_error".localizedString)
+                                    } else if underMaintenance {
+                                        self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
+                                    } else if outsideServiceArea {
                                         self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
                                     } else if spots.count == 0 {
                                         self.delegate?.showMapMessage("map_message_no_spots".localizedString)

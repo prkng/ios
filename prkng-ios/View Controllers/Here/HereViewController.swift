@@ -98,6 +98,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         verticalRec.delegate = self
         
         mapMessageView.backgroundColor = Styles.Colors.stone
+        mapMessageView.alpha = 0
         view.addSubview(mapMessageView)
         mapMessageLabel.textColor = Styles.Colors.red2
         mapMessageLabel.font = Styles.Fonts.s1r
@@ -332,7 +333,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             
             if (Settings.notificationTime() > 0) {
                 Settings.cancelNotification()
-                Settings.scheduleNotification(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
+                if self.activeSpot!.currentlyActiveRule.ruleType != .Paid {
+                    Settings.scheduleNotification(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
+                }
             }
             
             SVProgressHUD.dismiss()
@@ -355,17 +358,33 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func updateSpotDetailsTime() {
         
         if self.activeSpot != nil {
-            
-            let interval = activeSpot!.availableTimeInterval()
-            
-            if (interval > 2*3600) { // greater than 2 hours = show available until... by default
-                detailView.availableTextLabel.text = NSLocalizedString("until", comment: "").uppercaseString
-                detailView.availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
-            } else {
-                detailView.availableTextLabel.text = NSLocalizedString("for", comment: "").uppercaseString
-                detailView.availableTimeLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2r)
+            switch self.activeSpot!.currentlyActiveRule.ruleType {
+            case .Paid:
+                let interval = self.activeSpot!.currentlyActiveRuleEndTime
+
+                detailView.rightTopLabel.text = "metered".localizedString.uppercaseString
+                
+                var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(16)])
+                var numberString = NSMutableAttributedString(string: self.activeSpot!.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2r])
+                currencyString.appendAttributedString(numberString)
+
+                detailView.leftBottomLabel.attributedText = currencyString
+
+                detailView.rightBottomLabel.attributedText = interval.untilAttributedString(Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
+                break
+            default:
+                let interval = activeSpot!.availableTimeInterval()
+
+                if (interval > 2*3600) { // greater than 2 hours = show available until... by default
+                    detailView.rightTopLabel.text = "until".localizedString.uppercaseString
+                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
+                } else {
+                    detailView.rightTopLabel.text = "for".localizedString.uppercaseString
+                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2r)
+                }
+                break
+                
             }
-            
         }
     }
     
@@ -381,6 +400,23 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 println("selected spot : " + activeSpot!.identifier)
             }
             
+            switch spot!.currentlyActiveRule.ruleType {
+            case .Paid:
+                detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
+                    make.width.equalTo(110)
+                })
+                detailView.checkinImageView.image = UIImage(named:"icon_checkin_pin_pay")
+                detailView.checkinImageLabel.text = "check-in-pay".localizedString
+                break
+            default:
+                detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
+                    make.width.equalTo(0)
+                })
+                detailView.checkinImageView.image = UIImage(named:"icon_checkin_pin")
+                detailView.checkinImageLabel.text = "check-in".localizedString
+                break
+            }
+
             detailView.titleLabel.text = activeSpot?.name
             updateSpotDetailsTime()
             detailView.checkinImageView.layer.wigglewigglewiggle()

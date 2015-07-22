@@ -60,17 +60,17 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         addSubview(topContainer)
         
-        titleLabel.font = Styles.Fonts.h2
+        titleLabel.font = Styles.Fonts.h3r
         titleLabel.textColor = Styles.Colors.cream1
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.Left
         topContainer.addSubview(titleLabel)
         
         leftImageView.image = UIImage(named: "btn_back_outline")
-        leftImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        leftImageView.contentMode = UIViewContentMode.Center
         topContainer.addSubview(leftImageView)
 
-        rightImageView.image = UIImage(named: "btn_list")
-        rightImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        rightImageView.image = UIImage(named: "btn_menu")
+        rightImageView.contentMode = UIViewContentMode.Center
         topContainer.addSubview(rightImageView)
 
         topContainer.addSubview(materialDesignButton)
@@ -93,22 +93,21 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.topContainer)
-            make.left.equalTo(self.leftImageView.snp_right).with.offset(10)
-            make.right.equalTo(self.rightImageView.snp_left).with.offset(-20)
-            make.bottom.equalTo(self.topContainer).with.offset(-13)
+            make.left.equalTo(self.leftImageView.snp_right).with.offset(4)
+            make.right.equalTo(self.rightImageView.snp_left).with.offset(-10)
+            make.bottom.equalTo(self.topContainer).with.offset(-20)
         }
         
         leftImageView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(24, 22))
-            make.left.equalTo(self.topContainer).with.offset(27)
-            make.bottom.equalTo(self.topContainer).with.offset(-18)
+            make.size.equalTo(CGSizeMake(20, 20)) //real size is CGSizeMake(11, 9)
+            make.left.equalTo(self.topContainer).with.offset(10)
+            make.bottom.equalTo(self.topContainer).with.offset(-22)
         }
 
         rightImageView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(20, 17))
-            make.right.equalTo(self.topContainer).with.offset(-40)
-            make.bottom.equalTo(self.topContainer).with.offset(-18)
+            make.size.equalTo(CGSizeMake(17, 15))
+            make.right.equalTo(self.topContainer).with.offset(-33)
+            make.bottom.equalTo(self.topContainer).with.offset(-25)
         }
         
         materialDesignButton.snp_makeConstraints { (make) -> () in
@@ -143,7 +142,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         let duration = animated ? 0.2 : 0
         UIView.animateWithDuration(duration, animations: {
-            self.rightImageView.transform = CGAffineTransformMakeRotation((90.0 * CGFloat(M_PI)) / 180.0)
+            self.rightImageView.transform = CGAffineTransformMakeRotation((-90.0 * CGFloat(M_PI)) / 180.0)
         })
 
         isRightImageViewRotated = true

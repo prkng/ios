@@ -29,7 +29,7 @@ struct SpotOperations {
     }
     
     
-    static func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, permit: Bool = false, completion: ((spots: Array<ParkingSpot>, outsideServiceArea: Bool) -> Void)) {
+    static func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, permit: Bool = false, completion: ((spots: Array<ParkingSpot>, underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "slots"
         
@@ -74,11 +74,12 @@ struct SpotOperations {
                 ParkingSpot(json: spotJson)
             })
             
-            let outsideServiceArea = response!.statusCode == 404
+            let underMaintenance = response != nil && response!.statusCode == 503
+            let outsideServiceArea = response != nil && response!.statusCode == 404
 
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
-                completion(spots: spots, outsideServiceArea: outsideServiceArea)
+                completion(spots: spots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
             })
             
         }

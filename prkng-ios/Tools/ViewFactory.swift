@@ -241,6 +241,33 @@ struct ViewFactory {
         return imageView
     }
 
+    static func paidIcon(hourlyRateString: String, color: UIColor) -> UIImageView {
+        
+        var imageView = UIImageView()
+        var maxLabel = UILabel()
+        var image = UIImage(named: "icon_paid")
+        
+        imageView.image = image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.tintColor = color
+        
+        maxLabel.text = hourlyRateString + "/H"
+        maxLabel.font = Styles.FontFaces.regular(12)
+        maxLabel.textAlignment = NSTextAlignment.Center
+        maxLabel.textColor = color
+        maxLabel.adjustsFontSizeToFitWidth = true
+        maxLabel.numberOfLines = 1
+        maxLabel.sizeToFit()
+        
+        imageView.addSubview(maxLabel)
+        
+        maxLabel.snp_makeConstraints({ (make) -> () in
+            make.centerX.equalTo(imageView)
+            make.top.equalTo(imageView.snp_bottom).with.offset(2)
+        })
+        
+        return imageView
+    }
+
     
     
 }

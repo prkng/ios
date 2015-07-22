@@ -57,21 +57,25 @@ class AgendaTableViewCell: UITableViewCell {
         }
         
         var imageView = UIImageView()
-        switch agendaItem.state() {
-        case .FREE:
+        switch agendaItem.rule.ruleType {
+        case .Free:
             colorView.backgroundColor = Styles.Colors.cream1
             imageView = ViewFactory.authorizedIcon(Styles.Colors.petrol2)
             break
-        case .RESTRICTION:
+        case .Restriction:
             hoursTextColor = Styles.Colors.red2
             colorView.backgroundColor = Styles.Colors.red2
             imageView = ViewFactory.forbiddenIcon(Styles.Colors.red2)
             break
-        case .TIMEMAX:
+        case .TimeMax:
             colorView.backgroundColor = Styles.Colors.petrol2
             imageView = ViewFactory.timeMaxIcon(agendaItem.timeLimit/60, addMaxLabel: false, color: Styles.Colors.petrol2)
             break
-            
+        case .Paid:
+            hoursTextColor = Styles.Colors.curry
+            colorView.backgroundColor = Styles.Colors.curry
+            imageView = ViewFactory.paidIcon("", color: Styles.Colors.curry)
+            break
         }
         
         icon.image = imageView.image

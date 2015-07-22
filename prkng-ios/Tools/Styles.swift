@@ -16,6 +16,7 @@ struct Styles {
         static let cream2 = UIColor(rgba: "#F4F1EF")
         
         static let curry = UIColor(rgba: "#E6AE5C")
+        static let sand = UIColor(rgba: "#E0AF65")
         
         static let stone = UIColor(rgba: "#EAE9E5")
         

@@ -8,12 +8,22 @@
 			<key>DefaultValue</key>
 			<false/>
 			<key>Key</key>
-			<string>use_apple_maps</string>
+			<string>use_test_server</string>
 			<key>Title</key>
-			<string>Apple Maps</string>
+			<string>Test Server</string>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 		</dict>
+        <dict>
+            <key>DefaultValue</key>
+            <false/>
+            <key>Key</key>
+            <string>use_apple_maps</string>
+            <key>Title</key>
+            <string>Apple Maps</string>
+            <key>Type</key>
+            <string>PSToggleSwitchSpecifier</string>
+        </dict>
 		<dict>
 			<key>DefaultValue</key>
 			<false/>

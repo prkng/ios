@@ -2,18 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "btnBackCopy.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "btnBackCopy@2x.png"
+      "filename" : "btn-Checkin-Pay@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "btnBackCopy@3x.png"
+      "filename" : "btn-Checkin-Pay@3x.png"
     }
   ],
   "info" : {

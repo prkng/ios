@@ -148,11 +148,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let selected = userInfo!["selected"] as! Bool
             let spot = userInfo!["spot"] as! ParkingSpot
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
-            
+            let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
             var shape = RMShape(view: mapView)
             
-            if (selected) {
+            if selected {
                 shape.lineColor = Styles.Colors.red2
+            } else if isCurrentlyPaidSpot {
+                shape.lineColor = Styles.Colors.curry
             } else {
                 shape.lineColor = Styles.Colors.petrol2
             }
@@ -179,12 +181,16 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
             let selected = userInfo!["selected"] as! Bool
             let spot = userInfo!["spot"] as! ParkingSpot
+            let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             
             var imageName = "button_line_"
             
             if mapView.zoom < 18 {
                 imageName += "small_"
+            }
+            if isCurrentlyPaidSpot {
+                imageName += "metered_"
             }
             if !selected {
                 imageName += "in"
@@ -515,7 +521,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let permit = self.delegate?.activeFilterPermit() ?? false
             
             SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion:
-                { (spots, outsideServiceArea) -> Void in
+                { (spots, underMaintenance, outsideServiceArea, error) -> Void in
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         //only show the spinner if this map is active
@@ -523,9 +529,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                             if tabController.activeTab() == PrkTab.Here {
                                 SVProgressHUD.setBackgroundColor(UIColor.clearColor())
                                 SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
-                            
+
                                 if self.canShowMapMessage {
-                                    if outsideServiceArea {
+                                    if error {
+                                        self.delegate?.showMapMessage("map_message_error".localizedString)
+                                    } else if underMaintenance {
+                                        self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
+                                    } else if outsideServiceArea {
                                         self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
                                     } else if spots.count == 0 {
                                         self.delegate?.showMapMessage("map_message_no_spots".localizedString)

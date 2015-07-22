@@ -13,22 +13,31 @@ class ScheduleItemView : UIView {
     private var containerView : UIView
     private var imageView : UIImageView
     
-    var limited : Bool
+    var rule: ParkingRule
     
     private var didSetupSubviews : Bool
     private var didSetupConstraints : Bool
     
-    convenience init(model : ScheduleItemModel) {
+    convenience init(model: ScheduleItemModel) {
         self.init(frame:CGRectZero)
         
-        self.limited = (model.timeLimitText != nil)
+        self.rule = model.rule
         
-        if(limited) {
-            imageView = ViewFactory.timeMaxIcon(Int(model.limit/60), addMaxLabel: true, color: Styles.Colors.cream2)
-
-        } else {
+        switch self.rule.ruleType {
+        case .Free:
+            //.free not supported in schedule items at the moment!
+            break
+        case .Restriction:
             imageView = ViewFactory.forbiddenIcon(Styles.Colors.berry2)
+            break
+        case .TimeMax:
+            imageView = ViewFactory.timeMaxIcon(Int(model.limit/60), addMaxLabel: true, color: Styles.Colors.cream2)
+            break
+        case .Paid:
+            imageView = ViewFactory.paidIcon(model.rule.paidHourlyRateString, color: Styles.Colors.curry)
+            break
         }
+        
     }
     
     convenience init() {
@@ -43,7 +52,7 @@ class ScheduleItemView : UIView {
         didSetupSubviews = false
         didSetupConstraints = true
         
-        limited =  false
+        rule = ParkingRule(ruleType: ParkingRuleType.Restriction)
 
         super.init(frame: frame)
         
@@ -78,12 +87,19 @@ class ScheduleItemView : UIView {
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         containerView.addSubview(imageView)
         
-        if(limited) {
-            self.backgroundColor = Styles.Colors.midnight1
-
-        } else {
+        switch self.rule.ruleType {
+        case .Free:
+            //.free not supported in schedule items at the moment!
+            break
+        case .Restriction:
             self.backgroundColor = Styles.Colors.red2
-            
+            break
+        case .TimeMax:
+            self.backgroundColor = Styles.Colors.midnight1
+            break
+        case .Paid:
+            self.backgroundColor = Styles.Colors.petrol2
+            break
         }
         
         didSetupSubviews = true

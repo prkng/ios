@@ -110,35 +110,18 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
 
 class AgendaItem {
     
-    enum AgendaItemState {
-        case FREE
-        case RESTRICTION
-        case TIMEMAX
-    }
-    
     var startTime   : NSTimeInterval
     var endTime     : NSTimeInterval
     var dayIndex    : Int   //0 means today, 1 means tomorrow, etc
     var timeLimit   : Int
+    var rule        : ParkingRule
     
-    init(startTime: NSTimeInterval, endTime: NSTimeInterval, dayIndex: Int, timeLimit: Int) {
+    init(startTime: NSTimeInterval, endTime: NSTimeInterval, dayIndex: Int, timeLimit: Int, rule: ParkingRule) {
         self.startTime = startTime
         self.endTime = endTime
         self.dayIndex = dayIndex
         self.timeLimit = timeLimit
-    }
-    
-    func state() -> AgendaItemState {
-        
-        if startTime == 0 && endTime == 3600 * 24 {
-            return AgendaItemState.FREE
-        }
-        if timeLimit > 0 {
-            return AgendaItemState.TIMEMAX
-        } else {
-            return AgendaItemState.RESTRICTION
-        }
-
+        self.rule = rule
     }
     
     func isToday() -> Bool {
@@ -158,7 +141,7 @@ class AgendaItem {
         let firstPartFont = Styles.FontFaces.regular(14)
         let secondPartFont = Styles.FontFaces.light(14)
         
-        if self.state() == .FREE {
+        if self.rule.ruleType == .Free {
             let attrs = [NSFontAttributeName: firstPartFont]
             var attributedString = NSMutableAttributedString(string: "24 H", attributes: attrs)
             return attributedString
