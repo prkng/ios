@@ -26,6 +26,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     var smallButtonContainer : UIView
     var reportButton : UIButton
     
+    var bottomButtonContainer: UIView
+    var bottomButtonLabel: UILabel
+    var bottomPillButton: UIButton
+    var bottomSelectionControl: SelectionControl
+    
     var bigButtonContainer : UIView
     var shareButton : UIButton
     var leaveButton : UIButton
@@ -43,7 +48,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     private var smallerVerticalMargin: Int = 0
     private var largerVerticalMargin: Int = 0
 
-    private let BUTTONS_TRANSLATION_X = CGFloat(Styles.Sizes.hugeButtonHeight * 2)
+    private let BUTTONS_TRANSLATION_X = CGFloat(2*Styles.Sizes.hugeButtonHeight + 60)
     
     
     init() {
@@ -57,6 +62,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         availableTitleLabel = ViewFactory.formLabel()
         availableTimeLabel = UILabel()
         
+        bottomButtonContainer = UIView()
+        bottomButtonLabel = UILabel()
+        bottomPillButton = UIButton()
+        bottomSelectionControl = SelectionControl(titles: ["yes".localizedString.uppercaseString, "no".localizedString.uppercaseString])
+
         bigButtonContainer = UIView()
         shareButton = ViewFactory.hugeButton()
         leaveButton = ViewFactory.hugeButton()
@@ -126,7 +136,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             
             let setSpot = {(var spot: ParkingSpot?) -> () in
                 self.spot = spot
-                self.updateValues()
+                self.setDefaultTimeDisplay()
                 SVProgressHUD.dismiss()
                 if (spot != nil) {
                     self.animateAndShow()
@@ -168,7 +178,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         locationLabel.text = "PRKNG"
         containerView.addSubview(locationLabel)
         
-        setDefaultTimeDisplay()
         containerView.addSubview(availableTitleLabel)
         
         availableTimeLabel.textColor = Styles.Colors.red2
@@ -190,6 +199,26 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         smallButtonContainer.addSubview(reportButton)
         
         view.addSubview(bigButtonContainer)
+        
+        bottomButtonContainer.backgroundColor = Styles.Colors.dark30
+        bigButtonContainer.addSubview(bottomButtonContainer)
+        
+        bottomButtonLabel.font = Styles.FontFaces.light(12)
+        bottomButtonLabel.textColor = Styles.Colors.stone
+        bottomButtonContainer.addSubview(bottomButtonLabel)
+        
+        bottomPillButton.clipsToBounds = true
+        bottomPillButton.layer.cornerRadius = 12
+        bottomPillButton.layer.borderWidth = 1
+        bottomPillButton.titleLabel?.font = Styles.FontFaces.regular(12)
+        bottomPillButton.setTitle("pay".localizedString.uppercaseString, forState: UIControlState.Normal)
+        bottomPillButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
+        bottomPillButton.layer.borderColor = Styles.Colors.stone.CGColor
+        bottomPillButton.addTarget(self, action: "payButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        bottomButtonContainer.addSubview(bottomPillButton)
+
+        bottomSelectionControl.addTarget(self, action: "nightBeforeSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        bottomButtonContainer.addSubview(bottomSelectionControl)
         
         leaveButton.setTitle("leave_spot".localizedString.lowercaseString, forState: UIControlState.Normal)
         leaveButton.addTarget(self, action: "leaveButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -255,7 +284,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         smallButtonContainer.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.shareButton.snp_top).with.offset(-self.largerVerticalMargin)
+            make.top.greaterThanOrEqualTo(self.containerView.snp_bottom).with.offset(self.largerVerticalMargin/2)
+            make.bottom.greaterThanOrEqualTo(self.bigButtonContainer.snp_top).with.offset(-self.largerVerticalMargin)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(26)
@@ -271,7 +301,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight * 2)
+            make.height.equalTo(self.BUTTONS_TRANSLATION_X)
         }
         
         leaveButton.snp_makeConstraints { (make) -> () in
@@ -281,7 +311,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.right.equalTo(self.bigButtonContainer)
         }
         
-        
         shareButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.leaveButton.snp_top)
@@ -289,6 +318,30 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.right.equalTo(self.bigButtonContainer)
         }
         
+        bottomButtonContainer.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.shareButton.snp_top)
+            make.left.equalTo(self.bigButtonContainer)
+            make.right.equalTo(self.bigButtonContainer)
+            make.height.equalTo(60)
+        }
+        
+        bottomButtonLabel.snp_makeConstraints { (make) -> () in
+            make.centerY.equalTo(self.bottomButtonContainer)
+            make.left.equalTo(self.bottomButtonContainer).with.offset(27)
+        }
+        
+        bottomPillButton.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSize(width: 92, height: 24))
+            make.centerY.equalTo(self.bottomButtonContainer)
+            make.right.equalTo(self.bottomButtonContainer).with.offset(-31)
+        }
+        
+        bottomSelectionControl.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(self.bottomButtonContainer)
+            make.centerY.equalTo(self.bottomButtonContainer)
+            make.left.equalTo(self.bottomButtonLabel.snp_rightMargin)
+            make.right.equalTo(self.bottomButtonContainer)
+        }
     }
     
     func updateValues () {
@@ -317,6 +370,22 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 
                 availableTimeLabel.attributedText = attributedString
                 
+                bottomButtonContainer.hidden = false
+                bottomSelectionControl.hidden = true
+                
+                switch Settings.selectedCity() {
+                case Settings.City.Montreal:
+                    bottomButtonLabel.text = "p_service_mobile_user".localizedString.uppercaseString
+                    break
+                case Settings.City.QuebecCity:
+                    bottomButtonLabel.text = "copilote_mobile_user".localizedString.uppercaseString
+                    break
+                default:
+                    bottomButtonLabel.text = ""
+                    break
+                }
+
+                
                 break
             default:
                 logoView.image = UIImage(named: "icon_checkin")
@@ -331,6 +400,18 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 } else {
                     availableTimeLabel.attributedText = NSAttributedString(string: "time_up".localizedString)
                     availableTimeLabel.font = Styles.Fonts.h1r
+                }
+                
+                bottomButtonContainer.hidden = true
+                bottomSelectionControl.hidden = false
+                bottomPillButton.hidden = true
+
+                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval) % (24*60*60)
+                if intervalInEndDay < 12*60*60 {
+                    bottomButtonContainer.hidden = false
+                    bottomButtonLabel.text = "notified_night_before".localizedString.uppercaseString
+                    let i = Settings.shouldNotifyTheNightBefore() ? 0 : 1
+                    bottomSelectionControl.selectOption(bottomSelectionControl.buttons[i], animated: false)
                 }
                 break
             }
@@ -426,6 +507,57 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func reportButtonTapped(sender: UIButton) {
         loadReportScreen(self.spot?.identifier)
     }
+    
+    func payButtonTapped(sender: UIButton) {
+
+        var url = NSURL(string: "")
+
+        switch Settings.selectedCity() {
+        case Settings.City.Montreal:
+            url = NSURL(string: "https://itunes.apple.com/ca/app/p-service-mobile/id535957293")
+            break
+        case Settings.City.QuebecCity:
+            url = NSURL(string: "copilote://")
+            if !UIApplication.sharedApplication().canOpenURL(url!) {
+                url = NSURL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
+            }
+            break
+        default:
+            break
+        }
+
+        UIApplication.sharedApplication().openURL(url!)
+    }
+    
+    func nightBeforeSelectionValueChanged() {
+        
+        if self.spot != nil {
+            switch(bottomSelectionControl.selectedIndex) {
+            case 0:
+                //yes you stupid iphone, remind me the night before
+                Settings.setShouldNotifyTheNightBefore(true)
+                
+                let interval = Settings.checkInTimeRemaining()
+                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval) % (24*60*60)
+                
+                var date8pmBefore = NSDate(timeIntervalSinceNow:interval - intervalInEndDay - (4*60*60))
+                date8pmBefore = date8pmBefore.dateBySubtractingMinutes(date8pmBefore.minute())
+
+                Settings.scheduleNotification(date8pmBefore)
+                
+                break
+            case 1:
+                //no you stupid iphone, stop trying to make early reminders happen. they're not going to happen.
+                Settings.setShouldNotifyTheNightBefore(false)
+                Settings.scheduleNotification(NSDate(timeIntervalSinceNow: Settings.checkInTimeRemaining() - NSTimeInterval(Settings.notificationTime() * 60)))
+                
+                break
+            default:break
+            }
+        }
+    }
+
+
     
     func setDefaultTimeDisplay() {
         

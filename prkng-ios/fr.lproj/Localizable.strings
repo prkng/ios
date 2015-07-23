@@ -95,9 +95,16 @@
 "leave_spot" = "check out";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
-"off" = "non";
+"notified_night_before" = "Get notified the night before";
+"on" = "Oui";
+"off" = "Non";
+"yes" = "Oui";
+"no" = "Non";
 "share_location_copy" = "Je suis parqué sur: \"[street_name]\", prkng app. http://prk.ng";
 "pay_reminder" = "Hey, don't forget to pay!";
+"pay" = "Payez";
+"p_service_mobile_user" = "P$ Service Mobile user?";
+"copilote_mobile_user" = "Copilote user?";
 
 // Days
 "this_day" = "Ce jour";
@@ -157,6 +164,7 @@
 "search" = "Rechercher";
 "search_bar_text" = "Lieu ou adresse";
 "car_sharing" = "car2go";
+"car_sharing_filter" = "Filtre Car2go";
 
 "map_message_too_zoomed_out" = "Zoom in to see where you're allowed to park.";
 "map_message_no_spots" = "Uh oh! There are no spots in this area.";

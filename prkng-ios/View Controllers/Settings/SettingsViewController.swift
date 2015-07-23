@@ -166,14 +166,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         notificationsLabel.textAlignment = NSTextAlignment.Center
         notificationsContainer.addSubview(notificationsLabel)
         
-        notificationSelection.buttonSize = CGSizeMake(90, 28)
-        notificationSelection.font = Styles.FontFaces.light(17)
-        notificationSelection.textColor = Styles.Colors.anthracite1
-        notificationSelection.selectedTextColor = Styles.Colors.cream1
-        notificationSelection.borderColor = UIColor.clearColor()
-        notificationSelection.selectedBorderColor = UIColor.clearColor()
-        notificationSelection.buttonBackgroundColor = UIColor.clearColor()
-        notificationSelection.selectedButtonBackgroundColor = Styles.Colors.red2
         notificationSelection.addTarget(self, action: "notificationSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
         notificationsContainer.addSubview(notificationSelection)
         

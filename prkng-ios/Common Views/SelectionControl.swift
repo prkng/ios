@@ -22,6 +22,7 @@ class SelectionControl: UIControl {
     var selectedIndex : Int
     
     var buttonSize : CGSize
+    var selectionIndicatorSize : CGSize
     var borderColor : UIColor?
     var selectedBorderColor : UIColor?
     var textColor : UIColor?
@@ -48,6 +49,7 @@ class SelectionControl: UIControl {
         didSetupSubviews = false
         didSetupConstraints = true
         buttonSize = CGSizeMake(110, 26) // Default
+        selectionIndicatorSize = CGSizeMake(5, 5)
         selectedIndex = 0
         selectionIndicator = UIView()
         super.init(frame: frame)
@@ -83,8 +85,8 @@ class SelectionControl: UIControl {
         
         var index : Int = 0
         
-        selectionIndicator.backgroundColor = self.selectedButtonBackgroundColor
-        selectionIndicator.layer.cornerRadius =  self.buttonSize.height / 2.0
+        selectionIndicator.backgroundColor = self.selectedTextColor ?? Styles.Colors.red2
+        selectionIndicator.layer.cornerRadius =  self.selectionIndicatorSize.height / 2.0
         addSubview(selectionIndicator)
         
         for title in titles {
@@ -173,7 +175,9 @@ class SelectionControl: UIControl {
         }
         
         selectionIndicator.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.buttons[selectedIndex])
+            make.centerX.equalTo(self.buttons[self.selectedIndex])
+            make.centerY.equalTo(self.buttons[self.selectedIndex]).with.offset(12)
+            make.size.equalTo(self.selectionIndicatorSize)
         }
         
         didSetupConstraints = true
@@ -202,7 +206,9 @@ class SelectionControl: UIControl {
             deselectAll()
             
             selectionIndicator.snp_remakeConstraints { (make) -> () in
-                make.edges.equalTo(self.buttons[selectedIndex])
+                make.centerX.equalTo(self.buttons[self.selectedIndex])
+                make.centerY.equalTo(self.buttons[self.selectedIndex]).with.offset(12)
+                make.size.equalTo(self.selectionIndicatorSize)
             }
             
             if (animated) {
@@ -259,13 +265,13 @@ class SelectionButton: UIControl {
     override init(frame: CGRect) {
         
         // defaults
-        font = Styles.FontFaces.light(12)
-        textColor = Styles.Colors.stone
-        selectedTextColor = Styles.Colors.stone
-        borderColor = Styles.Colors.stone
-        selectedBorderColor =  Styles.Colors.red2
+        font = Styles.FontFaces.regular(12)
+        textColor = Styles.Colors.anthracite1
+        selectedTextColor = Styles.Colors.red2
+        borderColor = UIColor.clearColor()
+        selectedBorderColor =  UIColor.clearColor()
         buttonBackgroundColor = UIColor.clearColor()
-        selectedButtonBackgroundColor = Styles.Colors.red2
+        selectedButtonBackgroundColor = UIColor.clearColor()
         
         titleLabel = UILabel()
         index = -1

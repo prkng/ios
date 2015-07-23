@@ -343,16 +343,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             
         })
         
-        //opening copilote
-//        var url = NSURL(string: "https://itunes.apple.com/ca/app/p-service-mobile/id535957293")
-//        var url = NSURL(string: "copilote://")
-//        if !UIApplication.sharedApplication().canOpenURL(url!) {
-//            url = NSURL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
-//        }
-//        UIApplication.sharedApplication().openURL(url!)
-
-        
-        
     }
     
     func updateSpotDetailsTime() {

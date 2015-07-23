@@ -19,6 +19,7 @@ struct Settings {
     static let FIRST_USE_PASSED_KEY = "prkng_first_use_passed"
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
+    static let NOTIFICATION_NIGHT_BEFORE_KEY = "prkng_notification_night_before_time"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
     static let CHECKED_IN_SPOT_KEY = "prkng_checked_in_spot"
     static let CHECKED_IN_SPOT_ID_KEY = "prkng_checked_in_spot_id"
@@ -166,12 +167,24 @@ struct Settings {
     }
    
     
+    static func shouldNotifyTheNightBefore() -> Bool{
+        return NSUserDefaults.standardUserDefaults().boolForKey(NOTIFICATION_NIGHT_BEFORE_KEY)
+        
+    }
+
+    static func setShouldNotifyTheNightBefore(value: Bool) {
+        NSUserDefaults.standardUserDefaults().setBool(value, forKey: NOTIFICATION_NIGHT_BEFORE_KEY)
+    }
+    
     static func scheduleNotification(time : NSDate) {
         
+        Settings.cancelNotification()
+        
+        let alarmTime = time.dateByAddingTimeInterval(NSTimeInterval(-time.seconds()))
         let alarm = UILocalNotification()
         alarm.alertBody = "alarm_text".localizedString
         alarm.soundName = UILocalNotificationDefaultSoundName
-        alarm.fireDate = time
+        alarm.fireDate = alarmTime
         alarm.applicationIconBadgeNumber = 1
         UIApplication.sharedApplication().scheduleLocalNotification(alarm)
         
