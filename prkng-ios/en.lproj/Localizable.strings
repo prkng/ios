@@ -164,6 +164,8 @@
 "search_bar_text" = "Search";
 "car_sharing" = "Car2go";
 "car_sharing_filter" = "Car2go filter";
+"car_sharing_info_text" = "Put something here";
+"got_it" = "Got it!";
 
 "map_message_too_zoomed_out" = "Zoom in to see where you're allowed to park.";
 "map_message_no_spots" = "Uh oh! There are no spots in this area.";

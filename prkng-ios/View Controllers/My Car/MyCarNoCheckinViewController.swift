@@ -27,7 +27,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         messageLabel = ViewFactory.bigMessageLabel()
         parkButton = ViewFactory.hugeButton()
         searchButton = ViewFactory.hugeButton()
-        reportButton = ViewFactory.exclamationButton()
+        reportButton = UIButton()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -61,7 +61,15 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         messageLabel.text = "no_checkin_message".localizedString
         view.addSubview(messageLabel)
         
-        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: .TouchUpInside)
+        reportButton.clipsToBounds = true
+        reportButton.layer.cornerRadius = 14
+        reportButton.layer.borderWidth = 1
+        reportButton.titleLabel?.font = Styles.FontFaces.light(12)
+        reportButton.setTitle("report_an_error".localizedString.uppercaseString, forState: UIControlState.Normal)
+        reportButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
+        reportButton.layer.borderColor = Styles.Colors.red2.CGColor
+        reportButton.backgroundColor = Styles.Colors.red2
+        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(reportButton)
         
         searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
@@ -93,11 +101,11 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         }
         
         reportButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(24, 24))
             make.bottom.equalTo(self.parkButton.snp_top).with.offset(-20)
-            make.centerX.equalTo(self.view).multipliedBy(1.66)
+            make.size.equalTo(CGSizeMake(155, 26))
+            make.centerX.equalTo(self.view)
         }
-        
+
         parkButton.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
             make.bottom.equalTo(self.searchButton.snp_top)

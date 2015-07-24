@@ -499,6 +499,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         updateInProgress = true
         
+        self.delegate?.showMapMessage(nil)
+        
         if (mapView.zoom > 15.0) {
             
             var checkinTime = searchCheckinDate
@@ -531,10 +533,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                                 SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
 
                                 if self.canShowMapMessage {
-                                    if error {
-                                        self.delegate?.showMapMessage("map_message_error".localizedString)
-                                    } else if underMaintenance {
+                                    if underMaintenance {
                                         self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
+                                    } else if error {
+                                        self.delegate?.showMapMessage("map_message_error".localizedString)
                                     } else if outsideServiceArea {
                                         self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
                                     } else if spots.count == 0 {

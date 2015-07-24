@@ -165,6 +165,8 @@
 "search_bar_text" = "Lieu ou adresse";
 "car_sharing" = "car2go";
 "car_sharing_filter" = "Filtre Car2go";
+"car_sharing_info_text" = "Put something here";
+"got_it" = "Got it!";
 
 "map_message_too_zoomed_out" = "Zoom in to see where you're allowed to park.";
 "map_message_no_spots" = "Uh oh! There are no spots in this area.";

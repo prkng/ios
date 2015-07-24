@@ -11,7 +11,7 @@ import MessageUI
 
 class SettingsViewController: AbstractViewController, MFMailComposeViewControllerDelegate {
     
-    let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
+    let backgroundImageView = UIImageView(image: UIImage(named:"bg_settings"))
     
     var topContainer : UIView
     
@@ -29,6 +29,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     var notificationsContainer : UIView
     var notificationsLabel : UILabel
     var notificationSelection : SelectionControl
+
+    var separator1: UIView
+    var separator2: UIView
+    var separator3: UIView
 
     var carSharingContainer : UIView
     var carSharingLabel : UILabel
@@ -67,6 +71,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             "30 " + "minutes_short".localizedString.uppercaseString,
             "off".localizedString.uppercaseString])
 
+        separator1 = UIView()
+        separator2 = UIView()
+        separator3 = UIView()
+        
         carSharingContainer = UIView()
         carSharingLabel = UILabel()
         carSharingButton = ViewFactory.infoButton()
@@ -193,6 +201,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         carSharingLabel.textAlignment = NSTextAlignment.Left
         carSharingContainer.addSubview(carSharingLabel)
         
+        carSharingButton.addTarget(self, action: "carSharingButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         carSharingContainer.addSubview(carSharingButton)
 
         carSharingSelection.buttonSize = CGSizeMake(90, 28)
@@ -206,6 +215,13 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         sendLogButton.addTarget(self, action: "sendLogButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(sendLogButton)
+        
+        separator1.backgroundColor = Styles.Colors.transparentBlack
+        separator2.backgroundColor = Styles.Colors.transparentWhite
+        separator3.backgroundColor = Styles.Colors.transparentBlack
+        view.addSubview(separator1)
+        view.addSubview(separator2)
+        view.addSubview(separator3)
         
     }
     
@@ -242,6 +258,28 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.bottom.equalTo(self.notificationsContainer)
         }
 
+        
+        separator1.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(0.5)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.top.equalTo(self.notificationsContainer.snp_bottom)
+        }
+        
+        separator2.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(0.5)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.top.equalTo(self.separator1.snp_bottom)
+        }
+        
+        separator3.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(0.5)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.top.equalTo(self.carSharingContainer.snp_bottom)
+        }
+        
         
         carSharingContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(60)
@@ -452,6 +490,16 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             break
         default:break
         }
+    }
+    
+    func carSharingButtonTapped() {
+        
+        let alert = UIAlertView()
+        alert.title = "car_sharing_filter".localizedString
+        alert.message = "car_sharing_info_text".localizedString
+        alert.addButtonWithTitle("got_it".localizedString)
+        alert.show()
+
     }
     
     func profileButtonTapped(sender: UIButton) {

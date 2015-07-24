@@ -371,22 +371,23 @@ class ScheduleHelper {
                 else if (lastScheduleItem != nil
                     && lastScheduleItem!.columnIndex! == scheduleItem.columnIndex!
                     && lastScheduleItem!.endInterval >= scheduleItem.startInterval
-                    && lastScheduleItem!.limit == scheduleItem.limit) {
+                    && lastScheduleItem!.limit == scheduleItem.limit
+                    && lastScheduleItem!.rule.ruleType == scheduleItem.rule.ruleType) {
                         newScheduleItems.removeLast()
                         var newScheduleItem = ScheduleItemModel(startF: lastScheduleItem!.startInterval, endF: scheduleItem.endInterval, column : scheduleItem.columnIndex!, limitInterval: scheduleItem.limit, rule: scheduleItem.rule)
                         newScheduleItems.append(newScheduleItem)
                 }
-                    //RULE: SPLIT TIME MAXES IF A RESTRICTION OVERLAPS IT
+                    //RULE: SPLIT (TIME MAXES OR PAID) IF A RESTRICTION OVERLAPS IT
                 else if (lastScheduleItem != nil
                     && lastScheduleItem!.columnIndex! == scheduleItem.columnIndex!
                     && lastScheduleItem!.startInterval < scheduleItem.endInterval
                     && lastScheduleItem!.endInterval > scheduleItem.startInterval
-                    && lastScheduleItem!.limit != scheduleItem.limit) {
+                    && lastScheduleItem!.rule.ruleType != scheduleItem.rule.ruleType) {
                         //now just determine which is the restriction and which is the time max
                         var restriction: ScheduleItemModel = ScheduleItemModel()
                         var timeMax: ScheduleItemModel = ScheduleItemModel()
                         
-                        if lastScheduleItem!.limit > 0 { //then this is the time mac
+                        if lastScheduleItem!.rule.ruleType != .Restriction { //then this is the time max or paid
                             restriction = scheduleItem
                             timeMax = lastScheduleItem!
                             newScheduleItems.removeLast()
