@@ -29,7 +29,12 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     var notificationsContainer : UIView
     var notificationsLabel : UILabel
     var notificationSelection : SelectionControl
-    
+
+    var carSharingContainer : UIView
+    var carSharingLabel : UILabel
+    var carSharingButton : UIButton
+    var carSharingSelection : SelectionControl
+
     var historyButton : UIButton
     var aboutButton : UIButton
 
@@ -61,7 +66,12 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         notificationSelection = SelectionControl(titles: ["15 " + "minutes_short".localizedString.uppercaseString,
             "30 " + "minutes_short".localizedString.uppercaseString,
             "off".localizedString.uppercaseString])
-        
+
+        carSharingContainer = UIView()
+        carSharingLabel = UILabel()
+        carSharingButton = ViewFactory.infoButton()
+        carSharingSelection = SelectionControl(titles: ["on".localizedString.uppercaseString, "off".localizedString.uppercaseString])
+
         aboutButton = ViewFactory.hugeCreamButton()
         sendLogButton = ViewFactory.exclamationButton()
         
@@ -104,6 +114,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             i = 1
         }
         self.notificationSelection.selectOption(self.notificationSelection.buttons[i], animated: false)
+        
+        let j = Settings.shouldFilterForCarSharing() ? 0 : 1
+        self.carSharingSelection.selectOption(self.carSharingSelection.buttons[j], animated: false)
         
         if let user = AuthUtility.getUser() {
             self.profileNameLabel.text = user.name
@@ -163,11 +176,29 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         notificationsLabel.textColor = Styles.Colors.midnight2
         notificationsLabel.font = Styles.FontFaces.light(12)
         notificationsLabel.text = "notifications".localizedString.uppercaseString
-        notificationsLabel.textAlignment = NSTextAlignment.Center
+        notificationsLabel.textAlignment = NSTextAlignment.Left
         notificationsContainer.addSubview(notificationsLabel)
         
+        notificationSelection.buttonSize = CGSizeMake(90, 28)
         notificationSelection.addTarget(self, action: "notificationSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        notificationSelection.fixedWidth = 20
         notificationsContainer.addSubview(notificationSelection)
+        
+        carSharingContainer.backgroundColor = Styles.Colors.stone
+        view.addSubview(carSharingContainer)
+        
+        carSharingLabel.textColor = Styles.Colors.midnight2
+        carSharingLabel.font = Styles.FontFaces.light(12)
+        carSharingLabel.text = "car_sharing_filter".localizedString.uppercaseString
+        carSharingLabel.textAlignment = NSTextAlignment.Left
+        carSharingContainer.addSubview(carSharingLabel)
+        
+        carSharingContainer.addSubview(carSharingButton)
+
+        carSharingSelection.buttonSize = CGSizeMake(90, 28)
+        carSharingSelection.addTarget(self, action: "carSharingSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        carSharingSelection.fixedWidth = 30
+        carSharingContainer.addSubview(carSharingSelection)
         
         aboutButton.setTitle("about".localizedString, forState: UIControlState.Normal)
         aboutButton.addTarget(self, action: "aboutButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -191,25 +222,52 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.bottom.equalTo(self.view)
         }
         
+        
         notificationsContainer.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(84)
+            make.height.equalTo(60)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.carSharingContainer.snp_top)
+        }
+        
+        notificationsLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.notificationsContainer).with.offset(30)
+            make.centerY.equalTo(self.notificationsContainer)
+        }
+        
+        notificationSelection.snp_makeConstraints { (make) -> () in
+            make.width.greaterThanOrEqualTo(164) //42(15 min)+39(30 min)+23(off)+60(spacing is 3*20)
+            make.right.equalTo(self.notificationsContainer).with.offset(-20).priorityHigh()
+            make.top.equalTo(self.notificationsContainer)
+            make.bottom.equalTo(self.notificationsContainer)
+        }
+
+        
+        carSharingContainer.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(60)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.aboutButton.snp_top)
         }
         
-        notificationsLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.notificationsContainer).with.offset(10)
-            make.left.equalTo(self.notificationsContainer)
-            make.right.equalTo(self.notificationsContainer)
+        carSharingLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.carSharingContainer).with.offset(30)
+            make.centerY.equalTo(self.carSharingContainer)
         }
-        
-        notificationSelection.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.notificationsLabel.snp_bottom).with.offset(5)
-            make.bottom.equalTo(self.notificationsContainer)
-            make.left.equalTo(self.notificationsContainer).with.offset(-10)
-            make.right.equalTo(self.notificationsContainer).with.offset(10)
+
+        carSharingButton.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.carSharingLabel.snp_right).with.offset(10)
+            make.centerY.equalTo(self.carSharingContainer)
+            make.size.equalTo(CGSize(width: 18, height: 18))
         }
+
+        carSharingSelection.snp_makeConstraints { (make) -> () in
+            make.width.greaterThanOrEqualTo(102)//19(ON)+23(off)+60(spacing is 2*30)
+            make.right.equalTo(self.carSharingContainer).with.offset(-20).priorityHigh()
+            make.top.equalTo(self.carSharingContainer)
+            make.bottom.equalTo(self.carSharingContainer)
+        }
+
         
         cityContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.CITY_CONTAINER_HEIGHT)
@@ -377,6 +435,20 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             break
         case 2 :
             Settings.setNotificationTime(0)
+            break
+        default:break
+        }
+    }
+    
+    func carSharingSelectionValueChanged() {
+        switch(carSharingSelection.selectedIndex) {
+        case 0:
+            //on
+            Settings.setShouldFilterForCarSharing(true)
+            break
+        case 1:
+            //off
+            Settings.setShouldFilterForCarSharing(false)
             break
         default:break
         }

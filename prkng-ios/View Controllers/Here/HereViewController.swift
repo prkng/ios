@@ -76,6 +76,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         if (Settings.firstMapUse()) {
             Settings.setFirstMapUsePassed(true)
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstUseMessage"), userInfo: nil, repeats: false)
+        } else {
+            self.delegate?.updateMapAnnotations()
         }
         
     }

@@ -30,6 +30,7 @@ class SelectionControl: UIControl {
     var buttonBackgroundColor : UIColor?
     var selectedButtonBackgroundColor : UIColor?
     var font : UIFont?
+    var fixedWidth : Int = 0
     
     convenience init(titles : Array<String>) {
         self.init(frame:CGRectZero)
@@ -147,27 +148,51 @@ class SelectionControl: UIControl {
             
         } else if (buttons.count > 1) {
             
-            
-            for index in 0...buttons.count-1 {
+            if fixedWidth > 0 {
                 
-                let multiplier : Float = 2.0 * Float(index + 1) / (Float(buttons.count + 1) )  // MAGIC =)
-                NSLog("multiplier : %f", multiplier)
+                var rightConstraint = self.snp_left
                 
-                buttonContainers[index].snp_makeConstraints({ (make) -> () in
-                    make.width.equalTo(self).multipliedBy(1.0 / Float(self.buttons.count))
-                    make.height.equalTo(self)
-                    make.centerX.equalTo(self).multipliedBy(multiplier)
-                    make.top.equalTo(self)
-                    make.bottom.equalTo(self)
-                })
+                for index in 0...buttons.count-1 {
+                    
+                    buttonContainers[index].snp_makeConstraints({ (make) -> () in
+                        make.left.equalTo(rightConstraint).with.offset(self.fixedWidth)
+                        make.top.equalTo(self)
+                        make.bottom.equalTo(self)
+                    })
+                    
+                    buttons[index].snp_makeConstraints({ (make) -> () in
+                        make.edges.equalTo(self.buttonContainers[index])
+                        
+                    })
+
+                    rightConstraint = buttons[index].snp_right
+                    
+                }
+            } else {
                 
-                
-                buttons[index].snp_makeConstraints({ (make) -> () in
-                    make.center.equalTo(self.buttonContainers[index])
-                    make.size.equalTo(self.buttonSize)
-                })
-                
+                for index in 0...buttons.count-1 {
+                    
+                    let multiplier : Float = 2.0 * Float(index + 1) / (Float(buttons.count + 1) )  // MAGIC =)
+                    NSLog("multiplier : %f", multiplier)
+                    
+                    buttonContainers[index].snp_makeConstraints({ (make) -> () in
+                        make.width.equalTo(self).multipliedBy(1.0 / Float(self.buttons.count))
+                        make.height.equalTo(self)
+                        make.centerX.equalTo(self).multipliedBy(multiplier)
+                        make.top.equalTo(self)
+                        make.bottom.equalTo(self)
+                    })
+                    
+                    
+                    buttons[index].snp_makeConstraints({ (make) -> () in
+                        make.center.equalTo(self.buttonContainers[index])
+                        make.size.equalTo(self.buttonSize)
+                        
+                    })
+                }
             }
+            
+            
             
             
             
@@ -326,7 +351,7 @@ class SelectionButton: UIControl {
     func setupConstraints() {
         
         self.titleLabel.snp_makeConstraints { (make) -> () in
-            make.center.equalTo(self)
+            make.edges.equalTo(self)
         }
         
         didSetupConstraints = true

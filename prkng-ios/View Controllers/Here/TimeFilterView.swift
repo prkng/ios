@@ -54,7 +54,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             TimeFilter(interval: 8 * TimeFilter.SECONDS_PER_HOUR),
             TimeFilter(interval: 12 * TimeFilter.SECONDS_PER_HOUR),
             TimeFilter(interval: 24 * TimeFilter.SECONDS_PER_HOUR),
-            TimeFilter(interval: 24 * TimeFilter.SECONDS_PER_HOUR, labelText: "car_sharing".localizedString.uppercaseString, permit: true),
+//            TimeFilter(interval: 24 * TimeFilter.SECONDS_PER_HOUR, labelText: "car_sharing".localizedString.uppercaseString, permit: true),
         ]
         
         topLine = UIView()
