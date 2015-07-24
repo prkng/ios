@@ -40,6 +40,7 @@
 "reset_email_copy" = "Please enter your email address";
 "reset_password" = "Reset Password";
 "cancel" = "Cancel";
+"allow" = "Allow";
 "check_email_copy" = "Please check your email for instructions.";
 "pasword_reset_error" = "Something went wrong, please try again";
 "login_edit_message_google" = "Logged in with Google";
@@ -172,3 +173,5 @@
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here. \n:(";
 "map_message_under_maintenance" = "We're currently performing maintenance on our service. Try again in a little bit!";
 "map_message_error" = "We couldn't connect you to our service, please make sure you have a good network connection, or try again a little later!";
+"camera" = "Camera";
+"enable_camera_message" = "Camera access required to send reports.";

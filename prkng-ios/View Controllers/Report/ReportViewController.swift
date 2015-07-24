@@ -46,7 +46,11 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         setupSubviews()
         setupConstraints()
         
-        // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
         
         let devices = AVCaptureDevice.devices()
@@ -65,8 +69,6 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
                 }
             }
         }
-        
-        
     }
     
     func setupSubviews() {
@@ -151,6 +153,45 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
     }
     
+    func cameraPermissionError() {
+        
+        self.navigationController?.popViewControllerAnimated(true)
+        
+        let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
+        switch authStatus {
+        case .Denied:
+            self.alertToEnableCamera()
+            break
+        case .Restricted:
+            self.alertToEnableCamera()
+            break
+            // this case in handled in beginsession since it only happens the first time
+            //            case .NotDetermined:
+            //                AVCaptureDevice.requestAccessForMediaType(mediaType, completionHandler: { (granted) -> Void in
+            //                    if(granted){
+            //                        NSLog("Granted access to %@", mediaType);
+            //                    } else {
+            //                        NSLog("Not granted access to %@", mediaType);
+            //                        self.alertPromptToAllowCameraAccessViaSetting()
+            //                    }
+            //                })
+            //                break
+        default: break
+        }
+    }
+    
+    func alertToEnableCamera() {
+        var alert = UIAlertController(title: "camera".localizedString, message: "enable_camera_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
+        
+        alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Default, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "allow".localizedString, style: .Cancel, handler: { (alert) -> Void in
+            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+        }))
+        
+        self.navigationController?.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     func beginSession() {
         
         configureDevice()
@@ -158,26 +199,38 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         var err : NSError? = nil
         
         if (captureDevice == nil) {
+            self.navigationController?.popViewControllerAnimated(true)
             return
         }
         
-        captureSession.addInput(AVCaptureDeviceInput(device: captureDevice, error: &err))
-        
-        if err != nil {
-            println("error: \(err?.localizedDescription)")
-        }
-        
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewView.layer.addSublayer(previewLayer)
-        
-        let width =  self.view.frame.height * (768.0 / 1024.0)
-        previewLayer?.frame = CGRectMake((self.view.frame.width - width) / 2, 0, width, self.view.frame.height)
-        captureSession.startRunning()
-        
-        stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
-        if captureSession.canAddOutput(stillImageOutput) {
-            captureSession.addOutput(stillImageOutput)
-        }
+        AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { (granted) -> Void in
+            
+            dispatch_async(dispatch_get_main_queue()) {
+                
+                if let input = AVCaptureDeviceInput(device: self.captureDevice, error: &err) {
+                    self.captureSession.addInput(input)
+                }
+                
+                if err != nil || !granted {
+                    //                println("error: \(err?.localizedDescription)")
+                    self.cameraPermissionError()
+                    return
+                }
+                
+                self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+                self.previewView.layer.addSublayer(self.previewLayer)
+                
+                let width =  self.view.frame.height * (768.0 / 1024.0)
+                self.previewLayer?.frame = CGRectMake((self.view.frame.width - width) / 2, 0, width, self.view.frame.height)
+                self.captureSession.startRunning()
+                
+                self.stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
+                if self.captureSession.canAddOutput(self.stillImageOutput) {
+                    self.captureSession.addOutput(self.stillImageOutput)
+                }
+            }
+        })
+
     }
     
     
