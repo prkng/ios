@@ -31,6 +31,15 @@ class LoginExternalViewController: AbstractViewController {
     var notificationsLabel : UILabel
     var notificationSelection : SelectionControl
     
+    var separator1: UIView
+    var separator2: UIView
+    var separator3: UIView
+    
+    var carSharingContainer : UIView
+    var carSharingLabel : UILabel
+    var carSharingButton : UIButton
+    var carSharingSelection : SelectionControl
+    
     var loginButton : UIButton
     
     var delegate : LoginExternalViewControllerDelegate?
@@ -67,6 +76,14 @@ class LoginExternalViewController: AbstractViewController {
             "30 " + "minutes_short".localizedString.uppercaseString,
             "off".localizedString.uppercaseString])
         
+        separator1 = UIView()
+        separator2 = UIView()
+        separator3 = UIView()
+        
+        carSharingContainer = UIView()
+        carSharingLabel = UILabel()
+        carSharingButton = ViewFactory.infoButton()
+        carSharingSelection = SelectionControl(titles: ["on".localizedString.uppercaseString, "off".localizedString.uppercaseString])
         
         
     loginButton = ViewFactory.hugeButton()
@@ -99,6 +116,8 @@ class LoginExternalViewController: AbstractViewController {
         super.viewDidAppear(animated)
         
         self.notificationSelection.selectOption(self.notificationSelection.buttons[0], animated: false)
+        self.carSharingSelection.selectOption(self.carSharingSelection.buttons[1], animated: false)
+
     }
     
     
@@ -160,15 +179,42 @@ class LoginExternalViewController: AbstractViewController {
         notificationsLabel.textColor = Styles.Colors.midnight2
         notificationsLabel.font = Styles.FontFaces.light(12)
         notificationsLabel.text = "notifications".localizedString.uppercaseString
-        notificationsLabel.textAlignment = NSTextAlignment.Center
+        notificationsLabel.textAlignment = NSTextAlignment.Left
         notificationsContainer.addSubview(notificationsLabel)
         
         notificationSelection.buttonSize = CGSizeMake(90, 28)
+        notificationSelection.addTarget(self, action: "notificationSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        notificationSelection.fixedWidth = 20
         notificationsContainer.addSubview(notificationSelection)
+        
+        carSharingContainer.backgroundColor = Styles.Colors.stone
+        scrollContentView.addSubview(carSharingContainer)
+        
+        carSharingLabel.textColor = Styles.Colors.midnight2
+        carSharingLabel.font = Styles.FontFaces.light(12)
+        carSharingLabel.text = "car_sharing_filter".localizedString.uppercaseString
+        carSharingLabel.textAlignment = NSTextAlignment.Left
+        carSharingContainer.addSubview(carSharingLabel)
+        
+        carSharingButton.addTarget(self, action: "carSharingButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        carSharingContainer.addSubview(carSharingButton)
+        
+        carSharingSelection.buttonSize = CGSizeMake(90, 28)
+        carSharingSelection.addTarget(self, action: "carSharingSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        carSharingSelection.fixedWidth = 30
+        carSharingContainer.addSubview(carSharingSelection)
         
         loginButton.setTitle("login".localizedString, forState: UIControlState.Normal)
         loginButton.addTarget(self, action: "loginButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         scrollContentView.addSubview(loginButton)
+    
+        separator1.backgroundColor = Styles.Colors.transparentBlack
+        separator2.backgroundColor = Styles.Colors.transparentWhite
+        separator3.backgroundColor = Styles.Colors.transparentBlack
+        scrollContentView.addSubview(separator1)
+        scrollContentView.addSubview(separator2)
+        scrollContentView.addSubview(separator3)
+    
     }
     
     func setupConstraints () {
@@ -246,25 +292,74 @@ class LoginExternalViewController: AbstractViewController {
             make.centerY.equalTo(self.cityContainer)
         }
         
+        
         notificationsContainer.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.loginButton.snp_top)
+            make.height.equalTo(60)
             make.left.equalTo(self.scrollContentView)
             make.right.equalTo(self.scrollContentView)
-            make.height.equalTo(84)
+            make.bottom.equalTo(self.carSharingContainer.snp_top)
         }
         
         notificationsLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.notificationsContainer).with.offset(10)
-            make.left.equalTo(self.notificationsContainer)
-            make.right.equalTo(self.notificationsContainer)
+            make.left.equalTo(self.notificationsContainer).with.offset(30)
+            make.centerY.equalTo(self.notificationsContainer)
         }
         
         notificationSelection.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.notificationsLabel.snp_bottom).with.offset(5)
+            make.width.greaterThanOrEqualTo(164) //42(15 min)+39(30 min)+23(off)+60(spacing is 3*20)
+            make.right.equalTo(self.notificationsContainer).with.offset(-20).priorityHigh()
+            make.top.equalTo(self.notificationsContainer)
             make.bottom.equalTo(self.notificationsContainer)
-            make.left.equalTo(self.notificationsContainer).with.offset(-10)
-            make.right.equalTo(self.notificationsContainer).with.offset(10)
         }
+        
+        
+        separator1.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(0.5)
+            make.left.equalTo(self.scrollContentView)
+            make.right.equalTo(self.scrollContentView)
+            make.top.equalTo(self.notificationsContainer.snp_bottom)
+        }
+        
+        separator2.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(0.5)
+            make.left.equalTo(self.scrollContentView)
+            make.right.equalTo(self.scrollContentView)
+            make.top.equalTo(self.separator1.snp_bottom)
+        }
+        
+        separator3.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(0.5)
+            make.left.equalTo(self.scrollContentView)
+            make.right.equalTo(self.scrollContentView)
+            make.top.equalTo(self.carSharingContainer.snp_bottom)
+        }
+
+        
+        carSharingContainer.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(60)
+            make.left.equalTo(self.scrollContentView)
+            make.right.equalTo(self.scrollContentView)
+            make.bottom.equalTo(self.loginButton.snp_top)
+        }
+        
+        carSharingLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.carSharingContainer).with.offset(30)
+            make.centerY.equalTo(self.carSharingContainer)
+        }
+        
+        carSharingButton.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.carSharingLabel.snp_right).with.offset(10)
+            make.centerY.equalTo(self.carSharingContainer)
+            make.size.equalTo(CGSize(width: 18, height: 18))
+        }
+        
+        carSharingSelection.snp_makeConstraints { (make) -> () in
+            make.width.greaterThanOrEqualTo(102)//19(ON)+23(off)+60(spacing is 2*30)
+            make.right.equalTo(self.carSharingContainer).with.offset(-20).priorityHigh()
+            make.top.equalTo(self.carSharingContainer)
+            make.bottom.equalTo(self.carSharingContainer)
+        }
+
         
         loginButton.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.scrollContentView)
@@ -279,22 +374,6 @@ class LoginExternalViewController: AbstractViewController {
     func loginButtonTapped () {
         
         Settings.setSelectedCity(cityLabel.text!)
-        
-        switch (notificationSelection.selectedIndex) {
-        case 0:
-            Settings.setNotificationTime(15)
-            break
-        case 1:
-            Settings.setNotificationTime(30)
-            break
-        case 3:
-            Settings.setNotificationTime(0)
-            break
-        default:
-            Settings.setNotificationTime(0)
-            break;
-        }
-        
         
         if self.delegate != nil {
             delegate!.didLoginExternal(logintype)
@@ -350,6 +429,45 @@ class LoginExternalViewController: AbstractViewController {
         
     }
     
+    func notificationSelectionValueChanged() {
+        switch(notificationSelection.selectedIndex) {
+        case 0:
+            Settings.setNotificationTime(15)
+            break
+        case 1:
+            Settings.setNotificationTime(30)
+            break
+        case 2 :
+            Settings.setNotificationTime(0)
+            break
+        default:break
+        }
+    }
+    
+    func carSharingSelectionValueChanged() {
+        switch(carSharingSelection.selectedIndex) {
+        case 0:
+            //on
+            Settings.setShouldFilterForCarSharing(true)
+            break
+        case 1:
+            //off
+            Settings.setShouldFilterForCarSharing(false)
+            break
+        default:break
+        }
+    }
+    
+    func carSharingButtonTapped() {
+        
+        let alert = UIAlertView()
+        alert.title = "car_sharing_filter".localizedString
+        alert.message = "car_sharing_info_text".localizedString
+        alert.addButtonWithTitle("got_it".localizedString)
+        alert.show()
+        
+    }
+
     
 }
 
