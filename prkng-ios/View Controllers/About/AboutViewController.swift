@@ -16,6 +16,7 @@ class AboutViewController: AbstractViewController {
     let titleLabel = UILabel()
     let faqButton = ViewFactory.bigTransparentButton()
     let termsButton = ViewFactory.bigTransparentButton()
+    let privacyButton = ViewFactory.bigTransparentButton()
     let shareButton = ViewFactory.bigTransparentButton()
     let backButton = ViewFactory.redBackButton()
     
@@ -47,11 +48,15 @@ class AboutViewController: AbstractViewController {
         termsButton.setTitle("terms_conditions".localizedString, forState: .Normal)
         termsButton.addTarget(self, action: "termsButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(termsButton)
+
+        privacyButton.setTitle("privacy_policy".localizedString, forState: .Normal)
+        privacyButton.addTarget(self, action: "privacyButtonTapped:", forControlEvents: .TouchUpInside)
+        view.addSubview(privacyButton)
         
         shareButton.setTitle("share".localizedString, forState: .Normal)
         shareButton.addTarget(self, action: "shareButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(shareButton)
-        
+
         backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(backButton)
     }
@@ -92,8 +97,15 @@ class AboutViewController: AbstractViewController {
             make.right.equalTo(self.view)
         }
         
-        shareButton.snp_makeConstraints { (make) -> () in
+        privacyButton.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.termsButton.snp_bottom).with.offset(viewHeight * 0.05)
+            make.height.equalTo(34)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+        }
+
+        shareButton.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.privacyButton.snp_bottom).with.offset(viewHeight * 0.05)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -110,11 +122,20 @@ class AboutViewController: AbstractViewController {
     
     //MARK: Button Handlers
     func faqButtonTapped(sender: UIButton) {
-        self.navigationController?.pushViewController(FAQViewController(), animated: true)
+        let webViewController = PRKWebViewController(englishUrl: "http://prk.ng/faq/", frenchUrl: "http://prk.ng/fr/faq/")
+        self.navigationController?.pushViewController(webViewController, animated: true)
+        
     }
     
     func termsButtonTapped(sender: UIButton) {
-        self.navigationController?.pushViewController(TermsViewController(), animated: true)
+        let webViewController = PRKWebViewController(englishUrl: "http://prk.ng/terms/", frenchUrl: "http://prk.ng/fr/conditions/")
+        self.navigationController?.pushViewController(webViewController, animated: true)
+        
+    }
+    
+    func privacyButtonTapped(sender: UIButton) {
+        let webViewController = PRKWebViewController(englishUrl: "http://prk.ng/privacy", frenchUrl: "http://prk.ng/fr/privacy")
+        self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
     func shareButtonTapped(sender: UIButton) {

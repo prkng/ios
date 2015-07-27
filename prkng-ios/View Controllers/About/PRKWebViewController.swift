@@ -1,5 +1,5 @@
 //
-//  TermsViewController.swift
+//  PRKWebViewController.swift
 //  prkng-ios
 //
 //  Created by Cagdas Altinkaya on 18/06/15.
@@ -8,17 +8,27 @@
 
 import UIKit
 
-class TermsViewController: AbstractViewController, UIWebViewDelegate {
+class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
     
     let backgroundImageView = UIImageView(image: UIImage(named: "bg_login"))
     var statusBar = UIView()
     let webView = UIWebView()
     
-    let termsEnglishUrl = "http://prk.ng/terms/"
-    let termsFrenchUrl = "http://prk.ng/fr/conditions/"
+    var englishUrl: String
+    var frenchUrl: String
     
     let backButton = ViewFactory.hugeButton()
     
+    init(englishUrl: String, frenchUrl: String) {
+        self.englishUrl = englishUrl
+        self.frenchUrl = frenchUrl
+        super.init(nibName: nil, bundle: nil)
+
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func loadView() {
         view = UIView()
@@ -35,9 +45,9 @@ class TermsViewController: AbstractViewController, UIWebViewDelegate {
         
         var url : NSURL
         if lang == "fr" {
-            url = NSURL(string : termsFrenchUrl)!
+            url = NSURL(string : frenchUrl)!
         } else {
-            url = NSURL(string : termsEnglishUrl)!
+            url = NSURL(string : englishUrl)!
         }
         SVProgressHUD.showWithMaskType(.Clear)
         webView.loadRequest(NSURLRequest(URL: url))

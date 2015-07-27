@@ -236,8 +236,8 @@ class SpotDetailView: UIView {
         
         scheduleImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 22, height: Styles.Sizes.spotDetailViewBottomPortionHeight))// + 22))
-            make.centerY.equalTo(self.bottomRightContainer)
-            make.right.equalTo(self.bottomRightContainer.snp_centerX).multipliedBy(1.66).with.offset(11)
+            make.centerY.equalTo(self.bottomContainer)
+            make.right.equalTo(self.bottomContainer.snp_centerX).multipliedBy(1.66).with.offset(11)
         }
 
         didSetupConstraints = true

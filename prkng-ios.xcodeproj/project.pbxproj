@@ -78,7 +78,6 @@
 		BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6981B31B307DE200E0EF62 /* HistoryTableViewCell.swift */; };
 		BF6981B81B30800E00E0EF62 /* HistorySectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6981B71B30800E00E0EF62 /* HistorySectionTitleView.swift */; };
 		BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF6E1D451B2083290038E358 /* ReportOverlayView.swift */; };
-		BF7065A21B3C3FE10029987D /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7065A11B3C3FE10029987D /* FAQViewController.swift */; };
 		BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170A91AE3B59300B922CA /* PrkTabBar.swift */; };
 		BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */; };
 		BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7170AD1AE3F04D00B922CA /* TouchForwardingView.swift */; };
@@ -99,7 +98,7 @@
 		BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C961B149BB100A635A1 /* TutorialViewController.swift */; };
 		BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */; };
 		BF9C46F51B32E30600DCF858 /* TheProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */; };
-		BF9C46F71B32F72200DCF858 /* TermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C46F61B32F72200DCF858 /* TermsViewController.swift */; };
+		BF9C46F71B32F72200DCF858 /* PRKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C46F61B32F72200DCF858 /* PRKWebViewController.swift */; };
 		BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C531B25C8D600DAB393 /* Intro-Light.otf */; };
 		BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */; };
 		BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */; };
@@ -257,7 +256,6 @@
 		BF6981B31B307DE200E0EF62 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		BF6981B71B30800E00E0EF62 /* HistorySectionTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistorySectionTitleView.swift; sourceTree = "<group>"; };
 		BF6E1D451B2083290038E358 /* ReportOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportOverlayView.swift; sourceTree = "<group>"; };
-		BF7065A11B3C3FE10029987D /* FAQViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
 		BF7170A91AE3B59300B922CA /* PrkTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBar.swift; sourceTree = "<group>"; };
 		BF7170AB1AE3C27500B922CA /* PrkTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrkTabBarButton.swift; sourceTree = "<group>"; };
 		BF7170AD1AE3F04D00B922CA /* TouchForwardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchForwardingView.swift; sourceTree = "<group>"; };
@@ -278,7 +276,7 @@
 		BF982C961B149BB100A635A1 /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
 		BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TheProjectViewController.swift; sourceTree = "<group>"; };
-		BF9C46F61B32F72200DCF858 /* TermsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsViewController.swift; sourceTree = "<group>"; };
+		BF9C46F61B32F72200DCF858 /* PRKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKWebViewController.swift; sourceTree = "<group>"; };
 		BFA69C531B25C8D600DAB393 /* Intro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Light.otf"; sourceTree = "<group>"; };
 		BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Normal.otf"; sourceTree = "<group>"; };
 		BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarAbstractViewController.swift; sourceTree = "<group>"; };
@@ -689,8 +687,7 @@
 			children = (
 				BFC490921B31D24C00C43562 /* AboutViewController.swift */,
 				BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */,
-				BF9C46F61B32F72200DCF858 /* TermsViewController.swift */,
-				BF7065A11B3C3FE10029987D /* FAQViewController.swift */,
+				BF9C46F61B32F72200DCF858 /* PRKWebViewController.swift */,
 			);
 			path = About;
 			sourceTree = "<group>";
@@ -1066,7 +1063,6 @@
 				3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
-				BF7065A21B3C3FE10029987D /* FAQViewController.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */,
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
@@ -1080,7 +1076,7 @@
 				BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */,
 				BFFDE4651AFBA48D0035DF54 /* RegisterEmailViewController.swift in Sources */,
 				BFFDE4611AFB829B0035DF54 /* LoginMethodSelectionView.swift in Sources */,
-				BF9C46F71B32F72200DCF858 /* TermsViewController.swift in Sources */,
+				BF9C46F71B32F72200DCF858 /* PRKWebViewController.swift in Sources */,
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */,
 				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
