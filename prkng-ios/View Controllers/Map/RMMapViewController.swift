@@ -501,6 +501,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         self.delegate?.showMapMessage(nil)
         
+        removeMyCarMarker()
+        addMyCarMarker()
+        
         if (mapView.zoom > 15.0) {
             
             var checkinTime = searchCheckinDate
@@ -775,6 +778,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         centerButtonAnnotations = []
         self.mapView.removeAllAnnotations()
         addCityOverlays()
+        addMyCarMarker()
     }
     
     
@@ -843,6 +847,24 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.mapView.userTrackingMode = shouldTrack ? RMUserTrackingModeFollow : RMUserTrackingModeNone
     }
     
+    override func addMyCarMarker() {
+        if let spot = Settings.checkedInSpot() {
+            let coordinate = spot.buttonLocation.coordinate
+            let name = spot.name
+            var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
+            annotation.userInfo = ["type": "previousCheckin"]
+            myCarAnnotation = annotation
+            self.mapView.addAnnotation(annotation)
+        }
+    }
+    
+    override func removeMyCarMarker() {
+        if myCarAnnotation != nil {
+            self.mapView.removeAnnotation(myCarAnnotation as! RMAnnotation)
+            myCarAnnotation = nil
+        }
+    }
+
     override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) {
         var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
         annotation.userInfo = ["type": "previousCheckin"]

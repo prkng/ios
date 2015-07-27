@@ -407,7 +407,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 bottomPillButton.hidden = true
 
                 let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval) % (24*60*60)
-                if intervalInEndDay < 12*60*60 {
+                if intervalInEndDay < 12*60*60 && DateUtil.timeIntervalSinceDayStart() <= 16*60*60 {
                     bottomButtonContainer.hidden = false
                     bottomButtonLabel.text = "notified_night_before".localizedString.uppercaseString
                     let i = Settings.shouldNotifyTheNightBefore() ? 0 : 1

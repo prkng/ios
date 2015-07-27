@@ -413,6 +413,9 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         
         self.delegate?.showMapMessage(nil)
 
+        removeMyCarMarker()
+        addMyCarMarker()
+        
         //only show the spinner if this map is active
         if let tabController = self.parentViewController as? TabController {
             if tabController.activeTab() == PrkTab.Here {
@@ -734,6 +737,14 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         
     }
     
+    override func addMyCarMarker() {
+        NSLog("Can't yet go to a previous checkin in the apple map")
+    }
+    
+    override func removeMyCarMarker() {
+        NSLog("Can't yet go to a previous checkin in the apple map")
+    }
+    
     //shows a checkin on the map as a regular marker
     override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) {
         NSLog("Can't yet go to a previous checkin in the apple map")
@@ -744,6 +755,11 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         mapView.removeAnnotations(self.centerButtonAnnotations)
         mapView.removeAnnotations(self.searchAnnotations)
         mapView.removeOverlays(self.lineAnnotations)
+        searchAnnotations = []
+        lineAnnotations = []
+        centerButtonAnnotations = []
+        removeMyCarMarker()
+        addMyCarMarker()
     }
     
 }

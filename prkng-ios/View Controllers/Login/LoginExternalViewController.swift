@@ -162,7 +162,7 @@ class LoginExternalViewController: AbstractViewController {
         
         cityLabel.font = Styles.Fonts.h1
         cityLabel.textColor = Styles.Colors.cream1
-        cityLabel.text = Settings.selectedCity()
+        cityLabel.text = Settings.selectedCity().rawValue
         cityContainer.addSubview(cityLabel)
         
         prevCityButton.setImage(UIImage(named: "btn_left"), forState: UIControlState.Normal)
@@ -373,7 +373,7 @@ class LoginExternalViewController: AbstractViewController {
     
     func loginButtonTapped () {
         
-        Settings.setSelectedCity(cityLabel.text!)
+        Settings.setSelectedCity(Settings.City(rawValue: cityLabel.text!)!)
         
         if self.delegate != nil {
             delegate!.didLoginExternal(logintype)
@@ -401,7 +401,7 @@ class LoginExternalViewController: AbstractViewController {
         
         Settings.setSelectedCity(Settings.availableCities[index])
         
-        cityLabel.text = Settings.selectedCity()
+        cityLabel.text = Settings.selectedCity().rawValue
         
         
     }
@@ -425,7 +425,7 @@ class LoginExternalViewController: AbstractViewController {
         
         Settings.setSelectedCity(Settings.availableCities[index])
         
-        cityLabel.text = Settings.selectedCity()
+        cityLabel.text = Settings.selectedCity().rawValue
         
     }
     

@@ -105,7 +105,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.cityLabel.text = Settings.selectedCity()
+        self.cityLabel.text = Settings.selectedCity().rawValue
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -432,7 +432,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         Settings.setSelectedCity(Settings.availableCities[index])
         
-        cityLabel.text = Settings.selectedCity()
+        cityLabel.text = Settings.selectedCity().rawValue
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: Settings.availableCities[index])
     }
@@ -458,7 +458,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 
         Settings.setSelectedCity(Settings.availableCities[index])
         
-        cityLabel.text = Settings.selectedCity()
+        cityLabel.text = Settings.selectedCity().rawValue
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: Settings.availableCities[index])
     }
@@ -510,5 +510,5 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 
 protocol SettingsViewControllerDelegate {
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String)
-    func cityDidChange(#fromCity: String, toCity: String)
+    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City)
 }

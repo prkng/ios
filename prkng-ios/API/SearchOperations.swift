@@ -63,7 +63,7 @@ class SearchOperations {
         
         var url = "http://nominatim.openstreetmap.org/search"
         
-        var params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity(), "country" : "Canada", "street" : streetname]
+        var params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity().rawValue, "country" : "Canada", "street" : streetname]
         
         var numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")

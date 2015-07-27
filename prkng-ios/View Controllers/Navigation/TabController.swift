@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate, SettingsViewControllerDelegate {
+class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate, SettingsViewControllerDelegate, CLLocationManagerDelegate {
     
     var selectedTab : PrkTab
     
@@ -28,7 +28,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     var switchingMainView : Bool
     
-    
+    var locationManager = CLLocationManager()
+    var locationFixAchieved : Bool = false
+
     init () {
         selectedTab = PrkTab.None
         tabBar = PrkTabBar()
@@ -73,6 +75,14 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             loadMyCarTab()
         }
         
+        setCurrentCityFromUserLocation()
+        
+    }
+    
+    func setCurrentCityFromUserLocation() {
+        
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+        locationManager.delegate = self
     }
     
     func setupViews() {
@@ -399,11 +409,60 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         self.mapViewController.goToCoordinate(coordinate, named:name)
     }
     
-    func cityDidChange(#fromCity: String, toCity: String) {
-        if let coordinate = Settings.selectedCityPoint() {
-                self.mapViewController.goToCoordinate(coordinate, named:Settings.selectedCity(), withZoom:13)
+    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City) {
+        let coordinate = Settings.selectedCityPoint()
+        self.mapViewController.goToCoordinate(coordinate, named:Settings.selectedCity().rawValue, withZoom:13)
+    }
+    
+    // MARK: Location Manager Delegate stuff
+    
+    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        if (locationFixAchieved == false) {
+            locationFixAchieved = true
+            var location = locations.last as! CLLocation
+            var coord = location.coordinate
+            
+            println(coord.latitude)
+            println(coord.longitude)
+            
+            manager.stopUpdatingLocation()
+            
+            Settings.setClosestSelectedCity(coord)
         }
     }
+    
+    func locationManager(manager: CLLocationManager!,
+        didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+            
+            var locationStatus : NSString = "Not Started"
+            
+            var shouldIAllow = false
+            
+            switch status {
+            case CLAuthorizationStatus.Restricted:
+                locationStatus = "Restricted Access to location"
+            case CLAuthorizationStatus.Denied:
+                locationStatus = "User denied access to location"
+            case CLAuthorizationStatus.NotDetermined:
+                locationStatus = "Status not determined"
+            default:
+                locationStatus = "Allowed to location Access"
+                shouldIAllow = true
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName("LabelHasbeenUpdated", object: nil)
+            if (shouldIAllow == true) {
+                NSLog("Location to Allowed")
+                // Start location services
+                locationManager.startUpdatingLocation()
+            } else {
+                NSLog("Denied access: \(locationStatus)")
+            }
+    }
+
 
 }
 

@@ -14,6 +14,7 @@ class MapViewController: AbstractViewController {
     
     var canShowMapMessage: Bool = false
     
+    var myCarAnnotation: NSObject?
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
 
@@ -34,9 +35,10 @@ class MapViewController: AbstractViewController {
     func trackUser(shouldTrack: Bool) { }
     func updateAnnotations() { }
 
-    //shows a checkin on the map as a regular marker
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) { }
     
+    func addMyCarMarker() { }
+    func removeMyCarMarker() { }
     func removeSelectedAnnotationIfExists() { }
 
     

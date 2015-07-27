@@ -10,9 +10,9 @@ import UIKit
 
 struct Settings {
     
-    struct City {
-        static let Montreal = "Montréal"
-        static let QuebecCity = "Québec City"
+    enum City: String {
+        case Montreal = "Montréal"
+        case QuebecCity = "Québec City"
     }
     
     static let SELECTED_CITY_KEY = "prkng_selected_city"
@@ -33,32 +33,53 @@ struct Settings {
     
     static let iosVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
 
-    static func selectedCity() -> String  {
+    static func selectedCity() -> City  {
         
         var city = NSUserDefaults.standardUserDefaults().objectForKey(SELECTED_CITY_KEY) as? String
         
         if (city == nil) {
-            city = availableCities[0]
+            city = availableCities[0].rawValue
             NSUserDefaults.standardUserDefaults().setObject(city, forKey: SELECTED_CITY_KEY)
         }
         
-        return city!
+        let actualCity = City(rawValue: city!)
+        
+        return actualCity!
     }
     
-    static func setSelectedCity (city : String) {
-        NSUserDefaults.standardUserDefaults().setObject(city, forKey: SELECTED_CITY_KEY)
+    static func setSelectedCity (city : City) {
+        NSUserDefaults.standardUserDefaults().setObject(city.rawValue, forKey: SELECTED_CITY_KEY)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
-    static func selectedCityPoint() -> CLLocationCoordinate2D? {
-        switch selectedCity() {
-        case City.Montreal:
+    static func selectedCityPoint() -> CLLocationCoordinate2D {
+        return pointForCity(selectedCity())
+    }
+    
+    private static func pointForCity(city: City) -> CLLocationCoordinate2D {
+        switch city {
+        case .Montreal:
             return CLLocationCoordinate2D(latitude: 45.5016889, longitude: -73.567256)
-        case City.QuebecCity:
+        case .QuebecCity:
             return CLLocationCoordinate2D(latitude: 46.82053904, longitude: -71.22943997)
-        default:
-            return nil
         }
+    }
+    
+    static func setClosestSelectedCity(point: CLLocationCoordinate2D) {
+        var shortestDistance = Double.infinity
+        var closestCity: City?
+        let location = CLLocation(latitude: point.latitude, longitude: point.longitude)
+        for city in availableCities {
+            let cityPoint = pointForCity(city)
+            let cityLocation = CLLocation(latitude: cityPoint.latitude, longitude: cityPoint.longitude)
+            let distance = cityLocation.distanceFromLocation(location)
+            if distance < shortestDistance {
+                shortestDistance = distance
+                closestCity = city
+            }
+        }
+        
+        setSelectedCity(closestCity!)
     }
     
     static func firstUse() -> Bool {
