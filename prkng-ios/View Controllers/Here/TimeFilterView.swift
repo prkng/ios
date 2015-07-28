@@ -17,6 +17,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     var scrollView: UIScrollView
     var contentView: UIView
 
+    var messageLabel: UILabel
+    
     var times: [TimeFilter]
     var selectedPermitValue: Bool
     var selectedValue: NSTimeInterval?
@@ -38,8 +40,9 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     override init(frame: CGRect) {
 
         containerView = UIView()
-
-        timeImageView = UIImageView(image: UIImage(named: "icon_time"))
+        
+        messageLabel = UILabel()
+        timeImageView = UIImageView()
 
         scrollView = UIScrollView()
         contentView = UIView()
@@ -116,6 +119,10 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         timeImageView.userInteractionEnabled = false
         containerView.addSubview(timeImageView)
 
+        messageLabel.textColor = Styles.Colors.cream1
+        messageLabel.font = Styles.FontFaces.light(17)
+        containerView.addSubview(messageLabel)
+        
         topLine.backgroundColor = Styles.Colors.petrol1
         self.addSubview(topLine)
 
@@ -136,6 +143,12 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             make.size.equalTo(CGSize(width: 20, height: 20))
             make.centerY.equalTo(self.containerView)
             make.left.equalTo(self.containerView).with.offset(28.5)
+        }
+        
+        messageLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.timeImageView.snp_right).with.offset(15)
+            make.right.equalTo(self.containerView)
+            make.centerY.equalTo(self.containerView)
         }
         
         scrollView.snp_makeConstraints { (make) -> () in
@@ -197,6 +210,23 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             make.width.greaterThanOrEqualTo(contentViewWidth)
             make.height.equalTo(self.scrollView)
             make.edges.equalTo(self.scrollView)
+        }
+
+    }
+    
+    func update() {
+        
+        if Settings.shouldFilterForCarSharing() {
+            timeImageView.image = UIImage(named: "icon_exclamation")
+            messageLabel.text = "car_sharing_enabled_text".localizedString
+            contentView.hidden = true
+            self.userInteractionEnabled = false
+            self.delegate?.filterLabelUpdate("")
+        } else {
+            timeImageView.image = UIImage(named: "icon_time")
+            messageLabel.text = ""
+            contentView.hidden = false
+            self.userInteractionEnabled = true
         }
 
     }
@@ -298,6 +328,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         let point = CGPoint(x: 0, y: 0)
         scrollToNearestLabel(point)
         toggleSelectFromPoint(point)
+        update()
     }
     
     func toggleSelectFromPoint(point: CGPoint) {
@@ -378,7 +409,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 protocol TimeFilterViewDelegate {
     
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool)
-    
+    func filterLabelUpdate(labelText: String)
 }
 
 class TimeFilter {

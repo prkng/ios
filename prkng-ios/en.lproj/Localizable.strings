@@ -166,6 +166,7 @@
 "search_bar_text" = "Search";
 "car_sharing" = "Car2go";
 "car_sharing_filter" = "Car2go filter";
+"car_sharing_enabled_text" = "Car sharing is enabled";
 "car_sharing_info_title" = "Parking permit + 24h";
 "car_sharing_info_subtitle" = "The perfect combo for car2go users.";
 "car_sharing_info_message" = "This setting disables permit restrictions and shows you spots available for over 24h for your convenience!";

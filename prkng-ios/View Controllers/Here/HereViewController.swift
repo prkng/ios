@@ -77,6 +77,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             Settings.setFirstMapUsePassed(true)
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstUseMessage"), userInfo: nil, repeats: false)
         } else {
+            hideFilters(alsoHideFilterButton: false)
             self.delegate?.updateMapAnnotations()
         }
         
@@ -565,6 +566,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 
     func hideFilters(#alsoHideFilterButton: Bool) {
         
+        timeFilterView.update()
+
         if alsoHideFilterButton {
             self.hideFilterButton()
         } else {
@@ -653,11 +656,17 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 
     
     // MARK:TimeFilterViewDelegate
+    
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool) {
         self.delegate?.updateMapAnnotations()
         filterButtonText = selectedLabelText
         filterButton.setLabelText(selectedLabelText)
         hideFilters(alsoHideFilterButton: false)
+    }
+    
+    func filterLabelUpdate(labelText: String) {
+        filterButtonText = labelText
+        filterButton.setLabelText(labelText)
     }
     
 }
