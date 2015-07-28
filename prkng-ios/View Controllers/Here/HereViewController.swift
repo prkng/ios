@@ -669,10 +669,15 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         filterButton.setLabelText(labelText)
     }
     
+    func didTapCarSharing() {
+        self.delegate?.loadSettingsTab()
+    }
+    
 }
 
 
 protocol HereViewControllerDelegate {
     func loadMyCarTab()
+    func loadSettingsTab()
     func updateMapAnnotations()
 }

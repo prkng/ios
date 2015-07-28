@@ -220,13 +220,11 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             timeImageView.image = UIImage(named: "icon_exclamation")
             messageLabel.text = "car_sharing_enabled_text".localizedString
             contentView.hidden = true
-            self.userInteractionEnabled = false
             self.delegate?.filterLabelUpdate("")
         } else {
             timeImageView.image = UIImage(named: "icon_time")
             messageLabel.text = ""
             contentView.hidden = false
-            self.userInteractionEnabled = true
         }
 
     }
@@ -320,8 +318,12 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     //gesture recognizer tap
     func toggleSelectFromTap(recognizer: UITapGestureRecognizer) {
         
-        var tap = recognizer.locationInView(self.contentView)
-        toggleSelectFromPoint(tap)
+        if Settings.shouldFilterForCarSharing() {
+            self.delegate?.didTapCarSharing()
+        } else {
+            var tap = recognizer.locationInView(self.contentView)
+            toggleSelectFromPoint(tap)
+        }
     }
 
     func resetValue() {
@@ -410,6 +412,7 @@ protocol TimeFilterViewDelegate {
     
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool)
     func filterLabelUpdate(labelText: String)
+    func didTapCarSharing()
 }
 
 class TimeFilter {
