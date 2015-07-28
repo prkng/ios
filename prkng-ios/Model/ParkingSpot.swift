@@ -68,11 +68,14 @@ class ParkingSpot: NSObject, Hashable {
         // TODO : Fix this when the data is fixed
         for ruleJson in ruleJsons  {
             let rule1 = ParkingRule(json: ruleJson.1, bsIndex: 0)
-            rules.append(rule1)
             
+            let permit = Settings.shouldFilterForCarSharing()
+            if !permit || rule1.restrictionType != "permit" {
+                rules.append(rule1)
+            }
             
             let rule2 = ParkingRule(json: ruleJson.1, bsIndex: 1)
-            if (!rule2.bullshitRule) {
+            if (!rule2.bullshitRule && (!permit || rule2.restrictionType != "permit")) {
                 rules.append(rule2)
             }
             
