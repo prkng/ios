@@ -35,6 +35,7 @@
 		3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAF45191B59388D003010D6 /* GeneralHelper.swift */; };
 		3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */; };
 		3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */; };
+		3EBCF0591B67FA8E00E925A0 /* CarSharingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBCF0581B67FA8E00E925A0 /* CarSharingInfoViewController.swift */; };
 		3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */; };
 		3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */; };
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
@@ -212,6 +213,7 @@
 		3EAF45191B59388D003010D6 /* GeneralHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralHelper.swift; sourceTree = "<group>"; };
 		3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Abbreviations.strings; sourceTree = "<group>"; };
 		3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
+		3EBCF0581B67FA8E00E925A0 /* CarSharingInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarSharingInfoViewController.swift; sourceTree = "<group>"; };
 		3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKMapViewController.swift; sourceTree = "<group>"; };
 		3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
@@ -623,6 +625,7 @@
 			isa = PBXGroup;
 			children = (
 				BF7170B11AE42DDE00B922CA /* SettingsViewController.swift */,
+				3EBCF0581B67FA8E00E925A0 /* CarSharingInfoViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1116,6 +1119,7 @@
 				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,
 				3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */,
+				3EBCF0591B67FA8E00E925A0 /* CarSharingInfoViewController.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
 				BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */,

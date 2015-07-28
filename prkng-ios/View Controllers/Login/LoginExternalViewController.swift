@@ -42,6 +42,8 @@ class LoginExternalViewController: AbstractViewController {
     
     var loginButton : UIButton
     
+    var carSharingInfoVC: CarSharingInfoViewController?
+
     var delegate : LoginExternalViewControllerDelegate?
     
     var logintype : LoginType
@@ -196,7 +198,7 @@ class LoginExternalViewController: AbstractViewController {
         carSharingLabel.textAlignment = NSTextAlignment.Left
         carSharingContainer.addSubview(carSharingLabel)
         
-        carSharingButton.addTarget(self, action: "carSharingButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        carSharingButton.addTarget(self, action: "showCarSharingInfo", forControlEvents: UIControlEvents.TouchUpInside)
         carSharingContainer.addSubview(carSharingButton)
         
         carSharingSelection.buttonSize = CGSizeMake(90, 28)
@@ -458,16 +460,46 @@ class LoginExternalViewController: AbstractViewController {
         }
     }
     
-    func carSharingButtonTapped() {
+    func showCarSharingInfo() {
         
-        let alert = UIAlertView()
-        alert.title = "car_sharing_filter".localizedString
-        alert.message = "car_sharing_info_text".localizedString
-        alert.addButtonWithTitle("got_it".localizedString)
-        alert.show()
+        carSharingInfoVC = CarSharingInfoViewController()
+        
+        self.addChildViewController(carSharingInfoVC!)
+        self.view.addSubview(carSharingInfoVC!.view)
+        carSharingInfoVC!.didMoveToParentViewController(self)
+        
+        carSharingInfoVC!.view.snp_makeConstraints({ (make) -> () in
+            make.edges.equalTo(self.view)
+        })
+        
+        let tap = UITapGestureRecognizer(target: self, action: "dismissCarSharingInfo")
+        carSharingInfoVC!.view.addGestureRecognizer(tap)
+        
+        carSharingInfoVC!.view.alpha = 0.0
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.carSharingInfoVC!.view.alpha = 1.0
+        })
         
     }
-
+    
+    func dismissCarSharingInfo() {
+        
+        if let carShareingInfo = self.carSharingInfoVC {
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                carShareingInfo.view.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    carShareingInfo.removeFromParentViewController()
+                    carShareingInfo.view.removeFromSuperview()
+                    carShareingInfo.didMoveToParentViewController(nil)
+                    self.carSharingInfoVC = nil
+            })
+            
+        }
+        
+        
+    }
     
 }
 
