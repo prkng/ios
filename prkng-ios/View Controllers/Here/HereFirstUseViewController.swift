@@ -20,7 +20,6 @@ class HereFirstUseViewController: GAITrackedViewController {
     var subtitleLabel : UILabel
     
     var imageView : UIImageView
-    var imageTextLabel : UILabel
     
     var textContainer1 : UIView
     var textLabel1 : UILabel
@@ -46,7 +45,6 @@ class HereFirstUseViewController: GAITrackedViewController {
         subtitleLabel = UILabel()
         
         imageView = UIImageView()
-        imageTextLabel = UILabel ()
         
         textContainer1 = UIView()
         textLabel1 = UILabel()
@@ -114,17 +112,9 @@ class HereFirstUseViewController: GAITrackedViewController {
         textContainer1.layer.borderWidth = 0.5
         containerView.addSubview(textContainer1)
         
-        imageView.image =  UIImage(named:"icon_howto_freespots")
+        imageView.image =  UIImage(named:"icon_howto_spots")
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         textContainer1.addSubview(imageView)
-        
-        imageTextLabel.font = Styles.FontFaces.regular(11)
-        imageTextLabel.textColor = Styles.Colors.anthracite1
-        textContainer1.addSubview(imageTextLabel)
-        
-        imageTextLabel.font = Styles.FontFaces.regular(11)
-        imageTextLabel.text = "free_spots".localizedString.uppercaseString
-        textContainer1.addSubview(imageTextLabel)
         
         textLabel1.font = Styles.FontFaces.light(17)
         textLabel1.textColor = Styles.Colors.petrol2
@@ -196,13 +186,8 @@ class HereFirstUseViewController: GAITrackedViewController {
             make.right.equalTo(self.textContainer1)
         }
         
-        imageTextLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.imageView.snp_bottom).with.offset(3)
-            make.centerX.equalTo(self.textContainer1)
-        }
-        
         textLabel1.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.imageTextLabel.snp_bottom).with.offset(9)
+            make.top.equalTo(self.imageView.snp_bottom).with.offset(9)
             make.left.equalTo(self.textContainer1).with.offset(24)
             make.right.equalTo(self.textContainer1).with.offset(-24)
         }
