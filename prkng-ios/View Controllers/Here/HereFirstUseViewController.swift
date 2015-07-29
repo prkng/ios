@@ -112,7 +112,7 @@ class HereFirstUseViewController: GAITrackedViewController {
         textContainer1.layer.borderWidth = 0.5
         containerView.addSubview(textContainer1)
         
-        imageView.image =  UIImage(named:"icon_howto_spots")
+        imageView.image =  UIImage(named:"icon_howto_spots".localizedString)
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         textContainer1.addSubview(imageView)
         

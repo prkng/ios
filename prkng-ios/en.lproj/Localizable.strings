@@ -147,6 +147,7 @@
 "report_error" = "Something went wrong, please try again.";
 "report_sent_thanks" = "Thanks, report sent. We'll improve our service with your help!";
 
+"available_in" = "Available in:";
 "about" = "about";
 "the_project" = "the project";
 "terms_conditions" = "terms of use";
@@ -172,6 +173,7 @@
 "car_sharing_info_subtitle" = "Find a 24hrs+ spot around you.";
 "car_sharing_info_message" = "This option when you're using a carsharing service and need to find a spot on-street allowed for the next 24 hours";
 
+"map_message_loading" = "Loading...";
 "map_message_too_zoomed_out" = "Zoom in to street level";
 "map_message_no_spots" = "Uh oh! You can't park here at this time.";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here.";
@@ -179,3 +181,6 @@
 "map_message_error" = "Oops, make sure your connection is active and try again.";
 "camera" = "Camera";
 "enable_camera_message" = "Please allow access to your camera to report an error.";
+
+//this section is for localized images
+"icon_howto_spots" = "icon_howto_spots_en";

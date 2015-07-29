@@ -147,6 +147,7 @@
 "report_error" = "Une erreur est survenue, veuillez réessayer.";
 "report_sent_thanks" = "Merci du coup de pouce! On analysera votre photo sous peu.";
 
+"available_in" = "*** english is 'Available in:'";
 "about" = "à propos";
 "the_project" = "le projet";
 "terms_conditions" = "conditions d'utilisation";
@@ -172,6 +173,7 @@
 "car_sharing_info_subtitle" = "The perfect combo for car2go users.";
 "car_sharing_info_message" = "This setting disables permit restrictions and shows you spots available for over 24h for your convenience!";
 
+"map_message_loading" = "***";
 "map_message_too_zoomed_out" = "Zoom in to see where you're allowed to park.";
 "map_message_no_spots" = "Uh oh! There are no spots in this area.";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here. \n:(";
@@ -179,3 +181,6 @@
 "map_message_error" = "We couldn't connect you to our service, please make sure you have a good network connection, or try again a little later!";
 "camera" = "Appareil photo";
 "enable_camera_message" = "Accès à l'appareil photo requis pour signaliser une erreur.";
+
+//this section is for localized images
+"icon_howto_spots" = "icon_howto_spots_fr";

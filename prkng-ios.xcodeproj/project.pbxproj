@@ -23,6 +23,7 @@
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
+		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
 		3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31A01B2621E700760E05 /* libGoogleAnalyticsServices.a */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
@@ -181,6 +182,7 @@
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
 		3E8F31271B2621E700760E05 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changelog.txt; sourceTree = "<group>"; };
 		3E8F31531B2621E700760E05 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		3E8F31541B2621E700760E05 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
@@ -617,6 +619,7 @@
 				BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */,
 				3E3199581B31D4F600CB118D /* TimeFilterView.swift */,
 				3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */,
+				3E7523061B693DF70096755F /* MapMessageView.swift */,
 			);
 			path = Here;
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */,
 				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
+				3E7523071B693DF70096755F /* MapMessageView.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
 				BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */,
 				BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */,

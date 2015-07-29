@@ -124,6 +124,23 @@ class MapViewController: AbstractViewController {
 
         return []
     }
+    
+    func isFarAwayFromAvailableCities(centerCoordinate: CLLocationCoordinate2D) -> Bool {
+        
+        var inAnAvailableCity = false
+        
+        let centerLocation = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
+        
+        for location in Settings.availableCityLocations() {
+            let distanceInKm = centerLocation.distanceFromLocation(location) as Double / 1000
+            if distanceInKm < 40 {
+                inAnAvailableCity = true
+            }
+        }
+        
+        return !inAnAvailableCity
+
+    }
 
 }
 
@@ -136,7 +153,10 @@ protocol MapViewControllerDelegate {
     func shouldShowUserTrackingButton() -> Bool
     
     func showMapMessage(message: String?)
-
+    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool)
+    
+    func mapDidMoveFarAwayFromAvailableCities()
+    
     //returns the number of hours to search for as a minimum parking duration
     func activeFilterDuration() -> Float?
     func activeFilterPermit() -> Bool

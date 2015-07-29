@@ -8,10 +8,11 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate, MapMessageViewDelegate {
 
-    var mapMessageView: UIView
-    var mapMessageLabel: UILabel
+    var showFiltersOnAppear: Bool = false
+    
+    var mapMessageView: MapMessageView
     var canShowMapMessage: Bool = false
 
     var prkModalViewController: PRKModalViewController?
@@ -43,8 +44,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         timeFilterView = TimeFilterView()
         searchFilterView = SearchFilterView()
         showingFilters = false
-        mapMessageView = UIView()
-        mapMessageLabel = UILabel()
+        mapMessageView = MapMessageView()
         statusBar = UIView()
         filterButton = PRKTextButton(image: nil, imageSize: CGSizeMake(36, 36), labelText: "")
         filterButtonImageName = "icon_filter"
@@ -77,8 +77,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             Settings.setFirstMapUsePassed(true)
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstUseMessage"), userInfo: nil, repeats: false)
         } else {
-            hideFilters(alsoHideFilterButton: false)
-            self.delegate?.updateMapAnnotations()
+            if showFiltersOnAppear {
+                showFilters()
+                self.searchFilterView.makeActive()
+                showFiltersOnAppear = false
+            } else {
+                hideFilters(alsoHideFilterButton: false)
+                self.delegate?.updateMapAnnotations()
+            }
         }
         
     }
@@ -100,45 +106,32 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         verticalRec = PRKVerticalGestureRecognizer(view: detailView, superViewOfView: self.view)
         verticalRec.delegate = self
         
-        mapMessageView.backgroundColor = Styles.Colors.stone
-        mapMessageView.alpha = 0
-        view.addSubview(mapMessageView)
-        mapMessageLabel.textColor = Styles.Colors.red2
-        mapMessageLabel.font = Styles.Fonts.s1r
-        mapMessageLabel.numberOfLines = 0
-        mapMessageLabel.textAlignment = .Center
-        mapMessageView.addSubview(mapMessageLabel)
-
         detailView.delegate = self
         view.addSubview(detailView)
-        
-        view.addSubview(searchFilterView)
-
-        timeFilterView.delegate = self
-        view.addSubview(timeFilterView)
         
         statusBar.backgroundColor = Styles.Colors.statusBar
         view.addSubview(statusBar)
         
+        mapMessageView.delegate = self
+        view.addSubview(mapMessageView)
+
+        view.addSubview(searchFilterView)
+        timeFilterView.delegate = self
+        view.addSubview(timeFilterView)
+
         filterButton.setImage(UIImage(named: filterButtonImageName))
         filterButton.addTarget(self, action: "toggleFilterButton", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(filterButton)
-        
+    
     }
     
     func setupConstraints() {
         
         mapMessageView.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(20)
-            make.right.equalTo(self.view).with.offset(-20)
-            make.top.equalTo(self.view).with.offset(20 + Styles.Sizes.statusBarHeight)
-            make.bottom.equalTo(self.mapMessageLabel).with.offset(10)
-        }
-
-        mapMessageLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.mapMessageView).with.offset(10)
-            make.left.equalTo(self.mapMessageView).with.offset(10)
-            make.right.equalTo(self.mapMessageView).with.offset(-10)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.top.equalTo(self.view).with.offset(-200)
+            make.height.greaterThanOrEqualTo(120)
         }
 
         statusBar.snp_makeConstraints { (make) -> () in
@@ -655,7 +648,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
 
     
-    // MARK:TimeFilterViewDelegate
+    // MARK : TimeFilterViewDelegate
     
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool) {
         self.delegate?.updateMapAnnotations()
@@ -672,7 +665,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func didTapCarSharing() {
         self.delegate?.loadSettingsTab()
     }
+ 
+    // MARK : MapMessageViewDelegate
     
+    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City) {
+        self.delegate?.cityDidChange(fromCity: fromCity, toCity: toCity)
+    }
+
 }
 
 
@@ -680,4 +679,5 @@ protocol HereViewControllerDelegate {
     func loadMyCarTab()
     func loadSettingsTab()
     func updateMapAnnotations()
+    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City)
 }

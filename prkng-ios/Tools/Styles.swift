@@ -79,12 +79,14 @@ struct Styles {
         static let h3 =  FontFaces.light(20)
         
         static let s1 =  FontFaces.light(17)
+        static let s2 =  FontFaces.light(12)
         
         static let h1r =  FontFaces.regular(25)
         static let h2r =  FontFaces.regular(25)
         static let h3r =  FontFaces.regular(20)
         
         static let s1r =  FontFaces.regular(17)
+        static let s2r =  FontFaces.regular(12)
 
     }
     

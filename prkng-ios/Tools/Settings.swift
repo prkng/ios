@@ -56,7 +56,7 @@ struct Settings {
         return pointForCity(selectedCity())
     }
     
-    private static func pointForCity(city: City) -> CLLocationCoordinate2D {
+    static func pointForCity(city: City) -> CLLocationCoordinate2D {
         switch city {
         case .Montreal:
             return CLLocationCoordinate2D(latitude: 45.5016889, longitude: -73.567256)
@@ -82,6 +82,15 @@ struct Settings {
         setSelectedCity(closestCity!)
     }
     
+    static func availableCityLocations() -> [CLLocation] {
+        
+        return availableCities.map({ (var city) -> CLLocation in
+            let point = self.pointForCity(city)
+            let location = CLLocation(latitude: point.latitude, longitude: point.longitude)
+            return location
+        })
+    }
+
     static func firstUse() -> Bool {
         return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_USE_PASSED_KEY)
     }

@@ -411,8 +411,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         
         updateInProgress = true
         
-        self.delegate?.showMapMessage(nil)
-
         removeMyCarMarker()
         addMyCarMarker()
         
@@ -424,8 +422,18 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             }
         }
         
-        if (mapView.mbx_zoomLevel() > 15.0) {
+        if isFarAwayFromAvailableCities(mapView.centerCoordinate) {
             
+            if canShowMapMessage {
+                self.delegate?.mapDidMoveFarAwayFromAvailableCities()
+            }
+            
+            updateInProgress = false
+            
+        } else if (mapView.mbx_zoomLevel() > 15.0) {
+            
+            self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true)
+
             var checkinTime = searchCheckinDate
             var duration = searchDuration
             

@@ -499,13 +499,21 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         updateInProgress = true
         
-        self.delegate?.showMapMessage(nil)
-        
         removeMyCarMarker()
         addMyCarMarker()
         
-        if (mapView.zoom > 15.0) {
+        if isFarAwayFromAvailableCities(mapView.centerCoordinate) {
             
+            if canShowMapMessage {
+                self.delegate?.mapDidMoveFarAwayFromAvailableCities()
+            }
+            
+            updateInProgress = false
+
+        } else if (mapView.zoom > 15.0) {
+            
+            self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true)
+
             var checkinTime = searchCheckinDate
             var duration = searchDuration
             

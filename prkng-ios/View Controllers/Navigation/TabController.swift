@@ -188,8 +188,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func loadSearchInHereTab() {
         loadHereTab()
-        hereViewController.showFilters()
-        hereViewController.searchFilterView.makeActive()
+        hereViewController.showFiltersOnAppear = true
     }
     
     
@@ -322,14 +321,35 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func showMapMessage(message: String?) {
+        showMapMessage(message, onlyIfPreviouslyShown: false)
+    }
+    
+    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool) {
 
         if message != nil {
-            hereViewController.mapMessageLabel.text = message
+            hereViewController.mapMessageView.mapMessageLabel.text = message
         }
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.hereViewController.mapMessageView.alpha = message == nil ? 0 : 1
-        })
+        if !onlyIfPreviouslyShown {
+
+            hereViewController.mapMessageView.hideCityPicker()
+
+            hereViewController.mapMessageView.snp_updateConstraints { (make) -> () in
+                make.top.equalTo(self.hereViewController.view).with.offset(message == nil ? -200 : 0)
+            }
+            
+            hereViewController.mapMessageView.setNeedsLayout()
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.hereViewController.mapMessageView.layoutIfNeeded()
+            })
+        }
+    }
+    
+    func mapDidMoveFarAwayFromAvailableCities() {
+        
+        showMapMessage("map_message_outside_service_area".localizedString)
+        hereViewController.mapMessageView.showCityPicker()
     }
     
     func activeFilterDuration() -> Float? {
@@ -341,7 +361,6 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func activeFilterPermit() -> Bool {
-//        return hereViewController.timeFilterView.selectedPermitValue
         return Settings.shouldFilterForCarSharing()
     }
     
@@ -410,8 +429,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func cityDidChange(#fromCity: Settings.City, toCity: Settings.City) {
-        let coordinate = Settings.selectedCityPoint()
-        self.mapViewController.goToCoordinate(coordinate, named:Settings.selectedCity().rawValue, withZoom:13)
+        let coordinate = Settings.pointForCity(toCity)
+        self.mapViewController.goToCoordinate(coordinate, named:toCity.rawValue, withZoom:13)
     }
     
     // MARK: Location Manager Delegate stuff
