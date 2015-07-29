@@ -430,7 +430,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func cityDidChange(#fromCity: Settings.City, toCity: Settings.City) {
         let coordinate = Settings.pointForCity(toCity)
-        self.mapViewController.goToCoordinate(coordinate, named:toCity.rawValue, withZoom:13)
+        self.mapViewController.goToCoordinate(coordinate, named:toCity.rawValue, withZoom:13, showing: false)
     }
     
     // MARK: Location Manager Delegate stuff

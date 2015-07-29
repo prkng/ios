@@ -35,7 +35,7 @@ class MapViewController: AbstractViewController {
     func trackUser(shouldTrack: Bool) { }
     func updateAnnotations() { }
 
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) { }
+    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) { }
     
     func addMyCarMarker() { }
     func removeMyCarMarker() { }

@@ -873,14 +873,16 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
 
-    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil) {
+    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
         var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
         annotation.userInfo = ["type": "previousCheckin"]
         mapView.zoom = zoom ?? 17
         mapView.centerCoordinate = coordinate
         removeAllAnnotations()
-        searchAnnotations.append(annotation)
-        self.mapView.addAnnotation(annotation)
+        if showing {
+            searchAnnotations.append(annotation)
+            self.mapView.addAnnotation(annotation)
+        }
     }
 
     override func removeSelectedAnnotationIfExists() {
