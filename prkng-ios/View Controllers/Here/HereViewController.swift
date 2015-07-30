@@ -351,22 +351,22 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 detailView.rightTopLabel.text = "metered".localizedString.uppercaseString
                 
                 var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(16)])
-                var numberString = NSMutableAttributedString(string: self.activeSpot!.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2r])
+                var numberString = NSMutableAttributedString(string: self.activeSpot!.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
                 currencyString.appendAttributedString(numberString)
 
                 detailView.leftBottomLabel.attributedText = currencyString
 
-                detailView.rightBottomLabel.attributedText = interval.untilAttributedString(Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
+                detailView.rightBottomLabel.attributedText = interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
                 break
             default:
                 let interval = activeSpot!.availableTimeInterval()
 
                 if (interval > 2*3600) { // greater than 2 hours = show available until... by default
                     detailView.rightTopLabel.text = "until".localizedString.uppercaseString
-                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2r, secondPartFont: Styles.FontFaces.light(16))
+                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
                 } else {
                     detailView.rightTopLabel.text = "for".localizedString.uppercaseString
-                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2r)
+                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2rVariable)
                 }
                 break
                 
@@ -389,7 +389,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             switch spot!.currentlyActiveRule.ruleType {
             case .Paid:
                 detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
-                    make.width.equalTo(110)
+                    make.width.equalTo(SpotDetailView.BOTTOM_LEFT_CONTAINER_WIDTH)
                 })
                 detailView.checkinImageView.image = UIImage(named:"icon_checkin_pin_pay")
                 detailView.checkinImageLabel.text = "check-in-pay".localizedString

@@ -32,6 +32,9 @@ class SpotDetailView: UIView {
     
     var delegate : SpotDetailViewDelegate?
     
+    let VERTICAL_LABEL_SPACING = UIScreen.mainScreen().bounds.width == 320 ? 18 : 14
+    static let BOTTOM_LEFT_CONTAINER_WIDTH = UIScreen.mainScreen().bounds.width == 320 ? 100 : 110
+
     convenience init() {
         self.init(frame: CGRectZero)
     }
@@ -85,7 +88,7 @@ class SpotDetailView: UIView {
         topContainerButton.addTarget(self, action: "topContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(topContainerButton)
 
-        titleLabel.font = Styles.Fonts.h2
+        titleLabel.font = Styles.Fonts.h2Variable
         titleLabel.textColor = Styles.Colors.cream1
         titleLabel.textAlignment = NSTextAlignment.Left
         topContainer.addSubview(titleLabel)
@@ -119,7 +122,7 @@ class SpotDetailView: UIView {
         leftTopLabel.text = NSLocalizedString("hourly", comment: "").uppercaseString
         bottomLeftContainer.addSubview(leftTopLabel)
         
-        leftBottomLabel.font = Styles.Fonts.h1r
+        leftBottomLabel.font = Styles.Fonts.h2rVariable
         leftBottomLabel.adjustsFontSizeToFitWidth = true
         leftBottomLabel.textColor = Styles.Colors.red2
         leftBottomLabel.textAlignment = NSTextAlignment.Left
@@ -132,7 +135,7 @@ class SpotDetailView: UIView {
         rightTopLabel.numberOfLines = 1
         bottomRightContainer.addSubview(rightTopLabel)
 
-        rightBottomLabel.font = Styles.Fonts.h1r
+        rightBottomLabel.font = Styles.Fonts.h2rVariable
         rightBottomLabel.adjustsFontSizeToFitWidth = true
         rightBottomLabel.textColor = Styles.Colors.petrol2
         rightBottomLabel.textAlignment = NSTextAlignment.Left
@@ -206,13 +209,13 @@ class SpotDetailView: UIView {
         
         leftTopLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomLeftContainer).with.offset(24)
-            make.top.equalTo(self.bottomLeftContainer).with.offset(14)
+            make.top.equalTo(self.bottomLeftContainer).with.offset(self.VERTICAL_LABEL_SPACING)
             make.right.lessThanOrEqualTo(self.bottomLeftContainer.snp_right).with.offset(-10)
         }
         
         leftBottomLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomLeftContainer).with.offset(24)
-            make.bottom.equalTo(self.bottomLeftContainer).with.offset(-14)
+            make.bottom.equalTo(self.bottomLeftContainer).with.offset(-self.VERTICAL_LABEL_SPACING)
             make.right.lessThanOrEqualTo(self.bottomLeftContainer.snp_right).with.offset(-10)
         }
         
@@ -225,12 +228,12 @@ class SpotDetailView: UIView {
         
         rightTopLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomRightContainer).with.offset(24)
-            make.top.equalTo(self.bottomRightContainer).with.offset(14)
+            make.top.equalTo(self.bottomRightContainer).with.offset(self.VERTICAL_LABEL_SPACING)
         }
         
         rightBottomLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomRightContainer).with.offset(24)
-            make.bottom.equalTo(self.bottomRightContainer).with.offset(-14)
+            make.bottom.equalTo(self.bottomRightContainer).with.offset(-self.VERTICAL_LABEL_SPACING)
             make.right.lessThanOrEqualTo(self.scheduleImageView.snp_left)
         }
         

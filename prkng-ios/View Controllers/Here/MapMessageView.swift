@@ -69,7 +69,7 @@ class MapMessageView: UIView {
         messageContainer.backgroundColor = Styles.Colors.red2.colorWithAlphaComponent(0.8)
         messageContainer.addSubview(mapMessageViewImage)
         mapMessageLabel.textColor = Styles.Colors.cream1
-        mapMessageLabel.font = Styles.Fonts.s2r
+        mapMessageLabel.font = Styles.Fonts.s2b
         mapMessageLabel.numberOfLines = 0
         mapMessageLabel.textAlignment = .Left
         messageContainer.addSubview(mapMessageLabel)
@@ -79,7 +79,7 @@ class MapMessageView: UIView {
         
         availableInLabel.text = "available_in".localizedString
         availableInLabel.textColor = Styles.Colors.petrol2
-        availableInLabel.font = Styles.Fonts.s2r
+        availableInLabel.font = Styles.Fonts.s3r
         availableCityPicker.addSubview(availableInLabel)
 
         montrealButton.setTitleColor(Styles.Colors.petrol2, forState: UIControlState.Normal)

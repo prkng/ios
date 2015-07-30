@@ -101,6 +101,12 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        if let checkIn = Settings.checkedInSpot() {
+            let coordinate = checkIn.buttonLocation.coordinate
+            self.mapView.userTrackingMode = MKUserTrackingMode.None
+            goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
+        }
+
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
             Int64(1.5 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
@@ -247,7 +253,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         //the following used to happen after a zoom
         self.radius = (20.0 - mapView.mbx_zoomLevel()) * 100
         
-        if(mapView.mbx_zoomLevel() <= 15.0) {
+        if(mapView.mbx_zoomLevel() < 15.0) {
             self.radius = 0
         }
         
@@ -430,7 +436,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             
             updateInProgress = false
             
-        } else if (mapView.mbx_zoomLevel() > 15.0) {
+        } else if (mapView.mbx_zoomLevel() >= 15.0) {
             
             self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true)
 

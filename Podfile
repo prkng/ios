@@ -14,6 +14,7 @@ pod 'GZIP'
 pod 'MarqueeLabel'
 #pod 'GoogleMaps'
 pod 'CocoaLumberjack'
+#pod 'GoogleAnalytics-iOS-SDK'
 
 #the pods below should only be enabled if we move to ios 8
 #use_frameworks!

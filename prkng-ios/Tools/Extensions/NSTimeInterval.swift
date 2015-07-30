@@ -64,9 +64,9 @@ extension NSTimeInterval {
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
-                text = String(format: "%ldH%ld", hours, minutes)
+                text = String(format: "%ldh%ld", hours, minutes)
             } else {
-                text =  String(format: "%ldH", hours)
+                text =  String(format: "%ldh", hours)
             }
             
             let attrText = NSMutableAttributedString(string: text, attributes: attrs)

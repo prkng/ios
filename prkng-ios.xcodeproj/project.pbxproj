@@ -30,6 +30,9 @@
 		3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E9509C31B56B5DC0088E336 /* MessageUI.framework */; };
 		3E9509C61B56EE940088E336 /* PRKTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C51B56EE940088E336 /* PRKTextField.swift */; };
 		3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C91B570A6A0088E336 /* PRKInputForm.swift */; };
+		3E954A5E1B6AA82E00B81738 /* Intro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C531B25C8D600DAB393 /* Intro-Light.otf */; };
+		3E954A5F1B6AA82E00B81738 /* Intro-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C541B25C8D600DAB393 /* Intro-Book.otf */; };
+		3E954A601B6AA82E00B81738 /* Intro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3E954A5C1B6AA60F00B81738 /* Intro-Regular.otf */; };
 		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
 		3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */; };
 		3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */; };
@@ -43,6 +46,7 @@
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
+		3EF64E7B1B6A88FD002B010B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF64E7A1B6A88FD002B010B /* AdSupport.framework */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
@@ -101,8 +105,6 @@
 		BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */; };
 		BF9C46F51B32E30600DCF858 /* TheProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */; };
 		BF9C46F71B32F72200DCF858 /* PRKWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF9C46F61B32F72200DCF858 /* PRKWebViewController.swift */; };
-		BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C531B25C8D600DAB393 /* Intro-Light.otf */; };
-		BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */; };
 		BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */; };
 		BFA8D16D1A83D34F005F4054 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */; };
 		BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA8D16E1A83D356005F4054 /* QuartzCore.framework */; };
@@ -209,6 +211,7 @@
 		3E9509C31B56B5DC0088E336 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3E9509C51B56EE940088E336 /* PRKTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextField.swift; sourceTree = "<group>"; };
 		3E9509C91B570A6A0088E336 /* PRKInputForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKInputForm.swift; sourceTree = "<group>"; };
+		3E954A5C1B6AA60F00B81738 /* Intro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Regular.otf"; sourceTree = "<group>"; };
 		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaListViewController.swift; sourceTree = "<group>"; };
 		3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolygon.swift; sourceTree = "<group>"; };
@@ -222,6 +225,7 @@
 		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
+		3EF64E7A1B6A88FD002B010B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKVerticalGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -282,7 +286,7 @@
 		BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TheProjectViewController.swift; sourceTree = "<group>"; };
 		BF9C46F61B32F72200DCF858 /* PRKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKWebViewController.swift; sourceTree = "<group>"; };
 		BFA69C531B25C8D600DAB393 /* Intro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Light.otf"; sourceTree = "<group>"; };
-		BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Normal.otf"; sourceTree = "<group>"; };
+		BFA69C541B25C8D600DAB393 /* Intro-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Book.otf"; sourceTree = "<group>"; };
 		BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarAbstractViewController.swift; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -344,6 +348,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EF64E7B1B6A88FD002B010B /* AdSupport.framework in Frameworks */,
 				3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */,
 				3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */,
 				3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */,
@@ -394,6 +399,7 @@
 		14ED3BF3E75A844F19A53B43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3EF64E7A1B6A88FD002B010B /* AdSupport.framework */,
 				3E9509C31B56B5DC0088E336 /* MessageUI.framework */,
 				3EF969BC1B3B13B7007641AE /* Crashlytics.framework */,
 				BF5061C41B3AC2890010F650 /* Fabric.framework */,
@@ -771,7 +777,8 @@
 			isa = PBXGroup;
 			children = (
 				BFA69C531B25C8D600DAB393 /* Intro-Light.otf */,
-				BFA69C541B25C8D600DAB393 /* Intro-Normal.otf */,
+				BFA69C541B25C8D600DAB393 /* Intro-Book.otf */,
+				3E954A5C1B6AA60F00B81738 /* Intro-Regular.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -995,11 +1002,12 @@
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */,
 				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
-				BFA69C551B25C8D600DAB393 /* Intro-Light.otf in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
 				3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */,
-				BFA69C561B25C8D600DAB393 /* Intro-Normal.otf in Resources */,
+				3E954A5E1B6AA82E00B81738 /* Intro-Light.otf in Resources */,
+				3E954A5F1B6AA82E00B81738 /* Intro-Book.otf in Resources */,
+				3E954A601B6AA82E00B81738 /* Intro-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -85,16 +85,18 @@ class CarSharingInfoViewController: GAITrackedViewController {
         iconView.image = UIImage(named: titleIconName)
         containerView.addSubview(iconView)
         
-        titleLabel.font = Styles.Fonts.h1
+        titleLabel.font = Styles.Fonts.h2Variable
         titleLabel.textColor = Styles.Colors.petrol2
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.text = titleText
+        titleLabel.numberOfLines = 0
         containerView.addSubview(titleLabel)
         
         subtitleLabel.font = Styles.FontFaces.regular(15)
         subtitleLabel.textColor = Styles.Colors.red2
         subtitleLabel.textAlignment = NSTextAlignment.Center
         subtitleLabel.text = subTitleText
+        subtitleLabel.numberOfLines = 0
         containerView.addSubview(subtitleLabel)
         
         textContainer.backgroundColor = Styles.Colors.cream2
@@ -102,7 +104,7 @@ class CarSharingInfoViewController: GAITrackedViewController {
         textContainer.layer.borderWidth = 0.5
         containerView.addSubview(textContainer)
                 
-        textLabel.font = Styles.FontFaces.light(17)
+        textLabel.font = Styles.FontFaces.light(15)
         textLabel.textColor = Styles.Colors.petrol2
         textLabel.numberOfLines = 0
         textLabel.textAlignment = NSTextAlignment.Center

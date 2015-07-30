@@ -319,6 +319,7 @@ class ScheduleHelper {
         
         agendaItems.sort { (first, second) -> Bool in
             first.dayIndex < second.dayIndex
+            && first.startTime < second.startTime
         }
         
         return agendaItems
@@ -362,8 +363,21 @@ class ScheduleHelper {
             for scheduleItem in tempScheduleItems {
                 var lastScheduleItem = newScheduleItems.last
                 
+                //this loop is to see if this is the only item, potentially on other days of the week, in the schedule.
+                //we can then deduce that it's safe to alter it and make it taller without messing with other items.
+                var allScheduleItemsEqual = true
+                for item in scheduleItems {
+                    if item.startInterval != scheduleItem.startInterval
+                        || item.endInterval != scheduleItem.endInterval
+                        || item.limit != scheduleItem.limit
+                        || item.rule.ruleType != scheduleItem.rule.ruleType {
+                            allScheduleItemsEqual = false
+                    }
+
+                }
+
                 //RULE: IF ONLY RESTRICTION, MAKE IT TALLER!
-                if tempScheduleItems.count == 1 {
+                if tempScheduleItems.count == 1 && allScheduleItemsEqual {
                     scheduleItem.setMinimumHeight()
                     newScheduleItems.append(scheduleItem)
                 }

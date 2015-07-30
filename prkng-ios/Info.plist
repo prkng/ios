@@ -64,7 +64,8 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>Intro-Light.otf</string>
-		<string>Intro-Normal.otf</string>
+		<string>Intro-Book.otf</string>
+		<string>Intro-Regular.otf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

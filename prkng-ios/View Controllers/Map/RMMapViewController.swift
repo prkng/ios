@@ -107,6 +107,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        if let checkIn = Settings.checkedInSpot() {
+            let coordinate = checkIn.buttonLocation.coordinate
+            self.mapView.userTrackingMode = RMUserTrackingModeNone
+            goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
+        }
+        
         self.removeSelectedAnnotationIfExists()
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
@@ -159,7 +165,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 shape.lineColor = Styles.Colors.petrol2
             }
             
-            if mapView.zoom > 15.0 && mapView.zoom < 16.0 {
+            if mapView.zoom >= 15.0 && mapView.zoom < 16.0 {
                 shape.lineWidth = 2.6
             } else {
                 shape.lineWidth = 4.4
@@ -307,7 +313,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.radius = (20.0 - map.zoom) * 100
             
-            if(map.zoom <= 15.0) {
+            if(map.zoom < 15.0) {
                 self.radius = 0
             }
             
@@ -510,7 +516,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             updateInProgress = false
 
-        } else if (mapView.zoom > 15.0) {
+        } else if (mapView.zoom >= 15.0) {
             
             self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true)
 

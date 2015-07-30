@@ -322,7 +322,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.bottom.equalTo(self.shareButton.snp_top)
             make.left.equalTo(self.bigButtonContainer)
             make.right.equalTo(self.bigButtonContainer)
-            make.height.equalTo(60)
+            make.height.equalTo(50)
         }
         
         bottomButtonLabel.snp_makeConstraints { (make) -> () in
@@ -406,8 +406,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 bottomSelectionControl.hidden = false
                 bottomPillButton.hidden = true
 
-                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval) % (24*60*60)
-                if intervalInEndDay < 12*60*60 && DateUtil.timeIntervalSinceDayStart() <= 16*60*60 {
+                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval) % (24*3600)
+                let isDayBefore = interval <= 24*3600
+                if intervalInEndDay < 12*3600 && (DateUtil.timeIntervalSinceDayStart() <= 16*3600 || !isDayBefore) {
                     bottomButtonContainer.hidden = false
                     bottomButtonLabel.text = "notified_night_before".localizedString.uppercaseString
                     let i = Settings.shouldNotifyTheNightBefore() ? 0 : 1

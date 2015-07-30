@@ -61,6 +61,7 @@ struct Styles {
         
         static let regular = "Intro-Normal"
         static let light = "Intro-Light"
+        static let bold = "Intro-Regular"
         
         static func regular (size : CGFloat) -> UIFont {
             return UIFont(name: regular, size: size)!
@@ -68,6 +69,10 @@ struct Styles {
         
         static func light (size : CGFloat) -> UIFont {
             return UIFont(name: light, size: size)!
+        }
+
+        static func bold (size : CGFloat) -> UIFont {
+            return UIFont(name: bold, size: size)!
         }
         
     }
@@ -78,21 +83,38 @@ struct Styles {
         static let h2 =  FontFaces.light(25)
         static let h3 =  FontFaces.light(20)
         
+        static let h2Variable = UIScreen.mainScreen().bounds.width == 320 ? h3 : h2
+        
         static let s1 =  FontFaces.light(17)
-        static let s2 =  FontFaces.light(12)
+        static let s2 =  FontFaces.regular(14)
+        static let s3 =  FontFaces.regular(12)
+        
         
         static let h1r =  FontFaces.regular(25)
         static let h2r =  FontFaces.regular(25)
         static let h3r =  FontFaces.regular(20)
         
-        static let s1r =  FontFaces.regular(17)
-        static let s2r =  FontFaces.regular(12)
+        static let h2rVariable = UIScreen.mainScreen().bounds.width == 320 ? h3r : h2r
 
+        static let s1r =  FontFaces.regular(17)
+        static let s2r =  FontFaces.regular(14)
+        static let s3r =  FontFaces.regular(12)
+
+        
+        static let h1b =  FontFaces.regular(25)
+        static let h2b =  FontFaces.regular(20)
+        
+        static let h1bVariable = UIScreen.mainScreen().bounds.width == 320 ? h3r : h2r
+        
+        static let s1b =  FontFaces.regular(17)
+        static let s2b =  FontFaces.regular(14)
+        static let s3b =  FontFaces.regular(12)
+        
     }
     
     struct Sizes {
         static let tabbarHeight = 58
-        static let hugeButtonHeight = UIScreen.mainScreen().bounds.height == 480 ? 54 : 70
+        static let hugeButtonHeight = UIScreen.mainScreen().bounds.width == 320 ? 54 : 70
         static let formTextFieldHeight = 71
         static let formLabelHeight = 17
         static let searchTextFieldHeight = 46
