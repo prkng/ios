@@ -591,6 +591,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             completion: { (completed:Bool) -> Void in
         })
         
+        searchFilterView.searchField.resignFirstResponder()
+        
         showingFilters = false
         
     }
