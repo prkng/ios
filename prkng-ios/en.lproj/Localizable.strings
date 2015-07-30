@@ -170,15 +170,15 @@
 "car_sharing_filter" = "Carsharing";
 "car_sharing_enabled_text" = "Car sharing is enabled";
 "car_sharing_info_title" = "Carsharing made easy";
-"car_sharing_info_subtitle" = "Find a 24hrs+ spot around you.";
-"car_sharing_info_message" = "This option when you're using a carsharing service and need to find a spot on-street allowed for the next 24 hours";
+"car_sharing_info_subtitle" = "Find a 24hour+ spot around you.";
+"car_sharing_info_message" = "This option is for when you're using a carsharing service and need to find a spot available for the next 24 hours.";
 
 "map_message_loading" = "Loading...";
 "map_message_too_zoomed_out" = "Zoom in to street level";
 "map_message_no_spots" = "Uh oh! You can't park here at this time.";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here.";
 "map_message_under_maintenance" = "We're currently performing maintenance on our service. Please try again soon!";
-"map_message_error" = "Oops, make sure your connection is active and try again.";
+"map_message_error" = "Oops, make sure your internet connection is active and try again.";
 "camera" = "Camera";
 "enable_camera_message" = "Please allow access to your camera to report an error.";
 

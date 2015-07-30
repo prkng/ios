@@ -256,7 +256,7 @@ struct ViewFactory {
         imageView.image = image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         imageView.tintColor = color
         
-        maxLabel.text = hourlyRateString + "/H"
+        maxLabel.text = hourlyRateString == "" ? "" : hourlyRateString + "/H"
         maxLabel.font = Styles.FontFaces.regular(12)
         maxLabel.textAlignment = NSTextAlignment.Center
         maxLabel.textColor = color

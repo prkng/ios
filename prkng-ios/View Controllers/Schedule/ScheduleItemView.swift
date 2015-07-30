@@ -34,7 +34,11 @@ class ScheduleItemView : UIView {
             imageView = ViewFactory.timeMaxIcon(Int(model.limit/60), addMaxLabel: true, color: Styles.Colors.cream2)
             break
         case .Paid:
-            imageView = ViewFactory.paidIcon(model.rule.paidHourlyRateString, color: Styles.Colors.curry)
+            var rateString = model.rule.paidHourlyRateString
+            if model.endInterval - model.startInterval < 4*3600 {
+                rateString = ""
+            }
+            imageView = ViewFactory.paidIcon(rateString, color: Styles.Colors.curry)
             break
         }
         

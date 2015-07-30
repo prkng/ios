@@ -207,7 +207,9 @@ class PRKModalViewController: AbstractViewController, ModalHeaderViewDelegate, P
     }
     
     func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
-        self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
+        if yDistanceFromBeginTap < 0 {
+            self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
+        }
     }
     
     func swipeDidEndUp() {

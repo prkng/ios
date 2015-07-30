@@ -815,7 +815,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         let interiorPolygons = MKPolygon.interiorPolygons(polygons)
         let interiorPolygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(interiorPolygons, mapView: mapView)
         
-        var allAnnotationsToAdd = interiorPolygonAnnotations + [annotation]
+        var allAnnotationsToAdd = [annotation]
         mapView.addAnnotations(allAnnotationsToAdd)
         
     }

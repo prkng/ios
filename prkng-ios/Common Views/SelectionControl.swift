@@ -29,7 +29,7 @@ class SelectionControl: UIControl {
     var selectedTextColor : UIColor?
     var buttonBackgroundColor : UIColor?
     var selectedButtonBackgroundColor : UIColor?
-    var font : UIFont?
+    var font : UIFont = Styles.FontFaces.regular(12)
     var fixedWidth : Int = 0
     
     convenience init(titles : Array<String>) {
@@ -122,9 +122,7 @@ class SelectionControl: UIControl {
                 button.selectedButtonBackgroundColor = UIColor.clearColor() //selectedButtonBackgroundColor!
             }
             
-            if font != nil {
-                button.font = font!
-            }
+            button.font = font
             
             button.layer.cornerRadius =  self.buttonSize.height / 2.0
             button.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -206,6 +204,22 @@ class SelectionControl: UIControl {
         }
         
         didSetupConstraints = true
+    }
+    
+    //only works for fixed width...
+    func calculatedWidth() -> CGFloat {
+        var width: CGFloat = 0
+        for title in titles {
+            width += CGFloat(fixedWidth)
+            
+            let attrs = [NSFontAttributeName: font]
+            let maximumLabelSize = CGSizeMake(310, 9999);
+            let rect = (title as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs , context: nil)
+            
+            width += rect.width
+            
+        }
+        return width
     }
     
     private func deselectAll () {

@@ -16,7 +16,6 @@ class AboutViewController: AbstractViewController {
     let titleLabel = UILabel()
     let faqButton = ViewFactory.bigTransparentButton()
     let termsButton = ViewFactory.bigTransparentButton()
-    let privacyButton = ViewFactory.bigTransparentButton()
     let shareButton = ViewFactory.bigTransparentButton()
     let backButton = ViewFactory.redBackButton()
     
@@ -49,10 +48,6 @@ class AboutViewController: AbstractViewController {
         termsButton.addTarget(self, action: "termsButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(termsButton)
 
-        privacyButton.setTitle("privacy_policy".localizedString, forState: .Normal)
-        privacyButton.addTarget(self, action: "privacyButtonTapped:", forControlEvents: .TouchUpInside)
-        view.addSubview(privacyButton)
-        
         shareButton.setTitle("share".localizedString, forState: .Normal)
         shareButton.addTarget(self, action: "shareButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(shareButton)
@@ -97,15 +92,8 @@ class AboutViewController: AbstractViewController {
             make.right.equalTo(self.view)
         }
         
-        privacyButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.termsButton.snp_bottom).with.offset(viewHeight * 0.05)
-            make.height.equalTo(34)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-        }
-
         shareButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.privacyButton.snp_bottom).with.offset(viewHeight * 0.05)
+            make.top.equalTo(self.termsButton.snp_bottom).with.offset(viewHeight * 0.05)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)

@@ -254,7 +254,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         notificationSelection.snp_makeConstraints { (make) -> () in
-            make.width.greaterThanOrEqualTo(164) //42(15 min)+39(30 min)+23(off)+60(spacing is 3*20)
+            make.width.equalTo(self.notificationSelection.calculatedWidth())
             make.right.equalTo(self.notificationsContainer).with.offset(-20).priorityHigh()
             make.top.equalTo(self.notificationsContainer)
             make.bottom.equalTo(self.notificationsContainer)
@@ -302,7 +302,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
 
         carSharingSelection.snp_makeConstraints { (make) -> () in
-            make.width.greaterThanOrEqualTo(102)//19(ON)+23(off)+60(spacing is 2*30)
+            make.width.equalTo(self.carSharingSelection.calculatedWidth())
             make.right.equalTo(self.carSharingContainer).with.offset(-20).priorityHigh()
             make.top.equalTo(self.carSharingContainer)
             make.bottom.equalTo(self.carSharingContainer)

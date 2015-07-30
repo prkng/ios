@@ -18,6 +18,8 @@ class APIUtility: NSObject {
 #endif
     }
     
+    //set test server in debug console with NSUserDefaults.standardUserDefaults().setObject(true, forKey:"use_test_server")
+    
     class func rootURL() -> String {
         return APIConstants.rootURLString;
     }
