@@ -40,6 +40,7 @@ extension NSTimeInterval {
             
             var hours = Int((self / 3600))
             hours = hours >= 13 ? hours - 12 : hours
+            hours = hours == 0 ? 12 : hours
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
@@ -91,6 +92,7 @@ extension NSTimeInterval {
             var text = ""
             var hours = Int((self / 3600))
             hours = hours >= 13 ? hours - 12 : hours
+            hours = hours == 0 ? 12 : hours
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
