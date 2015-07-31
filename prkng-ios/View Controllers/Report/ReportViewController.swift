@@ -38,6 +38,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
     var notesVC: NotesModalViewController?
     
+    var delegate: ReportViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -322,8 +324,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         SpotOperations.reportParkingRule(resized, location: location!.coordinate, notes: notesVC?.textView.text ?? "", spotId: spotId, completion: { (completed) -> Void in
             
             if (completed) {
-                SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
-                SVProgressHUD.showSuccessWithStatus("report_sent_thanks".localizedString)
+                SVProgressHUD.dismiss()
+                self.delegate?.reportDidEnd(true)
                 self.navigationController?.popViewControllerAnimated(true)
             } else {
                 SVProgressHUD.dismiss()
@@ -432,4 +434,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
     }
     
+}
+
+protocol ReportViewControllerDelegate {
+    func reportDidEnd(success: Bool)
 }

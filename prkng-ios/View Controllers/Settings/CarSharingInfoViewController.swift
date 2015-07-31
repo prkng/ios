@@ -25,6 +25,8 @@ class CarSharingInfoViewController: GAITrackedViewController {
     let X_TRANSFORM = CGFloat(100)
     let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
     
+    let cornerRadius: CGFloat = 8
+    
     let titleIconName = "icon_car2go"
     let titleText = "car_sharing_info_title".localizedString
     let subTitleText = "car_sharing_info_subtitle".localizedString
@@ -77,9 +79,12 @@ class CarSharingInfoViewController: GAITrackedViewController {
         
         view.backgroundColor = Styles.Colors.transparentBackground
         
+        containerView.layer.cornerRadius = cornerRadius
+        containerView.backgroundColor = Styles.Colors.cream2
         view.addSubview(containerView)
         
         titleContainer.backgroundColor = Styles.Colors.cream2
+        titleContainer.layer.cornerRadius = cornerRadius
         containerView.addSubview(titleContainer)
         
         iconView.image = UIImage(named: titleIconName)
@@ -102,6 +107,7 @@ class CarSharingInfoViewController: GAITrackedViewController {
         textContainer.backgroundColor = Styles.Colors.cream2
         textContainer.layer.borderColor = Styles.Colors.beige1.CGColor
         textContainer.layer.borderWidth = 0.5
+        textContainer.layer.cornerRadius = cornerRadius
         containerView.addSubview(textContainer)
                 
         textLabel.font = Styles.FontFaces.light(15)

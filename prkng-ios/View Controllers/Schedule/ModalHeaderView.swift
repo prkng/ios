@@ -60,6 +60,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         addSubview(topContainer)
         
+        titleLabel.animationDelay = 2
         titleLabel.font = Styles.Fonts.h3r
         titleLabel.textColor = Styles.Colors.cream1
         titleLabel.textAlignment = NSTextAlignment.Left

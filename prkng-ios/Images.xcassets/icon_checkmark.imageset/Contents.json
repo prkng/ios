@@ -2,17 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "cAr2GoIcon.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "image-firstcheckin@2x.png"
+      "filename" : "cAr2GoIcon@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "image-firstcheckin@3x.png"
+      "filename" : "cAr2GoIcon@3x.png"
     }
   ],
   "info" : {

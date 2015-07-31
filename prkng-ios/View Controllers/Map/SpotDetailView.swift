@@ -88,6 +88,7 @@ class SpotDetailView: UIView {
         topContainerButton.addTarget(self, action: "topContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(topContainerButton)
 
+        titleLabel.animationDelay = 2
         titleLabel.font = Styles.Fonts.h2Variable
         titleLabel.textColor = Styles.Colors.cream1
         titleLabel.textAlignment = NSTextAlignment.Left

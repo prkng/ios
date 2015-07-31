@@ -11,6 +11,7 @@ import UIKit
 class CheckinMessageViewController: GAITrackedViewController {
     
     var containerView: UIView
+    var iconView : UIImageView
     var imageView : UIImageView
     var titleContainer : UIView
     var titleLabel : UILabel
@@ -21,9 +22,12 @@ class CheckinMessageViewController: GAITrackedViewController {
     let X_TRANSFORM = CGFloat(100)
     let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
     
+    let cornerRadius: CGFloat = 9
+
     init() {
         
         containerView = UIView()
+        iconView = UIImageView()
         imageView = UIImageView()
         titleContainer = UIView()
         titleLabel = UILabel()
@@ -64,13 +68,19 @@ class CheckinMessageViewController: GAITrackedViewController {
         
         view.backgroundColor = Styles.Colors.transparentBackground
         
+        containerView.layer.cornerRadius = cornerRadius
+        containerView.backgroundColor = Styles.Colors.cream2
         view.addSubview(containerView)
         
         imageView.image =  UIImage(named:"first_checkin_header")
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         containerView.addSubview(imageView)
         
+        iconView.image = UIImage(named: "icon_howto_checkin")
+        containerView.addSubview(iconView)
+
         titleContainer.backgroundColor = Styles.Colors.cream2
+        titleContainer.layer.cornerRadius = cornerRadius
         containerView.addSubview(titleContainer)
         
         titleLabel.font = Styles.Fonts.h1
@@ -88,6 +98,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         textContainer.backgroundColor = Styles.Colors.cream2
         textContainer.layer.borderColor = Styles.Colors.beige1.CGColor
         textContainer.layer.borderWidth = 0.5
+        textContainer.layer.cornerRadius = cornerRadius
         containerView.addSubview(textContainer)
         
         textLabel.font = Styles.FontFaces.light(17)
@@ -105,6 +116,12 @@ class CheckinMessageViewController: GAITrackedViewController {
             make.centerY.equalTo(self.view)
             make.left.equalTo(self.view).with.offset(24)
             make.right.equalTo(self.view).with.offset(-24)
+        }
+        
+        iconView.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.containerView)
+            make.centerY.equalTo(self.containerView.snp_top)
+            make.size.equalTo(CGSizeMake(36, 36))
         }
         
         titleContainer.snp_makeConstraints { (make) -> () in

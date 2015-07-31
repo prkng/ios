@@ -20,6 +20,7 @@
 		3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */; };
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
+		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
@@ -181,6 +182,7 @@
 		3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
+		3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKPopupViewController.swift; sourceTree = "<group>"; };
 		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModalViewController.swift; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 		3E6799061B4F2C8E003913CF /* Modal */ = {
 			isa = PBXGroup;
 			children = (
+				3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */,
 				3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */,
 			);
 			path = Modal;
@@ -1097,6 +1100,7 @@
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */,
 				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
+				3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */,
 				3E7523071B693DF70096755F /* MapMessageView.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
 				BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */,

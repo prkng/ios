@@ -149,6 +149,9 @@
 "report_thanks" = "-";
 "report_error" = "Une erreur est survenue, veuillez réessayer.";
 "report_sent_thanks" = "Merci du coup de pouce! On analysera votre photo sous peu.";
+"report_sent_thanks_title" = "Merci du coup de pouce!";
+"report_sent_thanks_message" = "On analysera votre photo sous peu.";
+
 
 "available_in" = "Disponible à:";
 "about" = "à propos";

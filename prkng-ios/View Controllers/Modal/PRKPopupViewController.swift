@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereFirstUseViewController: GAITrackedViewController {
+class PRKPopupViewController: GAITrackedViewController {
 
     var containerView: UIView
     
@@ -19,42 +19,37 @@ class HereFirstUseViewController: GAITrackedViewController {
     var titleLabel : UILabel
     var subtitleLabel : UILabel
     
-    var imageView : UIImageView
+    var textContainer : UIView
+    var textLabel : UILabel
     
-    var textContainer1 : UIView
-    var textLabel1 : UILabel
-    
-    var icon2View : UIImageView
-    
-    var textContainer2 : UIView
-    var textLabel2 : UILabel
-    
-    let cornerRadius: CGFloat = 8
-
     let X_TRANSFORM = CGFloat(100)
     let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
     
-    init() {
+    let cornerRadius: CGFloat = 8
+    
+    var titleIconName: String
+    var titleText: String
+    var subTitleText: String
+    var messageText: String
+    
+    init(titleIconName: String, titleText: String, subTitleText: String, messageText: String) {
 
+        self.titleIconName = titleIconName
+        self.titleText = titleText
+        self.subTitleText = subTitleText
+        self.messageText = messageText
+        
         containerView = UIView()
         
         iconView = UIImageView()
-        
-        imageView = UIImageView()
         
         titleContainer = UIView()
         titleLabel = UILabel()
         subtitleLabel = UILabel()
         
-        imageView = UIImageView()
+        textContainer = UIView()
+        textLabel = UILabel()
         
-        textContainer1 = UIView()
-        textLabel1 = UILabel()
-        
-        icon2View = UIImageView()
-        
-        textContainer2 = UIView()
-        textLabel2 = UILabel()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -71,7 +66,7 @@ class HereFirstUseViewController: GAITrackedViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.screenName = "Here - First Use View"
+        self.screenName = "Car Sharing Info View"
         
         let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
         let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
@@ -93,85 +88,48 @@ class HereFirstUseViewController: GAITrackedViewController {
         containerView.backgroundColor = Styles.Colors.cream2
         view.addSubview(containerView)
         
-        titleContainer.backgroundColor = Styles.Colors.cream2
         titleContainer.layer.cornerRadius = cornerRadius
+        titleContainer.backgroundColor = Styles.Colors.cream2
         containerView.addSubview(titleContainer)
         
-        iconView.image = UIImage(named: "icon_howto_compass")
+        iconView.image = UIImage(named: titleIconName)
         containerView.addSubview(iconView)
         
-        titleLabel.font = Styles.Fonts.h1
+        titleLabel.font = Styles.Fonts.h2Variable
         titleLabel.textColor = Styles.Colors.petrol2
         titleLabel.textAlignment = NSTextAlignment.Center
-        titleLabel.text = "here_firstuse_title".localizedString
+        titleLabel.text = titleText
+        titleLabel.numberOfLines = 0
         containerView.addSubview(titleLabel)
         
-        subtitleLabel.font = Styles.FontFaces.regular(17)
+        subtitleLabel.font = Styles.FontFaces.regular(15)
         subtitleLabel.textColor = Styles.Colors.red2
         subtitleLabel.textAlignment = NSTextAlignment.Center
-        subtitleLabel.text = "here_firstuse_subtitle".localizedString
+        subtitleLabel.text = subTitleText
+        subtitleLabel.numberOfLines = 0
         containerView.addSubview(subtitleLabel)
         
-        textContainer1.backgroundColor = Styles.Colors.cream2
-        textContainer1.layer.borderColor = Styles.Colors.beige1.CGColor
-        textContainer1.layer.borderWidth = 0.5
-        textContainer2.layer.cornerRadius = cornerRadius
-        containerView.addSubview(textContainer1)
+        textContainer.backgroundColor = Styles.Colors.cream2
+        textContainer.layer.borderColor = Styles.Colors.beige1.CGColor
+        textContainer.layer.borderWidth = 0.5
+        textContainer.layer.cornerRadius = cornerRadius
+        containerView.addSubview(textContainer)
+                
+        textLabel.font = Styles.FontFaces.light(15)
+        textLabel.textColor = Styles.Colors.petrol2
+        textLabel.numberOfLines = 0
+        textLabel.textAlignment = NSTextAlignment.Center
+        textLabel.text = messageText
+        containerView.addSubview(textLabel)
         
-        imageView.image =  UIImage(named:"icon_howto_spots".localizedString)
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
-        textContainer1.addSubview(imageView)
-        
-        textLabel1.font = Styles.FontFaces.light(17)
-        textLabel1.textColor = Styles.Colors.petrol2
-        textLabel1.numberOfLines = 0
-        textLabel1.textAlignment = NSTextAlignment.Center
-        textLabel1.text = "here_firstuse_1".localizedString
-        containerView.addSubview(textLabel1)
-        
-        textContainer2.backgroundColor = Styles.Colors.cream2
-        textContainer2.layer.cornerRadius = cornerRadius
-        containerView.addSubview(textContainer2)
-        
-        
-        textLabel2.font = Styles.FontFaces.light(17)
-        textLabel2.textColor = Styles.Colors.petrol2
-        textLabel2.numberOfLines = 0
-        textLabel2.textAlignment = NSTextAlignment.Center
-        textLabel2.text = "here_firstuse_2".localizedString
-        textContainer2.addSubview(textLabel2)
-        
-        icon2View.image = UIImage(named: "icon_howto_checkin")
-        textContainer2.addSubview(icon2View)
     }
     
     func setupConstraints () {
         
         containerView.snp_makeConstraints { (make) -> () in
-            make.centerY.equalTo(self.view)
+            make.center.equalTo(self.view)
             make.left.equalTo(self.view).with.offset(24)
             make.right.equalTo(self.view).with.offset(-24)
-        }
-        
-        titleContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.containerView)
-            make.left.equalTo(self.containerView)
-            make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.subtitleLabel).with.offset(10)
-        }
-        
-
-        titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleContainer).with.offset(25)
-            make.left.equalTo(self.containerView)
-            make.right.equalTo(self.containerView)
-        }
-        
-        
-        subtitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(7)
-            make.left.equalTo(self.containerView)
-            make.right.equalTo(self.containerView)
         }
         
         iconView.snp_makeConstraints { (make) -> () in
@@ -180,46 +138,39 @@ class HereFirstUseViewController: GAITrackedViewController {
             make.size.equalTo(CGSizeMake(36, 36))
         }
         
-        textContainer1.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleContainer.snp_bottom)
+        titleContainer.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.textLabel1).with.offset(29)
+            make.bottom.equalTo(self.subtitleLabel).with.offset(14)
+        }
+
+        titleLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.titleContainer).with.offset(25)
+            make.left.equalTo(self.containerView)
+            make.right.equalTo(self.containerView)
         }
         
-        imageView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textContainer1).with.offset(21)
-            make.left.equalTo(self.textContainer1)
-            make.right.equalTo(self.textContainer1)
+        subtitleLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(7)
+            make.left.equalTo(self.containerView)
+            make.right.equalTo(self.containerView)
         }
         
-        textLabel1.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.imageView.snp_bottom).with.offset(9)
-            make.left.equalTo(self.textContainer1).with.offset(24)
-            make.right.equalTo(self.textContainer1).with.offset(-24)
-        }
-        
-        
-        textContainer2.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textContainer1.snp_bottom)
+        textContainer.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.titleContainer.snp_bottom)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
             make.bottom.equalTo(self.containerView)
         }
         
-        icon2View.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.textContainer2)
-            make.centerY.equalTo(self.textContainer2.snp_top)
-            make.size.equalTo(CGSizeMake(36, 36))
+        textLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.textContainer).with.offset(14)
+            make.left.equalTo(self.textContainer).with.offset(24)
+            make.right.equalTo(self.textContainer).with.offset(-24)
+            make.bottom.equalTo(self.textContainer).with.offset(-22)
         }
-        
-        textLabel2.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textContainer2).with.offset(29)
-            make.left.equalTo(self.textContainer2).with.offset(24)
-            make.right.equalTo(self.textContainer2).with.offset(-24)
-            make.bottom.equalTo(self.textContainer2).with.offset(-22)
-        }
-        
+
         
     }
     
