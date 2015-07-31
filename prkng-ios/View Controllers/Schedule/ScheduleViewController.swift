@@ -318,8 +318,11 @@ class ScheduleHelper {
         }
         
         agendaItems.sort { (first, second) -> Bool in
-            first.dayIndex < second.dayIndex
-            && first.startTime < second.startTime
+            if first.dayIndex == second.dayIndex {
+                return first.startTime < second.startTime
+            } else {
+                return first.dayIndex < second.dayIndex
+            }
         }
         
         return agendaItems
