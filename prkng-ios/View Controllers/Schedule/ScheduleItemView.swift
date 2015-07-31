@@ -102,7 +102,7 @@ class ScheduleItemView : UIView {
             self.backgroundColor = Styles.Colors.midnight1
             break
         case .Paid:
-            self.backgroundColor = Styles.Colors.petrol2
+            self.backgroundColor = Styles.Colors.midnight1
             break
         }
         
