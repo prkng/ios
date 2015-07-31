@@ -27,6 +27,7 @@
 #import <SZTextView/SZTextView.h>
 #import "DDLoggerWrapper.h"
 #import "GAI.h"
+#import "GAIDictionaryBuilder.h"
 #import "KMLParser.h"
 #import "GeoJsonParser.h"
 #import "POP.h"

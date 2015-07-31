@@ -283,6 +283,10 @@ class ParkingSpot: NSObject, Hashable {
         
         let today = DateUtil.dayIndexOfTheWeek()
         
+        if self.rules.count == 0 {
+            return array
+        }
+        
         for r in 0...(self.rules.count - 1) {
             
             var timePeriods : Array<TimePeriod?> = []

@@ -15,6 +15,7 @@ pod 'MarqueeLabel'
 #pod 'GoogleMaps'
 pod 'CocoaLumberjack'
 #pod 'GoogleAnalytics-iOS-SDK'
+pod 'GoogleIDFASupport'
 pod 'SZTextView'
 
 #the pods below should only be enabled if we move to ios 8

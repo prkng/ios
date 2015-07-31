@@ -472,6 +472,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func shareButtonTapped() {
         
+        var tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Share Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+
         createGoogleMapsLink(spot!.buttonLocation)
     }
     
@@ -501,15 +504,25 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func leaveButtonTapped() {
         
+        var tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Check Out Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+
         Settings.checkOut()
         self.delegate?.reloadMyCarTab()
     }
     
     func reportButtonTapped(sender: UIButton) {
+        
+        var tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Report Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+
         loadReportScreen(self.spot?.identifier)
     }
     
     func payButtonTapped(sender: UIButton) {
+
+        var tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Pay Button Tapped", label: bottomButtonLabel.text, value: nil).build() as [NSObject : AnyObject])
 
         var url = NSURL(string: "")
 
