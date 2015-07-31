@@ -17,7 +17,8 @@ class MapViewController: AbstractViewController {
     var myCarAnnotation: NSObject?
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
-
+    var wasShown : Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,10 +38,11 @@ class MapViewController: AbstractViewController {
 
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) { }
     
+    func showForFirstTime() { }
+
     func addMyCarMarker() { }
     func removeMyCarMarker() { }
     func removeSelectedAnnotationIfExists() { }
-
     
     func addCityOverlays() {
         getCityOverlays()

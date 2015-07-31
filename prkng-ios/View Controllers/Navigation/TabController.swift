@@ -184,6 +184,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             self.tabBar.updateSelected()
         })
         
+        self.mapViewController.showForFirstTime()
+        
     }
     
     func loadSearchInHereTab() {

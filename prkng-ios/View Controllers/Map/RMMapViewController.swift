@@ -46,8 +46,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: offlineSource)
         }
         
-        mapView.userTrackingMode = RMUserTrackingModeFollow
-        
         mapView.tintColor = Styles.Colors.red2
         mapView.showLogoBug = false
         mapView.hideAttribution = true
@@ -107,12 +105,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let checkIn = Settings.checkedInSpot() {
-            let coordinate = checkIn.buttonLocation.coordinate
-            self.mapView.userTrackingMode = RMUserTrackingModeNone
-            goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
-        }
-        
         self.removeSelectedAnnotationIfExists()
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
@@ -126,6 +118,21 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             if let source = RMMapboxSource(mapID: mapSource) {
                 mapView.tileSource = source
             }
+        }
+    }
+    
+    override func showForFirstTime() {
+        
+        if !wasShown {
+            if let checkIn = Settings.checkedInSpot() {
+                let coordinate = checkIn.buttonLocation.coordinate
+                self.showTrackUserButton()
+                self.mapView.userTrackingMode = RMUserTrackingModeNone
+                goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
+            }
+            
+            wasShown = true
+
         }
     }
     

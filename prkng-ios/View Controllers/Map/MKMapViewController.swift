@@ -100,12 +100,6 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if let checkIn = Settings.checkedInSpot() {
-            let coordinate = checkIn.buttonLocation.coordinate
-            self.mapView.userTrackingMode = MKUserTrackingMode.None
-            goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
-        }
 
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
             Int64(1.5 * Double(NSEC_PER_SEC)))
@@ -115,6 +109,20 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         }
 
     }
+    
+    override func showForFirstTime() {
+        if !wasShown {
+            
+            if let checkIn = Settings.checkedInSpot() {
+                let coordinate = checkIn.buttonLocation.coordinate
+                self.mapView.userTrackingMode = MKUserTrackingMode.None
+                goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
+            }
+            
+            wasShown = true
+        }
+    }
+
     
     func updateMapCenterIfNecessary () {
         
