@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */; };
 		3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */; };
 		3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC51B2769FF00872667 /* GLKit.framework */; };
 		3E0FDAC81B276A0700872667 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC71B276A0700872667 /* ImageIO.framework */; };
@@ -165,6 +166,7 @@
 
 /* Begin PBXFileReference section */
 		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
+		3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesModalViewController.swift; sourceTree = "<group>"; };
 		3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3E0FDAC51B2769FF00872667 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		3E0FDAC71B276A0700872667 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
@@ -889,6 +891,7 @@
 			children = (
 				BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */,
 				BF6E1D451B2083290038E358 /* ReportOverlayView.swift */,
+				3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */,
 			);
 			path = Report;
 			sourceTree = "<group>";
@@ -1124,6 +1127,7 @@
 				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
 				BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
+				3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */,
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,

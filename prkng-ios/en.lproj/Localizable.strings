@@ -139,7 +139,8 @@
 "free_spots" = "FREE SPOTS";
 "metered_spots" = "METERED SPOTS";
 
-
+"report_notes_title" = "Uh oh, sorry!";
+"report_notes_placeholder" = "Could you please tell us what's wrong?";
 "report_an_error" = "Report an Error";
 "report_title" = "REPORT AN ERROR AT";
 "report_text" = "Take a picture of the \nlocal regulation and help \nus to improve our service.";

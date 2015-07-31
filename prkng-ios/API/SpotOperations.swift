@@ -112,7 +112,7 @@ struct SpotOperations {
         
     }
     
-    static func reportParkingRule (image : UIImage, location : CLLocationCoordinate2D, spotId: String?, completion: ((completed : Bool) -> Void)) {
+    static func reportParkingRule (image : UIImage, location : CLLocationCoordinate2D, notes: String, spotId: String?, completion: ((completed : Bool) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "image"
         let params = ["image_type" : "report",
@@ -147,7 +147,8 @@ struct SpotOperations {
                     
                     var reportParams : [String: AnyObject] = ["latitude" : "\(location.latitude)",
                         "longitude" : "\(location.longitude)",
-                        "image_url" : accessUrl]
+                        "image_url" : accessUrl,
+                        "notes" : notes]
                     
                     if (spotId != nil) {
                         reportParams["slot_id"] = spotId!

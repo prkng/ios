@@ -11,6 +11,7 @@ import AVFoundation
 
 class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
+
     let captureSession = AVCaptureSession()
     var previewLayer : AVCaptureVideoPreviewLayer?
     var captureDevice : AVCaptureDevice?
@@ -19,6 +20,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
     let overlayView = ReportOverlayView()
     let previewView = UIView()
+    let previewViewOverlay = UIView()
     let imageView = UIImageView()
     let captureButton = UIButton()
     let sendButton = UIButton()
@@ -33,6 +35,8 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     var spotId : String?
     
     var timer : NSTimer?
+    
+    var notesVC: NotesModalViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +79,10 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         view.addSubview(previewView)
         
+        previewViewOverlay.backgroundColor = Styles.Colors.transparentBackground
+        previewViewOverlay.hidden = true
+        view.addSubview(previewViewOverlay)
+        
         view.addSubview(overlayView)
         
         imageView.hidden = true
@@ -104,6 +112,10 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             make.edges.equalTo(self.view)
         }
         
+        previewViewOverlay.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
+
         overlayView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.view)
         }
@@ -297,12 +309,17 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
     func sendButtonTapped(sender : UIButton) {
         
+        if notesVC == nil {
+            showNotes()
+            return
+        }
+        
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())
         SVProgressHUD.showWithMaskType(.Clear)
         
         let resized = ImageUtil.resizeImage(capturedImage!, targetSize: CGSizeMake(1024, 768))
         
-        SpotOperations.reportParkingRule(resized, location: location!.coordinate, spotId: spotId, completion: { (completed) -> Void in
+        SpotOperations.reportParkingRule(resized, location: location!.coordinate, notes: notesVC?.textView.text ?? "", spotId: spotId, completion: { (completed) -> Void in
             
             if (completed) {
                 SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
@@ -335,8 +352,67 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         self.captureButton.hidden = false
         self.cancelButton.hidden = true
         self.sendButton.hidden = true
+        
+        dismissNotes()
     }
     
+    func showNotes() {
+        
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+            self.previewViewOverlay.alpha = 1.0
+            }, completion: { (completed) -> Void in
+                self.previewViewOverlay.hidden = false
+        })
+        
+        self.view.bringSubviewToFront(previewViewOverlay)
+        self.view.bringSubviewToFront(cancelButton)
+        self.view.bringSubviewToFront(sendButton)
+        
+        notesVC = NotesModalViewController()
+        
+        self.addChildViewController(notesVC!)
+        self.view.addSubview(notesVC!.view)
+        notesVC!.didMoveToParentViewController(self)
+        
+        notesVC!.view.snp_makeConstraints({ (make) -> () in
+            make.edges.equalTo(self.view)
+        })
+        
+        notesVC!.view.alpha = 0.0
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.notesVC!.view.alpha = 1.0
+        })
+        
+        self.view.bringSubviewToFront(cancelButton)
+        self.view.bringSubviewToFront(sendButton)
+                
+    }
+    
+    func dismissNotes() {
+        
+        if let carShareingInfo = self.notesVC {
+            
+            UIView.animateWithDuration(0.15, animations: { () -> Void in
+                self.previewViewOverlay.alpha = 0.0
+                }, completion: { (completed) -> Void in
+                    self.previewViewOverlay.hidden = true
+            })
+
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                carShareingInfo.view.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    carShareingInfo.removeFromParentViewController()
+                    carShareingInfo.view.removeFromSuperview()
+                    carShareingInfo.didMoveToParentViewController(nil)
+                    self.notesVC = nil
+            })
+            
+        }
+        
+        
+    }
+
     //MARK: CLLocationManagerDelegate
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         

@@ -141,6 +141,8 @@
 "free_spots" = "segments gratuits";
 "metered_spots" = "segments payants";
 
+"report_notes_title" = "Oops, désolé!";
+"report_notes_placeholder" = "Merci de spécifier l'erreur rencontrée!";
 "report_an_error" = "Signaler une erreur";
 "report_title" = "SIGNALER UNE ERREUR SUR";
 "report_text" = "Prenez en photo le panneau \nde réglementation en vigueur \nafin d’améliorer notre service.";

@@ -24,6 +24,7 @@
 #import <GeoJSONSerialization/GeoJSONSerialization.h>
 #import <GZIP/GZIP.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import <SZTextView/SZTextView.h>
 #import "DDLoggerWrapper.h"
 #import "GAI.h"
 #import "KMLParser.h"
