@@ -13,7 +13,19 @@ PODS:
   - FMDB/standard (2.3):
     - FMDB/common
   - GeoJSONSerialization (0.0.4)
-  - GoogleIDFASupport (3.12.0)
+  - Google/Analytics (1.0.7):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/Core (1.0.7):
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.0)
+  - GoogleAnalytics (3.13.0)
+  - GoogleNetworkingUtilities (1.0.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSymbolUtilities (1.0.0)
+  - GoogleUtilities (1.0.1):
+    - GoogleSymbolUtilities (~> 1.0)
   - GRMustache (7.3.0):
     - JRSwizzle (~> 1.0)
   - GZIP (1.1.1)
@@ -36,7 +48,7 @@ PODS:
 DEPENDENCIES:
   - CocoaLumberjack
   - GeoJSONSerialization
-  - GoogleIDFASupport
+  - Google/Analytics
   - GZIP
   - IQKeyboardManager (= 3.2.4)
   - Mapbox-iOS-SDK (= 1.6.0)
@@ -51,7 +63,11 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   FMDB: 773d79bb74226959b7e2286b1d6e0bd857c88915
   GeoJSONSerialization: 55a3d24fe9af26508e3af76873114b39b13ba479
-  GoogleIDFASupport: 0dd25ffdd152fd8e3deefd72978b42ef818ef0fa
+  Google: 875f5a8ade86dd02e36586e4a54814843938c7f6
+  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
+  GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
+  GoogleUtilities: e3475cd4d45134221d2f3f3626095a1c49b62041
   GRMustache: 6baee020c5644416c034f5afb1607f6219e7f753
   GZIP: f8beb59597f651e6970a45b816508a9c6d700b77
   IQKeyboardManager: 555b1231fefafb21b19278d7cca72986a27b748b

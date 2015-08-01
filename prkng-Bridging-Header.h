@@ -26,8 +26,8 @@
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import <SZTextView/SZTextView.h>
 #import "DDLoggerWrapper.h"
-#import "GAI.h"
-#import "GAIDictionaryBuilder.h"
+#import "GoogleAnalytics/GAI.h"
+#import "GoogleAnalytics/GAIDictionaryBuilder.h"
 #import "KMLParser.h"
 #import "GeoJsonParser.h"
 #import "POP.h"

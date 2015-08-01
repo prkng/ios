@@ -26,7 +26,6 @@
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
-		3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31A01B2621E700760E05 /* libGoogleAnalyticsServices.a */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E9509C31B56B5DC0088E336 /* MessageUI.framework */; };
@@ -48,7 +47,6 @@
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
-		3EF64E7B1B6A88FD002B010B /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF64E7A1B6A88FD002B010B /* AdSupport.framework */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
@@ -189,27 +187,6 @@
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
-		3E8F31271B2621E700760E05 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changelog.txt; sourceTree = "<group>"; };
-		3E8F31531B2621E700760E05 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
-		3E8F31541B2621E700760E05 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
-		3E8F31551B2621E700760E05 /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
-		3E8F31561B2621E700760E05 /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
-		3E8F31571B2621E700760E05 /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
-		3E8F31581B2621E700760E05 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
-		3E8F31591B2621E700760E05 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
-		3E8F315A1B2621E700760E05 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
-		3E8F315B1B2621E700760E05 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
-		3E8F315C1B2621E700760E05 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
-		3E8F315D1B2621E700760E05 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
-		3E8F315F1B2621E700760E05 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Changelog.txt; sourceTree = "<group>"; };
-		3E8F31991B2621E700760E05 /* TAGContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainer.h; sourceTree = "<group>"; };
-		3E8F319A1B2621E700760E05 /* TAGContainerOpener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGContainerOpener.h; sourceTree = "<group>"; };
-		3E8F319B1B2621E700760E05 /* TAGDataLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGDataLayer.h; sourceTree = "<group>"; };
-		3E8F319C1B2621E700760E05 /* TAGLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGLogger.h; sourceTree = "<group>"; };
-		3E8F319D1B2621E700760E05 /* TAGManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAGManager.h; sourceTree = "<group>"; };
-		3E8F319E1B2621E700760E05 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
-		3E8F31A01B2621E700760E05 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		3E8F31A11B2621E700760E05 /* Readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Readme.txt; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E9509C31B56B5DC0088E336 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -352,7 +329,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3EF64E7B1B6A88FD002B010B /* AdSupport.framework in Frameworks */,
 				3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */,
 				3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */,
 				3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */,
@@ -374,7 +350,6 @@
 				BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */,
 				BF2891E61AFF9DFD0041B04C /* FBSDKCoreKit.framework in Frameworks */,
 				BFDDF1081B035FDD00E8C59E /* GooglePlus.framework in Frameworks */,
-				3E8F31EE1B2621E700760E05 /* libGoogleAnalyticsServices.a in Frameworks */,
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
 				BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */,
 				99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */,
@@ -468,66 +443,6 @@
 				3E6CC96E1B309A64009EA460 /* KMLParser.m */,
 			);
 			path = KMLParser;
-			sourceTree = "<group>";
-		};
-		3E8F31251B2621E700760E05 /* GoogleAnalyticsServices */ = {
-			isa = PBXGroup;
-			children = (
-				3E8F31261B2621E700760E05 /* GoogleAnalytics */,
-				3E8F315E1B2621E700760E05 /* GoogleTagManager */,
-				3E8F31A01B2621E700760E05 /* libGoogleAnalyticsServices.a */,
-				3E8F31A11B2621E700760E05 /* Readme.txt */,
-			);
-			path = GoogleAnalyticsServices;
-			sourceTree = "<group>";
-		};
-		3E8F31261B2621E700760E05 /* GoogleAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				3E8F31271B2621E700760E05 /* Changelog.txt */,
-				3E8F31521B2621E700760E05 /* Library */,
-				3E8F315D1B2621E700760E05 /* Readme.txt */,
-			);
-			path = GoogleAnalytics;
-			sourceTree = "<group>";
-		};
-		3E8F31521B2621E700760E05 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				3E8F31531B2621E700760E05 /* GAI.h */,
-				3E8F31541B2621E700760E05 /* GAIDictionaryBuilder.h */,
-				3E8F31551B2621E700760E05 /* GAIEcommerceFields.h */,
-				3E8F31561B2621E700760E05 /* GAIEcommerceProduct.h */,
-				3E8F31571B2621E700760E05 /* GAIEcommerceProductAction.h */,
-				3E8F31581B2621E700760E05 /* GAIEcommercePromotion.h */,
-				3E8F31591B2621E700760E05 /* GAIFields.h */,
-				3E8F315A1B2621E700760E05 /* GAILogger.h */,
-				3E8F315B1B2621E700760E05 /* GAITrackedViewController.h */,
-				3E8F315C1B2621E700760E05 /* GAITracker.h */,
-			);
-			path = Library;
-			sourceTree = "<group>";
-		};
-		3E8F315E1B2621E700760E05 /* GoogleTagManager */ = {
-			isa = PBXGroup;
-			children = (
-				3E8F315F1B2621E700760E05 /* Changelog.txt */,
-				3E8F31981B2621E700760E05 /* Library */,
-				3E8F319E1B2621E700760E05 /* Readme.txt */,
-			);
-			path = GoogleTagManager;
-			sourceTree = "<group>";
-		};
-		3E8F31981B2621E700760E05 /* Library */ = {
-			isa = PBXGroup;
-			children = (
-				3E8F31991B2621E700760E05 /* TAGContainer.h */,
-				3E8F319A1B2621E700760E05 /* TAGContainerOpener.h */,
-				3E8F319B1B2621E700760E05 /* TAGDataLayer.h */,
-				3E8F319C1B2621E700760E05 /* TAGLogger.h */,
-				3E8F319D1B2621E700760E05 /* TAGManager.h */,
-			);
-			path = Library;
 			sourceTree = "<group>";
 		};
 		3EA3E7E31B4C6BEF000EDEF8 /* Agenda List */ = {
@@ -847,7 +762,6 @@
 			isa = PBXGroup;
 			children = (
 				BF3282641B384732002ED8DF /* MaterialKit */,
-				3E8F31251B2621E700760E05 /* GoogleAnalyticsServices */,
 				BF5E84F81B07B3A000EC6AD2 /* AFDateHelper */,
 				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
 				BFEA6A991A9E2E81001F063E /* Snap */,
@@ -1339,8 +1253,8 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEFINES_MODULE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

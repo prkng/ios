@@ -35,10 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize tracker. Replace with your tracking ID.
         GAI.sharedInstance().trackerWithTrackingId("UA-63856349-1")
         
-        let tracker = GAI.sharedInstance().defaultTracker
-        // Enable IDFA collection.
-        tracker.allowIDFACollection = true
-        
         //configure cocoa lumberjack for logging
         DDLog.addLogger(DDASLLogger.sharedInstance())
         DDLog.addLogger(DDTTYLogger.sharedInstance())
