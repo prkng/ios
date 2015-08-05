@@ -601,6 +601,8 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             self.removeAllAnnotations()
             self.mapView.addOverlays(overlays)
             self.mapView.addAnnotations(annotations)
+            
+            SVProgressHUD.dismiss()
         })
     }
 

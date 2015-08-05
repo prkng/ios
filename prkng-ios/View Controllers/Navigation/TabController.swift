@@ -36,8 +36,18 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         tabBar = PrkTabBar()
         containerView = UIView()
         switchingMainView = false
-        let useAppleMaps = NSUserDefaults.standardUserDefaults().boolForKey("use_apple_maps")
-        mapViewController = useAppleMaps ? MKMapViewController() : RMMapViewController()
+        let mapType = NSUserDefaults.standardUserDefaults().integerForKey("map_type")
+        switch mapType {
+        case 1:
+            mapViewController = MKMapViewController()
+            break
+        case 2:
+            mapViewController = GoogleMapViewController()
+            break
+        default:
+            mapViewController = RMMapViewController()
+            break
+        }
         hereViewController = HereViewController()
         activeViewController = hereViewController
         super.init(nibName: nil, bundle: nil)

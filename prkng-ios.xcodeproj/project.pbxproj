@@ -21,11 +21,13 @@
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
+		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
+		3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E9509C31B56B5DC0088E336 /* MessageUI.framework */; };
@@ -181,12 +183,14 @@
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
 		3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKPopupViewController.swift; sourceTree = "<group>"; };
+		3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
 		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModalViewController.swift; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
+		3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRK_GMSPolyline.swift; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E9509C31B56B5DC0088E336 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -720,7 +724,9 @@
 				3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */,
 				BFE1AB791A839F6A00B77F2E /* RMMapViewController.swift */,
 				3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */,
+				3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */,
 				BF2A40A61AC468450055D785 /* SpotDetailView.swift */,
+				3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -1034,6 +1040,7 @@
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
 				BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */,
+				3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */,
 				BF6981B21B30701600E0EF62 /* Checkin.swift in Sources */,
 				BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */,
 				BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */,
@@ -1077,6 +1084,7 @@
 				3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */,
 				BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */,
 				BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */,
+				3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */,
 				BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */,
 				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
