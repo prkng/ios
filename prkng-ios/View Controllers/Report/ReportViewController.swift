@@ -157,8 +157,6 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     func configureDevice() {
         if let device = captureDevice {
             device.lockForConfiguration(nil)
-            device.focusMode = .AutoFocus
-            device.exposureMode = .ContinuousAutoExposure            
             if (device.isFlashModeSupported(.Auto)) {
                 device.flashMode = .Auto
             }
