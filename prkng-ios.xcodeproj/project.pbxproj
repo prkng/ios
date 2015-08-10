@@ -27,6 +27,7 @@
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
+		3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */; };
 		3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
@@ -47,12 +48,13 @@
 		3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */; };
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
+		3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
-		99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */; };
+		834EE6C7AA0F31AC7EF11445 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
 		BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055961ACF100500413F16 /* ScheduleItemView.swift */; };
@@ -167,6 +169,7 @@
 
 /* Begin PBXFileReference section */
 		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
+		33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesModalViewController.swift; sourceTree = "<group>"; };
 		3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3E0FDAC51B2769FF00872667 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -190,6 +193,7 @@
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
+		3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLMapViewController.swift; sourceTree = "<group>"; };
 		3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRK_GMSPolyline.swift; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -208,6 +212,7 @@
 		3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
+		3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewController.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
 		3EF64E7A1B6A88FD002B010B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
@@ -215,7 +220,6 @@
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKVerticalGestureRecognizer.swift; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
-		A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		BF1055961ACF100500413F16 /* ScheduleItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleItemView.swift; sourceTree = "<group>"; };
@@ -333,14 +337,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */,
-				3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */,
+				BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */,
+				BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */,
 				3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */,
-				BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */,
-				3E0FDACA1B276A1000872667 /* MobileCoreServices.framework in Frameworks */,
 				3E0FDAC81B276A0700872667 /* ImageIO.framework in Frameworks */,
 				3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */,
 				3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */,
+				3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */,
+				3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */,
+				BFA8D16F1A83D356005F4054 /* QuartzCore.framework in Frameworks */,
+				3E0FDACA1B276A1000872667 /* MobileCoreServices.framework in Frameworks */,
 				3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */,
 				3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */,
 				BFDDF1101B03614400E8C59E /* CoreMotion.framework in Frameworks */,
@@ -350,13 +356,11 @@
 				BFDDF10E1B03613300E8C59E /* AssetsLibrary.framework in Frameworks */,
 				BFDDF10C1B03612D00E8C59E /* MediaPlayer.framework in Frameworks */,
 				BFDDF10A1B03612600E8C59E /* AddressBook.framework in Frameworks */,
-				BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */,
-				BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */,
 				BF2891E61AFF9DFD0041B04C /* FBSDKCoreKit.framework in Frameworks */,
 				BFDDF1081B035FDD00E8C59E /* GooglePlus.framework in Frameworks */,
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
 				BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */,
-				99D5428F8D2618FA68118763 /* libPods-prkng-ios.a in Frameworks */,
+				834EE6C7AA0F31AC7EF11445 /* libPods-prkng-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,7 +412,7 @@
 				BFA8D1701A83D364005F4054 /* libsqlite3.dylib */,
 				BFA8D16E1A83D356005F4054 /* QuartzCore.framework */,
 				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
-				A6D15A7069CED56EAF544F54 /* libPods-prkng-ios.a */,
+				33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -550,6 +554,7 @@
 				3E3199581B31D4F600CB118D /* TimeFilterView.swift */,
 				3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */,
 				3E7523061B693DF70096755F /* MapMessageView.swift */,
+				3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */,
 			);
 			path = Here;
 			sourceTree = "<group>";
@@ -721,6 +726,7 @@
 		BFE1AB761A839F0100B77F2E /* Map */ = {
 			isa = PBXGroup;
 			children = (
+				3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */,
 				3EBDC5EE1B2945E400CB4A68 /* MapViewController.swift */,
 				BFE1AB791A839F6A00B77F2E /* RMMapViewController.swift */,
 				3EBDC5EC1B29442000CB4A68 /* MKMapViewController.swift */,
@@ -1020,6 +1026,7 @@
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */,
 				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
+				3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */,
 				3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */,
 				3E7523071B693DF70096755F /* MapMessageView.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
@@ -1079,6 +1086,7 @@
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
 				3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */,
+				3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */,
 				BF3282711B3847AE002ED8DF /* MKTableViewCell.swift in Sources */,
 				BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */,
 				3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */,

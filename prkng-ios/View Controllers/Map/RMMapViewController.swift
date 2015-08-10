@@ -9,6 +9,10 @@
 import UIKit
 import Foundation
 
+//class RMMapViewController: MapViewController {
+//    
+//}
+
 class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     let mapSource = "arnaudspuhler.l54pj66f"

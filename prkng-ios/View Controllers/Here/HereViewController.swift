@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate, MapMessageViewDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate, MapMessageViewDelegate, SearchResultsTableViewControllerDelegate {
 
     var showFiltersOnAppear: Bool = false
     
@@ -22,6 +22,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     var searchFilterView: SearchFilterView
     var timeFilterView: TimeFilterView
     var showingFilters: Bool
+    var autocompleteVC: SearchResultsTableViewController?
     
     var statusBar: UIView
     var filterButton: PRKTextButton
@@ -154,7 +155,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             make.right.equalTo(self.view)
             make.height.equalTo(0)
         }
-
+        
         timeFilterView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.searchFilterView.snp_bottom)
             make.left.equalTo(self.view)
@@ -238,6 +239,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         showSpotDetails()
     }
     
+    // MARK: Schedule/Agenda methods
     func showScheduleView(spot : ParkingSpot?) {
         setupScheduleView(spot)
         animateScheduleView()
@@ -304,6 +306,43 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         let distanceFromBottom = height - distanceFromTop
         adjustSpotDetailsWithDistanceFromBottom(-distanceFromBottom, animated: animated)
 
+    }
+
+    //MARK: Autocomplete methods and SearchResultsTableViewControllerDelegate methods
+    func updateAutocompleteWithValues(results: [String]) {
+        
+        if self.autocompleteVC != nil {
+
+            self.autocompleteVC!.view.removeFromSuperview()
+            self.autocompleteVC!.willMoveToParentViewController(nil)
+            self.autocompleteVC!.removeFromParentViewController()
+            self.autocompleteVC = nil
+            
+        }
+        
+        if results.count > 0 {
+            
+            self.autocompleteVC = SearchResultsTableViewController(textValues: results)
+            self.autocompleteVC!.delegate = self
+            self.view.addSubview(self.autocompleteVC!.view)
+            self.autocompleteVC!.willMoveToParentViewController(self)
+            //                self.autocompleteVC!.delegate = self
+            
+            self.autocompleteVC!.view.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.searchFilterView.snp_bottom)
+                make.left.equalTo(self.view)
+                make.right.equalTo(self.view)
+                make.bottom.equalTo(self.view)
+            }
+            
+            self.autocompleteVC!.view.layoutIfNeeded()
+        }
+        
+    }
+    
+    func didSelectString(result: String) {
+        self.searchFilterView.setText(result)
+        updateAutocompleteWithValues([])
     }
 
     
@@ -591,7 +630,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             completion: { (completed:Bool) -> Void in
         })
         
-        searchFilterView.searchField.resignFirstResponder()
+        searchFilterView.makeInactive()
         
         showingFilters = false
         

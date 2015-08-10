@@ -378,6 +378,7 @@ func ==(lhs: LineParkingSpot, rhs: LineParkingSpot) -> Bool {
 }
 
 class LineParkingSpot: MKPolyline, Hashable {
+    
     var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } }//to maintain backwards compatibility with mapbox
     var parkingSpot: ParkingSpot!
     
@@ -397,8 +398,42 @@ class LineParkingSpot: MKPolyline, Hashable {
     }
 }
 
-class ButtonParkingSpot: ParkingSpot, MKAnnotation {
+//func ==(lhs: MGLLineParkingSpot, rhs: MGLLineParkingSpot) -> Bool {
+//    return lhs.hashValue == rhs.hashValue
+//}
+//
+//class MGLLineParkingSpot: MGLPolyline, Hashable {
+//    
+//    var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } }//to maintain backwards compatibility with mapbox
+//    var parkingSpot: ParkingSpot!
+//    
+//    //MARK- Hashable
+//    override var hashValue: Int { get { return parkingSpot.identifier.toInt()! } }
+//    
+//    override init() {
+//        super.init()
+//    }
+//}
+
+class ButtonParkingSpot: ParkingSpot, MKAnnotation, MGLAnnotation {
     var coordinate: CLLocationCoordinate2D { get { return buttonLocation.coordinate } }
+}
+
+class PreviousCheckinSpot: NSObject, MKAnnotation, MGLAnnotation {
+    var coordinate: CLLocationCoordinate2D //{ get { return buttonLocation.coordinate } }
+    var title: String! //{ get { return name } }
+    var spot: ParkingSpot?
+    
+    init(coordinate: CLLocationCoordinate2D, title: String) {
+        self.coordinate = coordinate
+        self.title = title
+    }
+    
+    init(spot: ParkingSpot) {
+        self.spot = spot
+        self.coordinate = spot.buttonLocation.coordinate
+        self.title = spot.name
+    }
 }
 
 class LineParkingSpotRenderer: MKPolylineRenderer {
@@ -411,8 +446,15 @@ class LineParkingSpotRenderer: MKPolylineRenderer {
 
 class ButtonParkingSpotView: MKAnnotationView {
     
+    var imageName: String = ""
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+    
+    init!(mapboxGLAnnotation: MGLAnnotation!, reuseIdentifier: String!, mbxZoomLevel: Double) {
+        super.init(annotation: mapboxGLAnnotation as! MKAnnotation, reuseIdentifier: reuseIdentifier)
+        setup(CGFloat(mbxZoomLevel))
     }
     
     init!(annotation: MKAnnotation!, reuseIdentifier: String!, mbxZoomLevel: CGFloat) {
@@ -448,7 +490,7 @@ class ButtonParkingSpotView: MKAnnotationView {
 //            spotIdentifiersDrawnOnMap.append(spot.identifier)
         }
         
-        var imageName = "button_line_"
+        imageName = "button_line_"
         
         if mbxZoomLevel < 18 {
             imageName += "small_"
@@ -480,6 +522,14 @@ class ButtonParkingSpotView: MKAnnotationView {
         }
 
     }
+    
+//    var annotationImage: MGLAnnotationImage {
+//        return MGLAnnotationImage(image: self.image, reuseIdentifier: self.reuseIdentifier + self.imageName)
+//    }
+    
+    
+    
+
     
 }
 

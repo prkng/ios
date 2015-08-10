@@ -10,13 +10,13 @@ import UIKit
 
 class SearchFilterView: UIView, UITextFieldDelegate {
 
-    var searchFieldView : UIView
-    var searchField : UITextField
+    private var searchFieldView : UIView
+    private var searchField : UITextField
     
-    var searchImageView: UIImageView
+    private var searchImageView: UIImageView
     
-    var topLine: UIView
-    var bottomLine: UIView
+    private var topLine: UIView
+    private var bottomLine: UIView
     
     var delegate : SearchViewControllerDelegate?
 
@@ -142,6 +142,15 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         return self.searchFieldView.frame.size.width > 0
     }
     
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+        if (Float(arc4random()) / Float(UINT32_MAX)) > 0.5 {
+            delegate?.didGetAutocompleteResults(["original", "test"])
+        } else {
+            delegate?.didGetAutocompleteResults(["changed", "montreal"])
+        }
+        return true
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         textField.endEditing(true)
@@ -170,6 +179,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     func endSearch(textField: UITextField) {
         delegate?.clearSearchResults()
+        delegate?.didGetAutocompleteResults([])
 //        transformSearchFieldIntoButton()
         textField.endEditing(true)
     }
@@ -178,6 +188,15 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     func makeActive() {
         searchField.becomeFirstResponder()
+    }
+    
+    func makeInactive() {
+        searchField.resignFirstResponder()
+    }
+    
+    func setText(result: String) {
+        self.searchField.text = result
+        textFieldShouldReturn(self.searchField)
     }
 
 }

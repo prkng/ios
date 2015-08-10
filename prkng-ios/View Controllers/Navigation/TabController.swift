@@ -394,6 +394,11 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         mapViewController.clearSearchResults()
     }
     
+    func didGetAutocompleteResults(results: [String]) {
+        hereViewController.updateAutocompleteWithValues(results)
+    }
+
+    
     // MARK: MyCarNoCheckinViewControllerDelegate
     
     

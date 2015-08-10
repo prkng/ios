@@ -43,6 +43,23 @@ extension MKPolygon {
         return polygonAnnotation
     }
     
+//    func toMGLPolygon() -> MGLPolygon {
+//        var coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
+//        self.getCoordinates(coordsPointer, range: NSMakeRange(0, self.pointCount))
+//        let mglPolygon = MGLPolygon(coordinates: coordsPointer, count: UInt(self.pointCount))
+//        return mglPolygon
+//    }
+//
+//    static func toMGLPolygons(polygons: [MKPolygon]) -> [MGLPolygon] {
+//        
+//        var mglPolygons = [MGLPolygon]()
+//        for polygon in polygons {
+//            let mglPolygon = polygon.toMGLPolygon()
+//            mglPolygons.append(mglPolygon)
+//        }
+//        return mglPolygons
+//    }
+    
     static func invertPolygons(polygons: [MKPolygon]) -> MKPolygon {
         
         var worldCorners: [MKMapPoint] = [

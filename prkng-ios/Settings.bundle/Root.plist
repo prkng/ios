@@ -8,9 +8,9 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string></string>
+			<string>Test Server</string>
 			<key>Key</key>
-			<string></string>
+			<string>use_test_server</string>
 			<key>DefaultValue</key>
 			<false/>
 		</dict>

@@ -8,9 +8,9 @@
 
 import UIKit
 
-class SearchResult: NSObject, MKAnnotation {
+class SearchResult: NSObject, MKAnnotation, MGLAnnotation {
     
-    var title : String
+    var title : String?
     var location : CLLocation
     
     var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
