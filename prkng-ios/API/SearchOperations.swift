@@ -58,12 +58,20 @@ class SearchOperations {
         
     }
     
+    class func searchWithInput(input : String , forAutocomplete: Bool, completion : (results : Array<SearchResult>) -> Void) {
+        if forAutocomplete {
+            peliasSearchWithInput(input, forAutocomplete: forAutocomplete, completion: completion)
+        } else {
+            nominatimSearchWithStreet(input, completion: completion)
+        }
+    }
     
-    class func searchByStreetName(streetname : String , completion : (results : Array<SearchResult>) -> Void) {
+    
+    private class func nominatimSearchWithStreet(input : String , completion : (results : Array<SearchResult>) -> Void) {
         
         var url = "http://nominatim.openstreetmap.org/search"
         
-        var params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity().rawValue, "country" : "Canada", "street" : streetname]
+        var params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity().rawValue, "country" : "Canada", "q" : input]
         
         var numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
@@ -101,8 +109,80 @@ class SearchOperations {
             
         }
         
-        
     }
     
+    private class func peliasSearchWithInput(input : String , forAutocomplete: Bool, completion : (results : Array<SearchResult>) -> Void) {
+        
+        var url = "http://pelias.mapzen.com/"
+        
+        if forAutocomplete {
+            url += "suggest"
+        } else {
+            url += "search"
+        }
+        
+        var params  = ["input" : input,
+            "lat" : String(stringInterpolationSegment: Settings.selectedCityPoint().latitude),
+            "lon" : String(stringInterpolationSegment: Settings.selectedCityPoint().longitude) ]
+        
+        var numberFormatter = NSNumberFormatter()
+        numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        
+        request(.GET, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            var results : Array<SearchResult> = [];
+            
+            for (key: String, subJson: JSON) in json["features"] {
+                
+                let name = subJson["properties"]["name"].stringValue
+                let admin1 = subJson["properties"]["admin1"].stringValue
+                let admin2 = subJson["properties"]["admin2"].stringValue
+                
+                var matchesCity = false
+                if Settings.selectedCity() == Settings.City.Montreal {
+                    matchesCity = admin2.lowercaseString.rangeOfString("montreal") != nil
+                        || admin2.lowercaseString.rangeOfString("montréal") != nil
+                } else if Settings.selectedCity() == Settings.City.QuebecCity {
+                    matchesCity = admin2.lowercaseString.rangeOfString("quebec") != nil
+                        || admin2.lowercaseString.rangeOfString("québec") != nil
+                }
+                
+                let isPoint = subJson["geometry"]["type"].stringValue == "Point"
+                
+                if isPoint && matchesCity {
+                    
+                    let street = subJson["properties"]["address"]["street"].stringValue
+                    let number = subJson["properties"]["address"]["number"].stringValue
+                    
+                    let address = number + " " + street
+                    let cityAndProvince = admin2 + ", " + admin1
+                    
+                    let title = name
+                    var subtitle = name.rangeOfString(number) == nil && address != " " ? address : cityAndProvince
+                    
+                    let latStr = subJson["geometry"]["coordinates"][1].stringValue
+                    let lat = numberFormatter.numberFromString(latStr)!.doubleValue
+                    let lonStr = subJson["geometry"]["coordinates"][0].stringValue
+                    let lon = numberFormatter.numberFromString(lonStr)!.doubleValue
+                    let location = CLLocation(latitude: lat, longitude: lon)
+                    location.coordinate
+                    results.append(SearchResult(title: title, subtitle: subtitle, location: location))
+                    
+                }
+                
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                () -> Void in
+                
+                completion(results: results)
+                
+            })
+            
+        }
+        
+    }
+
     
 }

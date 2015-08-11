@@ -11,9 +11,17 @@ import UIKit
 class SearchResult: NSObject, MKAnnotation, MGLAnnotation {
     
     var title : String?
+    var subtitle: String?
     var location : CLLocation
     
     var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
+
+    init(title: String, subtitle: String, location : CLLocation) {
+        self.title = title
+        self.subtitle = subtitle
+        self.location = location
+        self.userInfo = [String:AnyObject]()
+    }
 
     init(title: String, location : CLLocation) {
         self.title = title

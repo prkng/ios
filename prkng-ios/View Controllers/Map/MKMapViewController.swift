@@ -288,7 +288,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             self.lastMapCenterCoordinate = mapView.centerCoordinate
         }
         
-        self.delegate?.mapDidDismissSelection()
+        self.delegate?.mapDidDismissSelection(byUser: true)
         
     }
 
@@ -307,7 +307,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
             button.setup(mapView.mbx_zoomLevel())
         }
         
-        self.delegate?.mapDidDismissSelection()
+        self.delegate?.mapDidDismissSelection(byUser: true)
     }
     
     func mapView(mapView: MKMapView!, didUpdateUserLocation userLocation: MKUserLocation!) {

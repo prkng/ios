@@ -208,7 +208,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         textField.endEditing(false)
-        SearchOperations.searchByStreetName(textField.text, completion: { (results) -> Void in
+        SearchOperations.searchWithInput(textField.text, forAutocomplete: false, completion: { (results) -> Void in
             
             self.markerIcon.hidden = true
             
@@ -393,7 +393,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         delegate?.setSearchParameters(NSDate(), duration: 1)
         searchField.endEditing(false)
         
-        SearchOperations.searchByStreetName(searchField.text, completion: { (results) -> Void in
+        SearchOperations.searchWithInput(searchField.text, forAutocomplete: false, completion: { (results) -> Void in
             
             self.markerIcon.hidden = true
             
@@ -423,7 +423,7 @@ protocol SearchViewControllerDelegate {
     func setSearchParameters(time : NSDate?, duration : Float?)
     func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?)
     func clearSearchResults()
-    func didGetAutocompleteResults(results: [String])
+    func didGetAutocompleteResults(results: [SearchResult])
     
 }
 

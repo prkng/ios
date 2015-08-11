@@ -306,7 +306,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     
     // MapViewControllerDelegate
-    func mapDidDismissSelection() {
+    func mapDidDismissSelection(byUser wasUserAction: Bool) {
         
 //        if(selectedTab == PrkTab.Search) {
 //            searchViewController?.transformToStepTwo()
@@ -315,8 +315,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //                searchViewController?.showStreetName(result)
 //            })
 //        } else if (selectedTab == PrkTab.Here) {
+        if wasUserAction {
             hereViewController.updateSpotDetails(nil)
             hereViewController.hideFilters(alsoHideFilterButton: false)
+        }
 //        }
                 
     }
@@ -394,7 +396,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         mapViewController.clearSearchResults()
     }
     
-    func didGetAutocompleteResults(results: [String]) {
+    func didGetAutocompleteResults(results: [SearchResult]) {
         hereViewController.updateAutocompleteWithValues(results)
     }
 

@@ -9,7 +9,7 @@
 import UIKit
 import Fabric
 import Crashlytics
-import GoogleMaps
+//import GoogleMaps
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,8 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         RMConfiguration.sharedInstance().accessToken = "pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA"
         MBXMapKit.setAccessToken("pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA")
 //        MGLAccountManager.setAccessToken("pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA")
-        
-        GMSServices.provideAPIKey("AIzaSyAjtDb1VW1rnICr_JMFPmzWi3pMshLusA8")
+//        GMSServices.provideAPIKey("AIzaSyAjtDb1VW1rnICr_JMFPmzWi3pMshLusA8")
 
 //        Crashlytics.startWithAPIKey("0a552ed905e273700bb769724c451c706ceb78cb")
         Fabric.with([Crashlytics()])
@@ -67,6 +66,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
 
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
+        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
 
@@ -112,6 +113,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         alert.addButtonWithTitle("OK")
         alert.show()
         Settings.cancelNotification()
+    }
+    
+    func keyboardWasShown(notification: NSNotification) {
+        
+        let keyboardSize = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue().size
+        NSUserDefaults.standardUserDefaults().setValue(keyboardSize.height, forKey: "last_keyboard_height")
     }
     
     

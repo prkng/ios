@@ -34,8 +34,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
 
-    static var TOTAL_HEIGHT : CGFloat = 50
-    static var SCROLL_HEIGHT: CGFloat = 50
+    static var TOTAL_HEIGHT : CGFloat = 46
+    static var SCROLL_HEIGHT: CGFloat = 46
     
     override init(frame: CGRect) {
 
@@ -103,11 +103,11 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         self.addGestureRecognizer(tapRec)
 
         self.addSubview(containerView)
-        containerView.backgroundColor = Styles.Colors.petrol2
+        containerView.backgroundColor = Styles.Colors.midnight1
         containerView.clipsToBounds = true
         
         containerView.addSubview(scrollView)
-        scrollView.backgroundColor = Styles.Colors.petrol2
+        scrollView.backgroundColor = Styles.Colors.midnight1
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.delegate = self
         scrollView.addSubview(contentView)
@@ -123,10 +123,10 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         messageLabel.font = Styles.FontFaces.light(17)
         containerView.addSubview(messageLabel)
         
-        topLine.backgroundColor = Styles.Colors.petrol1
+        topLine.backgroundColor = Styles.Colors.transparentWhite
         self.addSubview(topLine)
 
-        bottomLine.backgroundColor = Styles.Colors.midnight2
+        bottomLine.backgroundColor = Styles.Colors.transparentBlack
         self.addSubview(bottomLine)
         
         didsetupSubviews = true
@@ -166,7 +166,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         
         times[0].label.snp_makeConstraints({ (make) -> () in
             make.centerY.equalTo(self.contentView)
-            make.left.equalTo(self.contentView)
+            make.left.equalTo(self.contentView).with.offset(-30)
         })
         
         var leftViewToLabel: UIView = times[0].label
@@ -197,7 +197,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     
     func resizeContentViewWidth() {
         
-        var contentViewWidth = 30 * (times.count - 2)
+        var contentViewWidth = 30 * (times.count - 3)
         var lastAddedWidth = 0
         for time in times {
             let label = time.label

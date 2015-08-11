@@ -12,10 +12,17 @@ class SearchResultsTableViewController: UITableViewController {
 
     var delegate: SearchResultsTableViewControllerDelegate?
     
-    private var textValues: [String] = []
+    private var searchResultValues: [SearchResult] = []
     
-    init(textValues: [String]) {
-        self.textValues = textValues
+    func customSeparator() -> UIView {
+        let screenWidth = UIScreen.mainScreen().bounds.width
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 0.5))
+        view.backgroundColor = Styles.Colors.transparentWhite
+        return view
+    }
+    
+    init(searchResultValues: [SearchResult]) {
+        self.searchResultValues = searchResultValues
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -26,6 +33,9 @@ class SearchResultsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = Styles.Colors.midnight2
+        self.tableView.separatorStyle = .None
+        self.tableView.tableFooterView = customSeparator()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -39,7 +49,7 @@ class SearchResultsTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
@@ -49,73 +59,39 @@ class SearchResultsTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return textValues.count
+        return searchResultValues.count
     }
 
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60.0
+    }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 //        var cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as? UITableViewCell
 //
 //        if cell == nil {
-           let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "reuseIdentifier")
+           let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "reuseIdentifier")
 //        }
         // Configure the cell...
-        cell.textLabel?.text = textValues[indexPath.row]
+        cell.backgroundColor = Styles.Colors.midnight2
+        cell.indentationWidth = 48
+        cell.indentationLevel = 1
+        cell.textLabel?.text = searchResultValues[indexPath.row].title
+        cell.textLabel?.textColor = Styles.Colors.cream2
+        cell.textLabel?.font = Styles.FontFaces.bold(16)
+        cell.detailTextLabel?.text = searchResultValues[indexPath.row].subtitle
+        cell.detailTextLabel?.textColor = Styles.Colors.anthracite1
+        cell.detailTextLabel?.font = Styles.FontFaces.regular(14)
+        cell.addSubview(customSeparator())
         return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        delegate?.didSelectString(textValues[indexPath.row])
+        delegate?.didSelectSearchResult(searchResultValues[indexPath.row])
     }
-    
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 
 protocol SearchResultsTableViewControllerDelegate {
-    func didSelectString(result: String)
+    func didSelectSearchResult(result: SearchResult)
 }

@@ -306,7 +306,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     self.updateAnnotations()
                     self.lastMapCenterCoordinate = map.centerCoordinate
             }
-            self.delegate?.mapDidDismissSelection()
+            self.delegate?.mapDidDismissSelection(byUser: wasUserAction)
             
         }
         
@@ -387,7 +387,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func customDeselectAnnotation() {
         
         removeSelectedAnnotationIfExists()
-        self.delegate?.mapDidDismissSelection()
+        self.delegate?.mapDidDismissSelection(byUser: true)
 
     }
     
@@ -691,6 +691,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func addSearchResultMarker(searchResult: SearchResult) {
         
         var annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: searchResult.location.coordinate, andTitle: searchResult.title)
+        annotation.subtitle = searchResult.subtitle
         annotation.userInfo = ["type": "searchResult", "details": searchResult]
         mapView.addAnnotation(annotation)
         searchAnnotations.append(annotation)

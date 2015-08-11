@@ -101,14 +101,14 @@ struct Styles {
         static let s3r =  FontFaces.regular(12)
 
         
-        static let h1b =  FontFaces.regular(25)
-        static let h2b =  FontFaces.regular(20)
+        static let h1b =  FontFaces.bold(25)
+        static let h2b =  FontFaces.bold(20)
         
-        static let h1bVariable = UIScreen.mainScreen().bounds.width == 320 ? h3r : h2r
+        static let h1bVariable = UIScreen.mainScreen().bounds.width == 320 ? h2b : h1b
         
-        static let s1b =  FontFaces.regular(17)
-        static let s2b =  FontFaces.regular(14)
-        static let s3b =  FontFaces.regular(12)
+        static let s1b =  FontFaces.bold(17)
+        static let s2b =  FontFaces.bold(14)
+        static let s3b =  FontFaces.bold(12)
         
     }
     

@@ -69,7 +69,7 @@ class MapMessageView: UIView {
         messageContainer.backgroundColor = Styles.Colors.red2.colorWithAlphaComponent(0.8)
         messageContainer.addSubview(mapMessageViewImage)
         mapMessageLabel.textColor = Styles.Colors.cream1
-        mapMessageLabel.font = Styles.Fonts.s2b
+        mapMessageLabel.font = Styles.Fonts.s2r
         mapMessageLabel.numberOfLines = 0
         mapMessageLabel.textAlignment = .Left
         messageContainer.addSubview(mapMessageLabel)

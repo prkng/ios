@@ -6,23 +6,23 @@
 //
 //
 
-import UIKit
-import GoogleMaps
-
-class PRK_GMSPolyline: GMSPolyline {
-
-    var spot: ParkingSpot
-    
-    convenience init(path: GMSMutablePath, title: String, spot: ParkingSpot) {
-        self.init(spot: spot)
-        self.title = title
-        self.path = path
-    }
-    
-    init(spot: ParkingSpot) {
-        self.spot = spot
-        super.init()
-    }
-
-    
-}
+//import UIKit
+//import GoogleMaps
+//
+//class PRK_GMSPolyline: GMSPolyline {
+//
+//    var spot: ParkingSpot
+//    
+//    convenience init(path: GMSMutablePath, title: String, spot: ParkingSpot) {
+//        self.init(spot: spot)
+//        self.title = title
+//        self.path = path
+//    }
+//    
+//    init(spot: ParkingSpot) {
+//        self.spot = spot
+//        super.init()
+//    }
+//
+//    
+//}

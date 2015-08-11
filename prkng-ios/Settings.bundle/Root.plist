@@ -27,13 +27,11 @@
 			<array>
 				<integer>0</integer>
 				<integer>1</integer>
-				<integer>2</integer>
 			</array>
 			<key>Titles</key>
 			<array>
 				<string>Mapbox</string>
 				<string>Apple</string>
-				<string>Google</string>
 			</array>
 		</dict>
 		<dict>

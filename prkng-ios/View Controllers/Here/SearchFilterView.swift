@@ -23,7 +23,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
 
-    static var TOTAL_HEIGHT : CGFloat = 90
+    static var TOTAL_HEIGHT : CGFloat = 80
 
     override init(frame: CGRect) {
         
@@ -65,14 +65,14 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func setupSubviews () {
         
         self.clipsToBounds = true
-        self.backgroundColor = Styles.Colors.midnight1
+        self.backgroundColor = Styles.Colors.midnight2
         
-        searchFieldView.backgroundColor = Styles.Colors.petrol2
+        searchFieldView.backgroundColor = Styles.Colors.midnight1
         self.addSubview(searchFieldView)
 
         let attributes = [NSFontAttributeName: Styles.FontFaces.light(17), NSForegroundColorAttributeName: Styles.Colors.cream1]
         
-        searchField.clearButtonMode = UITextFieldViewMode.Always
+        searchField.clearButtonMode = UITextFieldViewMode.Never
         searchField.font = Styles.FontFaces.light(17)
         searchField.textColor = Styles.Colors.cream1
         searchField.textAlignment = NSTextAlignment.Natural
@@ -82,15 +82,16 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField.keyboardType = UIKeyboardType.Default
         searchField.autocorrectionType = UITextAutocorrectionType.No
         searchField.returnKeyType = UIReturnKeyType.Search
+        searchField.modifyClearButtonWithImageNamed("icon_close")
         self.addSubview(searchField)
         
-        searchImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        searchImageView.contentMode = UIViewContentMode.Center
         self.addSubview(searchImageView)
         
-        topLine.backgroundColor = Styles.Colors.petrol2
+        topLine.backgroundColor = Styles.Colors.transparentWhite
         self.addSubview(topLine)
         
-        bottomLine.backgroundColor = Styles.Colors.midnight2
+        bottomLine.backgroundColor = Styles.Colors.transparentBlack
         self.addSubview(bottomLine)
 
         didsetupSubviews = true
@@ -102,15 +103,15 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchFieldView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self).with.offset(12)
             make.right.equalTo(self).with.offset(-12)
-            make.bottom.equalTo(self).with.offset(-13)
-            make.height.equalTo(44)
+            make.bottom.equalTo(self).with.offset(-10)
+            make.height.equalTo(40)
         }
         
         searchField.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.searchImageView.snp_right).with.offset(14)
             make.right.equalTo(self).with.offset(-12)
-            make.bottom.equalTo(self).with.offset(-13)
-            make.height.equalTo(44)
+            make.bottom.equalTo(self).with.offset(-10)
+            make.height.equalTo(40)
         }
         
         searchImageView.snp_makeConstraints { (make) -> () in
@@ -143,10 +144,13 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        if (Float(arc4random()) / Float(UINT32_MAX)) > 0.5 {
-            delegate?.didGetAutocompleteResults(["original", "test"])
+        let resultString = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        if count(resultString) >= 2 {
+            SearchOperations.searchWithInput(resultString, forAutocomplete: true, completion: { (results) -> Void in
+                self.delegate?.didGetAutocompleteResults(results)
+            })
         } else {
-            delegate?.didGetAutocompleteResults(["changed", "montreal"])
+            self.delegate?.didGetAutocompleteResults([])
         }
         return true
     }
@@ -154,7 +158,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         textField.endEditing(true)
-        SearchOperations.searchByStreetName(textField.text, completion: { (results) -> Void in
+        SearchOperations.searchWithInput(textField.text, forAutocomplete: false, completion: { (results) -> Void in
             
             let today = DateUtil.dayIndexOfTheWeek()
             var date : NSDate = NSDate()
@@ -169,17 +173,28 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func textFieldDidEndEditing(textField: UITextField) {
         if textField.text.isEmpty {
             endSearch(textField)
+        } else {
+            delegate?.didGetAutocompleteResults([])
         }
     }
     
     func textFieldShouldClear(textField: UITextField) -> Bool {
-        endSearch(textField)
+        if textField.text == "" {
+            endSearch(textField)
+        } else {
+            clearSearch(textField)
+        }
         return true
     }
     
-    func endSearch(textField: UITextField) {
+    func clearSearch(textField: UITextField) {
         delegate?.clearSearchResults()
         delegate?.didGetAutocompleteResults([])
+        textField.text = ""
+    }
+
+    func endSearch(textField: UITextField) {
+        clearSearch(textField)
 //        transformSearchFieldIntoButton()
         textField.endEditing(true)
     }
@@ -192,11 +207,13 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     func makeInactive() {
         searchField.resignFirstResponder()
+        delegate?.didGetAutocompleteResults([])
     }
     
-    func setText(result: String) {
-        self.searchField.text = result
-        textFieldShouldReturn(self.searchField)
+    func setSearchResult(result: SearchResult) {
+        self.searchField.text = result.title
+//        textFieldShouldReturn(self.searchField)
+        self.delegate!.displaySearchResults([result], checkinTime : NSDate())
     }
 
 }

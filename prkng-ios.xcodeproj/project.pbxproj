@@ -19,6 +19,7 @@
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
 		3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */; };
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
+		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
@@ -183,6 +184,7 @@
 		3E411C4E1B55B5510000BB18 /* DDLoggerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLoggerWrapper.h; sourceTree = "<group>"; };
 		3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLoggerWrapper.m; sourceTree = "<group>"; };
 		3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
+		3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
 		3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKPopupViewController.swift; sourceTree = "<group>"; };
@@ -508,6 +510,7 @@
 				3E98D6BA1B346053009032AF /* CALayer.swift */,
 				3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */,
 				3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */,
+				3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1052,6 +1055,7 @@
 				BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */,
 				BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */,
 				3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */,
+				3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */,
 				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,
 				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,

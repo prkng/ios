@@ -308,8 +308,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 
     }
 
+    
     //MARK: Autocomplete methods and SearchResultsTableViewControllerDelegate methods
-    func updateAutocompleteWithValues(results: [String]) {
+    
+    func updateAutocompleteWithValues(results: [SearchResult]) {
         
         if self.autocompleteVC != nil {
 
@@ -322,17 +324,19 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
         if results.count > 0 {
             
-            self.autocompleteVC = SearchResultsTableViewController(textValues: results)
+            self.autocompleteVC = SearchResultsTableViewController(searchResultValues: results)
             self.autocompleteVC!.delegate = self
             self.view.addSubview(self.autocompleteVC!.view)
             self.autocompleteVC!.willMoveToParentViewController(self)
-            //                self.autocompleteVC!.delegate = self
             
+            let lastKeyboardHeight = NSUserDefaults.standardUserDefaults().valueForKey("last_keyboard_height") as? CGFloat ?? 216
+            let height = lastKeyboardHeight - CGFloat(Styles.Sizes.tabbarHeight)
+
             self.autocompleteVC!.view.snp_makeConstraints { (make) -> () in
                 make.top.equalTo(self.searchFilterView.snp_bottom)
                 make.left.equalTo(self.view)
                 make.right.equalTo(self.view)
-                make.bottom.equalTo(self.view)
+                make.bottom.equalTo(self.view).with.offset(-height)
             }
             
             self.autocompleteVC!.view.layoutIfNeeded()
@@ -340,8 +344,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
     }
     
-    func didSelectString(result: String) {
-        self.searchFilterView.setText(result)
+    func didSelectSearchResult(result: SearchResult) {
+        self.searchFilterView.setSearchResult(result)
         updateAutocompleteWithValues([])
     }
 

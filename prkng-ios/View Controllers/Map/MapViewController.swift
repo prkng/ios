@@ -148,7 +148,7 @@ class MapViewController: AbstractViewController {
 
 protocol MapViewControllerDelegate {
     
-    func mapDidDismissSelection()
+    func mapDidDismissSelection(byUser wasUserAction: Bool)
     
     func didSelectSpot(spot: ParkingSpot)
     

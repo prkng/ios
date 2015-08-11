@@ -21,7 +21,6 @@ PODS:
     - GoogleSymbolUtilities (~> 1.0)
     - GoogleUtilities (~> 1.0)
   - GoogleAnalytics (3.13.0)
-  - GoogleMaps (1.10.1)
   - GoogleNetworkingUtilities (1.0.0):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleSymbolUtilities (1.0.0)
@@ -50,7 +49,6 @@ DEPENDENCIES:
   - CocoaLumberjack
   - GeoJSONSerialization
   - Google/Analytics
-  - GoogleMaps
   - GZIP
   - IQKeyboardManager (= 3.2.4)
   - Mapbox-iOS-SDK (= 1.6.0)
@@ -67,7 +65,6 @@ SPEC CHECKSUMS:
   GeoJSONSerialization: 55a3d24fe9af26508e3af76873114b39b13ba479
   Google: 875f5a8ade86dd02e36586e4a54814843938c7f6
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
-  GoogleMaps: ebf08677f181d9c2dcdbd1721d206f02beccc9b1
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
   GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
   GoogleUtilities: e3475cd4d45134221d2f3f3626095a1c49b62041
