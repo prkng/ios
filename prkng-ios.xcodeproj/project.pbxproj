@@ -28,6 +28,7 @@
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
+		3E79D01E1B7BB0CF009CF8A5 /* SliderSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */; };
 		3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */; };
 		3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
@@ -195,6 +196,7 @@
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
+		3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderSelectionControl.swift; sourceTree = "<group>"; };
 		3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLMapViewController.swift; sourceTree = "<group>"; };
 		3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRK_GMSPolyline.swift; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -598,6 +600,7 @@
 			isa = PBXGroup;
 			children = (
 				BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */,
+				3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */,
 				3E9509C51B56EE940088E336 /* PRKTextField.swift */,
 				3E9509C91B570A6A0088E336 /* PRKInputForm.swift */,
 			);
@@ -1017,6 +1020,7 @@
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
 				3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */,
+				3E79D01E1B7BB0CF009CF8A5 /* SliderSelectionControl.swift in Sources */,
 				3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,

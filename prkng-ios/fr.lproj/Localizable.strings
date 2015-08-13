@@ -188,5 +188,7 @@
 "camera" = "Appareil photo";
 "enable_camera_message" = "Pour signaler une erreur, veuillez autoriser l'accès à votre appareil photo.";
 
+"provided_by_foursquare" = "***résultats par foursquare";
+
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";

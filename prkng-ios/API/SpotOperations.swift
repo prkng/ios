@@ -45,7 +45,8 @@ struct SpotOperations {
         
         
         if(duration != nil) {
-            let durationStr = NSString(format: "%.0f", duration!)
+            let durationStr = NSString(format: "%.1f", duration!)
+            NSLog("getting spots with duration: %@", durationStr)
             params["duration"] = durationStr
         }
         

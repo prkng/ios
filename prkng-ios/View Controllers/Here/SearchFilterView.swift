@@ -211,8 +211,8 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     }
     
     func setSearchResult(result: SearchResult) {
+        makeInactive()
         self.searchField.text = result.title
-//        textFieldShouldReturn(self.searchField)
         self.delegate!.displaySearchResults([result], checkinTime : NSDate())
     }
 

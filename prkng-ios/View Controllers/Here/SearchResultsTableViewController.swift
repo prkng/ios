@@ -14,6 +14,11 @@ class SearchResultsTableViewController: UITableViewController {
     
     private var searchResultValues: [SearchResult] = []
     
+    func updateSearchResultValues(searchResultValues: [SearchResult]) {
+        self.searchResultValues = searchResultValues
+        self.tableView.reloadData()
+    }
+    
     func customSeparator() -> UIView {
         let screenWidth = UIScreen.mainScreen().bounds.width
         let view = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 0.5))
@@ -35,7 +40,17 @@ class SearchResultsTableViewController: UITableViewController {
 
         self.view.backgroundColor = Styles.Colors.midnight2
         self.tableView.separatorStyle = .None
-        self.tableView.tableFooterView = customSeparator()
+        
+        let screenWidth = UIScreen.mainScreen().bounds.width
+        let footer = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 40))
+        footer.addSubview(customSeparator())
+        let label = UILabel(frame: CGRect(x: 0, y: 0.5, width: screenWidth, height: 39.5))
+        label.text = "provided_by_foursquare".localizedString
+        label.textColor = Styles.Colors.anthracite1
+        label.font = Styles.FontFaces.regular(14)
+        label.textAlignment = .Center
+        footer.addSubview(label)
+        self.tableView.tableFooterView = footer
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 

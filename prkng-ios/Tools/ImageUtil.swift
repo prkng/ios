@@ -37,3 +37,34 @@ struct ImageUtil {
         return newImage
     }
 }
+
+extension UIImage {
+    
+    class func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
+        let rect = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+    
+    class func getRoundedRectImageFromImage(image: UIImage, rect:CGRect, cornerRadius:CGFloat) -> UIImage {
+        
+        let screenScale = UIScreen.mainScreen().scale
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, screenScale)
+        UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius).addClip()
+        image.drawInRect(rect)
+        let finalImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return finalImage
+    }
+
+    
+}
+

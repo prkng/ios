@@ -418,7 +418,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
             var annotationType = userInfo!["type"] as! String
 
-            if annotationType == "button" {
+            if annotationType == "button" || annotationType == "searchResult" {
             
                 var annotationPoint = map.coordinateToPixel(annotation.coordinate)
                 let distance = annotationPoint.distanceToPoint(point)
@@ -480,7 +480,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         trackUserButton.snp_updateConstraints{ (make) -> () in
             make.size.equalTo(CGSizeMake(0, 0))
             make.centerX.equalTo(self.view).multipliedBy(0.33)
-            make.bottom.equalTo(self.view).with.offset(-48)
+            make.bottom.equalTo(self.view).with.offset(-48-50)
         }
         animateTrackUserButton()
     }
@@ -490,7 +490,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         trackUserButton.snp_updateConstraints{ (make) -> () in
             make.size.equalTo(CGSizeMake(36, 36))
             make.centerX.equalTo(self.view).multipliedBy(0.33)
-            make.bottom.equalTo(self.view).with.offset(-30)
+            make.bottom.equalTo(self.view).with.offset(-30-50)
         }
         animateTrackUserButton()
     }
@@ -541,13 +541,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             if (duration == nil) {
                 duration = self.delegate?.activeFilterDuration()
             }
-            
-            if duration != nil {
-                NSLog("updating with duration: %f", duration!)
-            } else {
-                NSLog("updating with duration: nil")
-            }
-            
+                        
             let permit = self.delegate?.activeFilterPermit() ?? false
             
             SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion:

@@ -185,5 +185,7 @@
 "camera" = "Camera";
 "enable_camera_message" = "Please allow access to your camera to report an error.";
 
+"provided_by_foursquare" = "provided by foursquare";
+
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";
