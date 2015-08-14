@@ -507,7 +507,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         })
     }
     
-    override func updateAnnotations() {
+    override func updateAnnotations(completion: (() -> Void)) {
         
         if (updateInProgress) {
             println("Update already in progress, cancelled!")
@@ -585,7 +585,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                             contains(newSpotIDs, spotID)
                         })
 
-                        self.updateSpotAnnotations(spots)
+                        self.updateSpotAnnotations(spots, completion: completion)
                         
                     })
                     
@@ -605,12 +605,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             updateInProgress = false
 
             self.delegate?.showMapMessage("map_message_too_zoomed_out".localizedString)
+            
+            completion()
         }
         
         
     }
     
-    func updateSpotAnnotations(spots: [ParkingSpot]) {
+    func updateSpotAnnotations(spots: [ParkingSpot], completion: (() -> Void)) {
         
         let duration = self.delegate?.activeFilterDuration()
         var tempLineAnnotations = [RMAnnotation]()
@@ -638,6 +640,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             SVProgressHUD.dismiss()
             self.updateInProgress = false
+            
+            completion()
 
         })
 
@@ -903,6 +907,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             addSpotAnnotation(self.mapView, spot: selectedSpot!, selected: false)
             selectedSpot = nil
         }
+    }
+
+    override func mapModeDidChange(completion: (() -> Void)) {
+        updateAnnotations(completion)
     }
 
 

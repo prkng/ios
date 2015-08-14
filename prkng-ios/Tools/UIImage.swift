@@ -6,16 +6,13 @@
 //  Copyright (c) 2015 PRKNG. All rights reserved.
 //
 
-import UIKit
-
-struct ImageUtil {
+extension UIImage {
     
-    
-    static func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
+    func resizeImage(targetSize: CGSize) -> UIImage {
+        let size = self.size
         
-        let widthRatio  = targetSize.width  / image.size.width
-        let heightRatio = targetSize.height / image.size.height
+        let widthRatio  = targetSize.width  / self.size.width
+        let heightRatio = targetSize.height / self.size.height
         
         // Figure out what our orientation is, and use that to form the rectangle
         var newSize: CGSize
@@ -30,15 +27,12 @@ struct ImageUtil {
         
         // Actually do the resizing to the rect using the ImageContext stuff
         UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.drawInRect(rect)
+        self.drawInRect(rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
         return newImage
     }
-}
-
-extension UIImage {
     
     class func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
         let rect = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
@@ -65,6 +59,15 @@ extension UIImage {
         return finalImage
     }
 
+    class func imageFromView(view: UIView) -> UIImage {
+        
+        UIGraphicsBeginImageContext(view.bounds.size)
+        view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        let viewImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return viewImage
+
+    }
     
 }
 

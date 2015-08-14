@@ -317,7 +317,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())
         SVProgressHUD.showWithMaskType(.Clear)
         
-        let resized = ImageUtil.resizeImage(capturedImage!, targetSize: CGSizeMake(1024, 768))
+        let resized = capturedImage!.resizeImage(CGSizeMake(1024, 768))
         
         SpotOperations.reportParkingRule(resized, location: location!.coordinate, notes: notesVC?.textView.text ?? "", spotId: spotId, completion: { (completed) -> Void in
             

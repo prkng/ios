@@ -259,6 +259,12 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         mapViewController.updateAnnotations()
     }
     
+    func didSelectMapMode(mapMode: MapMode) {
+        if mapMode != mapViewController.mapMode {
+            mapViewController.mapMode = mapMode
+        }
+    }
+    
     func switchActiveViewController  (newViewController : UIViewController, completion : ((finished:Bool) -> Void)) {
         
         if switchingMainView {

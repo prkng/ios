@@ -336,25 +336,22 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         let frontButton = frontButtons[sender.index]
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
+            
             self.selectionIndicator.setValue(Float(sender.index), animated: true)
+            
             }, completion: { (completed) -> Void in
+                
+                self.deselectAll()
+                sender.selected = true
+                frontButton.selected = true
                 
                 let valueChanged = self.selectedIndex != sender.index
                 
                 if valueChanged {
-                    
                     self.selectedIndex = sender.index
-                    self.deselectAll()
-                    sender.selected = true
-                    frontButton.selected = true
                     self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-                    
-                }  else if !animated {
-                    self.deselectAll()
-                    sender.selected = true
-                    frontButton.selected = true
                 }
-                
+
         })
     }
     

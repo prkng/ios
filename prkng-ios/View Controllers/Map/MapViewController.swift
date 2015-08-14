@@ -8,8 +8,39 @@
 
 import UIKit
 
+enum MapMode {
+    case Garage
+    case StreetParking
+    case CarSharing
+}
+
 class MapViewController: AbstractViewController {
 
+    var mapModeImageView: UIView?
+    var mapMode: MapMode = .StreetParking {
+        didSet {
+            //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
+            if mapModeImageView != nil {
+                mapModeImageView?.removeFromSuperview()
+                mapModeImageView = nil
+            }
+            
+            let snapshotView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+            mapModeImageView = snapshotView
+            self.view.addSubview(mapModeImageView!)
+            
+            mapModeDidChange { () -> Void in
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.mapModeImageView?.alpha = 0
+                    }) { (completed) -> Void in
+                        self.mapModeImageView?.removeFromSuperview()
+                        self.mapModeImageView = nil
+                        
+                }
+            }
+        }
+    }
+    
     var delegate: MapViewControllerDelegate?
     
     var canShowMapMessage: Bool = false
@@ -34,7 +65,11 @@ class MapViewController: AbstractViewController {
     func clearSearchResults() { }
     func showUserLocation(shouldShow: Bool) { }
     func trackUser(shouldTrack: Bool) { }
-    func updateAnnotations() { }
+    
+    func updateAnnotations() {
+        updateAnnotations { () -> Void in }
+    }
+    func updateAnnotations(completion: (() -> Void)) { }
 
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) { }
     
@@ -143,6 +178,11 @@ class MapViewController: AbstractViewController {
         return !inAnAvailableCity
 
     }
+
+    func mapModeDidChange(completion: (() -> Void)) {
+        completion()
+    }
+    
 
 }
 
