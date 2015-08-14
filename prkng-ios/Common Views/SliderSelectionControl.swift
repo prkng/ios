@@ -318,13 +318,10 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         
         if newValue < 0.5 {
             selectOption(buttons[0])
-//            self.selectionIndicator.setValue(0, animated: true)
         } else if newValue < 1.5 {
             selectOption(buttons[1])
-//            self.selectionIndicator.setValue(1, animated: true)
         } else {
             selectOption(buttons[2])
-//            self.selectionIndicator.setValue(2, animated: true)
         }
 
     }
@@ -338,38 +335,27 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         
         let frontButton = frontButtons[sender.index]
         
-        selectionIndicator.setValue(Float(sender.index), animated: animated)
-
-        let valueChanged = selectedIndex != sender.index
-        
-        if valueChanged {
-            
-            selectedIndex = sender.index
-            deselectAll()
-            
-            if (animated) {
-                UIView.animateWithDuration(0.15, animations: { () -> Void in
-                    self.selectionIndicator.layoutIfNeeded()
-                    }, completion: { (completed) -> Void in
-                        sender.selected = true
-                        frontButton.selected = true
-                        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-                })
-            } else {
-                self.selectionIndicator.layoutIfNeeded()
-                deselectAll()
-                sender.selected = true
-                frontButton.selected = true
-                self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
-            }
-            
-            
-        }  else if !animated {
-            deselectAll()
-            sender.selected = true
-            frontButton.selected = true
-        }
-        
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+            self.selectionIndicator.setValue(Float(sender.index), animated: true)
+            }, completion: { (completed) -> Void in
+                
+                let valueChanged = self.selectedIndex != sender.index
+                
+                if valueChanged {
+                    
+                    self.selectedIndex = sender.index
+                    self.deselectAll()
+                    sender.selected = true
+                    frontButton.selected = true
+                    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                    
+                }  else if !animated {
+                    self.deselectAll()
+                    sender.selected = true
+                    frontButton.selected = true
+                }
+                
+        })
     }
     
     
