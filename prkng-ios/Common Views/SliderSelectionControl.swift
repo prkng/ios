@@ -17,6 +17,8 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     
     var buttonContainers: Array<UIView>
     var buttons: Array<SliderSelectionButton>
+    private var frontButtonContainers: Array<UIView>
+    private var frontButtons: Array<SliderSelectionButton>
     var selectionIndicator: UISlider
     
     var selectedIndex: Int
@@ -28,8 +30,8 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     var textColor: UIColor = Styles.Colors.cream1
     var selectedTextColor: UIColor = Styles.Colors.cream2
     var buttonBackgroundColor: UIColor = Styles.Colors.midnight2
-    var selectedButtonBackgroundColor: UIColor = Styles.Colors.midnight1
-    var selectionIndicatorColor: UIColor = Styles.Colors.midnight1
+    var selectedButtonBackgroundColor: UIColor = Styles.Colors.red2
+    var selectionIndicatorColor: UIColor = Styles.Colors.red2
     var font: UIFont = Styles.FontFaces.regular(12)
     var fixedWidth: Int = 0
     
@@ -48,12 +50,19 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         for title in titles {
             buttons.append(SliderSelectionButton(title:title, index: i++))
         }
-        
+
+        i = 0
+        for title in titles {
+            frontButtons.append(SliderSelectionButton(title:title, index: i++))
+        }
+
     }
     
     override init(frame: CGRect) {
         titles = []
+        frontButtons = []
         buttons = []
+        frontButtonContainers = []
         buttonContainers = []
         didSetupSubviews = false
         didSetupConstraints = true
@@ -94,20 +103,6 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         
         var index: Int = 0
         
-        selectionIndicator.continuous = false
-        selectionIndicator.setThumbImage(self.thumbImage, forState: UIControlState.Normal)
-        selectionIndicator.minimumValue = 0
-        selectionIndicator.maximumValue = Float(titles.count-1)
-        selectionIndicator.minimumTrackTintColor = Styles.Colors.midnight2
-        selectionIndicator.maximumTrackTintColor = Styles.Colors.midnight2
-
-        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
-        addSubview(selectionIndicator)
-        
-        let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
-        tapRec.delegate = self
-        selectionIndicator.addGestureRecognizer(tapRec)
-        
         for title in titles {
             
             let buttonContainer = UIView()
@@ -145,6 +140,60 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             index++
         }
         
+        selectionIndicator.continuous = false
+        selectionIndicator.setThumbImage(self.thumbImage, forState: UIControlState.Normal)
+        selectionIndicator.minimumValue = 0
+        selectionIndicator.maximumValue = Float(titles.count-1)
+        selectionIndicator.minimumTrackTintColor = Styles.Colors.midnight2
+        selectionIndicator.maximumTrackTintColor = Styles.Colors.midnight2
+        
+        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        addSubview(selectionIndicator)
+        
+        let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
+        tapRec.delegate = self
+        selectionIndicator.addGestureRecognizer(tapRec)
+        
+        
+        index = 0
+        
+        for title in titles {
+            
+            let frontButtonContainer = UIView()
+            frontButtonContainer.userInteractionEnabled = false
+            addSubview(frontButtonContainer)
+            frontButtonContainers.append(frontButtonContainer)
+            
+            let frontButton = frontButtons[index]
+            
+            frontButton.userInteractionEnabled = false
+            
+            if borderColor != nil {
+                frontButton.borderColor = borderColor!
+            }
+            
+            if selectedBorderColor != nil {
+                frontButton.selectedBorderColor = selectedBorderColor!
+            }
+            
+            frontButton.textColor = textColor
+            
+            frontButton.selectedTextColor = selectedTextColor
+            
+            frontButton.buttonBackgroundColor = UIColor.clearColor()
+            
+            frontButton.selectedButtonBackgroundColor = selectedButtonBackgroundColor
+            
+            frontButton.font = font
+            
+            frontButton.layer.cornerRadius =  self.buttonSize.height / 2.0
+            frontButton.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
+            frontButton.selected = (selectedIndex == index)
+            frontButtonContainer.addSubview(frontButton)
+            
+            index++
+        }
+        
         didSetupSubviews = true
     }
     
@@ -159,55 +208,57 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             
         } else if (buttons.count > 1) {
             
-            if fixedWidth > 0 {
+            for index in 0...buttons.count-1 {
                 
-                var rightConstraint = self.snp_left
+                let multiplier: Float = 2.0 * Float(index + 1) / (Float(buttons.count + 1) )  // MAGIC =)
+                NSLog("multiplier: %f", multiplier)
                 
-                for index in 0...buttons.count-1 {
-                    
-                    buttonContainers[index].snp_makeConstraints({ (make) -> () in
-                        make.left.equalTo(rightConstraint).with.offset(self.fixedWidth)
-                        make.top.equalTo(self)
-                        make.bottom.equalTo(self)
-                    })
-                    
-                    buttons[index].snp_makeConstraints({ (make) -> () in
-                        make.edges.equalTo(self.buttonContainers[index])
-                        
-                    })
-
-                    rightConstraint = buttons[index].snp_right
-                    
-                }
-            } else {
+                buttonContainers[index].snp_makeConstraints({ (make) -> () in
+                    make.width.equalTo(self).multipliedBy(1.0 / Float(self.buttons.count))
+                    make.height.equalTo(self)
+                    make.centerX.equalTo(self).multipliedBy(multiplier)
+                    make.top.equalTo(self)
+                    make.bottom.equalTo(self)
+                })
                 
-                for index in 0...buttons.count-1 {
+                
+                buttons[index].snp_makeConstraints({ (make) -> () in
+                    make.center.equalTo(self.buttonContainers[index])
+                    make.size.equalTo(self.buttonSize)
                     
-                    let multiplier: Float = 2.0 * Float(index + 1) / (Float(buttons.count + 1) )  // MAGIC =)
-                    NSLog("multiplier: %f", multiplier)
-                    
-                    buttonContainers[index].snp_makeConstraints({ (make) -> () in
-                        make.width.equalTo(self).multipliedBy(1.0 / Float(self.buttons.count))
-                        make.height.equalTo(self)
-                        make.centerX.equalTo(self).multipliedBy(multiplier)
-                        make.top.equalTo(self)
-                        make.bottom.equalTo(self)
-                    })
-                    
-                    
-                    buttons[index].snp_makeConstraints({ (make) -> () in
-                        make.center.equalTo(self.buttonContainers[index])
-                        make.size.equalTo(self.buttonSize)
-                        
-                    })
-                }
+                })
             }
+        }
+        
+        if(frontButtons.count == 1) {
             
+            frontButtons[0].snp_makeConstraints({ (make) -> () in
+                make.center.equalTo(self)
+                make.size.equalTo(self.buttonSize)
+            })
             
+        } else if (frontButtons.count > 1) {
             
-            
-            
-            
+            for index in 0...frontButtons.count-1 {
+                
+                let multiplier: Float = 2.0 * Float(index + 1) / (Float(frontButtons.count + 1) )  // MAGIC =)
+                NSLog("multiplier: %f", multiplier)
+                
+                frontButtonContainers[index].snp_makeConstraints({ (make) -> () in
+                    make.width.equalTo(self).multipliedBy(1.0 / Float(self.frontButtons.count))
+                    make.height.equalTo(self)
+                    make.centerX.equalTo(self).multipliedBy(multiplier)
+                    make.top.equalTo(self)
+                    make.bottom.equalTo(self)
+                })
+                
+                
+                frontButtons[index].snp_makeConstraints({ (make) -> () in
+                    make.center.equalTo(self.frontButtonContainers[index])
+                    make.size.equalTo(self.buttonSize)
+                    
+                })
+            }
         }
         
         let leftMultiplier: Float = 2.0 * Float(0 + 1) / (Float(buttons.count + 1) )  // MAGIC =)
@@ -241,6 +292,10 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     private func deselectAll () {
         
         for button in buttons {
+            button.selected = false
+        }
+        
+        for button in frontButtons {
             button.selected = false
         }
         
@@ -281,6 +336,8 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     
     func selectOption (sender: SliderSelectionButton, animated: Bool) {
         
+        let frontButton = frontButtons[sender.index]
+        
         selectionIndicator.setValue(Float(sender.index), animated: animated)
 
         let valueChanged = selectedIndex != sender.index
@@ -290,23 +347,19 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             selectedIndex = sender.index
             deselectAll()
             
-//            selectionIndicator.snp_remakeConstraints { (make) -> () in
-//                make.centerX.equalTo(self.buttons[self.selectedIndex])
-//                make.centerY.equalTo(self.buttons[self.selectedIndex])//.with.offset(12)
-//                make.size.equalTo(self.selectionIndicatorSize)
-//            }
-            
             if (animated) {
                 UIView.animateWithDuration(0.15, animations: { () -> Void in
                     self.selectionIndicator.layoutIfNeeded()
                     }, completion: { (completed) -> Void in
                         sender.selected = true
+                        frontButton.selected = true
                         self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
                 })
             } else {
                 self.selectionIndicator.layoutIfNeeded()
                 deselectAll()
                 sender.selected = true
+                frontButton.selected = true
                 self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
             }
             
@@ -314,6 +367,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         }  else if !animated {
             deselectAll()
             sender.selected = true
+            frontButton.selected = true
         }
         
     }
