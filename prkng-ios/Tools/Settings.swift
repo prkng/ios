@@ -258,4 +258,11 @@ struct Settings {
         return nil
     }
     
+    static func iOS8OrLater() -> Bool {
+        if NSProcessInfo().isOperatingSystemAtLeastVersion(NSOperatingSystemVersion(majorVersion: 8, minorVersion: 0, patchVersion: 0)) {
+            return true
+        }
+        return false
+    }
+    
 }

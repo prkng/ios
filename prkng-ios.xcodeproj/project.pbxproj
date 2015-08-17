@@ -52,6 +52,7 @@
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
+		3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
@@ -218,6 +219,8 @@
 		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
 		3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewController.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
+		3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
 		3EF64E7A1B6A88FD002B010B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
@@ -514,6 +517,8 @@
 				3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */,
 				3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */,
 				3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */,
+				3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */,
+				3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1070,6 +1075,7 @@
 				3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */,
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
+				3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
 				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,
 				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,

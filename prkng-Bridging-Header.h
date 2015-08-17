@@ -33,5 +33,6 @@
 #import "GeoJsonParser.h"
 #import "POP.h"
 #import "MarqueeLabel.h"
+#import "UIImage+ImageEffects.h"
 
 #endif
