@@ -15,6 +15,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     
     var titles: Array<String>
     
+    var backgroundView: UIVisualEffectView
     var buttonContainers: Array<UIView>
     var buttons: Array<SliderSelectionButton>
     private var frontButtonContainers: Array<UIView>
@@ -23,29 +24,42 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     
     var selectedIndex: Int
     
-    var buttonSize: CGSize
-    var selectionIndicatorSize: CGSize
     var borderColor: UIColor?
     var selectedBorderColor: UIColor?
-    var textColor: UIColor = Styles.Colors.cream1
-    var selectedTextColor: UIColor = Styles.Colors.cream2
-    var buttonBackgroundColor: UIColor = Styles.Colors.midnight2
+    var textColor: UIColor = Styles.Colors.petrol2
+    var selectedTextColor: UIColor = Styles.Colors.cream1
+    var buttonBackgroundColor: UIColor = Styles.Colors.cream1 //only applies if < ios 8, otherwise we blur
     var selectedButtonBackgroundColor: UIColor = Styles.Colors.red2
     var selectionIndicatorColor: UIColor = Styles.Colors.red2
-    var font: UIFont = Styles.FontFaces.regular(12)
-    var fixedWidth: Int = 0
+    var font: UIFont = Styles.FontFaces.regular(14)
     
-    var thumbImage: UIImage {
-        let rect = CGRect(x: 0, y: 0, width: 30, height: 30)
+    var thumbImage: UIImage { get {
+        let rect = CGRect(x: 0, y: 0, width: self.width, height: SliderSelectionControl.HEIGHT)
         let image = UIImage.imageWithColor(selectionIndicatorColor, size: rect.size)
-        let roundedImage = UIImage.getRoundedRectImageFromImage(image, rect: rect, cornerRadius: 15)
-        return roundedImage
+        return image
+        }
     }
     
+    static let HEIGHT = 60
+    var width: Int
+
     convenience init(titles: Array<String>) {
         self.init(frame:CGRectZero)
         self.titles = titles
         
+        self.width = Int(UIScreen.mainScreen().bounds.width)/self.titles.count
+        
+        if Settings.iOS8OrLater() {
+            buttonBackgroundColor = UIColor.clearColor()
+            selectedButtonBackgroundColor = UIColor.clearColor()
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+            backgroundView = UIVisualEffectView(effect: blurEffect)
+//            backgroundView.backgroundColor = Styles.Colors.cream1
+//            backgroundView.alpha = 0.9
+        } else {
+            backgroundView.backgroundColor = buttonBackgroundColor
+        }
+
         var i: Int = 0
         for title in titles {
             buttons.append(SliderSelectionButton(title:title, index: i++))
@@ -66,10 +80,10 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         buttonContainers = []
         didSetupSubviews = false
         didSetupConstraints = true
-        buttonSize = CGSizeMake(30, 30) // Default
-        selectionIndicatorSize = CGSizeMake(30, 30)
         selectedIndex = 1
         selectionIndicator = UISlider()
+        backgroundView = UIVisualEffectView()
+        width = 0
         super.init(frame: frame)
     }
     
@@ -101,13 +115,15 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     
     func setupSubviews() {
         
+        self.addSubview(backgroundView)
+
         var index: Int = 0
         
         for title in titles {
             
             let buttonContainer = UIView()
             buttonContainer.userInteractionEnabled = false
-            addSubview(buttonContainer)
+            backgroundView.addSubview(buttonContainer)
             buttonContainers.append(buttonContainer)
             
             let button = buttons[index]
@@ -132,7 +148,6 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             
             button.font = font
             
-            button.layer.cornerRadius =  self.buttonSize.height / 2.0
             button.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
             button.selected = (selectedIndex == index)
             buttonContainer.addSubview(button)
@@ -140,15 +155,16 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             index++
         }
         
-        selectionIndicator.continuous = false
-        selectionIndicator.setThumbImage(self.thumbImage, forState: UIControlState.Normal)
+        selectionIndicator.continuous = true
+        selectionIndicator.setThumbImage(thumbImage, forState: UIControlState.Normal)
         selectionIndicator.minimumValue = 0
         selectionIndicator.maximumValue = Float(titles.count-1)
-        selectionIndicator.minimumTrackTintColor = Styles.Colors.midnight2
-        selectionIndicator.maximumTrackTintColor = Styles.Colors.midnight2
+        selectionIndicator.minimumTrackTintColor = UIColor.clearColor()
+        selectionIndicator.maximumTrackTintColor = UIColor.clearColor()
         
-        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
-        addSubview(selectionIndicator)
+        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanged", forControlEvents: UIControlEvents.TouchUpInside)
+        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanging", forControlEvents: UIControlEvents.ValueChanged)
+        backgroundView.addSubview(selectionIndicator)
         
         let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
         tapRec.delegate = self
@@ -161,7 +177,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             
             let frontButtonContainer = UIView()
             frontButtonContainer.userInteractionEnabled = false
-            addSubview(frontButtonContainer)
+            backgroundView.addSubview(frontButtonContainer)
             frontButtonContainers.append(frontButtonContainer)
             
             let frontButton = frontButtons[index]
@@ -186,7 +202,6 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             
             frontButton.font = font
             
-            frontButton.layer.cornerRadius =  self.buttonSize.height / 2.0
             frontButton.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
             frontButton.selected = (selectedIndex == index)
             frontButtonContainer.addSubview(frontButton)
@@ -203,30 +218,29 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             
             buttons[0].snp_makeConstraints({ (make) -> () in
                 make.center.equalTo(self)
-                make.size.equalTo(self.buttonSize)
+                make.height.equalTo(SliderSelectionControl.HEIGHT)
+                make.width.equalTo(self)
             })
             
         } else if (buttons.count > 1) {
             
+            var leftViewConstraint = self.snp_left
+            
             for index in 0...buttons.count-1 {
                 
-                let multiplier: Float = 2.0 * Float(index + 1) / (Float(buttons.count + 1) )  // MAGIC =)
-                NSLog("multiplier: %f", multiplier)
-                
                 buttonContainers[index].snp_makeConstraints({ (make) -> () in
-                    make.width.equalTo(self).multipliedBy(1.0 / Float(self.buttons.count))
-                    make.height.equalTo(self)
-                    make.centerX.equalTo(self).multipliedBy(multiplier)
+                    make.width.equalTo(self.width)
+                    make.height.equalTo(SliderSelectionControl.HEIGHT)
+                    make.left.equalTo(leftViewConstraint)
                     make.top.equalTo(self)
-                    make.bottom.equalTo(self)
                 })
-                
                 
                 buttons[index].snp_makeConstraints({ (make) -> () in
-                    make.center.equalTo(self.buttonContainers[index])
-                    make.size.equalTo(self.buttonSize)
-                    
+                    make.edges.equalTo(buttonContainers[index])
                 })
+                
+                leftViewConstraint = buttonContainers[index].snp_right
+                
             }
         }
         
@@ -234,59 +248,43 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             
             frontButtons[0].snp_makeConstraints({ (make) -> () in
                 make.center.equalTo(self)
-                make.size.equalTo(self.buttonSize)
+                make.height.equalTo(SliderSelectionControl.HEIGHT)
+                make.width.equalTo(self)
             })
             
         } else if (frontButtons.count > 1) {
             
+            var leftViewConstraint = self.snp_left
+            
             for index in 0...frontButtons.count-1 {
                 
-                let multiplier: Float = 2.0 * Float(index + 1) / (Float(frontButtons.count + 1) )  // MAGIC =)
-                NSLog("multiplier: %f", multiplier)
-                
                 frontButtonContainers[index].snp_makeConstraints({ (make) -> () in
-                    make.width.equalTo(self).multipliedBy(1.0 / Float(self.frontButtons.count))
-                    make.height.equalTo(self)
-                    make.centerX.equalTo(self).multipliedBy(multiplier)
+                    make.width.equalTo(self.width)
+                    make.height.equalTo(SliderSelectionControl.HEIGHT)
+                    make.left.equalTo(leftViewConstraint)
                     make.top.equalTo(self)
-                    make.bottom.equalTo(self)
                 })
-                
                 
                 frontButtons[index].snp_makeConstraints({ (make) -> () in
-                    make.center.equalTo(self.frontButtonContainers[index])
-                    make.size.equalTo(self.buttonSize)
-                    
+                    make.edges.equalTo(frontButtonContainers[index])
                 })
+                
+                leftViewConstraint = frontButtonContainers[index].snp_right
+                
             }
         }
         
-        let leftMultiplier: Float = 2.0 * Float(0 + 1) / (Float(buttons.count + 1) )  // MAGIC =)
-        let rightMultiplier: Float = 2.0 * Float(2 + 1) / (Float(buttons.count + 1) )  // MAGIC =)
-
         selectionIndicator.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.snp_centerX).multipliedBy(leftMultiplier).with.offset(-13)
-            make.right.equalTo(self.snp_centerX).multipliedBy(rightMultiplier).with.offset(13)
+            make.left.equalTo(self.snp_left)
+            make.right.equalTo(self.snp_right)
             make.centerY.equalTo(self)
         }
         
-        didSetupConstraints = true
-    }
-    
-    //only works for fixed width...
-    func calculatedWidth() -> CGFloat {
-        var width: CGFloat = 0
-        for title in titles {
-            width += CGFloat(fixedWidth)
-            
-            let attrs = [NSFontAttributeName: font]
-            let maximumLabelSize = CGSizeMake(310, 9999);
-            let rect = (title as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs , context: nil)
-            
-            width += rect.width
-            
+        backgroundView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self)
         }
-        return width
+        
+        didSetupConstraints = true
     }
     
     private func deselectAll () {
@@ -308,6 +306,14 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
 //            self.selectionIndicator.setValue(Float(newValue), animated: true)
             sliderSelectionValueChanged(Float(newValue))
         }
+    }
+    
+    func sliderSelectionValueChanging() {
+
+//        let thumb = selectionIndicator.thumbRectForBounds(<#bounds: CGRect#>, trackRect: <#CGRect#>, value: <#Float#>)
+//        for button in buttons {
+//            button.titleLabel
+//        }
     }
     
     func sliderSelectionValueChanged() {

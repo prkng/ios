@@ -51,7 +51,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         filterButton = PRKTextButton(image: nil, imageSize: CGSizeMake(36, 36), labelText: "")
         filterButtonImageName = "icon_filter"
         filterButtonText = ""
-        modeSelection = SliderSelectionControl(titles: ["1", "2", "3"])
+        modeSelection = SliderSelectionControl(titles: ["garages".localizedString, "on-street".localizedString, "car_sharing".localizedString])
         forceShowSpotDetails = false
         verticalRec = PRKVerticalGestureRecognizer()
         isShowingSchedule = false
@@ -177,10 +177,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
         
         modeSelection.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(40)
+            make.height.equalTo(SliderSelectionControl.HEIGHT)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(-30)
+            make.bottom.equalTo(self.view)
         }
         
     }
@@ -755,20 +755,20 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func modeSelectionValueChanged() {
         //do something on the map by way of a callback
-        switch(self.modeSelection.selectedIndex) {
-        case 0:
-            //oh em gee you wanna see garages!
-            self.delegate?.didSelectMapMode(MapMode.Garage)
-            break
-        case 1:
-            //oh. em. gee. you wanna see street parking!
-            self.delegate?.didSelectMapMode(MapMode.StreetParking)
-            break
-        case 2:
-            //oh. em. geeeeeeee you wanna see car sharing spots!
-            self.delegate?.didSelectMapMode(MapMode.CarSharing)
-        default:break
-        }
+//        switch(self.modeSelection.selectedIndex) {
+//        case 0:
+//            //oh em gee you wanna see garages!
+//            self.delegate?.didSelectMapMode(MapMode.Garage)
+//            break
+//        case 1:
+//            //oh. em. gee. you wanna see street parking!
+//            self.delegate?.didSelectMapMode(MapMode.StreetParking)
+//            break
+//        case 2:
+//            //oh. em. geeeeeeee you wanna see car sharing spots!
+//            self.delegate?.didSelectMapMode(MapMode.CarSharing)
+//        default:break
+//        }
 
     }
     

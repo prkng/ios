@@ -187,5 +187,8 @@
 
 "provided_by_foursquare" = "provided by foursquare";
 
+"on-street" = "On-Street";
+"garages" = "Garages";
+
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";

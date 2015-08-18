@@ -10,36 +10,36 @@ import UIKit
 
 class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate, POPAnimationDelegate {
     
-    var spot : ParkingSpot?
+    var spot: ParkingSpot?
     
-    let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
+    var backgroundImageView: UIImageView
     
-    var logoView : UIImageView
+    var logoView: UIImageView
     
-    var containerView : UIView
-    var locationTitleLabel : UILabel
-    var locationLabel : UILabel
+    var containerView: UIView
+    var locationTitleLabel: UILabel
+    var locationLabel: UILabel
     
-    var availableTitleLabel : UILabel
-    var availableTimeLabel : UILabel //ex: 24+
+    var availableTitleLabel: UILabel
+    var availableTimeLabel: UILabel //ex: 24+
 
-    var smallButtonContainer : UIView
-    var reportButton : UIButton
+    var smallButtonContainer: UIView
+    var reportButton: UIButton
     
     var bottomButtonContainer: UIView
     var bottomButtonLabel: UILabel
     var bottomPillButton: UIButton
     var bottomSelectionControl: SelectionControl
     
-    var bigButtonContainer : UIView
-    var shareButton : UIButton
-    var leaveButton : UIButton
+    var bigButtonContainer: UIView
+    var shareButton: UIButton
+    var leaveButton: UIButton
     
-    var checkinMessageVC : CheckinMessageViewController?
+    var checkinMessageVC: CheckinMessageViewController?
     
-    var delegate : MyCarCheckedInViewControllerDelegate?
+    var delegate: MyCarCheckedInViewControllerDelegate?
     
-    private var timer : NSTimer?
+    private var timer: NSTimer?
     
     private let SMALL_VERTICAL_MARGIN = 5
     private let MEDIUM_VERTICAL_MARGIN = 10
@@ -52,6 +52,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     
     init() {
+        
+        backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
         logoView = UIImageView()
         
         containerView = UIView()
@@ -165,6 +167,22 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func setupViews () {
         
+//        let screenHeight = UIScreen.mainScreen().bounds.height
+//        let screenWidth = UIScreen.mainScreen().bounds.width
+//        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//        let root = delegate.window?.rootViewController
+//        let bounds = CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight)
+//        
+//        UIGraphicsBeginImageContextWithOptions(bounds.size,
+//            true, 1)
+//        root!.view.drawViewHierarchyInRect(bounds,
+//            afterScreenUpdates: true)
+//        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext()
+//        
+//        let blur = screenshot.applyBlurWithRadius(3, tintColor: UIColor.blackColor().colorWithAlphaComponent(0.85), saturationDeltaFactor: 1, maskImage: UIImage(named:"bg_mycar"))
+//        
+//        backgroundImageView.image = blur
         view.addSubview(backgroundImageView)
         
         logoView.image = UIImage(named: "icon_checkin")
@@ -473,12 +491,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func shareButtonTapped() {
         
         var tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Share Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Share Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
         createGoogleMapsLink(spot!.buttonLocation)
     }
     
-    func createGoogleMapsLink(location : CLLocation) {
+    func createGoogleMapsLink(location: CLLocation) {
         let latitude = "\(spot!.buttonLocation.coordinate.latitude)"
         let longitude = "\(spot!.buttonLocation.coordinate.longitude)"
         let longUrlString = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "&ll=" + latitude + "," + longitude + "&z=17"
@@ -495,7 +513,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     }
     
     func shareButtonTappedCompletion(url: String) {
-        var text : String = "share_location_copy".localizedString
+        var text: String = "share_location_copy".localizedString
         text = text.stringByReplacingOccurrencesOfString("[street_name]", withString: spot!.name)
         text += "\n--\n" + url
         let activityViewController = UIActivityViewController( activityItems: [text], applicationActivities: nil)
@@ -505,7 +523,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func leaveButtonTapped() {
         
         var tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Check Out Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Check Out Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
         Settings.checkOut()
         self.delegate?.reloadMyCarTab()
@@ -514,7 +532,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func reportButtonTapped(sender: UIButton) {
         
         var tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Report Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Report Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
         loadReportScreen(self.spot?.identifier)
     }
@@ -522,7 +540,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func payButtonTapped(sender: UIButton) {
 
         var tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Pay Button Tapped", label: bottomButtonLabel.text, value: nil).build() as [NSObject : AnyObject])
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Pay Button Tapped", label: bottomButtonLabel.text, value: nil).build() as [NSObject: AnyObject])
 
         var url = NSURL(string: "")
 
