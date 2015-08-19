@@ -76,7 +76,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         containerView.addSubview(hereViewController.view)
         tabBar.updateSelected()
         hereViewController.delegate = self
-        hereViewController.searchFilterView.delegate = self
+        hereViewController.filterVC.searchFilterView.delegate = self
         hereViewController.view.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.containerView)
         }
@@ -323,7 +323,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //        } else if (selectedTab == PrkTab.Here) {
         if wasUserAction {
             hereViewController.updateSpotDetails(nil)
-            hereViewController.hideFilters(alsoHideFilterButton: false)
+            hereViewController.filterVC.hideFilters(completely: false)
         }
 //        }
                 
@@ -376,7 +376,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         if self.activeFilterPermit() {
             return 24
         }
-        var hours = hereViewController.timeFilterView.selectedValueInHours()
+        var hours = hereViewController.filterVC.timeFilterView.selectedValueInHours()
         return hours
     }
     
@@ -403,9 +403,16 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func didGetAutocompleteResults(results: [SearchResult]) {
-        hereViewController.updateAutocompleteWithValues(results)
+        hereViewController.filterVC.updateAutocompleteWithValues(results)
     }
 
+    func startSearching() {
+        hereViewController.filterVC.showFilters(resettingTimeFilterValue: false)
+    }
+    
+    func endSearchingAndFiltering() {
+        hereViewController.filterVC.hideFilters(completely: false)
+    }
     
     // MARK: MyCarNoCheckinViewControllerDelegate
     

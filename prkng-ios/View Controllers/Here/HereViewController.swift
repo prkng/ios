@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, TimeFilterViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate, MapMessageViewDelegate, SearchResultsTableViewControllerDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate, MapMessageViewDelegate, FilterViewControllerDelegate {
 
     var showFiltersOnAppear: Bool = false
     
@@ -19,13 +19,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     var firstUseMessageVC: HereFirstUseViewController?
     var detailView: SpotDetailView
     
-    var searchFilterView: SearchFilterView
-    var timeFilterView: TimeFilterView
-    var showingFilters: Bool
-    var autocompleteVC: SearchResultsTableViewController?
+    var filterVC: FilterViewController
     
     var statusBar: UIView
-    var filterButton: PRKTextButton
     var modeSelection: SliderSelectionControl
 
     var activeSpot: ParkingSpot?
@@ -43,12 +39,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 
     init() {
         detailView = SpotDetailView()
-        timeFilterView = TimeFilterView()
-        searchFilterView = SearchFilterView()
-        showingFilters = false
+        filterVC = FilterViewController()
         mapMessageView = MapMessageView()
         statusBar = UIView()
-        filterButton = PRKTextButton(image: nil, imageSize: CGSizeMake(36, 36), labelText: "")
         filterButtonImageName = "icon_filter"
         filterButtonText = ""
         modeSelection = SliderSelectionControl(titles: ["garages".localizedString, "on-street".localizedString, "car_sharing".localizedString])
@@ -83,11 +76,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstUseMessage"), userInfo: nil, repeats: false)
         } else {
             if showFiltersOnAppear {
-                showFilters()
-                self.searchFilterView.makeActive()
+                self.filterVC.showFilters(resettingTimeFilterValue: false)
+                self.filterVC.makeActive()
                 showFiltersOnAppear = false
             } else {
-                hideFilters(alsoHideFilterButton: false)
+                self.filterVC.hideFilters(completely: false)
                 self.delegate?.updateMapAnnotations()
             }
         }
@@ -117,16 +110,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         statusBar.backgroundColor = Styles.Colors.statusBar
         view.addSubview(statusBar)
         
+        self.filterVC.delegate = self
+        self.view.addSubview(self.filterVC.view)
+        self.filterVC.willMoveToParentViewController(self)
+
         mapMessageView.delegate = self
         view.addSubview(mapMessageView)
-
-        view.addSubview(searchFilterView)
-        timeFilterView.delegate = self
-        view.addSubview(timeFilterView)
-
-        filterButton.setImage(UIImage(named: filterButtonImageName))
-        filterButton.addTarget(self, action: "toggleFilterButton", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(filterButton)
         
         modeSelection.addTarget(self, action: "modeSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
         view.addSubview(modeSelection)
@@ -139,7 +128,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.top.equalTo(self.view).with.offset(-200)
-            make.height.greaterThanOrEqualTo(120)
+            make.height.lessThanOrEqualTo(200)
         }
 
         statusBar.snp_makeConstraints { (make) -> () in
@@ -156,24 +145,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
         }
 
-        searchFilterView.snp_makeConstraints { (make) -> () in
+        self.filterVC.view.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(0)
-        }
-        
-        timeFilterView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.searchFilterView.snp_bottom)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(0)
-        }
-        
-        filterButton.snp_makeConstraints{ (make) -> () in
-            make.size.greaterThanOrEqualTo(CGSizeMake(36, 36))
-            make.right.equalTo(self.view.snp_centerX).multipliedBy(1.66).with.offset(18)
-            make.bottom.equalTo(self.view).with.offset(-30-50)
+            make.bottom.equalTo(self.view)
         }
         
         modeSelection.snp_makeConstraints { (make) -> () in
@@ -321,75 +297,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         adjustSpotDetailsWithDistanceFromBottom(-distanceFromBottom, animated: animated)
 
     }
-
-    
-    //MARK: Autocomplete methods and SearchResultsTableViewControllerDelegate methods
-    
-    func updateAutocompleteWithValues(results: [SearchResult]) {
-        
-        if results.count == 0 {
-            
-            if self.autocompleteVC != nil {
-            
-                UIView.animateWithDuration(0.15,
-                    delay: 0,
-                    options: UIViewAnimationOptions.CurveEaseInOut,
-                    animations: { () -> Void in
-                        self.autocompleteVC?.view.alpha = 0
-                    },
-                    completion: { (completed:Bool) -> Void in
-                        
-                        self.autocompleteVC?.view.removeFromSuperview()
-                        self.autocompleteVC?.willMoveToParentViewController(nil)
-                        self.autocompleteVC?.removeFromParentViewController()
-                        self.autocompleteVC = nil
-                })
-                
-            }
-            
-        } else {
-            
-            if self.autocompleteVC != nil {
-                self.autocompleteVC?.updateSearchResultValues(results)
-                return
-            }
-
-            self.autocompleteVC = SearchResultsTableViewController(searchResultValues: results)
-            self.autocompleteVC?.delegate = self
-            self.view.addSubview(self.autocompleteVC!.view)
-            self.autocompleteVC?.willMoveToParentViewController(self)
-            
-            let lastKeyboardHeight = NSUserDefaults.standardUserDefaults().valueForKey("last_keyboard_height") as? CGFloat ?? 216
-            let height = lastKeyboardHeight - CGFloat(Styles.Sizes.tabbarHeight)
-
-            self.autocompleteVC?.view.snp_makeConstraints { (make) -> () in
-                make.top.equalTo(self.searchFilterView.snp_bottom)
-                make.left.equalTo(self.view)
-                make.right.equalTo(self.view)
-                make.bottom.equalTo(self.view).with.offset(-height)
-            }
-            
-            self.autocompleteVC?.view.alpha = 0
-
-            self.autocompleteVC?.view.layoutIfNeeded()
-
-            UIView.animateWithDuration(0.15,
-                delay: 0,
-                options: UIViewAnimationOptions.CurveEaseInOut,
-                animations: { () -> Void in
-                    self.autocompleteVC?.view.alpha = 1
-                },
-                completion: { (completed:Bool) -> Void in
-            })
-
-        }
-        
-    }
-    
-    func didSelectSearchResult(result: SearchResult) {
-        self.searchFilterView.setSearchResult(result)
-    }
-
     
     func checkin() {
         
@@ -491,7 +398,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             updateSpotDetailsTime()
             detailView.checkinImageView.layer.wigglewigglewiggle()
 
-            hideFilters(alsoHideFilterButton: true)
             hideModeSelection()
             
             showSpotDetails()
@@ -566,7 +472,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                     changeView()
                 },
                 completion: { (completed: Bool) -> Void in
-                    self.showFilterButton(false)
                     self.showModeSelection(false)
             })
         } else {
@@ -595,148 +500,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
     }
     
-    func toggleFilterButton() {
-        
-        if showingFilters {
-            hideFilters(alsoHideFilterButton: false)
-        } else {
-            showFilters()
-        }
-    }
-    
-    func showFilters() {
-        
-        //whenever it's shown, reset the filter
-        timeFilterView.resetValue()
-        
-        searchFilterView.snp_updateConstraints { (make) -> () in
-            make.height.equalTo(SearchFilterView.TOTAL_HEIGHT)
-        }
-
-        timeFilterView.snp_updateConstraints { (make) -> () in
-            make.height.equalTo(TimeFilterView.TOTAL_HEIGHT)
-        }
-
-        timeFilterView.setNeedsLayout()
-        searchFilterView.setNeedsLayout()
-        
-        UIView.animateWithDuration(0.2,
-            delay: 0,
-            options: UIViewAnimationOptions.CurveEaseInOut,
-            animations: { () -> Void in
-                //also, make the status bar transparent
-                self.statusBar.alpha = 0
-
-                self.filterButtonText = ""
-                self.filterButton.setLabelText(self.filterButtonText)
-                
-                self.filterButtonImageName = "icon_filter_close"
-                self.filterButton.setImage(UIImage(named: self.filterButtonImageName))
-
-                self.timeFilterView.layoutIfNeeded()
-                self.searchFilterView.layoutIfNeeded()
-            },
-            completion: { (completed:Bool) -> Void in
-        })
-        
-        showingFilters = true
-        
-    }
-
-    func hideFilters(#alsoHideFilterButton: Bool) {
-        
-        timeFilterView.update()
-
-        if alsoHideFilterButton {
-            self.hideFilterButton()
-            self.hideModeSelection()
-        } else {
-            self.showFilterButton(true)
-            self.showModeSelection(true)
-        }
-
-        searchFilterView.snp_updateConstraints { (make) -> () in
-            make.height.equalTo(0)
-        }
-        
-        timeFilterView.snp_updateConstraints { (make) -> () in
-            make.height.equalTo(0)
-        }
-        
-        timeFilterView.setNeedsLayout()
-        searchFilterView.setNeedsLayout()
-
-        UIView.animateWithDuration(0.2,
-            delay: 0,
-            options: UIViewAnimationOptions.CurveEaseInOut,
-            animations: { () -> Void in
-                //also, make the status bar not transparent anymore
-                self.statusBar.alpha = 1
-
-                self.timeFilterView.layoutIfNeeded()
-                self.searchFilterView.layoutIfNeeded()
-            },
-            completion: { (completed:Bool) -> Void in
-        })
-        
-        searchFilterView.makeInactive()
-        
-        showingFilters = false
-        
-    }
-
     
     // MARK: Helper Methods
     
-    func hideFilterButton() {
-
-        filterButton.snp_remakeConstraints{ (make) -> () in
-            make.size.equalTo(CGSizeMake(0, 0))
-            make.centerX.equalTo(self.view).multipliedBy(1.66)
-            make.bottom.equalTo(self.view).with.offset(-48-50)
-        }
-        animatefilterButton()
-    }
-    
-    func showFilterButton(forceShow: Bool) {
-
-        //only shows the button if the searchField is 'hidden'
-        if !forceShow
-            && (showingFilters
-                || !self.isSpotDetailsHidden()) {
-                    return
-        }
-
-        //if we have an active filter...
-        if filterButtonText == "" {
-            filterButtonImageName = "icon_filter"
-        } else {
-            filterButtonImageName = "icon_time"
-
-        }
-        
-        filterButton.setImage(UIImage(named: filterButtonImageName))
-
-        filterButton.snp_remakeConstraints{ (make) -> () in
-            make.size.greaterThanOrEqualTo(CGSizeMake(36, 36))
-            make.right.equalTo(self.view.snp_centerX).multipliedBy(1.66).with.offset(18)
-            make.bottom.equalTo(self.view).with.offset(-30-50)
-        }
-        animatefilterButton()
-    }
-    
-    func animatefilterButton() {
-        filterButton.setNeedsLayout()
-        UIView.animateWithDuration(0.2,
-            delay: 0,
-            options: UIViewAnimationOptions.CurveEaseInOut,
-            animations: { () -> Void in
-                self.filterButton.layoutIfNeeded()
-            },
-            completion: { (completed:Bool) -> Void in
-        })
-    }
-
     func hideModeSelection() {
         modeSelection.hidden = true
     }
@@ -745,8 +511,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
         //only shows the button if the searchField is 'hidden'
         if !forceShow
-            && (showingFilters
-                || !self.isSpotDetailsHidden()) {
+            && !self.isSpotDetailsHidden() {
                     return
         }
 
@@ -776,14 +541,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool) {
         self.delegate?.updateMapAnnotations()
-        filterButtonText = selectedLabelText
-        filterButton.setLabelText(selectedLabelText)
-        hideFilters(alsoHideFilterButton: false)
+//        filterButtonText = selectedLabelText
+//        filterButton.setLabelText(selectedLabelText)
+//        hideFilters(alsoHideFilterButton: false)
     }
     
     func filterLabelUpdate(labelText: String) {
-        filterButtonText = labelText
-        filterButton.setLabelText(labelText)
+//        filterButtonText = labelText
+//        filterButton.setLabelText(labelText)
     }
     
     func didTapCarSharing() {

@@ -57,7 +57,6 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             TimeFilter(interval: 8 * TimeFilter.SECONDS_PER_HOUR),
             TimeFilter(interval: 12 * TimeFilter.SECONDS_PER_HOUR),
             TimeFilter(interval: 24 * TimeFilter.SECONDS_PER_HOUR),
-//            TimeFilter(interval: 24 * TimeFilter.SECONDS_PER_HOUR, labelText: "car_sharing".localizedString.uppercaseString, permit: true),
         ]
         
         topLine = UIView()
@@ -103,11 +102,11 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         self.addGestureRecognizer(tapRec)
 
         self.addSubview(containerView)
-        containerView.backgroundColor = Styles.Colors.midnight1
+        containerView.backgroundColor = Styles.Colors.cream1
         containerView.clipsToBounds = true
         
         containerView.addSubview(scrollView)
-        scrollView.backgroundColor = Styles.Colors.midnight1
+        scrollView.backgroundColor = Styles.Colors.cream1
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.delegate = self
         scrollView.addSubview(contentView)
@@ -119,7 +118,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         timeImageView.userInteractionEnabled = false
         containerView.addSubview(timeImageView)
 
-        messageLabel.textColor = Styles.Colors.cream1
+        messageLabel.textColor = Styles.Colors.petrol2
         messageLabel.font = Styles.FontFaces.light(17)
         containerView.addSubview(messageLabel)
         
@@ -217,15 +216,18 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     func update() {
         
         if Settings.shouldFilterForCarSharing() {
-            timeImageView.image = UIImage(named: "icon_exclamation")
+            timeImageView.image = UIImage(named: "icon_exclamation")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             messageLabel.text = "car_sharing_enabled_text".localizedString
             contentView.hidden = true
             self.delegate?.filterLabelUpdate("")
         } else {
-            timeImageView.image = UIImage(named: "icon_time")
+            timeImageView.image = UIImage(named: "icon_time")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             messageLabel.text = ""
             contentView.hidden = false
         }
+        
+        timeImageView.tintColor = Styles.Colors.petrol2
+
 
     }
     
@@ -318,9 +320,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     //gesture recognizer tap
     func toggleSelectFromTap(recognizer: UITapGestureRecognizer) {
         
-        if Settings.shouldFilterForCarSharing() {
-            self.delegate?.didTapCarSharing()
-        } else {
+        if !Settings.shouldFilterForCarSharing() {
             var tap = recognizer.locationInView(self.contentView)
             toggleSelectFromPoint(tap)
         }
@@ -389,7 +389,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         let maxDistance = timeLabels.first?.tag
         for i in 0..<timeLabels.count {
             let alpha = 1.1 - Float(timeLabels[i].tag) / Float(maxDistance!)
-            timeLabels[i].textColor = Styles.Colors.cream1.colorWithAlphaComponent(CGFloat(alpha))
+            timeLabels[i].textColor = Styles.Colors.petrol2.colorWithAlphaComponent(CGFloat(alpha))
         }
     }
     
@@ -412,7 +412,6 @@ protocol TimeFilterViewDelegate {
     
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool)
     func filterLabelUpdate(labelText: String)
-    func didTapCarSharing()
 }
 
 class TimeFilter {
@@ -450,7 +449,7 @@ class TimeFilter {
         }
         
         label.font = TimeFilter.FONT
-        label.textColor = Styles.Colors.cream1
+        label.textColor = Styles.Colors.petrol2
         label.valueTag = interval
         label.text = self.labelText()
         
@@ -470,4 +469,5 @@ class TimeFilter {
             return String(format: "%dH", Int(interval/TimeFilter.SECONDS_PER_HOUR))
         }
     }
+    
 }

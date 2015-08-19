@@ -20,6 +20,8 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     var delegate : SearchViewControllerDelegate?
 
+    private var shouldCloseFilters: Bool
+    
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
 
@@ -30,10 +32,14 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchFieldView = UIView()
         searchField = UITextField()
         
-        searchImageView = UIImageView(image: UIImage(named: "icon_searchfield"))
+        searchImageView = UIImageView()
+        searchImageView.image = UIImage(named: "icon_searchfield")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        searchImageView.tintColor = Styles.Colors.petrol2
 
         topLine = UIView()
         bottomLine = UIView()
+        
+        shouldCloseFilters = true
         
         didsetupSubviews = false
         didSetupConstraints = true
@@ -65,16 +71,18 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func setupSubviews () {
         
         self.clipsToBounds = true
-        self.backgroundColor = Styles.Colors.midnight2
+        self.backgroundColor = UIColor.clearColor() //stone if no blur?
         
-        searchFieldView.backgroundColor = Styles.Colors.midnight1
+        self.searchFieldView.layer.borderWidth = 0.5
+        self.searchFieldView.layer.borderColor = Styles.Colors.cream1.CGColor
+        searchFieldView.backgroundColor = UIColor.clearColor() //stone if no blur?
         self.addSubview(searchFieldView)
 
-        let attributes = [NSFontAttributeName: Styles.FontFaces.light(17), NSForegroundColorAttributeName: Styles.Colors.cream1]
+        let attributes = [NSFontAttributeName: Styles.FontFaces.light(14), NSForegroundColorAttributeName: Styles.Colors.petrol2]
         
         searchField.clearButtonMode = UITextFieldViewMode.Never
-        searchField.font = Styles.FontFaces.light(17)
-        searchField.textColor = Styles.Colors.cream1
+        searchField.font = Styles.FontFaces.bold(14)
+        searchField.textColor = Styles.Colors.petrol2
         searchField.textAlignment = NSTextAlignment.Natural
         searchField.attributedPlaceholder = NSAttributedString(string: "search_bar_text".localizedString, attributes: attributes)
         searchField.delegate = self
@@ -82,7 +90,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField.keyboardType = UIKeyboardType.Default
         searchField.autocorrectionType = UITextAutocorrectionType.No
         searchField.returnKeyType = UIReturnKeyType.Search
-        searchField.modifyClearButtonWithImageNamed("icon_close")
+        searchField.modifyClearButtonWithImageNamed("icon_close", color: Styles.Colors.petrol2)
         self.addSubview(searchField)
         
         searchImageView.contentMode = UIViewContentMode.Center
@@ -140,7 +148,11 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     // UITextFieldDelegate
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        return self.searchFieldView.frame.size.width > 0
+        if self.searchFieldView.frame.size.width > 0 {
+            self.delegate?.startSearching()
+            return true
+        }
+        return false
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
@@ -180,8 +192,17 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     func textFieldShouldClear(textField: UITextField) -> Bool {
         if textField.text == "" {
-            endSearch(textField)
+            if shouldCloseFilters {
+                //this happens the last time you press the x, to close the filters
+                self.searchField.rightViewMode = UITextFieldViewMode.WhileEditing
+                self.delegate?.endSearchingAndFiltering()
+                shouldCloseFilters = false
+            } else {
+                //this happens the second time you press the x, to dismiss the keyboard
+                endSearch(textField)
+            }
         } else {
+            //this happens the first time you press the x, to clear the text
             clearSearch(textField)
         }
         return true
@@ -191,12 +212,14 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         delegate?.clearSearchResults()
         delegate?.didGetAutocompleteResults([])
         textField.text = ""
+        shouldCloseFilters = false
     }
 
     func endSearch(textField: UITextField) {
         clearSearch(textField)
-//        transformSearchFieldIntoButton()
         textField.endEditing(true)
+        self.searchField.rightViewMode = UITextFieldViewMode.Always
+        shouldCloseFilters = true
     }
 
     //MARK- helper functions
@@ -215,5 +238,14 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         self.searchField.text = result.title
         self.delegate!.displaySearchResults([result], checkinTime : NSDate())
     }
+    
+    func changeAppearance(#small: Bool) {
+        if small {
+            self.searchFieldView.backgroundColor = UIColor.clearColor()
+        } else {
+            self.searchFieldView.backgroundColor = Styles.Colors.cream1
+        }
+    }
+
 
 }

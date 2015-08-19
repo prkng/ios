@@ -143,8 +143,8 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
         cell.indentationWidth = 48
         cell.indentationLevel = 1
         cell.textLabel?.text = searchResultValues[indexPath.row].title
-        cell.textLabel?.textColor = Styles.Colors.cream2
-        cell.textLabel?.font = Styles.FontFaces.bold(16)
+        cell.textLabel?.textColor = Styles.Colors.petrol2
+        cell.textLabel?.font = Styles.FontFaces.bold(14)
         cell.detailTextLabel?.text = searchResultValues[indexPath.row].subtitle
         cell.detailTextLabel?.textColor = Styles.Colors.anthracite1
         cell.detailTextLabel?.font = Styles.FontFaces.regular(14)

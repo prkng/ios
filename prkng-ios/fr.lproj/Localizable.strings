@@ -171,7 +171,7 @@
 "check-in-pay" = "Check-in + Payer";
 "authorized_for" = "Autorisé pour";
 "search" = "Rechercher";
-"search_bar_text" = "Lieu ou adresse";
+"search_bar_text" = "***'Search or filter'Lieu ou adresse";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
 "car_sharing_enabled_text" = "Auto-partage est selectionné";

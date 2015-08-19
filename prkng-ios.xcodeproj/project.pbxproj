@@ -27,6 +27,7 @@
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
+		3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB6041B83BE370081E30A /* FilterViewController.swift */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
 		3E79D01E1B7BB0CF009CF8A5 /* SliderSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */; };
 		3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */; };
@@ -196,6 +197,7 @@
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		3E6EB6041B83BE370081E30A /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
 		3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderSelectionControl.swift; sourceTree = "<group>"; };
 		3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLMapViewController.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 				BF7170B31AE4303D00B922CA /* HereViewController.swift */,
 				BF8F78121B00E07800A85197 /* CheckinMessageViewController.swift */,
 				BF959C821B17587900E60A09 /* HereFirstUseViewController.swift */,
+				3E6EB6041B83BE370081E30A /* FilterViewController.swift */,
 				3E3199581B31D4F600CB118D /* TimeFilterView.swift */,
 				3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */,
 				3E7523061B693DF70096755F /* MapMessageView.swift */,
@@ -1088,6 +1091,7 @@
 				BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */,
 				3E98D6BB1B346053009032AF /* CALayer.swift in Sources */,
 				BF73AE531B289D0200F4CD79 /* EditProfileViewController.swift in Sources */,
+				3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */,
 				BF2891EA1AFFC0590041B04C /* User.swift in Sources */,
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,
 				3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */,

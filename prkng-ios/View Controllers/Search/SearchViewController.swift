@@ -424,7 +424,9 @@ protocol SearchViewControllerDelegate {
     func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?)
     func clearSearchResults()
     func didGetAutocompleteResults(results: [SearchResult])
-    
+    func startSearching()
+    func endSearchingAndFiltering()
+
 }
 
 
