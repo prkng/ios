@@ -26,6 +26,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     private var didSetupConstraints : Bool
 
     static var TOTAL_HEIGHT : CGFloat = 80
+    static var FIELD_HEIGHT : CGFloat = 40
 
     override init(frame: CGRect) {
         
@@ -90,7 +91,6 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField.keyboardType = UIKeyboardType.Default
         searchField.autocorrectionType = UITextAutocorrectionType.No
         searchField.returnKeyType = UIReturnKeyType.Search
-        searchField.modifyClearButtonWithImageNamed("icon_close", color: Styles.Colors.petrol2)
         self.addSubview(searchField)
         
         searchImageView.contentMode = UIViewContentMode.Center
@@ -112,14 +112,14 @@ class SearchFilterView: UIView, UITextFieldDelegate {
             make.left.equalTo(self).with.offset(12)
             make.right.equalTo(self).with.offset(-12)
             make.bottom.equalTo(self).with.offset(-10)
-            make.height.equalTo(40)
+            make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
         }
         
         searchField.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.searchImageView.snp_right).with.offset(14)
             make.right.equalTo(self).with.offset(-12)
             make.bottom.equalTo(self).with.offset(-10)
-            make.height.equalTo(40)
+            make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
         }
         
         searchImageView.snp_makeConstraints { (make) -> () in
@@ -150,6 +150,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if self.searchFieldView.frame.size.width > 0 {
             self.delegate?.startSearching()
+            searchField.modifyClearButtonWithImageNamed("icon_close", color: Styles.Colors.petrol2)
             return true
         }
         return false
@@ -194,9 +195,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         if textField.text == "" {
             if shouldCloseFilters {
                 //this happens the last time you press the x, to close the filters
-                self.searchField.rightViewMode = UITextFieldViewMode.WhileEditing
-                self.delegate?.endSearchingAndFiltering()
-                shouldCloseFilters = false
+                makeInactive(closeFilters: true)
             } else {
                 //this happens the second time you press the x, to dismiss the keyboard
                 endSearch(textField)
@@ -228,13 +227,31 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField.becomeFirstResponder()
     }
     
-    func makeInactive() {
+    func makeInactive(#closeFilters: Bool) {
         searchField.resignFirstResponder()
         delegate?.didGetAutocompleteResults([])
+        self.searchField.rightViewMode = UITextFieldViewMode.WhileEditing
+        if closeFilters {
+            self.delegate?.endSearchingAndFiltering()
+        }
+        shouldCloseFilters = false
+        
+        //this is where we change the right view!
+//        let indicatorButton = PRKTextButton(image: nil, imageSize: CGSizeZero, labelText: "omggg")
+//        indicatorButton.frame = CGRect(x: 0, y: 0, width: 40, height: 25)
+//        indicatorButton.clipsToBounds = false
+        
+        let rightView = UIView()
+        rightView.clipsToBounds = false
+        rightView.frame = CGRect(x: 0, y: 0, width: 65, height: SearchFilterView.FIELD_HEIGHT)
+        rightView.backgroundColor = Styles.Colors.petrol2
+//        rightView.addSubview(indicatorButton)
+        searchField.rightView = rightView
+        searchField.rightViewMode = UITextFieldViewMode.Always
     }
     
     func setSearchResult(result: SearchResult) {
-        makeInactive()
+        makeInactive(closeFilters: false)
         self.searchField.text = result.title
         self.delegate!.displaySearchResults([result], checkinTime : NSDate())
     }

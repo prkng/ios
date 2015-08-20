@@ -170,7 +170,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             completion: { (completed:Bool) -> Void in
         })
         
-        searchFilterView.makeInactive()
+        searchFilterView.makeInactive(closeFilters: false)
         
         showingFilters = false
         
@@ -258,8 +258,6 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
 
 
 protocol FilterViewControllerDelegate {
-    
-    //these functions match SearchResultsTableViewControllerDelegate
     
     //these functions match TimeViewControllerDelegate
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool)
