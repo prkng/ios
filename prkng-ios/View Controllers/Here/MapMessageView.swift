@@ -10,11 +10,11 @@ import UIKit
 
 class MapMessageView: UIView {
     
-    private var messageContainer: UIView
+    var messageContainer: UIView
     private var mapMessageViewImage: UIImageView
     var mapMessageLabel: UILabel
 
-    private var availableCityPicker: UIView
+    var availableCityPicker: UIView
     private var availableInLabel: UILabel
     private var montrealButton: UIButton
     private var quebecCityButton: UIButton
@@ -106,7 +106,6 @@ class MapMessageView: UIView {
             make.left.equalTo(self)
             make.right.equalTo(self)
             make.top.equalTo(self)
-            make.height.greaterThanOrEqualTo(70)
         }
         
         mapMessageViewImage.snp_makeConstraints { (make) -> () in
@@ -117,10 +116,10 @@ class MapMessageView: UIView {
         }
         
         mapMessageLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.mapMessageViewImage.snp_right).with.offset(16)
-            make.right.equalTo(self.messageContainer).with.offset(-20)
-            make.centerY.equalTo(self.messageContainer).with.offset(Styles.Sizes.statusBarHeight/2)
-            make.bottom.lessThanOrEqualTo(self.messageContainer).with.offset(-15)
+            make.left.equalTo(self.mapMessageViewImage.snp_right).with.offset(16).priorityRequired()
+            make.right.equalTo(self.messageContainer).with.offset(-20).priorityRequired()
+            make.centerY.equalTo(self.messageContainer).with.offset(Styles.Sizes.statusBarHeight/2).priorityRequired()
+            make.bottom.greaterThanOrEqualTo(self.messageContainer).with.offset(-15).priorityRequired()
         }
         
         hideCityPicker()
@@ -153,6 +152,7 @@ class MapMessageView: UIView {
             make.right.equalTo(self)
             make.top.equalTo(self.messageContainer.snp_bottom)
             make.height.equalTo(50)
+            make.bottom.equalTo(self)
         }
     }
     
@@ -165,6 +165,8 @@ class MapMessageView: UIView {
             make.right.equalTo(self)
             make.top.equalTo(self.messageContainer.snp_bottom)
             make.height.equalTo(0)
+            make.bottom.equalTo(self)
+
         }
 
     }
@@ -175,6 +177,17 @@ class MapMessageView: UIView {
     
     func quebecCityButtonTapped() {
         self.delegate?.cityDidChange(fromCity: Settings.City.QuebecCity, toCity: Settings.City.QuebecCity)
+    }
+    
+    func height() -> CGFloat {
+        
+//        let attrs = [NSFontAttributeName: indicatorButton.titleLabel!.font]
+//        let maximumLabelSize = CGSize(width: rightViewWidth - locationButtonWidth - 10, height: 20)
+//        let rect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs, context: nil)
+//
+//        return Styles.Sizes.statusBarHeight +
+
+        return 0
     }
         
 }

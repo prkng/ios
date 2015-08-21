@@ -18,6 +18,11 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     private var topLine: UIView
     private var bottomLine: UIView
     
+    var indicatorText: String = "" {
+        didSet {
+            
+        }
+    }
     var delegate : SearchViewControllerDelegate?
 
     private var shouldCloseFilters: Bool
@@ -184,8 +189,8 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if textField.text.isEmpty {
-            endSearch(textField)
+        if self.searchField.text.isEmpty {
+            endSearch()
         } else {
             delegate?.didGetAutocompleteResults([])
         }
@@ -198,25 +203,25 @@ class SearchFilterView: UIView, UITextFieldDelegate {
                 makeInactive(closeFilters: true)
             } else {
                 //this happens the second time you press the x, to dismiss the keyboard
-                endSearch(textField)
+                endSearch()
             }
         } else {
             //this happens the first time you press the x, to clear the text
-            clearSearch(textField)
+            clearSearch()
         }
         return true
     }
     
-    func clearSearch(textField: UITextField) {
+    func clearSearch() {
         delegate?.clearSearchResults()
         delegate?.didGetAutocompleteResults([])
-        textField.text = ""
+        self.searchField.text = ""
         shouldCloseFilters = false
     }
 
-    func endSearch(textField: UITextField) {
-        clearSearch(textField)
-        textField.endEditing(true)
+    func endSearch() {
+        clearSearch()
+        self.searchField.endEditing(true)
         self.searchField.rightViewMode = UITextFieldViewMode.Always
         shouldCloseFilters = true
     }
@@ -237,17 +242,30 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         shouldCloseFilters = false
         
         //this is where we change the right view!
-//        let indicatorButton = PRKTextButton(image: nil, imageSize: CGSizeZero, labelText: "omggg")
-//        indicatorButton.frame = CGRect(x: 0, y: 0, width: 40, height: 25)
-//        indicatorButton.clipsToBounds = false
+        var rightViewWidth: CGFloat = 130
+        let locationButtonWidth: CGFloat = 46
+        
+        let indicatorButton = ViewFactory.redRoundedButtonWithHeight(20, font: Styles.FontFaces.regular(12), text: indicatorText)
+        let attrs = [NSFontAttributeName: indicatorButton.titleLabel!.font]
+        let maximumLabelSize = CGSize(width: rightViewWidth - locationButtonWidth - 10, height: 20)
+        let rect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs, context: nil)
+        indicatorButton.frame = indicatorText == "" ? CGRectZero : CGRect(x: 10, y: 10, width: rect.width+20, height: 20)
+        indicatorButton.addTarget(self, action: "textFieldShouldBeginEditing:", forControlEvents: UIControlEvents.TouchUpInside)
+
+        rightViewWidth = 10 + locationButtonWidth + 10 + indicatorButton.frame.width
+        
+        //this is a placeholder, the actual button should be on the mapview.
+        let locationButton = UIButton(frame: CGRect(x: rightViewWidth - locationButtonWidth, y: 0, width: locationButtonWidth, height: SearchFilterView.FIELD_HEIGHT))
         
         let rightView = UIView()
         rightView.clipsToBounds = false
-        rightView.frame = CGRect(x: 0, y: 0, width: 65, height: SearchFilterView.FIELD_HEIGHT)
-        rightView.backgroundColor = Styles.Colors.petrol2
-//        rightView.addSubview(indicatorButton)
+        rightView.frame = CGRect(x: 0, y: 0, width: rightViewWidth, height: SearchFilterView.FIELD_HEIGHT)
+        rightView.backgroundColor = UIColor.clearColor()
+        rightView.addSubview(locationButton)
+        rightView.addSubview(indicatorButton)
         searchField.rightView = rightView
         searchField.rightViewMode = UITextFieldViewMode.Always
+        
     }
     
     func setSearchResult(result: SearchResult) {

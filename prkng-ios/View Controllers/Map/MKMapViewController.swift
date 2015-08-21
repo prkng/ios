@@ -27,9 +27,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
     var isSelecting: Bool
     var radius : CGFloat
     var updateInProgress : Bool
-    
-    var trackUserButton : UIButton
-        
+            
     private(set) var MOVE_DELTA_IN_METERS : Double
     
     convenience init() {
@@ -58,9 +56,7 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         searchAnnotations = []
         radius = 300
         updateInProgress = false
-        
-        trackUserButton = UIButton()
-        
+                
         MOVE_DELTA_IN_METERS = 100
         
         super.init(nibName: nil, bundle: nil)
@@ -756,9 +752,9 @@ class MKMapViewController: MapViewController, MKMapViewDelegate, MBXRasterTileOv
         self.mapView.showsUserLocation = shouldShow
     }
     
-    override func trackUser(shouldTrack: Bool) {
-        self.mapView.userTrackingMode = shouldTrack ? MKUserTrackingMode.Follow : MKUserTrackingMode.None
-        
+    override func setMapUserMode(mode: MapUserMode) {
+        self.mapView.userTrackingMode = mode == MapUserMode.Follow ? MKUserTrackingMode.Follow : MKUserTrackingMode.None
+        Settings.setMapUserMode(mode)
     }
     
     override func addMyCarMarker() {

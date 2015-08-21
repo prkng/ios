@@ -14,6 +14,12 @@ enum MapMode {
     case CarSharing
 }
 
+enum MapUserMode: String {
+    case None = "None"
+    case Follow = "Follow"
+    case FollowWithHeading = "FollowWithHeading"
+}
+
 class MapViewController: AbstractViewController {
 
     var mapModeImageView: UIView?
@@ -43,6 +49,8 @@ class MapViewController: AbstractViewController {
     
     var delegate: MapViewControllerDelegate?
     
+    var trackUserButton = UIButton()
+
     var canShowMapMessage: Bool = false
     
     var myCarAnnotation: NSObject?
@@ -64,7 +72,7 @@ class MapViewController: AbstractViewController {
     func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) { }
     func clearSearchResults() { }
     func showUserLocation(shouldShow: Bool) { }
-    func trackUser(shouldTrack: Bool) { }
+    func setMapUserMode(mode: MapUserMode) { }
     
     func updateAnnotations() {
         updateAnnotations { () -> Void in }

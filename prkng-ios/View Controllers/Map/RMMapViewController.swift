@@ -31,9 +31,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     var isSelecting: Bool
     var radius : Float
     var updateInProgress : Bool
-    
-    var trackUserButton : UIButton
-        
+            
     private(set) var MOVE_DELTA_IN_METERS : Double
     
     convenience init() {
@@ -69,9 +67,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         searchAnnotations = []
         radius = 300
         updateInProgress = false
-        
-        trackUserButton = UIButton()
-        
+                
         MOVE_DELTA_IN_METERS = 100
         
         super.init(nibName: nil, bundle: nil)
@@ -88,7 +84,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         addCityOverlays()
         
-        trackUserButton.setImage(UIImage(named: "track_user"), forState: UIControlState.Normal)
+        trackUserButton.backgroundColor = Styles.Colors.cream2
+        trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
         trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(trackUserButton)
         
@@ -96,7 +93,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             make.edges.equalTo(self.view)
         }
         
-        showTrackUserButton()
+        trackUserButton.snp_makeConstraints { (make) -> () in
+            make.right.equalTo(self.view).with.offset(-12)
+            make.top.equalTo(self.view).with.offset(Styles.Sizes.statusBarHeight + 10)
+            make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
+            make.width.equalTo(46)
+        }
 
     }
     
@@ -130,8 +132,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if !wasShown {
             if let checkIn = Settings.checkedInSpot() {
                 let coordinate = checkIn.buttonLocation.coordinate
-                self.showTrackUserButton()
-                self.mapView.userTrackingMode = RMUserTrackingModeNone
+                self.dontTrackUser()
                 goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
             }
             
@@ -275,11 +276,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
         }
         
-        if (mapView.userTrackingMode.value == RMUserTrackingModeFollow.value ) {
-            self.hideTrackUserButton()
+        if (mapView.userTrackingMode.value == RMUserTrackingModeFollow.value) {
+            self.trackUser()
         } else {
-            toggleTrackUserButton(!(delegate != nil && !delegate!.shouldShowUserTrackingButton()))
-            self.mapView.userTrackingMode = RMUserTrackingModeNone
+            if delegate?.shouldShowUserTrackingButton() ?? false {
+                self.dontTrackUser()
+            }
         }
         
     }
@@ -461,50 +463,24 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     // MARK: Helper Methods
     
     func trackUserButtonTapped () {
-        self.mapView.setZoom(17, animated: false)
-        self.mapView.userTrackingMode = RMUserTrackingModeFollow
-        hideTrackUserButton()
-    }
-    
-    
-    func toggleTrackUserButton(shouldShowButton: Bool) {
-        if (shouldShowButton) {
-            showTrackUserButton()
+        if self.mapView.userTrackingMode.value == RMUserTrackingModeFollow.value {
+            dontTrackUser()
         } else {
-            hideTrackUserButton()
+            trackUser()
         }
     }
     
-    func hideTrackUserButton() {
-        
-        trackUserButton.snp_updateConstraints{ (make) -> () in
-            make.size.equalTo(CGSizeMake(0, 0))
-            make.centerX.equalTo(self.view).multipliedBy(0.33)
-            make.bottom.equalTo(self.view).with.offset(-48-50)
+    func trackUser() {
+        if self.mapView.userTrackingMode.value != RMUserTrackingModeFollow.value {
+            trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
+            self.mapView.setZoom(17, animated: false)
+            self.mapView.userTrackingMode = RMUserTrackingModeFollow
         }
-        animateTrackUserButton()
     }
     
-    func showTrackUserButton() {
-        
-        trackUserButton.snp_updateConstraints{ (make) -> () in
-            make.size.equalTo(CGSizeMake(36, 36))
-            make.centerX.equalTo(self.view).multipliedBy(0.33)
-            make.bottom.equalTo(self.view).with.offset(-30-50)
-        }
-        animateTrackUserButton()
-    }
-    
-    func animateTrackUserButton() {
-        self.trackUserButton.setNeedsLayout()
-        UIView.animateWithDuration(0.2,
-            delay: 0,
-            options: UIViewAnimationOptions.CurveEaseInOut,
-            animations: { () -> Void in
-                self.trackUserButton.layoutIfNeeded()
-            },
-            completion: { (completed:Bool) -> Void in
-        })
+    func dontTrackUser() {
+        trackUserButton.setImage(UIImage(named:"btn_geo_off"), forState: UIControlState.Normal)
+        self.mapView.userTrackingMode = RMUserTrackingModeNone
     }
     
     override func updateAnnotations(completion: (() -> Void)) {
@@ -867,9 +843,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.mapView.showsUserLocation = shouldShow
     }
     
-    override func trackUser(shouldTrack: Bool) {
-        self.mapView.userTrackingMode = shouldTrack ? RMUserTrackingModeFollow : RMUserTrackingModeNone
+    override func setMapUserMode(mode: MapUserMode) {
+        self.mapView.userTrackingMode = mode == MapUserMode.Follow ? RMUserTrackingModeFollow : RMUserTrackingModeNone
+        Settings.setMapUserMode(mode)
     }
+
     
     override func addMyCarMarker() {
         if let spot = Settings.checkedInSpot() {

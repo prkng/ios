@@ -12,6 +12,7 @@ class PRKTextButton: UIView {
 
     private var imageSize: CGSize
     private var labelText: String
+    private var labelFont: UIFont
     private var image: UIImage?
     
     private var button: UIButton
@@ -22,11 +23,12 @@ class PRKTextButton: UIView {
     private var didSetupConstraints : Bool
 
 
-    init(image: UIImage?, imageSize: CGSize, labelText: String) {
+    init(image: UIImage?, imageSize: CGSize, labelText: String, labelFont: UIFont) {
         
         self.image = image
         self.imageSize = imageSize
         self.labelText = labelText
+        self.labelFont = labelFont
 
         button = UIButton()
         imageView = UIImageView()
@@ -47,6 +49,7 @@ class PRKTextButton: UIView {
         
         imageSize = CGSizeZero
         labelText = ""
+        labelFont = Styles.FontFaces.regular(17)
 
         didsetupSubviews = false
         didSetupConstraints = true
@@ -86,7 +89,7 @@ class PRKTextButton: UIView {
         imageView.contentMode = UIViewContentMode.Center
         
         label.text = labelText
-        label.font = Styles.FontFaces.regular(17)
+        label.font = labelFont
         label.textColor = Styles.Colors.cream1
         self.addSubview(label)
         
@@ -161,6 +164,11 @@ class PRKTextButton: UIView {
         
         self.labelText = text
         self.label.text = text
+    }
+    
+    func setLabelFont(labelFont: UIFont) {
+        self.labelFont = labelFont
+        self.label.font = labelFont
     }
 
 }

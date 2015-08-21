@@ -27,6 +27,7 @@ struct Settings {
     static let LAST_CHECKIN_TIME_KEY = "prkng_last_checkin_time"
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
     static let LOG_FILE_PATH_KEY = "prkng_last_log_file_path"
+    static let MAP_USER_MODE = "prkng_map_user_mode"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
     static let availableCities = [City.Montreal, City.QuebecCity]
@@ -265,4 +266,14 @@ struct Settings {
         return false
     }
     
+    static func setMapUserMode(mode: MapUserMode) {
+        NSUserDefaults.standardUserDefaults().setValue(mode.rawValue, forKey: MAP_USER_MODE)
+    }
+    
+    static func getMapUserMode() -> MapUserMode {
+        let rawValue = (NSUserDefaults.standardUserDefaults().valueForKey(MAP_USER_MODE) as? String) ?? "None"
+        return MapUserMode(rawValue: rawValue)!
+    }
+    
+
 }

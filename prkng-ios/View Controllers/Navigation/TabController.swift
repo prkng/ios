@@ -242,7 +242,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         settingsViewController?.delegate = self
         
         mapViewController.showUserLocation(false)
-        mapViewController.trackUser(false)
+        mapViewController.setMapUserMode(MapUserMode.None)
 
         let navigationController = UINavigationController(rootViewController: settingsViewController!)
         navigationController.navigationBarHidden = true
@@ -354,14 +354,50 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
             hereViewController.mapMessageView.hideCityPicker()
 
-            hereViewController.mapMessageView.snp_updateConstraints { (make) -> () in
-                make.top.equalTo(self.hereViewController.view).with.offset(message == nil ? -200 : 0)
+            if message == nil {
+                
+                hereViewController.mapMessageView.snp_remakeConstraints { (make) -> () in
+                    make.left.equalTo(self.hereViewController.view)
+                    make.right.equalTo(self.hereViewController.view)
+                    make.bottom.equalTo(self.view.snp_top)
+                }
+                
+                hereViewController.filterVC.view.snp_updateConstraints { (make) -> () in
+                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom)//.with.offset(-10)
+                }
+                
+                mapViewController.trackUserButton.snp_remakeConstraints { (make) -> () in
+                    make.right.equalTo(self.view).with.offset(-12)
+                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(Styles.Sizes.statusBarHeight + 10)
+                    make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
+                    make.width.equalTo(46)
+                }
+
+
+            } else {
+                
+                hereViewController.mapMessageView.snp_remakeConstraints { (make) -> () in
+                    make.left.equalTo(self.hereViewController.view)
+                    make.right.equalTo(self.hereViewController.view)
+                    make.top.equalTo(self.view.snp_top)
+                }
+                
+                hereViewController.filterVC.view.snp_updateConstraints { (make) -> () in
+                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(-16)
+                }
+
+                mapViewController.trackUserButton.snp_remakeConstraints { (make) -> () in
+                    make.right.equalTo(self.view).with.offset(-12)
+                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(Styles.Sizes.statusBarHeight + 10 - 16)
+                    make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
+                    make.width.equalTo(46)
+                }
+
             }
-            
-            hereViewController.mapMessageView.setNeedsLayout()
             
             UIView.animateWithDuration(0.2, animations: { () -> Void in
                 self.hereViewController.mapMessageView.layoutIfNeeded()
+                self.mapViewController.trackUserButton.layoutIfNeeded()
             })
         }
     }
@@ -394,8 +430,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
     
     func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?) {
-        mapViewController.trackUser(false)
+        mapViewController.setMapUserMode(MapUserMode.None)
         mapViewController.displaySearchResults(results, checkinTime: checkinTime)
+        self.hereViewController.filterVC.hideFilters(completely: false)
     }
     
     func clearSearchResults() {
@@ -422,7 +459,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     func reloadMyCarTab() {
         
         mapViewController.showUserLocation(false)
-        mapViewController.trackUser(false)
+        mapViewController.setMapUserMode(MapUserMode.None)
         
         
         var myCarViewController : AbstractViewController?
@@ -456,7 +493,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) {
         loadHereTab()
-        self.mapViewController.trackUser(false)
+        self.mapViewController.setMapUserMode(MapUserMode.None)
         self.mapViewController.goToCoordinate(coordinate, named:name)
     }
     

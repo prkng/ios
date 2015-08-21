@@ -78,9 +78,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         
         containerView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).with.offset(12)
-            make.right.equalTo(self.view).with.offset(-12)
+            make.right.equalTo(self.view).with.offset(-12-46)
             make.top.equalTo(self.view).with.offset(Styles.Sizes.statusBarHeight + 10)
-            make.height.equalTo(40)
+            make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
         }
         
         backgroundView.snp_makeConstraints { (make) -> () in
@@ -152,7 +152,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         //make the constraints to match the search bar
         containerView.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.view).with.offset(12)
-            make.right.equalTo(self.view).with.offset(-12)
+            make.right.equalTo(self.view).with.offset(-12-46)
             make.top.equalTo(self.view).with.offset(Styles.Sizes.statusBarHeight + 10)
             make.height.equalTo(height)
         }
@@ -180,10 +180,12 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool) {
         self.delegate?.filterValueWasChanged(hours: hours, selectedLabelText: selectedLabelText, permit: permit)
+        self.searchFilterView.indicatorText = selectedLabelText
         hideFilters(completely: false)
     }
     
     func filterLabelUpdate(labelText: String) {
+        self.searchFilterView.indicatorText = labelText
     }
     
     //MARK: Autocomplete methods and SearchResultsTableViewControllerDelegate methods

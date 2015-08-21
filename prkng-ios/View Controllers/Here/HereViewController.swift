@@ -127,8 +127,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         mapMessageView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.top.equalTo(self.view).with.offset(-200)
-            make.height.lessThanOrEqualTo(200)
+            make.bottom.equalTo(self.view.snp_top)
         }
 
         statusBar.snp_makeConstraints { (make) -> () in
@@ -146,7 +145,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
 
         self.filterVC.view.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view)
+            make.top.equalTo(self.mapMessageView.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)

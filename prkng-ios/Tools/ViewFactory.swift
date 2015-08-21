@@ -28,11 +28,17 @@ struct ViewFactory {
     
     static func redRoundedButton () -> UIButton {
         
+        return redRoundedButtonWithHeight(28, font: Styles.FontFaces.light(12), text: "")
+    }
+
+    static func redRoundedButtonWithHeight(height: CGFloat, font: UIFont, text: String) -> UIButton {
+        
         let button = UIButton ()
-        button.titleLabel?.font = Styles.FontFaces.light(12)
+        button.titleLabel?.font = font
+        button.setTitle(text, forState: UIControlState.Normal)
         button.setTitleColor(Styles.Colors.beige1, forState: UIControlState.Normal)
         button.setTitleColor(Styles.Colors.beige2, forState: UIControlState.Highlighted)
-        button.layer.cornerRadius = 14
+        button.layer.cornerRadius = height/2
         button.backgroundColor = Styles.Colors.red2
         button.clipsToBounds = true
         return button
@@ -104,7 +110,7 @@ struct ViewFactory {
 
     static func infoButton () -> UIButton {
         let button = UIButton ()
-        button.setImage(UIImage(named: "btn_info"), forState: .Normal)
+        button.setImage(UIImage(named: "btn_info_outline"), forState: .Normal)
         return button
     }
 
