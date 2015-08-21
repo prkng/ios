@@ -110,6 +110,7 @@ class SpotDetailView: UIView {
         addSubview(bottomContainer)
 
         bottomLeftContainer.backgroundColor = Styles.Colors.cream1
+        bottomLeftContainer.clipsToBounds = true
         bottomContainer.addSubview(bottomLeftContainer)
         bottomContainer.addSubview(bottomRightContainer)
         
@@ -211,13 +212,11 @@ class SpotDetailView: UIView {
         leftTopLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomLeftContainer).with.offset(24)
             make.top.equalTo(self.bottomLeftContainer).with.offset(self.VERTICAL_LABEL_SPACING)
-            make.right.lessThanOrEqualTo(self.bottomLeftContainer.snp_right).with.offset(-10)
         }
         
         leftBottomLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.bottomLeftContainer).with.offset(24)
             make.bottom.equalTo(self.bottomLeftContainer).with.offset(-self.VERTICAL_LABEL_SPACING)
-            make.right.lessThanOrEqualTo(self.bottomLeftContainer.snp_right).with.offset(-10)
         }
         
         bottomRightContainer.snp_makeConstraints { (make) -> () in

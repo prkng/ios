@@ -203,7 +203,7 @@ protocol MapViewControllerDelegate {
     func shouldShowUserTrackingButton() -> Bool
     
     func showMapMessage(message: String?)
-    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool)
+    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool, showCityPicker: Bool)
     
     func mapDidMoveFarAwayFromAvailableCities()
     

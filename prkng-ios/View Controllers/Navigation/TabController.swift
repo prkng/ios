@@ -341,10 +341,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func showMapMessage(message: String?) {
-        showMapMessage(message, onlyIfPreviouslyShown: false)
+        showMapMessage(message, onlyIfPreviouslyShown: false, showCityPicker: false)
     }
     
-    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool) {
+    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool, showCityPicker: Bool) {
 
         if message != nil {
             hereViewController.mapMessageView.mapMessageLabel.text = message
@@ -352,60 +352,59 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
         if !onlyIfPreviouslyShown {
 
-            hereViewController.mapMessageView.hideCityPicker()
-
-            if message == nil {
-                
-                hereViewController.mapMessageView.snp_remakeConstraints { (make) -> () in
-                    make.left.equalTo(self.hereViewController.view)
-                    make.right.equalTo(self.hereViewController.view)
-                    make.bottom.equalTo(self.view.snp_top)
-                }
-                
-                hereViewController.filterVC.view.snp_updateConstraints { (make) -> () in
-                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom)//.with.offset(-10)
-                }
-                
-                mapViewController.trackUserButton.snp_remakeConstraints { (make) -> () in
-                    make.right.equalTo(self.view).with.offset(-12)
-                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(Styles.Sizes.statusBarHeight + 10)
-                    make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
-                    make.width.equalTo(46)
-                }
-
-
+            if showCityPicker {
+                hereViewController.mapMessageView.showCityPicker()
             } else {
-                
-                hereViewController.mapMessageView.snp_remakeConstraints { (make) -> () in
-                    make.left.equalTo(self.hereViewController.view)
-                    make.right.equalTo(self.hereViewController.view)
-                    make.top.equalTo(self.view.snp_top)
-                }
-                
-                hereViewController.filterVC.view.snp_updateConstraints { (make) -> () in
-                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(-16)
-                }
-
-                mapViewController.trackUserButton.snp_remakeConstraints { (make) -> () in
-                    make.right.equalTo(self.view).with.offset(-12)
-                    make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(Styles.Sizes.statusBarHeight + 10 - 16)
-                    make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
-                    make.width.equalTo(46)
-                }
-
+                hereViewController.mapMessageView.hideCityPicker()
             }
             
             UIView.animateWithDuration(0.2, animations: { () -> Void in
-                self.hereViewController.mapMessageView.layoutIfNeeded()
-                self.mapViewController.trackUserButton.layoutIfNeeded()
+                self.hereViewController.view.layoutIfNeeded()
+                self.mapViewController.view.layoutIfNeeded()
+                
+                if message == nil {
+                    
+                    self.hereViewController.mapMessageView.snp_remakeConstraints { (make) -> () in
+                        make.left.equalTo(self.hereViewController.view)
+                        make.right.equalTo(self.hereViewController.view)
+                        make.bottom.equalTo(self.hereViewController.view.snp_top)
+                    }
+                    
+                    self.hereViewController.filterVC.view.snp_updateConstraints { (make) -> () in
+                        make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom)
+                    }
+                    
+                } else {
+                    
+                    self.hereViewController.mapMessageView.snp_remakeConstraints { (make) -> () in
+                        make.left.equalTo(self.hereViewController.view)
+                        make.right.equalTo(self.hereViewController.view)
+                        make.top.equalTo(self.hereViewController.view.snp_top)
+                    }
+                    
+                    self.hereViewController.filterVC.view.snp_updateConstraints { (make) -> () in
+                        make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(-16)
+                    }
+
+                }
+                
+                let height: Int = message == nil ? 0 : Int(self.hereViewController.mapMessageView.bounds.height) - 16
+                
+                self.mapViewController.trackUserButton.snp_updateConstraints { (make) -> () in
+                    make.top.equalTo(self.mapViewController.view).with.offset(height + Styles.Sizes.statusBarHeight + 10)
+                }
+                
+                self.hereViewController.view.layoutIfNeeded()
+                self.mapViewController.view.layoutIfNeeded()
+
             })
         }
     }
     
     func mapDidMoveFarAwayFromAvailableCities() {
         
-        showMapMessage("map_message_outside_service_area".localizedString)
-        hereViewController.mapMessageView.showCityPicker()
+        showMapMessage("map_message_outside_service_area".localizedString, onlyIfPreviouslyShown: false, showCityPicker: true)
+
     }
     
     func activeFilterDuration() -> Float? {

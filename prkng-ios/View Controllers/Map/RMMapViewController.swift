@@ -505,7 +505,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
         } else if (mapView.zoom >= 15.0) {
             
-            self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true)
+            self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true, showCityPicker: false)
 
             var checkinTime = searchCheckinDate
             var duration = searchDuration
