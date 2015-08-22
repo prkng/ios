@@ -329,7 +329,11 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     func resetValue() {
         let point = CGPoint(x: 0, y: 0)
         scrollToNearestLabel(point)
-        toggleSelectFromPoint(point)
+//        toggleSelectFromPoint(point)
+        //instead of doing the line above, reset actually shows NOTHING even though the default time is 30 minutes
+        selectedValue = 1800.0
+        selectedPermitValue = false
+        delegate?.filterValueWasChanged(hours: selectedValueInHours(), selectedLabelText: "", permit: selectedPermitValue, fromReset: true)
         update()
     }
     
@@ -344,7 +348,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         selectedValue = label.valueTag
         selectedPermitValue = time.permit
         
-        delegate?.filterValueWasChanged(hours: selectedValueInHours(), selectedLabelText: time.labelText(), permit: time.permit)
+        delegate?.filterValueWasChanged(hours: selectedValueInHours(), selectedLabelText: time.labelText(), permit: time.permit, fromReset: false)
         
     }
     
@@ -410,7 +414,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
 protocol TimeFilterViewDelegate {
     
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool)
+    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
     func filterLabelUpdate(labelText: String)
 }
 

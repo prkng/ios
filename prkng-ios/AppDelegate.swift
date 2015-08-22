@@ -55,7 +55,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //configure IQKeyboardManager
         IQKeyboardManager.sharedManager().considerToolbarPreviousNextInViewClass(PRKInputForm)
-        
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(FilterViewController)
+        IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
+
         // Override point for customization after application launch.
         if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
             application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
@@ -64,7 +66,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //do iOS 7 stuff, which is pretty much nothing for local notifications.
         }
 
-        IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
         

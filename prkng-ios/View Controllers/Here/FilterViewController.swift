@@ -178,10 +178,12 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     
     // MARK: TimeFilterViewDelegate
     
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool) {
-        self.delegate?.filterValueWasChanged(hours: hours, selectedLabelText: selectedLabelText, permit: permit)
+    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
+        self.delegate?.filterValueWasChanged(hours: hours, selectedLabelText: selectedLabelText, permit: permit, fromReset: fromReset)
         self.searchFilterView.indicatorText = selectedLabelText
-        hideFilters(completely: false)
+        if !fromReset {
+            hideFilters(completely: false)
+        }
     }
     
     func filterLabelUpdate(labelText: String) {
@@ -262,7 +264,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
 protocol FilterViewControllerDelegate {
     
     //these functions match TimeViewControllerDelegate
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool)
+    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
     
 }
 

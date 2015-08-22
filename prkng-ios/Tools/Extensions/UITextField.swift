@@ -18,7 +18,7 @@ extension UITextField {
         button.addTarget(self, action: "textFieldClear:", forControlEvents: UIControlEvents.TouchUpInside)
         button.backgroundColor = Styles.Colors.cream1
         self.rightView = button
-        self.rightViewMode = UITextFieldViewMode.WhileEditing
+        self.rightViewMode = UITextFieldViewMode.Always
     }
     
     func textFieldClear(sender: AnyObject) {

@@ -76,7 +76,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstUseMessage"), userInfo: nil, repeats: false)
         } else {
             if showFiltersOnAppear {
-                self.filterVC.showFilters(resettingTimeFilterValue: false)
+                self.filterVC.showFilters(resettingTimeFilterValue: true)
                 self.filterVC.makeActive()
                 showFiltersOnAppear = false
             } else {
@@ -538,7 +538,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     // MARK: TimeFilterViewDelegate
     
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool) {
+    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
         self.delegate?.updateMapAnnotations()
 //        filterButtonText = selectedLabelText
 //        filterButton.setLabelText(selectedLabelText)

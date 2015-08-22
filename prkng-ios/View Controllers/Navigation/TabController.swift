@@ -443,7 +443,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
 
     func startSearching() {
-        hereViewController.filterVC.showFilters(resettingTimeFilterValue: false)
+        hereViewController.filterVC.showFilters(resettingTimeFilterValue: true)
     }
     
     func endSearchingAndFiltering() {

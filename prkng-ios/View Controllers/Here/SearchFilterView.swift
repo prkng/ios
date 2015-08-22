@@ -39,9 +39,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField = UITextField()
         
         searchImageView = UIImageView()
-        searchImageView.image = UIImage(named: "icon_searchfield")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        searchImageView.tintColor = Styles.Colors.petrol2
-
+        searchImageView.image = UIImage(named: "icon_searchfield")
         topLine = UIView()
         bottomLine = UIView()
         
@@ -87,7 +85,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         let attributes = [NSFontAttributeName: Styles.FontFaces.light(14), NSForegroundColorAttributeName: Styles.Colors.petrol2]
         
         searchField.clearButtonMode = UITextFieldViewMode.Never
-        searchField.font = Styles.FontFaces.bold(14)
+        searchField.font = Styles.FontFaces.regular(14)
         searchField.textColor = Styles.Colors.petrol2
         searchField.textAlignment = NSTextAlignment.Natural
         searchField.attributedPlaceholder = NSAttributedString(string: "search_bar_text".localizedString, attributes: attributes)
@@ -154,8 +152,11 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         if self.searchFieldView.frame.size.width > 0 {
+            //calling this in a dispatch block prevents the
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
+                self.searchField.modifyClearButtonWithImageNamed("icon_close", color: Styles.Colors.petrol2)
+            })
             self.delegate?.startSearching()
-            searchField.modifyClearButtonWithImageNamed("icon_close", color: Styles.Colors.petrol2)
             return true
         }
         return false
@@ -245,11 +246,26 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         var rightViewWidth: CGFloat = 130
         let locationButtonWidth: CGFloat = 46
         
-        let indicatorButton = ViewFactory.redRoundedButtonWithHeight(20, font: Styles.FontFaces.regular(12), text: indicatorText)
+        //create the indicator button
+        let indicatorButton = ViewFactory.redRoundedButtonWithHeight(20, font: Styles.FontFaces.regular(12), text: "")
         let attrs = [NSFontAttributeName: indicatorButton.titleLabel!.font]
         let maximumLabelSize = CGSize(width: rightViewWidth - locationButtonWidth - 10, height: 20)
-        let rect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs, context: nil)
-        indicatorButton.frame = indicatorText == "" ? CGRectZero : CGRect(x: 10, y: 10, width: rect.width+20, height: 20)
+        let labelRect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs, context: nil)
+
+        //add the close icon
+        let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
+        closeImageView.contentMode = .ScaleAspectFit
+        closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 5, width: 10, height: 10)
+        indicatorButton.addSubview(closeImageView)
+        
+        //add the label
+        let label = UILabel(frame: CGRect(x: 10, y: 2.5, width: labelRect.width, height: labelRect.height))
+        label.text = indicatorText
+        label.font = Styles.FontFaces.regular(12)
+        label.textColor = Styles.Colors.beige1
+        indicatorButton.addSubview(label)
+        
+        indicatorButton.frame = indicatorText == "" ? CGRectZero : CGRect(x: 10, y: 10, width: 10+labelRect.width+5+closeImageView.frame.width+10, height: 20)
         indicatorButton.addTarget(self, action: "textFieldShouldBeginEditing:", forControlEvents: UIControlEvents.TouchUpInside)
 
         rightViewWidth = 10 + locationButtonWidth + 10 + indicatorButton.frame.width
