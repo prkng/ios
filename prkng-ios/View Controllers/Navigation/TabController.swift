@@ -38,12 +38,12 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         switchingMainView = false
         let mapType = NSUserDefaults.standardUserDefaults().integerForKey("map_type")
         switch mapType {
-        case 1:
-            mapViewController = MKMapViewController()
-            break
-        case 2:
-            mapViewController = GoogleMapViewController()
-            break
+//        case 1:
+//            mapViewController = MKMapViewController()
+//            break
+//        case 2:
+//            mapViewController = GoogleMapViewController()
+//            break
         default:
             mapViewController = RMMapViewController()
             break
@@ -482,7 +482,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func showSpotOnMap(spot: ParkingSpot) {
-        let coordinate = spot.buttonLocation.coordinate
+        let coordinate = spot.selectedButtonLocation ?? spot.buttonLocations.first!
         let name = spot.name
         goToCoordinate(coordinate, named: name)
     }

@@ -121,7 +121,7 @@ class SpotDetailView: UIView {
         leftTopLabel.textColor = Styles.Colors.petrol2
         leftTopLabel.textAlignment = NSTextAlignment.Left
         leftTopLabel.numberOfLines = 1
-        leftTopLabel.text = NSLocalizedString("hourly", comment: "").uppercaseString
+        leftTopLabel.text = "hourly".localizedString.uppercaseString
         bottomLeftContainer.addSubview(leftTopLabel)
         
         leftBottomLabel.font = Styles.Fonts.h2rVariable

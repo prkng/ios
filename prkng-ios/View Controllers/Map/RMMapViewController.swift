@@ -131,7 +131,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         if !wasShown {
             if let checkIn = Settings.checkedInSpot() {
-                let coordinate = checkIn.buttonLocation.coordinate
+                let coordinate = checkIn.selectedButtonLocation ?? checkIn.buttonLocations.first!
                 self.dontTrackUser()
                 goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
             }
@@ -372,7 +372,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             addSpotAnnotation(self.mapView, spot: spot!, selected: true)
             
             selectedSpot = spot
-            
+            selectedSpot?.selectedButtonLocation = annotation.coordinate
+            selectedSpot?.json["selectedButtonLocation"].dictionaryObject = ["lat" : annotation.coordinate.latitude, "long" : annotation.coordinate.longitude]
+
             self.delegate?.didSelectSpot(selectedSpot!)
             
         } else if (type == "searchResult") {
@@ -433,7 +435,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             } else if loopThroughLines && annotationType == "line" {
                 
                 let spot = userInfo!["spot"] as! ParkingSpot
-                let coordinates = spot.line.coordinates2D + [spot.buttonLocation.coordinate]
+                let coordinates = spot.line.coordinates2D + spot.buttonLocations
                 
                 var distances = coordinates.map{(coordinate: CLLocationCoordinate2D) -> CGFloat in
                     let annotationPoint = map.coordinateToPixel(coordinate)
@@ -597,10 +599,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         for spot in spots {
             let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
             var annotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
-                tempLineAnnotations.append(annotations.0)
-                if let button = annotations.1 {
-                    tempButtonAnnotations.append(button)
-                }
+            tempLineAnnotations.append(annotations.0)
+            let buttons = annotations.1
+            tempButtonAnnotations += buttons
 
         }
         
@@ -627,10 +628,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         annotationForSpot(map, spot: spot, selected: selected, addToMapView: true)
     }
     
-    func annotationForSpot(map: RMMapView, spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (RMAnnotation, RMAnnotation?) {
+    func annotationForSpot(map: RMMapView, spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (RMAnnotation, [RMAnnotation]) {
         
         var annotation: RMAnnotation
-        var centerButton: RMAnnotation?
+        var centerButtons = [RMAnnotation]()
         
         let coordinate = spot.line.coordinates[0].coordinate
         let shouldAddAnimationForLine = !contains(self.lineSpotIDsDrawnOnMap, spot.identifier)
@@ -645,19 +646,22 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         if (mapView.zoom >= 17.0) {
             
-            let shouldAddAnimationForButton = !contains(self.spotIDsDrawnOnMap, spot.identifier)
-            centerButton = RMAnnotation(mapView: self.mapView, coordinate: spot.buttonLocation.coordinate, andTitle: spot.identifier)
-            centerButton!.setBoundingBoxFromLocations(spot.line.coordinates)
-            centerButton!.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForButton]
+            for coordinate in spot.buttonLocations {
+                let shouldAddAnimationForButton = !contains(self.spotIDsDrawnOnMap, spot.identifier)
+                let centerButton = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: spot.identifier)
+                centerButton!.setBoundingBoxFromLocations(spot.line.coordinates)
+                centerButton!.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForButton]
+                centerButtons.append(centerButton)
+            }
             
             if addToMapView {
-                mapView.addAnnotation(centerButton!)
-                centerButtonAnnotations.append(centerButton!)
+                mapView.addAnnotations(centerButtons)
+                centerButtonAnnotations += centerButtons
             }
             
         }
         
-        return (annotation, centerButton)
+        return (annotation, centerButtons)
         
     }
     
@@ -851,7 +855,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func addMyCarMarker() {
         if let spot = Settings.checkedInSpot() {
-            let coordinate = spot.buttonLocation.coordinate
+            let coordinate = spot.selectedButtonLocation ?? spot.buttonLocations.first!
             let name = spot.name
             var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
             annotation.userInfo = ["type": "previousCheckin"]

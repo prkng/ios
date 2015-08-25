@@ -493,12 +493,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         var tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Share Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
-        createGoogleMapsLink(spot!.buttonLocation)
+        createGoogleMapsLink(spot!.selectedButtonLocation ?? spot!.buttonLocations.first!)
     }
     
-    func createGoogleMapsLink(location: CLLocation) {
-        let latitude = "\(spot!.buttonLocation.coordinate.latitude)"
-        let longitude = "\(spot!.buttonLocation.coordinate.longitude)"
+    func createGoogleMapsLink(coordinate: CLLocationCoordinate2D) {
+        let latitude = "\(coordinate.latitude)"
+        let longitude = "\(coordinate.longitude)"
         let longUrlString = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "&ll=" + latitude + "," + longitude + "&z=17"
 
         request(Method.POST, "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBVSdiMcYO1qpJIMbcOV9ATgWpSxsGvc1M", parameters: ["longUrl": longUrlString], encoding: ParameterEncoding.JSON).responseSwiftyJSON { (request, response, json, error) -> Void in

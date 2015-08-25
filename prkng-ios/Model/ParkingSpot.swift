@@ -21,17 +21,18 @@ class ParkingSpot: NSObject, Hashable {
     var desc: String
     var maxParkingTime: Int
     var duration: Int
-    var buttonLocation: CLLocation
+    var selectedButtonLocation: CLLocationCoordinate2D?
+    var buttonLocations: [CLLocationCoordinate2D]
     var rules: Array<ParkingRule>
     var line: Shape
     
     var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
         
-    //MARK- MKAnnotation
-    var title: String! { get { return identifier } }
-    var subtitle: String! { get { return name } }
-//    var lineSpot: LineParkingSpot { get { return LineParkingSpot(spot: self) } }
-    var buttonSpot: ButtonParkingSpot { get { return ButtonParkingSpot(spot: self) } }
+//    //MARK- MKAnnotation
+//    var title: String! { get { return identifier } }
+//    var subtitle: String! { get { return name } }
+////    var lineSpot: LineParkingSpot { get { return LineParkingSpot(spot: self) } }
+//    var buttonSpot: ButtonParkingSpot { get { return ButtonParkingSpot(spot: self) } }
 
     //MARK- Hashable
     override var hashValue: Int { get { return identifier.toInt()! } }
@@ -44,7 +45,7 @@ class ParkingSpot: NSObject, Hashable {
         desc = spot.desc
         maxParkingTime = spot.maxParkingTime
         duration = spot.duration
-        buttonLocation = spot.buttonLocation
+        buttonLocations = spot.buttonLocations
         rules = spot.rules
         line = spot.line
         userInfo = spot.userInfo
@@ -59,7 +60,22 @@ class ParkingSpot: NSObject, Hashable {
         desc = json["properties"]["rules"][0]["description"].stringValue
         maxParkingTime = json["time_max_parking"].intValue
         duration = json["duration"].intValue
-        buttonLocation = CLLocation(latitude: json["properties"]["button_location"]["lat"].doubleValue, longitude: json["properties"]["button_location"]["long"].doubleValue)
+        buttonLocations = []
+        let buttons = json["properties"]["button_locations"].arrayValue
+        let singleButtonLocation = CLLocationCoordinate2D(latitude: json["properties"]["button_location"]["lat"].doubleValue, longitude: json["properties"]["button_location"]["long"].doubleValue)
+        for button in buttons {
+            let buttonLocation = CLLocationCoordinate2D(latitude: button["lat"].doubleValue, longitude: button["long"].doubleValue)
+            buttonLocations.append(buttonLocation)
+        }
+        if buttons.count == 0 {
+            buttonLocations.append(singleButtonLocation)
+        }
+        
+        let selectedLat  = json["selectedButtonLocation"]["lat"].double
+        let selectedLong = json["selectedButtonLocation"]["long"].double
+        if selectedLat != nil && selectedLong != nil {
+            selectedButtonLocation = CLLocationCoordinate2D(latitude: selectedLat!, longitude: selectedLong!)
+        }
         
         rules = []
         
@@ -415,121 +431,117 @@ class LineParkingSpot: MKPolyline, Hashable {
 //    }
 //}
 
-class ButtonParkingSpot: ParkingSpot, MKAnnotation, MGLAnnotation {
-    var coordinate: CLLocationCoordinate2D { get { return buttonLocation.coordinate } }
-}
-
-class PreviousCheckinSpot: NSObject, MKAnnotation, MGLAnnotation {
-    var coordinate: CLLocationCoordinate2D //{ get { return buttonLocation.coordinate } }
-    var title: String! //{ get { return name } }
-    var spot: ParkingSpot?
-    
-    init(coordinate: CLLocationCoordinate2D, title: String) {
-        self.coordinate = coordinate
-        self.title = title
-    }
-    
-    init(spot: ParkingSpot) {
-        self.spot = spot
-        self.coordinate = spot.buttonLocation.coordinate
-        self.title = spot.name
-    }
-}
-
-class LineParkingSpotRenderer: MKPolylineRenderer {
-    
-    override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext!) {
-        super.drawMapRect(mapRect, zoomScale: zoomScale, inContext: context)
-    }
-    
-}
-
-class ButtonParkingSpotView: MKAnnotationView {
-    
-    var imageName: String = ""
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    init!(mapboxGLAnnotation: MGLAnnotation!, reuseIdentifier: String!, mbxZoomLevel: Double) {
-        super.init(annotation: mapboxGLAnnotation as! MKAnnotation, reuseIdentifier: reuseIdentifier)
-        setup(CGFloat(mbxZoomLevel))
-    }
-    
-    init!(annotation: MKAnnotation!, reuseIdentifier: String!, mbxZoomLevel: CGFloat) {
-        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-        setup(mbxZoomLevel)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    var buttonParkingSpotAnnotation : ButtonParkingSpot!
-    
-    override var annotation: MKAnnotation! {
-        get { return buttonParkingSpotAnnotation }
-        set { if newValue == nil || newValue is ButtonParkingSpot {
-            buttonParkingSpotAnnotation = newValue as? ButtonParkingSpot
-        } else {
-            println("Incorrect annotation type for ButtonParkingSpotView")
-            }
-        }
-    }
-    
-    func setup(mbxZoomLevel: CGFloat) {
-        let userInfo = buttonParkingSpotAnnotation.userInfo
-        let selected = userInfo["selected"] as! Bool
-        let spot = userInfo["spot"] as! ParkingSpot
-        let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
-        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
-        
-        if shouldAddAnimation {
-           self.layer.addScaleAnimation()
-//            spotIdentifiersDrawnOnMap.append(spot.identifier)
-        }
-        
-        imageName = "button_line_"
-        
-        if mbxZoomLevel < 18 {
-            imageName += "small_"
-        }
-        if isCurrentlyPaidSpot {
-            imageName += "metered_"
-        }
-        if !selected {
-            imageName += "in"
-        }
-        
-        imageName += "active"
-        
-        var circleImage = UIImage(named: imageName)
-        
-        self.image = circleImage
-        
-        if (selected) {
-            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-            pulseAnimation.duration = 0.7
-            pulseAnimation.fromValue = 0.95
-            pulseAnimation.toValue = 1.10
-            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-            pulseAnimation.autoreverses = true
-            pulseAnimation.repeatCount = FLT_MAX
-            self.layer.addAnimation(pulseAnimation, forKey: "pulse")
-        } else {
-            self.layer.removeAnimationForKey("pulse")
-        }
-
-    }
-    
+//class ButtonParkingSpot: ParkingSpot, MKAnnotation, MGLAnnotation {
+//    var coordinate: CLLocationCoordinate2D { get { return buttonLocation.coordinate } }
+//}
+//
+//class PreviousCheckinSpot: NSObject, MKAnnotation, MGLAnnotation {
+//    var coordinate: CLLocationCoordinate2D //{ get { return buttonLocation.coordinate } }
+//    var title: String! //{ get { return name } }
+//    var spot: ParkingSpot?
+//    
+//    init(coordinate: CLLocationCoordinate2D, title: String) {
+//        self.coordinate = coordinate
+//        self.title = title
+//    }
+//    
+//    init(spot: ParkingSpot) {
+//        self.spot = spot
+//        self.coordinate = spot.buttonLocation.coordinate
+//        self.title = spot.name
+//    }
+//}
+//
+//class LineParkingSpotRenderer: MKPolylineRenderer {
+//    
+//    override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext!) {
+//        super.drawMapRect(mapRect, zoomScale: zoomScale, inContext: context)
+//    }
+//    
+//}
+//
+//class ButtonParkingSpotView: MKAnnotationView {
+//    
+//    var imageName: String = ""
+//    
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//    }
+//    
+//    init!(mapboxGLAnnotation: MGLAnnotation!, reuseIdentifier: String!, mbxZoomLevel: Double) {
+//        super.init(annotation: mapboxGLAnnotation as! MKAnnotation, reuseIdentifier: reuseIdentifier)
+//        setup(CGFloat(mbxZoomLevel))
+//    }
+//    
+//    init!(annotation: MKAnnotation!, reuseIdentifier: String!, mbxZoomLevel: CGFloat) {
+//        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+//        setup(mbxZoomLevel)
+//    }
+//
+//    required init(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//    }
+//
+//    var buttonParkingSpotAnnotation : ButtonParkingSpot!
+//    
+//    override var annotation: MKAnnotation! {
+//        get { return buttonParkingSpotAnnotation }
+//        set { if newValue == nil || newValue is ButtonParkingSpot {
+//            buttonParkingSpotAnnotation = newValue as? ButtonParkingSpot
+//        } else {
+//            println("Incorrect annotation type for ButtonParkingSpotView")
+//            }
+//        }
+//    }
+//    
+//    func setup(mbxZoomLevel: CGFloat) {
+//        let userInfo = buttonParkingSpotAnnotation.userInfo
+//        let selected = userInfo["selected"] as! Bool
+//        let spot = userInfo["spot"] as! ParkingSpot
+//        let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
+//        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+//        
+//        if shouldAddAnimation {
+//           self.layer.addScaleAnimation()
+////            spotIdentifiersDrawnOnMap.append(spot.identifier)
+//        }
+//        
+//        imageName = "button_line_"
+//        
+//        if mbxZoomLevel < 18 {
+//            imageName += "small_"
+//        }
+//        if isCurrentlyPaidSpot {
+//            imageName += "metered_"
+//        }
+//        if !selected {
+//            imageName += "in"
+//        }
+//        
+//        imageName += "active"
+//        
+//        var circleImage = UIImage(named: imageName)
+//        
+//        self.image = circleImage
+//        
+//        if (selected) {
+//            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
+//            pulseAnimation.duration = 0.7
+//            pulseAnimation.fromValue = 0.95
+//            pulseAnimation.toValue = 1.10
+//            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//            pulseAnimation.autoreverses = true
+//            pulseAnimation.repeatCount = FLT_MAX
+//            self.layer.addAnimation(pulseAnimation, forKey: "pulse")
+//        } else {
+//            self.layer.removeAnimationForKey("pulse")
+//        }
+//
+//    }
+//
 //    var annotationImage: MGLAnnotationImage {
 //        return MGLAnnotationImage(image: self.image, reuseIdentifier: self.reuseIdentifier + self.imageName)
 //    }
-    
-    
-    
-
-    
-}
+//    
+//}
 

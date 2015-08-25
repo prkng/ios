@@ -37,6 +37,7 @@ public let ErrorNotExist: Int! = 500
 
 /**
 JSON's type definitions.
+
 See http://tools.ietf.org/html/rfc7231#section-4.3
 */
 public enum Type :Int{
@@ -91,6 +92,21 @@ public struct JSON {
     */
     public init(_ jsonArray:[JSON]) {
         self.init(jsonArray.map { $0.object })
+    }
+    
+    /**
+    Creates a JSON from a [String: JSON]
+    
+    :param: jsonDictionary A Swift dictionary of JSON objects
+    
+    :returns: The created JSON
+    */
+    public init(_ jsonDictionary:[String: JSON]) {
+        var dictionary = [String: AnyObject]()
+        for (key, json) in jsonDictionary {
+            dictionary[key] = json.object
+        }
+        self.init(dictionary)
     }
     
     /// Private object
@@ -163,9 +179,9 @@ extension JSON : Swift.SequenceType {
         get {
             switch self.type {
             case .Array:
-                return self.arrayValue.count
+                return (self.object as! [AnyObject]).count
             case .Dictionary:
-                return self.dictionaryValue.count
+                return (self.object as! [String : AnyObject]).count
             default:
                 return 0
             }
