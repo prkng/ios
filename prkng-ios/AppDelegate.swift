@@ -12,12 +12,19 @@ import Crashlytics
 //import GoogleMaps
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
 
     var window: UIWindow?
+    var locationManager = CLLocationManager()
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
+        
+//        //register for background location usage for updates
+//        locationManager.delegate = self
+//        locationManager.requestAlwaysAuthorization()
+//        locationManager.startMonitoringForRegion(CLCircularRegion(center: Settings.pointForCity(Settings.City.Montreal), radius: 2000, identifier: "watshpringgefon"))
+        
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         RMConfiguration.sharedInstance().accessToken = "pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA"
@@ -117,7 +124,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         let alert = UIAlertView()
-        alert.message = "alarm_text".localizedString
+        alert.message = notification.alertBody
         alert.addButtonWithTitle("OK")
         alert.show()
         Settings.cancelNotification()
@@ -151,6 +158,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window!.makeKeyAndVisible()
     }
+//    
+//    // MARK: CLLocationManagerDelegate methods
+//
+//    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+//        
+//        if let spot = Settings.checkedInSpot() {
+//            SpotOperations.checkout(spot.identifier, completion: { (completed) -> Void in
+//                Settings.checkOut()
+//            })
+//            
+//            let alert = UILocalNotification()
+//            alert.alertBody = "entered region, checked out"
+//            alert.soundName = UILocalNotificationDefaultSoundName
+//            UIApplication.sharedApplication().presentLocalNotificationNow(alert)
+//            NSLog(alert.alertBody!)
+//        }
+//
+//    }
+//
+//    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+//        Settings.checkedInSpot()
+//        let alert = UILocalNotification()
+//        alert.alertBody = "exited region"
+//        alert.soundName = UILocalNotificationDefaultSoundName
+//        UIApplication.sharedApplication().presentLocalNotificationNow(alert)
+//        NSLog(alert.alertBody!)
+//    }
+//    
 
 }
 
