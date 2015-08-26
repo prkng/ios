@@ -31,17 +31,22 @@ class MapViewController: AbstractViewController {
                 mapModeImageView = nil
             }
             
-            let snapshotView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+            let snapshotView = UIImageView(image: UIImage.screenshot(self))
             mapModeImageView = snapshotView
+            mapModeImageView?.userInteractionEnabled = false
             self.view.addSubview(mapModeImageView!)
             
+            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+
             mapModeDidChange { () -> Void in
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
                     self.mapModeImageView?.alpha = 0
                     }) { (completed) -> Void in
+                        SVProgressHUD.dismiss()
+
                         self.mapModeImageView?.removeFromSuperview()
                         self.mapModeImageView = nil
-                        
                 }
             }
         }

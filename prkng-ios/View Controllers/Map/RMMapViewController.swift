@@ -522,35 +522,35 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                         
             let permit = self.delegate?.activeFilterPermit() ?? false
             
-            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion:
-                { (spots, underMaintenance, outsideServiceArea, error) -> Void in
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        //only show the spinner if this map is active
-                        if let tabController = self.parentViewController as? TabController {
-                            if tabController.activeTab() == PrkTab.Here {
-                                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                                SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
-
-                                if self.canShowMapMessage {
-                                    if underMaintenance {
-                                        self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
-                                    } else if error {
-                                        self.delegate?.showMapMessage("map_message_error".localizedString)
-                                    } else if outsideServiceArea {
-                                        self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
-                                    } else if spots.count == 0 {
-                                        self.delegate?.showMapMessage("map_message_no_spots".localizedString)
-                                    } else {
-                                        self.delegate?.showMapMessage(nil)
-                                    }
+            let operationCompletion = { (objects: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void in
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    //only show the spinner if this map is active
+                    if let tabController = self.parentViewController as? TabController {
+                        if tabController.activeTab() == PrkTab.Here {
+                            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+                            
+                            if self.canShowMapMessage {
+                                if underMaintenance {
+                                    self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
+                                } else if error {
+                                    self.delegate?.showMapMessage("map_message_error".localizedString)
+                                } else if outsideServiceArea {
+                                    self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
+                                } else if objects.count == 0 {
+                                    self.delegate?.showMapMessage("map_message_no_spots".localizedString)
+                                } else {
+                                    self.delegate?.showMapMessage(nil)
                                 }
                             }
                         }
-                    })
-
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
-
+                    }
+                })
+                
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+                    
+                    if let spots = objects as? [ParkingSpot] {
                         //
                         // spots that have left the screen need to be re-animated next time
                         // therefore, we remove spots that have not been fetched this time around
@@ -564,10 +564,29 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                         })
 
                         self.updateSpotAnnotations(spots, completion: completion)
-                        
-                    })
+                    }
                     
-            })
+                    if let lots = objects as? [Lot] {
+                        
+                        completion()
+                    }
+                    
+                })
+            }
+            
+            switch(self.mapMode) {
+            case MapMode.StreetParking:
+                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion: operationCompletion)
+                break
+            case MapMode.Garage:
+                LotOperations.findLots(self.mapView.centerCoordinate, radius: radius, completion: operationCompletion)
+                break
+            default:
+                updateInProgress = false
+                self.removeLinesAndButtons()
+                completion()
+                break
+            }
             
         } else {
             

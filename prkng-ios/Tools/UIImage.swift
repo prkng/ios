@@ -69,5 +69,22 @@ extension UIImage {
 
     }
     
+    class func screenshot(viewController: UIViewController?) -> UIImage {
+
+        let screenHeight = UIScreen.mainScreen().bounds.height
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let root = viewController ?? delegate.window?.rootViewController
+        let bounds = CGRect(x: 0, y: 0, width: root!.view.bounds.width, height: root!.view.bounds.height)
+        
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: root!.view.bounds.width, height: root!.view.bounds.height),
+            true, 1)
+        root!.view.drawViewHierarchyInRect(bounds,
+            afterScreenUpdates: true)
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return screenshot
+    }
+    
 }
 

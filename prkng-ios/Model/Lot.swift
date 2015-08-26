@@ -1,5 +1,5 @@
 //
-//  Garage.swift
+//  Lot.swift
 //  prkng-ios
 //
 //  Created by Antonino Urbano on 2015-08-24.
@@ -8,24 +8,24 @@
 
 import UIKit
 
-enum GarageAttribute: String {
+enum LotAttribute: String {
     case Clerk = "clerk"//.localizedString
     case Indoor = "indoor"//.localizedString
     case Valet = "valet"//.localizedString
 }
 
-func ==(lhs: Garage, rhs: Garage) -> Bool {
+func ==(lhs: Lot, rhs: Lot) -> Bool {
     return lhs.identifier == rhs.identifier
 }
 
-class Garage: NSObject, Hashable {
+class Lot: NSObject, Hashable {
    
     var json: JSON
     var identifier: Int
     var name: String
     var address: String
     var dailyPrice: Float
-    var attributes: [GarageAttribute: Bool]
+    var attributes: [LotAttribute: Bool]
     var agenda: [Int: (Float, Float)?]
     var coordinate: CLLocationCoordinate2D
     
@@ -40,15 +40,15 @@ class Garage: NSObject, Hashable {
     //MARK- Hashable
     override var hashValue: Int { get { return identifier } }
     
-    init(garage: Garage) {
-        self.json = garage.json
-        self.identifier = garage.identifier
-        self.coordinate = garage.coordinate
-        self.address = garage.address
-        self.agenda = garage.agenda
-        self.attributes = garage.attributes
-        self.dailyPrice = garage.dailyPrice
-        self.name = garage.name
+    init(lot: Lot) {
+        self.json = lot.json
+        self.identifier = lot.identifier
+        self.coordinate = lot.coordinate
+        self.address = lot.address
+        self.agenda = lot.agenda
+        self.attributes = lot.attributes
+        self.dailyPrice = lot.dailyPrice
+        self.name = lot.name
     }
     
     init(json: JSON) {
@@ -67,9 +67,9 @@ class Garage: NSObject, Hashable {
             self.agenda.updateValue(floatList.count == 0 ? nil : (firstFloat, secondFloat), forKey: key)
         }
        
-        self.attributes = [GarageAttribute: Bool]()
+        self.attributes = [LotAttribute: Bool]()
         for attr in json["properties"]["attrs"] {
-            let attribute = GarageAttribute(rawValue: attr.0)!
+            let attribute = LotAttribute(rawValue: attr.0)!
             let value = attr.1.boolValue
             self.attributes.updateValue(value, forKey: attribute)
         }

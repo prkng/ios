@@ -518,21 +518,21 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func modeSelectionValueChanged() {
-        //do something on the map by way of a callback
-//        switch(self.modeSelection.selectedIndex) {
-//        case 0:
-//            //oh em gee you wanna see garages!
-//            self.delegate?.didSelectMapMode(MapMode.Garage)
-//            break
-//        case 1:
-//            //oh. em. gee. you wanna see street parking!
-//            self.delegate?.didSelectMapMode(MapMode.StreetParking)
-//            break
-//        case 2:
-//            //oh. em. geeeeeeee you wanna see car sharing spots!
-//            self.delegate?.didSelectMapMode(MapMode.CarSharing)
-//        default:break
-//        }
+
+        switch(self.modeSelection.selectedIndex) {
+        case 0:
+            //oh em gee you wanna see garages!
+            self.delegate?.didSelectMapMode(MapMode.Garage)
+            break
+        case 1:
+            //oh. em. gee. you wanna see street parking!
+            self.delegate?.didSelectMapMode(MapMode.StreetParking)
+            break
+        case 2:
+            //oh. em. geeeeeeee you wanna see car sharing spots!
+            self.delegate?.didSelectMapMode(MapMode.CarSharing)
+        default:break
+        }
 
     }
     

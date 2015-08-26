@@ -14,11 +14,12 @@
 		3E0FDACA1B276A1000872667 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */; };
 		3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDACB1B276A2B00872667 /* libc++.dylib */; };
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
+		3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */; };
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
 		3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */; };
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
 		3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */; };
-		3E4123E51B8B67DB002553D7 /* Garage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4123E41B8B67DB002553D7 /* Garage.swift */; };
+		3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4123E41B8B67DB002553D7 /* Lot.swift */; };
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
 		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
@@ -182,12 +183,13 @@
 		3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		3E0FDACB1B276A2B00872667 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		3E0FDAD31B27921400872667 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotOperations.swift; sourceTree = "<group>"; };
 		3E3199581B31D4F600CB118D /* TimeFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFilterView.swift; sourceTree = "<group>"; };
 		3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
 		3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextButton.swift; sourceTree = "<group>"; };
 		3E411C4E1B55B5510000BB18 /* DDLoggerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLoggerWrapper.h; sourceTree = "<group>"; };
 		3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLoggerWrapper.m; sourceTree = "<group>"; };
-		3E4123E41B8B67DB002553D7 /* Garage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Garage.swift; sourceTree = "<group>"; };
+		3E4123E41B8B67DB002553D7 /* Lot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lot.swift; sourceTree = "<group>"; };
 		3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
 		3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
@@ -484,7 +486,7 @@
 				BF2891E91AFFC0590041B04C /* User.swift */,
 				BF6981B11B30701600E0EF62 /* Checkin.swift */,
 				3EC55E671B472195001A1B2B /* SupportedArea.swift */,
-				3E4123E41B8B67DB002553D7 /* Garage.swift */,
+				3E4123E41B8B67DB002553D7 /* Lot.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -781,6 +783,7 @@
 				BFE956681A8E59DF00C2C117 /* APIUtility.swift */,
 				BF1C2B581AFCBBA00070085A /* AuthUtility.swift */,
 				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
+				3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */,
 				BF4567FF1AD85722006D7C23 /* SearchOperations.swift */,
 				BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */,
 			);
@@ -1061,6 +1064,7 @@
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
 				BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
+				3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */,
 				3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */,
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
@@ -1100,7 +1104,7 @@
 				3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
-				3E4123E51B8B67DB002553D7 /* Garage.swift in Sources */,
+				3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */,
 				3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */,
 				BFC850FA1B2F618A006383AC /* UIImage.swift in Sources */,
 				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,

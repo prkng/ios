@@ -29,7 +29,7 @@ struct SpotOperations {
     }
     
     
-    static func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, permit: Bool = false, completion: ((spots: Array<ParkingSpot>, underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+    static func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, permit: Bool = false, completion: ((spots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "slots"
         
