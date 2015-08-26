@@ -13,7 +13,7 @@ struct UserOperations {
     
     static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User?, apiKey : String?, error: NSError?) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "register"
+        let url = APIUtility.APIConstants.rootURLString + "login/register"
         
         let params = ["email" : email, "name" : name, "password" : password, "gender" : gender, "birthYear" : birthYear]
         
@@ -39,7 +39,7 @@ struct UserOperations {
     
     static func login (email : String, password: String, completion : (user : User?, apiKey : String?) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login/email"
+        let url = APIUtility.APIConstants.rootURLString + "login"
         
         let params = ["email" : email,  "password" : password]
         
@@ -62,9 +62,9 @@ struct UserOperations {
     
     static func loginWithFacebook (accessToken: String, completion : (user : User, apiKey : String) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login/facebook"
+        let url = APIUtility.APIConstants.rootURLString + "login"
         
-        let params = ["access_token" : accessToken]
+        let params = ["type" : "facebook", "access_token" : accessToken]
         
         request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -82,9 +82,9 @@ struct UserOperations {
     
     static func loginWithGoogle(accessToken: String, completion : (user : User, apiKey : String) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login/google"
+        let url = APIUtility.APIConstants.rootURLString + "login"
         
-        let params = ["access_token" : accessToken]
+        let params = ["type" : "google", "access_token" : accessToken]
         
         request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -154,7 +154,7 @@ struct UserOperations {
     
     static func uploadAvatar (image : UIImage, completion: ((completed : Bool, imageUrl : String?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "image"
+        let url = APIUtility.APIConstants.rootURLString + "images"
         let params = ["image_type" : "avatar",
             "file_name" : "avatar.jpg"]
         
@@ -199,7 +199,7 @@ struct UserOperations {
     
     static func resetPassword (email : String, completion : ((completed : Bool) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login/email/reset"
+        let url = APIUtility.APIConstants.rootURLString + "login/resetpass"
         let params = ["email" : email]
         
         request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
