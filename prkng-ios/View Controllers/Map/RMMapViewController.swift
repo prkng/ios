@@ -22,11 +22,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     var lastMapZoom: Float
     var lastUserLocation: CLLocation
     var lastMapCenterCoordinate: CLLocationCoordinate2D
-    var spotIDsDrawnOnMap: Array<String>
-    var lineSpotIDsDrawnOnMap: Array<String>
-    var lineAnnotations: Array<RMAnnotation>
-    var centerButtonAnnotations: Array<RMAnnotation>
-    var searchAnnotations: Array<RMAnnotation>
+    var spotIDsDrawnOnMap: [String]
+    var lineSpotIDsDrawnOnMap: [String]
+    var annotations: [RMAnnotation]
+    var searchAnnotations: [RMAnnotation]
     var selectedSpot: ParkingSpot?
     var isSelecting: Bool
     var radius : Float
@@ -62,8 +61,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         isSelecting = false
         spotIDsDrawnOnMap = []
         lineSpotIDsDrawnOnMap = []
-        lineAnnotations = []
-        centerButtonAnnotations = []
+        annotations = []
         searchAnnotations = []
         radius = 300
         updateInProgress = false
@@ -367,8 +365,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 return
             }
             
-            var annotations = findAnnotations(spot!.identifier)
-            removeAnnotations(annotations)
+            var foundAnnotations = findAnnotations(spot!.identifier)
+            removeAnnotations(foundAnnotations)
             addSpotAnnotation(self.mapView, spot: spot!, selected: true)
             
             selectedSpot = spot
@@ -568,7 +566,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     
                     if let lots = objects as? [Lot] {
                         
-                        completion()
+                        self.updateLotAnnotations(lots, completion: completion)
+                        
                     }
                     
                 })
@@ -590,11 +589,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
         } else {
             
-            mapView.removeAnnotations(lineAnnotations)
-            lineAnnotations = []
-            
-            mapView.removeAnnotations(centerButtonAnnotations)
-            centerButtonAnnotations = []
+            mapView.removeAnnotations(annotations)
+            annotations = []
             
             spotIDsDrawnOnMap = []
             lineSpotIDsDrawnOnMap = []
@@ -612,15 +608,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func updateSpotAnnotations(spots: [ParkingSpot], completion: (() -> Void)) {
         
         let duration = self.delegate?.activeFilterDuration()
-        var tempLineAnnotations = [RMAnnotation]()
-        var tempButtonAnnotations = [RMAnnotation]()
+        var tempAnnotations = [RMAnnotation]()
         
         for spot in spots {
             let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
-            var annotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
-            tempLineAnnotations.append(annotations.0)
-            let buttons = annotations.1
-            tempButtonAnnotations += buttons
+            var generatedAnnotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
+            tempAnnotations.append(generatedAnnotations.0)
+            let buttons = generatedAnnotations.1
+            tempAnnotations += buttons
 
         }
         
@@ -628,11 +623,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.removeLinesAndButtons()
 
-            self.lineAnnotations = tempLineAnnotations
-            self.centerButtonAnnotations = tempButtonAnnotations
+            self.annotations = tempAnnotations
 
-            self.mapView.addAnnotations(self.lineAnnotations)
-            self.mapView.addAnnotations(self.centerButtonAnnotations)
+            self.mapView.addAnnotations(self.annotations)
             
             SVProgressHUD.dismiss()
             self.updateInProgress = false
@@ -660,7 +653,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         if addToMapView {
             mapView.addAnnotation(annotation)
-            lineAnnotations.append(annotation)
+            annotations.append(annotation)
         }
         
         if (mapView.zoom >= 17.0) {
@@ -675,7 +668,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             if addToMapView {
                 mapView.addAnnotations(centerButtons)
-                centerButtonAnnotations += centerButtons
+                annotations += centerButtons
             }
             
         }
@@ -684,6 +677,36 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
+    func updateLotAnnotations(lots: [Lot], completion: (() -> Void)) {
+        
+        var tempAnnotations = [RMAnnotation]()
+        
+        for lot in lots {
+            let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == String(lot.identifier))
+//            var generatedAnnotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
+//            tempAnnotations.append(generatedAnnotations.0)
+//            let buttons = generatedAnnotations.1
+//            tempAnnotations += buttons
+            
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            
+            self.removeLinesAndButtons()
+            
+            self.annotations = tempAnnotations
+            
+            self.mapView.addAnnotations(self.annotations)
+            
+            SVProgressHUD.dismiss()
+            self.updateInProgress = false
+            
+            completion()
+            
+        })
+        
+    }
+
     
     func addSearchResultMarker(searchResult: SearchResult) {
         
@@ -697,26 +720,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func findAnnotations(identifier: String) -> Array<RMAnnotation> {
         
-        var foundAnnotations: Array<RMAnnotation> = []
+        var foundAnnotations = [RMAnnotation]()
         
-        for annotation in lineAnnotations {
+        for annotation in annotations {
             
             var userInfo: [String:AnyObject]? = (annotation as RMAnnotation).userInfo as? [String:AnyObject]
-            var spot = userInfo!["spot"] as! ParkingSpot
             
-            if spot.identifier == identifier {
-                foundAnnotations.append(annotation)
-            }
-        }
-        
-        
-        for annotation in centerButtonAnnotations {
-            
-            var userInfo: [String:AnyObject]? = (annotation as RMAnnotation).userInfo as? [String:AnyObject]
-            var spot = userInfo!["spot"] as! ParkingSpot
-            
-            if spot.identifier == identifier {
-                foundAnnotations.append(annotation)
+            if let spot = userInfo!["spot"] as? ParkingSpot {
+                
+                if spot.identifier == identifier {
+                    foundAnnotations.append(annotation)
+                }
             }
         }
         
@@ -724,81 +738,53 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     
-    func removeAnnotations(annotations: Array<RMAnnotation>) {
+    func removeAnnotations(annotationsToRemove: Array<RMAnnotation>) {
         
-        var tempLineAnnotations: Array<RMAnnotation> = []
+        var tempAnnotations = [RMAnnotation]()
         
-        for ann in lineAnnotations {
+        for ann in annotations {
             
             var userInfo: [String:AnyObject]? = (ann as RMAnnotation).userInfo as? [String:AnyObject]
-            var spot = userInfo!["spot"] as! ParkingSpot
-            
-            var found: Bool = false
-            for delAnn in annotations {
+            if let spot = userInfo!["spot"] as? ParkingSpot {
                 
-                var delUserInfo: [String:AnyObject]? = (delAnn as RMAnnotation).userInfo as? [String:AnyObject]
-                var delSpot = delUserInfo!["spot"] as! ParkingSpot
-                
-                if delSpot.identifier == spot.identifier {
-                    found = true
-                    break
+                var found: Bool = false
+                for delAnn in annotationsToRemove {
+                    
+                    var delUserInfo: [String:AnyObject]? = (delAnn as RMAnnotation).userInfo as? [String:AnyObject]
+                    if let delSpot = delUserInfo!["spot"] as? ParkingSpot {
+                        
+                        if delSpot.identifier == spot.identifier {
+                            found = true
+                            break
+                        }
+                    }
                 }
-            }
-            
-            if !found {
-                tempLineAnnotations.append(ann)
-            }
-            
-        }
-    
-        self.lineAnnotations = tempLineAnnotations
-        
-        
-        var tempCenterButtonAnnotations: Array<RMAnnotation> = []
-
-        for ann in centerButtonAnnotations {
-            
-            var userInfo: [String:AnyObject]? = (ann as RMAnnotation).userInfo as? [String:AnyObject]
-            var spot = userInfo!["spot"] as! ParkingSpot
-            
-            var found: Bool = false
-            for delAnn in annotations {
                 
-                var delUserInfo: [String:AnyObject]? = (delAnn as RMAnnotation).userInfo as? [String:AnyObject]
-                var delSpot = delUserInfo!["spot"] as! ParkingSpot
-                
-                if delSpot.identifier == spot.identifier {
-                    found = true
-                    break
+                if !found {
+                    tempAnnotations.append(ann)
                 }
-            }
-            
-            if !found {
-                tempCenterButtonAnnotations.append(ann)
+                
             }
             
         }
 
-        self.centerButtonAnnotations = tempCenterButtonAnnotations
+        self.annotations = tempAnnotations
 
-        self.mapView.removeAnnotations(annotations)
+        self.mapView.removeAnnotations(annotationsToRemove)
         
     }
     
     func removeLinesAndButtons() {
-        self.mapView.removeAnnotations(self.lineAnnotations)
-        self.mapView.removeAnnotations(self.centerButtonAnnotations)
 
-        lineAnnotations = []
-        centerButtonAnnotations = []
+        self.mapView.removeAnnotations(self.annotations)
+        annotations = []
 
     }
     
     func removeAllAnnotations() {
         
         searchAnnotations = []
-        lineAnnotations = []
-        centerButtonAnnotations = []
+        annotations = []
         self.mapView.removeAllAnnotations()
         addCityOverlays()
         addMyCarMarker()
