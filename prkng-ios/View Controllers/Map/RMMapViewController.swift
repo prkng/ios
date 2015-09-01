@@ -235,7 +235,46 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
 
             return circleMarker
+
+        case "lot":
             
+            let selected = userInfo!["selected"] as! Bool
+            let lot = userInfo!["lot"] as! ParkingSpot
+            let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
+            
+            var imageName = "lot_pin_closed"
+            
+//            if !selected {
+//                imageName += "in"
+//            }
+//            
+//            imageName += "active"
+            
+            var circleImage = UIImage(named: imageName)
+            if lot.bottomLeftPrimaryText != nil {
+                circleImage = circleImage!.addText(lot.bottomLeftPrimaryText!)
+            }
+            
+            var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
+            
+            if shouldAddAnimation {
+                circleMarker.addScaleAnimation()
+                spotIDsDrawnOnMap.append(lot.identifier)
+            }
+            
+            if (selected) {
+                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
+                pulseAnimation.duration = 0.7
+                pulseAnimation.fromValue = 0.95
+                pulseAnimation.toValue = 1.10
+                pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+                pulseAnimation.autoreverses = true
+                pulseAnimation.repeatCount = FLT_MAX
+                circleMarker.addAnimation(pulseAnimation, forKey: nil)
+            }
+            
+            return circleMarker
+
         case "searchResult":
             
             let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
@@ -683,10 +722,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         for lot in lots {
             let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == String(lot.identifier))
-//            var generatedAnnotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
-//            tempAnnotations.append(generatedAnnotations.0)
-//            let buttons = generatedAnnotations.1
-//            tempAnnotations += buttons
+            var generatedAnnotations = annotationForLot(lot, selected: selected, addToMapView: false)
+            tempAnnotations.append(generatedAnnotations)
             
         }
         
@@ -704,6 +741,21 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             completion()
             
         })
+        
+    }
+    
+    func annotationForLot(lot: Lot, selected: Bool, addToMapView: Bool) -> RMAnnotation {
+        
+        let shouldAddAnimation = true//!contains(self.lineSpotIDsDrawnOnMap, lot.identifier)
+        var annotation = RMAnnotation(mapView: self.mapView, coordinate: lot.coordinate, andTitle: String(lot.identifier))
+        annotation.userInfo = ["type": "lot", "lot": lot, "selected": selected, "shouldAddAnimation": shouldAddAnimation]
+        
+        if addToMapView {
+            mapView.addAnnotation(annotation)
+            annotations.append(annotation)
+        }
+        
+        return annotation
         
     }
 

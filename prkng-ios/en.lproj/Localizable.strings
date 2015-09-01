@@ -163,12 +163,15 @@
 
 "all" = "all";
 "hourly" = "hourly";
+"daily" = "Daily";
 "metered" = "metered";
 "check-in" = "Check-in";
 "check-in-pay" = "Check-in + Pay";
 "authorized_for" = "Authorized for";
 "search" = "Search";
 "search_bar_text" = "Search or filter";
+"open" = "Open";
+"closed" = "Closed";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";
 "car_sharing_enabled_text" = "Car sharing is enabled";

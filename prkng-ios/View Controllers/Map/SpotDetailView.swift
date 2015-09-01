@@ -121,7 +121,6 @@ class SpotDetailView: UIView {
         leftTopLabel.textColor = Styles.Colors.petrol2
         leftTopLabel.textAlignment = NSTextAlignment.Left
         leftTopLabel.numberOfLines = 1
-        leftTopLabel.text = "hourly".localizedString.uppercaseString
         bottomLeftContainer.addSubview(leftTopLabel)
         
         leftBottomLabel.font = Styles.Fonts.h2rVariable
@@ -144,7 +143,6 @@ class SpotDetailView: UIView {
         rightBottomLabel.text = "00:00"
         bottomRightContainer.addSubview(rightBottomLabel)
         
-        scheduleImageView.image = UIImage(named:"btn_schedule")
         scheduleImageView.contentMode = UIViewContentMode.Center
         bottomRightContainer.addSubview(scheduleImageView)
 

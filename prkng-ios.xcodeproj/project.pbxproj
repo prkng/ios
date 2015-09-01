@@ -31,6 +31,7 @@
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB6041B83BE370081E30A /* FilterViewController.swift */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
+		3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */; };
 		3E79D01E1B7BB0CF009CF8A5 /* SliderSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */; };
 		3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */; };
 		3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */; };
@@ -203,6 +204,7 @@
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E6EB6041B83BE370081E30A /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
+		3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailObject.swift; sourceTree = "<group>"; };
 		3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderSelectionControl.swift; sourceTree = "<group>"; };
 		3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLMapViewController.swift; sourceTree = "<group>"; };
 		3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRK_GMSPolyline.swift; sourceTree = "<group>"; };
@@ -487,6 +489,7 @@
 				BF6981B11B30701600E0EF62 /* Checkin.swift */,
 				3EC55E671B472195001A1B2B /* SupportedArea.swift */,
 				3E4123E41B8B67DB002553D7 /* Lot.swift */,
+				3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1085,6 +1088,7 @@
 				3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */,
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
+				3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */,
 				3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
 				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,

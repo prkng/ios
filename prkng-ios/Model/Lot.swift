@@ -18,27 +18,51 @@ func ==(lhs: Lot, rhs: Lot) -> Bool {
     return lhs.identifier == rhs.identifier
 }
 
-class Lot: NSObject, Hashable {
+class Lot: NSObject, Hashable, DetailObject {
    
     var json: JSON
-    var identifier: Int
+    var identifier: String
     var name: String
     var address: String
     var dailyPrice: Float
     var attributes: [LotAttribute: Bool]
     var agenda: [Int: (Float, Float)?]
     var coordinate: CLLocationCoordinate2D
+
+    //TODO:parse the time and price things and then fill out these properties
+    var isOpen: Bool {
+        return true
+    }
+
+    // MARK: DetailObject Protocol
+    var headerText: String { get { return name } }
+    var headerIconName: String { get { return "btn_info_styled" } }
+    var headerIconSubtitle: String { get { return "info" } }
     
-//    var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
+    var bottomLeftTitleText: String? { get { return "daily".localizedString.uppercaseString } }
+    var bottomLeftPrimaryText: NSAttributedString? { get { return NSAttributedString(string: name) } }
     
-//    //MARK- MKAnnotation
-//    var title: String! { get { return identifier } }
-//    var subtitle: String! { get { return name } }
-//    //    var lineSpot: LineParkingSpot { get { return LineParkingSpot(spot: self) } }
-//    var buttonSpot: ButtonParkingSpot { get { return ButtonParkingSpot(spot: self) } }
+    var bottomRightTitleText: String { get {
+        if self.isOpen {
+            return "open".localizedString.uppercaseString
+        } else {
+            return "closed".localizedString.uppercaseString
+        }
+        }
+    }
+    var bottomRightPrimaryText: NSAttributedString { get {
+        let interval = DateUtil.timeIntervalSinceDayStart()
+        return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
+        }
+    }
+    var bottomRightIconName: String? { get { return nil } }
+    
+    var showsBottomLeftContainer: Bool { get { return true } }
+
+    
     
     //MARK- Hashable
-    override var hashValue: Int { get { return identifier } }
+    override var hashValue: Int { get { return identifier.toInt()! } }
     
     init(lot: Lot) {
         self.json = lot.json
@@ -54,7 +78,7 @@ class Lot: NSObject, Hashable {
     init(json: JSON) {
         
         self.json = json
-        self.identifier = json["id"].intValue
+        self.identifier = json["id"].stringValue
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][0].doubleValue, longitude: json["geometry"]["coordinates"][1].doubleValue)
         self.address = json["properties"]["address"].stringValue
         

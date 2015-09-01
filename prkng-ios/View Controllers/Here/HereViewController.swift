@@ -24,7 +24,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     var statusBar: UIView
     var modeSelection: SliderSelectionControl
 
-    var activeSpot: ParkingSpot?
+    var activeDetailObject: DetailObject?
     var forceShowSpotDetails: Bool
     
     let viewHeight = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
@@ -208,12 +208,17 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func bottomContainerTapped() {
-        showScheduleView(activeSpot)
+        if let spot = activeDetailObject as? ParkingSpot {
+            showScheduleView(spot)
+        }
     }
     
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     func swipeDidBegin() {
-        setupScheduleView(activeSpot)
+        if let spot = activeDetailObject as? ParkingSpot {
+            setupScheduleView(spot)
+        }
+
     }
     
     func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
@@ -299,102 +304,78 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func checkin() {
         
-        //OLD RULE FOR WHETHER WE COULD/COULDN'T CHECK-IN:
-        //            let checkedInSpotID = Settings.checkedInSpotId()
-        //            if (activeSpot != nil && checkedInSpotID != nil) {
-        //                checkinButton.enabled = checkedInSpotID != activeSpot?.identifier
-        //            } else {
-        //                checkinButton.enabled = true
-        //            }
-
-        
-        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-        SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
-        
-        Settings.checkOut()
-        
-        SpotOperations.checkin(activeSpot!.identifier, completion: { (completed) -> Void in
+        if let activeSpot = activeDetailObject as? ParkingSpot {
             
-            Settings.saveCheckInData(self.activeSpot!, time: NSDate())
+            //OLD RULE FOR WHETHER WE COULD/COULDN'T CHECK-IN:
+            //            let checkedInSpotID = Settings.checkedInSpotId()
+            //            if (activeDetailObject != nil && checkedInSpotID != nil) {
+            //                checkinButton.enabled = checkedInSpotID != activeDetailObject?.identifier
+            //            } else {
+            //                checkinButton.enabled = true
+            //            }
             
-            if (Settings.notificationTime() > 0) {
-                Settings.cancelNotification()
-                if self.activeSpot!.currentlyActiveRule.ruleType != .Paid {
-                    Settings.scheduleNotification(NSDate(timeIntervalSinceNow: self.activeSpot!.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
+            
+            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+            
+            Settings.checkOut()
+            
+            SpotOperations.checkin(activeSpot.identifier, completion: { (completed) -> Void in
+                
+                Settings.saveCheckInData(activeSpot, time: NSDate())
+                
+                if (Settings.notificationTime() > 0) {
+                    Settings.cancelNotification()
+                    if activeSpot.currentlyActiveRule.ruleType != .Paid {
+                        Settings.scheduleNotification(NSDate(timeIntervalSinceNow: activeSpot.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
+                    }
                 }
-            }
+                
+                SVProgressHUD.dismiss()
+                self.delegate?.loadMyCarTab()
+                
+            })
             
-            SVProgressHUD.dismiss()
-            self.delegate?.loadMyCarTab()
-            
-        })
+        }
         
     }
     
-    func updateSpotDetailsTime() {
+    //start here
+    func updateDetailsTime() {
         
-        if self.activeSpot != nil {
-            switch self.activeSpot!.currentlyActiveRule.ruleType {
-            case .Paid:
-                let interval = self.activeSpot!.currentlyActiveRuleEndTime
-
-                detailView.rightTopLabel.text = "metered".localizedString.uppercaseString
-                
-                var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(16)])
-                var numberString = NSMutableAttributedString(string: self.activeSpot!.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
-                currencyString.appendAttributedString(numberString)
-
-                detailView.leftBottomLabel.attributedText = currencyString
-
-                detailView.rightBottomLabel.attributedText = interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
-                break
-            default:
-                let interval = activeSpot!.availableTimeInterval()
-
-                if (interval > 2*3600) { // greater than 2 hours = show available until... by default
-                    detailView.rightTopLabel.text = "until".localizedString.uppercaseString
-                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
-                } else {
-                    detailView.rightTopLabel.text = "for".localizedString.uppercaseString
-                    detailView.rightBottomLabel.attributedText = ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2rVariable)
-                }
-                break
-                
-            }
+        if self.activeDetailObject != nil {
+            
+            detailView.leftBottomLabel.attributedText = self.activeDetailObject!.bottomLeftPrimaryText
+            detailView.rightTopLabel.text = self.activeDetailObject!.bottomRightTitleText
+            detailView.rightBottomLabel.attributedText = self.activeDetailObject!.bottomRightPrimaryText
         }
     }
     
-    func updateSpotDetails(spot: ParkingSpot?) {
+    func updateDetails(detailObject: DetailObject?) {
         
-        self.activeSpot = spot
+        self.activeDetailObject = detailObject
         
-        if spot != nil {
+        if detailObject != nil {
             
             forceShowSpotDetails = true
             
-            if (activeSpot != nil) {
-                println("selected spot : " + activeSpot!.identifier)
+            if (activeDetailObject != nil) {
+                println("selected spot/lot : " + activeDetailObject!.identifier)
             }
             
-            switch spot!.currentlyActiveRule.ruleType {
-            case .Paid:
-                detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
-                    make.width.equalTo(SpotDetailView.BOTTOM_LEFT_CONTAINER_WIDTH)
-                })
-                detailView.checkinImageView.image = UIImage(named:"icon_checkin_pin_pay")
-                detailView.checkinImageLabel.text = "check-in-pay".localizedString
-                break
-            default:
-                detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
-                    make.width.equalTo(0)
-                })
-                detailView.checkinImageView.image = UIImage(named:"icon_checkin_pin")
-                detailView.checkinImageLabel.text = "check-in".localizedString
-                break
+            detailView.checkinImageView.image = UIImage(named: detailObject!.headerIconName)
+            detailView.checkinImageLabel.text = detailObject!.headerIconSubtitle
+            detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
+                make.width.equalTo(detailObject!.showsBottomLeftContainer ? SpotDetailView.BOTTOM_LEFT_CONTAINER_WIDTH : 0)
+            })
+            if let iconName = detailObject!.bottomRightIconName {
+                detailView.scheduleImageView.image = UIImage(named:iconName)
             }
+            detailView.leftTopLabel.text = detailObject!.bottomLeftTitleText
+                
 
-            detailView.titleLabel.text = activeSpot?.name
-            updateSpotDetailsTime()
+            detailView.titleLabel.text = activeDetailObject?.headerText
+            updateDetailsTime()
             detailView.checkinImageView.layer.wigglewigglewiggle()
 
             hideModeSelection()
@@ -402,10 +383,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             showSpotDetails()
             
             self.timer?.invalidate()
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateSpotDetailsTime", userInfo: nil, repeats: true)
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(60, target: self, selector: "updateDetailsTime", userInfo: nil, repeats: true)
             
         } else {
-            self.activeSpot = nil
+            self.activeDetailObject = nil
             self.timer?.invalidate()
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
                 self.hideSpotDetails()
@@ -413,6 +394,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
         
     }
+    
+    //end here
     
     private func showSpotDetails() {
         adjustSpotDetailsWithDistanceFromBottom(0, animated: true)

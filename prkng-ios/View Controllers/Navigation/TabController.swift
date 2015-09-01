@@ -322,7 +322,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //            })
 //        } else if (selectedTab == PrkTab.Here) {
         if wasUserAction {
-            hereViewController.updateSpotDetails(nil)
+            hereViewController.updateDetails(nil)
             hereViewController.filterVC.hideFilters(completely: false)
         }
 //        }
@@ -332,7 +332,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     func didSelectSpot (spot : ParkingSpot) {
         
         loadHereTab()
-        hereViewController.updateSpotDetails(spot)
+        hereViewController.updateDetails(spot)
         
     }
     

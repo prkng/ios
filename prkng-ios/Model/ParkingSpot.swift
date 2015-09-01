@@ -12,7 +12,7 @@ func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-class ParkingSpot: NSObject, Hashable {
+class ParkingSpot: NSObject, Hashable, DetailObject {
     
     var json: JSON
     var identifier: String
@@ -33,6 +33,84 @@ class ParkingSpot: NSObject, Hashable {
 //    var subtitle: String! { get { return name } }
 ////    var lineSpot: LineParkingSpot { get { return LineParkingSpot(spot: self) } }
 //    var buttonSpot: ButtonParkingSpot { get { return ButtonParkingSpot(spot: self) } }
+
+    
+    // MARK: DetailObject Protocol
+    var headerText: String { get { return name } }
+    var headerIconName: String {
+        get {
+            if self.currentlyActiveRule.ruleType == .Paid {
+                return "icon_checkin_pin_pay"
+            } else {
+                return "icon_checkin_pin"
+            }
+        }
+    }
+    var headerIconSubtitle: String {
+        get {
+            if self.currentlyActiveRule.ruleType == .Paid {
+                return "check-in-pay".localizedString
+            } else {
+                return "check-in".localizedString
+            }
+        }
+    }
+    
+    var bottomLeftTitleText: String? { get { return "hourly".localizedString.uppercaseString } }
+    var bottomLeftPrimaryText: NSAttributedString? { get {
+        
+        switch self.currentlyActiveRule.ruleType {
+        case .Paid:
+            let interval = self.currentlyActiveRuleEndTime
+            var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(16)])
+            var numberString = NSMutableAttributedString(string: self.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
+            currencyString.appendAttributedString(numberString)
+            return currencyString
+        default:
+            return nil
+            
+        }
+        
+        }
+    }
+    
+    var bottomRightTitleText: String { get {
+        switch self.currentlyActiveRule.ruleType {
+        case .Paid:
+            return "metered".localizedString.uppercaseString
+        default:
+            let interval = self.availableTimeInterval()
+            
+            if (interval > 2*3600) { // greater than 2 hours = show available until... by default
+                return "until".localizedString.uppercaseString
+            } else {
+                return "for".localizedString.uppercaseString
+            }
+
+        }
+
+        }
+    }
+    var bottomRightPrimaryText: NSAttributedString { get {
+        switch self.currentlyActiveRule.ruleType {
+        case .Paid:
+            let interval = self.currentlyActiveRuleEndTime
+            return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
+        default:
+            let interval = self.availableTimeInterval()
+            
+            if (interval > 2*3600) { // greater than 2 hours = show available until... by default
+                return ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
+            } else {
+                return ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2rVariable)
+            }
+            
+        }
+        }
+    }
+    var bottomRightIconName: String? { get { return "btn_schedule" } }
+    
+    var showsBottomLeftContainer: Bool { get { return self.currentlyActiveRule.ruleType == .Paid } }
 
     //MARK- Hashable
     override var hashValue: Int { get { return identifier.toInt()! } }
