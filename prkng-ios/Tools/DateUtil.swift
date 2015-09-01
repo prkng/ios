@@ -23,6 +23,19 @@ class DateUtil {
         return (weekDay! - 2)
     }
     
+    class func dayIndexOfTheWeekStartingOnMonday() -> Int {
+        let todayDate = NSDate()
+        let myCalendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
+        let myComponents = myCalendar?.components(.WeekdayCalendarUnit, fromDate: todayDate)
+        let weekDay = myComponents?.weekday
+        
+        if (weekDay == 1) {
+            return 7
+        }
+        
+        return (weekDay! - 1)
+    }
+    
     
     class func timeIntervalSinceDayStart () -> NSTimeInterval {   // Example : 10:30 -> 10.5 * 3600
         let date = NSDate()

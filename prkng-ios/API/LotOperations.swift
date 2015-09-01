@@ -15,7 +15,7 @@ struct LotOperations {
         
         let url = APIUtility.APIConstants.rootURLString + "lots"
         
-        let radiusStr = NSString(format: "%.0f", radius)
+        let radiusStr = NSString(format: "%.0f", 30000.0)//radius)
         
         var params = ["latitude": coordinate.latitude,
             "longitude": coordinate.longitude,

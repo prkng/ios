@@ -203,7 +203,7 @@ protocol MapViewControllerDelegate {
     
     func mapDidDismissSelection(byUser wasUserAction: Bool)
     
-    func didSelectSpot(spot: ParkingSpot)
+    func didSelectObject (detailsObject : DetailObject)
     
     func shouldShowUserTrackingButton() -> Bool
     

@@ -26,7 +26,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     var lineSpotIDsDrawnOnMap: [String]
     var annotations: [RMAnnotation]
     var searchAnnotations: [RMAnnotation]
-    var selectedSpot: ParkingSpot?
+    var selectedObject: DetailObject?
     var isSelecting: Bool
     var radius : Float
     var updateInProgress : Bool
@@ -239,20 +239,25 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         case "lot":
             
             let selected = userInfo!["selected"] as! Bool
-            let lot = userInfo!["lot"] as! ParkingSpot
+            let lot = userInfo!["lot"] as! Lot
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             
             var imageName = "lot_pin_closed"
             
-//            if !selected {
-//                imageName += "in"
-//            }
-//            
-//            imageName += "active"
+            if lot.isCurrentlyOpen {
+                imageName = "lot_pin_open"
+            }
+
+            if selected {
+                imageName += "_selected"
+            }
             
             var circleImage = UIImage(named: imageName)
-            if lot.bottomLeftPrimaryText != nil {
-                circleImage = circleImage!.addText(lot.bottomLeftPrimaryText!)
+            if lot.bottomLeftPrimaryText != nil && lot.bottomLeftPrimaryText!.string != "$0" {
+                var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9)])
+                var numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+                currencyString.appendAttributedString(numberString)
+                circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1)
             }
             
             var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
@@ -395,25 +400,31 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         var type: String = userInfo!["type"] as! String
         
-        if (type == "line" || type == "button") {
+        if type == "line" || type == "button" {
             
-            var spot = userInfo!["spot"] as! ParkingSpot?
+            var spot = userInfo!["spot"] as! ParkingSpot
             
-            
-            if spot == nil {
-                return
-            }
-            
-            var foundAnnotations = findAnnotations(spot!.identifier)
+            var foundAnnotations = findAnnotations(spot.identifier)
             removeAnnotations(foundAnnotations)
-            addSpotAnnotation(self.mapView, spot: spot!, selected: true)
+            addSpotAnnotation(spot, selected: true)
             
-            selectedSpot = spot
-            selectedSpot?.selectedButtonLocation = annotation.coordinate
-            selectedSpot?.json["selectedButtonLocation"].dictionaryObject = ["lat" : annotation.coordinate.latitude, "long" : annotation.coordinate.longitude]
+            spot.selectedButtonLocation = annotation.coordinate
+            spot.json["selectedButtonLocation"].dictionaryObject = ["lat" : annotation.coordinate.latitude, "long" : annotation.coordinate.longitude]
+            selectedObject = spot
 
-            self.delegate?.didSelectSpot(selectedSpot!)
+            self.delegate?.didSelectObject(selectedObject as! ParkingSpot)
             
+        } else if type == "lot" {
+            
+            var lot = userInfo!["lot"] as! Lot
+            
+            var foundAnnotations = findAnnotations(lot.identifier)
+            removeAnnotations(foundAnnotations)
+            addLotAnnotation(lot, selected: true)
+            selectedObject = lot
+            
+            self.delegate?.didSelectObject(selectedObject as! Lot)
+
         } else if (type == "searchResult") {
             
             var result = userInfo!["spot"] as! ParkingSpot?
@@ -459,7 +470,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
             var annotationType = userInfo!["type"] as! String
 
-            if annotationType == "button" || annotationType == "searchResult" {
+            if annotationType == "button" || annotationType == "searchResult" || annotationType == "lot" {
             
                 var annotationPoint = map.coordinateToPixel(annotation.coordinate)
                 let distance = annotationPoint.distanceToPoint(point)
@@ -542,7 +553,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             updateInProgress = false
 
-        } else if (mapView.zoom >= 15.0) {
+        } else if mapView.zoom >= 15.0 || self.mapMode == MapMode.Garage {
             
             self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true, showCityPicker: false)
 
@@ -650,8 +661,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         var tempAnnotations = [RMAnnotation]()
         
         for spot in spots {
-            let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
-            var generatedAnnotations = annotationForSpot(self.mapView, spot: spot, selected: selected, addToMapView: false)
+            let selected = (self.selectedObject != nil && self.selectedObject?.identifier == spot.identifier)
+            var generatedAnnotations = annotationForSpot(spot, selected: selected, addToMapView: false)
             tempAnnotations.append(generatedAnnotations.0)
             let buttons = generatedAnnotations.1
             tempAnnotations += buttons
@@ -675,11 +686,19 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
     }
     
-    func addSpotAnnotation(map: RMMapView, spot: ParkingSpot, selected: Bool) {
-        annotationForSpot(map, spot: spot, selected: selected, addToMapView: true)
+    func addAnnotation(detailObject: DetailObject, selected: Bool) {
+        if detailObject is ParkingSpot {
+            addSpotAnnotation(detailObject as! ParkingSpot, selected: selected)
+        } else if detailObject is Lot {
+            addLotAnnotation(detailObject as! Lot, selected: selected)
+        }
     }
     
-    func annotationForSpot(map: RMMapView, spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (RMAnnotation, [RMAnnotation]) {
+    func addSpotAnnotation(spot: ParkingSpot, selected: Bool) {
+        annotationForSpot(spot, selected: selected, addToMapView: true)
+    }
+    
+    func annotationForSpot(spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (RMAnnotation, [RMAnnotation]) {
         
         var annotation: RMAnnotation
         var centerButtons = [RMAnnotation]()
@@ -721,7 +740,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         var tempAnnotations = [RMAnnotation]()
         
         for lot in lots {
-            let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == String(lot.identifier))
+            let selected = (self.selectedObject != nil && self.selectedObject?.identifier == String(lot.identifier))
             var generatedAnnotations = annotationForLot(lot, selected: selected, addToMapView: false)
             tempAnnotations.append(generatedAnnotations)
             
@@ -744,9 +763,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
+    func addLotAnnotation(lot: Lot, selected: Bool) {
+        annotationForLot(lot, selected: selected, addToMapView: true)
+    }
+
     func annotationForLot(lot: Lot, selected: Bool, addToMapView: Bool) -> RMAnnotation {
         
-        let shouldAddAnimation = true//!contains(self.lineSpotIDsDrawnOnMap, lot.identifier)
+        let shouldAddAnimation = !contains(self.spotIDsDrawnOnMap, lot.identifier)
         var annotation = RMAnnotation(mapView: self.mapView, coordinate: lot.coordinate, andTitle: String(lot.identifier))
         annotation.userInfo = ["type": "lot", "lot": lot, "selected": selected, "shouldAddAnimation": shouldAddAnimation]
         
@@ -783,6 +806,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 if spot.identifier == identifier {
                     foundAnnotations.append(annotation)
                 }
+            } else if let lot = userInfo!["lot"] as? Lot {
+                
+                if lot.identifier == identifier {
+                    foundAnnotations.append(annotation)
+                }
             }
         }
         
@@ -806,6 +834,25 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     if let delSpot = delUserInfo!["spot"] as? ParkingSpot {
                         
                         if delSpot.identifier == spot.identifier {
+                            found = true
+                            break
+                        }
+                    }
+                }
+                
+                if !found {
+                    tempAnnotations.append(ann)
+                }
+                
+            } else if let lot = userInfo!["lot"] as? Lot {
+                
+                var found: Bool = false
+                for delAnn in annotationsToRemove {
+                    
+                    var delUserInfo: [String:AnyObject]? = (delAnn as RMAnnotation).userInfo as? [String:AnyObject]
+                    if let delSpot = delUserInfo!["spot"] as? ParkingSpot {
+                        
+                        if delSpot.identifier == lot.identifier {
                             found = true
                             break
                         }
@@ -941,10 +988,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     override func removeSelectedAnnotationIfExists() {
-        if (selectedSpot != nil) {
-            removeAnnotations(findAnnotations(selectedSpot!.identifier))
-            addSpotAnnotation(self.mapView, spot: selectedSpot!, selected: false)
-            selectedSpot = nil
+        if (selectedObject != nil) {
+            removeAnnotations(findAnnotations(selectedObject!.identifier))
+            addAnnotation(selectedObject!, selected: false)
+            selectedObject = nil
         }
     }
 

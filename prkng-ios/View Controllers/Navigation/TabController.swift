@@ -329,10 +329,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
                 
     }
     
-    func didSelectSpot (spot : ParkingSpot) {
+    func didSelectObject (detailsObject : DetailObject) {
         
         loadHereTab()
-        hereViewController.updateDetails(spot)
+        hereViewController.updateDetails(detailsObject)
         
     }
     
