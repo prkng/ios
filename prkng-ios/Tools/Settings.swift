@@ -33,7 +33,8 @@ struct Settings {
     static let availableCities = [City.Montreal, City.QuebecCity]
     
     static let iosVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
-
+    static let screenScale: CGFloat = UIScreen.mainScreen().scale
+    
     static func selectedCity() -> City  {
         
         var city = NSUserDefaults.standardUserDefaults().objectForKey(SELECTED_CITY_KEY) as? String

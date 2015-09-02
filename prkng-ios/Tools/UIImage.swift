@@ -26,7 +26,7 @@ extension UIImage {
         let rect = CGRectMake(0, 0, newSize.width, newSize.height)
         
         // Actually do the resizing to the rect using the ImageContext stuff
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
+        UIGraphicsBeginImageContextWithOptions(newSize, false, Settings.screenScale)
         self.drawInRect(rect)
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -36,7 +36,7 @@ extension UIImage {
     
     class func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
         let rect = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
-        UIGraphicsBeginImageContext(rect.size)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, Settings.screenScale)
         let context = UIGraphicsGetCurrentContext()
         
         CGContextSetFillColorWithColor(context, color.CGColor)
@@ -51,7 +51,7 @@ extension UIImage {
     class func getRoundedRectImageFromImage(image: UIImage, rect:CGRect, cornerRadius:CGFloat) -> UIImage {
         
         let screenScale = UIScreen.mainScreen().scale
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, screenScale)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, Settings.screenScale)
         UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius).addClip()
         image.drawInRect(rect)
         let finalImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -61,7 +61,7 @@ extension UIImage {
 
     class func imageFromView(view: UIView) -> UIImage {
         
-        UIGraphicsBeginImageContext(view.bounds.size)
+        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, Settings.screenScale)
         view.layer.renderInContext(UIGraphicsGetCurrentContext())
         let viewImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -77,7 +77,7 @@ extension UIImage {
         let bounds = CGRect(x: 0, y: 0, width: root!.view.bounds.width, height: root!.view.bounds.height)
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: root!.view.bounds.width, height: root!.view.bounds.height),
-            true, 1)
+            true, Settings.screenScale)
         root!.view.drawViewHierarchyInRect(bounds,
             afterScreenUpdates: true)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
@@ -93,7 +93,7 @@ extension UIImage {
         label.text = text
         label.font = font
         
-        UIGraphicsBeginImageContext(self.size)
+        UIGraphicsBeginImageContextWithOptions(self.size, false, Settings.screenScale)
         self.drawInRect(drawRect)
         label.drawTextInRect(drawRect)
         var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -110,7 +110,7 @@ extension UIImage {
         label.textColor = color
         label.textAlignment = NSTextAlignment.Center
 
-        UIGraphicsBeginImageContext(self.size)
+        UIGraphicsBeginImageContextWithOptions(self.size, false, Settings.screenScale)
         self.drawInRect(drawRect)
         label.drawTextInRect(drawRect)
         var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()

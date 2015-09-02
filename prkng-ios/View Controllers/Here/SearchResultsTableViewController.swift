@@ -46,7 +46,7 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
         let bounds = CGRect(x: 0, y: -SearchFilterView.TOTAL_HEIGHT, width: root!.view.bounds.width, height: screenHeight)
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: root!.view.bounds.width, height: screenHeight - SearchFilterView.TOTAL_HEIGHT),
-            true, 1)
+            true, Settings.screenScale)
         root!.view.drawViewHierarchyInRect(bounds,
             afterScreenUpdates: true)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()

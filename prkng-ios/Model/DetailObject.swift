@@ -14,6 +14,7 @@ protocol DetailObject {
     
     var headerText: String { get }
     var headerIconName: String { get }
+    var doesHeaderIconWiggle: Bool { get }
     var headerIconSubtitle: String { get }
     
     var bottomLeftTitleText: String? { get }

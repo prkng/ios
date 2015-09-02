@@ -375,7 +375,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 let smallFont = Styles.FontFaces.regular(16)
                 let bigFont = Styles.Fonts.h2r
                 
-                let attributedString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: smallFont])
+                let attributedString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: smallFont, NSBaselineOffsetAttributeName: 5])
                 let number = NSMutableAttributedString(string: self.spot!.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: bigFont])
                 let perHour = NSMutableAttributedString(string: "/H", attributes: [NSFontAttributeName: smallFont])
                 let space = NSMutableAttributedString(string: " • ", attributes: [NSFontAttributeName: bigFont])

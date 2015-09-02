@@ -370,13 +370,19 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             })
             if let iconName = detailObject!.bottomRightIconName {
                 detailView.scheduleImageView.image = UIImage(named:iconName)
+            } else {
+                detailView.scheduleImageView.image = UIImage()
             }
             detailView.leftTopLabel.text = detailObject!.bottomLeftTitleText
                 
 
             detailView.titleLabel.text = activeDetailObject?.headerText
             updateDetailsTime()
-            detailView.checkinImageView.layer.wigglewigglewiggle()
+            if detailObject!.doesHeaderIconWiggle {
+                detailView.checkinImageView.layer.wigglewigglewiggle()
+            } else {
+                detailView.checkinImageView.layer.removeAllAnimations()
+            }
 
             hideModeSelection()
             
