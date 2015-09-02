@@ -15,7 +15,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     var mapMessageView: MapMessageView
     var canShowMapMessage: Bool = false
 
-    var prkModalViewController: PRKModalViewController?
+    var prkModalViewController: PRKModalDelegatedViewController?
     var firstUseMessageVC: HereFirstUseViewController?
     var detailView: SpotDetailView
     
@@ -32,7 +32,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     private var filterButtonImageName: String
     private var filterButtonText: String
     private var verticalRec: PRKVerticalGestureRecognizer
-    private var isShowingSchedule: Bool
+    private var isShowingModal: Bool
     private var timer: NSTimer?
     
     var delegate : HereViewControllerDelegate?
@@ -47,7 +47,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         modeSelection = SliderSelectionControl(titles: ["garages".localizedString, "on-street".localizedString, "car_sharing".localizedString])
         forceShowSpotDetails = false
         verticalRec = PRKVerticalGestureRecognizer()
-        isShowingSchedule = false
+        isShowingModal = false
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -95,7 +95,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         NSLog("HereViewController disappeared")
-        hideScheduleView()
+        hideModalView()
         hideSpotDetails()
     }
     
@@ -209,14 +209,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func bottomContainerTapped() {
         if let spot = activeDetailObject as? ParkingSpot {
-            showScheduleView(spot)
+            showModalView(spot)
         }
     }
     
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     func swipeDidBegin() {
         if let spot = activeDetailObject as? ParkingSpot {
-            setupScheduleView(spot)
+            setupModalView(spot)
         }
 
     }
@@ -226,23 +226,23 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func swipeDidEndUp() {
-        animateScheduleView()
+        animateModalView()
     }
     
     func swipeDidEndDown() {
         showSpotDetails()
     }
     
-    // MARK: Schedule/Agenda methods
-    func showScheduleView(spot : ParkingSpot?) {
-        setupScheduleView(spot)
-        animateScheduleView()
+    // MARK: Schedule/Agenda/Modal methods
+    func showModalView(spot : ParkingSpot?) {
+        setupModalView(spot)
+        animateModalView()
     }
     
-    func setupScheduleView(spot : ParkingSpot?) {
+    func setupModalView(detailObject : DetailObject?) {
         
-        if spot != nil {
-            self.prkModalViewController = PRKModalViewController(spot: spot!, view: self.view)
+        if let spot = detailObject as? ParkingSpot {
+            self.prkModalViewController = PRKModalViewController(spot: spot, view: self.view)
             self.view.addSubview(self.prkModalViewController!.view)
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
@@ -259,14 +259,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
     }
     
-    func animateScheduleView() {
+    func animateModalView() {
         
         adjustSpotDetailsWithDistanceFromBottom(-viewHeight, animated: true)
-        isShowingSchedule = true
+        isShowingModal = true
     }
     
     
-    func hideScheduleView () {
+    func hideModalView () {
         
         if(self.prkModalViewController == nil) {
             return
@@ -290,7 +290,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 self.prkModalViewController!.willMoveToParentViewController(nil)
                 self.prkModalViewController!.removeFromParentViewController()
                 self.prkModalViewController = nil
-                self.isShowingSchedule = false
+                self.isShowingModal = false
         })
         
     }
@@ -419,7 +419,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
         let parallaxOffset = fullLayout ? 0 : alpha * CGFloat(Styles.Sizes.spotDetailViewHeight)
         
-        if isShowingSchedule {
+        if isShowingModal {
             
             detailView.snp_updateConstraints {
                 (make) -> () in
@@ -447,7 +447,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             } else {
                 self.view.updateConstraints()
             }
-            if self.isShowingSchedule {
+            if self.isShowingModal {
                 self.detailView.alpha = (self.viewHeight/2 - abs(distance)) / (self.viewHeight/2)
             } else {
                 self.detailView.alpha = (self.viewHeight/3 - abs(distance)) / (self.viewHeight/3)

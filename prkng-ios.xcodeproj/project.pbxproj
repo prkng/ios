@@ -46,6 +46,8 @@
 		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
 		3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */; };
 		3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */; };
+		3EA8126D1B977E58002987EC /* LotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA8126C1B977E58002987EC /* LotViewController.swift */; };
+		3EA8126F1B978490002987EC /* LotHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA8126E1B978490002987EC /* LotHeaderView.swift */; };
 		3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAF45191B59388D003010D6 /* GeneralHelper.swift */; };
 		3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */; };
 		3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */; };
@@ -217,6 +219,8 @@
 		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaListViewController.swift; sourceTree = "<group>"; };
 		3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolygon.swift; sourceTree = "<group>"; };
+		3EA8126C1B977E58002987EC /* LotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotViewController.swift; sourceTree = "<group>"; };
+		3EA8126E1B978490002987EC /* LotHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotHeaderView.swift; sourceTree = "<group>"; };
 		3EAF45191B59388D003010D6 /* GeneralHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralHelper.swift; sourceTree = "<group>"; };
 		3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Abbreviations.strings; sourceTree = "<group>"; };
 		3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
@@ -478,6 +482,15 @@
 			path = "Navigation/Agenda List";
 			sourceTree = "<group>";
 		};
+		3EA8126B1B977DE0002987EC /* Lot */ = {
+			isa = PBXGroup;
+			children = (
+				3EA8126C1B977E58002987EC /* LotViewController.swift */,
+				3EA8126E1B978490002987EC /* LotHeaderView.swift */,
+			);
+			path = Lot;
+			sourceTree = "<group>";
+		};
 		BF0B47221A7E903900E94B3C /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -503,6 +516,7 @@
 				BFEE21AA1B1F82640029BA71 /* Report */,
 				BF8F78111B00D2CF00A85197 /* My Car */,
 				BFB0958D1AFA3F79007F1D16 /* Login */,
+				3EA8126B1B977DE0002987EC /* Lot */,
 				BF522FC51AE59B65001DB93E /* Intro */,
 				BF7170B01AE42DBF00B922CA /* Settings */,
 				BF73AE511B289CCA00F4CD79 /* User */,
@@ -1049,6 +1063,7 @@
 				BF9C46F71B32F72200DCF858 /* PRKWebViewController.swift in Sources */,
 				BF8F78131B00E07800A85197 /* CheckinMessageViewController.swift in Sources */,
 				BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */,
+				3EA8126F1B978490002987EC /* LotHeaderView.swift in Sources */,
 				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
 				3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */,
 				3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */,
@@ -1122,6 +1137,7 @@
 				3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */,
 				BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */,
 				BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */,
+				3EA8126D1B977E58002987EC /* LotViewController.swift in Sources */,
 				3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */,
 				BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */,
 				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,

@@ -8,10 +8,10 @@
 
 import UIKit
 
-class PRKModalViewController: AbstractViewController, ModalHeaderViewDelegate, PRKVerticalGestureRecognizerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegate, PRKVerticalGestureRecognizerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
     private var _delegate : PRKModalViewControllerDelegate?
-    var delegate : PRKModalViewControllerDelegate? {
+    override var delegate : PRKModalViewControllerDelegate? {
         set(value) {
             _delegate = value
             for VC in viewControllers {
@@ -190,7 +190,7 @@ class PRKModalViewController: AbstractViewController, ModalHeaderViewDelegate, P
     //MARK: ModalHeaderViewDelegate
     
     func tappedBackButton() {
-        self.delegate?.hideScheduleView()
+        self.delegate?.hideModalView()
     }
     
     func tappedRightButton() {
@@ -217,7 +217,7 @@ class PRKModalViewController: AbstractViewController, ModalHeaderViewDelegate, P
     }
     
     func swipeDidEndDown() {
-        self.delegate?.hideScheduleView()
+        self.delegate?.hideModalView()
     }
 
     
@@ -270,9 +270,14 @@ class PRKModalViewController: AbstractViewController, ModalHeaderViewDelegate, P
     
 }
 
+class PRKModalDelegatedViewController: AbstractViewController {
+    
+    var delegate : PRKModalViewControllerDelegate?
+}
+
 protocol PRKModalViewControllerDelegate {
     
-    func hideScheduleView()
+    func hideModalView()
     func shouldAdjustTopConstraintWithOffset(distanceFromTop: CGFloat, animated: Bool)
 }
 
