@@ -60,6 +60,7 @@
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
+		3EF4A7D11B97AD2700CE4870 /* PRKTimeSpanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
@@ -234,6 +235,7 @@
 		3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
+		3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTimeSpanView.swift; sourceTree = "<group>"; };
 		3EF64E7A1B6A88FD002B010B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -634,6 +636,7 @@
 				3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */,
 				3E9509C51B56EE940088E336 /* PRKTextField.swift */,
 				3E9509C91B570A6A0088E336 /* PRKInputForm.swift */,
+				3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */,
 			);
 			path = "Common Views";
 			sourceTree = "<group>";
@@ -1083,6 +1086,7 @@
 				BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
 				3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */,
+				3EF4A7D11B97AD2700CE4870 /* PRKTimeSpanView.swift in Sources */,
 				3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */,
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,

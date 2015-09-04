@@ -113,6 +113,12 @@ struct ViewFactory {
         button.setImage(UIImage(named: "btn_info_outline"), forState: .Normal)
         return button
     }
+    
+    static func directionsButton() -> UIButton {
+        let button = UIButton()
+        button.setImage(UIImage(named:"btn_directions"), forState: .Normal)
+        return button
+    }
 
     static func bigTransparentButton () -> UIButton {
         let button = UIButton ()

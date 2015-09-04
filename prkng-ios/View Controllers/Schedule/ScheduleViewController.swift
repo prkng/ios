@@ -179,7 +179,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
     
     func updateValues () {
         
-        var columnTitles = ScheduleHelper.sortedDayAbbreviations()
+        var columnTitles = DateUtil.sortedDayAbbreviations()
         var index = 0
         for columnView in columnViews {
             columnView.setTitle(columnTitles[index++])
@@ -237,64 +237,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
 //MARK: Helper class for managing and parsing schedules
 
 class ScheduleHelper {
-    
-    static func sortedDays() -> Array<String> {
-        var array : Array<String> = []
         
-        var days : Array<String> = []
-        
-        days.append("monday".localizedString)
-        days.append("tuesday".localizedString)
-        days.append("wednesday".localizedString)
-        days.append("thursday".localizedString)
-        days.append("friday".localizedString)
-        days.append("saturday".localizedString)
-        days.append("sunday".localizedString)
-        
-        let today = DateUtil.dayIndexOfTheWeek()
-        
-        for var i = today; i < 7; ++i {
-            array.append(days[i])
-        }
-        
-        for var j = 0; j < today; ++j {
-            array.append(days[j])
-        }
-        
-        array[0] = "today".localizedString
-        array[1] = "tomorrow".localizedString
-
-        return array
-    }
-    
-    static func sortedDayAbbreviations() -> Array<String> {
-        var array : Array<String> = []
-        
-        var days : Array<String> = []
-        
-        days.append("monday".localizedString.uppercaseString[0...2])
-        days.append("tuesday".localizedString.uppercaseString[0...2])
-        days.append("wednesday".localizedString.uppercaseString[0...2])
-        days.append("thursday".localizedString.uppercaseString[0...2])
-        days.append("friday".localizedString.uppercaseString[0...2])
-        days.append("saturday".localizedString.uppercaseString[0...2])
-        days.append("sunday".localizedString.uppercaseString[0...2])
-        
-        let today = DateUtil.dayIndexOfTheWeek()
-        
-        for var i = today; i < 7; ++i {
-            array.append(days[i])
-        }
-        
-        for var j = 0; j < today; ++j {
-            array.append(days[j])
-        }
-        
-        array[0] = "this_day".localizedString.uppercaseString
-        
-        return array
-    }
-    
     static func getAgendaItems(spot: ParkingSpot) -> [AgendaItem] {
         
         var agendaItems = [AgendaItem]()

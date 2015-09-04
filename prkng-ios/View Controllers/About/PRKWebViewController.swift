@@ -49,7 +49,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
         } else {
             url = NSURL(string : englishUrl)!
         }
-        SVProgressHUD.showWithMaskType(.Clear)
+        SVProgressHUD.show()
         webView.loadRequest(NSURLRequest(URL: url))
         
     }

@@ -315,7 +315,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         }
         
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-        SVProgressHUD.showWithMaskType(.Clear)
+        SVProgressHUD.show()
         
         let resized = capturedImage!.resizeImage(CGSizeMake(1024, 768))
         

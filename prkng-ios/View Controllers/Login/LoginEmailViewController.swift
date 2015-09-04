@@ -163,7 +163,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
                 
                 if Int(count(email)) > 4 {
                     
-                    SVProgressHUD.showWithMaskType(.Clear)
+                    SVProgressHUD.show()
                     
                     UserOperations.resetPassword(email, completion: { (completed) -> Void in
                         

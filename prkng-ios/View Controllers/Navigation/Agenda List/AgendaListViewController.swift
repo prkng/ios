@@ -129,7 +129,7 @@ class AgendaItem {
     }
     
     func dayText() -> String {
-        let days = ScheduleHelper.sortedDays()
+        let days = DateUtil.sortedDays()
         if dayIndex < days.count && dayIndex > -1 {
             return days[dayIndex]
         }

@@ -133,7 +133,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             
             if (!Settings.firstCheckin()) {
                 SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+                SVProgressHUD.show()
             }
             
             let setSpot = {(var spot: ParkingSpot?) -> () in

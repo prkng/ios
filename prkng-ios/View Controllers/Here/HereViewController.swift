@@ -204,19 +204,29 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func topContainerTapped() {
-        checkin()
-    }
-    
-    func bottomContainerTapped() {
-        if let spot = activeDetailObject as? ParkingSpot {
-            showModalView(spot)
+        if activeDetailObject != nil &&  activeDetailObject is Lot {
+            showModalView(activeDetailObject)
+        } else {
+            checkin()
         }
     }
     
+    func bottomContainerTapped() {
+        if activeDetailObject != nil {
+            showModalView(activeDetailObject)
+        }
+    }
+    
+    
     //MARK: PRKVerticalGestureRecognizerDelegate methods
+    
+    func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
+        return false
+    }
+    
     func swipeDidBegin() {
-        if let spot = activeDetailObject as? ParkingSpot {
-            setupModalView(spot)
+        if activeDetailObject != nil {
+            setupModalView(activeDetailObject)
         }
 
     }
@@ -234,8 +244,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     // MARK: Schedule/Agenda/Modal methods
-    func showModalView(spot : ParkingSpot?) {
-        setupModalView(spot)
+    func showModalView(detailObject : DetailObject?) {
+        setupModalView(detailObject)
         animateModalView()
     }
     
@@ -243,6 +253,21 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
         if let spot = detailObject as? ParkingSpot {
             self.prkModalViewController = PRKModalViewController(spot: spot, view: self.view)
+            self.view.addSubview(self.prkModalViewController!.view)
+            self.prkModalViewController!.willMoveToParentViewController(self)
+            self.prkModalViewController!.delegate = self
+            
+            self.prkModalViewController!.view.snp_makeConstraints({ (make) -> () in
+                make.top.equalTo(self.detailView.snp_bottom)
+                make.size.equalTo(self.view)
+                make.left.equalTo(self.view)
+                make.right.equalTo(self.view)
+            })
+            
+            self.prkModalViewController!.view.layoutIfNeeded()
+            
+        } else if let lot = detailObject as? Lot {
+            self.prkModalViewController = LotViewController(lot: lot, view: self.view)
             self.view.addSubview(self.prkModalViewController!.view)
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
@@ -316,7 +341,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             
             
             SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+            SVProgressHUD.show()
             
             Settings.checkOut()
             

@@ -118,6 +118,22 @@ extension UIImage {
         return newImage
         
     }
+    
+    static func imageFromGradient(size: CGSize, fromColor: UIColor, toColor: UIColor) -> UIImage {
+        
+        var layer = CAGradientLayer()
+        layer.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+        layer.colors = [fromColor.CGColor, toColor.CGColor]
+        
+        UIGraphicsBeginImageContext(size)
+        layer.renderInContext(UIGraphicsGetCurrentContext())
+//        let image = UIGraphicsGetImageFromCurrentContext()
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+
+        UIGraphicsEndImageContext()
+
+        return image
+    }
 
     
 }

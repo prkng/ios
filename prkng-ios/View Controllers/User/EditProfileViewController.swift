@@ -236,7 +236,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     
     func logoutButtonTapped(sender : UIButton) {
         
-        SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+        SVProgressHUD.show()
         
         AuthUtility.saveAuthToken(nil)
         AuthUtility.saveUser(nil)
@@ -255,7 +255,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             return
         }
         
-        SVProgressHUD.showWithMaskType(.Clear)
+        SVProgressHUD.show()
         
         let user = AuthUtility.getUser()!
         

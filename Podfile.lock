@@ -21,6 +21,7 @@ PODS:
     - GoogleSymbolUtilities (~> 1.0)
     - GoogleUtilities (~> 1.0)
   - GoogleAnalytics (3.13.0)
+  - GoogleMaps (1.10.2)
   - GoogleNetworkingUtilities (1.0.0):
     - GoogleSymbolUtilities (~> 1.0)
   - GoogleSymbolUtilities (1.0.0)
@@ -36,7 +37,7 @@ PODS:
     - GRMustache (= 7.3.0)
     - SMCalloutView (= 2.0)
   - MarqueeLabel (2.2.5)
-  - MBXMapKit (0.7.0)
+  - MBXMapKit (0.8.0)
   - pop (1.0.7)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
@@ -49,6 +50,7 @@ DEPENDENCIES:
   - CocoaLumberjack
   - GeoJSONSerialization
   - Google/Analytics
+  - GoogleMaps
   - GZIP
   - IQKeyboardManager (= 3.2.4)
   - Mapbox-iOS-SDK (= 1.6.0)
@@ -65,6 +67,7 @@ SPEC CHECKSUMS:
   GeoJSONSerialization: 55a3d24fe9af26508e3af76873114b39b13ba479
   Google: 875f5a8ade86dd02e36586e4a54814843938c7f6
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
+  GoogleMaps: 5c92e599b07b0a2a9b367c5dd128edc629bddfea
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
   GoogleSymbolUtilities: a7b0feed1fe667c8d5e647177938d0ecd62d6948
   GoogleUtilities: e3475cd4d45134221d2f3f3626095a1c49b62041
@@ -74,7 +77,7 @@ SPEC CHECKSUMS:
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   Mapbox-iOS-SDK: ee136ca5b7f853456b50dfd7a7f0e243288cf86f
   MarqueeLabel: 65ca60ee9ba554be34f35339004c6c9fe6366a31
-  MBXMapKit: 1fd570fd955fb4475b7303360b3b96afb1ff9634
+  MBXMapKit: 56040108ea7fbb87f98ea896d620e0d4290c2dbd
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SMCalloutView: f758edd824b18bf4f42de00df1e299861a2d1950

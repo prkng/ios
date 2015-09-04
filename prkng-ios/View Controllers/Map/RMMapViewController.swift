@@ -577,7 +577,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     if let tabController = self.parentViewController as? TabController {
                         if tabController.activeTab() == PrkTab.Here {
                             SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+                            SVProgressHUD.show()
                             
                             if self.canShowMapMessage {
                                 if underMaintenance {

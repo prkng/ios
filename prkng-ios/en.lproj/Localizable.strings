@@ -162,6 +162,7 @@
 "prkng_share_copy" = "With prkng app, parking has never been so easy. Available in Montreal & Quebec!";
 
 "all" = "all";
+"hour" = "hour";
 "hourly" = "hourly";
 "daily" = "Daily";
 "metered" = "metered";
@@ -172,6 +173,10 @@
 "search_bar_text" = "Search or filter";
 "open" = "Open";
 "closed" = "Closed";
+"clerk" = "Clerk";
+"indoor" = "Indoor";
+"valet" = "Valet";
+"handicap" = "Handicap";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";
 "car_sharing_enabled_text" = "Car sharing is enabled";
@@ -195,3 +200,6 @@
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";
+
+//this section is for format strings
+"capacity_x_places" = "CAPACITY: %d PLACES";

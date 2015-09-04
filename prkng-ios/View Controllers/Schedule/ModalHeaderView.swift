@@ -14,6 +14,9 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     var titleLabel: MarqueeLabel
     private var leftImageView: UIImageView
     private var rightImageView: UIImageView
+    private var rightView: UIView
+    var rightViewTitleLabel: UILabel
+    var rightViewPrimaryLabel: UILabel
     private var materialDesignButton: UIButton
     private var isRightImageViewRotated: Bool = false
     
@@ -21,6 +24,12 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
+    
+    var showsRightButton: Bool {
+        didSet {
+            rightImageView.hidden = !showsRightButton
+        }
+    }
     
     convenience init() {
         self.init(frame: CGRectZero)
@@ -35,8 +44,13 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         titleLabel = MarqueeLabel()
         leftImageView = UIImageView()
         rightImageView = UIImageView()
+        rightView = UIView()
+        rightViewTitleLabel = UILabel()
+        rightViewPrimaryLabel = UILabel()
         
         materialDesignButton = ViewFactory.checkInButton()
+        
+        showsRightButton = true
         
         super.init(frame: frame)
         
@@ -74,6 +88,17 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         rightImageView.contentMode = UIViewContentMode.Center
         topContainer.addSubview(rightImageView)
 
+        topContainer.addSubview(rightView)
+        
+        rightViewTitleLabel.font = Styles.FontFaces.light(11)
+        rightViewTitleLabel.textColor = Styles.Colors.cream1
+        rightViewTitleLabel.textAlignment = NSTextAlignment.Center
+        rightView.addSubview(rightViewTitleLabel)
+        
+        rightViewPrimaryLabel.textColor = Styles.Colors.cream1
+        rightViewPrimaryLabel.textAlignment = NSTextAlignment.Center
+        rightView.addSubview(rightViewPrimaryLabel)
+        
         topContainer.addSubview(materialDesignButton)
         topContainer.sendSubviewToBack(materialDesignButton)
 
@@ -90,12 +115,13 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
             make.top.equalTo(self)
             make.left.equalTo(self)
             make.right.equalTo(self)
-            make.height.equalTo(Styles.Sizes.modalViewHeaderHeight)
+            make.height.equalTo(self)
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.leftImageView.snp_right).with.offset(4)
-            make.right.equalTo(self.rightImageView.snp_left).with.offset(-10)
+            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).with.offset(-10)
+            make.right.lessThanOrEqualTo(self.rightView.snp_left).with.offset(-10)
             make.bottom.equalTo(self.topContainer).with.offset(-20)
         }
         
@@ -111,6 +137,22 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
             make.bottom.equalTo(self.topContainer).with.offset(-25)
         }
         
+        rightView.snp_makeConstraints { (make) -> () in
+            make.size.equalTo(CGSize(width:34, height:40))
+            make.right.equalTo(self.topContainer).with.offset(-42)
+            make.centerY.equalTo(self.topContainer)
+        }
+        
+        rightViewTitleLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.rightView)
+            make.centerX.equalTo(self.rightView)
+        }
+
+        rightViewPrimaryLabel.snp_makeConstraints { (make) -> () in
+            make.bottom.equalTo(self.rightView)
+            make.centerX.equalTo(self.rightView)
+        }
+
         materialDesignButton.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.topContainer)
         }

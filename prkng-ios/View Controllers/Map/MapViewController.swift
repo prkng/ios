@@ -37,7 +37,7 @@ class MapViewController: AbstractViewController {
             self.view.addSubview(mapModeImageView!)
             
             SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-            SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
+            SVProgressHUD.show()
 
             mapModeDidChange { () -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in

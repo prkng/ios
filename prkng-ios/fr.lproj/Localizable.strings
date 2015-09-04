@@ -165,6 +165,7 @@
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec! http://prk.ng";
 
 "all" = "tous";
+"hour" = "heure";
 "hourly" = "1 heure";
 "daily" = "Daily***";
 "metered" = "Tarifé";
@@ -175,6 +176,10 @@
 "search_bar_text" = "***'Search or filter'Lieu ou adresse";
 "open" = "***Open";
 "closed" = "***Closed";
+"clerk" = "***Clerk";
+"indoor" = "***Indoor";
+"valet" = "***Valet";
+"handicap" = "***Handicap";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
 "car_sharing_enabled_text" = "Auto-partage est selectionné";
@@ -198,3 +203,6 @@
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
+
+//this section is for format strings
+"capacity_x_places" = "***CAPACITÉ : %d PLACES";

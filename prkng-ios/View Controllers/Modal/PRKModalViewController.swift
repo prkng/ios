@@ -202,6 +202,10 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
+    func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
+        return false
+    }
+    
     func swipeDidBegin() {
         
     }

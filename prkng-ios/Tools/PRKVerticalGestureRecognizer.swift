@@ -60,32 +60,39 @@ class PRKVerticalGestureRecognizer: NSObject {
         
         if panRec.state == UIGestureRecognizerState.Began {
             
-            beginTap = tap
-            self.delegate?.swipeDidBegin()
+            if self.delegate != nil && !self.delegate!.shouldIgnoreSwipe(tap) {
+                beginTap = tap
+                self.delegate?.swipeDidBegin()
+            }
             
         } else if panRec.state == UIGestureRecognizerState.Changed {
             
-            let distance = tap.yDistanceToPointWithDirection(beginTap!)
-            self.delegate?.swipeInProgress(distance)
-            
-            if lastPanTap != nil {
-                let distanceSinceLastTap = tap.yDistanceToPointWithDirection(lastPanTap!)
-                if distance != 0 {
+            if beginTap != nil {
+                let distance = tap.yDistanceToPointWithDirection(beginTap!)
+                self.delegate?.swipeInProgress(distance)
+                
+                if lastPanTap != nil {
+                    let distanceSinceLastTap = tap.yDistanceToPointWithDirection(lastPanTap!)
+                    if distance != 0 {
+                        lastPanTap = tap
+                    }
+                    panDirectionIsUp = distanceSinceLastTap > 0
+                } else {
                     lastPanTap = tap
+                    panDirectionIsUp = distance > 0
                 }
-                panDirectionIsUp = distanceSinceLastTap > 0
-            } else {
-                lastPanTap = tap
-                panDirectionIsUp = distance > 0
             }
             
         } else if panRec.state == UIGestureRecognizerState.Ended {
             
-            if panDirectionIsUp {
-                self.delegate?.swipeDidEndUp()
+            if beginTap != nil {
                 
-            } else {
-                self.delegate?.swipeDidEndDown()
+                if panDirectionIsUp {
+                    self.delegate?.swipeDidEndUp()
+                    
+                } else {
+                    self.delegate?.swipeDidEndDown()
+                }
             }
             
         } else {
@@ -98,6 +105,7 @@ class PRKVerticalGestureRecognizer: NSObject {
 
 protocol PRKVerticalGestureRecognizerDelegate: UIGestureRecognizerDelegate {
     
+    func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool
     func swipeDidBegin()
     func swipeInProgress(yDistanceFromBeginTap: CGFloat)
     func swipeDidEndUp()

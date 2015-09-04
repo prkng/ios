@@ -8,11 +8,40 @@
 
 import UIKit
 
-enum LotAttribute: String {
-    case Clerk = "clerk"//.localizedString
-    case Indoor = "indoor"//.localizedString
-    case Valet = "valet"//.localizedString
-    case Handicap = "handicap"//.localizedString
+struct LotAttribute {
+
+    enum LotAttributeType: Int {
+        case Indoor = 0
+        case Handicap
+        case Clerk
+        case Valet
+    }
+    
+    var type: LotAttributeType
+    var enabled: Bool
+    
+    var name: String {
+        get {
+            switch (type) {
+            case .Indoor    : return "indoor"//.localizedString
+            case .Handicap  : return "handicap"//.localizedString
+            case .Clerk     : return "clerk"//.localizedString
+            case .Valet     : return "valet"//.localizedString
+                
+            }
+        }
+    }
+    
+    static func typeFromName(name: String) -> LotAttributeType? {
+        switch (name.lowercaseString) {
+        case "clerk"    : return .Clerk
+        case "indoor"   : return .Indoor
+        case "valet"    : return .Valet
+        case "handicap" : return .Handicap
+        default         : return nil
+        }
+    }
+    
 }
 
 func ==(lhs: Lot, rhs: Lot) -> Bool {
@@ -25,13 +54,14 @@ class Lot: NSObject, Hashable, DetailObject {
     var identifier: String
     var name: String
     var address: String
-    var attributes: [LotAttribute: Bool]
+    var capacity: Int
+    var attributes: [LotAttribute]
     var agenda: [LotAgendaDay]
     var coordinate: CLLocationCoordinate2D
 
     var isCurrentlyOpen: Bool {
         
-        let currentDay = DateUtil.dayIndexOfTheWeekStartingOnMonday()
+        let currentDay = DateUtil.dayIndexOfTheWeek()
         let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
         
         let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
@@ -49,7 +79,7 @@ class Lot: NSObject, Hashable, DetailObject {
     //returns the "main" rate ie the one we want to display
     var mainRate: Float {
         
-        let currentDay = DateUtil.dayIndexOfTheWeekStartingOnMonday()
+        let currentDay = DateUtil.dayIndexOfTheWeek()
         let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
         
         let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
@@ -64,9 +94,26 @@ class Lot: NSObject, Hashable, DetailObject {
         
         return 0
     }
+    var mainHourlyRate: Float {
+        
+        let currentDay = DateUtil.dayIndexOfTheWeek()
+        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
+        
+        let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
+        
+        for day in dayAgenda {
+            if currentTimeInterval >= day.startHour
+                && currentTimeInterval <= day.endHour
+                && day.hourlyRate != nil {
+                    return day.hourlyRate!
+            }
+        }
+        
+        return 0
+    }
     var endTimeToday: NSTimeInterval {
         
-        let currentDay = DateUtil.dayIndexOfTheWeekStartingOnMonday()
+        let currentDay = DateUtil.dayIndexOfTheWeek()
         let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
         
         let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
@@ -86,7 +133,7 @@ class Lot: NSObject, Hashable, DetailObject {
         var beforeItem: LotAgendaDay?
         var afterItem: LotAgendaDay?
         
-        let currentDay = DateUtil.dayIndexOfTheWeekStartingOnMonday()
+        let currentDay = DateUtil.dayIndexOfTheWeek()
         let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
         
         let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
@@ -110,17 +157,7 @@ class Lot: NSObject, Hashable, DetailObject {
 //            }
 //        }
         
-        var agendaSortedByToday = [LotAgendaDay]()
-        
-        for var i = currentDay; i < 8; ++i {
-            let itemsForDay = LotAgendaDay.getAgendaForDay(i, agenda: self.agenda)
-            agendaSortedByToday += itemsForDay
-        }
-        
-        for var j = 1; j < currentDay; ++j {
-            let itemsForDay = LotAgendaDay.getAgendaForDay(j, agenda: self.agenda)
-            agendaSortedByToday += itemsForDay
-        }
+        var agendaSortedByToday = self.sortedAgenda
 
         for day in agendaSortedByToday {
             if currentTimeInterval >= day.startHour
@@ -134,6 +171,58 @@ class Lot: NSObject, Hashable, DetailObject {
         }
         
         return -1
+    }
+    
+    var sortedAgenda: [LotAgendaDay] {
+        get {
+            
+            var agendaSortedByToday = [LotAgendaDay]()
+            let currentDay = DateUtil.dayIndexOfTheWeek()
+            
+            for var i = currentDay; i < 7; ++i {
+                let itemsForDay = LotAgendaDay.getAgendaForDay(i, agenda: self.agenda)
+                agendaSortedByToday += itemsForDay
+            }
+            
+            for var j = 0; j < currentDay; ++j {
+                let itemsForDay = LotAgendaDay.getAgendaForDay(j, agenda: self.agenda)
+                agendaSortedByToday += itemsForDay
+            }
+            
+            return agendaSortedByToday
+        }
+    }
+    
+    //aggregates the open times and returns a list of 7 nullable tuples with the total open times
+    //optionally sorted
+    func openTimes(sortedByToday: Bool) -> [(NSTimeInterval, NSTimeInterval)] {
+        
+        var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
+        let agenda = sortedByToday ? self.sortedAgenda : self.agenda
+        let groupedAgenda = LotAgendaDay.groupedAgenda(self.sortedAgenda)
+        for group in groupedAgenda {
+            
+            var earliestStartTime: NSTimeInterval = 24*3600
+            var latestEndTime: NSTimeInterval = 0
+            
+            for item in group {
+                if item.startHour < earliestStartTime {
+                    earliestStartTime = item.startHour
+                }
+                if item.endHour > latestEndTime {
+                    latestEndTime = item.endHour
+                }
+            }
+            
+            if latestEndTime > 0 {
+                timeIntervals.append((earliestStartTime, latestEndTime))
+            } else {
+                timeIntervals.append((0, 0))
+            }
+        }
+        
+        return timeIntervals
+
     }
     
 
@@ -178,10 +267,12 @@ class Lot: NSObject, Hashable, DetailObject {
         self.json = lot.json
         self.identifier = lot.identifier
         self.coordinate = lot.coordinate
+        self.capacity = lot.capacity
         self.address = lot.address
         self.agenda = lot.agenda
         self.attributes = lot.attributes
         self.name = lot.name
+        
     }
     
     init(json: JSON) {
@@ -190,10 +281,11 @@ class Lot: NSObject, Hashable, DetailObject {
         self.identifier = json["id"].stringValue
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
         self.address = json["properties"]["address"].stringValue
+        self.capacity = json["properties"]["capacity"].intValue
         
         self.agenda = [LotAgendaDay]()
         for attr in json["properties"]["agenda"] {
-            let day = attr.0.toInt()!
+            let day = attr.0.toInt()! - 1 //this is 1-indexed on the server, convert it to 0-index
             for item in attr.1.arrayValue {
                 let hourly = item["hourly"].float
                 let max = item["max"].float
@@ -210,11 +302,15 @@ class Lot: NSObject, Hashable, DetailObject {
         
         LotAgendaDay.getAgendaForDay(5, agenda: self.agenda)
 
-        self.attributes = [LotAttribute: Bool]()
+        self.attributes = [LotAttribute]()
         for attr in json["properties"]["attrs"] {
-            let attribute = LotAttribute(rawValue: attr.0)!
-            let value = attr.1.boolValue
-            self.attributes.updateValue(value, forKey: attribute)
+            let attributeType = LotAttribute.typeFromName(attr.0)
+            assert(attributeType != nil, "Cannot parse lot attribute type: '" + attr.0 + "'" )
+            let attribute = LotAttribute(type: attributeType!, enabled: attr.1.boolValue)
+            self.attributes.append(attribute)
+        }
+        self.attributes.sort { (left, right) -> Bool in
+            left.type.rawValue < right.type.rawValue
         }
 
         self.name = json["properties"]["name"].stringValue
@@ -250,6 +346,19 @@ class LotAgendaDay: Printable, DebugPrintable {
         
         return agendaForDay
 
+    }
+    
+    //returns the sorted agenda as an array of arrays
+    //ex: [day 0: [LotAgendaDay], day 1: [LotAgendaDay], etc by day number
+    static func groupedAgenda(agenda: [LotAgendaDay]) -> [[LotAgendaDay]] {
+        var groupedAgenda = [[LotAgendaDay]]()
+        let startIndex = agenda[0].dayIndex
+        for i in Range(start: startIndex, end: (7+startIndex)) {
+            let index = i % 7
+            let agendaForDay = LotAgendaDay.getAgendaForDay(index, agenda: agenda)
+            groupedAgenda.append(agendaForDay)
+        }
+        return groupedAgenda
     }
     
     var description: String { get {
