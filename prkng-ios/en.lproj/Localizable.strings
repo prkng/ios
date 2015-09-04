@@ -194,6 +194,11 @@
 "camera" = "Camera";
 "enable_camera_message" = "Please allow access to your camera to report an error.";
 
+"directions" = "Directions";
+"directions_app_message" = "Which app do you want to use for navigation?";
+"directions_apple_maps_message" = "Use Apple Maps";
+"directions_google_maps_message" = "Use Google Maps";
+
 "provided_by_foursquare" = "provided by foursquare";
 
 "on-street" = "On-Street";

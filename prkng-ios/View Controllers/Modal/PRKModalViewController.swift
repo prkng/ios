@@ -276,7 +276,12 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
 
 class PRKModalDelegatedViewController: AbstractViewController {
     
-    var delegate : PRKModalViewControllerDelegate?
+    var TOP_PARALLAX_HEIGHT: CGFloat = 0
+    var FULL_HEIGHT: CGFloat = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
+    var FULL_WIDTH: CGFloat = UIScreen.mainScreen().bounds.width
+
+    var delegate: PRKModalViewControllerDelegate?
+    var topParallaxView: UIView? { get { return nil } }
 }
 
 protocol PRKModalViewControllerDelegate {

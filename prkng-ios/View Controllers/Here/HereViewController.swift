@@ -69,7 +69,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        modeSelection.selectOption(modeSelection.buttons[1], animated: false)
+        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
         
         if (Settings.firstMapUse()) {
             Settings.setFirstMapUsePassed(true)
@@ -233,6 +233,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
         adjustSpotDetailsWithDistanceFromBottom(-yDistanceFromBeginTap, animated: false)
+        
+        //parallax for the top image/street view!
+        let topViewOffset = (yDistanceFromBeginTap / prkModalViewController!.FULL_HEIGHT) * prkModalViewController!.TOP_PARALLAX_HEIGHT
+        prkModalViewController?.topParallaxView?.snp_updateConstraints { (make) -> () in
+            make.top.equalTo(self.prkModalViewController!.view).with.offset(prkModalViewController!.TOP_PARALLAX_HEIGHT - topViewOffset)
+        }
+        prkModalViewController?.topParallaxView?.layoutIfNeeded()
+
     }
     
     func swipeDidEndUp() {
@@ -250,6 +258,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func setupModalView(detailObject : DetailObject?) {
+        
+        //this prevents the "double modal view" bug that we sometimes see
+        self.prkModalViewController?.view.removeFromSuperview()
+        self.prkModalViewController?.willMoveToParentViewController(nil)
+        self.prkModalViewController?.removeFromParentViewController()
+        self.prkModalViewController = nil
         
         if let spot = detailObject as? ParkingSpot {
             self.prkModalViewController = PRKModalViewController(spot: spot, view: self.view)
@@ -288,6 +302,18 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
         adjustSpotDetailsWithDistanceFromBottom(-viewHeight, animated: true)
         isShowingModal = true
+        
+        //fix parallax effect just in case
+        prkModalViewController?.topParallaxView?.snp_updateConstraints { (make) -> () in
+            make.top.equalTo(self.prkModalViewController!.view)
+        }
+        UIView.animateWithDuration(0.2,
+            animations: { () -> Void in
+                prkModalViewController?.topParallaxView?.updateConstraints()
+            },
+            completion: nil
+        )
+
     }
     
     

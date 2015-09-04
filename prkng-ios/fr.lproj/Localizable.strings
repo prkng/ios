@@ -197,6 +197,11 @@
 "camera" = "Appareil photo";
 "enable_camera_message" = "Pour signaler une erreur, veuillez autoriser l'accès à votre appareil photo.";
 
+"directions" = "***Directions";
+"directions_app_message" = "***Which app do you want to use for navigation?";
+"directions_apple_maps_message" = "***Use Apple Maps";
+"directions_google_maps_message" = "***Use Google Maps";
+
 "provided_by_foursquare" = "***résultats par foursquare";
 
 "on-street" = "***On-Street";

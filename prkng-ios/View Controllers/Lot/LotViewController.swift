@@ -15,6 +15,11 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     var lot : Lot
     var parentView: UIView
     
+    override var topParallaxView: UIView? { get {
+        return topImageView
+        }
+    }
+    
     private var topImageView = GMSPanoramaView(frame: CGRectZero)
     private var topGradient = UIImageView()
     private var directionsButton = ViewFactory.directionsButton()
@@ -32,9 +37,6 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
 
     private var verticalRec: PRKVerticalGestureRecognizer
     private static let HEADER_HEIGHT: CGFloat = 70
-    private static let FULL_WIDTH: CGFloat = UIScreen.mainScreen().bounds.width
-    private static let TOP_IMAGE_HEIGHT: CGFloat = UIScreen.mainScreen().bounds.height - (HEADER_HEIGHT + 30 + 50 + 185 + 52) - CGFloat(Styles.Sizes.tabbarHeight)
-
     
     init(lot: Lot, view: UIView) {
         self.lot = lot
@@ -42,6 +44,9 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         headerView = ModalHeaderView()
         verticalRec = PRKVerticalGestureRecognizer()
         super.init(nibName: nil, bundle: nil)
+
+        self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotViewController.HEADER_HEIGHT + 30 + 50 + 185 + 52) - CGFloat(Styles.Sizes.tabbarHeight)
+
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -69,7 +74,6 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     
     override func loadView() {
         self.view = UIView()
-        view.backgroundColor = Styles.Colors.stone
         setupViews()
         setupConstraints()
     }
@@ -80,7 +84,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         topImageView.moveNearCoordinate(lot.coordinate)
         
         view.addSubview(topGradient)
-        topGradient.image = UIImage.imageFromGradient(CGSize(width: LotViewController.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
+        topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
         
         var operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
         var operatorString = NSMutableAttributedString(string: lot.lotOperator, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
@@ -167,11 +171,11 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.top.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(LotViewController.TOP_IMAGE_HEIGHT)
+            make.height.equalTo(self.TOP_PARALLAX_HEIGHT)
         }
         
         topGradient.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.topImageView)
+            make.bottom.equalTo(self.headerView.snp_top)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(65)
@@ -179,17 +183,17 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         topLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).with.offset(34)
-            make.bottom.equalTo(self.topImageView).with.offset(-24)
+            make.bottom.equalTo(self.headerView.snp_top).with.offset(-24)
         }
         
         directionsButton.snp_makeConstraints { (make) -> () in
             make.right.equalTo(self.view).with.offset(-30)
-            make.bottom.equalTo(self.topImageView).with.offset(-16)
+            make.bottom.equalTo(self.headerView.snp_top).with.offset(-16)
         }
         
         
         headerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(LotViewController.TOP_IMAGE_HEIGHT)
+            make.top.equalTo(self.view).with.offset(self.TOP_PARALLAX_HEIGHT)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(LotViewController.HEADER_HEIGHT)
@@ -277,32 +281,38 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     
     //MARK: Helper methods
     
-    func shouldShowSchedule() -> Bool {
-        
-        let defaultModalView = (NSUserDefaults.standardUserDefaults().valueForKey("DEFAULT_MODAL_VIEW") as? Int) ?? 0
-        
-        switch defaultModalView {
-        case 0:
-            return true
-        case 1:
-            return false
-        default:
-            return true
-        }
-        
-    }
-    
-    func updateHeader(viewController: PRKModalViewControllerChild) {
-        let isSchedule = viewController is ScheduleViewController
-        if isSchedule {
-            headerView.makeRightButtonList(true)
-        } else {
-            headerView.makeRightButtonColumns(true)
-        }
-    }
-    
     func directionsButtonTapped(sender: UIButton) {
-        NSLog("DIRECTIONS COMING RIGHT UP!")
+        
+        let coordinateString = String(stringInterpolationSegment: self.lot.coordinate.latitude) + "," + String(stringInterpolationSegment: self.lot.coordinate.longitude)
+        
+        let appleMapsURLString = "http://maps.apple.com/?saddr=Current%20Location&daddr=" + coordinateString
+        
+//        let googleMapsURLStringWithSucessCallback = "comgooglemaps-x-callback://?saddr=&daddr=" + coordinateString + "&x-success=prkng://?resumeAfterNavWithCoordinate" + coordinateString + "&x-source=Prkng"
+        let googleMapsURLString = "comgooglemaps-x-callback://?saddr=&daddr=" + coordinateString + "&x-source=Prkng"
+
+        let supportsGoogleMaps = UIApplication.sharedApplication().canOpenURL(NSURL(string: "comgooglemaps://")!)
+        
+        if supportsGoogleMaps {
+
+            var alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
+            
+            alert.addAction(UIAlertAction(title: "directions_google_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string: googleMapsURLString)!)
+            }))
+
+            alert.addAction(UIAlertAction(title: "directions_apple_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
+            }))
+
+            alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Cancel, handler: nil))
+            
+            self.presentViewController(alert, animated: true, completion: nil)
+
+        } else {
+
+            UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
+
+        }
     }
     
     
@@ -320,7 +330,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
     func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
-        return beginTap.y <= LotViewController.TOP_IMAGE_HEIGHT
+        return beginTap.y <= self.TOP_PARALLAX_HEIGHT
     }
 
     func swipeDidBegin() {
@@ -330,27 +340,36 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
         if yDistanceFromBeginTap < 0 {
             self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
+
+            //parallax for the top image/street view!
+            let topViewOffset = (-yDistanceFromBeginTap / self.FULL_HEIGHT) * self.TOP_PARALLAX_HEIGHT
+            topImageView.snp_updateConstraints { (make) -> () in
+                make.top.equalTo(self.view).with.offset(topViewOffset)
+            }
+            topImageView.layoutIfNeeded()
         }
     }
     
     func swipeDidEndUp() {
         self.delegate?.shouldAdjustTopConstraintWithOffset(0, animated: true)
+        
+        //fix parallax effect just in case
+        self.topParallaxView?.snp_updateConstraints { (make) -> () in
+            make.top.equalTo(self.view)
+        }
+        UIView.animateWithDuration(0.2,
+            animations: { () -> Void in
+                self.topParallaxView?.updateConstraints()
+            },
+            completion: nil
+        )
+
+
     }
     
     func swipeDidEndDown() {
         self.delegate?.hideModalView()
     }
     
-    
-    //NOTE: we use this to flip the icon between transitions. the method above will ensure we always end up with the right header icon
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [AnyObject], transitionCompleted completed: Bool) {
-        
-        if let fromViewController = previousViewControllers[0] as? PRKModalViewControllerChild {
-            if !completed {
-                updateHeader(fromViewController)
-            }
-        }
-        
-    }
     
 }
