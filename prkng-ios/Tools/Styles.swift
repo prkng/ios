@@ -29,6 +29,8 @@ struct Styles {
         static let berry1 = UIColor(rgba: "#A63A3A")
         static let berry2 = UIColor(rgba: "#802D2D")
         
+        static let lipstick = UIColor(rgba: "#CF4F48")
+        
         static let petrol1 = UIColor(rgba: "#5B717F")
         static let petrol2 = UIColor(rgba: "#485966")
         

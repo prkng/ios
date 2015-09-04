@@ -23,7 +23,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     private var subHeaderView = UIView()
     private var subHeaderViewLabel = PRKTimeSpanView()
     private var todayTimeHeaderView = UIView()
-    private var timeIconView = UIImageView(image: UIImage(named: "icon_time"))
+    private var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
     private var timeListView = UIView()
     private var timeSpanLabels = [PRKTimeSpanView]()
     private var attributesView = UIView()
@@ -77,36 +77,32 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     func setupViews() {
         
         view.addSubview(topImageView)
-        //width, height, lat, long
-//        let urlString = String(format:"https://maps.googleapis.com/maps/api/streetview?size=%dx%d&location=%f,%f&key=AIzaSyAjtDb1VW1rnICr_JMFPmzWi3pMshLusA8", Int(Settings.screenScale * LotViewController.FULL_WIDTH), Int(Settings.screenScale * LotViewController.TOP_IMAGE_HEIGHT), lot.coordinate.latitude, lot.coordinate.longitude)
-//        topImageView.sd_setImageWithURL(NSURL(string: urlString))
-//        topImageView.sd_setImageWithURL(url: NSURL(string: "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=46.414382,10.013988&heading=151.78&pitch=-0.76&key=AIzaSyAjtDb1VW1rnICr_JMFPmzWi3pMshLusA8"))
         topImageView.moveNearCoordinate(lot.coordinate)
         
         view.addSubview(topGradient)
-        topGradient.image = UIImage.imageFromGradient(CGSize(width: LotViewController.FULL_WIDTH, height: 64.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.75))
+        topGradient.image = UIImage.imageFromGradient(CGSize(width: LotViewController.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
         
+        var operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+        var operatorString = NSMutableAttributedString(string: lot.lotOperator, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+        operatedByString.appendAttributedString(operatorString)
         view.addSubview(topLabel)
-        topLabel.textColor
+        topLabel.textColor = Styles.Colors.cream1
+        topLabel.attributedText = operatedByString
+        
+        directionsButton.addTarget(self, action: "directionsButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(directionsButton)
         
         view.addSubview(headerView)
         headerView.showsRightButton = false
         headerView.delegate = self
-        headerView.layer.shadowColor = UIColor.blackColor().CGColor
-        headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        headerView.layer.shadowOpacity = 0.2
-        headerView.layer.shadowRadius = 0.5
         
         view.addSubview(subHeaderView)
-        subHeaderView.backgroundColor = Styles.Colors.red2
+        subHeaderView.backgroundColor = Styles.Colors.lipstick
         
         subHeaderView.addSubview(subHeaderViewLabel)
         subHeaderViewLabel.leftLabel.text = String(format: "capacity_x_places".localizedString, lot.capacity)
         subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
         subHeaderViewLabel.leftLabel.textColor = Styles.Colors.cream1
-
-        subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
 
         var currencyString = NSMutableAttributedString(string: "$" + String(Int(lot.mainHourlyRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
         var numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
@@ -178,9 +174,18 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.bottom.equalTo(self.topImageView)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(64)
+            make.height.equalTo(65)
         }
         
+        topLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.view).with.offset(34)
+            make.bottom.equalTo(self.topImageView).with.offset(-24)
+        }
+        
+        directionsButton.snp_makeConstraints { (make) -> () in
+            make.right.equalTo(self.view).with.offset(-30)
+            make.bottom.equalTo(self.topImageView).with.offset(-16)
+        }
         
         
         headerView.snp_makeConstraints { (make) -> () in
@@ -294,6 +299,10 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         } else {
             headerView.makeRightButtonColumns(true)
         }
+    }
+    
+    func directionsButtonTapped(sender: UIButton) {
+        NSLog("DIRECTIONS COMING RIGHT UP!")
     }
     
     

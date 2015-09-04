@@ -180,6 +180,7 @@
 "indoor" = "***Indoor";
 "valet" = "***Valet";
 "handicap" = "***Handicap";
+"operated_by" = "***Operated by";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
 "car_sharing_enabled_text" = "Auto-partage est selectionné";
@@ -205,4 +206,4 @@
 "icon_howto_spots" = "icon_howto_spots_fr";
 
 //this section is for format strings
-"capacity_x_places" = "***CAPACITÉ : %d PLACES";
+"capacity_x_places" = "***Capacité: %d places";

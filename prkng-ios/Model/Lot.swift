@@ -53,6 +53,7 @@ class Lot: NSObject, Hashable, DetailObject {
     var json: JSON
     var identifier: String
     var name: String
+    var lotOperator: String
     var address: String
     var capacity: Int
     var attributes: [LotAttribute]
@@ -272,6 +273,7 @@ class Lot: NSObject, Hashable, DetailObject {
         self.agenda = lot.agenda
         self.attributes = lot.attributes
         self.name = lot.name
+        self.lotOperator = lot.lotOperator
         
     }
     
@@ -314,6 +316,7 @@ class Lot: NSObject, Hashable, DetailObject {
         }
 
         self.name = json["properties"]["name"].stringValue
+        self.lotOperator = json["properties"]["operator"].stringValue
         
     }
 
