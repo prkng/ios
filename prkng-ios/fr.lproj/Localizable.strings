@@ -180,6 +180,7 @@
 "indoor" = "***Indoor";
 "valet" = "***Valet";
 "handicap" = "***Handicap";
+"card" = "***Carte";
 "operated_by" = "***Operated by";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";

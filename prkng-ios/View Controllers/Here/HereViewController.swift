@@ -427,7 +427,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             detailView.leftTopLabel.text = detailObject!.bottomLeftTitleText
                 
 
-            detailView.titleLabel.text = activeDetailObject?.headerText
+            detailView.topText = activeDetailObject!.headerText
             updateDetailsTime()
             if detailObject!.doesHeaderIconWiggle {
                 detailView.checkinImageView.layer.wigglewigglewiggle()

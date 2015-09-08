@@ -150,6 +150,36 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             var marker = RMMarker(UIImage: UIImage(named: "cursor_you"))
             marker.canShowCallout = false
             return marker
+        } else if annotation.isClusterAnnotation {
+            var countString = NSMutableAttributedString(string: String(annotation.clusteredAnnotations.count), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+//            var size = CGSize(width: 115, height: 115)
+//            if annotation.clusteredAnnotations.count >= 2 {
+//                size = CGSize(width: 80, height: 80)
+//            } else if annotation.clusteredAnnotations.count > 5 {
+//                size = CGSize(width: 90, height: 90)
+//            } else if annotation.clusteredAnnotations.count > 10 {
+//                size = CGSize(width: 100, height: 100)
+//            } else if annotation.clusteredAnnotations.count > 20 {
+//                size = CGSize(width: 110, height: 110)
+//            } else if annotation.clusteredAnnotations.count > 30 {
+//                size = CGSize(width: 120, height: 120)
+//            }
+//            size = CGSize(width: size.width / Settings.screenScale, height: size.height / Settings.screenScale)
+            var circleImage = UIImage(named: "pin_cluster")//?.resizeImage(size)
+//            circleImage = circleImage!.addText(countString, color: Styles.Colors.cream1)
+            var marker = RMMarker(UIImage: circleImage)
+            marker.canShowCallout = false
+//            marker.opacity = 0.75
+            marker.textForegroundColor = Styles.Colors.cream1
+//            marker.bounds = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
+
+            let hash = self.getClusterCustomHashValue(annotation)
+            if !contains(spotIDsDrawnOnMap, hash) {
+                marker.addScaleAnimation()
+                spotIDsDrawnOnMap.append(hash)
+            }
+            
+            return marker
         }
         
         var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
@@ -358,6 +388,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         
+        if self.mapMode == .Garage {
+            map.clusteringEnabled = map.zoom < 15
+        }
+        
         if wasUserAction {
             userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
         }
@@ -389,6 +423,33 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func mapView(mapView: RMMapView!, didSelectAnnotation annotation: RMAnnotation!) {
 
         if (isSelecting || annotation.isUserLocationAnnotation) {
+            return
+        } else if annotation.isClusterAnnotation {
+            
+            //determine the southwest and northeast coordinates!
+            var southWest = annotation.coordinate
+            var northEast = annotation.coordinate
+            let nonClusteredAnnotations = getAnnotationsInCluster(annotation)
+            for subAnnotation in nonClusteredAnnotations {
+                let lat = subAnnotation.coordinate.latitude
+                let long = subAnnotation.coordinate.longitude
+                
+                if southWest.latitude > fabs(lat) { southWest.latitude = lat }
+                if southWest.longitude > fabs(long) { southWest.longitude = long }
+                
+                if northEast.latitude < fabs(lat) { northEast.latitude = lat }
+                if northEast.longitude < fabs(long) { northEast.longitude = long }
+            }
+            
+            //add some padding to the coordinates
+            let latDelta = abs(southWest.latitude - northEast.latitude) / 2
+            let longDelta = abs(southWest.longitude - northEast.longitude) / 2
+            southWest.latitude -= latDelta
+            southWest.longitude -= longDelta
+            northEast.latitude += latDelta
+            northEast.longitude += longDelta
+            
+            self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
             return
         }
         
@@ -463,7 +524,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
         for annotation: RMAnnotation in map.visibleAnnotations as! [RMAnnotation] {
             
-            if (annotation.isUserLocationAnnotation || annotation.isKindOfClass(RMPolygonAnnotation)) {
+            if (annotation.isUserLocationAnnotation || annotation.isKindOfClass(RMPolygonAnnotation) || annotation.isClusterAnnotation) {
                 continue
             }
             
@@ -531,6 +592,44 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func dontTrackUser() {
         trackUserButton.setImage(UIImage(named:"btn_geo_off"), forState: UIControlState.Normal)
         self.mapView.userTrackingMode = RMUserTrackingModeNone
+    }
+    
+    func getAnnotationsInCluster(cluster: RMAnnotation) -> [RMAnnotation] {
+        
+        var nonClusteredAnnotations = [RMAnnotation]()
+        for subAnnotation in cluster.clusteredAnnotations as! [RMAnnotation] {
+            if subAnnotation.isClusterAnnotation {
+                nonClusteredAnnotations += getAnnotationsInCluster(subAnnotation)
+            } else {
+                nonClusteredAnnotations.append(subAnnotation)
+            }
+        }
+        return nonClusteredAnnotations
+    }
+    
+    func getClusterCustomHashValue(cluster: RMAnnotation) -> String {
+        var hash = ""
+        var annotations = getAnnotationsInCluster(cluster)
+        annotations.sort { (left, right) -> Bool in
+            return left.title < right.title
+        }
+        for annotation in getAnnotationsInCluster(cluster) {
+            hash += annotation.title
+        }
+        return hash
+    }
+    
+    override func didSetMapMode() {
+        switch (self.mapMode) {
+        case .Garage:
+            if self.mapMode == .Garage {
+                self.mapView.clusteringEnabled = self.mapView.zoom < 15
+            }
+            break
+        default:
+            self.mapView.clusteringEnabled = false
+            break
+        }
     }
     
     override func updateAnnotations(completion: (() -> Void)) {
@@ -628,7 +727,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion: operationCompletion)
                 break
             case MapMode.Garage:
-                LotOperations.findLots(self.mapView.centerCoordinate, radius: radius, completion: operationCompletion)
+                if self.annotations.count > 0 {
+                    updateInProgress = false
+                    completion()
+                } else {
+                    LotOperations.findLots(self.mapView.centerCoordinate, radius: radius, completion: operationCompletion)
+                }
                 break
             default:
                 updateInProgress = false
@@ -997,6 +1101,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
     override func mapModeDidChange(completion: (() -> Void)) {
         updateAnnotations(completion)
+    }
+    
+    override func removeRegularAnnotations() {
+        self.removeLinesAndButtons()
     }
 
 

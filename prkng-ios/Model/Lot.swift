@@ -15,6 +15,7 @@ struct LotAttribute {
         case Handicap
         case Clerk
         case Valet
+        case Card
     }
     
     var type: LotAttributeType
@@ -27,7 +28,7 @@ struct LotAttribute {
             case .Handicap  : return "handicap"//.localizedString
             case .Clerk     : return "clerk"//.localizedString
             case .Valet     : return "valet"//.localizedString
-                
+            case .Card      : return "card"//.localizedString
             }
         }
     }
@@ -38,6 +39,7 @@ struct LotAttribute {
         case "indoor"   : return .Indoor
         case "valet"    : return .Valet
         case "handicap" : return .Handicap
+        case "card"     : return .Card
         default         : return nil
         }
     }
@@ -200,7 +202,7 @@ class Lot: NSObject, Hashable, DetailObject {
         
         var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
         let agenda = sortedByToday ? self.sortedAgenda : self.agenda
-        let groupedAgenda = LotAgendaDay.groupedAgenda(self.sortedAgenda)
+        let groupedAgenda = LotAgendaDay.groupedAgenda(agenda)
         for group in groupedAgenda {
             
             var earliestStartTime: NSTimeInterval = 24*3600
@@ -307,9 +309,12 @@ class Lot: NSObject, Hashable, DetailObject {
         self.attributes = [LotAttribute]()
         for attr in json["properties"]["attrs"] {
             let attributeType = LotAttribute.typeFromName(attr.0)
-            assert(attributeType != nil, "Cannot parse lot attribute type: '" + attr.0 + "'" )
-            let attribute = LotAttribute(type: attributeType!, enabled: attr.1.boolValue)
-            self.attributes.append(attribute)
+            if attributeType != nil {
+                let attribute = LotAttribute(type: attributeType!, enabled: attr.1.boolValue)
+                self.attributes.append(attribute)
+            } else {
+                NSLog("Cannot parse lot attribute type: '" + attr.0 + "'")
+            }
         }
         self.attributes.sort { (left, right) -> Bool in
             left.type.rawValue < right.type.rawValue

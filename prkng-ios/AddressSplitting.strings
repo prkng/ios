@@ -1,0 +1,15 @@
+/* 
+  AddressSplitting.strings
+  prkng-ios
+
+  Created by Antonino Urbano on 2015-09-08.
+  Copyright (c) 2015 PRKNG. All rights reserved.
+*/
+
+//note: only the first part is used currently.
+
+"rue " = "";
+"boulevard " = "";
+"avenue " = "";
+"chemin " = "";
+"chemin de la " = "";

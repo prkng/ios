@@ -38,7 +38,34 @@ extension String {
         
         return newString
     }
-    
+
+    var splitAddressString: (String, String) {
+        
+        let myself = self.abbreviatedString
+        var longestMatchedString: Int = 0
+        var firstString = ""
+        var secondString = self.abbreviatedString
+        
+        let path = NSBundle.mainBundle().pathForResource("AddressSplitting", ofType: "strings")
+        let dictionary = NSDictionary(contentsOfFile: path!) as! Dictionary<String, String>
+        
+        for pair in dictionary {
+            let delimittingString = pair.0
+//            let replaceMentStringForDelimitter = pair.1
+            if let leftRange = myself.rangeOfString(delimittingString, options: NSStringCompareOptions.CaseInsensitiveSearch) {
+                let stringCount = count(delimittingString)
+                if stringCount > longestMatchedString {
+                    longestMatchedString = stringCount
+                    firstString = myself.substringWithRange(Range(start: myself.startIndex, end: leftRange.endIndex))
+                    secondString = myself.substringWithRange(Range(start: leftRange.endIndex, end: myself.endIndex))
+                }
+            }
+            
+        }
+        
+        return (firstString, secondString)
+    }
+
     var isValidEmail: Bool {
         // println("validate calendar: \(testStr)")
         let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"

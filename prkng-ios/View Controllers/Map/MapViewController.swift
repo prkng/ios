@@ -25,13 +25,16 @@ class MapViewController: AbstractViewController {
     var mapModeImageView: UIView?
     var mapMode: MapMode = .StreetParking {
         didSet {
+            
+            didSetMapMode()
+            
             //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
             if mapModeImageView != nil {
                 mapModeImageView?.removeFromSuperview()
                 mapModeImageView = nil
             }
             
-            let snapshotView = UIImageView(image: UIImage.screenshot(self))
+            let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
             mapModeImageView = snapshotView
             mapModeImageView?.userInteractionEnabled = false
             self.view.addSubview(mapModeImageView!)
@@ -39,6 +42,8 @@ class MapViewController: AbstractViewController {
             SVProgressHUD.setBackgroundColor(UIColor.clearColor())
             SVProgressHUD.show()
 
+            self.removeRegularAnnotations()
+            
             mapModeDidChange { () -> Void in
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                     self.mapModeImageView?.alpha = 0
@@ -74,6 +79,8 @@ class MapViewController: AbstractViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func didSetMapMode() { }
+    
     func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) { }
     func clearSearchResults() { }
     func showUserLocation(shouldShow: Bool) { }
@@ -91,7 +98,8 @@ class MapViewController: AbstractViewController {
     func addMyCarMarker() { }
     func removeMyCarMarker() { }
     func removeSelectedAnnotationIfExists() { }
-    
+    func removeRegularAnnotations() { }
+
     func addCityOverlays() {
         getCityOverlays()
     }

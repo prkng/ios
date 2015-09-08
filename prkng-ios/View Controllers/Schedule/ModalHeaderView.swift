@@ -11,7 +11,8 @@ import UIKit
 class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     
     private var topContainer: UIView
-    var titleLabel: MarqueeLabel
+    private var headerTitleLabel: MarqueeLabel
+    private var titleLabel: MarqueeLabel
     private var leftImageView: UIImageView
     private var rightImageView: UIImageView
     private var rightView: UIView
@@ -21,6 +22,14 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     private var isRightImageViewRotated: Bool = false
     
     var delegate: ModalHeaderViewDelegate?
+    
+    var topText: String {
+        didSet {
+            let splitAddressString = topText.splitAddressString
+            headerTitleLabel.text = splitAddressString.0
+            titleLabel.text = splitAddressString.1
+        }
+    }
     
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
@@ -41,6 +50,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         didSetupConstraints = false
         
         topContainer = UIView ()
+        headerTitleLabel = MarqueeLabel()
         titleLabel = MarqueeLabel()
         leftImageView = UIImageView()
         rightImageView = UIImageView()
@@ -50,6 +60,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         materialDesignButton = ViewFactory.checkInButton()
         
+        topText = ""
         showsRightButton = true
         
         super.init(frame: frame)
@@ -74,9 +85,14 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         addSubview(topContainer)
         
-        titleLabel.animationDelay = 2
-        titleLabel.font = Styles.Fonts.h3r
-        titleLabel.textColor = Styles.Colors.cream1
+        headerTitleLabel.animationDelay = 2
+        headerTitleLabel.font = Styles.FontFaces.light(11)
+        headerTitleLabel.textColor = Styles.Colors.cream2
+        headerTitleLabel.textAlignment = NSTextAlignment.Left
+        topContainer.addSubview(headerTitleLabel)
+        
+        titleLabel.font = Styles.Fonts.h2Variable
+        titleLabel.textColor = Styles.Colors.cream2
         titleLabel.textAlignment = NSTextAlignment.Left
         topContainer.addSubview(titleLabel)
         
@@ -118,11 +134,18 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
             make.height.equalTo(self)
         }
         
+        headerTitleLabel.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.leftImageView.snp_right).with.offset(5)
+            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).with.offset(-10)
+            make.right.lessThanOrEqualTo(self.rightView.snp_left).with.offset(-10)
+            make.bottom.equalTo(self.titleLabel.snp_top).with.offset(2)
+        }
+
         titleLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.leftImageView.snp_right).with.offset(4)
             make.right.lessThanOrEqualTo(self.rightImageView.snp_left).with.offset(-10)
             make.right.lessThanOrEqualTo(self.rightView.snp_left).with.offset(-10)
-            make.bottom.equalTo(self.topContainer).with.offset(-20)
+            make.bottom.equalTo(self.topContainer).with.offset(-15)
         }
         
         leftImageView.snp_makeConstraints { (make) -> () in

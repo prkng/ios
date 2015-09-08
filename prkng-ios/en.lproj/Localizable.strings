@@ -177,6 +177,7 @@
 "indoor" = "Indoor";
 "valet" = "Valet";
 "handicap" = "Handicap";
+"card" = "Card";
 "operated_by" = "Operated by";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";

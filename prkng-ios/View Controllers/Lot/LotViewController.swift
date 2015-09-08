@@ -55,7 +55,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        headerView.titleLabel.text = lot.headerText
+        headerView.topText = lot.headerText
         headerView.rightViewTitleLabel.text = "daily".localizedString.uppercaseString
         headerView.rightViewPrimaryLabel.attributedText = lot.bottomLeftPrimaryText
     }
@@ -81,6 +81,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     func setupViews() {
         
         view.addSubview(topImageView)
+        topImageView.navigationLinksHidden = true
         topImageView.moveNearCoordinate(lot.coordinate)
         
         view.addSubview(topGradient)

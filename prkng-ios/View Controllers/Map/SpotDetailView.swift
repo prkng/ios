@@ -12,7 +12,8 @@ class SpotDetailView: UIView {
 
     var topContainer: UIView
     var topContainerButton: UIButton
-    var titleLabel: MarqueeLabel
+    private var headerTitleLabel: MarqueeLabel
+    private var titleLabel: MarqueeLabel
     var topContainerRightView: UIView
     var checkinImageView: UIImageView
     var checkinImageLabel: UILabel
@@ -27,6 +28,14 @@ class SpotDetailView: UIView {
     var rightBottomLabel: UILabel
     var scheduleImageView: UIImageView
 
+    var topText: String {
+        didSet {
+            let splitAddressString = topText.splitAddressString
+            headerTitleLabel.text = splitAddressString.0
+            titleLabel.text = splitAddressString.1
+        }
+    }
+    
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
@@ -44,6 +53,7 @@ class SpotDetailView: UIView {
         topContainer = UIView()
         topContainerButton = ViewFactory.checkInButton()
 
+        headerTitleLabel = MarqueeLabel()
         titleLabel = MarqueeLabel()
         topContainerRightView = UIView()
         checkinImageView = UIImageView()
@@ -59,6 +69,8 @@ class SpotDetailView: UIView {
         rightBottomLabel = UILabel()
         scheduleImageView = UIImageView()
 
+        topText = ""
+        
         didSetupSubviews = false
         didSetupConstraints = false
         
@@ -88,9 +100,15 @@ class SpotDetailView: UIView {
         topContainerButton.addTarget(self, action: "topContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         self.addSubview(topContainerButton)
 
+        headerTitleLabel.animationDelay = 2
+        headerTitleLabel.font = Styles.FontFaces.light(11)
+        headerTitleLabel.textColor = Styles.Colors.cream2
+        headerTitleLabel.textAlignment = NSTextAlignment.Left
+        topContainer.addSubview(headerTitleLabel)
+        
         titleLabel.animationDelay = 2
         titleLabel.font = Styles.Fonts.h2Variable
-        titleLabel.textColor = Styles.Colors.cream1
+        titleLabel.textColor = Styles.Colors.cream2
         titleLabel.textAlignment = NSTextAlignment.Left
         topContainer.addSubview(titleLabel)
         
@@ -165,8 +183,16 @@ class SpotDetailView: UIView {
             make.edges.equalTo(self.topContainer)
         }
 
+        headerTitleLabel.snp_makeConstraints { (make) -> () in
+//            make.centerY.equalTo(self.topContainer)
+            make.top.equalTo(self.topContainer).with.offset(17)
+            make.left.equalTo(self.topContainer).with.offset(25)
+            make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).with.offset(-15)
+        }
+
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.centerY.equalTo(self.topContainer)
+//            make.centerY.equalTo(self.topContainer)
+            make.bottom.equalTo(self.topContainer.snp_bottom).with.offset(-13)
             make.left.equalTo(self.topContainer).with.offset(24)
             make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).with.offset(-15)
         }

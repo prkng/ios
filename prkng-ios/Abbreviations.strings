@@ -8,13 +8,13 @@
  NOTE = THIS IS CURRENTLY (AS OF 2015-06-26) IMPLEMENTED AS A CASE-INSENSITIVE SEARCH BUT AN EXACT REPLACEMENT
 */
 
-"Street " = "St ";
-"Avenue " = "Ave ";
-"Boulevard " = "Boul ";
-"Saint-"  = "St-";
-"Saint "  = "St ";
-"Sainte-"  = "Ste-";
-"Sainte "  = "Ste ";
+//"Street " = "St ";
+//"Avenue " = "Ave ";
+//"Boulevard " = "Boul ";
+//"Saint-"  = "St-";
+//"Saint "  = "St ";
+//"Sainte-"  = "Ste-";
+//"Sainte "  = "Ste ";
 
 " Ouest"  = " O";
 " Est"  = " E";
@@ -24,4 +24,4 @@
 " North"  = " N";
 " Sud"  = " S";
 " South"  = " S";
-“Avenue des Canadiens-de-Montreal" = “Ave des Habs ";
+"Canadiens-de-Montreal" = "Habs";

@@ -55,7 +55,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        headerView.titleLabel.text = spot.name
+        headerView.topText = spot.name
     }
     
     override func viewWillDisappear(animated: Bool) {
