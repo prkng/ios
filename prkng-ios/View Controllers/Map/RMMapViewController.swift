@@ -622,9 +622,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func didSetMapMode() {
         switch (self.mapMode) {
         case .Garage:
-            if self.mapMode == .Garage {
-                self.mapView.clusteringEnabled = self.mapView.zoom < 15
-            }
+            self.mapView.clusteringEnabled = self.mapView.zoom < 15
             break
         default:
             self.mapView.clusteringEnabled = false
@@ -723,6 +721,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             switch(self.mapMode) {
+            case MapMode.CarSharing:
+                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion: operationCompletion)
+                break
             case MapMode.StreetParking:
                 SpotOperations.findSpots(self.mapView.centerCoordinate, radius: radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion: operationCompletion)
                 break

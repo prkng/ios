@@ -26,6 +26,7 @@ class MapViewController: AbstractViewController {
     var mapMode: MapMode = .StreetParking {
         didSet {
             
+            Settings.setShouldFilterForCarSharing(self.mapMode == .CarSharing)
             didSetMapMode()
             
             //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view

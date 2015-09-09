@@ -34,17 +34,17 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     var separator2: UIView
     var separator3: UIView
 
-    var carSharingContainer : UIView
-    var carSharingLabel : UILabel
-    var carSharingButton : UIButton
-    var carSharingSelection : SelectionControl
+//    var carSharingContainer : UIView
+//    var carSharingLabel : UILabel
+//    var carSharingButton : UIButton
+//    var carSharingSelection : SelectionControl
 
     var historyButton : UIButton
     var aboutButton : UIButton
 
     var sendLogButton : UIButton
     
-    var carSharingInfoVC: CarSharingInfoViewController?
+//    var carSharingInfoVC: CarSharingInfoViewController?
 
     var delegate: SettingsViewControllerDelegate?
     
@@ -77,10 +77,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         separator2 = UIView()
         separator3 = UIView()
         
-        carSharingContainer = UIView()
-        carSharingLabel = UILabel()
-        carSharingButton = ViewFactory.infoButton()
-        carSharingSelection = SelectionControl(titles: ["on".localizedString.uppercaseString, "off".localizedString.uppercaseString])
+//        carSharingContainer = UIView()
+//        carSharingLabel = UILabel()
+//        carSharingButton = ViewFactory.infoButton()
+//        carSharingSelection = SelectionControl(titles: ["on".localizedString.uppercaseString, "off".localizedString.uppercaseString])
 
         aboutButton = ViewFactory.hugeCreamButton()
         sendLogButton = ViewFactory.exclamationButton()
@@ -126,7 +126,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         self.notificationSelection.selectOption(self.notificationSelection.buttons[i], animated: false)
         
         let j = Settings.shouldFilterForCarSharing() ? 0 : 1
-        self.carSharingSelection.selectOption(self.carSharingSelection.buttons[j], animated: false)
+//        self.carSharingSelection.selectOption(self.carSharingSelection.buttons[j], animated: false)
         
         if let user = AuthUtility.getUser() {
             self.profileNameLabel.text = user.name
@@ -194,22 +194,22 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         notificationSelection.fixedWidth = 20
         notificationsContainer.addSubview(notificationSelection)
         
-        carSharingContainer.backgroundColor = Styles.Colors.stone
-        view.addSubview(carSharingContainer)
-        
-        carSharingLabel.textColor = Styles.Colors.midnight2
-        carSharingLabel.font = Styles.FontFaces.light(12)
-        carSharingLabel.text = "car_sharing_filter".localizedString.uppercaseString
-        carSharingLabel.textAlignment = NSTextAlignment.Left
-        carSharingContainer.addSubview(carSharingLabel)
-        
-        carSharingButton.addTarget(self, action: "showCarSharingInfo", forControlEvents: UIControlEvents.TouchUpInside)
-        carSharingContainer.addSubview(carSharingButton)
-
-        carSharingSelection.buttonSize = CGSizeMake(90, 28)
-        carSharingSelection.addTarget(self, action: "carSharingSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
-        carSharingSelection.fixedWidth = 30
-        carSharingContainer.addSubview(carSharingSelection)
+//        carSharingContainer.backgroundColor = Styles.Colors.stone
+//        view.addSubview(carSharingContainer)
+//        
+//        carSharingLabel.textColor = Styles.Colors.midnight2
+//        carSharingLabel.font = Styles.FontFaces.light(12)
+//        carSharingLabel.text = "car_sharing_filter".localizedString.uppercaseString
+//        carSharingLabel.textAlignment = NSTextAlignment.Left
+//        carSharingContainer.addSubview(carSharingLabel)
+//        
+//        carSharingButton.addTarget(self, action: "showCarSharingInfo", forControlEvents: UIControlEvents.TouchUpInside)
+//        carSharingContainer.addSubview(carSharingButton)
+//
+//        carSharingSelection.buttonSize = CGSizeMake(90, 28)
+//        carSharingSelection.addTarget(self, action: "carSharingSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+//        carSharingSelection.fixedWidth = 30
+//        carSharingContainer.addSubview(carSharingSelection)
         
         aboutButton.setTitle("about".localizedString, forState: UIControlState.Normal)
         aboutButton.addTarget(self, action: "aboutButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
@@ -245,7 +245,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.height.equalTo(60)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.carSharingContainer.snp_top)
+            make.bottom.equalTo(self.aboutButton.snp_top)
         }
         
         notificationsLabel.snp_makeConstraints { (make) -> () in
@@ -275,38 +275,38 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.top.equalTo(self.separator1.snp_bottom)
         }
         
-        separator3.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(0.5)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.top.equalTo(self.carSharingContainer.snp_bottom)
-        }
-        
-        
-        carSharingContainer.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(60)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.bottom.equalTo(self.aboutButton.snp_top)
-        }
-        
-        carSharingLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.carSharingContainer).with.offset(30)
-            make.centerY.equalTo(self.carSharingContainer)
-        }
-
-        carSharingButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.carSharingLabel.snp_right).with.offset(10)
-            make.centerY.equalTo(self.carSharingContainer)
-            make.size.equalTo(CGSize(width: 18, height: 18))
-        }
-
-        carSharingSelection.snp_makeConstraints { (make) -> () in
-            make.width.equalTo(self.carSharingSelection.calculatedWidth())
-            make.right.equalTo(self.carSharingContainer).with.offset(-20).priorityHigh()
-            make.top.equalTo(self.carSharingContainer)
-            make.bottom.equalTo(self.carSharingContainer)
-        }
+//        separator3.snp_makeConstraints { (make) -> () in
+//            make.height.equalTo(0.5)
+//            make.left.equalTo(self.view)
+//            make.right.equalTo(self.view)
+//            make.top.equalTo(self.carSharingContainer.snp_bottom)
+//        }
+//        
+//        
+//        carSharingContainer.snp_makeConstraints { (make) -> () in
+//            make.height.equalTo(60)
+//            make.left.equalTo(self.view)
+//            make.right.equalTo(self.view)
+//            make.bottom.equalTo(self.aboutButton.snp_top)
+//        }
+//        
+//        carSharingLabel.snp_makeConstraints { (make) -> () in
+//            make.left.equalTo(self.carSharingContainer).with.offset(30)
+//            make.centerY.equalTo(self.carSharingContainer)
+//        }
+//
+//        carSharingButton.snp_makeConstraints { (make) -> () in
+//            make.left.equalTo(self.carSharingLabel.snp_right).with.offset(10)
+//            make.centerY.equalTo(self.carSharingContainer)
+//            make.size.equalTo(CGSize(width: 18, height: 18))
+//        }
+//
+//        carSharingSelection.snp_makeConstraints { (make) -> () in
+//            make.width.equalTo(self.carSharingSelection.calculatedWidth())
+//            make.right.equalTo(self.carSharingContainer).with.offset(-20).priorityHigh()
+//            make.top.equalTo(self.carSharingContainer)
+//            make.bottom.equalTo(self.carSharingContainer)
+//        }
 
         
         cityContainer.snp_makeConstraints { (make) -> () in
@@ -480,64 +480,64 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
     }
     
-    func carSharingSelectionValueChanged() {
-        switch(carSharingSelection.selectedIndex) {
-        case 0:
-            //on
-            Settings.setShouldFilterForCarSharing(true)
-            break
-        case 1:
-            //off
-            Settings.setShouldFilterForCarSharing(false)
-            break
-        default:break
-        }
-    }
+//    func carSharingSelectionValueChanged() {
+//        switch(carSharingSelection.selectedIndex) {
+//        case 0:
+//            //on
+//            Settings.setShouldFilterForCarSharing(true)
+//            break
+//        case 1:
+//            //off
+//            Settings.setShouldFilterForCarSharing(false)
+//            break
+//        default:break
+//        }
+//    }
     
     func profileButtonTapped(sender: UIButton) {
         self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
     }
     
-    func showCarSharingInfo() {
-        
-        carSharingInfoVC = CarSharingInfoViewController()
-        
-        self.addChildViewController(carSharingInfoVC!)
-        self.view.addSubview(carSharingInfoVC!.view)
-        carSharingInfoVC!.didMoveToParentViewController(self)
-        
-        carSharingInfoVC!.view.snp_makeConstraints({ (make) -> () in
-            make.edges.equalTo(self.view)
-        })
-        
-        let tap = UITapGestureRecognizer(target: self, action: "dismissCarSharingInfo")
-        carSharingInfoVC!.view.addGestureRecognizer(tap)
-        
-        carSharingInfoVC!.view.alpha = 0.0
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.carSharingInfoVC!.view.alpha = 1.0
-        })
-        
-    }
-    
-    func dismissCarSharingInfo() {
-        
-        if let carShareingInfo = self.carSharingInfoVC {
-            
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
-                carShareingInfo.view.alpha = 0.0
-                }, completion: { (finished) -> Void in
-                    carShareingInfo.removeFromParentViewController()
-                    carShareingInfo.view.removeFromSuperview()
-                    carShareingInfo.didMoveToParentViewController(nil)
-                    self.carSharingInfoVC = nil
-            })
-            
-        }
-        
-        
-    }
+//    func showCarSharingInfo() {
+//        
+//        carSharingInfoVC = CarSharingInfoViewController()
+//        
+//        self.addChildViewController(carSharingInfoVC!)
+//        self.view.addSubview(carSharingInfoVC!.view)
+//        carSharingInfoVC!.didMoveToParentViewController(self)
+//        
+//        carSharingInfoVC!.view.snp_makeConstraints({ (make) -> () in
+//            make.edges.equalTo(self.view)
+//        })
+//        
+//        let tap = UITapGestureRecognizer(target: self, action: "dismissCarSharingInfo")
+//        carSharingInfoVC!.view.addGestureRecognizer(tap)
+//        
+//        carSharingInfoVC!.view.alpha = 0.0
+//        
+//        UIView.animateWithDuration(0.2, animations: { () -> Void in
+//            self.carSharingInfoVC!.view.alpha = 1.0
+//        })
+//        
+//    }
+//    
+//    func dismissCarSharingInfo() {
+//        
+//        if let carShareingInfo = self.carSharingInfoVC {
+//            
+//            UIView.animateWithDuration(0.2, animations: { () -> Void in
+//                carShareingInfo.view.alpha = 0.0
+//                }, completion: { (finished) -> Void in
+//                    carShareingInfo.removeFromParentViewController()
+//                    carShareingInfo.view.removeFromSuperview()
+//                    carShareingInfo.didMoveToParentViewController(nil)
+//                    self.carSharingInfoVC = nil
+//            })
+//            
+//        }
+//        
+//        
+//    }
 
     
 }
