@@ -72,7 +72,7 @@ class Lot: NSObject, Hashable, DetailObject {
         for day in dayAgenda {
             if currentTimeInterval >= day.startHour
                 && currentTimeInterval <= day.endHour
-                && day.maxRate != nil {
+                && (day.maxRate != nil || day.hourlyRate != nil) {
                     return true
             }
         }
@@ -201,8 +201,9 @@ class Lot: NSObject, Hashable, DetailObject {
     func openTimes(sortedByToday: Bool) -> [(NSTimeInterval, NSTimeInterval)] {
         
         var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
-        let agenda = sortedByToday ? self.sortedAgenda : self.agenda
-        let groupedAgenda = LotAgendaDay.groupedAgenda(agenda)
+//        NSLog(self.json.description)
+        var chosenAgenda = sortedByToday ? self.sortedAgenda : self.agenda
+        var groupedAgenda = LotAgendaDay.groupedAgenda(chosenAgenda)
         for group in groupedAgenda {
             
             var earliestStartTime: NSTimeInterval = 24*3600
@@ -243,6 +244,7 @@ class Lot: NSObject, Hashable, DetailObject {
         return currencyString
         }
     }
+    var bottomLeftWidth: Int { get { return 95 } }
     
     var bottomRightTitleText: String { get {
         if self.isCurrentlyOpen {
@@ -253,6 +255,14 @@ class Lot: NSObject, Hashable, DetailObject {
         }
     }
     var bottomRightPrimaryText: NSAttributedString { get {
+        //this logic should be similar to "timeperiodtext" in time span
+        let filteredAgenda = self.openTimes(false).filter({ (var item: (NSTimeInterval, NSTimeInterval)) -> Bool in
+            item.0 == 0 && item.1 == 24*3600
+        })
+        if filteredAgenda.count == 7 {
+            return NSAttributedString(string: "24H", attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
+        }
+
         let interval = endTimeToday
         return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
         }

@@ -417,7 +417,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             detailView.checkinImageView.image = UIImage(named: detailObject!.headerIconName)
             detailView.checkinImageLabel.text = detailObject!.headerIconSubtitle
             detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
-                make.width.equalTo(detailObject!.showsBottomLeftContainer ? SpotDetailView.BOTTOM_LEFT_CONTAINER_WIDTH : 0)
+                make.width.equalTo(detailObject!.showsBottomLeftContainer ? detailObject!.bottomLeftWidth : 0)
             })
             if let iconName = detailObject!.bottomRightIconName {
                 detailView.scheduleImageView.image = UIImage(named:iconName)

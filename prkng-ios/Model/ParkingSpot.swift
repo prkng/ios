@@ -74,6 +74,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
         
         }
     }
+    var bottomLeftWidth: Int { get { return UIScreen.mainScreen().bounds.width == 320 ? 100 : 110 } }
     
     var bottomRightTitleText: String { get {
         switch self.currentlyActiveRule.ruleType {

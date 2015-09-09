@@ -204,7 +204,7 @@ struct UserOperations {
         
         request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
             
-            completion(completed: true)
+            completion(completed: response!.statusCode != 400)
         }
         
     }

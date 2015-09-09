@@ -42,7 +42,6 @@ class SpotDetailView: UIView {
     var delegate : SpotDetailViewDelegate?
     
     let VERTICAL_LABEL_SPACING = UIScreen.mainScreen().bounds.width == 320 ? 18 : 14
-    static let BOTTOM_LEFT_CONTAINER_WIDTH = UIScreen.mainScreen().bounds.width == 320 ? 100 : 110
 
     convenience init() {
         self.init(frame: CGRectZero)
