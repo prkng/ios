@@ -14,6 +14,7 @@ class APIUtility: NSObject {
 #if DEBUG
         static let rootURLString = "http://54.144.3.236/"
 #else
+//        static let rootURLString = "http://api-test.prk.ng/v1/"
         static let rootURLString = NSUserDefaults.standardUserDefaults().boolForKey("use_test_server") ? "http://api-test.prk.ng/v1/" : "https://api.prk.ng/v1/"
 #endif
     }

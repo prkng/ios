@@ -166,7 +166,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 //            }
 //            size = CGSize(width: size.width / Settings.screenScale, height: size.height / Settings.screenScale)
             var circleImage = UIImage(named: "pin_cluster")//?.resizeImage(size)
-//            circleImage = circleImage!.addText(countString, color: Styles.Colors.cream1)
+            circleImage = circleImage!.addText(countString, color: Styles.Colors.cream1)
             var marker = RMMarker(UIImage: circleImage)
             marker.canShowCallout = false
 //            marker.opacity = 0.75
@@ -449,7 +449,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             northEast.latitude += latDelta
             northEast.longitude += longDelta
             
-            self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
+            if southWest.latitude == northEast.latitude
+                && southWest.longitude == northEast.longitude {
+                    self.mapView.zoomInToNextNativeZoomAt(annotation.position, animated: true)
+            } else {
+                self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
+            }
             return
         }
         

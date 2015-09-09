@@ -201,7 +201,6 @@ class Lot: NSObject, Hashable, DetailObject {
     func openTimes(sortedByToday: Bool) -> [(NSTimeInterval, NSTimeInterval)] {
         
         var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
-//        NSLog(self.json.description)
         var chosenAgenda = sortedByToday ? self.sortedAgenda : self.agenda
         var groupedAgenda = LotAgendaDay.groupedAgenda(chosenAgenda)
         for group in groupedAgenda {
@@ -300,6 +299,11 @@ class Lot: NSObject, Hashable, DetailObject {
         self.agenda = [LotAgendaDay]()
         for attr in json["properties"]["agenda"] {
             let day = attr.0.toInt()! - 1 //this is 1-indexed on the server, convert it to 0-index
+            let timesArray = attr.1.arrayValue
+            if timesArray.count == 0 {
+                let lotAgendaDay = LotAgendaDay(day: day, hourly: nil, max: nil, daily: nil, start: NSTimeInterval(0), end: NSTimeInterval(24*3600))
+                self.agenda.append(lotAgendaDay)
+            }
             for item in attr.1.arrayValue {
                 let hourly = item["hourly"].float
                 let max = item["max"].float
