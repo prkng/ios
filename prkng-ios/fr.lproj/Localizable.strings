@@ -166,22 +166,22 @@
 
 "all" = "tous";
 "hour" = "heure";
-"hourly" = "1 heure";
-"daily" = "Daily***";
+"hourly" = "heure";
+"daily" = "heure";
 "metered" = "Tarifé";
 "check-in" = "Check-in";
 "check-in-pay" = "Check-in + Payer";
 "authorized_for" = "Autorisé pour";
 "search" = "Rechercher";
-"search_bar_text" = "***'Search or filter'Lieu ou adresse";
-"open" = "***Open";
-"closed" = "***Closed";
-"clerk" = "***Clerk";
-"indoor" = "***Indoor";
-"valet" = "***Valet";
-"handicap" = "***Handicap";
-"card" = "***Carte";
-"operated_by" = "***Operated by";
+"search_bar_text" = "'Rechercher ou filter'Lieu ou adresse";
+"open" = "Ouvert";
+"closed" = "Fermé";
+"clerk" = "Vigile";
+"indoor" = "Intérieur";
+"valet" = "Valet";
+"handicap" = "Handicapé";
+"card" = "Carte";
+"operated_by" = "Par";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
 "car_sharing_enabled_text" = "Auto-partage est selectionné";
@@ -198,18 +198,18 @@
 "camera" = "Appareil photo";
 "enable_camera_message" = "Pour signaler une erreur, veuillez autoriser l'accès à votre appareil photo.";
 
-"directions" = "***Directions";
-"directions_app_message" = "***Which app do you want to use for navigation?";
-"directions_apple_maps_message" = "***Use Apple Maps";
-"directions_google_maps_message" = "***Use Google Maps";
+"directions" = "Itinéraire";
+"directions_app_message" = "Quelle application veux-tu utiliser?";
+"directions_apple_maps_message" = "Utiliser Apple Maps";
+"directions_google_maps_message" = "Utiliser Google Maps";
 
-"provided_by_foursquare" = "***résultats par foursquare";
+"provided_by_foursquare" = "résultats par foursquare";
 
-"on-street" = "***On-Street";
-"garages" = "***Garages";
+"on-street" = "Sur rue";
+"garages" = "Hors rue";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
 
 //this section is for format strings
-"capacity_x_places" = "***Capacité: %d places";
+"capacity_x_places" = "Capacité: %d places";
