@@ -178,7 +178,7 @@
 "valet" = "Valet";
 "handicap" = "Handicap";
 "card" = "Card";
-"operated_by" = "Operated by";
+"operated_by" = "By";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";
 "car_sharing_enabled_text" = "Car sharing is enabled";
@@ -196,17 +196,17 @@
 "enable_camera_message" = "Please allow access to your camera to report an error.";
 
 "directions" = "Directions";
-"directions_app_message" = "Which app do you want to use for navigation?";
+"directions_app_message" = "Which app do you want to use?";
 "directions_apple_maps_message" = "Use Apple Maps";
 "directions_google_maps_message" = "Use Google Maps";
 
 "provided_by_foursquare" = "provided by foursquare";
 
 "on-street" = "On-Street";
-"garages" = "Garages";
+"garages" = "Parking lots";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";
 
 //this section is for format strings
-"capacity_x_places" = "Capacity: %d places";
+"capacity_x_places" = "Capacity: %d spaces";
