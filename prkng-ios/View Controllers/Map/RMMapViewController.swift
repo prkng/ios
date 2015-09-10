@@ -426,28 +426,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             return
         } else if annotation.isClusterAnnotation {
             
-            //determine the southwest and northeast coordinates!
-            var southWest = annotation.coordinate
-            var northEast = annotation.coordinate
             let nonClusteredAnnotations = getAnnotationsInCluster(annotation)
-            for subAnnotation in nonClusteredAnnotations {
-                let lat = subAnnotation.coordinate.latitude
-                let long = subAnnotation.coordinate.longitude
-                
-                if southWest.latitude > fabs(lat) { southWest.latitude = lat }
-                if southWest.longitude > fabs(long) { southWest.longitude = long }
-                
-                if northEast.latitude < fabs(lat) { northEast.latitude = lat }
-                if northEast.longitude < fabs(long) { northEast.longitude = long }
-            }
-            
-            //add some padding to the coordinates
-            let latDelta = abs(southWest.latitude - northEast.latitude) / 2
-            let longDelta = abs(southWest.longitude - northEast.longitude) / 2
-            southWest.latitude -= latDelta
-            southWest.longitude -= longDelta
-            northEast.latitude += latDelta
-            northEast.longitude += longDelta
+            let southWestAndNorthEast = getSouthWestAndNorthEastFromAnnotations(nonClusteredAnnotations, centerCoordinate: annotation.coordinate)
+            let southWest = southWestAndNorthEast.0
+            let northEast = southWestAndNorthEast.1
             
             if southWest.latitude == northEast.latitude
                 && southWest.longitude == northEast.longitude {
@@ -867,10 +849,62 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
+            self.zoomIntoClosestPins(3)
+            
             completion()
             
         })
         
+    }
+    
+    func zoomIntoClosestPins(numberOfPins: Int) {
+        //order annotations by distance from map center
+        let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+        let orderedAnnotations = self.annotations.sorted { (first, second) -> Bool in
+            let firstLocation = CLLocation(latitude: first.coordinate.latitude, longitude: first.coordinate.longitude)
+            let secondLocation = CLLocation(latitude: second.coordinate.latitude, longitude: second.coordinate.longitude)
+            return mapCenter.distanceFromLocation(firstLocation) > mapCenter.distanceFromLocation(secondLocation)
+        }
+        
+        var annotationsToZoom = [RMAnnotation]()
+        let newNumberOfPins = orderedAnnotations.count < numberOfPins ? orderedAnnotations.count : numberOfPins
+        for i in 0..<newNumberOfPins {
+            annotationsToZoom.append(orderedAnnotations[i])
+        }
+        
+        let southWestAndNorthEast = getSouthWestAndNorthEastFromAnnotations(annotationsToZoom, centerCoordinate: mapCenter.coordinate)
+        let southWest = southWestAndNorthEast.0
+        let northEast = southWestAndNorthEast.1
+            
+        self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
+    }
+    
+    func getSouthWestAndNorthEastFromAnnotations(annots: [RMAnnotation], centerCoordinate: CLLocationCoordinate2D) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
+        
+        //determine the southwest and northeast coordinates!
+        var southWest = centerCoordinate
+        var northEast = centerCoordinate
+        
+        for annotation in annots {
+            let lat = annotation.coordinate.latitude
+            let long = annotation.coordinate.longitude
+            
+            if southWest.latitude > fabs(lat) { southWest.latitude = lat }
+            if southWest.longitude > fabs(long) { southWest.longitude = long }
+            
+            if northEast.latitude < fabs(lat) { northEast.latitude = lat }
+            if northEast.longitude < fabs(long) { northEast.longitude = long }
+        }
+        
+        //add some padding to the coordinates
+        let latDelta = abs(southWest.latitude - northEast.latitude) / 2
+        let longDelta = abs(southWest.longitude - northEast.longitude) / 2
+        southWest.latitude -= latDelta
+        southWest.longitude -= longDelta
+        northEast.latitude += latDelta
+        northEast.longitude += longDelta
+
+        return (southWest, northEast)
     }
     
     func addLotAnnotation(lot: Lot, selected: Bool) {
