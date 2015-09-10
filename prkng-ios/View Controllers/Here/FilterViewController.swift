@@ -190,6 +190,10 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         self.searchFilterView.indicatorText = labelText
     }
     
+    func showCarSharingInfo() {
+        self.delegate?.showCarSharingInfo()
+    }
+    
     //MARK: Autocomplete methods and SearchResultsTableViewControllerDelegate methods
     
     func updateAutocompleteWithValues(results: [SearchResult]) {
@@ -265,6 +269,6 @@ protocol FilterViewControllerDelegate {
     
     //these functions match TimeViewControllerDelegate
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
-    
+    func showCarSharingInfo()
 }
 

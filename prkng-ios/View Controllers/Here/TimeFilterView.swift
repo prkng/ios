@@ -18,7 +18,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     var contentView: UIView
 
     var messageLabel: UILabel
-    
+    var infoButton = ViewFactory.infoButton()
+
     var times: [TimeFilter]
     var selectedPermitValue: Bool
     var selectedValue: NSTimeInterval?
@@ -122,6 +123,9 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         messageLabel.font = Styles.FontFaces.light(14)
         containerView.addSubview(messageLabel)
         
+        infoButton.addTarget(self, action: "infoButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        containerView.addSubview(infoButton)
+
         topLine.backgroundColor = Styles.Colors.transparentWhite
         self.addSubview(topLine)
 
@@ -148,6 +152,12 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             make.left.equalTo(self.timeImageView.snp_right).with.offset(15)
             make.right.equalTo(self.containerView)
             make.centerY.equalTo(self.containerView)
+        }
+        
+        infoButton.snp_makeConstraints { (make) -> () in
+            make.right.equalTo(self.containerView.snp_right).with.offset(-28.5)
+            make.centerY.equalTo(self.containerView)
+            make.size.equalTo(CGSize(width: 18, height: 18))
         }
         
         scrollView.snp_makeConstraints { (make) -> () in
@@ -218,11 +228,13 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         if Settings.shouldFilterForCarSharing() {
             timeImageView.image = UIImage(named: "icon_exclamation")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             messageLabel.text = "car_sharing_enabled_text".localizedString
+            infoButton.hidden = false
             contentView.hidden = true
             self.delegate?.filterLabelUpdate("")
         } else {
             timeImageView.image = UIImage(named: "icon_time")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
             messageLabel.text = ""
+            infoButton.hidden = true
             contentView.hidden = false
         }
         
@@ -410,12 +422,17 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         return hours
     }
     
+    func infoButtonTapped() {
+        self.delegate?.showCarSharingInfo()
+    }
+    
 }
 
 protocol TimeFilterViewDelegate {
     
     func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
     func filterLabelUpdate(labelText: String)
+    func showCarSharingInfo()
 }
 
 class TimeFilter {

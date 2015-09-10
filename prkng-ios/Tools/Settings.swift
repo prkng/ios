@@ -19,6 +19,7 @@ struct Settings {
     static let FIRST_USE_PASSED_KEY = "prkng_first_use_passed"
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
+    static let FIRST_CAR_SHARING_USE_PASSED_KEY = "prkng_first_car_sharing_use_passed"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
     static let NOTIFICATION_NIGHT_BEFORE_KEY = "prkng_notification_night_before"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
@@ -117,7 +118,16 @@ struct Settings {
         NSUserDefaults.standardUserDefaults().setObject(firstMapUsePassed, forKey: FIRST_MAP_USE_PASSED_KEY)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
+
+    static func firstCarSharingUse() -> Bool {
+        return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_CAR_SHARING_USE_PASSED_KEY)
+    }
     
+    static func setFirstCarSharingUsePassed(firstCarSharingUsePassed : Bool)  {
+        NSUserDefaults.standardUserDefaults().setObject(firstCarSharingUsePassed, forKey: FIRST_CAR_SHARING_USE_PASSED_KEY)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+
     static func notificationTime() -> Int {
 
         var time = NSUserDefaults.standardUserDefaults().objectForKey(NOTIFICATION_TIME_KEY) as? Int

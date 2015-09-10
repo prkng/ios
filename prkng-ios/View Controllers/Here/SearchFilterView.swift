@@ -252,11 +252,11 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         let maximumLabelSize = CGSize(width: rightViewWidth - locationButtonWidth - 10, height: 20)
         let labelRect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs, context: nil)
 
-        //add the close icon
-        let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
-        closeImageView.contentMode = .ScaleAspectFit
-        closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 5, width: 10, height: 10)
-        indicatorButton.addSubview(closeImageView)
+        //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
+//        let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
+//        closeImageView.contentMode = .ScaleAspectFit
+//        closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 5, width: 10, height: 10)
+//        indicatorButton.addSubview(closeImageView)
         
         //add the label
         let label = UILabel(frame: CGRect(x: 10, y: 2.5, width: labelRect.width, height: labelRect.height))
@@ -265,7 +265,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         label.textColor = Styles.Colors.beige1
         indicatorButton.addSubview(label)
         
-        indicatorButton.frame = indicatorText == "" ? CGRectZero : CGRect(x: 10, y: 10, width: 10+labelRect.width+5+closeImageView.frame.width+10, height: 20)
+        indicatorButton.frame = indicatorText == "" ? CGRectZero : CGRect(x: 10, y: 10, width: 10+labelRect.width+10, height: 20)
         indicatorButton.addTarget(self, action: "textFieldShouldBeginEditing:", forControlEvents: UIControlEvents.TouchUpInside)
 
         rightViewWidth = 10 + locationButtonWidth + 10 + indicatorButton.frame.width

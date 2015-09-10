@@ -20,7 +20,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     var detailView: SpotDetailView
     
     var filterVC: FilterViewController
-    
+    var carSharingInfoVC: CarSharingInfoViewController?
+
     var statusBar: UIView
     var modeSelection: SliderSelectionControl
 
@@ -559,6 +560,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func modeSelectionValueChanged() {
 
+        self.filterVC.hideFilters(completely: false)
+
         switch(self.modeSelection.selectedIndex) {
         case 0:
             //oh em gee you wanna see garages!
@@ -571,6 +574,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         case 2:
             //oh. em. geeeeeeee you wanna see car sharing spots!
             self.delegate?.didSelectMapMode(MapMode.CarSharing)
+            if Settings.firstCarSharingUse() {
+                Settings.setFirstCarSharingUsePassed(true)
+                showCarSharingInfo()
+            }
         default:break
         }
 
@@ -599,6 +606,50 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func cityDidChange(#fromCity: Settings.City, toCity: Settings.City) {
         self.delegate?.cityDidChange(fromCity: fromCity, toCity: toCity)
     }
+    
+    // MARK: Car sharing popup
+    
+    func showCarSharingInfo() {
+        
+        carSharingInfoVC = CarSharingInfoViewController()
+        
+        self.addChildViewController(carSharingInfoVC!)
+        self.view.addSubview(carSharingInfoVC!.view)
+        carSharingInfoVC!.didMoveToParentViewController(self)
+        
+        carSharingInfoVC!.view.snp_makeConstraints({ (make) -> () in
+            make.edges.equalTo(self.view)
+        })
+        
+        let tap = UITapGestureRecognizer(target: self, action: "dismissCarSharingInfo")
+        carSharingInfoVC!.view.addGestureRecognizer(tap)
+        
+        carSharingInfoVC!.view.alpha = 0.0
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.carSharingInfoVC!.view.alpha = 1.0
+        })
+        
+    }
+    
+    func dismissCarSharingInfo() {
+        
+        if let carShareingInfo = self.carSharingInfoVC {
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                carShareingInfo.view.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    carShareingInfo.removeFromParentViewController()
+                    carShareingInfo.view.removeFromSuperview()
+                    carShareingInfo.didMoveToParentViewController(nil)
+                    self.carSharingInfoVC = nil
+            })
+            
+        }
+        
+        
+    }
+    
 
 }
 
