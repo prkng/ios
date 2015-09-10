@@ -167,7 +167,7 @@
 "all" = "tous";
 "hour" = "heure";
 "hourly" = "heure";
-"daily" = "heure";
+"daily" = "jour";
 "metered" = "Tarifé";
 "check-in" = "Check-in";
 "check-in-pay" = "Check-in + Payer";
