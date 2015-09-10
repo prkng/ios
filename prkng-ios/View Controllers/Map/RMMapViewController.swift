@@ -849,8 +849,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
-            self.zoomIntoClosestPins(3)
-            
             completion()
             
         })
@@ -863,7 +861,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         let orderedAnnotations = self.annotations.sorted { (first, second) -> Bool in
             let firstLocation = CLLocation(latitude: first.coordinate.latitude, longitude: first.coordinate.longitude)
             let secondLocation = CLLocation(latitude: second.coordinate.latitude, longitude: second.coordinate.longitude)
-            return mapCenter.distanceFromLocation(firstLocation) > mapCenter.distanceFromLocation(secondLocation)
+            return mapCenter.distanceFromLocation(firstLocation) < mapCenter.distanceFromLocation(secondLocation)
         }
         
         var annotationsToZoom = [RMAnnotation]()
@@ -1140,7 +1138,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     override func mapModeDidChange(completion: (() -> Void)) {
-        updateAnnotations(completion)
+        updateAnnotations({ () -> Void in
+            completion()
+            self.zoomIntoClosestPins(3)
+        })
     }
     
     override func removeRegularAnnotations() {
