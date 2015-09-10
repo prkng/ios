@@ -21,15 +21,13 @@ struct LotAttribute {
     var type: LotAttributeType
     var enabled: Bool
     
-    var name: String {
-        get {
-            switch (type) {
-            case .Indoor    : return "indoor"//.localizedString
-            case .Handicap  : return "handicap"//.localizedString
-            case .Clerk     : return "clerk"//.localizedString
-            case .Valet     : return "valet"//.localizedString
-            case .Card      : return "card"//.localizedString
-            }
+    func name(forIcon: Bool) -> String {
+        switch (type) {
+        case .Indoor    : return enabled || forIcon ? "indoor" : "outdoor"//.localizedString
+        case .Handicap  : return "handicap"//.localizedString
+        case .Clerk     : return "clerk"//.localizedString
+        case .Valet     : return "valet"//.localizedString
+        case .Card      : return "card"//.localizedString
         }
     }
     

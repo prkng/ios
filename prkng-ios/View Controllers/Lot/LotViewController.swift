@@ -144,8 +144,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         }
         
         for attribute in lot.attributes {
-            let caption = attribute.name.localizedString.uppercaseString
-            let imageName = "icon_" + attribute.name + (attribute.enabled ? "_on" : "_off" )
+            let caption = attribute.name(false).localizedString.uppercaseString
+            let imageName = "icon_" + attribute.name(true) + (attribute.enabled ? "_on" : "_off" )
             
             let attributeLabel = UILabel()
             attributeLabel.text = caption

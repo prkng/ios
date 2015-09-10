@@ -178,6 +178,7 @@
 "closed" = "Fermé";
 "clerk" = "Vigile";
 "indoor" = "Intérieur";
+"outdoor" = "Extérieur";
 "valet" = "Valet";
 "handicap" = "Handicapé";
 "card" = "Carte";

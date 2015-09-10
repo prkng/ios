@@ -175,6 +175,7 @@
 "closed" = "Closed";
 "clerk" = "Clerk";
 "indoor" = "Indoor";
+"outdoor" = "Outdoor";
 "valet" = "Valet";
 "handicap" = "Handicap";
 "card" = "Card";
