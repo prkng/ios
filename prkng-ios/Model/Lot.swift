@@ -59,163 +59,126 @@ class Lot: NSObject, Hashable, DetailObject {
     var address: String
     var capacity: Int
     var attributes: [LotAttribute]
-    var agenda: [LotAgendaDay]
+    var agenda: [LotAgendaPeriod]
     var coordinate: CLLocationCoordinate2D
     var streetViewCoordinate: CLLocationCoordinate2D
     var streetViewHeading: Double?
 
     var isCurrentlyOpen: Bool {
         
-        let currentDay = DateUtil.dayIndexOfTheWeek()
-        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
-        
-        let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
-        
-        for day in dayAgenda {
-            if currentTimeInterval >= day.startHour
-                && currentTimeInterval <= day.endHour
-                && (day.maxRate != nil || day.hourlyRate != nil) {
-                    return true
-            }
+        if let period = self.currentPeriod {
+            return period.isOpen
         }
-        
         return false
     }
+    
     //returns the "main" rate ie the one we want to display
     var mainRate: Float {
         
-        let currentDay = DateUtil.dayIndexOfTheWeek()
-        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
+        let period = currentOrNextOpenPeriod
         
-        let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
+        var maxHourly: Float = currentOrNextOpenPeriod?.hourlyRate ?? 0
+        var maxMax: Float = currentOrNextOpenPeriod?.maxRate ?? 0
+        var maxDaily: Float = currentOrNextOpenPeriod?.dailyRate ?? 0
         
-        for day in dayAgenda {
-            if currentTimeInterval >= day.startHour
-                && currentTimeInterval <= day.endHour
-                && day.maxRate != nil {
-                    return day.maxRate!
-            }
-        }
-        
-        return 0
-    }
-    var mainHourlyRate: Float {
-        
-        let currentDay = DateUtil.dayIndexOfTheWeek()
-        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
-        
-        let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
-        
-        for day in dayAgenda {
-            if currentTimeInterval >= day.startHour
-                && currentTimeInterval <= day.endHour
-                && day.hourlyRate != nil {
-                    return day.hourlyRate!
-            }
-        }
-        
-        return 0
-    }
-    var endTimeToday: NSTimeInterval {
-        
-        let currentDay = DateUtil.dayIndexOfTheWeek()
-        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
-        
-        let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
-        
-        for day in dayAgenda {
-            if currentTimeInterval >= day.startHour
-                && currentTimeInterval <= day.endHour {
-                    return day.endHour
-            }
-        }
-        
-        return -1
-    }
-    //TODO: this is incomplete. needs to be finished
-    var nextEndTime: NSTimeInterval {
-        
-        var beforeItem: LotAgendaDay?
-        var afterItem: LotAgendaDay?
-        
-        let currentDay = DateUtil.dayIndexOfTheWeek()
-        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
-        
-        let dayAgenda = LotAgendaDay.getAgendaForDay(currentDay, agenda: self.agenda)
-        for day in dayAgenda {
-            if currentTimeInterval >= day.startHour
-                && currentTimeInterval <= day.endHour {
-                    return day.endHour
-            }
-//            if currentTimeInterval > day.startHour
-//                && currentTimeInterval > day.endHour {
-//                    return day.startHour
-//            }
-
-        }
-
-//        self.agenda.sort { (first, second) -> Bool in
-//            if first.dayIndex == second.dayIndex {
-//                return first.startHour < second.startHour
-//            } else {
-//                return first.dayIndex < second.dayIndex
-//            }
-//        }
-        
-        var agendaSortedByToday = self.sortedAgenda
-
-        for day in agendaSortedByToday {
-            if currentTimeInterval >= day.startHour
-                && currentTimeInterval <= day.endHour {
-                    return day.endHour
-            }
-        }
-
-        if self.agenda.count == 0 {
-            return -1
-        }
-        
-        return -1
-    }
-    
-    var sortedAgenda: [LotAgendaDay] {
-        get {
-            
-            var agendaSortedByToday = [LotAgendaDay]()
-            let currentDay = DateUtil.dayIndexOfTheWeek()
-            
-            for var i = currentDay; i < 7; ++i {
-                let itemsForDay = LotAgendaDay.getAgendaForDay(i, agenda: self.agenda)
-                agendaSortedByToday += itemsForDay
-            }
-            
-            for var j = 0; j < currentDay; ++j {
-                let itemsForDay = LotAgendaDay.getAgendaForDay(j, agenda: self.agenda)
-                agendaSortedByToday += itemsForDay
-            }
-            
-            return agendaSortedByToday
+        if maxMax > 0 {
+            return maxMax
+        } else if maxDaily > 0 {
+            return maxDaily
+        } else if maxHourly > 0 {
+            let hours = ((period?.endHour ?? 0) - (period?.startHour ?? 0)) / 3600
+            return maxHourly * Float(hours)
+        } else {
+            return 0
         }
     }
     
+    var hourlyRate: Float {
+        return self.currentOrNextOpenPeriod?.hourlyRate ?? 0
+    }
+    
+    //returns the periods flattened and ordered by day, then by start time
+    var sortedAgenda: [LotAgendaPeriod] {
+        
+        var agendaSortedByToday = [LotAgendaPeriod]()
+        let currentDay = DateUtil.dayIndexOfTheWeek()
+        
+        for var i = currentDay; i < 7; ++i {
+            var itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(i, agenda: self.agenda)
+            agendaSortedByToday += itemsForDay
+        }
+        
+        for var j = 0; j < currentDay; ++j {
+            var itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(j, agenda: self.agenda)
+            agendaSortedByToday += itemsForDay
+        }
+        
+        return agendaSortedByToday
+    }
+    
+    var currentPeriod: LotAgendaPeriod? {
+        
+        let currentDay = DateUtil.dayIndexOfTheWeek()
+        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
+        let dayAgenda = LotAgendaPeriod.getSortedAgendaForDay(currentDay, agenda: self.agenda)
+        
+        for period in dayAgenda {
+            if currentTimeInterval >= period.startHour
+                && currentTimeInterval <= period.endHour {
+                    return period
+            }
+        }
+        
+        return nil
+    }
+
+    var currentOrNextOpenPeriod: LotAgendaPeriod? {
+        
+        let currentPeriod = self.currentPeriod!
+        
+        if currentPeriod.isOpen {
+            return currentPeriod
+        }
+        
+        let currentDay = DateUtil.dayIndexOfTheWeek()
+        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
+        let sortedAgenda = self.sortedAgenda
+        
+        var nextOpenPeriod: LotAgendaPeriod?
+        
+        for period in sortedAgenda {
+            let isBeforeCurrent = period.startHour < currentPeriod.startHour && period.dayIndex <= currentPeriod.dayIndex
+            if period.isOpen {
+                nextOpenPeriod = period
+                if !isBeforeCurrent {
+                    return nextOpenPeriod
+                }
+            }
+        }
+        
+        return nil
+    }
+
     //aggregates the open times and returns a list of 7 nullable tuples with the total open times
     //optionally sorted
     func openTimes(sortedByToday: Bool) -> [(NSTimeInterval, NSTimeInterval)] {
         
         var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
         var chosenAgenda = sortedByToday ? self.sortedAgenda : self.agenda
-        var groupedAgenda = LotAgendaDay.groupedAgenda(chosenAgenda)
+        var groupedAgenda = LotAgendaPeriod.groupedAgenda(chosenAgenda)
         for group in groupedAgenda {
             
             var earliestStartTime: NSTimeInterval = 24*3600
             var latestEndTime: NSTimeInterval = 0
             
             for item in group {
-                if item.startHour < earliestStartTime {
-                    earliestStartTime = item.startHour
-                }
-                if item.endHour > latestEndTime {
-                    latestEndTime = item.endHour
+                if item.isOpen {
+                    if item.startHour < earliestStartTime {
+                        earliestStartTime = item.startHour
+                    }
+                    if item.endHour > latestEndTime {
+                        latestEndTime = item.endHour
+                    }
                 }
             }
             
@@ -264,7 +227,7 @@ class Lot: NSObject, Hashable, DetailObject {
             return NSAttributedString(string: "24H", attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         }
 
-        let interval = endTimeToday
+        let interval = currentPeriod!.endHour
         return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
         }
     }
@@ -300,13 +263,13 @@ class Lot: NSObject, Hashable, DetailObject {
         self.address = json["properties"]["address"].stringValue
         self.capacity = json["properties"]["capacity"].intValue
         
-        self.agenda = [LotAgendaDay]()
+        self.agenda = [LotAgendaPeriod]()
         for attr in json["properties"]["agenda"] {
             let day = attr.0.toInt()! - 1 //this is 1-indexed on the server, convert it to 0-index
             let timesArray = attr.1.arrayValue
             if timesArray.count == 0 {
-                let lotAgendaDay = LotAgendaDay(day: day, hourly: nil, max: nil, daily: nil, start: NSTimeInterval(0), end: NSTimeInterval(24*3600))
-                self.agenda.append(lotAgendaDay)
+                let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: nil, max: nil, daily: nil, start: NSTimeInterval(0), end: NSTimeInterval(24*3600))
+                self.agenda.append(lotAgendaPeriod)
             }
             for item in attr.1.arrayValue {
                 let hourly = item["hourly"].float
@@ -317,12 +280,10 @@ class Lot: NSObject, Hashable, DetailObject {
                 var firstFloat: Float = floatList.first?.floatValue ?? 0
                 var secondFloat: Float = floatList.last?.floatValue ?? 0
                 
-                let lotAgendaDay = LotAgendaDay(day: day, hourly: hourly, max: max, daily: daily, start: NSTimeInterval(firstFloat*60*60), end: NSTimeInterval(secondFloat*60*60))
-                self.agenda.append(lotAgendaDay)
+                let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: hourly, max: max, daily: daily, start: NSTimeInterval(firstFloat*60*60), end: NSTimeInterval(secondFloat*60*60))
+                self.agenda.append(lotAgendaPeriod)
             }
         }
-        
-        LotAgendaDay.getAgendaForDay(5, agenda: self.agenda)
 
         self.attributes = [LotAttribute]()
         for attr in json["properties"]["attrs"] {
@@ -347,7 +308,7 @@ class Lot: NSObject, Hashable, DetailObject {
 
 }
 
-class LotAgendaDay: Printable, DebugPrintable {
+class LotAgendaPeriod: Printable, DebugPrintable {
     
     var dayIndex: Int //1 to 7, monday to sunday
     var hourlyRate: Float?
@@ -355,6 +316,11 @@ class LotAgendaDay: Printable, DebugPrintable {
     var dailyRate: Float?
     var startHour: NSTimeInterval
     var endHour: NSTimeInterval
+    
+    var isOpen: Bool { get {
+        return hourlyRate != nil || maxRate != nil || dailyRate != nil
+        }
+    }
     
     init(day: Int, hourly: Float?, max: Float?, daily: Float?, start: NSTimeInterval, end: NSTimeInterval) {
         self.dayIndex = day
@@ -365,36 +331,44 @@ class LotAgendaDay: Printable, DebugPrintable {
         self.endHour = end
     }
 
-    static func getAgendaForDay(day: Int, agenda: [LotAgendaDay]) -> [LotAgendaDay] {
+    static func getSortedAgendaForDay(day: Int, agenda: [LotAgendaPeriod]) -> [LotAgendaPeriod] {
         
-        let agendaForDay = agenda.filter({ (var item: LotAgendaDay) -> Bool in
+        var agendaForDay = agenda.filter({ (var item: LotAgendaPeriod) -> Bool in
             item.dayIndex == day
         })
         
+        agendaForDay.sort({ (first, second) -> Bool in
+            if first.dayIndex == second.dayIndex {
+                return first.startHour < second.startHour
+            } else {
+                return first.dayIndex < second.dayIndex
+            }
+        })
+
         return agendaForDay
 
     }
     
     //returns the sorted agenda as an array of arrays
-    //ex: [day 0: [LotAgendaDay], day 1: [LotAgendaDay], etc by day number
-    static func groupedAgenda(agenda: [LotAgendaDay]) -> [[LotAgendaDay]] {
-        var groupedAgenda = [[LotAgendaDay]]()
+    //ex: [day 0: [LotAgendaPeriod], day 1: [LotAgendaPeriod], etc by day number
+    static func groupedAgenda(agenda: [LotAgendaPeriod]) -> [[LotAgendaPeriod]] {
+        var groupedAgenda = [[LotAgendaPeriod]]()
         let startIndex = agenda[0].dayIndex
         for i in Range(start: startIndex, end: (7+startIndex)) {
             let index = i % 7
-            let agendaForDay = LotAgendaDay.getAgendaForDay(index, agenda: agenda)
+            let agendaForDay = LotAgendaPeriod.getSortedAgendaForDay(index, agenda: agenda)
             groupedAgenda.append(agendaForDay)
         }
         return groupedAgenda
     }
     
     var description: String { get {
-        return String(format: "day: %d, hourly: %f, max: %f, start: %f, end: %f", dayIndex, hourlyRate ?? 0, maxRate ?? 0, startHour, endHour)
+        return String(format: "day: %d, hourly: %f, max: %f, daily: %f, start: %f, end: %f", dayIndex, hourlyRate ?? -1, maxRate ?? -1, dailyRate ?? -1, startHour, endHour)
         }
     }
 
     var debugDescription: String { get {
-        return String(format: "day: %d, hourly: %f, max: %f, start: %f, end: %f", dayIndex, hourlyRate ?? 0, maxRate ?? 0, startHour, endHour)
+        return String(format: "day: %d, hourly: %f, max: %f, daily: %f, start: %f, end: %f", dayIndex, hourlyRate ?? -1, maxRate ?? -1, dailyRate ?? -1, startHour, endHour)
         }
     }
 

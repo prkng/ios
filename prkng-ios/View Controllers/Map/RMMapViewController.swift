@@ -284,10 +284,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             var circleImage = UIImage(named: imageName)
             if lot.bottomLeftPrimaryText != nil && lot.bottomLeftPrimaryText!.string != "$0" {
-                var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
-                var numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
-                currencyString.appendAttributedString(numberString)
-                circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1)
+                if lot.isCurrentlyOpen {
+                    var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
+                    var numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+                    currencyString.appendAttributedString(numberString)
+                    circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1)
+                } else {
+                    var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(6), NSBaselineOffsetAttributeName: 3])
+                    var numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+                    currencyString.appendAttributedString(numberString)
+                    circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1)
+                }
             }
             
             var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
@@ -1140,7 +1147,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func mapModeDidChange(completion: (() -> Void)) {
         updateAnnotations({ () -> Void in
             completion()
-            self.zoomIntoClosestPins(3)
+            if self.mapMode == .Garage {
+                self.zoomIntoClosestPins(3)
+            }
         })
     }
     

@@ -112,7 +112,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
         subHeaderViewLabel.leftLabel.textColor = Styles.Colors.cream1
 
-        var currencyString = NSMutableAttributedString(string: "$" + String(Int(lot.mainHourlyRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+        var currencyString = NSMutableAttributedString(string: "$" + String(Int(lot.hourlyRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
         var numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
         currencyString.appendAttributedString(numberString)
         subHeaderViewLabel.rightLabel.attributedText = currencyString
