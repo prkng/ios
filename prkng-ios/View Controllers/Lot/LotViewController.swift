@@ -29,7 +29,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     private var subHeaderViewLabel = PRKTimeSpanView()
     private var todayTimeHeaderView = UIView()
     private var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
-    private var timeListView = UIView()
+    private var timeListScrollView = UIScrollView()
+    private var timeListContentView = UIView()
     private var timeSpanLabels = [PRKTimeSpanView]()
     private var attributesView = UIView()
     private var attributesViewLabels = [UILabel]()
@@ -37,6 +38,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
 
     private var verticalRec: PRKVerticalGestureRecognizer
     private static let HEADER_HEIGHT: CGFloat = 70
+    private(set) var LIST_HEIGHT: Int = 185
+    private(set) var SCROLL_HEIGHT: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 185
     
     init(lot: Lot, view: UIView) {
         self.lot = lot
@@ -45,8 +48,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         verticalRec = PRKVerticalGestureRecognizer()
         super.init(nibName: nil, bundle: nil)
 
-        self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotViewController.HEADER_HEIGHT + 30 + 50 + 185 + 52) - CGFloat(Styles.Sizes.tabbarHeight)
-
+        self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotViewController.HEADER_HEIGHT + 30 + 50 + 52) - CGFloat(Styles.Sizes.tabbarHeight)
+        self.TOP_PARALLAX_HEIGHT -= CGFloat(self.SCROLL_HEIGHT)
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -130,13 +133,14 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         timeSpanLabels.append(todayTimeSpanLabel)
         todayTimeHeaderView.addSubview(todayTimeSpanLabel)
         
-        view.addSubview(timeListView)
-        timeListView.backgroundColor = Styles.Colors.stone
+        view.addSubview(timeListScrollView)
+        timeListScrollView.backgroundColor = Styles.Colors.stone
+        timeListScrollView.addSubview(timeListContentView)
 
         for i in 1..<7 {
             let timeSpanLabel = PRKTimeSpanView(dayString: days[i], startTime: openTimes[i].0, endTime: openTimes[i].1)
             timeSpanLabels.append(timeSpanLabel)
-            timeListView.addSubview(timeSpanLabel)
+            timeListContentView.addSubview(timeSpanLabel)
         }
         
         for attribute in lot.attributes {
@@ -225,11 +229,17 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.centerY.equalTo(self.todayTimeHeaderView)
         }
         
-        timeListView.snp_makeConstraints { (make) -> () in
+        timeListScrollView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.todayTimeHeaderView.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(185)
+            make.height.equalTo(self.SCROLL_HEIGHT)
+        }
+        
+        timeListContentView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.timeListScrollView)
+            make.width.equalTo(self.view)
+            make.height.equalTo(self.LIST_HEIGHT)
         }
         
         timeSpanLabels[0].snp_makeConstraints({ (make) -> () in
@@ -238,21 +248,21 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.centerY.equalTo(self.todayTimeHeaderView)
         })
 
-        var topConstraint = self.timeListView.snp_top
+        var topConstraint = self.timeListContentView.snp_top
         for i in 1..<7 {
             let timeSpanLabel = timeSpanLabels[i]
             let topOffset = i == 1 ? 14 : 10
             timeSpanLabel.snp_makeConstraints({ (make) -> () in
                 make.top.equalTo(topConstraint).with.offset(topOffset)
-                make.left.equalTo(self.timeListView).with.offset(34)
-                make.right.equalTo(self.timeListView).with.offset(-40)
+                make.left.equalTo(self.timeListContentView).with.offset(34)
+                make.right.equalTo(self.timeListContentView).with.offset(-40)
             })
             topConstraint = timeSpanLabel.snp_bottom
         }
 
         
         attributesView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.timeListView.snp_bottom)
+            make.top.equalTo(self.timeListScrollView.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(52)

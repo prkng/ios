@@ -119,7 +119,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         containerView.addSubview(timeImageView)
 
         messageLabel.textColor = Styles.Colors.petrol2
-        messageLabel.font = Styles.FontFaces.light(17)
+        messageLabel.font = Styles.FontFaces.light(14)
         containerView.addSubview(messageLabel)
         
         topLine.backgroundColor = Styles.Colors.transparentWhite
@@ -427,7 +427,7 @@ class TimeFilter {
     
     static var SECONDS_PER_MINUTE : NSTimeInterval = 60
     static var SECONDS_PER_HOUR : NSTimeInterval = 3600
-    static var FONT : UIFont = Styles.FontFaces.regular(14)
+    static var FONT : UIFont = Styles.FontFaces.light(14)
 
     convenience init(interval: NSTimeInterval) {
         self.init(interval: interval, labelText: nil)

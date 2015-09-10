@@ -81,7 +81,7 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
         pickerView.dataSource = self
         pickerView.delegate = self
         bottomContainer.addSubview(pickerView)
-        // TODO
+
         didSetupSubviews = true
     }
     
@@ -112,7 +112,6 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
             make.center.equalTo(bottomContainer)
         }
         
-        // TODO
         didSetupConstraints = true
     }
     

@@ -62,7 +62,7 @@ class Lot: NSObject, Hashable, DetailObject {
     var agenda: [LotAgendaDay]
     var coordinate: CLLocationCoordinate2D
     var streetViewCoordinate: CLLocationCoordinate2D
-    var streetViewHeading: Double
+    var streetViewHeading: Double?
 
     var isCurrentlyOpen: Bool {
         
@@ -341,7 +341,7 @@ class Lot: NSObject, Hashable, DetailObject {
         self.name = json["properties"]["name"].stringValue
         self.lotOperator = json["properties"]["operator"].stringValue
         self.streetViewCoordinate = CLLocationCoordinate2D(latitude: json["properties"]["street_view"]["lat"].doubleValue, longitude: json["properties"]["street_view"]["long"].doubleValue)
-        self.streetViewHeading = json["properties"]["street_view"]["head"].doubleValue
+        self.streetViewHeading = json["properties"]["street_view"]["head"].double
     }
 
 

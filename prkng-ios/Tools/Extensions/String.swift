@@ -63,6 +63,8 @@ extension String {
             
         }
         
+        firstString = firstString.uppercaseString
+        
         return (firstString, secondString)
     }
 
