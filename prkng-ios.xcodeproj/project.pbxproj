@@ -26,6 +26,7 @@
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
 		3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */; };
+		3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E5B2EFF1BA359B500658A9A /* InfoPlist.strings */; };
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
@@ -203,6 +204,8 @@
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
 		3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKPopupViewController.swift; sourceTree = "<group>"; };
 		3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsOperations.swift; sourceTree = "<group>"; };
+		3E5B2EFE1BA359B500658A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3E5B2F001BA359B700658A9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
 		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModalViewController.swift; sourceTree = "<group>"; };
@@ -726,6 +729,7 @@
 				3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */,
 				3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */,
 				3E52EB721B9F45E6004183FD /* AddressSplitting.strings */,
+				3E5B2EFF1BA359B500658A9A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -978,6 +982,7 @@
 				3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */,
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */,
+				3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */,
 				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
@@ -1195,6 +1200,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3E5B2EFF1BA359B500658A9A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3E5B2EFE1BA359B500658A9A /* Base */,
+				3E5B2F001BA359B700658A9A /* fr */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		BFF568E91ACC62CA0018F62F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

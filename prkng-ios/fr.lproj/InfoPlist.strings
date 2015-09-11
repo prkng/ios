@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  prkng-ios
+
+  Created by Antonino Urbano on 2015-09-11.
+  Copyright (c) 2015 PRKNG. All rights reserved.
+*/
+
+"NSLocationAlwaysUsageDescription" = "*** We need this permission to show the parking spots around you and to automatically check you in and out of parking spots.";
+"NSLocationWhenInUseUsageDescription" = "*** We need this permission to show the parking spots around you.";

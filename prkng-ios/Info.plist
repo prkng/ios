@@ -62,9 +62,9 @@
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need this permission to show the parking spots around you and to automatically check you in and out of parking spots.</string>
+	<string>Localized in InfoPlist.strings</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need this permission to show the parking spots around you.</string>
+	<string>Localized in InfoPlist.strings</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Intro-Light.otf</string>
