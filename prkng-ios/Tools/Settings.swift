@@ -16,6 +16,7 @@ struct Settings {
     }
     
     static let SELECTED_CITY_KEY = "prkng_selected_city"
+    static let LOCATION_MANAGER_LAST_STATUS_KEY = "location_manager_last_status"
     static let FIRST_USE_PASSED_KEY = "prkng_first_use_passed"
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
@@ -285,6 +286,15 @@ struct Settings {
         let rawValue = (NSUserDefaults.standardUserDefaults().valueForKey(MAP_USER_MODE) as? String) ?? "None"
         return MapUserMode(rawValue: rawValue)!
     }
+
+    static func setLastLocationManagerStatus(status: CLAuthorizationStatus) {
+        NSUserDefaults.standardUserDefaults().setInteger(Int(status.rawValue), forKey: LOCATION_MANAGER_LAST_STATUS_KEY)
+    }
     
+    static func getLastLocationManagerStatus() -> CLAuthorizationStatus {
+        let rawValue = Int32(NSUserDefaults.standardUserDefaults().integerForKey(LOCATION_MANAGER_LAST_STATUS_KEY))
+        return CLAuthorizationStatus(rawValue: rawValue)!
+    }
+
 
 }

@@ -21,8 +21,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
         
 //        //register for background location usage for updates
-//        locationManager.delegate = self
-//        locationManager.requestAlwaysAuthorization()
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+        
+        //send analytics on the location manager status
+        let currentLocationManagerStatus = CLLocationManager.authorizationStatus()
+        if Settings.getLastLocationManagerStatus() != currentLocationManagerStatus {
+            AnalyticsOperations.locationPermission(currentLocationManagerStatus, completion: { (completed) -> Void in
+                if completed {
+                    Settings.setLastLocationManagerStatus(currentLocationManagerStatus)
+                }
+            })
+        }
 //        locationManager.startMonitoringForRegion(CLCircularRegion(center: Settings.pointForCity(Settings.City.Montreal), radius: 2000, identifier: "watshpringgefon"))
         
         // Override point for customization after application launch.

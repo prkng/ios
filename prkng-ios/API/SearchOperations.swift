@@ -37,18 +37,6 @@ class SearchOperations {
         
     }
     
-    class func sendSearchQueryToAnalytics(query: String) {
-        
-        let url = APIUtility.APIConstants.rootURLString + "search"
-        let params = ["query" : query]
-        
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
-            
-        }
-        
-    }
-    
     class func searchWithInput(input : String , forAutocomplete: Bool, completion : (results : Array<SearchResult>) -> Void) {
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -62,7 +50,7 @@ class SearchOperations {
                             let totalResults = results1 + results2
                             dispatch_async(dispatch_get_main_queue(), {
                                 () -> Void in
-                                SearchOperations.sendSearchQueryToAnalytics(input)
+                                AnalyticsOperations.sendSearchQueryToAnalytics(input)
                                 completion(results: totalResults)
                             })
                             

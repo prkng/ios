@@ -25,6 +25,7 @@
 		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
+		3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */; };
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
@@ -201,6 +202,7 @@
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
 		3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKPopupViewController.swift; sourceTree = "<group>"; };
+		3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsOperations.swift; sourceTree = "<group>"; };
 		3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
 		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModalViewController.swift; sourceTree = "<group>"; };
@@ -809,6 +811,7 @@
 				3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */,
 				BF4567FF1AD85722006D7C23 /* SearchOperations.swift */,
 				BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */,
+				3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1156,6 +1159,7 @@
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */,
 				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
+				3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */,
 				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
 				BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
