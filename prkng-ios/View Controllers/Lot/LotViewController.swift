@@ -85,7 +85,15 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         view.addSubview(topImageView)
         topImageView.navigationLinksHidden = true
-        topImageView.moveNearCoordinate(lot.coordinate)
+        if lot.streetViewPanoramaId == nil {
+            topImageView.moveNearCoordinate(lot.coordinate)
+        } else {
+            topImageView.moveToPanoramaID(lot.streetViewPanoramaId!)
+        }
+        if let heading = lot.streetViewHeading {
+            let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
+            topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
+        }
         
         view.addSubview(topGradient)
         topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))

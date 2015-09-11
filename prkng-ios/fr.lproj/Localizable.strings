@@ -31,7 +31,7 @@
 "my_history" = "HISTORIQUE";
 "history" = "historique";
 "save" = "enregistrer";
-"new_password" = "NOUVEAU MOT DE PASSE";g
+"new_password" = "NOUVEAU MOT DE PASSE";
 "new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
 "name_empty" = "Merci d’entrer votre nom.";
 "email_empty" = "Merci d’entrer une adresse valide.";

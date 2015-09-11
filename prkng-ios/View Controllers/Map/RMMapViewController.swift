@@ -297,7 +297,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 }
             }
             
-            var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
+            var circleMarker: RMMarker = RMMarker(UIImage: circleImage, anchorPoint: CGPoint(x: 0.5, y: 0))
             
             if shouldAddAnimation {
                 circleMarker.addScaleAnimation()
