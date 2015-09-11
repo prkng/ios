@@ -11,10 +11,10 @@
 //"Street " = "St ";
 //"Avenue " = "Ave ";
 //"Boulevard " = "Boul ";
-//"Saint-"  = "St-";
-//"Saint "  = "St ";
-//"Sainte-"  = "Ste-";
-//"Sainte "  = "Ste ";
+"Saint-"  = "St-";
+"Saint "  = "St ";
+"Sainte-"  = "Ste-";
+"Sainte "  = "Ste ";
 
 " Ouest"  = " O";
 " Est"  = " E";
