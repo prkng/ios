@@ -31,7 +31,7 @@
 "my_history" = "HISTORIQUE";
 "history" = "historique";
 "save" = "enregistrer";
-"new_password" = "NOUVEAU MOT DE PASSE";
+"new_password" = "NOUVEAU MOT DE PASSE";g
 "new_password_confirm" = "CONFIRMATION DU MOT DE PASSE";
 "name_empty" = "Merci d’entrer votre nom.";
 "email_empty" = "Merci d’entrer une adresse valide.";
@@ -185,7 +185,7 @@
 "operated_by" = "Par";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
-"car_sharing_enabled_text" = "Auto-partage est selectionné";
+"car_sharing_enabled_text" = "Autopartage est selectionné";
 "car_sharing_info_title" = "L'autopartage sans tracas";
 "car_sharing_info_subtitle" = "Les places de 24hrs+ autour de vous";
 "car_sharing_info_message" = "Activez cette fonction lorsque vous utilisez un service d'autopartage et devez trouver un stationnement sur rue autorisé pour les 24 prochaines heures. Pas mal non?";
@@ -201,13 +201,13 @@
 
 "directions" = "Itinéraire";
 "directions_app_message" = "Quelle application veux-tu utiliser?";
-"directions_apple_maps_message" = "Utiliser Apple Maps";
-"directions_google_maps_message" = "Utiliser Google Maps";
+"directions_apple_maps_message" = "Apple Maps";
+"directions_google_maps_message" = "Google Maps";
 
 "provided_by_foursquare" = "résultats par foursquare";
 
-"on-street" = "Sur rue";
-"garages" = "Hors rue";
+"on-street" = "Sur-rue";
+"garages" = "Hors-rue";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
