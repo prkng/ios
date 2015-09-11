@@ -138,7 +138,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
             make.left.equalTo(self.leftImageView.snp_right).with.offset(5)
             make.right.lessThanOrEqualTo(self.rightImageView.snp_left).with.offset(-10)
             make.right.lessThanOrEqualTo(self.rightView.snp_left).with.offset(-10)
-            make.bottom.equalTo(self.titleLabel.snp_top).with.offset(2)
+            make.bottom.equalTo(self.titleLabel.snp_top).with.offset(1)
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in

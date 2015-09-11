@@ -42,6 +42,7 @@ class SpotDetailView: UIView {
     var delegate : SpotDetailViewDelegate?
     
     let VERTICAL_LABEL_SPACING = UIScreen.mainScreen().bounds.width == 320 ? 18 : 14
+    private(set) var TITLE_LABEL_BOTTOM_OFFSET = UIScreen.mainScreen().bounds.width == 320 ? -15 : -13
 
     convenience init() {
         self.init(frame: CGRectZero)
@@ -183,15 +184,13 @@ class SpotDetailView: UIView {
         }
 
         headerTitleLabel.snp_makeConstraints { (make) -> () in
-//            make.centerY.equalTo(self.topContainer)
-            make.top.equalTo(self.topContainer).with.offset(17)
             make.left.equalTo(self.topContainer).with.offset(25)
             make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).with.offset(-15)
+            make.bottom.equalTo(self.titleLabel.snp_top).with.offset(1)
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
-//            make.centerY.equalTo(self.topContainer)
-            make.bottom.equalTo(self.topContainer.snp_bottom).with.offset(-13)
+            make.bottom.equalTo(self.topContainer.snp_bottom).with.offset(self.TITLE_LABEL_BOTTOM_OFFSET)
             make.left.equalTo(self.topContainer).with.offset(24)
             make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).with.offset(-15)
         }

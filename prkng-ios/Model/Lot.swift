@@ -200,7 +200,7 @@ class Lot: NSObject, Hashable, DetailObject {
     
     var bottomLeftTitleText: String? { get { return "daily".localizedString.uppercaseString } }
     var bottomLeftPrimaryText: NSAttributedString? { get {
-        var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(16), NSBaselineOffsetAttributeName: 5])
+        var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
         var numberString = NSMutableAttributedString(string: String(Int(self.mainRate)), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         currencyString.appendAttributedString(numberString)
         return currencyString

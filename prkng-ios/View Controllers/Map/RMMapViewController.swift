@@ -288,12 +288,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
                     var numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
                     currencyString.appendAttributedString(numberString)
-                    circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1)
+                    circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
                 } else {
                     var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(6), NSBaselineOffsetAttributeName: 3])
                     var numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
                     currencyString.appendAttributedString(numberString)
-                    circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1)
+                    circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
                 }
             }
             
@@ -396,7 +396,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         
         if self.mapMode == .Garage {
-            map.clusteringEnabled = map.zoom < 15
+            map.clusteringEnabled = map.zoom <= 14
         }
         
         if wasUserAction {
@@ -616,7 +616,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func didSetMapMode() {
         switch (self.mapMode) {
         case .Garage:
-            self.mapView.clusteringEnabled = self.mapView.zoom < 15
+            self.mapView.clusteringEnabled = self.mapView.zoom <= 14
             break
         default:
             self.mapView.clusteringEnabled = false
@@ -643,6 +643,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             updateInProgress = false
+            completion()
 
         } else if mapView.zoom >= 15.0 || self.mapMode == MapMode.Garage {
             

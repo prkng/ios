@@ -96,6 +96,7 @@ struct Styles {
         static let h2r =  FontFaces.regular(25)
         static let h3r =  FontFaces.regular(20)
         
+        static let h4rVariable = UIScreen.mainScreen().bounds.width == 320 ? FontFaces.regular(12) : FontFaces.regular(16) //used with "$" superscripts
         static let h2rVariable = UIScreen.mainScreen().bounds.width == 320 ? h3r : h2r
 
         static let s1r =  FontFaces.regular(17)
