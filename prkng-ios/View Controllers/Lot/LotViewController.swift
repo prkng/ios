@@ -94,6 +94,9 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
             topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
         }
+        let cameraUpdate = GMSPanoramaCameraUpdate.setZoom(3)
+        topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
+
         
         view.addSubview(topGradient)
         topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
