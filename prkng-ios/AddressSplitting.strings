@@ -9,7 +9,11 @@
 //note: only the first part is used currently.
 
 "rue " = "";
+"ruelle " = "";
 "boulevard " = "";
 "avenue " = "";
 "chemin " = "";
 "chemin de la " = "";
+"Voie " = "";
+"Quai " = "";
+"Côte " = "";
