@@ -114,6 +114,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         view.addSubview(headerView)
         headerView.showsRightButton = false
         headerView.delegate = self
+        headerView.clipsToBounds = true
         
         view.addSubview(subHeaderView)
         subHeaderView.backgroundColor = Styles.Colors.lipstick
@@ -309,8 +310,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         let appleMapsURLString = "http://maps.apple.com/?saddr=Current%20Location&daddr=" + coordinateString
         
-//        let googleMapsURLStringWithSucessCallback = "comgooglemaps-x-callback://?saddr=&daddr=" + coordinateString + "&x-success=prkng://?resumeAfterNavWithCoordinate" + coordinateString + "&x-source=Prkng"
-        let googleMapsURLString = "comgooglemaps-x-callback://?saddr=&daddr=" + coordinateString + "&x-source=Prkng"
+        let googleMapsURLString = "comgooglemaps-x-callback://?saddr=&daddr=" + coordinateString + "&x-success=ng.prk.prkng-ios://?returningFromGoogleMaps=true&x-source=Prkng"
 
         let supportsGoogleMaps = UIApplication.sharedApplication().canOpenURL(NSURL(string: "comgooglemaps://")!)
         

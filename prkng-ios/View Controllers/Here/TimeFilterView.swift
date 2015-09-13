@@ -117,6 +117,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         }
         
         timeImageView.userInteractionEnabled = false
+        timeImageView.contentMode = UIViewContentMode.Left
         containerView.addSubview(timeImageView)
 
         messageLabel.textColor = Styles.Colors.petrol2
@@ -485,9 +486,9 @@ class TimeFilter {
         if interval < 0 {
             return ""
         } else if interval < TimeFilter.SECONDS_PER_HOUR {
-            return String(format: "%dMIN", Int(interval/TimeFilter.SECONDS_PER_MINUTE))
+            return String(format: "%dmin", Int(interval/TimeFilter.SECONDS_PER_MINUTE))
         } else {
-            return String(format: "%dH", Int(interval/TimeFilter.SECONDS_PER_HOUR))
+            return String(format: "%dh", Int(interval/TimeFilter.SECONDS_PER_HOUR))
         }
     }
     

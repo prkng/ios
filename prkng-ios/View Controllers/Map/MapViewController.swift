@@ -26,14 +26,13 @@ class MapViewController: AbstractViewController {
     var mapMode: MapMode = .StreetParking {
         didSet {
             
+            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
+            
             Settings.setShouldFilterForCarSharing(self.mapMode == .CarSharing)
             didSetMapMode()
             
             //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
-            if mapModeImageView != nil {
-                mapModeImageView?.removeFromSuperview()
-                mapModeImageView = nil
-            }
+            removeSnapshot()
             
             let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
             mapModeImageView = snapshotView
@@ -45,14 +44,13 @@ class MapViewController: AbstractViewController {
 
             self.removeRegularAnnotations()
             
-            mapModeDidChange { () -> Void in
+            self.mapModeDidChange { () -> Void in
+                dispatch_semaphore_signal(self.sema)
                 UIView.animateWithDuration(0.2, animations: { () -> Void in
                     self.mapModeImageView?.alpha = 0
                     }) { (completed) -> Void in
                         SVProgressHUD.dismiss()
-
-                        self.mapModeImageView?.removeFromSuperview()
-                        self.mapModeImageView = nil
+                        self.removeSnapshot()
                 }
             }
         }
@@ -63,7 +61,8 @@ class MapViewController: AbstractViewController {
     var trackUserButton = UIButton()
 
     var canShowMapMessage: Bool = false
-    
+    var updateInProgress: Bool = false
+    var sema = dispatch_semaphore_create(0)
     var myCarAnnotation: NSObject?
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
@@ -88,9 +87,16 @@ class MapViewController: AbstractViewController {
     func setMapUserMode(mode: MapUserMode) { }
     
     func updateAnnotations() {
-        updateAnnotations { () -> Void in }
+        if self.updateInProgress {
+            NSLog("update already in progress, fuggetaboutit")
+            return
+        }
+        self.updateAnnotations { (operationCompleted: Bool) -> Void in
+            self.removeSnapshot()
+            dispatch_semaphore_signal(self.sema)
+        }
     }
-    func updateAnnotations(completion: (() -> Void)) { }
+    func updateAnnotations(completion: ((operationCompleted: Bool) -> Void)) { }
 
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) { }
     
@@ -203,6 +209,13 @@ class MapViewController: AbstractViewController {
 
     func mapModeDidChange(completion: (() -> Void)) {
         completion()
+    }
+    
+    func removeSnapshot() {
+        if mapModeImageView != nil {
+            mapModeImageView?.removeFromSuperview()
+            mapModeImageView = nil
+        }
     }
     
 

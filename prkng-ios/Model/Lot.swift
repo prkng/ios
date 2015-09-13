@@ -154,7 +154,7 @@ class Lot: NSObject, Hashable, DetailObject {
             }
         }
         
-        return nil
+        return nextOpenPeriod
     }
 
     //aggregates the open times and returns a list of 7 nullable tuples with the total open times
@@ -222,7 +222,7 @@ class Lot: NSObject, Hashable, DetailObject {
             item.0 == 0 && item.1 == 24*3600
         })
         if filteredAgenda.count == 7 {
-            return NSAttributedString(string: "24H", attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
+            return NSAttributedString(string: "24 hour".localizedString.lowercaseString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         }
 
         let interval = currentPeriod!.endHour
