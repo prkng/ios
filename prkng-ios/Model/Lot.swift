@@ -10,16 +10,24 @@ import UIKit
 
 struct LotAttribute {
 
+    //the display order of the attributes respects the enum order
     enum LotAttributeType: Int {
         case Indoor = 0
-        case Handicap
-        case Clerk
-        case Valet
         case Card
+        case Handicap
+        case Valet
+        case Clerk
     }
     
     var type: LotAttributeType
     var enabled: Bool
+    
+    var showAsEnabled: Bool {
+        switch (type) {
+        case .Indoor    : return true
+        default         : return enabled
+        }
+    }
     
     func name(forIcon: Bool) -> String {
         switch (type) {

@@ -161,7 +161,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             
             let attributeLabel = UILabel()
             attributeLabel.text = caption
-            attributeLabel.textColor = attribute.enabled ? Styles.Colors.petrol2 : Styles.Colors.greyish
+            attributeLabel.textColor = attribute.showAsEnabled ? Styles.Colors.petrol2 : Styles.Colors.greyish
             attributeLabel.font = Styles.FontFaces.regular(9)
             attributesViewLabels.append(attributeLabel)
             
@@ -280,20 +280,22 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.height.equalTo(52)
         }
 
+        let attributeOffset = UIScreen.mainScreen().bounds.width / CGFloat(attributesViewImages.count) / 2.0
+        
         for i in 0..<attributesViewImages.count {
             
-            let multiplier: Float = 2.0 * Float(i + 1) / (Float(attributesViewImages.count + 1) )  // MAGIC =)
+            let multiplier: Float = 2.0 * Float(i + 1) / (Float(attributesViewImages.count) )  // MAGIC =)
             
             let label = attributesViewLabels[i]
             label.snp_makeConstraints({ (make) -> () in
-                make.centerX.equalTo(self.attributesView).multipliedBy(multiplier)
+                make.centerX.equalTo(self.attributesView).multipliedBy(multiplier).with.offset(-attributeOffset)
                 make.bottom.equalTo(self.attributesView).with.offset(-4.5)
             })
             
             let imageView = attributesViewImages[i]
             imageView.snp_makeConstraints({ (make) -> () in
                 make.size.equalTo(CGSize(width: 21, height: 25))
-                make.centerX.equalTo(self.attributesView).multipliedBy(multiplier)
+                make.centerX.equalTo(self.attributesView).multipliedBy(multiplier).with.offset(-attributeOffset)
                 make.bottom.equalTo(label.snp_top).with.offset(-3.5)
             })
 
