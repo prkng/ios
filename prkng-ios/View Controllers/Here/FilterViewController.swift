@@ -15,6 +15,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     var searchFilterView: SearchFilterView
     var timeFilterView: TimeFilterView
 
+    var shouldShowTimeFilter: Bool = true
     var showingFilters: Bool
     var autocompleteVC: SearchResultsTableViewController?
 
@@ -117,12 +118,14 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             timeFilterView.resetValue()
         }
         
+        let height: CGFloat = shouldShowTimeFilter ? TimeFilterView.TOTAL_HEIGHT : 0
+
         //make the constraints to match the search bar
         containerView.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.top.equalTo(self.view)
-            make.height.equalTo(SearchFilterView.TOTAL_HEIGHT + TimeFilterView.TOTAL_HEIGHT)
+            make.height.equalTo(SearchFilterView.TOTAL_HEIGHT + height)
         }
         
         UIView.animateWithDuration(0.2,

@@ -8,8 +8,8 @@
 
 import UIKit
 
-enum MapMode {
-    case Garage
+enum MapMode: Int {
+    case Garage = 0
     case StreetParking
     case CarSharing
 }

@@ -559,27 +559,35 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func modeSelectionValueChanged() {
-
-        self.filterVC.hideFilters(completely: false)
-
+        
+        var mapMode = MapMode.StreetParking
+        
         switch(self.modeSelection.selectedIndex) {
         case 0:
             //oh em gee you wanna see garages!
-            self.delegate?.didSelectMapMode(MapMode.Garage)
+            mapMode = .Garage
+            self.screenName = "Here - General View - Lot"
             break
         case 1:
             //oh. em. gee. you wanna see street parking!
-            self.delegate?.didSelectMapMode(MapMode.StreetParking)
+            mapMode = .StreetParking
+            self.screenName = "Here - General View - On-Street"
             break
         case 2:
             //oh. em. geeeeeeee you wanna see car sharing spots!
-            self.delegate?.didSelectMapMode(MapMode.CarSharing)
+            mapMode = .CarSharing
             if Settings.firstCarSharingUse() {
                 Settings.setFirstCarSharingUsePassed(true)
                 showCarSharingInfo()
             }
+            self.screenName = "Here - General View - CarSharing"
+            break
         default:break
         }
+        
+        self.delegate?.didSelectMapMode(mapMode)
+        self.filterVC.hideFilters(completely: false)
+        self.filterVC.shouldShowTimeFilter = mapMode == .StreetParking
 
     }
     
