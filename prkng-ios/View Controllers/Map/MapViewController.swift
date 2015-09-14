@@ -26,33 +26,40 @@ class MapViewController: AbstractViewController {
     var mapMode: MapMode = .StreetParking {
         didSet {
             
-            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
-            
-            Settings.setShouldFilterForCarSharing(self.mapMode == .CarSharing)
-            didSetMapMode()
-            
-            //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
-            removeSnapshot()
-            
-            let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
-            mapModeImageView = snapshotView
-            mapModeImageView?.userInteractionEnabled = false
-            self.view.addSubview(mapModeImageView!)
-            
-            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-            SVProgressHUD.show()
-
-            self.removeRegularAnnotations()
-            
-            self.mapModeDidChange { () -> Void in
-                dispatch_semaphore_signal(self.sema)
-                UIView.animateWithDuration(0.2, animations: { () -> Void in
-                    self.mapModeImageView?.alpha = 0
-                    }) { (completed) -> Void in
-                        SVProgressHUD.dismiss()
-                        self.removeSnapshot()
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+                
+                if self.updateInProgress {
+                    dispatch_semaphore_wait(self.sema, DISPATCH_TIME_FOREVER)
                 }
-            }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    Settings.setShouldFilterForCarSharing(self.mapMode == .CarSharing)
+                    self.didSetMapMode()
+                    
+                    //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
+                    self.removeSnapshot()
+                    
+                    let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
+                    self.mapModeImageView = snapshotView
+                    self.mapModeImageView?.userInteractionEnabled = false
+                    self.view.addSubview(self.mapModeImageView!)
+                    
+                    SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                    SVProgressHUD.show()
+                    
+                    self.removeRegularAnnotations()
+                    
+                    self.mapModeDidChange { () -> Void in
+                        UIView.animateWithDuration(0.2, animations: { () -> Void in
+                            self.mapModeImageView?.alpha = 0
+                            }) { (completed) -> Void in
+                                SVProgressHUD.dismiss()
+                                self.removeSnapshot()
+                        }
+                    }
+                })
+            })
         }
     }
     
@@ -61,7 +68,15 @@ class MapViewController: AbstractViewController {
     var trackUserButton = UIButton()
 
     var canShowMapMessage: Bool = false
-    var updateInProgress: Bool = false
+    var updateInProgress: Bool = false {
+        didSet {
+            if updateInProgress {
+                sema = dispatch_semaphore_create(0)
+            } else {
+                dispatch_semaphore_signal(self.sema)
+            }
+        }
+    }
     var sema = dispatch_semaphore_create(0)
     var myCarAnnotation: NSObject?
     var searchCheckinDate : NSDate?
@@ -93,7 +108,6 @@ class MapViewController: AbstractViewController {
         }
         self.updateAnnotations { (operationCompleted: Bool) -> Void in
             self.removeSnapshot()
-            dispatch_semaphore_signal(self.sema)
         }
     }
     func updateAnnotations(completion: ((operationCompleted: Bool) -> Void)) { }
