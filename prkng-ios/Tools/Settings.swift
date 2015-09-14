@@ -30,6 +30,8 @@ struct Settings {
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
     static let LOG_FILE_PATH_KEY = "prkng_last_log_file_path"
     static let MAP_USER_MODE = "prkng_map_user_mode"
+    static let LOCALLY_CACHED_LOTS = "prkng_locally_cached_lots"
+    static let LOCALLY_CACHED_LOTS_FRESH = "prkng_locally_cached_lots_fresh"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
     static let availableCities = [City.Montreal, City.QuebecCity]
@@ -198,6 +200,32 @@ struct Settings {
             return ParkingSpot(json: json)
         }
         return nil
+    }
+    
+    static func cacheLotsJson(lots: JSON) {
+        NSUserDefaults.standardUserDefaults().setObject(lots.rawData(), forKey: LOCALLY_CACHED_LOTS)
+    }
+    
+    static func getCachedLots() -> [Lot] {
+        if let archivedLots = NSUserDefaults.standardUserDefaults().objectForKey(LOCALLY_CACHED_LOTS) as? NSData {
+            let json = JSON(data: archivedLots)
+            var lotJsons: [JSON] = json["features"].arrayValue
+            var lots = lotJsons.map({ (var lotJson) -> Lot in
+                Lot(json: lotJson)
+            })
+            return lots
+
+        }
+        
+        return []
+    }
+    
+    static func isCachedLotDataFresh() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(LOCALLY_CACHED_LOTS_FRESH)
+    }
+    
+    static func setCachedLotDataFresh(fresh: Bool) {
+        NSUserDefaults.standardUserDefaults().setBool(fresh, forKey: LOCALLY_CACHED_LOTS_FRESH)
     }
     
     static func lastCheckinTime() -> NSDate? {

@@ -409,14 +409,14 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func activeFilterDuration() -> Float? {
-        if self.activeFilterPermit() {
+        if self.activeCarsharingPermit() {
             return 24
         }
         var hours = hereViewController.filterVC.timeFilterView.selectedValueInHours()
         return hours
     }
     
-    func activeFilterPermit() -> Bool {
+    func activeCarsharingPermit() -> Bool {
         return Settings.shouldFilterForCarSharing()
     }
     

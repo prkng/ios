@@ -150,6 +150,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // MARK: Helper
 
     func configureGlobals() {
+        Settings.setCachedLotDataFresh(false)
+        LotOperations.sharedInstance.findLots(Settings.selectedCityPoint(), radius: 1.0) { (lots, underMaintenance, outsideServiceArea, error) -> Void in }
+        
         SVProgressHUD.setRingThickness(4)
         SVProgressHUD.setCornerRadius(0)
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())

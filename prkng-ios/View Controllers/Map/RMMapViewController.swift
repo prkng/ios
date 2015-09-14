@@ -657,7 +657,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 duration = self.delegate?.activeFilterDuration()
             }
             
-            let permit = self.delegate?.activeFilterPermit() ?? false
+            let carsharing = self.delegate?.activeCarsharingPermit() ?? false
             
             let operationCompletion = { (objects: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void in
                 
@@ -714,17 +714,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             switch(self.mapMode) {
             case MapMode.CarSharing:
-                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion: operationCompletion)
+                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.StreetParking:
-                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, permit: permit, completion: operationCompletion)
+                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.Garage:
                 if self.annotations.count > 0 {
                     self.updateInProgress = false
                     completion(operationCompleted: true)
                 } else {
-                    LotOperations.findLots(self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
+                    LotOperations.sharedInstance.findLots(self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
                 }
                 break
             default:

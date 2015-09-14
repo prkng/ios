@@ -8,10 +8,31 @@
 
 import UIKit
 
-struct LotOperations {
+ class LotOperations {
     
+    static let sharedInstance = LotOperations()
     
-    static func findLots(coordinate: CLLocationCoordinate2D, radius : Float, completion: ((lots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+    var sema = dispatch_semaphore_create(0)
+    var inProgress = false
+    
+    func findLots(coordinate: CLLocationCoordinate2D, radius : Float, completion: ((lots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+        
+        if inProgress {
+            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
+        }
+        
+        inProgress = true
+        
+        if Settings.isCachedLotDataFresh() {
+            let lots = Settings.getCachedLots()
+            dispatch_async(dispatch_get_main_queue(), {
+                () -> Void in
+                completion(lots: lots, underMaintenance: false, outsideServiceArea: false, error: false)
+            })
+            inProgress = false
+            dispatch_semaphore_signal(self.sema)
+            return
+        }
         
         let url = APIUtility.APIConstants.rootURLString + "lots"
         
@@ -37,6 +58,14 @@ struct LotOperations {
             
             let underMaintenance = response != nil && response!.statusCode == 503
             let outsideServiceArea = response != nil && response!.statusCode == 404
+
+            if error == nil && lots.count > 0 {
+                Settings.cacheLotsJson(json)
+                Settings.setCachedLotDataFresh(true)
+            }
+
+            self.inProgress = false
+            dispatch_semaphore_signal(self.sema)
 
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
