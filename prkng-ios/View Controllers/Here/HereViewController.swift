@@ -388,6 +388,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 GiFHUD.dismiss()
                 self.delegate?.loadMyCarTab()
                 
+                if Settings.shouldPromptUserToRateApp() {
+                    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                    let dialogVC = PRKDialogViewController(titleIconName: "icon_review", headerImageName: "review_header", titleText: "review_title_text".localizedString, subTitleText: "", messageText: "review_message_text".localizedString, buttonLabels: ["review_rate_us".localizedString, "review_feedback".localizedString, "dismiss".localizedString])
+                    dialogVC.delegate = appDelegate
+                    dialogVC.showOnViewController(appDelegate.window!.rootViewController!)
+                }
+                
+                
             })
             
         }

@@ -10,6 +10,10 @@ enum PRKDialogType {
     case List
 }
 
+protocol PRKDialogViewControllerDelegate {
+    func listButtonTapped(index: Int)
+}
+
 class PRKDialogViewController: AbstractViewController {
 
     var containerView = UIView()
@@ -30,7 +34,13 @@ class PRKDialogViewController: AbstractViewController {
     var yesButton = ViewFactory.dialogChoiceButton()
     var noButton = ViewFactory.dialogChoiceButton()
 
-    var type: PRKDialogType = .YesNo
+    var listButtonsContainer = UIView()
+    var listButtons = [UIButton]()
+    var listButtonSeparators = [UIView]()
+    
+    var type: PRKDialogType
+    
+    var delegate: PRKDialogViewControllerDelegate?
     
     let X_TRANSFORM = CGFloat(100)
     let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
@@ -43,6 +53,34 @@ class PRKDialogViewController: AbstractViewController {
     var subTitleText: String
     var messageText: String
     
+    var yesNoContainerHeight: Int {
+        
+        if self.type == .YesNo {
+            return 60
+        } else {
+            return 0
+        }
+    }
+    
+    var listButtonContainerHeight: Int {
+        
+        if self.type == .YesNo {
+            return 0
+        } else {
+            return listButtons.count * 50
+        }
+    }
+    
+    var bottomContainerHeight: Int {
+
+        if self.type == .YesNo {
+            return 60
+        } else {
+            return listButtons.count * 50
+        }
+
+    }
+    
     init(titleIconName: String, headerImageName: String, titleText: String, subTitleText: String, messageText: String) {
 
         self.titleIconName = titleIconName
@@ -51,9 +89,41 @@ class PRKDialogViewController: AbstractViewController {
         self.subTitleText = subTitleText
         self.messageText = messageText
         
+        self.type = .YesNo
+        
         super.init(nibName: nil, bundle: nil)
     }
-    
+
+    init(titleIconName: String, headerImageName: String, titleText: String, subTitleText: String, messageText: String, buttonLabels: [String]) {
+        
+        self.titleIconName = titleIconName
+        self.headerImageName = headerImageName
+        self.titleText = titleText
+        self.subTitleText = subTitleText
+        self.messageText = messageText
+        
+        for i in 0..<buttonLabels.count {
+            let title = buttonLabels[i]
+            let button = ViewFactory.dialogChoiceButton()
+            button.setTitle(title, forState: .Normal)
+            
+            if i == 0 {
+                button.setTitleColor(Styles.Colors.petrol1, forState: .Normal)
+                button.titleLabel?.font = Styles.FontFaces.regular(15)
+            } else {
+                button.setTitleColor(Styles.Colors.petrol2, forState: .Normal)
+                button.titleLabel?.font = Styles.FontFaces.light(15)
+            }
+            
+            listButtons.append(button)
+        }
+        
+        //button height should be 50 points
+        self.type = .List
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+
     required init(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
@@ -141,6 +211,19 @@ class PRKDialogViewController: AbstractViewController {
         yesNoVerticalSeparator.backgroundColor = Styles.Colors.beige1
         containerView.addSubview(yesNoVerticalSeparator)
         
+        //other buttons container
+        listButtonsContainer.layer.cornerRadius = cornerRadius
+        listButtonsContainer.clipsToBounds = true
+        containerView.addSubview(listButtonsContainer)
+        for button in listButtons {
+            button.addTarget(self, action: "listButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+            listButtonsContainer.addSubview(button)
+            let sep = UIView()
+            sep.backgroundColor = Styles.Colors.beige1
+            listButtonSeparators.append(sep)
+            containerView.addSubview(sep)
+        }
+        
     }
     
     func setupConstraints () {
@@ -150,7 +233,7 @@ class PRKDialogViewController: AbstractViewController {
         }
         
         centerContainerView.snp_makeConstraints { (make) -> () in
-            make.center.equalTo(self.view)
+            make.center.equalTo(self.view).with.offset(-self.bottomContainerHeight/2)
             make.left.equalTo(self.view).with.offset(24)
             make.right.equalTo(self.view).with.offset(-24)
         }
@@ -161,11 +244,19 @@ class PRKDialogViewController: AbstractViewController {
             make.size.equalTo(CGSizeMake(36, 36))
         }
         
-        titleContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.centerContainerView)
-            make.left.equalTo(self.centerContainerView)
-            make.right.equalTo(self.centerContainerView)
-            make.bottom.equalTo(self.yesNoContainer)
+        if self.type == .YesNo {
+            titleContainer.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.centerContainerView)
+                make.left.equalTo(self.centerContainerView)
+                make.right.equalTo(self.centerContainerView)
+                make.bottom.equalTo(self.yesNoContainer)            }
+        } else {
+            titleContainer.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.centerContainerView)
+                make.left.equalTo(self.centerContainerView)
+                make.right.equalTo(self.centerContainerView)
+                make.bottom.equalTo(self.listButtonsContainer)
+            }
         }
 
         headerImageView.snp_makeConstraints { (make) -> () in
@@ -194,8 +285,10 @@ class PRKDialogViewController: AbstractViewController {
             make.bottom.equalTo(self.centerContainerView).with.offset(-22)
         }
         
+        // yes/no stuff
+        
         yesNoContainer.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(60)
+            make.height.equalTo(self.yesNoContainerHeight)
             make.top.equalTo(self.textLabel.snp_bottom).with.offset(14)
             make.left.equalTo(self.centerContainerView)
             make.right.equalTo(self.centerContainerView)
@@ -227,6 +320,39 @@ class PRKDialogViewController: AbstractViewController {
             make.bottom.equalTo(self.yesNoContainer)
             make.left.equalTo(self.yesNoContainer.snp_centerX)
             make.right.equalTo(self.yesNoContainer)
+        }
+        
+        // list stuff
+        
+        listButtonsContainer.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(self.listButtonContainerHeight)
+            make.top.equalTo(self.textLabel.snp_bottom).with.offset(14)
+            make.left.equalTo(self.centerContainerView)
+            make.right.equalTo(self.centerContainerView)
+        }
+
+        var topConstraint = listButtonsContainer.snp_top
+        
+        for i in 0..<listButtons.count {
+            
+            let button = listButtons[i]
+            let sep = listButtonSeparators[i]
+            
+            button.snp_makeConstraints({ (make) -> () in
+                make.top.equalTo(topConstraint)
+                make.left.equalTo(self.listButtonsContainer)
+                make.right.equalTo(self.listButtonsContainer)
+                make.height.equalTo(50)
+            })
+        
+            sep.snp_makeConstraints({ (make) -> () in
+                make.top.equalTo(topConstraint)
+                make.left.equalTo(self.listButtonsContainer)
+                make.right.equalTo(self.listButtonsContainer)
+                make.height.equalTo(0.5)
+            })
+            
+            topConstraint = button.snp_bottom
         }
 
     }
@@ -277,19 +403,32 @@ class PRKDialogViewController: AbstractViewController {
     func yesButtonTapped() {
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         delegate.geofencingNotificationResponse(true)
-        self.removeFromParentViewController()
-        self.view.removeFromSuperview()
-        self.didMoveToParentViewController(nil)
-
+        dismissDialog()
     }
     
     func noButtonTapped() {
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         delegate.geofencingNotificationResponse(false)
-        self.removeFromParentViewController()
-        self.view.removeFromSuperview()
-        self.didMoveToParentViewController(nil)
-
+        dismissDialog()
+    }
+    
+    func listButtonTapped(sender: UIButton) {
+        for i in 0..<listButtons.count {
+            if listButtons[i] == sender {
+                self.delegate?.listButtonTapped(i)
+                dismissDialog()
+            }
+        }
+    }
+    
+    func dismissDialog() {
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.view.alpha = 0.0
+            }, completion: { (finished) -> Void in
+                self.removeFromParentViewController()
+                self.view.removeFromSuperview()
+                self.didMoveToParentViewController(nil)
+        })
     }
     
 }

@@ -153,6 +153,12 @@
 "report_sent_thanks_title" = "Thanks, report sent.";
 "report_sent_thanks_message" = "We'll improve our service with your help!";
 
+"review_title_text" = "Ticket-free?";
+"review_message_text" = "Recommend prkng to others by leaving us a review in the App Store!";
+"review_rate_us" = "Rate it now!";
+"review_feedback" = "Send feedback";
+"dismiss" = "Dismiss";
+
 "available_in" = "Available in:";
 "about" = "about";
 "the_project" = "the project";

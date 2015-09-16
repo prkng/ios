@@ -21,6 +21,9 @@ struct Settings {
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
     static let FIRST_CAR_SHARING_USE_PASSED_KEY = "prkng_first_car_sharing_use_passed"
+    static let DID_PROMPT_USER_TO_RATE_APP_KEY = "prkng_did_prompt_user_to_rate_app"
+    static let CHECKIN_COUNT = "prkng_checkin_count"
+    static let APP_LAUNCH_COUNT = "prkng_app_launch_count"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
     static let NOTIFICATION_NIGHT_BEFORE_KEY = "prkng_notification_night_before"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
@@ -175,6 +178,7 @@ struct Settings {
     static func saveCheckInData(spot : ParkingSpot?, time : NSDate?) {
         
         if (spot != nil && time != nil) {
+            Settings.incrementNumberOfCheckins()
             NSUserDefaults.standardUserDefaults().setObject(spot!.json.rawData(), forKey: CHECKED_IN_SPOT_KEY)
             NSUserDefaults.standardUserDefaults().setObject(spot!.identifier, forKey: CHECKED_IN_SPOT_ID_KEY)
             NSUserDefaults.standardUserDefaults().setObject(time!, forKey: LAST_CHECKIN_TIME_KEY)
@@ -237,7 +241,38 @@ struct Settings {
         return nil
         
     }
-   
+
+    static func resetPromptConditions() {
+        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: APP_LAUNCH_COUNT)
+        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: CHECKIN_COUNT)
+        NSUserDefaults.standardUserDefaults().setBool(false, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
+    }
+    
+    static func shouldPromptUserToRateApp() -> Bool {
+        
+        let alreadyPromptedUser = NSUserDefaults.standardUserDefaults().boolForKey(DID_PROMPT_USER_TO_RATE_APP_KEY)
+        let appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT)
+        let numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT)
+        
+        if !alreadyPromptedUser && (appLaunches > 5 || numberOfCheckins > 3) {
+            
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
+            return true
+        }
+        
+        return false
+    }
+    
+    static func incrementAppLaunches() {
+        var appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT)
+        NSUserDefaults.standardUserDefaults().setInteger(++appLaunches, forKey: APP_LAUNCH_COUNT)
+    }
+
+    static func incrementNumberOfCheckins() {
+        var numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT)
+        NSUserDefaults.standardUserDefaults().setInteger(++numberOfCheckins, forKey: CHECKIN_COUNT)
+    }
+
     
     static func shouldFilterForCarSharing() -> Bool {
         return NSUserDefaults.standardUserDefaults().boolForKey(CAR_SHARING_FILTER_KEY)

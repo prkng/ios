@@ -12,7 +12,7 @@ import Crashlytics
 import GoogleMaps
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, PRKDialogViewControllerDelegate {
 
     var window: UIWindow?
     var locationManager = CLLocationManager()
@@ -130,8 +130,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBSDKAppEvents.activateApp()
+        
         if let tabController = window?.rootViewController as? TabController {
             tabController.updateTabBar()
+            
+            if Settings.shouldPromptUserToRateApp() {
+                let dialogVC = PRKDialogViewController(titleIconName: "icon_review", headerImageName: "review_header", titleText: "review_title_text".localizedString, subTitleText: "", messageText: "review_message_text".localizedString, buttonLabels: ["review_rate_us".localizedString, "review_feedback".localizedString, "dismiss".localizedString])
+                dialogVC.delegate = self
+                dialogVC.showOnViewController(tabController)
+            }
+
         }
         
         if let data = NSUserDefaults.standardUserDefaults().objectForKey("prkng_check_out_monitor_notification") as? NSData {
@@ -222,6 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             window!.rootViewController = FirstUseViewController()
         } else {
             window!.rootViewController = TabController()
+            Settings.incrementAppLaunches()
         }
         
         window!.makeKeyAndVisible()
@@ -269,6 +278,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     //MARK: Notification handling
+    
     func geofencingNotificationResponse(answeredYes: Bool) {
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey("prkng_check_out_monitor_notification")
@@ -299,6 +309,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         
     }
+    
+    //MARK: PRKDialogViewControllerDelegate methods
 
+    func listButtonTapped(index: Int) {
+
+        if index == 0 {
+            //rate it now!
+            UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id999834216")!)
+        } else if index == 1 {
+            //send feedback?
+        }
+        
+    }
 }
 

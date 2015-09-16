@@ -418,6 +418,8 @@ class GiFHUD: UIView {
             }, completion: { (complate) in
                 self.shown = false
                 self.imageView?.stopAnimatingGif()
+                //custom fix!
+                self.Window.sendSubviewToBack(self)
         })
     }
     
