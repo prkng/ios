@@ -152,9 +152,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             if let savedSpot = Settings.checkedInSpot() {
                 setSpot(savedSpot)
             } else {
-                SpotOperations.getSpotDetails(Settings.checkedInSpotId()!, completion: { (spot) -> Void in
-                    setSpot(spot)
-                })
+                if let spotId = Settings.checkedInSpotId() {
+                    SpotOperations.getSpotDetails(spotId, completion: { (spot) -> Void in
+                        setSpot(spot)
+                    })
+                }
             }
             
         } else {

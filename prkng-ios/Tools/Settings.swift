@@ -264,6 +264,7 @@ struct Settings {
         
         let alarmTime = time.dateByAddingTimeInterval(NSTimeInterval(-time.seconds()))
         let alarm = UILocalNotification()
+        alarm.userInfo = ["identifier": "regular_app_notification"]
         alarm.alertBody = "alarm_text".localizedString
         alarm.soundName = UILocalNotificationDefaultSoundName
         alarm.fireDate = alarmTime
@@ -271,7 +272,89 @@ struct Settings {
         UIApplication.sharedApplication().scheduleLocalNotification(alarm)
         
     }
-    
+
+    static func scheduleNotification(spot : ParkingSpot) {
+        
+        Settings.cancelNotification()
+        
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        //first of all, stop monitoring regions
+        for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLRegion> {
+            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
+                delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
+            }
+        }
+
+        var locations = spot.line.coordinates
+        for coordinate in spot.buttonLocations {
+            let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            locations.append(location)
+        }
+        
+        let userLocation = delegate.locationManager.location
+        var useUserLocationAsRegion = false
+        for location in locations {
+//            NSLog("lat: %f, long: %f", location.coordinate.latitude, location.coordinate.longitude)
+            if userLocation.distanceFromLocation(location) < 10 {
+                //then use this as the only region
+                useUserLocationAsRegion = true
+            }
+        }
+        
+        //algorithm:
+        //find each point's two closest points and determine what its radius should be.
+        //if there is only one closest point (or if it is an edge of the line) then take the distance to the single closest point
+        //in the future we may wish to restrict this to just the on-screen or more closely tapped area of a line, to avoid too many regoins being generated
+        var regions = [CLCircularRegion]()
+        
+        //determine the distances!
+        var minimumDistance: Double = Double.infinity
+        var maximumDistance: Double = 0
+        for i in 0..<locations.count {
+            let firstLocation = locations[i]
+            var distances = [Double]()
+            
+            for j in 0..<locations.count {
+                let secondLocation = locations[j]
+                if firstLocation != secondLocation {
+                    let distance = firstLocation.distanceFromLocation(secondLocation)
+                    distances.append(distance)
+                    minimumDistance = distance < minimumDistance ? distance : minimumDistance
+                    maximumDistance = distance > maximumDistance ? distance : maximumDistance
+                }
+            }
+            
+            distances.sort({ (one, two) -> Bool in return one < two })
+            
+            let isEdgePoint = (spot.line.coordinates.first != nil && spot.line.coordinates.first! == firstLocation)
+                || (spot.line.coordinates.last != nil && spot.line.coordinates.last! == firstLocation)
+            
+            if isEdgePoint || distances.count == 1 {
+                let distance = 0.75 * distances[0]
+                let region = CLCircularRegion(center: firstLocation.coordinate, radius: distance, identifier: "prkng_check_out_monitor")
+                regions.append(region)
+            } else if distances.count > 1 {
+                let largerDistance = distances[0] > distances[1] ? distances[0] : distances[1]
+                let distance = 0.75 * largerDistance
+                let region = CLCircularRegion(center: firstLocation.coordinate, radius: distance, identifier: "prkng_check_out_monitor")
+                regions.append(region)
+            }
+            
+        }
+        
+        if useUserLocationAsRegion {
+            let region = CLCircularRegion(center: userLocation.coordinate, radius: 5, identifier: "prkng_check_out_monitor")
+            delegate.locationManager.startMonitoringForRegion(region)
+        } else {
+            for region in regions {
+//                NSLog("starting monitoring for region %@", region.identifier)
+                delegate.locationManager.startMonitoringForRegion(region)
+            }
+        }
+        
+    }
+
     
     static func cancelNotification() {
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications {

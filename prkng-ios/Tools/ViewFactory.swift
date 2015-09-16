@@ -74,6 +74,26 @@ struct ViewFactory {
         return hugeCreamButton
     }
     
+    static func dialogChoiceButton() -> MKButton {
+        
+        let button = MKButton()
+        button.titleLabel?.font = Styles.FontFaces.regular(15)
+        button.setTitleColor(Styles.Colors.petrol2, forState: UIControlState.Normal)
+        button.backgroundColor = Styles.Colors.cream2
+        button.backgroundLayerColor = Styles.Colors.cream2
+        button.rippleLayerColor = Styles.Colors.cream1
+        button.rippleAniDuration = 0.35
+        button.cornerRadius = 0
+        button.shadowAniEnabled = false
+        
+        button.layer.shadowColor = UIColor.blackColor().CGColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+        button.layer.shadowOpacity = 0.1
+        button.layer.shadowRadius = 0.5
+        
+        return button
+    }
+    
     static func checkInButton() -> MKButton {
      
         let hugeButton = ViewFactory.hugeButton()

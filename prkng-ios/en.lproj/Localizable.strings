@@ -123,6 +123,9 @@
 
 "max" = "max";
 
+"on_the_go" = "On the go?";
+"left_this_spot_question" = "Did you leave this spot?";
+"left_spot_question" = "Did you leave your spot on '%@'?";
 "alarm_text" = "Hey smart driver, time to move your car!";
 "time_up" = "Your time is up!";
 

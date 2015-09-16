@@ -124,6 +124,9 @@
 
 "max" = "max";
 
+"on_the_go" = "***On the go?";
+"left_this_spot_question" = "***Did you leave this spot?";
+"left_spot_question" = "***Did you leave your spot on '%@'?";
 "alarm_text" = "C'est maintenant ou jamais: déplacez votre véhicule!";
 "time_up" = "Temps écoulé!";
 

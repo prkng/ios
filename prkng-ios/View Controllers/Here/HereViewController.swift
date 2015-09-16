@@ -383,6 +383,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                     }
                 }
                 
+                Settings.scheduleNotification(activeSpot)
+                
                 SVProgressHUD.dismiss()
                 self.delegate?.loadMyCarTab()
                 
@@ -561,17 +563,20 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func modeSelectionValueChanged() {
         
         var mapMode = MapMode.StreetParking
+        var tracker = GAI.sharedInstance().defaultTracker
         
         switch(self.modeSelection.selectedIndex) {
         case 0:
             //oh em gee you wanna see garages!
             mapMode = .Garage
-            self.screenName = "Here - General View - Lot"
+            self.screenName = "Here - General View - ParkingLot"
+            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "Parking Lot", value: nil).build() as [NSObject: AnyObject])
             break
         case 1:
             //oh. em. gee. you wanna see street parking!
             mapMode = .StreetParking
             self.screenName = "Here - General View - On-Street"
+            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "On Street", value: nil).build() as [NSObject: AnyObject])
             break
         case 2:
             //oh. em. geeeeeeee you wanna see car sharing spots!
@@ -581,6 +586,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 showCarSharingInfo()
             }
             self.screenName = "Here - General View - CarSharing"
+            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "CarSharing", value: nil).build() as [NSObject: AnyObject])
             break
         default:break
         }

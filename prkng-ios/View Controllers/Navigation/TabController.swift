@@ -301,6 +301,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func updateTabBar() {
         
+        if selectedTab == PrkTab.MyCar {
+            reloadMyCarTab()
+        }
         handleTabBadge()
     }
     

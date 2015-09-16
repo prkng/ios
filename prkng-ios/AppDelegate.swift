@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 }
             })
         }
-//        locationManager.startMonitoringForRegion(CLCircularRegion(center: Settings.pointForCity(Settings.City.Montreal), radius: 2000, identifier: "watshpringgefon"))
+        locationManager.startUpdatingLocation()
         
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -76,13 +76,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
 
         // Override point for customization after application launch.
-        if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
-            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
-        }
-        else {
-            //do iOS 7 stuff, which is pretty much nothing for local notifications.
-        }
+        
+        //
+        //notification set up
+        //
+        let yesAction = UIMutableUserNotificationAction()
+        yesAction.identifier = "yes"
+        yesAction.title = "yes".localizedString
+        yesAction.activationMode = .Background
+        yesAction.authenticationRequired = false
+        
+        let noAction = UIMutableUserNotificationAction()
+        noAction.identifier = "no"
+        noAction.title = "no".localizedString
+        noAction.activationMode = .Background
+        noAction.authenticationRequired = false
+        
+        let category = UIMutableUserNotificationCategory()
+        category.identifier = "prkng_check_out_monitor"
+        category.setActions([yesAction, noAction], forContext: UIUserNotificationActionContext.Default)
 
+        if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
+            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: NSSet(object: category) as Set<NSObject>))
+        }
+        
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
         
@@ -116,9 +133,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if let tabController = window?.rootViewController as? TabController {
             tabController.updateTabBar()
         }
+        
+        if let data = NSUserDefaults.standardUserDefaults().objectForKey("prkng_check_out_monitor_notification") as? NSData {
+            let alert = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! UILocalNotification
+            UIApplication.sharedApplication().presentLocalNotificationNow(alert)
+        }
+
     }
     
-
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
@@ -133,13 +155,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-        let alert = UIAlertView()
-        alert.message = notification.alertBody
-        alert.addButtonWithTitle("OK")
-        alert.show()
-        Settings.cancelNotification()
+        
+        let identifier = notification.userInfo != nil ? (notification.userInfo as! [NSObject:String])["identifier"]! : ""
+        
+        if identifier == "regular_app_notification" {
+            let alert = UIAlertView()
+            alert.message = notification.alertBody
+            alert.addButtonWithTitle("OK")
+            alert.show()
+            Settings.cancelNotification()
+        } else if identifier == "prkng_check_out_monitor" {
+
+            //present the custom dialog
+            let spotName = Settings.checkedInSpot()?.name ?? ""
+            
+            let dialogVC = PRKDialogViewController(titleIconName: "icon_howto_checkin", headerImageName: "checkout_question_header", titleText: "on_the_go".localizedString, subTitleText: "\"" + spotName + "\"", messageText: "left_this_spot_question".localizedString)
+
+            if let tabController = window?.rootViewController as? TabController {
+                dialogVC.showOnViewController(tabController)
+            }
+            
+        }
     }
     
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+
+        let notificationIdentifier = notification.userInfo != nil ? (notification.userInfo as! [NSObject:String])["identifier"]! : ""
+
+        if notificationIdentifier == "prkng_check_out_monitor" {
+
+            application.cancelLocalNotification(notification)
+            let answeredYes = identifier == "yes" ? true : false
+            geofencingNotificationResponse(answeredYes)
+        }
+        
+        completionHandler()
+    }
+
     func keyboardWasShown(notification: NSNotification) {
         
         let keyboardSize = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue).CGRectValue().size
@@ -172,34 +224,73 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         window!.makeKeyAndVisible()
     }
-//    
-//    // MARK: CLLocationManagerDelegate methods
-//
-//    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
-//        
-//        if let spot = Settings.checkedInSpot() {
-//            SpotOperations.checkout(spot.identifier, completion: { (completed) -> Void in
-//                Settings.checkOut()
-//            })
-//            
-//            let alert = UILocalNotification()
-//            alert.alertBody = "entered region, checked out"
-//            alert.soundName = UILocalNotificationDefaultSoundName
-//            UIApplication.sharedApplication().presentLocalNotificationNow(alert)
-//            NSLog(alert.alertBody!)
-//        }
-//
-//    }
-//
-//    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
-//        Settings.checkedInSpot()
-//        let alert = UILocalNotification()
-//        alert.alertBody = "exited region"
-//        alert.soundName = UILocalNotificationDefaultSoundName
-//        UIApplication.sharedApplication().presentLocalNotificationNow(alert)
-//        NSLog(alert.alertBody!)
-//    }
-//    
+    
+    // MARK: CLLocationManagerDelegate methods
+
+    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+        
+        //first of all, stop monitoring regions
+        for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLRegion> {
+            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
+                self.locationManager.stopMonitoringForRegion(monitoredRegion)
+            }
+        }
+        
+        let spotName = Settings.checkedInSpot()?.name ?? ""
+        
+        //next create the alert
+        let alert = UILocalNotification()
+        alert.userInfo = ["identifier" : "prkng_check_out_monitor"]
+        alert.alertTitle = "on_the_go".localizedString
+        alert.alertBody = String(format: "left_spot_question".localizedString, spotName)
+        alert.soundName = UILocalNotificationDefaultSoundName
+        alert.category = "prkng_check_out_monitor"
+        UIApplication.sharedApplication().presentLocalNotificationNow(alert)
+
+        let data = NSKeyedArchiver.archivedDataWithRootObject(alert)
+        NSUserDefaults.standardUserDefaults().setObject(data, forKey: "prkng_check_out_monitor_notification")
+        
+        //analytics
+        AnalyticsOperations.sharedInstance.geofencingEvent((region as! CLCircularRegion).center, entering: true) { (completed) -> Void in
+        }
+
+    }
+
+    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+        //do nothing
+    }
+    
+    //MARK: Notification handling
+    func geofencingNotificationResponse(answeredYes: Bool) {
+        
+        NSUserDefaults.standardUserDefaults().removeObjectForKey("prkng_check_out_monitor_notification")
+        
+        if answeredYes {
+            
+            let spotIdentifier = Settings.checkedInSpot()?.identifier ?? ""
+            SpotOperations.checkout(spotIdentifier, completion: { (completed) -> Void in
+                Settings.checkOut()
+
+                if let tabController = self.window?.rootViewController as? TabController {
+                    tabController.updateTabBar()
+                }
+
+            })
+            //analytics
+            AnalyticsOperations.sharedInstance.geofencingEventUserResponse(true, completion: { (completed) -> Void in })
+            
+        } else {
+            
+            if let tabController = self.window?.rootViewController as? TabController {
+                tabController.updateTabBar()
+            }
+
+            //analytics
+            AnalyticsOperations.sharedInstance.geofencingEventUserResponse(false, completion: { (completed) -> Void in })
+
+        }
+        
+    }
 
 }
 

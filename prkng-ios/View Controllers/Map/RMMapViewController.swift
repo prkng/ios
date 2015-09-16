@@ -200,7 +200,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             } else if isCurrentlyPaidSpot {
                 shape.lineColor = Styles.Colors.curry
             } else {
-                shape.lineColor = Styles.Colors.petrol2
+                shape.lineColor = Styles.Colors.lineBlue
             }
             
             if mapView.zoom >= 15.0 && mapView.zoom < 16.0 {

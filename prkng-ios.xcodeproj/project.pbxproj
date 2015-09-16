@@ -30,6 +30,7 @@
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
+		3E6B91491BA896C4006FB4B3 /* PRKDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6B91481BA896C4006FB4B3 /* PRKDialogViewController.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB6041B83BE370081E30A /* FilterViewController.swift */; };
@@ -209,6 +210,7 @@
 		3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
 		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModalViewController.swift; sourceTree = "<group>"; };
+		3E6B91481BA896C4006FB4B3 /* PRKDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKDialogViewController.swift; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 		3E6799061B4F2C8E003913CF /* Modal */ = {
 			isa = PBXGroup;
 			children = (
+				3E6B91481BA896C4006FB4B3 /* PRKDialogViewController.swift */,
 				3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */,
 				3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */,
 			);
@@ -1099,6 +1102,7 @@
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
 				3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */,
 				3EF4A7D11B97AD2700CE4870 /* PRKTimeSpanView.swift in Sources */,
+				3E6B91491BA896C4006FB4B3 /* PRKDialogViewController.swift in Sources */,
 				3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */,
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,

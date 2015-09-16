@@ -10,6 +10,9 @@ import UIKit
 
 class AnalyticsOperations {
    
+    static let sharedInstance = AnalyticsOperations()
+    
+    private var lastUsedCoordinate: CLLocationCoordinate2D?
     
     class func sendSearchQueryToAnalytics(query: String) {
         
@@ -23,7 +26,9 @@ class AnalyticsOperations {
         
     }
 
-    class func geofencingEvent(coordinate: CLLocationCoordinate2D, entering: Bool, completion : (completed : Bool) -> Void) {
+    func geofencingEvent(coordinate: CLLocationCoordinate2D, entering: Bool, completion : (completed : Bool) -> Void) {
+        
+        lastUsedCoordinate = coordinate
         
         let url = APIUtility.APIConstants.rootURLString + "analytics/event"
         let params = ["event" : (entering ? "entered_fence" : "left_fence"),
@@ -42,6 +47,30 @@ class AnalyticsOperations {
         }
         
     }
+
+    func geofencingEventUserResponse(response: Bool, completion : (completed : Bool) -> Void) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        var params = ["event" : (response ? "fence_response_yes" : "fence_response_no")]
+        
+        if let coordinate = self.lastUsedCoordinate {
+            params["longitude"] = String(stringInterpolationSegment: coordinate.longitude)
+            params["latitude"] = String(stringInterpolationSegment: coordinate.latitude)
+        }
+        
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            if (response?.statusCode != 201) {
+                completion(completed: false)
+            } else {
+                completion(completed: true)
+            }
+            
+        }
+        
+    }
+    
     
     class func locationPermission(authorizationStatus: CLAuthorizationStatus, completion : (completed : Bool) -> Void) {
         
