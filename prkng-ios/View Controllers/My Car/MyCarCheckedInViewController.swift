@@ -133,13 +133,13 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             
             if (!Settings.firstCheckin()) {
                 SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                SVProgressHUD.show()
+                GiFHUD.show()
             }
             
             let setSpot = {(var spot: ParkingSpot?) -> () in
                 self.spot = spot
                 self.setDefaultTimeDisplay()
-                SVProgressHUD.dismiss()
+                GiFHUD.dismiss()
                 if (spot != nil) {
                     self.animateAndShow()
                     

@@ -315,7 +315,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         }
         
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-        SVProgressHUD.show()
+        GiFHUD.show()
         
         let resized = capturedImage!.resizeImage(CGSizeMake(1024, 768))
         
@@ -323,10 +323,12 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             
             if (completed) {
                 SVProgressHUD.dismiss()
+                GiFHUD.dismiss()
                 self.delegate?.reportDidEnd(true)
                 self.navigationController?.popViewControllerAnimated(true)
             } else {
                 SVProgressHUD.dismiss()
+                GiFHUD.dismiss()
                 let alert = UIAlertView()
                 alert.message = "report_error".localizedString
                 alert.addButtonWithTitle("OK")

@@ -205,6 +205,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         Settings.setCachedLotDataFresh(false)
         LotOperations.sharedInstance.findLots(Settings.selectedCityPoint(), radius: 1.0) { (lots, underMaintenance, outsideServiceArea, error) -> Void in }
         
+        GiFHUD.setGif("loader.gif")
+
         SVProgressHUD.setRingThickness(4)
         SVProgressHUD.setCornerRadius(0)
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())
@@ -227,6 +229,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     // MARK: CLLocationManagerDelegate methods
 
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        
+        //test this instead of region updates...
+        
+    }
+    
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
         
         //first of all, stop monitoring regions

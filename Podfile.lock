@@ -36,7 +36,7 @@ PODS:
     - FMDB (= 2.3)
     - GRMustache (= 7.3.0)
     - SMCalloutView (= 2.0)
-  - MarqueeLabel (2.2.5)
+  - MarqueeLabel (2.3.1)
   - MBXMapKit (0.8.0)
   - pop (1.0.7)
   - SDWebImage (3.7.2):
@@ -76,7 +76,7 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 555b1231fefafb21b19278d7cca72986a27b748b
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   Mapbox-iOS-SDK: ee136ca5b7f853456b50dfd7a7f0e243288cf86f
-  MarqueeLabel: 65ca60ee9ba554be34f35339004c6c9fe6366a31
+  MarqueeLabel: 1adecfbfad67143aeddb19b2f17ae34c1f60eff6
   MBXMapKit: 56040108ea7fbb87f98ea896d620e0d4290c2dbd
   pop: 628ffc631644601567ee8bfaaaea493ebd7d0923
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29

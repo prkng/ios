@@ -33,7 +33,7 @@ struct Styles {
         
         static let petrol1 = UIColor(rgba: "#5B717F")
         static let petrol2 = UIColor(rgba: "#485966")
-        static let lineBlue = UIColor(rgba: "#547B99")
+        static let lineBlue = UIColor(rgba: "#5B717F")
         
         static let midnight1 = UIColor(rgba: "#435059")
         static let midnight2 = UIColor(rgba: "#3A4249")

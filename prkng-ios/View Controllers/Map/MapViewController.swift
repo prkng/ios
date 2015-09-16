@@ -46,7 +46,7 @@ class MapViewController: AbstractViewController {
                     self.view.addSubview(self.mapModeImageView!)
                     
                     SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                    SVProgressHUD.show()
+                    GiFHUD.show()
                     
                     self.removeRegularAnnotations()
                     
@@ -54,7 +54,7 @@ class MapViewController: AbstractViewController {
                         UIView.animateWithDuration(0.2, animations: { () -> Void in
                             self.mapModeImageView?.alpha = 0
                             }) { (completed) -> Void in
-                                SVProgressHUD.dismiss()
+                                GiFHUD.dismiss()
                                 self.removeSnapshot()
                         }
                     }

@@ -41,6 +41,8 @@
 		3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
+		3E90A92E1BA9C8FF00CCEB41 /* loader.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3E90A92D1BA9C8FF00CCEB41 /* loader.gif */; };
+		3E90A9311BA9C9B200CCEB41 /* GiFHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E90A9301BA9C9B200CCEB41 /* GiFHUD.swift */; };
 		3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E9509C31B56B5DC0088E336 /* MessageUI.framework */; };
 		3E9509C61B56EE940088E336 /* PRKTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C51B56EE940088E336 /* PRKTextField.swift */; };
 		3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C91B570A6A0088E336 /* PRKInputForm.swift */; };
@@ -222,6 +224,8 @@
 		3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRK_GMSPolyline.swift; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3E90A92D1BA9C8FF00CCEB41 /* loader.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loader.gif; sourceTree = "<group>"; };
+		3E90A9301BA9C9B200CCEB41 /* GiFHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiFHUD.swift; sourceTree = "<group>"; };
 		3E9509C31B56B5DC0088E336 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3E9509C51B56EE940088E336 /* PRKTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextField.swift; sourceTree = "<group>"; };
 		3E9509C91B570A6A0088E336 /* PRKInputForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKInputForm.swift; sourceTree = "<group>"; };
@@ -484,6 +488,14 @@
 			path = KMLParser;
 			sourceTree = "<group>";
 		};
+		3E90A92F1BA9C9B200CCEB41 /* GiFHUD */ = {
+			isa = PBXGroup;
+			children = (
+				3E90A9301BA9C9B200CCEB41 /* GiFHUD.swift */,
+			);
+			path = GiFHUD;
+			sourceTree = "<group>";
+		};
 		3EA3E7E31B4C6BEF000EDEF8 /* Agenda List */ = {
 			isa = PBXGroup;
 			children = (
@@ -724,6 +736,7 @@
 		BFC7648A1A7644AC008F2B26 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3E90A92D1BA9C8FF00CCEB41 /* loader.gif */,
 				BFCD562F1AB99A3A008406E8 /* Fonts */,
 				BFC7648B1A7644AC008F2B26 /* Info.plist */,
 				BFF568E91ACC62CA0018F62F /* Localizable.strings */,
@@ -826,6 +839,7 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				3E90A92F1BA9C9B200CCEB41 /* GiFHUD */,
 				BF3282641B384732002ED8DF /* MaterialKit */,
 				BF5E84F81B07B3A000EC6AD2 /* AFDateHelper */,
 				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
@@ -993,6 +1007,7 @@
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
 				3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */,
 				3E954A5E1B6AA82E00B81738 /* Intro-Light.otf in Resources */,
+				3E90A92E1BA9C8FF00CCEB41 /* loader.gif in Resources */,
 				3E954A5F1B6AA82E00B81738 /* Intro-Book.otf in Resources */,
 				3E954A601B6AA82E00B81738 /* Intro-Regular.otf in Resources */,
 			);
@@ -1075,6 +1090,7 @@
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
 				BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */,
 				BF2A40A71AC468450055D785 /* SpotDetailView.swift in Sources */,
+				3E90A9311BA9C9B200CCEB41 /* GiFHUD.swift in Sources */,
 				BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */,
 				BFFDE4651AFBA48D0035DF54 /* RegisterEmailViewController.swift in Sources */,
 				BFFDE4611AFB829B0035DF54 /* LoginMethodSelectionView.swift in Sources */,

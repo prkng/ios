@@ -49,7 +49,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
         } else {
             url = NSURL(string : englishUrl)!
         }
-        SVProgressHUD.show()
+        GiFHUD.show()
         webView.loadRequest(NSURLRequest(URL: url))
         
     }
@@ -117,7 +117,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
     // MARK: UIWebViewDelegate
     
     func webViewDidFinishLoad(webView: UIWebView) {
-        SVProgressHUD.dismiss()
+        GiFHUD.dismiss()
     }
     
     

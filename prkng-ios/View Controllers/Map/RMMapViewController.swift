@@ -387,7 +387,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         
         if self.mapMode == .Garage {
-            map.clusteringEnabled = map.zoom <= 14
+//            map.clusteringEnabled = map.zoom <= 14
         }
         
         if wasUserAction {
@@ -612,7 +612,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func didSetMapMode() {
         switch (self.mapMode) {
         case .Garage:
-            self.mapView.clusteringEnabled = self.mapView.zoom <= 14
+//            self.mapView.clusteringEnabled = self.mapView.zoom <= 14
             break
         default:
             self.mapView.clusteringEnabled = false
@@ -665,8 +665,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     //only show the spinner if this map is active
                     if let tabController = self.parentViewController as? TabController {
                         if tabController.activeTab() == PrkTab.Here {
-                            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                            SVProgressHUD.show()
+//                            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+//                            SVProgressHUD.show()
+                            GiFHUD.show()
                             
                             if self.canShowMapMessage {
                                 if underMaintenance {
@@ -774,7 +775,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
             self.mapView.addAnnotations(self.annotations)
             
-            SVProgressHUD.dismiss()
+            GiFHUD.dismiss()
             self.updateInProgress = false
             
             completion(operationCompleted: true)
@@ -851,7 +852,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
-            SVProgressHUD.dismiss()
+            GiFHUD.dismiss()
             self.updateInProgress = false
             
             completion(operationCompleted: true)
@@ -879,7 +880,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         let southWest = southWestAndNorthEast.0
         let northEast = southWestAndNorthEast.1
             
-        self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
+//        self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
+        self.mapView.zoom = self.mapView.zoom - 2
     }
     
     func getSouthWestAndNorthEastFromAnnotations(annots: [RMAnnotation], centerCoordinate: CLLocationCoordinate2D) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {

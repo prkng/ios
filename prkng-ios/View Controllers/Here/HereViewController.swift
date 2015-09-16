@@ -368,7 +368,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             
             
             SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-            SVProgressHUD.show()
+            GiFHUD.show()
             
             Settings.checkOut()
             
@@ -385,7 +385,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 
                 Settings.scheduleNotification(activeSpot)
                 
-                SVProgressHUD.dismiss()
+                GiFHUD.dismiss()
                 self.delegate?.loadMyCarTab()
                 
             })
