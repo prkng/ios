@@ -102,13 +102,15 @@ extension UIImage {
         
     }
 
-    func addText(attributedText: NSAttributedString, color: UIColor, bottomOffset: CGFloat = 0) -> UIImage {
+    func addText(attributedText: NSAttributedString, color: UIColor?, bottomOffset: CGFloat = 0) -> UIImage {
         
         let drawRect = CGRectMake(0, 0, self.size.width, self.size.height)
         let labelDrawRect = CGRectMake(0, 0, self.size.width, self.size.height - bottomOffset)
         let label = UILabel(frame: drawRect)
         label.attributedText = attributedText
-        label.textColor = color
+        if color != nil {
+            label.textColor = color!
+        }
         label.textAlignment = NSTextAlignment.Center
 
         UIGraphicsBeginImageContextWithOptions(self.size, false, Settings.screenScale)
