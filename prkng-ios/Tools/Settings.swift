@@ -25,6 +25,7 @@ struct Settings {
     static let CHECKIN_COUNT = "prkng_checkin_count"
     static let APP_LAUNCH_COUNT = "prkng_app_launch_count"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
+    static let GEOFENCE_LAST_SET_DATE_KEY = "prkng_geofence_last_set_date"
     static let NOTIFICATION_NIGHT_BEFORE_KEY = "prkng_notification_night_before"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
     static let CHECKED_IN_SPOT_KEY = "prkng_checked_in_spot"
@@ -254,7 +255,7 @@ struct Settings {
         let appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT)
         let numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT)
         
-        if !alreadyPromptedUser && (appLaunches > 5 || numberOfCheckins > 3) {
+        if !alreadyPromptedUser && (appLaunches > 5 || numberOfCheckins > 2) {
             
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
             return true
@@ -388,6 +389,14 @@ struct Settings {
             }
         }
         
+        let currentDate = NSDate()
+        NSUserDefaults.standardUserDefaults().setDouble(currentDate.timeIntervalSinceReferenceDate, forKey: GEOFENCE_LAST_SET_DATE_KEY)
+        
+    }
+    
+    static func geofenceLastSetOnInterval() -> NSTimeInterval {
+        let double = NSUserDefaults.standardUserDefaults().doubleForKey(GEOFENCE_LAST_SET_DATE_KEY)
+        return NSTimeInterval(double) ?? NSDate().timeIntervalSinceReferenceDate
     }
 
     

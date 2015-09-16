@@ -241,10 +241,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
         //test this instead of region updates...
+        for region in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
+            for location in locations as! [CLLocation] {
+                if region.identifier.rangeOfString("prkng_check_out_monitor") != nil
+                && region.containsCoordinate(location.coordinate) {
+                    //We've entered one of our regions! Handle it!
+                    let date = Settings.geofenceLastSetOnInterval()
+                    let timeInterval = location.timestamp.timeIntervalSinceReferenceDate
+//                    NSLog("%d",timeInterval)
+                    if ((date - timeInterval) / 60) > 5 {
+                        handleRegionEntered(location.coordinate)
+                    }
+                }
+            }
+
+        }
+        
         
     }
     
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+        //handleRegionEntered((region as! CLCircularRegion).center)
+        self.locationManager.startUpdatingLocation()
+    }
+
+    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+        //do nothing
+        self.locationManager.stopUpdatingLocation()
+    }
+    
+    //MARK: Notification handling
+    
+    func handleRegionEntered(center: CLLocationCoordinate2D) {
         
         //first of all, stop monitoring regions
         for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLRegion> {
@@ -263,21 +291,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         alert.soundName = UILocalNotificationDefaultSoundName
         alert.category = "prkng_check_out_monitor"
         UIApplication.sharedApplication().presentLocalNotificationNow(alert)
-
+        
         let data = NSKeyedArchiver.archivedDataWithRootObject(alert)
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: "prkng_check_out_monitor_notification")
         
         //analytics
-        AnalyticsOperations.sharedInstance.geofencingEvent((region as! CLCircularRegion).center, entering: true) { (completed) -> Void in
+        AnalyticsOperations.sharedInstance.geofencingEvent(center, entering: true) { (completed) -> Void in
         }
 
     }
-
-    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
-        //do nothing
-    }
-    
-    //MARK: Notification handling
     
     func geofencingNotificationResponse(answeredYes: Bool) {
         
