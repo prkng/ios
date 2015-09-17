@@ -6,5 +6,5 @@
   Copyright (c) 2015 PRKNG. All rights reserved.
 */
 
-"NSLocationAlwaysUsageDescription" = "We need this permission to show the parking spots around you and to automatically check you in and out of parking spots.";
-"NSLocationWhenInUseUsageDescription" = "We need this permission to show the parking spots around you.";
+"NSLocationAlwaysUsageDescription" = "We need this permission to help you find the best parking spots around you.";
+"NSLocationWhenInUseUsageDescription" = "We need this permission to help you find the best parking spots around you.";
