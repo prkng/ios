@@ -124,9 +124,9 @@
 
 "max" = "max";
 
-"on_the_go" = "***On the go?";
-"left_this_spot_question" = "***Did you leave this spot?";
-"left_spot_question" = "***Did you leave your spot on '%@'?";
+"on_the_go" = “Déjà parti?";
+"left_this_spot_question" = “Avez-vous quitté votre place sur";
+"left_spot_question" = "Avez-vous quitté votre place sur '%@'?”;
 "alarm_text" = "C'est maintenant ou jamais: déplacez votre véhicule!";
 "time_up" = "Temps écoulé!";
 
@@ -155,11 +155,11 @@
 "report_sent_thanks_title" = "Merci du coup de pouce!";
 "report_sent_thanks_message" = "On analysera votre photo sous peu.";
 
-"review_title_text" = "***Ticket-free?";
-"review_message_text" = "***Recommend prkng to others by leaving us a review in the App Store!";
-"review_rate_us" = "***Rate it now!";
-"review_feedback" = "***Send feedback";
-"dismiss" = "***Dismiss";
+"review_title_text" = “Satisfait?";
+"review_message_text" = "Recommandez prkng en laissant un commentaire sur l'App Store!";
+"review_rate_us" = "Évaluez maintenant!";
+"review_feedback" = "Envoyez un avis";
+"dismiss" = “Peut-être plus tard";
 
 "available_in" = "Disponible à:";
 "about" = "à propos";
