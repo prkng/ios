@@ -62,6 +62,13 @@ extension UIImageView {
     
     func startAnimatingGif() {
         if animatable {
+            animatableImage!.resetAnimation()
+            if let image = animatableImage {
+                if let frame = image.currentFrame {
+                    layer.contents = frame.CGImage
+                }
+            }
+
             animatableImage!.resumeAnimation()
         }
     }
@@ -69,6 +76,13 @@ extension UIImageView {
     func stopAnimatingGif() {
         if animatable {
             animatableImage!.pauseAnimation()
+            animatableImage!.resetAnimation()
+            if let image = animatableImage {
+                if let frame = image.currentFrame {
+                    layer.contents = frame.CGImage
+                }
+            }
+
         }
     }
     
@@ -266,6 +280,10 @@ class AnimatedImage: UIImage {
     func isAnimating() -> Bool {
         return !displayLink.paused
     }
+    
+    func resetAnimation() {
+        currentFrameIndex = 0
+    }
 }
 
 
@@ -276,7 +294,7 @@ class GiFHUD: UIView {
     // MARK: Constants
     
     let Size            : CGFloat           = 150
-    let FadeDuration    : NSTimeInterval    = 0.3
+    let FadeDuration    : NSTimeInterval    = 0.2//0.3
     let GifSpeed        : CGFloat           = 0.3
     let OverlayAlpha    : CGFloat           = 0.3
     let Window          : UIWindow = (UIApplication.sharedApplication().delegate as! AppDelegate).window!
@@ -335,8 +353,8 @@ class GiFHUD: UIView {
     }
     
     class func show () {
-        dismiss({
-            
+//        dismiss({
+        
             if let anim = self.instance.imageView?.animationImages {
                 self.instance.imageView?.startAnimating()
             } else {
@@ -345,8 +363,9 @@ class GiFHUD: UIView {
             
             self.instance.Window.bringSubviewToFront(self.instance)
             self.instance.shown = true
-            self.instance.fadeIn()
-        })
+            self.instance.fadeIn({ () -> Void in
+            })
+//        })
     }
 
     class func showForSeconds (seconds: Double) {
@@ -376,7 +395,8 @@ class GiFHUD: UIView {
         }
         
         self.instance.overlay().removeFromSuperview()
-        self.instance.fadeOut()
+        self.instance.fadeOut { () -> Void in
+        }
         
         if let anim = self.instance.imageView?.animationImages {
             self.instance.imageView?.stopAnimating()
@@ -385,14 +405,14 @@ class GiFHUD: UIView {
         }
     }
     
-    class func dismiss (complate: ()->Void) {
+    class func dismiss (complete: () -> Void) {
         if (!self.instance.shown) {
-            return complate ()
+            return complete()
         }
         
         self.instance.fadeOut({
             self.instance.overlay().removeFromSuperview()
-            complate ()
+            complete()
         })
         
         if let anim = self.instance.imageView?.animationImages {
@@ -405,14 +425,14 @@ class GiFHUD: UIView {
     
     // MARK: Effects
     
-    func fadeIn () {
+    func fadeIn (completed: () -> Void) {
         imageView?.startAnimatingGif()
         UIView.animateWithDuration(FadeDuration, animations: {
             self.alpha = 1
         })
     }
     
-    func fadeOut () {
+    func fadeOut (completed: () -> Void) {
         UIView.animateWithDuration(FadeDuration, animations: {
             self.alpha = 0
             }, completion: { (complate) in
@@ -420,16 +440,7 @@ class GiFHUD: UIView {
                 self.imageView?.stopAnimatingGif()
                 //custom fix!
                 self.Window.sendSubviewToBack(self)
-        })
-    }
-    
-    func fadeOut (complated: ()->Void) {
-        UIView.animateWithDuration(FadeDuration, animations: {
-            self.alpha = 0
-            }, completion: { (complate) in
-                self.shown = false
-                self.imageView?.stopAnimatingGif()
-                complated ()
+                completed()
         })
     }
     

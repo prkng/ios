@@ -70,6 +70,11 @@ import UIKit
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
                 completion(lots: self.lots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
+
+                if response != nil && response?.statusCode == 401 {
+                    Settings.logout()
+                }
+
             })
             
         }

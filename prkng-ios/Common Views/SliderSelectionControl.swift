@@ -35,19 +35,20 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     
     var thumbImage: UIImage { get {
         let rect = CGRect(x: 0, y: 0, width: self.width, height: SliderSelectionControl.HEIGHT)
-        let image = UIImage.imageWithColor(selectionIndicatorColor, size: rect.size)
+        let image = UIImage.imageWithColor(UIColor.clearColor(), size: rect.size)
         return image
         }
     }
     
-    static let HEIGHT = 60
-    var width: Int
+    static let HEIGHT: CGFloat = 60
+    var width: CGFloat
+    var lastThumbPixelValue: CGFloat = 0
 
     convenience init(titles: Array<String>) {
         self.init(frame:CGRectZero)
         self.titles = titles
         
-        self.width = Int(UIScreen.mainScreen().bounds.width)/self.titles.count
+        self.width = UIScreen.mainScreen().bounds.width/CGFloat(self.titles.count)
         
         if Settings.iOS8OrLater() {
             buttonBackgroundColor = UIColor.clearColor()
@@ -192,7 +193,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
                 frontButton.selectedBorderColor = selectedBorderColor!
             }
             
-            frontButton.textColor = textColor
+            frontButton.textColor = UIColor.clearColor()//textColor
             
             frontButton.selectedTextColor = selectedTextColor
             
@@ -275,6 +276,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         }
         
         selectionIndicator.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(SliderSelectionControl.HEIGHT)
             make.left.equalTo(self.snp_left)
             make.right.equalTo(self.snp_right)
             make.centerY.equalTo(self)
@@ -311,35 +313,29 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     func sliderSelectionValueChanging() {
         
         let newValue = self.selectionIndicator.value
-//        NSLog("%f", newValue)
         
-        let percentPassedFirstButton = CGFloat(newValue)
-        let percentPassedSecondButton = CGFloat(newValue < 1 ? 1 - newValue : newValue - 1)
-        let percentPassedThirdButton = 2 - CGFloat(newValue)
-        
-        frontButtons[0].titleLabel.alpha = percentPassedFirstButton
-        frontButtons[1].titleLabel.alpha = percentPassedSecondButton
-        frontButtons[2].titleLabel.alpha = percentPassedThirdButton
+        let bounds = self.selectionIndicator.bounds
+        let trackRect = selectionIndicator.trackRectForBounds(bounds)
+        let thumbRect = selectionIndicator.thumbRectForBounds(bounds, trackRect: trackRect, value: newValue)
 
-        var modifiedThumbImage = thumbImage
-        
-        if newValue <= 1 {
-            var leftAttributedString = NSMutableAttributedString(string: titles[0], attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: selectedTextColor.colorWithAlphaComponent(1-percentPassedFirstButton)])
-            var rightAttributedString = NSMutableAttributedString(string: titles[1], attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: selectedTextColor.colorWithAlphaComponent(1-percentPassedSecondButton)])
-            modifiedThumbImage = modifiedThumbImage.addText(leftAttributedString, color: nil, bottomOffset: 0)
-            modifiedThumbImage = modifiedThumbImage.addText(rightAttributedString, color: nil, bottomOffset: 0)
-            selectionIndicator.setThumbImage(modifiedThumbImage, forState: UIControlState.Normal)
+        let xDifference = (bounds.width - trackRect.size.width) / 2
+        let yDifference = CGFloat(-0.5)//(bounds.height - CGFloat(SliderSelectionControl.HEIGHT)) / 2
 
-        } else {
-            var leftAttributedString = NSMutableAttributedString(string: titles[1], attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: selectedTextColor.colorWithAlphaComponent(1-percentPassedSecondButton)])
-            var rightAttributedString = NSMutableAttributedString(string: titles[2], attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: selectedTextColor.colorWithAlphaComponent(1-percentPassedThirdButton)])
-            modifiedThumbImage = modifiedThumbImage.addText(leftAttributedString, color: nil, bottomOffset: 0)
-            modifiedThumbImage = modifiedThumbImage.addText(rightAttributedString, color: nil, bottomOffset: 0)
-            selectionIndicator.setThumbImage(modifiedThumbImage, forState: UIControlState.Normal)
+        var fullThumbImage = UIImage.imageWithColor(selectionIndicatorColor, size: CGSize(width: bounds.size.width, height: CGFloat(SliderSelectionControl.HEIGHT)))
 
+        let thumbDrawRect = CGRect(x: thumbRect.origin.x, y: 1, width: CGFloat(self.width), height: CGFloat(SliderSelectionControl.HEIGHT))
+
+        //draw the 3 titles in the image
+        for i in 0..<titles.count {
+            let title = titles[i]
+            let attributedTitle = NSMutableAttributedString(string: title, attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: selectedTextColor])
+            let labelRect = CGRect(x: xDifference + (CGFloat(i)*CGFloat(self.width)), y: yDifference, width: CGFloat(self.width), height: CGFloat(SliderSelectionControl.HEIGHT))
+            fullThumbImage = fullThumbImage.addText(attributedTitle, labelRect: labelRect)
         }
         
-
+        let modifiedThumbImage = fullThumbImage.redrawImageInRect(thumbDrawRect)
+        selectionIndicator.setThumbImage(modifiedThumbImage, forState: UIControlState.Normal)
+        
     }
     
     func sliderSelectionValueChanged() {

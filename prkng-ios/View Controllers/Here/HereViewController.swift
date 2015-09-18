@@ -70,6 +70,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        //super hack :(
+        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
+        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
         modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
         
         if (Settings.firstMapUse()) {
@@ -390,7 +393,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 
                 if Settings.shouldPromptUserToRateApp() {
                     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                    let dialogVC = PRKDialogViewController(titleIconName: "icon_review", headerImageName: "review_header", titleText: "review_title_text".localizedString, subTitleText: "", messageText: "review_message_text".localizedString, buttonLabels: ["review_rate_us".localizedString, "review_feedback".localizedString, "dismiss".localizedString])
+                    let dialogVC = PRKDialogViewController(titleIconName: "icon_review", headerImageName: "review_header", titleText: "review_title_text".localizedString, subTitleText: "review_message_text".localizedString, messageText: "", buttonLabels: ["review_rate_us".localizedString, "review_feedback".localizedString, "dismiss".localizedString])
                     dialogVC.delegate = appDelegate
                     dialogVC.showOnViewController(appDelegate.window!.rootViewController!)
                 }
@@ -599,6 +602,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         default:break
         }
         
+        AnalyticsOperations.sendMapModeChange(mapMode)
         self.delegate?.didSelectMapMode(mapMode)
         self.filterVC.hideFilters(completely: false)
         self.filterVC.shouldShowTimeFilter = mapMode == .StreetParking

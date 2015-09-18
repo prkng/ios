@@ -63,6 +63,8 @@ class PRKVerticalGestureRecognizer: NSObject {
             if self.delegate != nil && !self.delegate!.shouldIgnoreSwipe(tap) {
                 beginTap = tap
                 self.delegate?.swipeDidBegin()
+            } else {
+                beginTap = nil
             }
             
         } else if panRec.state == UIGestureRecognizerState.Changed {

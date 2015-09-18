@@ -36,6 +36,7 @@ struct Settings {
     static let MAP_USER_MODE = "prkng_map_user_mode"
     static let LOCALLY_CACHED_LOTS = "prkng_locally_cached_lots"
     static let LOCALLY_CACHED_LOTS_FRESH = "prkng_locally_cached_lots_fresh"
+    static let LAST_APP_VERSION_KEY = "prkng_last_app_version"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
     static let availableCities = [City.Montreal, City.QuebecCity]
@@ -101,6 +102,13 @@ struct Settings {
         })
     }
 
+    static func logout() {
+        AuthUtility.saveAuthToken(nil)
+        AuthUtility.saveUser(nil)
+        
+        UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+    }
+    
     static func firstUse() -> Bool {
         return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_USE_PASSED_KEY)
     }
@@ -450,6 +458,15 @@ struct Settings {
         let rawValue = Int32(NSUserDefaults.standardUserDefaults().integerForKey(LOCATION_MANAGER_LAST_STATUS_KEY))
         return CLAuthorizationStatus(rawValue: rawValue)!
     }
+    
+    static func setLastAppVersionString(version: String) {
+        return NSUserDefaults.standardUserDefaults().setValue(version, forKey: LAST_APP_VERSION_KEY)
+    }
+
+    static func getLastAppVersionString() -> String {
+        return NSUserDefaults.standardUserDefaults().stringForKey(LAST_APP_VERSION_KEY) ?? ""
+    }
+
 
 
 }

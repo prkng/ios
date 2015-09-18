@@ -79,10 +79,15 @@ struct SpotOperations {
             
             let underMaintenance = response != nil && response!.statusCode == 503
             let outsideServiceArea = response != nil && response!.statusCode == 404
-
+            
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
                 completion(spots: spots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
+
+                if response != nil && response?.statusCode == 401 {
+                    Settings.logout()
+                }
+
             })
             
         }

@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import MessageUI
 import Fabric
 import Crashlytics
 import GoogleMaps
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, PRKDialogViewControllerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, PRKDialogViewControllerDelegate, MFMailComposeViewControllerDelegate {
 
     var window: UIWindow?
     var locationManager = CLLocationManager()
@@ -135,7 +136,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             tabController.updateTabBar()
             
             if Settings.shouldPromptUserToRateApp() {
-                let dialogVC = PRKDialogViewController(titleIconName: "icon_review", headerImageName: "review_header", titleText: "review_title_text".localizedString, subTitleText: "", messageText: "review_message_text".localizedString, buttonLabels: ["review_rate_us".localizedString, "review_feedback".localizedString, "dismiss".localizedString])
+                let dialogVC = PRKDialogViewController(titleIconName: "icon_review", headerImageName: "review_header", titleText: "review_title_text".localizedString, subTitleText: "review_message_text".localizedString, messageText: "", buttonLabels: ["review_rate_us".localizedString, "review_feedback".localizedString, "dismiss".localizedString])
                 dialogVC.delegate = self
                 dialogVC.showOnViewController(tabController)
             }
@@ -177,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             //present the custom dialog
             let spotName = Settings.checkedInSpot()?.name ?? ""
             
-            let dialogVC = PRKDialogViewController(titleIconName: "icon_howto_checkin", headerImageName: "checkout_question_header", titleText: "on_the_go".localizedString, subTitleText: "\"" + spotName + "\"", messageText: "left_this_spot_question".localizedString)
+            let dialogVC = PRKDialogViewController(titleIconName: "icon_howto_checkin", headerImageName: "checkout_question_header", titleText: "on_the_go".localizedString, subTitleText: "left_this_spot_question".localizedString, messageText: "\"" + spotName + "\"")
 
             if let tabController = window?.rootViewController as? TabController {
                 dialogVC.showOnViewController(tabController)
@@ -210,6 +211,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     // MARK: Helper
 
     func configureGlobals() {
+        
+        let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        Settings.setLastAppVersionString(version)
+
         Settings.setCachedLotDataFresh(false)
         LotOperations.sharedInstance.findLots(Settings.selectedCityPoint(), radius: 1.0) { (lots, underMaintenance, outsideServiceArea, error) -> Void in }
         
@@ -238,36 +243,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     // MARK: CLLocationManagerDelegate methods
 
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        
-        //test this instead of region updates...
-        for region in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
-            for location in locations as! [CLLocation] {
-                if region.identifier.rangeOfString("prkng_check_out_monitor") != nil
-                && region.containsCoordinate(location.coordinate) {
-                    //We've entered one of our regions! Handle it!
-                    let date = Settings.geofenceLastSetOnInterval()
-                    let timeInterval = location.timestamp.timeIntervalSinceReferenceDate
-//                    NSLog("%d",timeInterval)
-                    if ((date - timeInterval) / 60) > 5 {
-                        handleRegionEntered(location.coordinate)
-                    }
-                }
-            }
-
-        }
-        
-        
-    }
+//    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+//        
+//        //test this instead of region updates...
+//        for region in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
+//            for location in locations as! [CLLocation] {
+//                if region.identifier.rangeOfString("prkng_check_out_monitor") != nil
+//                && region.containsCoordinate(location.coordinate) {
+//                    //We've entered one of our regions! Handle it!
+//                    let date = Settings.geofenceLastSetOnInterval()
+//                    let timeInterval = location.timestamp.timeIntervalSinceReferenceDate
+////                    NSLog("%d",timeInterval)
+//                    if ((date - timeInterval) / 60) > 5 {
+//                        handleRegionEntered(location.coordinate)
+//                    }
+//                }
+//            }
+//
+//        }
+//        
+//        
+//    }
     
     func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
-        //handleRegionEntered((region as! CLCircularRegion).center)
-        self.locationManager.startUpdatingLocation()
+        handleRegionEntered((region as! CLCircularRegion).center)
+//        self.locationManager.startUpdatingLocation()
     }
 
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
         //do nothing
-        self.locationManager.stopUpdatingLocation()
+//        self.locationManager.stopUpdatingLocation()
     }
     
     //MARK: Notification handling
@@ -341,8 +346,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id999834216")!)
         } else if index == 1 {
             //send feedback?
+            var mailVC = MFMailComposeViewController()
+            mailVC.mailComposeDelegate = self
+            mailVC.setSubject("feedback".localizedString)
+            mailVC.setToRecipients(["hello@prk.ng"])
+            window?.rootViewController?.presentViewController(mailVC, animated: true, completion: nil)
         }
         
     }
+    
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        controller.dismissViewControllerAnimated(true, completion: nil)
+    }
+
 }
 

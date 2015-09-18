@@ -179,15 +179,15 @@ class PRKDialogViewController: AbstractViewController {
         titleLabel.numberOfLines = 0
         centerContainerView.addSubview(titleLabel)
         
-        subtitleLabel.font = Styles.FontFaces.light(15)
-        subtitleLabel.textColor = Styles.Colors.petrol2
+        subtitleLabel.font = Styles.FontFaces.regular(15)
+        subtitleLabel.textColor = Styles.Colors.red2
         subtitleLabel.textAlignment = NSTextAlignment.Center
         subtitleLabel.text = subTitleText
         subtitleLabel.numberOfLines = 0
         centerContainerView.addSubview(subtitleLabel)
         
-        textLabel.font = Styles.FontFaces.regular(15)
-        textLabel.textColor = Styles.Colors.red2
+        textLabel.font = Styles.FontFaces.light(15)
+        textLabel.textColor = Styles.Colors.petrol2
         textLabel.numberOfLines = 0
         textLabel.textAlignment = NSTextAlignment.Center
         textLabel.text = messageText

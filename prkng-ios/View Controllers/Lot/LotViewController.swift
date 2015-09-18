@@ -29,10 +29,10 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     private var subHeaderViewLabel = PRKTimeSpanView()
     private var todayTimeHeaderView = UIView()
     private var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
-    private var timeListScrollView = UIScrollView()
     private var timeListContentView = UIView()
     private var timeSpanLabels = [PRKTimeSpanView]()
     private var attributesView = UIView()
+    private var attributesViewContainers = [UIView]()
     private var attributesViewLabels = [UILabel]()
     private var attributesViewImages = [UIImageView]()
 
@@ -40,6 +40,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     private static let HEADER_HEIGHT: CGFloat = 70
     private(set) var LIST_HEIGHT: Int = 185
     private(set) var SCROLL_HEIGHT: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 185
+    var topOffset: Int = 0
     
     init(lot: Lot, view: UIView) {
         self.lot = lot
@@ -134,6 +135,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         timeIconView.image = timeIconView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         timeIconView.tintColor = Styles.Colors.midnight1
         
+        let todayTimeHeaderTapRec = UITapGestureRecognizer(target: self, action: "timesTapped")
+        todayTimeHeaderView.addGestureRecognizer(todayTimeHeaderTapRec)
         view.addSubview(todayTimeHeaderView)
         todayTimeHeaderView.backgroundColor = Styles.Colors.cream1
         todayTimeHeaderView.addSubview(timeIconView)
@@ -145,9 +148,10 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         timeSpanLabels.append(todayTimeSpanLabel)
         todayTimeHeaderView.addSubview(todayTimeSpanLabel)
         
-        view.addSubview(timeListScrollView)
-        timeListScrollView.backgroundColor = Styles.Colors.stone
-        timeListScrollView.addSubview(timeListContentView)
+        let timeListTapRec = UITapGestureRecognizer(target: self, action: "timesTapped")
+        timeListContentView.addGestureRecognizer(timeListTapRec)
+        timeListContentView.backgroundColor = Styles.Colors.stone
+        view.addSubview(timeListContentView)
 
         for i in 1..<7 {
             let timeSpanLabel = PRKTimeSpanView(dayString: days[i], startTime: openTimes[i].0, endTime: openTimes[i].1)
@@ -156,6 +160,10 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         }
         
         for attribute in lot.attributes {
+            
+            let attributesViewContainer = UIView()
+            attributesViewContainers.append(attributesViewContainer)
+            
             let caption = attribute.name(false).localizedString.uppercaseString
             let imageName = "icon_" + attribute.name(true) + (attribute.enabled ? "_on" : "_off" )
             
@@ -169,9 +177,11 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             attributeImageView.contentMode = .Bottom
             attributesViewImages.append(attributeImageView)
             
-            attributesView.addSubview(attributeLabel)
-            attributesView.addSubview(attributeImageView)
+            attributesViewContainer.addSubview(attributeLabel)
+            attributesViewContainer.addSubview(attributeImageView)
+            attributesView.addSubview(attributesViewContainer)
         }
+        
         view.addSubview(attributesView)
         attributesView.backgroundColor = Styles.Colors.stone
         
@@ -241,17 +251,11 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.centerY.equalTo(self.todayTimeHeaderView)
         }
         
-        timeListScrollView.snp_makeConstraints { (make) -> () in
+        timeListContentView.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(self.LIST_HEIGHT)
             make.top.equalTo(self.todayTimeHeaderView.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(self.SCROLL_HEIGHT)
-        }
-        
-        timeListContentView.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.timeListScrollView)
-            make.width.equalTo(self.view)
-            make.height.equalTo(self.LIST_HEIGHT)
         }
         
         timeSpanLabels[0].snp_makeConstraints({ (make) -> () in
@@ -274,33 +278,59 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
 
         
         attributesView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.timeListScrollView.snp_bottom)
+            make.bottom.equalTo(self.view.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(52)
         }
 
-        let attributeOffset = UIScreen.mainScreen().bounds.width / CGFloat(attributesViewImages.count) / 2.0
+        //the below is a little overly complicated, to make it much simpler just debug the view hierarchy and you will easily see how/where things are aligned.
+        var leftConstraint = self.attributesView.snp_left
         
-        for i in 0..<attributesViewImages.count {
+        for i in 0..<attributesViewContainers.count {
             
-            let multiplier: Float = 2.0 * Float(i + 1) / (Float(attributesViewImages.count) )  // MAGIC =)
+            var width = Int(self.FULL_WIDTH)/3
+            if i == 1 || i == 2 {
+                width = Int(self.FULL_WIDTH)/6
+            }
+            
+            let attributesViewContainer = attributesViewContainers[i]
+            attributesViewContainer.snp_makeConstraints({ (make) -> () in
+                make.left.equalTo(leftConstraint)
+                make.top.equalTo(self.attributesView)
+                make.bottom.equalTo(self.attributesView)
+                make.width.equalTo(width)
+            })
             
             let label = attributesViewLabels[i]
-            label.snp_makeConstraints({ (make) -> () in
-                make.centerX.equalTo(self.attributesView).multipliedBy(multiplier).with.offset(-attributeOffset)
-                make.bottom.equalTo(self.attributesView).with.offset(-4.5)
-            })
+
+            if i == 1 {
+                label.snp_makeConstraints({ (make) -> () in
+                    make.left.equalTo(attributesViewContainer.snp_left)
+                    make.bottom.equalTo(self.attributesView).with.offset(-4.5)
+                })
+            } else if i == 2 {
+                label.snp_makeConstraints({ (make) -> () in
+                    make.right.equalTo(attributesViewContainer.snp_right)
+                    make.bottom.equalTo(self.attributesView).with.offset(-4.5)
+                })
+            } else {
+                label.snp_makeConstraints({ (make) -> () in
+                    make.centerX.equalTo(attributesViewContainer.snp_centerX)
+                    make.bottom.equalTo(self.attributesView).with.offset(-4.5)
+                })
+            }
             
             let imageView = attributesViewImages[i]
             imageView.snp_makeConstraints({ (make) -> () in
                 make.size.equalTo(CGSize(width: 21, height: 25))
-                make.centerX.equalTo(self.attributesView).multipliedBy(multiplier).with.offset(-attributeOffset)
+                make.centerX.equalTo(label.snp_centerX)
                 make.bottom.equalTo(label.snp_top).with.offset(-3.5)
             })
-
+            
+            leftConstraint = attributesViewContainer.snp_right
         }
-        
+
         
     }
     
@@ -354,7 +384,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
     func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
-        return beginTap.y <= self.TOP_PARALLAX_HEIGHT
+        let yPosition = self.TOP_PARALLAX_HEIGHT - CGFloat(self.topOffset)
+        return beginTap.y <= yPosition
     }
 
     func swipeDidBegin() {
@@ -393,6 +424,24 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     
     func swipeDidEndDown() {
         self.delegate?.hideModalView()
+    }
+
+    func timesTapped() {
+        
+        self.topOffset = self.topOffset == 0 ? self.LIST_HEIGHT - self.SCROLL_HEIGHT : 0
+        
+        topImageView.snp_updateConstraints { (make) -> () in
+            make.top.equalTo(self.view).with.offset(-self.topOffset)
+        }
+        
+        self.headerView.snp_updateConstraints { (make) -> () in
+            make.top.equalTo(self.view).with.offset(self.TOP_PARALLAX_HEIGHT - CGFloat(self.topOffset))
+        }
+
+        self.view.setNeedsLayout()
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+        })
     }
     
     

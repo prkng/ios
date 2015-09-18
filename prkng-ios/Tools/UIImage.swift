@@ -102,6 +102,23 @@ extension UIImage {
         
     }
 
+    func addText(attributedText: NSAttributedString, labelRect: CGRect?) -> UIImage {
+        
+        let drawRect = CGRectMake(0, 0, self.size.width, self.size.height)
+        let labelDrawRect = labelRect ?? CGRectMake(0, 0, self.size.width, self.size.height)
+        let label = UILabel(frame: drawRect)
+        label.attributedText = attributedText
+        label.textAlignment = NSTextAlignment.Center
+        
+        UIGraphicsBeginImageContextWithOptions(self.size, false, Settings.screenScale)
+        self.drawInRect(drawRect)
+        label.drawTextInRect(labelDrawRect)
+        var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+        
+    }
+    
     func addText(attributedText: NSAttributedString, color: UIColor?, bottomOffset: CGFloat = 0) -> UIImage {
         
         let drawRect = CGRectMake(0, 0, self.size.width, self.size.height)
@@ -136,6 +153,14 @@ extension UIImage {
         UIGraphicsEndImageContext()
 
         return image
+    }
+
+    func redrawImageInRect(drawRect: CGRect) -> UIImage {
+
+        let scale = UIScreen.mainScreen().scale
+        let scaledDrawRect = CGRect(x: drawRect.origin.x * scale, y: drawRect.origin.y * scale, width: drawRect.size.width * scale, height: drawRect.size.height * scale)
+        let croppedImage = CGImageCreateWithImageInRect(self.CGImage, scaledDrawRect)
+        return UIImage(CGImage: croppedImage, scale: scale, orientation: self.imageOrientation) ?? UIImage()
     }
 
     

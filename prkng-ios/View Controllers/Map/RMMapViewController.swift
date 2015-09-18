@@ -387,7 +387,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         
         if self.mapMode == .Garage {
-//            map.clusteringEnabled = map.zoom <= 14
+            map.clusteringEnabled = map.zoom <= 12
         }
         
         if wasUserAction {
@@ -612,7 +612,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func didSetMapMode() {
         switch (self.mapMode) {
         case .Garage:
-//            self.mapView.clusteringEnabled = self.mapView.zoom <= 14
+            self.mapView.clusteringEnabled = self.mapView.zoom <= 12
             break
         default:
             self.mapView.clusteringEnabled = false
@@ -880,8 +880,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         let southWest = southWestAndNorthEast.0
         let northEast = southWestAndNorthEast.1
             
-//        self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
-        self.mapView.zoom = self.mapView.zoom - 2
+        self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
     }
     
     func getSouthWestAndNorthEastFromAnnotations(annots: [RMAnnotation], centerCoordinate: CLLocationCoordinate2D) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
@@ -1144,7 +1143,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         updateAnnotations({ (operationCompleted: Bool) -> Void in
             completion()
             if self.mapMode == .Garage {
-                self.zoomIntoClosestPins(3)
+                self.zoomIntoClosestPins(5)
             }
         })
     }

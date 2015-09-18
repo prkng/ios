@@ -26,6 +26,33 @@ class AnalyticsOperations {
         
     }
 
+    class func sendMapModeChange(mapMode: MapMode) {
+
+        var mapModeString = ""
+        switch (mapMode.rawValue) {
+        case 0:
+            mapModeString = "parking_lot"
+            break
+        case 1:
+            mapModeString = "street_parking"
+            break
+        case 2:
+            mapModeString = "car_sharing"
+            break
+        default:
+            mapModeString = ""
+            break
+        }
+        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let params = ["event" : "map_mode_" + mapModeString]
+        
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+        }
+        
+    }
+    
     func geofencingEvent(coordinate: CLLocationCoordinate2D, entering: Bool, completion : (completed : Bool) -> Void) {
         
         lastUsedCoordinate = coordinate

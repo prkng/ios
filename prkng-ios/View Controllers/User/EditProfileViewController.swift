@@ -235,13 +235,8 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     }
     
     func logoutButtonTapped(sender : UIButton) {
-        
         GiFHUD.show()
-        
-        AuthUtility.saveAuthToken(nil)
-        AuthUtility.saveUser(nil)
-        
-        UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+        Settings.logout()
     }
     
     func saveButtonTapped(sender : UIButton) {
