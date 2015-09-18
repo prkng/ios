@@ -15,7 +15,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     
     var titles: Array<String>
     
-    var backgroundView: UIVisualEffectView
+    var backgroundView: UIView
     var buttonContainers: Array<UIView>
     var buttons: Array<SliderSelectionButton>
     private var frontButtonContainers: Array<UIView>
@@ -83,7 +83,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         didSetupConstraints = true
         selectedIndex = 1
         selectionIndicator = UISlider()
-        backgroundView = UIVisualEffectView()
+        backgroundView = UIView()
         width = 0
         super.init(frame: frame)
     }

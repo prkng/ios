@@ -435,10 +435,12 @@ struct Settings {
     }
     
     static func iOS8OrLater() -> Bool {
-        if NSProcessInfo().isOperatingSystemAtLeastVersion(NSOperatingSystemVersion(majorVersion: 8, minorVersion: 0, patchVersion: 0)) {
+        
+        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
+            return false
+        } else {
             return true
         }
-        return false
     }
     
     static func setMapUserMode(mode: MapUserMode) {

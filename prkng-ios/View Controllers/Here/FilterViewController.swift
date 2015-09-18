@@ -11,7 +11,7 @@ import UIKit
 class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, SearchResultsTableViewControllerDelegate {
 
     private var containerView: UIView
-    private var backgroundView: UIVisualEffectView
+    private var backgroundView: UIView
     var searchFilterView: SearchFilterView
     var timeFilterView: TimeFilterView
 
@@ -45,7 +45,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             //            backgroundView.backgroundColor = Styles.Colors.cream1
             //            backgroundView.alpha = 0.9
         } else {
-            backgroundView = UIVisualEffectView()
+            backgroundView = UIView()
             backgroundView.backgroundColor = Styles.Colors.cream1
             backgroundView.alpha = 0.9
         }

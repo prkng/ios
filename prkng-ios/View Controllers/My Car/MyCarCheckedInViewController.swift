@@ -112,10 +112,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         super.viewWillAppear(animated)
         
         if (spot == nil) {
-            logoView.alpha = 0
-            containerView.alpha = 0
-            smallButtonContainer.alpha = 0
-            bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
+            if Settings.iOS8OrLater() {
+                logoView.alpha = 0
+                containerView.alpha = 0
+                smallButtonContainer.alpha = 0
+                bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
+            }
         }
         
     }
@@ -141,7 +143,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 self.setDefaultTimeDisplay()
                 GiFHUD.dismiss()
                 if (spot != nil) {
-                    self.animateAndShow()
+                    
+                    if Settings.iOS8OrLater() {
+                        self.animateAndShow()
+                    }
                     
                     if(Settings.firstCheckin()) {
                         NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstCheckinMessage"), userInfo: nil, repeats: false)

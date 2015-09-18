@@ -52,17 +52,20 @@ class CheckinMessageViewController: GAITrackedViewController {
         super.viewDidLoad()
         self.screenName = "Here - Checkin Message"
         
-        let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
-        let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
-        let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
-        
-        containerView.layer.transform = CATransform3DConcat(CATransform3DConcat(rotateTransform, translateTransform), scaleTransform)
+        if Settings.iOS8OrLater() {
+            let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
+            let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
+            let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
+            containerView.layer.transform = CATransform3DConcat(CATransform3DConcat(rotateTransform, translateTransform), scaleTransform)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        animate()
-    }    
+        if Settings.iOS8OrLater() {
+            animate()
+        }
+    }
     
     func setupSubviews() {
         

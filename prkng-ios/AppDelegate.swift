@@ -23,7 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
 //        //register for background location usage for updates
         locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
+        if Settings.iOS8OrLater() {
+            locationManager.requestAlwaysAuthorization()
+        }
         
         //send analytics on the location manager status
         let currentLocationManagerStatus = CLLocationManager.authorizationStatus()
@@ -81,26 +83,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //
         //notification set up
         //
-        let yesAction = UIMutableUserNotificationAction()
-        yesAction.identifier = "yes"
-        yesAction.title = "yes".localizedString
-        yesAction.activationMode = .Background
-        yesAction.authenticationRequired = false
-        
-        let noAction = UIMutableUserNotificationAction()
-        noAction.identifier = "no"
-        noAction.title = "no".localizedString
-        noAction.activationMode = .Background
-        noAction.authenticationRequired = false
-        
-        let category = UIMutableUserNotificationCategory()
-        category.identifier = "prkng_check_out_monitor"
-        category.setActions([yesAction, noAction], forContext: UIUserNotificationActionContext.Default)
-
-        if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
-            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: NSSet(object: category) as Set<NSObject>))
+        if Settings.iOS8OrLater() {
+            let yesAction = UIMutableUserNotificationAction()
+            yesAction.identifier = "yes"
+            yesAction.title = "yes".localizedString
+            yesAction.activationMode = .Background
+            yesAction.authenticationRequired = false
+            
+            let noAction = UIMutableUserNotificationAction()
+            noAction.identifier = "no"
+            noAction.title = "no".localizedString
+            noAction.activationMode = .Background
+            noAction.authenticationRequired = false
+            
+            let category = UIMutableUserNotificationCategory()
+            category.identifier = "prkng_check_out_monitor"
+            category.setActions([yesAction, noAction], forContext: UIUserNotificationActionContext.Default)
+            
+            if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
+                application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: NSSet(object: category) as Set<NSObject>))
+            }
         }
-        
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
         
@@ -294,7 +297,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         alert.alertTitle = "on_the_go".localizedString
         alert.alertBody = String(format: "left_spot_question".localizedString, spotName)
         alert.soundName = UILocalNotificationDefaultSoundName
-        alert.category = "prkng_check_out_monitor"
+        if Settings.iOS8OrLater() {
+            alert.category = "prkng_check_out_monitor"
+        }
         UIApplication.sharedApplication().presentLocalNotificationNow(alert)
         
         let data = NSKeyedArchiver.archivedDataWithRootObject(alert)

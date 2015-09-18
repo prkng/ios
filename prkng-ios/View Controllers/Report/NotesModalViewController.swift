@@ -58,15 +58,17 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
         super.viewDidLoad()
         self.screenName = "Report View - Notes"
         
-        let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
-
-        containerView.layer.transform = translateTransform
+        if Settings.iOS8OrLater() {
+            let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
+            containerView.layer.transform = translateTransform
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        animate()
-        
+        if Settings.iOS8OrLater() {
+            animate()
+        }
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(300 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
             self.textView.becomeFirstResponder()
         })
