@@ -6,5 +6,5 @@
   Copyright (c) 2015 PRKNG. All rights reserved.
 */
 
-"NSLocationAlwaysUsageDescription" = "*** We need this permission to show the parking spots around you and to automatically check you in and out of parking spots.";
-"NSLocationWhenInUseUsageDescription" = "*** We need this permission to show the parking spots around you.";
+"NSLocationAlwaysUsageDescription" = "Prkng a besoin de connaître votre position afin de vous suggérer les meilleures places de stationnement autour de vous.";
+"NSLocationWhenInUseUsageDescription" = "Prkng a besoin de connaître votre position afin de vous suggérer les meilleures places de stationnement autour de vous.";
