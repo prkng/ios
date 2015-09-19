@@ -314,6 +314,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func geofencingNotificationResponse(answeredYes: Bool) {
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey("prkng_check_out_monitor_notification")
+        Settings.cancelNotification()
         
         if answeredYes {
             

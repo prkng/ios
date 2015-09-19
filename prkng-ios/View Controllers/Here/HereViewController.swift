@@ -71,9 +71,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         super.viewDidAppear(animated)
 
         //super hack :(
-        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
-        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
-        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
+        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false, forceRedraw: true)
+        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false, forceRedraw: true)
+        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false, forceRedraw: true)
         
         if (Settings.firstMapUse()) {
             Settings.setFirstMapUsePassed(true)
@@ -371,7 +371,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             
             
             SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-            GiFHUD.show()
+            SVProgressHUD.show()
             
             Settings.checkOut()
             
@@ -388,7 +388,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 
                 Settings.scheduleNotification(activeSpot)
                 
-                GiFHUD.dismiss()
+                SVProgressHUD.dismiss()
                 self.delegate?.loadMyCarTab()
                 
                 if Settings.shouldPromptUserToRateApp() {

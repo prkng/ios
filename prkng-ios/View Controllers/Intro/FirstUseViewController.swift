@@ -48,7 +48,7 @@ class FirstUseViewController: AbstractViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         SVProgressHUD.dismiss()
-        GiFHUD.dismiss()
+//        GiFHUD.dismiss()
     }
     
     

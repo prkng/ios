@@ -235,7 +235,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     }
     
     func logoutButtonTapped(sender : UIButton) {
-        GiFHUD.show()
+        SVProgressHUD.show()
         Settings.logout()
     }
     
@@ -250,7 +250,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             return
         }
         
-        GiFHUD.show()
+        SVProgressHUD.show()
         
         let user = AuthUtility.getUser()!
         
@@ -290,7 +290,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             }
             else {
                 SVProgressHUD.dismiss()
-                GiFHUD.dismiss()
+//                GiFHUD.dismiss()
                 GeneralHelper.warnUser("profile_updated_error_message".localizedString)
             }
         })

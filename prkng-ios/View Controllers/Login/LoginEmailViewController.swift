@@ -163,11 +163,11 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
                 
                 if Int(count(email)) > 4 {
                     
-                    GiFHUD.show()
+                    SVProgressHUD.show()
                     
                     UserOperations.resetPassword(email, completion: { (completed) -> Void in
                         
-                        GiFHUD.dismiss()
+                        SVProgressHUD.dismiss()
                         
                         let alert = UIAlertView()
                         alert.message = completed ? "check_email_copy".localizedString : "pasword_reset_error".localizedString

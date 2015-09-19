@@ -338,11 +338,13 @@ struct Settings {
         
         let userLocation = delegate.locationManager.location
         var useUserLocationAsRegion = false
-        for location in locations {
-//            NSLog("lat: %f, long: %f", location.coordinate.latitude, location.coordinate.longitude)
-            if userLocation.distanceFromLocation(location) < 10 {
-                //then use this as the only region
-                useUserLocationAsRegion = true
+        if userLocation != nil {
+            for location in locations {
+                //            NSLog("lat: %f, long: %f", location.coordinate.latitude, location.coordinate.longitude)
+                if userLocation.distanceFromLocation(location) < 10 {
+                    //then use this as the only region
+                    useUserLocationAsRegion = true
+                }
             }
         }
         

@@ -503,9 +503,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     func singleTapOnMap(map: RMMapView!, at point: CGPoint) {
-        
+
+        var minimumDistanceRadius: CGFloat = 60
+
         if self.mapMode == .Garage {
-            return
+            minimumDistanceRadius = 40
         }
         
         var minimumDistance = CGFloat(Float.infinity)
@@ -552,7 +554,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
         }
         
-        if (closestAnnotation != nil && minimumDistance < 60) {
+        if (closestAnnotation != nil && minimumDistance < minimumDistanceRadius) {
             mapView.selectAnnotation(closestAnnotation, animated: true)
         } else {
             customDeselectAnnotation()
@@ -665,9 +667,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     //only show the spinner if this map is active
                     if let tabController = self.parentViewController as? TabController {
                         if tabController.activeTab() == PrkTab.Here {
-//                            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-//                            SVProgressHUD.show()
-                            GiFHUD.show()
+                            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                            SVProgressHUD.show()
+//                            GiFHUD.show()
                             
                             if self.canShowMapMessage {
                                 if underMaintenance {
@@ -775,7 +777,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
             self.mapView.addAnnotations(self.annotations)
             
-            GiFHUD.dismiss()
+            SVProgressHUD.dismiss()
             self.updateInProgress = false
             
             completion(operationCompleted: true)
@@ -852,7 +854,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
-            GiFHUD.dismiss()
+            SVProgressHUD.dismiss()
             self.updateInProgress = false
             
             completion(operationCompleted: true)

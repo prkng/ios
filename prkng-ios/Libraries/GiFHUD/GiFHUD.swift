@@ -372,7 +372,7 @@ class GiFHUD: UIView {
         show()
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC)))
         dispatch_after(time, dispatch_get_main_queue(), {
-            GiFHUD.dismiss()
+            SVProgressHUD.dismiss()
         })
     }
     
@@ -383,7 +383,7 @@ class GiFHUD: UIView {
     }
 
     @objc private class func userTapped () {
-        GiFHUD.dismiss()
+        SVProgressHUD.dismiss()
         self.instance.tapGesture = nil
         self.instance.didTapClosure?()
         self.instance.didTapClosure = nil

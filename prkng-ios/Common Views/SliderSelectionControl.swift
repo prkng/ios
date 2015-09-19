@@ -101,7 +101,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             self.setNeedsUpdateConstraints()
         }
         
-        selectOption(self.buttons[selectedIndex], animated: true)
+        selectOption(self.buttons[selectedIndex], animated: true, forceRedraw: true)
         
         super.layoutSubviews()
     }
@@ -164,7 +164,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         selectionIndicator.maximumTrackTintColor = UIColor.clearColor()
         
         selectionIndicator.addTarget(self, action: "sliderSelectionValueChanged", forControlEvents: UIControlEvents.TouchUpInside)
-        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanging", forControlEvents: UIControlEvents.ValueChanged)
+        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanging", forControlEvents: UIControlEvents.AllEvents)
         backgroundView.addSubview(selectionIndicator)
         
         let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
@@ -355,18 +355,20 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     }
     
     func selectOption (sender: SliderSelectionButton) {
-        selectOption(sender, animated: true)
+        selectOption(sender, animated: true, forceRedraw: false)
     }
     
     
-    func selectOption (sender: SliderSelectionButton, animated: Bool) {
+    func selectOption (sender: SliderSelectionButton, animated: Bool, forceRedraw: Bool) {
         
         let frontButton = frontButtons[sender.index]
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
             
-            self.selectionIndicator.setValue(Float(sender.index), animated: true)
-            self.sliderSelectionValueChanging()
+            self.selectionIndicator.setValue(Float(sender.index), animated: false)
+            if forceRedraw {
+                self.sliderSelectionValueChanging()
+            }
             
             }, completion: { (completed) -> Void in
                 
