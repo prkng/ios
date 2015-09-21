@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 PRKNG. All rights reserved.
 //
 
+
+//TODO: THIS NEEDS TO BE CLEANED UP!! We should only use PRKModeSlider and add a tap recognizer for tapping. Get rid of everything else.
 import UIKit
 
 class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
@@ -20,7 +22,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     var buttons: Array<SliderSelectionButton>
     private var frontButtonContainers: Array<UIView>
     private var frontButtons: Array<SliderSelectionButton>
-    var selectionIndicator: UISlider
+    var selectionIndicator = PRKModeSlider()
     
     var selectedIndex: Int
     
@@ -82,7 +84,6 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         didSetupSubviews = false
         didSetupConstraints = true
         selectedIndex = 1
-        selectionIndicator = UISlider()
         backgroundView = UIView()
         width = 0
         super.init(frame: frame)
@@ -101,7 +102,7 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             self.setNeedsUpdateConstraints()
         }
         
-        selectOption(self.buttons[selectedIndex], animated: true, forceRedraw: true)
+        selectOption(self.buttons[selectedIndex], animated: true)
         
         super.layoutSubviews()
     }
@@ -156,15 +157,12 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
             index++
         }
         
-        selectionIndicator.continuous = true
-        selectionIndicator.setThumbImage(thumbImage, forState: UIControlState.Normal)
+        selectionIndicator.thumbWidth = self.width
         selectionIndicator.minimumValue = 0
-        selectionIndicator.maximumValue = Float(titles.count-1)
-        selectionIndicator.minimumTrackTintColor = UIColor.clearColor()
-        selectionIndicator.maximumTrackTintColor = UIColor.clearColor()
+        selectionIndicator.maximumValue = Double(titles.count-1)
+        selectionIndicator.titles = self.titles
         
         selectionIndicator.addTarget(self, action: "sliderSelectionValueChanged", forControlEvents: UIControlEvents.TouchUpInside)
-        selectionIndicator.addTarget(self, action: "sliderSelectionValueChanging", forControlEvents: UIControlEvents.AllEvents)
         backgroundView.addSubview(selectionIndicator)
         
         let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
@@ -305,44 +303,15 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
         if tapRec.state == UIGestureRecognizerState.Ended {
             let tap = tapRec.locationInView(self.selectionIndicator)
             let newValue = (tap.x / self.selectionIndicator.bounds.width) * CGFloat(self.titles.count - 1)
-//            self.selectionIndicator.setValue(Float(newValue), animated: true)
-            sliderSelectionValueChanged(Float(newValue))
+            sliderSelectionValueChanged(Double(newValue))
         }
-    }
-    
-    func sliderSelectionValueChanging() {
-        
-        let newValue = self.selectionIndicator.value
-        
-        let bounds = self.selectionIndicator.bounds
-        let trackRect = selectionIndicator.trackRectForBounds(bounds)
-        let thumbRect = selectionIndicator.thumbRectForBounds(bounds, trackRect: trackRect, value: newValue)
-
-        let xDifference = (bounds.width - trackRect.size.width) / 2
-        let yDifference = CGFloat(-0.5)//(bounds.height - CGFloat(SliderSelectionControl.HEIGHT)) / 2
-
-        var fullThumbImage = UIImage.imageWithColor(selectionIndicatorColor, size: CGSize(width: bounds.size.width, height: CGFloat(SliderSelectionControl.HEIGHT)))
-
-        let thumbDrawRect = CGRect(x: thumbRect.origin.x, y: 1, width: CGFloat(self.width), height: CGFloat(SliderSelectionControl.HEIGHT))
-
-        //draw the 3 titles in the image
-        for i in 0..<titles.count {
-            let title = titles[i]
-            let attributedTitle = NSMutableAttributedString(string: title, attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: selectedTextColor])
-            let labelRect = CGRect(x: xDifference + (CGFloat(i)*CGFloat(self.width)), y: yDifference, width: CGFloat(self.width), height: CGFloat(SliderSelectionControl.HEIGHT))
-            fullThumbImage = fullThumbImage.addText(attributedTitle, labelRect: labelRect)
-        }
-        
-        let modifiedThumbImage = fullThumbImage.redrawImageInRect(thumbDrawRect)
-        selectionIndicator.setThumbImage(modifiedThumbImage, forState: UIControlState.Normal)
-        
     }
     
     func sliderSelectionValueChanged() {
         sliderSelectionValueChanged(self.selectionIndicator.value)
     }
     
-    func sliderSelectionValueChanged(newValue: Float) {
+    func sliderSelectionValueChanged(newValue: Double) {
         
         if newValue < 0.5 {
             selectOption(buttons[0])
@@ -355,20 +324,18 @@ class SliderSelectionControl: UIControl, UIGestureRecognizerDelegate {
     }
     
     func selectOption (sender: SliderSelectionButton) {
-        selectOption(sender, animated: true, forceRedraw: false)
+        selectOption(sender, animated: true)
     }
     
     
-    func selectOption (sender: SliderSelectionButton, animated: Bool, forceRedraw: Bool) {
+    func selectOption (sender: SliderSelectionButton, animated: Bool) {
         
         let frontButton = frontButtons[sender.index]
         
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
-            
-            self.selectionIndicator.setValue(Float(sender.index), animated: false)
-            if forceRedraw {
-                self.sliderSelectionValueChanging()
-            }
+        UIView.animateWithDuration(0.25, animations: { () -> Void in
+
+            self.selectionIndicator.setValue(Double(sender.index), animationDuration: animated ? 0.25 : 0)
+
             
             }, completion: { (completed) -> Void in
                 
