@@ -83,7 +83,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.methodSelectionViewHeight)
+            make.height.equalTo(LoginMethodSelectionView.HEIGHT)
         }
         
     }
@@ -163,7 +163,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         loginEmailViewController!.view.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.methodSelectionView.snp_bottom)
             make.centerX.equalTo(self.view)
-            make.size.equalTo(self.view).with.offset(CGSizeMake(0, -CGFloat(Styles.Sizes.methodSelectionViewHeightCompact)))
+            make.size.equalTo(self.view)
         }
         self.loginEmailViewController!.view.layoutIfNeeded()
         
@@ -171,8 +171,8 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         methodSelectionView.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.top.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.methodSelectionViewHeightCompact)
+            make.bottom.equalTo(self.view.snp_top)
+            make.height.equalTo(LoginMethodSelectionView.HEIGHT)
         }
         
         
@@ -266,7 +266,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.top.equalTo(self.loginEmailViewController!.view.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(self.view).with.offset(-CGFloat(Styles.Sizes.methodSelectionViewHeightCompact))
+            make.height.equalTo(self.view)
         }
         
         registerEmailViewController!.view.layoutIfNeeded()
@@ -288,7 +288,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                     make.top.equalTo(self.methodSelectionView.snp_bottom)
                     make.left.equalTo(self.view)
                     make.right.equalTo(self.view)
-                    make.height.equalTo(self.view).with.offset(-Styles.Sizes.methodSelectionViewHeightCompact)
+                    make.height.equalTo(self.view)
                 }
                 
                 self.loginEmailViewController!.view.removeFromSuperview()

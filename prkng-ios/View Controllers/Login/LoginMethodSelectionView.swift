@@ -10,26 +10,22 @@ import UIKit
 
 class LoginMethodSelectionView: UIView {
     
-    var loginTitleLabel : UILabel
-    var facebookButton : UIButton
-    var googleButton : UIButton
-    var emailButton : UIButton
+    static let HEIGHT = 187
+    
+    var containerView = UIView()
+    var loginTitleLabel = UILabel()
+    var facebookButton = ViewFactory.bigRedRoundedButton()
+    var googleButton = ViewFactory.bigRedRoundedButton()
+    var emailButton = UIButton()
     
     var selectedMethod : LoginMethod?
     
     var delegate : LoginMethodSelectionViewDelegate?
     
-    var didSetupSubviews: Bool
-    var didSetupConstraints: Bool
+    var didSetupSubviews = false
+    var didSetupConstraints = false
     
     override init(frame: CGRect) {
-        didSetupSubviews = false
-        didSetupConstraints = false
-        loginTitleLabel = UILabel()
-        facebookButton = UIButton()
-        googleButton = UIButton()
-        emailButton = UIButton()
-        
         super.init(frame: frame)
         
         setupSubviews()
@@ -61,55 +57,64 @@ class LoginMethodSelectionView: UIView {
     
     func setupSubviews() {
         
-        self.backgroundColor = Styles.Colors.stone
+        self.clipsToBounds = true
+        addSubview(containerView)
         
-        loginTitleLabel.font = Styles.FontFaces.light(12)
+        loginTitleLabel.font = Styles.FontFaces.bold(12)
         loginTitleLabel.textColor = Styles.Colors.midnight2
         loginTitleLabel.text = NSLocalizedString("login_with", comment : "")
-        addSubview(loginTitleLabel)
+        containerView.addSubview(loginTitleLabel)
         
-        facebookButton.setImage(UIImage(named: "btn_fb"), forState: UIControlState.Normal)
-        facebookButton.setImage(UIImage(named: "btn_fb_active"), forState: UIControlState.Highlighted)
+        facebookButton.backgroundColor = Styles.Colors.facebookBlue
+        facebookButton.setTitle("login_with_facebook".localizedString, forState: .Normal)
         facebookButton.addTarget(self, action: "facebookButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        addSubview(facebookButton)
+        containerView.addSubview(facebookButton)
         
-        googleButton.setImage(UIImage(named: "btn_google"), forState: UIControlState.Normal)
-        googleButton.setImage(UIImage(named: "btn_google_active"), forState: UIControlState.Highlighted)
+        googleButton.setTitle("login_with_google".localizedString, forState: .Normal)
         googleButton.addTarget(self, action: "googleButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        addSubview(googleButton)
+        containerView.addSubview(googleButton)
         
-        
-        emailButton.setImage(UIImage(named: "btn_email"), forState: UIControlState.Normal)
-        emailButton.setImage(UIImage(named: "btn_email_active"), forState: UIControlState.Highlighted)
+        emailButton.titleLabel?.font = Styles.FontFaces.regular(12)
+        emailButton.titleLabel?.textColor = Styles.Colors.anthracite1
+        emailButton.setTitle("login_with_email".localizedString, forState: .Normal)
         emailButton.addTarget(self, action: "emailButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        addSubview(emailButton)
+        containerView.addSubview(emailButton)
         
         didSetupSubviews = true
     }
     
     func setupConstraints() {
         
+        containerView.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self)
+            make.right.equalTo(self)
+            make.top.equalTo(self)
+            make.height.equalTo(LoginMethodSelectionView.HEIGHT)
+        }
+        
         loginTitleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.facebookButton.snp_top)
-            make.centerX.equalTo(self)
+            make.top.equalTo(self.containerView)
+            make.centerX.equalTo(self.containerView)
         }
         
         facebookButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(70, 70))
-            make.centerX.equalTo(self).multipliedBy(0.5)
-            make.bottom.equalTo(self)
+            make.left.equalTo(self.containerView).with.offset(50)
+            make.right.equalTo(self.containerView).with.offset(-50)
+            make.top.equalTo(self.loginTitleLabel.snp_bottom).with.offset(14)
+            make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         
         googleButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(70, 70))
-            make.centerX.equalTo(self).multipliedBy(1.0)
-            make.bottom.equalTo(self)
+            make.left.equalTo(self.containerView).with.offset(50)
+            make.right.equalTo(self.containerView).with.offset(-50)
+            make.bottom.equalTo(self.containerView).with.offset(-70)
+            make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         
         emailButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(70, 70))
-            make.centerX.equalTo(self).multipliedBy(1.5)
-            make.bottom.equalTo(self)
+            make.centerX.equalTo(self.containerView)
+            make.bottom.equalTo(self.containerView)
+            make.height.equalTo(70)
         }
         
         didSetupConstraints = true
@@ -125,8 +130,6 @@ class LoginMethodSelectionView: UIView {
         
         deselectAll()
         selectedMethod = LoginMethod.Facebook
-        facebookButton.setImage(UIImage(named: "btn_fb_active"), forState: UIControlState.Normal)
-        facebookButton.setImage(UIImage(named: "btn_fb"), forState: UIControlState.Highlighted)
         
         if (delegate != nil) {
             delegate!.loginFacebookSelected()
@@ -143,8 +146,6 @@ class LoginMethodSelectionView: UIView {
         
         deselectAll()
         selectedMethod = LoginMethod.Google
-        googleButton.setImage(UIImage(named: "btn_google_active"), forState: UIControlState.Normal)
-        googleButton.setImage(UIImage(named: "btn_google"), forState: UIControlState.Highlighted)
         
         if (delegate != nil) {
             delegate!.loginGoogleSelected()
@@ -160,8 +161,6 @@ class LoginMethodSelectionView: UIView {
         
         deselectAll()
         selectedMethod = LoginMethod.Email
-        emailButton.setImage(UIImage(named: "btn_email_active"), forState: UIControlState.Normal)
-        emailButton.setImage(UIImage(named: "btn_email"), forState: UIControlState.Highlighted)
         
         if (delegate != nil) {
             delegate!.loginEmailSelected()
@@ -173,14 +172,6 @@ class LoginMethodSelectionView: UIView {
         
         selectedMethod = nil
         
-        facebookButton.setImage(UIImage(named: "btn_fb"), forState: UIControlState.Normal)
-        facebookButton.setImage(UIImage(named: "btn_fb"), forState: UIControlState.Highlighted)
-        
-        googleButton.setImage(UIImage(named: "btn_google"), forState: UIControlState.Normal)
-        googleButton.setImage(UIImage(named: "btn_google_active"), forState: UIControlState.Highlighted)
-        
-        emailButton.setImage(UIImage(named: "btn_email"), forState: UIControlState.Normal)
-        emailButton.setImage(UIImage(named: "btn_email_active"), forState: UIControlState.Highlighted)
     }
     
 }

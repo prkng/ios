@@ -26,7 +26,12 @@ struct ViewFactory {
         return scheduleButton
     }
     
-    static func redRoundedButton () -> UIButton {
+    static func bigRedRoundedButton() -> UIButton {
+        let button = redRoundedButtonWithHeight(CGFloat(Styles.Sizes.bigRoundedButtonHeight), font: Styles.FontFaces.regular(12), text: "")
+        return button
+    }
+    
+    static func redRoundedButton() -> UIButton {
         
         return redRoundedButtonWithHeight(28, font: Styles.FontFaces.light(12), text: "")
     }

@@ -11,6 +11,9 @@
 
 "sign_up" = "SIGN UP";
 "login_with" = "LOGIN WITH";
+"login_with_facebook" = "FACEBOOK";
+"login_with_google" = "GMAIL";
+"login_with_email" = "OR USE YOUR EMAIL";
 "login" = "login";
 "register" = "register";
 "create_an_account" = "Create an account";

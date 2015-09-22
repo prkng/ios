@@ -19,7 +19,7 @@ class RegisterEmailViewController: AbstractViewController {
     
     var delegate : RegisterEmailViewControllerDelegate?
     
-    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.methodSelectionViewHeightCompact + Styles.Sizes.hugeButtonHeight)
+    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.hugeButtonHeight)
 
     private var nameText: String {
         return inputForm.textForFieldNamed("name".localizedString)

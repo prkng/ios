@@ -20,6 +20,8 @@ struct Styles {
         
         static let stone = UIColor(rgba: "#EAE9E5")
         
+        static let facebookBlue = UIColor(red: 69/255, green: 99/255, blue: 151/255, alpha: 1)
+        
         static let beige1 = UIColor(rgba: "#E5E0DA")
         static let beige2 = UIColor(rgba: "#DBD4CE")
         
@@ -118,6 +120,7 @@ struct Styles {
     
     struct Sizes {
         static let tabbarHeight = 58
+        static let bigRoundedButtonHeight = 36
         static let hugeButtonHeight = UIScreen.mainScreen().bounds.width == 320 ? 54 : 70
         static let formTextFieldHeight = 71
         static let formLabelHeight = 17
@@ -128,8 +131,6 @@ struct Styles {
         static let spotDetailViewTopPortionHeight = 70
         static let spotDetailViewBottomPortionHeight = spotDetailViewHeight - spotDetailViewTopPortionHeight
         static let modalViewHeaderHeight : CGFloat = 90
-        static let methodSelectionViewHeight = 100
-        static let methodSelectionViewHeightCompact = 80
         static let statusBarHeight = Int(UIApplication.sharedApplication().statusBarFrame.size.height)
 
     }

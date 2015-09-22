@@ -19,7 +19,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
     
     var delegate : LoginEmailViewControllerDelegate?
     
-    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.methodSelectionViewHeightCompact + Styles.Sizes.hugeButtonHeight)
+    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.hugeButtonHeight)
     private var FORM_OFFSET = UIScreen.mainScreen().bounds.height == 480 ? 50 : 100
 
     

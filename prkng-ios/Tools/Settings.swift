@@ -17,6 +17,7 @@ struct Settings {
     
     static let SELECTED_CITY_KEY = "prkng_selected_city"
     static let LOCATION_MANAGER_LAST_STATUS_KEY = "location_manager_last_status"
+    static let TUTORIAL_PASSED_KEY = "prkng_tutorial_passed_key"
     static let FIRST_USE_PASSED_KEY = "prkng_first_use_passed"
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
@@ -107,6 +108,14 @@ struct Settings {
         AuthUtility.saveUser(nil)
         
         UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+    }
+    
+    static func tutorialPassed() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(TUTORIAL_PASSED_KEY)
+    }
+    
+    static func setTutorialPassed(tutorialPassed : Bool)  {
+        NSUserDefaults.standardUserDefaults().setBool(tutorialPassed, forKey: TUTORIAL_PASSED_KEY)
     }
     
     static func firstUse() -> Bool {

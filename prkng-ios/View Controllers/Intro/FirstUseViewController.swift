@@ -20,7 +20,7 @@ class FirstUseViewController: AbstractViewController {
         backgroundImageView = UIImageView()
         logoView = UIImageView()
         parkNowButton = ViewFactory.redRoundedButton()
-        tourButton = ViewFactory.hugeButton()
+        tourButton = ViewFactory.bigRedRoundedButton()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -68,7 +68,7 @@ class FirstUseViewController: AbstractViewController {
         view.addSubview(parkNowButton)
         parkNowButton.hidden = true
         
-        tourButton.setTitle(NSLocalizedString("take_the_tour", comment : ""), forState: UIControlState.Normal)
+        tourButton.setTitle("take_the_tour".localizedString.uppercaseString, forState: UIControlState.Normal)
         tourButton.addTarget(self, action: "tourButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(tourButton)
     }
@@ -92,10 +92,10 @@ class FirstUseViewController: AbstractViewController {
         }
         
         tourButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.bottom.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+            make.left.equalTo(self.view).with.offset(50)
+            make.right.equalTo(self.view).with.offset(-50)
+            make.bottom.equalTo(self.view).with.offset(-60)
+            make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         
     }
@@ -104,18 +104,24 @@ class FirstUseViewController: AbstractViewController {
     
     func parkNowButtonTapped() {
         self.presentViewController(LoginViewController(), animated: true) { () -> Void in
-            
+            Settings.setTutorialPassed(true)
         }
     }
     
     
     func tourButtonTapped() {
         
-        let tutorial = TutorialViewController()
-        tutorial.parent = self
-        
-        self.presentViewController(tutorial, animated: true) { () -> Void in
+        if Settings.tutorialPassed() {
             
+            self.parkNowButtonTapped()
+            
+        } else {
+            let tutorial = TutorialViewController()
+            tutorial.parent = self
+            
+            self.presentViewController(tutorial, animated: true) { () -> Void in
+                
+            }
         }
         
     }
