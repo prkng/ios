@@ -18,7 +18,7 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
     
-    private var FIELD_HEIGHT : Int = 60
+    private var FIELD_HEIGHT : Int = 50
     
     private var placeholderAttributes = [NSFontAttributeName: Styles.Fonts.h3r, NSForegroundColorAttributeName: Styles.Colors.petrol1]
     private var textFont = Styles.Fonts.h3r
@@ -160,6 +160,15 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     
     func height() -> Int {
         return cells.count * self.FIELD_HEIGHT
+    }
+    
+    func makeActive() {
+        if self.cells.first != nil {
+//            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
+//            dispatch_after(time, dispatch_get_main_queue(), {
+                self.cells[0].becomeFirstResponder()
+//            })
+        }
     }
     
     //MARK: PRKTextFieldDelegate

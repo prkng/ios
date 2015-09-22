@@ -14,8 +14,10 @@
 "login_with_facebook" = "FACEBOOK";
 "login_with_google" = "GMAIL";
 "login_with_email" = "***OR USE YOUR EMAIL";
+"login_with_email_switch" = "***OR LOGIN HERE";
+"register_with_email_switch" = "***OR CREATE AN ACCOUNT";
 "login" = "connexion";
-"register" = "enregistrer";
+"register" = "***Create my account";
 "create_an_account" = "Créez un compte";
 "step" = "étape";
 "email" = "Email";
@@ -24,7 +26,7 @@
 "your_email" = "Votre email";
 "your_password" = "Votre mot de passe";
 "confirm_your_password" = "CONFIRMATION DU MOT DE PASSE";
-"forgot_password_text" = "OUBLIÉ?";
+"forgot_password_text" = "OUBLIÉ VOTRE MOT DE PASSE?";
 "invalid_email" = "Merci d’entrer une adresse valide.";
 "password_short" = "Attention, votre mot de passe doit contenir au moins 6 caractères.";
 "password_mismatch" = "Les mots de passe ne correspondent pas.";

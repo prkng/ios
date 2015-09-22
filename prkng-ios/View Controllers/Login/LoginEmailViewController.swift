@@ -8,35 +8,36 @@
 
 import UIKit
 
-class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRKInputFormDelegate {
+class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
 
     private var scrollView : UIScrollView
     private var scrollContentView : UIView
     private var backButton = ViewFactory.outlineBackButton()
     private var topLabel : UILabel
     private var inputForm : PRKInputForm
+    private var forgotPasswordButton: UIButton
     private var signupButton : UIButton
     private var loginButton : UIButton
     
     var delegate : LoginEmailViewControllerDelegate?
     
-    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.hugeButtonHeight)
-    private var FORM_OFFSET = UIScreen.mainScreen().bounds.height == 480 ? 50 : 100
+    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height
+    private var MAIN_BUTTON_OFFSET = UIScreen.mainScreen().bounds.width == 320 ? 70 : 100
 
-    
     init() {
         
         let list = [
             ("email".localizedString, PRKTextFieldType.Email),
-            ("password".localizedString, PRKTextFieldType.PasswordWithForgotButton)
+            ("password".localizedString, PRKTextFieldType.Password)
         ]
         
         topLabel = UILabel()
         scrollView = UIScrollView()
         scrollContentView  = UIView()
         inputForm = PRKInputForm(list: list)
-        signupButton = ViewFactory.redRoundedButton()
-        loginButton = ViewFactory.hugeButton()
+        forgotPasswordButton = UIButton()
+        signupButton = UIButton()
+        loginButton = ViewFactory.bigRedRoundedButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -56,10 +57,10 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
         super.viewDidLoad()
         self.screenName = "Login - Enter Email Credentials"
     }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        inputForm.makeActive()
     }
     
     override func viewDidLayoutSubviews() {
@@ -77,20 +78,27 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
         scrollContentView.addSubview(backButton)
 
         topLabel.text = "login".localizedString.uppercaseString
-        topLabel.font = Styles.FontFaces.light(12)
+        topLabel.font = Styles.FontFaces.regular(12)
         topLabel.textColor = Styles.Colors.stone
         scrollContentView.addSubview(topLabel)
 
-        inputForm.delegate = self
         scrollContentView.addSubview(inputForm)
 
-        signupButton.setTitle("create_an_account".localizedString.uppercaseString, forState: UIControlState.Normal)
+        forgotPasswordButton.titleLabel?.font = Styles.FontFaces.light(12)
+        forgotPasswordButton.titleLabel?.textColor = Styles.Colors.anthracite1
+        forgotPasswordButton.setTitle("forgot_password_text".localizedString.uppercaseString, forState: .Normal)
+        forgotPasswordButton.addTarget(self, action:"didTapForgotPasswordButton", forControlEvents: UIControlEvents.TouchUpInside)
+        scrollContentView.addSubview(forgotPasswordButton)
+        
+        loginButton.setTitle("login".localizedString.uppercaseString, forState: UIControlState.Normal)
+        loginButton.addTarget(self, action: "loginButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        scrollContentView.addSubview(loginButton)
+
+        signupButton.titleLabel?.font = Styles.FontFaces.light(12)
+        signupButton.titleLabel?.textColor = Styles.Colors.anthracite1
+        signupButton.setTitle("register_with_email_switch".localizedString.uppercaseString, forState: .Normal)
         signupButton.addTarget(self, action:"signUpButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         scrollContentView.addSubview(signupButton)
-        
-        loginButton.setTitle("login".localizedString, forState: UIControlState.Normal)
-        loginButton.addTarget(self, action: "loginButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(loginButton)
     }
     
     func setupConstraints () {
@@ -99,7 +107,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
             make.top.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.loginButton.snp_top)
+            make.bottom.equalTo(self.view)
         }
         
         scrollContentView.snp_makeConstraints { (make) -> () in
@@ -113,29 +121,34 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
         }
 
         topLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.scrollContentView).with.offset(20)
+            make.top.equalTo(self.scrollContentView).with.offset(50)
             make.centerX.equalTo(self.scrollContentView)
         }
 
         inputForm.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.scrollContentView)
             make.right.equalTo(self.scrollContentView)
-            make.top.equalTo(self.topLabel.snp_bottom).with.offset(self.FORM_OFFSET)
+            make.top.equalTo(self.scrollContentView).with.offset(97)
             make.height.greaterThanOrEqualTo(self.inputForm.height())
         }
         
-        signupButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.scrollContentView).with.offset(-20)
+        forgotPasswordButton.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.inputForm.snp_bottom).with.offset(14)
             make.centerX.equalTo(self.scrollContentView)
-            make.size.equalTo(CGSizeMake(157, 24))
+        }
+        
+        loginButton.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.inputForm.snp_bottom).with.offset(self.MAIN_BUTTON_OFFSET)
+            make.left.equalTo(self.view).with.offset(50)
+            make.right.equalTo(self.view).with.offset(-50)
+            make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
+        }
+        
+        signupButton.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.loginButton.snp_bottom).with.offset(16)
+            make.centerX.equalTo(self.scrollContentView)
         }
 
-        loginButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view)
-            make.bottom.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-        }
     }
     
     func signUpButtonTapped() {
@@ -209,8 +222,6 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
     }
     
     
-    //MARK: PRKInputFormDelegate
-
     func didTapForgotPasswordButton() {
         let alert = UIAlertView()
         alert.title = "reset_email_copy".localizedString

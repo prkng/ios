@@ -15,11 +15,12 @@ class RegisterEmailViewController: AbstractViewController {
     var backButton = ViewFactory.outlineBackButton()
     var topLabel : UILabel
     var inputForm : PRKInputForm
-    var registerButton : UIButton
+    var registerButton = ViewFactory.bigRedRoundedButton()
+    var loginButton = UIButton()
     
     var delegate : RegisterEmailViewControllerDelegate?
     
-    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.hugeButtonHeight)
+    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height
 
     private var nameText: String {
         return inputForm.textForFieldNamed("name".localizedString)
@@ -30,9 +31,6 @@ class RegisterEmailViewController: AbstractViewController {
     private var passwordText: String {
         return inputForm.textForFieldNamed("password".localizedString)
     }
-    private var passwordConfirmText: String {
-        return inputForm.textForFieldNamed("password_confirm".localizedString)
-    }
     
     init() {
         
@@ -40,14 +38,12 @@ class RegisterEmailViewController: AbstractViewController {
             ("name".localizedString, PRKTextFieldType.NormalNoAutocorrect),
             ("email".localizedString, PRKTextFieldType.Email),
             ("password".localizedString, PRKTextFieldType.Password),
-            ("password_confirm".localizedString, PRKTextFieldType.Password),
         ]
 
         scrollView = UIScrollView()
         scrollContentView = UIView()
         topLabel = UILabel()
         inputForm = PRKInputForm(list: list)
-        registerButton = ViewFactory.hugeButton()
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -84,15 +80,22 @@ class RegisterEmailViewController: AbstractViewController {
         scrollContentView.addSubview(backButton)
         
         topLabel.textColor = Styles.Colors.cream2
-        topLabel.font = Styles.FontFaces.light(12)
-        topLabel.text = "sign_up".localizedString.uppercaseString
+        topLabel.font = Styles.FontFaces.regular(12)
+        topLabel.text = "create_an_account".localizedString.uppercaseString
         scrollContentView.addSubview(topLabel)
         
         scrollContentView.addSubview(inputForm)
-
-        registerButton.setTitle("register".localizedString, forState: UIControlState.Normal)
+        
+        registerButton.setTitle("register".localizedString.uppercaseString, forState: UIControlState.Normal)
         registerButton.addTarget(self, action: "registerButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(registerButton)
+        scrollContentView.addSubview(registerButton)
+        
+        loginButton.titleLabel?.font = Styles.FontFaces.light(12)
+        loginButton.titleLabel?.textColor = Styles.Colors.anthracite1
+        loginButton.setTitle("login_with_email_switch".localizedString.uppercaseString, forState: .Normal)
+        loginButton.addTarget(self, action:"loginButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        scrollContentView.addSubview(loginButton)
+
     }
     
     func setupConstraints () {
@@ -101,7 +104,7 @@ class RegisterEmailViewController: AbstractViewController {
             make.top.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.registerButton.snp_top)
+            make.bottom.equalTo(self.view)
         }
         
         scrollContentView.snp_makeConstraints { (make) -> () in
@@ -115,29 +118,35 @@ class RegisterEmailViewController: AbstractViewController {
         }
 
         topLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.scrollContentView).with.offset(20)
+            make.top.equalTo(self.scrollContentView).with.offset(50)
             make.centerX.equalTo(self.scrollContentView)
         }
         
         inputForm.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.scrollContentView)
             make.right.equalTo(self.scrollContentView)
-            make.centerY.equalTo(self.scrollContentView)
+            make.top.equalTo(self.scrollContentView).with.offset(97)
             make.height.greaterThanOrEqualTo(self.inputForm.height())
         }
         
         registerButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view)
-            make.bottom.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+            make.top.equalTo(self.inputForm.snp_bottom).with.offset(20)
+            make.left.equalTo(self.view).with.offset(50)
+            make.right.equalTo(self.view).with.offset(-50)
+            make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
+        
+        loginButton.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.registerButton.snp_bottom).with.offset(16)
+            make.centerX.equalTo(self.scrollContentView)
+        }
+
         
     }
 
     func registerButtonTapped () {
         
-        if !User.validateInput(nameText, emailText: emailText, passwordText: passwordText, passwordConfirmText: passwordConfirmText) {
+        if !User.validateInput(nameText, emailText: emailText, passwordText: passwordText, passwordConfirmText: passwordText) {
             return
         }
         
@@ -169,6 +178,10 @@ class RegisterEmailViewController: AbstractViewController {
         
     }
     
+    func loginButtonTapped() {
+        self.delegate?.showLogin()
+    }
+    
     func back() {
         self.delegate?.back()
     }
@@ -177,6 +190,7 @@ class RegisterEmailViewController: AbstractViewController {
 
 protocol RegisterEmailViewControllerDelegate {
     func didRegister()
+    func showLogin()
     func back()
 }
 
