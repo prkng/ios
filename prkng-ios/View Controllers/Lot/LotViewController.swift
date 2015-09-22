@@ -40,7 +40,18 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     private static let HEADER_HEIGHT: CGFloat = 70
     private(set) var LIST_HEIGHT: Int = 185
     private(set) var SCROLL_HEIGHT: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 185
-    var topOffset: Int = 0
+    var topOffset: Int = 0 {
+        didSet {
+            if topOffset > TOP_OFFSET_MAX {
+                topOffset = TOP_OFFSET_MAX
+            }
+            if topOffset < 0 {
+                topOffset = 0
+            }
+        }
+    }
+    private(set) var TOP_OFFSET_MAX: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 0
+    private var swipeBeganWithListAt: Int = 0
     
     init(lot: Lot, view: UIView) {
         self.lot = lot
@@ -267,9 +278,9 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         var topConstraint = self.timeListContentView.snp_top
         for i in 1..<7 {
             let timeSpanLabel = timeSpanLabels[i]
-            let topOffset = i == 1 ? 14 : 10
+            let listTopOffset = i == 1 ? 14 : 10
             timeSpanLabel.snp_makeConstraints({ (make) -> () in
-                make.top.equalTo(topConstraint).with.offset(topOffset)
+                make.top.equalTo(topConstraint).with.offset(listTopOffset)
                 make.left.equalTo(self.timeListContentView).with.offset(34)
                 make.right.equalTo(self.timeListContentView).with.offset(-40)
             })
@@ -389,28 +400,60 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     }
 
     func swipeDidBegin() {
-        
+        self.swipeBeganWithListAt = self.topOffset
     }
     
     func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
+//        NSLog("Swipe in progress with distance: %f, list began at: %d, top offset: %d", yDistanceFromBeginTap, self.swipeBeganWithListAt, self.topOffset)
+        
         if yDistanceFromBeginTap < 0 {
-            self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
+            //if yDistanceFromBeginTap < 0 then we're moving down
 
-            //parallax for the top image/street view!
-            let topViewOffset = (-yDistanceFromBeginTap / self.FULL_HEIGHT) * self.TOP_PARALLAX_HEIGHT
-            topImageView.snp_updateConstraints { (make) -> () in
-                make.top.equalTo(self.view).with.offset(topViewOffset)
+            if self.topOffset != 0 {
+                //then our swipe down should compress the list
+                self.topOffset = self.TOP_OFFSET_MAX + Int(yDistanceFromBeginTap)
+//                NSLog("swiping down, top offset is now %d", self.topOffset)
+                adjustTopOffsetForTimeList(false)
+            } else {
+                
+                //if we started off with a not-fully-expanded list, then we shouldn't auto-close this.
+                if self.swipeBeganWithListAt != 0 {
+                    return
+                }
+                
+//                NSLog("swiping down, top offset is STILL %d", self.topOffset)
+                
+                let newYDistanceFromBeginTap = CGFloat(swipeBeganWithListAt) + yDistanceFromBeginTap
+
+                self.delegate?.shouldAdjustTopConstraintWithOffset(-newYDistanceFromBeginTap, animated: false)
+                
+                //parallax for the top image/street view!
+                let topViewOffset = (-newYDistanceFromBeginTap / self.FULL_HEIGHT) * self.TOP_PARALLAX_HEIGHT
+                topImageView.snp_updateConstraints { (make) -> () in
+                    make.top.equalTo(self.view).with.offset(topViewOffset)
+                }
+                topImageView.layoutIfNeeded()
             }
-            topImageView.layoutIfNeeded()
+        } else if self.topOffset != self.TOP_OFFSET_MAX {
+//            NSLog("swiping up, top offset is now %d", self.topOffset)
+            
+            //else we're moving up. Expand the list
+            self.topOffset = Int(yDistanceFromBeginTap)
+            adjustTopOffsetForTimeList(false)
         }
+        
     }
     
     func swipeDidEndUp() {
+        
+        self.topOffset = self.TOP_OFFSET_MAX
+        adjustTopOffsetForTimeList(true)
+        
         self.delegate?.shouldAdjustTopConstraintWithOffset(0, animated: true)
         
         //fix parallax effect just in case
         self.topParallaxView?.snp_updateConstraints { (make) -> () in
-            make.top.equalTo(self.view)
+            make.top.equalTo(self.view).with.offset(-self.topOffset)
         }
         UIView.animateWithDuration(0.2,
             animations: { () -> Void in
@@ -418,17 +461,24 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             },
             completion: nil
         )
-
-
+        
     }
     
     func swipeDidEndDown() {
-        self.delegate?.hideModalView()
+        if self.swipeBeganWithListAt != 0 {
+            self.topOffset = 0
+            adjustTopOffsetForTimeList(true)
+        } else {
+            self.delegate?.hideModalView()
+        }
     }
 
     func timesTapped() {
-        
         self.topOffset = self.topOffset == 0 ? self.LIST_HEIGHT - self.SCROLL_HEIGHT : 0
+        adjustTopOffsetForTimeList(true)
+    }
+    
+    func adjustTopOffsetForTimeList(animate: Bool) {
         
         topImageView.snp_updateConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(-self.topOffset)
@@ -437,11 +487,16 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         self.headerView.snp_updateConstraints { (make) -> () in
             make.top.equalTo(self.view).with.offset(self.TOP_PARALLAX_HEIGHT - CGFloat(self.topOffset))
         }
-
+        
         self.view.setNeedsLayout()
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        if animate {
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.view.layoutIfNeeded()
+            })
+        } else {
             self.view.layoutIfNeeded()
-        })
+        }
+
     }
     
     
