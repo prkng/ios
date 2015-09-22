@@ -61,8 +61,8 @@ class LoginMethodSelectionView: UIView {
         addSubview(containerView)
         
         loginTitleLabel.font = Styles.FontFaces.bold(12)
-        loginTitleLabel.textColor = Styles.Colors.midnight2
-        loginTitleLabel.text = NSLocalizedString("login_with", comment : "")
+        loginTitleLabel.textColor = Styles.Colors.cream1
+        loginTitleLabel.text = "login_with".localizedString
         containerView.addSubview(loginTitleLabel)
         
         facebookButton.backgroundColor = Styles.Colors.facebookBlue

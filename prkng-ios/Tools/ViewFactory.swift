@@ -153,6 +153,13 @@ struct ViewFactory {
         return button
     }
     
+    static func outlineBackButton() -> UIButton {
+        let button = UIButton()
+        button.clipsToBounds = true
+        button.setImage(UIImage(named: "btn_back_outline"), forState: .Normal)
+        return button
+    }
+    
     static func redBackButton() -> UIButton {
         let button = UIButton ()
         button.backgroundColor = Styles.Colors.red2

@@ -12,6 +12,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
 
     private var scrollView : UIScrollView
     private var scrollContentView : UIView
+    private var backButton = ViewFactory.outlineBackButton()
     private var topLabel : UILabel
     private var inputForm : PRKInputForm
     private var signupButton : UIButton
@@ -72,6 +73,9 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
         view.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
+        backButton.addTarget(self, action: "back", forControlEvents: .TouchUpInside)
+        scrollContentView.addSubview(backButton)
+
         topLabel.text = "login".localizedString.uppercaseString
         topLabel.font = Styles.FontFaces.light(12)
         topLabel.textColor = Styles.Colors.stone
@@ -103,6 +107,11 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
             make.size.greaterThanOrEqualTo(CGSizeMake(UIScreen.mainScreen().bounds.size.width, self.USABLE_VIEW_HEIGHT))
         }
         
+        backButton.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.scrollContentView).with.offset(24)
+            make.centerY.equalTo(self.topLabel)
+        }
+
         topLabel.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.scrollContentView).with.offset(20)
             make.centerX.equalTo(self.scrollContentView)
@@ -195,6 +204,10 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
         }
     }
     
+    func back() {
+        self.delegate?.back()
+    }
+    
     
     //MARK: PRKInputFormDelegate
 
@@ -214,4 +227,5 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate, PRK
 protocol LoginEmailViewControllerDelegate {
     func signUp()
     func didLogin()
+    func back()
 }

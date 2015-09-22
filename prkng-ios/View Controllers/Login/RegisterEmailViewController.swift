@@ -10,9 +10,9 @@ import UIKit
 
 class RegisterEmailViewController: AbstractViewController {
     
-
     var scrollView : UIScrollView
     var scrollContentView : UIView
+    var backButton = ViewFactory.outlineBackButton()
     var topLabel : UILabel
     var inputForm : PRKInputForm
     var registerButton : UIButton
@@ -80,6 +80,9 @@ class RegisterEmailViewController: AbstractViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
+        backButton.addTarget(self, action: "back", forControlEvents: .TouchUpInside)
+        scrollContentView.addSubview(backButton)
+        
         topLabel.textColor = Styles.Colors.cream2
         topLabel.font = Styles.FontFaces.light(12)
         topLabel.text = "sign_up".localizedString.uppercaseString
@@ -104,6 +107,11 @@ class RegisterEmailViewController: AbstractViewController {
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
             make.size.greaterThanOrEqualTo(CGSizeMake(UIScreen.mainScreen().bounds.size.width, self.USABLE_VIEW_HEIGHT))
+        }
+        
+        backButton.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.scrollContentView).with.offset(24)
+            make.centerY.equalTo(self.topLabel)
         }
 
         topLabel.snp_makeConstraints { (make) -> () in
@@ -161,9 +169,14 @@ class RegisterEmailViewController: AbstractViewController {
         
     }
     
+    func back() {
+        self.delegate?.back()
+    }
+    
 }
 
 protocol RegisterEmailViewControllerDelegate {
     func didRegister()
+    func back()
 }
 

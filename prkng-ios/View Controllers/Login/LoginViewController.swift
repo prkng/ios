@@ -177,7 +177,6 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
         
         UIView.animateWithDuration(0.15, animations: { () -> Void in
-            self.methodSelectionView.loginTitleLabel.hidden = true
             self.view.layoutIfNeeded()
             }) { (finished) -> Void in
                 
@@ -317,6 +316,41 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         dismiss()
     }
     
+    // MARK: All login delegates
+    func back() {
+        
+        methodSelectionView.snp_remakeConstraints { (make) -> () in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.view)
+            make.height.equalTo(LoginMethodSelectionView.HEIGHT)
+        }
+        
+        self.loginEmailViewController?.view.snp_updateConstraints({ (make) -> () in
+            make.top.equalTo(self.view.snp_bottom)
+        })
+
+        self.registerEmailViewController?.view.snp_updateConstraints({ (make) -> () in
+            make.top.equalTo(self.view.snp_bottom)
+        })
+        
+        UIView.animateWithDuration(0.15, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            }) { (finished) -> Void in
+                self.loginEmailViewController?.view.removeFromSuperview()
+                self.loginEmailViewController?.removeFromParentViewController()
+                self.loginEmailViewController?.didMoveToParentViewController(nil)
+                self.loginEmailViewController = nil
+                
+                self.registerEmailViewController?.view.removeFromSuperview()
+                self.registerEmailViewController?.removeFromParentViewController()
+                self.registerEmailViewController?.didMoveToParentViewController(nil)
+                self.registerEmailViewController = nil
+        }
+        
+        deselectMethod()
+
+    }
     
     func dismiss() {
         
