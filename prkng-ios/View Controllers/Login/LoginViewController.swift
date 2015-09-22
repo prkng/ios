@@ -61,6 +61,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         view.addSubview(backgroundImageView)
         
         logoView.image = UIImage(named: "logo_opening")
+        logoView.contentMode = UIViewContentMode.Bottom
         view.addSubview(logoView)
         
         methodSelectionView.delegate = self
