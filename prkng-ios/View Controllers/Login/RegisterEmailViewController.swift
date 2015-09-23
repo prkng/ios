@@ -58,15 +58,14 @@ class RegisterEmailViewController: AbstractViewController {
         setupConstraints()
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.screenName = "Login - Register Email"
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        inputForm.makeActive()
     }
     
     func setupViews () {

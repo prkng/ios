@@ -164,10 +164,7 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     
     func makeActive() {
         if self.cells.first != nil {
-//            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(5 * Double(NSEC_PER_SEC)))
-//            dispatch_after(time, dispatch_get_main_queue(), {
-                self.cells[0].becomeFirstResponder()
-//            })
+                self.cells[0].makeActive()
         }
     }
     

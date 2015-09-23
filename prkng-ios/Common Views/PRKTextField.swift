@@ -190,6 +190,10 @@ class PRKTextField: UIView, UITextFieldDelegate {
         self.delegate?.didTapForgotPasswordButton(self)
     }
     
+    func makeActive() {
+        self.textField.becomeFirstResponder()
+    }
+    
 }
 
 protocol PRKTextFieldDelegate {
