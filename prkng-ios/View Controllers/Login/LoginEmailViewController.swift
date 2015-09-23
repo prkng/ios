@@ -218,7 +218,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
     }
     
     func back() {
-        self.delegate?.back()
+        self.delegate?.backFromEmail()
     }
     
     
@@ -238,5 +238,5 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
 protocol LoginEmailViewControllerDelegate {
     func signUp()
     func didLogin()
-    func back()
+    func backFromEmail()
 }

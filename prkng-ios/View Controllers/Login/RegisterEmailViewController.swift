@@ -183,7 +183,7 @@ class RegisterEmailViewController: AbstractViewController {
     }
     
     func back() {
-        self.delegate?.back()
+        self.delegate?.backFromRegister()
     }
     
 }
@@ -191,6 +191,6 @@ class RegisterEmailViewController: AbstractViewController {
 protocol RegisterEmailViewControllerDelegate {
     func didRegister()
     func showLogin()
-    func back()
+    func backFromRegister()
 }
 

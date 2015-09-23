@@ -20,8 +20,8 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     
     private var FIELD_HEIGHT : Int = 50
     
-    private var placeholderAttributes = [NSFontAttributeName: Styles.Fonts.h3r, NSForegroundColorAttributeName: Styles.Colors.petrol1]
-    private var textFont = Styles.Fonts.h3r
+    private var placeholderAttributes = [NSFontAttributeName: Styles.Fonts.h3, NSForegroundColorAttributeName: Styles.Colors.anthracite1]
+    private var textFont = Styles.Fonts.h3
 
     static func inputFormForRegister() -> PRKInputForm {
         

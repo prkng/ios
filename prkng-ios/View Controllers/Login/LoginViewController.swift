@@ -232,10 +232,12 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             self.loginEmailViewController = nil
         })
 
-        registerEmailViewController = RegisterEmailViewController()
-        registerEmailViewController!.delegate = self
-        self.presentViewController(registerEmailViewController!, animated: true) { () -> Void in }
-
+        //if registerEmailViewController already exists, then it was behind loginEmailViewController and we *don't* need to present it
+        if registerEmailViewController == nil {
+            registerEmailViewController = RegisterEmailViewController()
+            registerEmailViewController!.delegate = self
+            self.presentViewController(registerEmailViewController!, animated: true) { () -> Void in }
+        }
         
     }
     
@@ -257,19 +259,20 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     }
     
     func showLogin() {
-        
-        registerEmailViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
-            self.registerEmailViewController = nil
-        })
+
+        //do not dismiss register, show it on top of it instead
+//        registerEmailViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
+//            self.registerEmailViewController = nil
+//        })
         
         loginEmailViewController = LoginEmailViewController()
         loginEmailViewController!.delegate = self
-        self.presentViewController(loginEmailViewController!, animated: true) { () -> Void in }
+        (registerEmailViewController ?? self).presentViewController(loginEmailViewController!, animated: true) { () -> Void in }
     }
 
     
     // MARK: All login delegates
-    func back() {
+    func backFromRegister() {
         
         methodSelectionView.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.view)
@@ -281,12 +284,24 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         registerEmailViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
             self.registerEmailViewController = nil
         })
+        
+        deselectMethod()
+        
+    }
+    
+    func backFromEmail() {
+        
+        methodSelectionView.snp_remakeConstraints { (make) -> () in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.bottom.equalTo(self.view)
+            make.height.equalTo(LoginMethodSelectionView.HEIGHT)
+        }
+        
 
         loginEmailViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
             self.loginEmailViewController = nil
         })
-
-        deselectMethod()
 
     }
     
