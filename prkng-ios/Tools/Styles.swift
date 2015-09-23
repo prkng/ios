@@ -121,6 +121,7 @@ struct Styles {
     struct Sizes {
         static let tabbarHeight = 58
         static let bigRoundedButtonHeight = 36
+        static let bigRoundedButtonSideMargin = UIScreen.mainScreen().bounds.width == 320 ? 23 : 50
         static let hugeButtonHeight = UIScreen.mainScreen().bounds.width == 320 ? 54 : 70
         static let formTextFieldHeight = 71
         static let formLabelHeight = 17

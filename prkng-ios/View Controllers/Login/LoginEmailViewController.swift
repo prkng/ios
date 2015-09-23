@@ -139,8 +139,8 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
         
         loginButton.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.inputForm.snp_bottom).with.offset(self.MAIN_BUTTON_OFFSET)
-            make.left.equalTo(self.view).with.offset(50)
-            make.right.equalTo(self.view).with.offset(-50)
+            make.left.equalTo(self.view).with.offset(Styles.Sizes.bigRoundedButtonSideMargin)
+            make.right.equalTo(self.view).with.offset(-Styles.Sizes.bigRoundedButtonSideMargin)
             make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         

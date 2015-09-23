@@ -92,8 +92,8 @@ class FirstUseViewController: AbstractViewController {
         }
         
         tourButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(50)
-            make.right.equalTo(self.view).with.offset(-50)
+            make.left.equalTo(self.view).with.offset(Styles.Sizes.bigRoundedButtonSideMargin)
+            make.right.equalTo(self.view).with.offset(-Styles.Sizes.bigRoundedButtonSideMargin)
             make.bottom.equalTo(self.view).with.offset(-60)
             make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
