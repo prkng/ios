@@ -175,11 +175,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        DDLoggerWrapper.logInfo(String(format: "Did Register for Remote Notifications with Device Token (%@)", deviceToken))
+        
+        var characterSet: NSCharacterSet = NSCharacterSet( charactersInString: "<>" )
+        
+        var deviceTokenString: String = ( deviceToken.description as NSString )
+            .stringByTrimmingCharactersInSet( characterSet )
+            .stringByReplacingOccurrencesOfString( " ", withString: "" ) as String
+        
+        DDLoggerWrapper.logInfo(String(format: "Did Register for Remote Notifications with Device Token (%@), stringified: %@", deviceToken, deviceTokenString))
+        
+        UserOperations.hello(deviceTokenString) { (completed) -> Void in
+        }
+
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         DDLoggerWrapper.logError(String(format: "Did Fail to Register for Remote Notifications.\n Error: %@, %@", error, error.localizedDescription))
+        UserOperations.hello(nil) { (completed) -> Void in
+        }
     }
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {

@@ -209,4 +209,25 @@ struct UserOperations {
         
     }
     
+    static func hello(deviceTokenString: String?, completion : ((completed : Bool) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "hello"
+        
+        let locale = NSLocale.preferredLanguages()[0]
+        let deviceType = "ios"
+        
+        var params : [String : AnyObject] = [
+            "device_type" : deviceType,
+            "device_id" : deviceTokenString,
+            "lang" : locale
+        ]
+        
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            completion(completed: response!.statusCode < 400)
+        }
+
+    }
+    
 }
