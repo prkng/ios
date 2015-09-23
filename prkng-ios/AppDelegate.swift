@@ -106,6 +106,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
 
+        if Settings.iOS8OrLater() {
+            application.registerForRemoteNotifications()
+            //the types are registered above with registerUserNotificationSettings
+        } else {
+            application.registerForRemoteNotificationTypes(.Badge | .Sound | .Badge | .Alert)
+        }
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
         
         //removes lag when opening the keyboard for the first time on certain devices
@@ -165,6 +172,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         } else  {
             return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
         }        
+    }
+    
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        DDLoggerWrapper.logInfo(String(format: "Did Register for Remote Notifications with Device Token (%@)", deviceToken))
+    }
+    
+    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+        DDLoggerWrapper.logError(String(format: "Did Fail to Register for Remote Notifications.\n Error: %@, %@", error, error.localizedDescription))
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        DDLoggerWrapper.logInfo(String(format: "Received a remote notification."))
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {

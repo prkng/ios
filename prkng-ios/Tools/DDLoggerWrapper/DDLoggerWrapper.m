@@ -15,11 +15,10 @@
 #import "DDTTYLogger.h"
 
 // Definition of the current log level
-//#ifdef DEBUG
 //static const int ddLogLevel = LOG_LEVEL_VERBOSE;
-//#else
-static const int ddLogLevel = LOG_LEVEL_ERROR;
-//#endif
+static const int ddLogLevel = LOG_LEVEL_INFO;
+//static const int ddLogLevel = LOG_LEVEL_WARNING;
+//static const int ddLogLevel = LOG_LEVEL_ERROR;
 
 @implementation DDLoggerWrapper
 
