@@ -112,8 +112,9 @@ class RegisterEmailViewController: AbstractViewController {
         }
         
         backButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.scrollContentView).with.offset(24)
+            make.centerX.equalTo(self.scrollContentView.snp_left).with.offset(29)
             make.centerY.equalTo(self.topLabel)
+            make.size.equalTo(CGSize(width: 50, height: 50))
         }
 
         topLabel.snp_makeConstraints { (make) -> () in
