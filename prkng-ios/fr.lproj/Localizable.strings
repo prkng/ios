@@ -144,7 +144,7 @@
 
 "here_firstuse_title" = "Hé, salut!";
 "here_firstuse_subtitle" = "C'est votre première fois?";
-"here_firstuse_1" = "Sélectionez un tronçon et voyez sa durée autorisée.";
+"here_firstuse_1" = "Sélectionnez un tronçon et voyez sa durée autorisée.";
 "here_firstuse_2" = "Une fois trouvée, enregistez votre place afin d'être informé quand déplacer votre véhicule.";
 "free_spots" = "segments gratuits";
 "metered_spots" = "segments payants";
@@ -200,7 +200,7 @@
 "operated_by" = "Par";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
-"car_sharing_enabled_text" = "Autopartage est selectionné";
+"car_sharing_enabled_text" = "Autopartage est sélectionné";
 "car_sharing_info_title" = "L'autopartage sans tracas";
 "car_sharing_info_subtitle" = "Les places de 24hrs+ autour de vous";
 "car_sharing_info_message" = "Activez cette fonction lorsque vous utilisez un service d'autopartage et devez trouver un stationnement sur rue autorisé pour les 24 prochaines heures. Pas mal non?";
