@@ -144,7 +144,7 @@
 
 "here_firstuse_title" = "Hé, salut!";
 "here_firstuse_subtitle" = "C'est votre première fois?";
-"here_firstuse_1" = "Sélectionez un tronçon afin de connaître sa disponibilité.";
+"here_firstuse_1" = "Sélectionez un tronçon et voyez sa durée autorisée.";
 "here_firstuse_2" = "Une fois trouvée, enregistez votre place afin d'être informé quand déplacer votre véhicule.";
 "free_spots" = "segments gratuits";
 "metered_spots" = "segments payants";
