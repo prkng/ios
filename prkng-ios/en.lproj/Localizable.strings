@@ -91,7 +91,7 @@
 "first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation. Please keep an eye open.";
 "no_checkin_message" = "Please select \na segment first";
 "park_now" = "park now";
-"checked_in_message" = "you're checked-in at";
+"checked_in_message" = "you're checked-in on";
 "available_for" = "available for";
 "for" = "for";
 "available_until" = "available until";
