@@ -13,12 +13,12 @@
 "login_with" = "CONNEXION AVEC";
 "login_with_facebook" = "FACEBOOK";
 "login_with_google" = "GMAIL";
-"login_with_email" = "***OR USE YOUR EMAIL";
-"login_with_email_switch" = "***OR LOGIN HERE";
-"register_with_email_switch" = "***OR CREATE AN ACCOUNT";
+"login_with_email" = "OU PAR COURRIEL";
+"login_with_email_switch" = "DÉJÀ UN COMPTE?";
+"register_with_email_switch" = "OU CRÉEZ UN COMPTE";
 "login" = "connexion";
-"register" = "***Create my account";
-"create_an_account" = "Créez un compte";
+"register" = "VALIDER";
+"create_an_account" = "INSCRIPTION";
 "step" = "étape";
 "email" = "Email";
 "password" = "Mot de passe";
