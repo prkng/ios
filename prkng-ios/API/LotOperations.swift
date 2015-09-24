@@ -72,6 +72,7 @@ import UIKit
                 completion(lots: self.lots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
 
                 if response != nil && response?.statusCode == 401 {
+                    DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))
                     Settings.logout()
                 }
 

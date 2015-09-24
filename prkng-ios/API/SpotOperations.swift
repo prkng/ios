@@ -85,6 +85,7 @@ struct SpotOperations {
                 completion(spots: spots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
 
                 if response != nil && response?.statusCode == 401 {
+                    DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))
                     Settings.logout()
                 }
 
@@ -100,7 +101,6 @@ struct SpotOperations {
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
             let checkinId = json != nil ? json["id"].intValue : 0
-            NSLog(json.description)
             Settings.setCheckInId(checkinId)
             completion(completed: error == nil)
         }
