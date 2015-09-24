@@ -128,8 +128,10 @@ class RegisterEmailViewController: AbstractViewController {
             make.height.greaterThanOrEqualTo(self.inputForm.height())
         }
         
+        let registerButtonTopOffset = UIScreen.mainScreen().bounds.width == 320 ? 20 : 50
+
         registerButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.inputForm.snp_bottom).with.offset(20)
+            make.top.equalTo(self.inputForm.snp_bottom).with.offset(registerButtonTopOffset)
             make.left.equalTo(self.view).with.offset(Styles.Sizes.bigRoundedButtonSideMargin)
             make.right.equalTo(self.view).with.offset(-Styles.Sizes.bigRoundedButtonSideMargin)
             make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)

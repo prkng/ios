@@ -204,7 +204,7 @@ struct UserOperations {
         
         request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
             
-            completion(completed: response!.statusCode != 400)
+            completion(completed: response != nil && response!.statusCode != 400)
         }
         
     }
@@ -213,19 +213,19 @@ struct UserOperations {
         
         let url = APIUtility.APIConstants.rootURLString + "hello"
         
-        let locale = NSLocale.preferredLanguages()[0]
+        let locale = NSLocale.currentLocale().objectForKey(NSLocaleLanguageCode) as? String ?? ""
         let deviceType = "ios"
         
-        var params : [String : AnyObject] = [
+        var params: [String : AnyObject] = [
             "device_type" : deviceType,
-            "device_id" : deviceTokenString,
+            "device_id" : (deviceTokenString ?? ""),
             "lang" : locale
         ]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
-            completion(completed: response!.statusCode < 400)
+            completion(completed: response != nil && response!.statusCode < 400)
         }
 
     }

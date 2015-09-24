@@ -99,16 +99,26 @@ struct SpotOperations {
         let params = ["slot_id" : spotId]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
+            let checkinId = json != nil ? json["id"].intValue : 0
+            NSLog(json.description)
+            Settings.setCheckInId(checkinId)
             completion(completed: error == nil)
         }
     }
 
-    static func checkout (spotId : String, completion: ((completed : Bool) -> Void)) {
+    static func checkout (completion: ((completed : Bool) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "checkins/" + spotId
-        
-        APIUtility.authenticatedManager().request(.DELETE, url).responseSwiftyJSON { (request, response, json, error) -> Void in
-            completion(completed: error == nil)
+        let checkinId = Settings.getCheckInId()
+        if checkinId != 0 {
+           
+            let url = APIUtility.APIConstants.rootURLString + "checkins/" + String(stringInterpolationSegment: checkinId)
+            
+            APIUtility.authenticatedManager().request(.DELETE, url).responseSwiftyJSON { (request, response, json, error) -> Void in
+                completion(completed: error == nil)
+            }
+            
+        } else {
+            completion(completed: false)
         }
     }
 

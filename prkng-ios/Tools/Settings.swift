@@ -30,6 +30,7 @@ struct Settings {
     static let NOTIFICATION_NIGHT_BEFORE_KEY = "prkng_notification_night_before"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
     static let CHECKED_IN_SPOT_KEY = "prkng_checked_in_spot"
+    static let CHECK_IN_ID_KEY = "prkng_check_in_id"
     static let CHECKED_IN_SPOT_ID_KEY = "prkng_checked_in_spot_id"
     static let LAST_CHECKIN_TIME_KEY = "prkng_last_checkin_time"
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
@@ -189,8 +190,17 @@ struct Settings {
     }
     
     static func checkOut() {
+        Settings.setCheckInId(0)
         Settings.saveCheckInData(nil, time: nil)
         Settings.cancelNotification()
+    }
+    
+    static func setCheckInId(checkinId: Int) {
+        NSUserDefaults.standardUserDefaults().setInteger(checkinId, forKey: CHECK_IN_ID_KEY)
+    }
+    
+    static func getCheckInId() -> Int {
+        return NSUserDefaults.standardUserDefaults().integerForKey(CHECK_IN_ID_KEY)
     }
     
     static func saveCheckInData(spot : ParkingSpot?, time : NSDate?) {
@@ -332,8 +342,8 @@ struct Settings {
         
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
-        //first of all, stop monitoring regions
-        for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLRegion> {
+        //first of all, stop monitoring all regions
+        for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
             if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
                 delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
             }

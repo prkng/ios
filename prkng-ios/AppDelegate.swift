@@ -307,16 +307,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
 
     func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
-        //do nothing
+        handleRegionExited((region as! CLCircularRegion).center)
 //        self.locationManager.stopUpdatingLocation()
     }
     
     //MARK: Notification handling
     
+    //this is what we consider to be an estimated checkout
+    //take all the monitored regions and turn them into checkout regions
     func handleRegionEntered(center: CLLocationCoordinate2D) {
         
-        //first of all, stop monitoring regions
-        for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLRegion> {
+        //stop monitoring regions, turn the identifiers into "prkng_check_out_monitor_entered_region"
+        for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
+            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
+                self.locationManager.stopMonitoringForRegion(monitoredRegion)
+                let newMonitoredRegion = CLCircularRegion(center: monitoredRegion.center, radius: monitoredRegion.radius, identifier: "prkng_check_out_monitor_entered_region")
+                self.locationManager.startMonitoringForRegion(newMonitoredRegion)
+            }
+        }
+        
+        //analytics
+        AnalyticsOperations.sharedInstance.geofencingEvent(center, entering: true) { (completed) -> Void in
+        }
+
+    }
+
+    //this is what we consider to be an estimated checkout
+    //if we are leaving AFTER having entered, then we execute! 
+    //otherwise we do nothing and simply wait for the region to be entered
+    func handleRegionExited(center: CLLocationCoordinate2D) {
+        
+        //see if there are regions that the user exited after entering
+        var found = false
+        for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
+            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor_entered_region") != nil
+                && monitoredRegion.center.latitude == center.latitude
+                && monitoredRegion.center.longitude == center.longitude {
+                    found = true
+            }
+        }
+        if !found {
+            return
+        }
+
+        //stop monitoring ALL regions
+        for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
             if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
                 self.locationManager.stopMonitoringForRegion(monitoredRegion)
             }
@@ -339,11 +374,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: "prkng_check_out_monitor_notification")
         
         //analytics
-        AnalyticsOperations.sharedInstance.geofencingEvent(center, entering: true) { (completed) -> Void in
+        AnalyticsOperations.sharedInstance.geofencingEvent(center, entering: false) { (completed) -> Void in
         }
-
+        
     }
-    
+
     func geofencingNotificationResponse(answeredYes: Bool) {
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey("prkng_check_out_monitor_notification")
@@ -352,7 +387,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if answeredYes {
             
             let spotIdentifier = Settings.checkedInSpot()?.identifier ?? ""
-            SpotOperations.checkout(spotIdentifier, completion: { (completed) -> Void in
+            SpotOperations.checkout({ (completed) -> Void in
                 Settings.checkOut()
 
                 if let tabController = self.window?.rootViewController as? TabController {
