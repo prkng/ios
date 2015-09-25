@@ -45,7 +45,7 @@ class User : NSObject {
     
     static func validateInput(nameText: String, emailText: String, passwordText: String, passwordConfirmText: String) -> Bool {
         
-        if (count(nameText) < 2) {
+        if (nameText.characters.count < 2) {
             GeneralHelper.warnUser("invalid_name".localizedString)
             return false
         }
@@ -55,7 +55,7 @@ class User : NSObject {
             return false
         }
         
-        if (count (passwordText) < 6 || count(passwordConfirmText) < 6) {
+        if (passwordText.characters.count < 6 || passwordConfirmText.characters.count < 6) {
             GeneralHelper.warnUser("password_short".localizedString)
             return false
         }

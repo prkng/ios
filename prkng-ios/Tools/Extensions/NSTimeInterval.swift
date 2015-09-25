@@ -10,13 +10,13 @@ import UIKit
 
 extension NSTimeInterval {
     
-    func toString(#condensed: Bool) -> String {
+    func toString(condensed condensed: Bool) -> String {
         
         let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
         let is24Hour = testFormat?.rangeOfString("a") == nil
         
         if is24Hour {
-            var hours = Int((self / 3600))
+            let hours = Int((self / 3600))
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
@@ -52,7 +52,7 @@ extension NSTimeInterval {
         
     }
     
-    func toAttributedString(#condensed: Bool, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+    func toAttributedString(condensed condensed: Bool, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         
         let attrs = [NSFontAttributeName: firstPartFont]
         
@@ -61,7 +61,7 @@ extension NSTimeInterval {
         
         if is24Hour {
             var text = ""
-            var hours = Int((self / 3600))
+            let hours = Int((self / 3600))
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
@@ -101,7 +101,7 @@ extension NSTimeInterval {
                 text = String(format: "%ld", hours)
             }
             
-            var attrText = NSMutableAttributedString(string: text, attributes: attrs)
+            let attrText = NSMutableAttributedString(string: text, attributes: attrs)
             attrText.appendAttributedString(amPmAttributed)
             return attrText
             

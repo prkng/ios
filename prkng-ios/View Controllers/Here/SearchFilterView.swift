@@ -51,7 +51,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -164,7 +164,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         let resultString = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
-        if count(resultString) >= 2 {
+        if resultString.characters.count >= 2 {
             SearchOperations.searchWithInput(resultString, forAutocomplete: true, completion: { (results) -> Void in
                 self.delegate?.didGetAutocompleteResults(results)
             })
@@ -233,7 +233,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField.becomeFirstResponder()
     }
     
-    func makeInactive(#closeFilters: Bool) {
+    func makeInactive(closeFilters closeFilters: Bool) {
         searchField.resignFirstResponder()
         delegate?.didGetAutocompleteResults([])
         self.searchField.rightViewMode = UITextFieldViewMode.WhileEditing
@@ -250,7 +250,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         let indicatorButton = ViewFactory.redRoundedButtonWithHeight(20, font: Styles.FontFaces.regular(12), text: "")
         let attrs = [NSFontAttributeName: indicatorButton.titleLabel!.font]
         let maximumLabelSize = CGSize(width: rightViewWidth - locationButtonWidth - 10, height: 20)
-        let labelRect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs, context: nil)
+        let labelRect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
 
         //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
 //        let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
@@ -290,7 +290,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         self.delegate!.displaySearchResults([result], checkinTime : NSDate())
     }
     
-    func changeAppearance(#small: Bool) {
+    func changeAppearance(small small: Bool) {
         if small {
             self.searchFieldView.backgroundColor = UIColor.clearColor()
         } else {

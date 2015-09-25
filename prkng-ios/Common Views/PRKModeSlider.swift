@@ -83,7 +83,7 @@ class PRKModeSlider: UIControl {
 
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -111,7 +111,7 @@ class PRKModeSlider: UIControl {
     
     func setValue(newValue: Double, animated: Bool) {
         let animationDuration = animated ? 0.4 : 0
-        UIView.animateWithDuration(animationDuration, delay: 0.0, usingSpringWithDamping: 7, initialSpringVelocity: 15, options: nil, animations: { () -> Void in
+        UIView.animateWithDuration(animationDuration, delay: 0.0, usingSpringWithDamping: 7, initialSpringVelocity: 15, options: [], animations: { () -> Void in
             let thumbLeft = CGFloat(newValue) * self.thumbWidth
             self.thumbView.frame = CGRect(x: thumbLeft, y: 0, width: self.thumbWidth, height: self.bounds.height)
             self.thumbView.setNeedsLayout()
@@ -134,7 +134,7 @@ class PRKModeSlider: UIControl {
     }
     
     //MARK: UIControl functions
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         previousLocation = touch.locationInView(self)
         
         if thumbView.frame.contains(previousLocation) {
@@ -144,7 +144,7 @@ class PRKModeSlider: UIControl {
         return thumbView.touching
     }
     
-    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) -> Bool {
+    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         let location = touch.locationInView(self)
         
         // Track how much user has dragged
@@ -162,7 +162,7 @@ class PRKModeSlider: UIControl {
         return thumbView.touching
     }
     
-    override func endTrackingWithTouch(touch: UITouch, withEvent event: UIEvent) {
+    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         thumbView.touching = false
         self.setValue(round(self.value), animated: true)
     }
@@ -218,7 +218,7 @@ class PRKModeSliderThumbView: UIView {
             let value = self.frame.origin.x / self.bounds.width
             for i in 0..<self.subviews.count {
                 let labelRect = CGRect(x: (CGFloat(i)*slider.thumbWidth) - (CGFloat(value) * slider.thumbWidth), y: 0, width: slider.thumbWidth, height: slider.bounds.height)
-                let subview = self.subviews[i] as! UIView
+                let subview = self.subviews[i] 
                 subview.frame = labelRect
             }
         }
@@ -229,7 +229,7 @@ class PRKModeSliderThumbView: UIView {
         self.clipsToBounds = true
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

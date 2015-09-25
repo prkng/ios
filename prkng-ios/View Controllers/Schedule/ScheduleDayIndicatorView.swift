@@ -41,7 +41,7 @@ class ScheduleDayIndicatorView: UIView {
         }
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -127,7 +127,7 @@ class ScheduleDayIndicatorView: UIView {
     }
     
     func dayLabel () -> UILabel {
-        var label : UILabel = UILabel()
+        let label : UILabel = UILabel()
         label.font = Styles.FontFaces.light(17)
         label.textColor = Styles.Colors.cream1
         label.textAlignment = NSTextAlignment.Center
@@ -137,7 +137,7 @@ class ScheduleDayIndicatorView: UIView {
     
     func setPositionRatio (ratio : CGFloat) {
         
-        var offset : CGFloat = ((maxX! - minX!) * ratio) + minX!
+        let offset : CGFloat = ((maxX! - minX!) * ratio) + minX!
         self.indicatorXConstraint?.offset(offset)
         
         indicator.snp_remakeConstraints { (make) -> () in

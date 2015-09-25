@@ -21,7 +21,7 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
         agendaItems = ScheduleHelper.getAgendaItems(spot)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -143,14 +143,14 @@ class AgendaItem {
         
         if self.rule.ruleType == .Free {
             let attrs = [NSFontAttributeName: firstPartFont]
-            var attributedString = NSMutableAttributedString(string: "24 H", attributes: attrs)
+            let attributedString = NSMutableAttributedString(string: "24 H", attributes: attrs)
             return attributedString
         }
 
         let fromTime = self.startTime.toAttributedString(condensed: false, firstPartFont: firstPartFont, secondPartFont: secondPartFont)
         let toTime = self.endTime.toAttributedString(condensed: false, firstPartFont: firstPartFont, secondPartFont: secondPartFont)
         
-        var attributedString = NSMutableAttributedString(attributedString: fromTime)
+        let attributedString = NSMutableAttributedString(attributedString: fromTime)
         attributedString.appendAttributedString(NSAttributedString(string: "\n"))
         attributedString.appendAttributedString(toTime)
         

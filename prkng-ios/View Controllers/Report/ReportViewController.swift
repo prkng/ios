@@ -69,7 +69,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
                 if(device.position == AVCaptureDevicePosition.Back) {
                     captureDevice = device as? AVCaptureDevice
                     if captureDevice != nil {
-                        println("Capture device found")
+                        print("Capture device found")
                         beginSession()
                     }
                 }
@@ -156,7 +156,10 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
     func configureDevice() {
         if let device = captureDevice {
-            device.lockForConfiguration(nil)
+            do {
+                try device.lockForConfiguration()
+            } catch _ {
+            }
             if (device.isFlashModeSupported(.Auto)) {
                 device.flashMode = .Auto
             }
@@ -193,7 +196,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     }
     
     func alertToEnableCamera() {
-        var alert = UIAlertController(title: "camera".localizedString, message: "enable_camera_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: "camera".localizedString, message: "enable_camera_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
         
         alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Default, handler: nil))
         
@@ -219,8 +222,13 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             
             dispatch_async(dispatch_get_main_queue()) {
                 
-                if let input = AVCaptureDeviceInput(device: self.captureDevice, error: &err) {
+                do {
+                    let input = try AVCaptureDeviceInput(device: self.captureDevice)
                     self.captureSession.addInput(input)
+                } catch let error as NSError {
+                    err = error
+                } catch {
+                    fatalError()
                 }
                 
                 if err != nil || !granted {
@@ -416,7 +424,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     }
 
     //MARK: CLLocationManagerDelegate
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if streetName == nil && !updatingLocation {
             

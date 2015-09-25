@@ -43,7 +43,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -76,7 +76,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         view.addSubview(containerView)
         
-        var midnight1 = UIColor(rgba: "#435059E6")
+        let midnight1 = UIColor(rgba: "#435059E6")
         containerColorView.backgroundColor = midnight1
         containerColorView.userInteractionEnabled = false
         containerView.addSubview(containerColorView)
@@ -400,13 +400,13 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             var date : NSDate = NSDate()
             
             var gregorian:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!;
-            var unit : NSCalendarUnit = (NSCalendarUnit.YearCalendarUnit|NSCalendarUnit.MonthCalendarUnit|NSCalendarUnit.DayCalendarUnit|NSCalendarUnit.HourCalendarUnit|NSCalendarUnit.MinuteCalendarUnit);
+            var unit : NSCalendarUnit = ([NSCalendarUnit.NSYearCalendarUnit, NSCalendarUnit.NSMonthCalendarUnit, NSCalendarUnit.NSDayCalendarUnit, NSCalendarUnit.NSHourCalendarUnit, NSCalendarUnit.NSMinuteCalendarUnit]);
             
             var comps:NSDateComponents = gregorian.components(unit, fromDate: date);
             
-            comps.setValue(self.durationSelectionView.getHour(), forComponent: NSCalendarUnit.HourCalendarUnit);
-            comps.setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendarUnit.MinuteCalendarUnit);
-            comps.setValue(self.dateSelectionView.selectedDay, forComponent: NSCalendarUnit.WeekdayCalendarUnit)
+            comps.setValue(self.durationSelectionView.getHour(), forComponent: NSCalendarUnit.NSHourCalendarUnit);
+            comps.setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendarUnit.NSMinuteCalendarUnit);
+            comps.setValue(self.dateSelectionView.selectedDay, forComponent: NSCalendarUnit.NSWeekdayCalendarUnit)
             
             date = gregorian.dateFromComponents(comps)!;
                         

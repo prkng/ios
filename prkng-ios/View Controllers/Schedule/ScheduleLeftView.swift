@@ -39,7 +39,7 @@ class ScheduleLeftView: UIView {
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -60,7 +60,7 @@ class ScheduleLeftView: UIView {
         addSubview(horizontalSeperator)
         
         for scheduleTime in scheduleTimes {
-            var label = PRKLabel()
+            let label = PRKLabel()
             label.text = scheduleTime.timeInterval.toString(condensed: true)
             label.font = Styles.FontFaces.light(12)
             label.textAlignment = NSTextAlignment.Right

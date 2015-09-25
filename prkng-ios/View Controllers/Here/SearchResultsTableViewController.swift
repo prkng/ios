@@ -34,7 +34,7 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -68,7 +68,7 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
         super.viewDidLoad()
 
         self.tableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
-        self.tableView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.view.addSubview(self.tableView)

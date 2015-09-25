@@ -13,7 +13,7 @@ class DateUtil {
     class func dayIndexOfTheWeek() -> Int {
         let todayDate = NSDate()
         let myCalendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
-        let myComponents = myCalendar?.components(.WeekdayCalendarUnit, fromDate: todayDate)
+        let myComponents = myCalendar?.components(.NSWeekdayCalendarUnit, fromDate: todayDate)
         let weekDay = myComponents?.weekday
         
         if (weekDay == 1) {
@@ -27,7 +27,7 @@ class DateUtil {
         let date = NSDate()
         let calendar = NSCalendar.currentCalendar()
         calendar.locale = NSLocale(localeIdentifier: "en_GB")        
-        let components = calendar.components(.CalendarUnitHour | .CalendarUnitMinute, fromDate: date)
+        let components = calendar.components([.Hour, .Minute], fromDate: date)
         let hour = components.hour
         let minutes = components.minute
         
@@ -38,7 +38,7 @@ class DateUtil {
         
         let calendar = NSCalendar.currentCalendar()
         calendar.locale = NSLocale(localeIdentifier: "en_GB")
-        let components = calendar.components(.CalendarUnitYear | .CalendarUnitMonth | .CalendarUnitDay, fromDate: date)
+        let components = calendar.components([.Year, .Month, .Day], fromDate: date)
 
         let day = calendar.dateFromComponents(components)
 

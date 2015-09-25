@@ -10,7 +10,7 @@ extension UITextField {
 
     func modifyClearButtonWithImageNamed(imageName: String, color: UIColor) {
         let image = UIImage(named: imageName)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        let button = UIButton.buttonWithType(UIButtonType.Custom) as! UIButton
+        let button = UIButton(type: UIButtonType.Custom)
         button.setImage(image, forState: UIControlState.Normal)
         button.tintColor = color
         button.frame = CGRect(x: 0, y: 0, width: 35, height: SearchFilterView.FIELD_HEIGHT)

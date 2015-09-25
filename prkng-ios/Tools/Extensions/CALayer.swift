@@ -36,7 +36,7 @@ extension CALayer {
             self.removeAnimationForKey("wigglewigglewiggle")
         }
         
-        var animation = CABasicAnimation(keyPath: "transform.rotation")
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
         animation.fromValue = M_PI / 75.0
         animation.toValue = -M_PI / 75.0
         animation.duration = 0.2
@@ -48,7 +48,7 @@ extension CALayer {
     
     func addTopBorder(width: CGFloat, color: UIColor) {
         
-        var border = CALayer()
+        let border = CALayer()
         border.borderColor = color.CGColor
         
         border.frame = CGRect(x: 0, y: 1, width:  self.frame.size.width, height: self.frame.size.height)
@@ -60,7 +60,7 @@ extension CALayer {
 
     func addBottomBorder(width: CGFloat, color: UIColor) {
         
-        var border = CALayer()
+        let border = CALayer()
         border.borderColor = color.CGColor
         
         border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width, height: self.frame.size.height)

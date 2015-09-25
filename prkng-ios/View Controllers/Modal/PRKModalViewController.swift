@@ -49,7 +49,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
    
@@ -229,7 +229,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
         
-        if let index = find(viewControllers as [UIViewController], viewController) {
+        if let index = (viewControllers as [UIViewController]).indexOf(viewController) {
             if index <= 0 {
                 return nil
             }
@@ -242,7 +242,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
         
-        if let index = find(viewControllers as [UIViewController], viewController) {
+        if let index = (viewControllers as [UIViewController]).indexOf(viewController) {
             if index >= viewControllers.count - 1 {
                 return nil
             }
@@ -253,7 +253,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         return nil
     }
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
+    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
 
         if let viewController = pendingViewControllers[0] as? PRKModalViewControllerChild {
             updateHeader(viewController)
@@ -262,7 +262,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     }
 
     //NOTE: we use this to flip the icon between transitions. the method above will ensure we always end up with the right header icon
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [AnyObject], transitionCompleted completed: Bool) {
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 
         if let fromViewController = previousViewControllers[0] as? PRKModalViewControllerChild {
             if !completed {
@@ -303,7 +303,7 @@ class PRKModalViewControllerChild: AbstractViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

@@ -56,7 +56,7 @@ class PRKVerticalGestureRecognizer: NSObject {
 
     func handleVerticalGestureRecongizerSwipe(panRec: UIPanGestureRecognizer) {
         
-        var tap = panRec.locationInView(self.superView)
+        let tap = panRec.locationInView(self.superView)
         
         if panRec.state == UIGestureRecognizerState.Began {
             

@@ -12,7 +12,7 @@ extension String {
     }
     
     subscript (i: Int) -> Character {
-        return self[advance(self.startIndex, i)]
+        return self[self.startIndex.advancedBy(i)]
     }
     
     subscript (i: Int) -> String {
@@ -20,7 +20,7 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        return substringWithRange(Range(start: advance(startIndex, r.startIndex), end: advance(startIndex, r.endIndex)))
+        return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
     }
     
     var abbreviatedString: String {
@@ -53,7 +53,7 @@ extension String {
             let delimittingString = pair.0
 //            let replaceMentStringForDelimitter = pair.1
             if let leftRange = myself.rangeOfString(delimittingString, options: NSStringCompareOptions.CaseInsensitiveSearch) {
-                let stringCount = count(delimittingString)
+                let stringCount = delimittingString.characters.count
                 if stringCount > longestMatchedString {
                     longestMatchedString = stringCount
                     firstString = myself.substringWithRange(Range(start: myself.startIndex, end: leftRange.endIndex))

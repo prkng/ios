@@ -83,9 +83,9 @@ class Lot: NSObject, Hashable, DetailObject {
         
         let period = currentOrNextOpenPeriod
         
-        var maxHourly: Float = currentOrNextOpenPeriod?.hourlyRate ?? 0
-        var maxMax: Float = currentOrNextOpenPeriod?.maxRate ?? 0
-        var maxDaily: Float = currentOrNextOpenPeriod?.dailyRate ?? 0
+        let maxHourly: Float = currentOrNextOpenPeriod?.hourlyRate ?? 0
+        let maxMax: Float = currentOrNextOpenPeriod?.maxRate ?? 0
+        let maxDaily: Float = currentOrNextOpenPeriod?.dailyRate ?? 0
         
         if maxMax > 0 {
             return maxMax
@@ -110,12 +110,12 @@ class Lot: NSObject, Hashable, DetailObject {
         let currentDay = DateUtil.dayIndexOfTheWeek()
         
         for var i = currentDay; i < 7; ++i {
-            var itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(i, agenda: self.agenda)
+            let itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(i, agenda: self.agenda)
             agendaSortedByToday += itemsForDay
         }
         
         for var j = 0; j < currentDay; ++j {
-            var itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(j, agenda: self.agenda)
+            let itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(j, agenda: self.agenda)
             agendaSortedByToday += itemsForDay
         }
         
@@ -170,8 +170,8 @@ class Lot: NSObject, Hashable, DetailObject {
     func openTimes(sortedByToday: Bool) -> [(NSTimeInterval, NSTimeInterval)] {
         
         var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
-        var chosenAgenda = sortedByToday ? self.sortedAgenda : self.agenda
-        var groupedAgenda = LotAgendaPeriod.groupedAgenda(chosenAgenda)
+        let chosenAgenda = sortedByToday ? self.sortedAgenda : self.agenda
+        let groupedAgenda = LotAgendaPeriod.groupedAgenda(chosenAgenda)
         for group in groupedAgenda {
             
             var earliestStartTime: NSTimeInterval = 24*3600
@@ -208,8 +208,8 @@ class Lot: NSObject, Hashable, DetailObject {
     
     var bottomLeftTitleText: String? { get { return "daily".localizedString.uppercaseString } }
     var bottomLeftPrimaryText: NSAttributedString? { get {
-        var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
-        var numberString = NSMutableAttributedString(string: String(Int(self.mainRate)), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
+        let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
+        let numberString = NSMutableAttributedString(string: String(Int(self.mainRate)), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         currencyString.appendAttributedString(numberString)
         return currencyString
         }
@@ -226,7 +226,7 @@ class Lot: NSObject, Hashable, DetailObject {
     }
     var bottomRightPrimaryText: NSAttributedString { get {
         //this logic should be similar to "timeperiodtext" in time span
-        let filteredAgenda = self.openTimes(false).filter({ (var item: (NSTimeInterval, NSTimeInterval)) -> Bool in
+        let filteredAgenda = self.openTimes(false).filter({ (item: (NSTimeInterval, NSTimeInterval)) -> Bool in
             item.0 == 0 && item.1 == 24*3600
         })
         if filteredAgenda.count == 7 {
@@ -244,7 +244,7 @@ class Lot: NSObject, Hashable, DetailObject {
     
     
     //MARK- Hashable
-    override var hashValue: Int { get { return identifier.toInt()! } }
+    override var hashValue: Int { get { return Int(identifier)! } }
     
     init(lot: Lot) {
         self.json = lot.json
@@ -271,7 +271,7 @@ class Lot: NSObject, Hashable, DetailObject {
         
         self.agenda = [LotAgendaPeriod]()
         for attr in json["properties"]["agenda"] {
-            let day = attr.0.toInt()! - 1 //this is 1-indexed on the server, convert it to 0-index
+            let day = Int(attr.0)! - 1 //this is 1-indexed on the server, convert it to 0-index
             let timesArray = attr.1.arrayValue
             if timesArray.count == 0 {
                 let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: nil, max: nil, daily: nil, start: NSTimeInterval(0), end: NSTimeInterval(24*3600))
@@ -301,7 +301,7 @@ class Lot: NSObject, Hashable, DetailObject {
                 NSLog("Cannot parse lot attribute type: '" + attr.0 + "'")
             }
         }
-        self.attributes.sort { (left, right) -> Bool in
+        self.attributes.sortInPlace { (left, right) -> Bool in
             left.type.rawValue < right.type.rawValue
         }
 
@@ -315,7 +315,7 @@ class Lot: NSObject, Hashable, DetailObject {
 
 }
 
-class LotAgendaPeriod: Printable, DebugPrintable {
+class LotAgendaPeriod: CustomStringConvertible, CustomDebugStringConvertible {
     
     var dayIndex: Int //1 to 7, monday to sunday
     var hourlyRate: Float?
@@ -340,11 +340,11 @@ class LotAgendaPeriod: Printable, DebugPrintable {
 
     static func getSortedAgendaForDay(day: Int, agenda: [LotAgendaPeriod]) -> [LotAgendaPeriod] {
         
-        var agendaForDay = agenda.filter({ (var item: LotAgendaPeriod) -> Bool in
+        var agendaForDay = agenda.filter({ (item: LotAgendaPeriod) -> Bool in
             item.dayIndex == day
         })
         
-        agendaForDay.sort({ (first, second) -> Bool in
+        agendaForDay.sortInPlace({ (first, second) -> Bool in
             if first.dayIndex == second.dayIndex {
                 return first.startHour < second.startHour
             } else {

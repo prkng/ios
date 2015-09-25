@@ -79,7 +79,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -89,9 +89,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         setupConstraints()
         
         //add a tap gesture recognizer
-        var tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
-        var tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
-        var tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("showSpotOnMap"))
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("showSpotOnMap"))
         tapRecognizer1.delegate = self
         tapRecognizer2.delegate = self
         tapRecognizer3.delegate = self
@@ -138,7 +138,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 SVProgressHUD.show()
             }
             
-            let setSpot = {(var spot: ParkingSpot?) -> () in
+            let setSpot = {(spot: ParkingSpot?) -> () in
                 self.spot = spot
                 self.setDefaultTimeDisplay()
                 SVProgressHUD.dismiss()
@@ -497,7 +497,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func shareButtonTapped() {
         
-        var tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Share Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
         createGoogleMapsLink(spot!.selectedButtonLocation ?? spot!.buttonLocations.first!)
@@ -508,7 +508,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         let longitude = "\(coordinate.longitude)"
         let longUrlString = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "&ll=" + latitude + "," + longitude + "&z=17"
 
-        request(Method.POST, "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBVSdiMcYO1qpJIMbcOV9ATgWpSxsGvc1M", parameters: ["longUrl": longUrlString], encoding: ParameterEncoding.JSON).responseSwiftyJSON { (request, response, json, error) -> Void in
+        request(Method.POST, URLString: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBVSdiMcYO1qpJIMbcOV9ATgWpSxsGvc1M", parameters: ["longUrl": longUrlString], encoding: ParameterEncoding.JSON).responseSwiftyJSON { (request, response, json, error) -> Void in
             if error == nil && response?.statusCode == 200 {
                 if let shortUrlString = json["id"].string {
                     self.shareButtonTappedCompletion(shortUrlString)
@@ -529,7 +529,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func leaveButtonTapped() {
         
-        var tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Check Out Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
 //        SpotOperations.checkout({ (completed) -> Void in
@@ -540,7 +540,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func reportButtonTapped(sender: UIButton) {
         
-        var tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Report Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
         loadReportScreen(self.spot?.identifier)
@@ -548,7 +548,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func payButtonTapped(sender: UIButton) {
 
-        var tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Pay Button Tapped", label: bottomButtonLabel.text, value: nil).build() as [NSObject: AnyObject])
 
         var url = NSURL(string: "")
@@ -623,7 +623,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func toggleTimeDisplay() {
         //toggle between available until and available for
-        var fadeAnimation = CATransition()
+        let fadeAnimation = CATransition()
         fadeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         fadeAnimation.type = kCATransitionFade
         fadeAnimation.duration = 0.4

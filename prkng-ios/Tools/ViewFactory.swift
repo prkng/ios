@@ -14,14 +14,14 @@ struct ViewFactory {
     // MARK: Buttons
 
     static func scheduleButton () -> UIButton {
-        var scheduleButton : UIButton =  UIButton()
+        let scheduleButton : UIButton =  UIButton()
         scheduleButton.setImage(UIImage(named: "btn_schedule_active"), forState: UIControlState.Normal)
         scheduleButton.setImage(UIImage(named: "btn_schedule"), forState: UIControlState.Highlighted)
         return scheduleButton
     }
     
     static func mapReturnButton () -> UIButton {
-        var scheduleButton : UIButton =  UIButton()
+        let scheduleButton : UIButton =  UIButton()
         scheduleButton.setImage(UIImage(named: "btn_map_return"), forState: UIControlState.Normal)
         return scheduleButton
     }
@@ -223,9 +223,9 @@ struct ViewFactory {
     
     static func timeMaxIcon(minutes: Int, addMaxLabel: Bool, color: UIColor) -> UIImageView {
         
-        var imageView = UIImageView()
-        var timeLimitLabel = UILabel()
-        var maxLabel = UILabel()
+        let imageView = UIImageView()
+        let timeLimitLabel = UILabel()
+        let maxLabel = UILabel()
         var image = UIImage(named: "icon_timemax")
 
         if minutes > 0 {
@@ -293,9 +293,9 @@ struct ViewFactory {
 
     static func paidIcon(hourlyRateString: String, color: UIColor) -> UIImageView {
         
-        var imageView = UIImageView()
-        var maxLabel = UILabel()
-        var image = UIImage(named: "icon_paid")
+        let imageView = UIImageView()
+        let maxLabel = UILabel()
+        let image = UIImage(named: "icon_paid")
         
         imageView.image = image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         imageView.tintColor = color

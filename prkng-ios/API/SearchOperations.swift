@@ -20,7 +20,7 @@ class SearchOperations {
         
         var params  = ["lat": "\(location.latitude)", "lon": "\(location.longitude)", "format" : "json"]
         
-        request(.GET, url, parameters: params).responseSwiftyJSON() {
+        request(.GET, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             var street : String = json["address"]["road"].stringValue
@@ -79,12 +79,12 @@ class SearchOperations {
         var numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
 
-        request(.GET, url, parameters: params).responseSwiftyJSON() {
+        request(.GET, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             var results : Array<SearchResult> = [];
             
-            for (key: String, subJson: JSON) in json {
+            for (key, subJson): (String, JSON) in json {
                 
                 var title : String = subJson["display_name"].stringValue
                 
@@ -131,12 +131,12 @@ class SearchOperations {
         var numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
-        request(.GET, url, parameters: params).responseSwiftyJSON() {
+        request(.GET, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             var results : Array<SearchResult> = [];
             
-            for (key: String, subJson: JSON) in json["features"] {
+            for (key, subJson): (String, JSON) in json["features"] {
                 
                 let name = subJson["properties"]["name"].stringValue
                 let admin1 = subJson["properties"]["admin1"].stringValue
@@ -198,12 +198,12 @@ class SearchOperations {
         var numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
-        request(.GET, url).responseSwiftyJSON() {
+        request(.GET, URLString: url).responseSwiftyJSON() {
             (request, response, json, error) in
             
             var results : Array<SearchResult> = [];
             
-            for (key: String, subJson: JSON) in json["features"] {
+            for (key, subJson): (String, JSON) in json["features"] {
                 
                 let name = subJson["text"].stringValue
                 
@@ -212,7 +212,7 @@ class SearchOperations {
                 var state = ""
                 var country = ""
                 
-                for i in reverse(0...(subJson["context"].count)) {
+                for i in Array((0...(subJson["context"].count)).reverse()) {
                     if i - 1 >= 0 {
                         let text = subJson["context"][i - 1]["text"].stringValue
                         if country == "" {
@@ -315,12 +315,12 @@ class SearchOperations {
         var numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         
-        request(.GET, url, parameters: params).responseSwiftyJSON() {
+        request(.GET, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             var results : Array<SearchResult> = [];
             
-            for (key: String, subJson: JSON) in json["response"][arrayName] {
+            for (key, subJson): (String, JSON) in json["response"][arrayName] {
                 
                 let name = subJson["name"].stringValue
                 var title = name

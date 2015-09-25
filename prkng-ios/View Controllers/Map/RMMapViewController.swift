@@ -42,7 +42,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: source)
         } else {
             let offlineSourcePath = NSBundle.mainBundle().pathForResource("OfflineMap", ofType: "json")
-            let offlineSource = RMMapboxSource(tileJSON: String(contentsOfFile: offlineSourcePath!, encoding: NSUTF8StringEncoding, error: nil))
+            let offlineSource = RMMapboxSource(tileJSON: try? String(contentsOfFile: offlineSourcePath!, encoding: NSUTF8StringEncoding))
             mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: offlineSource)
         }
         
@@ -69,7 +69,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -145,11 +145,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         if (annotation.isUserLocationAnnotation) {
             
-            var marker = RMMarker(UIImage: UIImage(named: "cursor_you"))
+            let marker = RMMarker(UIImage: UIImage(named: "cursor_you"))
             marker.canShowCallout = false
             return marker
         } else if annotation.isClusterAnnotation {
-            var countString = NSMutableAttributedString(string: String(annotation.clusteredAnnotations.count), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+            let countString = NSMutableAttributedString(string: String(annotation.clusteredAnnotations.count), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
 //            var size = CGSize(width: 115, height: 115)
 //            if annotation.clusteredAnnotations.count >= 2 {
 //                size = CGSize(width: 80, height: 80)
@@ -165,14 +165,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 //            size = CGSize(width: size.width / Settings.screenScale, height: size.height / Settings.screenScale)
             var circleImage = UIImage(named: "pin_cluster")//?.resizeImage(size)
             circleImage = circleImage!.addText(countString, color: Styles.Colors.cream1)
-            var marker = RMMarker(UIImage: circleImage)
+            let marker = RMMarker(UIImage: circleImage)
             marker.canShowCallout = false
 //            marker.opacity = 0.75
             marker.textForegroundColor = Styles.Colors.cream1
 //            marker.bounds = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
 
             let hash = self.getClusterCustomHashValue(annotation)
-            if !contains(spotIDsDrawnOnMap, hash) {
+            if !spotIDsDrawnOnMap.contains(hash) {
                 marker.addScaleAnimation()
                 spotIDsDrawnOnMap.append(hash)
             }
@@ -181,7 +181,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         
         var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
-        var annotationType = userInfo!["type"] as! String
+        let annotationType = userInfo!["type"] as! String
         
         let addAnimation = annotationType
         
@@ -193,7 +193,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let spot = userInfo!["spot"] as! ParkingSpot
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
-            var shape = RMShape(view: mapView)
+            let shape = RMShape(view: mapView)
             
             if selected {
                 shape.lineColor = Styles.Colors.red2
@@ -242,9 +242,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             imageName += "active"
             
-            var circleImage = UIImage(named: imageName)
+            let circleImage = UIImage(named: imageName)
             
-            var circleMarker: RMMarker = RMMarker(UIImage: circleImage)
+            let circleMarker: RMMarker = RMMarker(UIImage: circleImage)
             
             if shouldAddAnimation {
                 circleMarker.addScaleAnimation()
@@ -252,7 +252,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             if (selected) {
-                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
+                let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
                 pulseAnimation.duration = 0.7
                 pulseAnimation.fromValue = 0.95
                 pulseAnimation.toValue = 1.10
@@ -282,13 +282,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             var circleImage = UIImage(named: imageName)
             if lot.bottomLeftPrimaryText != nil && lot.bottomLeftPrimaryText!.string != "$0" {
-                var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
-                var numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+                let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
+                let numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
                 currencyString.appendAttributedString(numberString)
                 circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
             }
             
-            var circleMarker: RMMarker = RMMarker(UIImage: circleImage, anchorPoint: CGPoint(x: 0.5, y: 1))
+            let circleMarker: RMMarker = RMMarker(UIImage: circleImage, anchorPoint: CGPoint(x: 0.5, y: 1))
             
             if shouldAddAnimation {
                 circleMarker.addScaleAnimation()
@@ -346,7 +346,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
         }
         
-        if (mapView.userTrackingMode.value == RMUserTrackingModeFollow.value) {
+        if (mapView.userTrackingMode.rawValue == RMUserTrackingModeFollow.rawValue) {
             self.trackUser()
         } else {
             if delegate?.shouldShowUserTrackingButton() ?? false {
@@ -444,13 +444,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         var userInfo: [String:AnyObject]? = (annotation as RMAnnotation).userInfo as? [String:AnyObject]
         
-        var type: String = userInfo!["type"] as! String
+        let type: String = userInfo!["type"] as! String
         
         if type == "line" || type == "button" {
             
-            var spot = userInfo!["spot"] as! ParkingSpot
+            let spot = userInfo!["spot"] as! ParkingSpot
             
-            var foundAnnotations = findAnnotations(spot.identifier)
+            let foundAnnotations = findAnnotations(spot.identifier)
             removeAnnotations(foundAnnotations)
             addSpotAnnotation(spot, selected: true)
             
@@ -462,9 +462,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
         } else if type == "lot" {
             
-            var lot = userInfo!["lot"] as! Lot
+            let lot = userInfo!["lot"] as! Lot
             
-            var foundAnnotations = findAnnotations(lot.identifier)
+            let foundAnnotations = findAnnotations(lot.identifier)
             removeAnnotations(foundAnnotations)
             annotationForLot(lot, selected: true, addToMapView: true, animate: false)
             selectedObject = lot
@@ -495,7 +495,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
             
             if differenceInMeters > MOVE_DELTA_IN_METERS/10 * 5
-                && mapView.userTrackingMode.value == RMUserTrackingModeFollow.value {
+                && mapView.userTrackingMode.rawValue == RMUserTrackingModeFollow.rawValue {
                 updateAnnotations()
                 lastUserLocation = userCLLocation
             }
@@ -512,7 +512,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         var minimumDistance = CGFloat(Float.infinity)
         var closestAnnotation : RMAnnotation? = nil
-        var loopThroughLines = mapView.zoom < 17.0
+        let loopThroughLines = mapView.zoom < 17.0
 
         for annotation: RMAnnotation in map.visibleAnnotations as! [RMAnnotation] {
             
@@ -521,11 +521,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
-            var annotationType = userInfo!["type"] as! String
+            let annotationType = userInfo!["type"] as! String
 
             if annotationType == "button" || annotationType == "searchResult" || annotationType == "lot" {
             
-                var annotationPoint = map.coordinateToPixel(annotation.coordinate)
+                let annotationPoint = map.coordinateToPixel(annotation.coordinate)
                 let distance = annotationPoint.distanceToPoint(point)
                 
                 if (distance < minimumDistance) {
@@ -538,7 +538,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 let spot = userInfo!["spot"] as! ParkingSpot
                 let coordinates = spot.line.coordinates2D + spot.buttonLocations
                 
-                var distances = coordinates.map{(coordinate: CLLocationCoordinate2D) -> CGFloat in
+                let distances = coordinates.map{(coordinate: CLLocationCoordinate2D) -> CGFloat in
                     let annotationPoint = map.coordinateToPixel(coordinate)
                     let distance = annotationPoint.distanceToPoint(point)
                     return distance
@@ -566,7 +566,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     // MARK: Helper Methods
     
     func trackUserButtonTapped () {
-        if self.mapView.userTrackingMode.value == RMUserTrackingModeFollow.value {
+        if self.mapView.userTrackingMode.rawValue == RMUserTrackingModeFollow.rawValue {
             dontTrackUser()
         } else {
             trackUser()
@@ -574,7 +574,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     func trackUser() {
-        if self.mapView.userTrackingMode.value != RMUserTrackingModeFollow.value {
+        if self.mapView.userTrackingMode.rawValue != RMUserTrackingModeFollow.rawValue {
             trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
             self.mapView.setZoom(17, animated: false)
             self.mapView.userTrackingMode = RMUserTrackingModeFollow
@@ -602,7 +602,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func getClusterCustomHashValue(cluster: RMAnnotation) -> String {
         var hash = ""
         var annotations = getAnnotationsInCluster(cluster)
-        annotations.sort { (left, right) -> Bool in
+        annotations.sortInPlace { (left, right) -> Bool in
             return left.title < right.title
         }
         for annotation in getAnnotationsInCluster(cluster) {
@@ -625,7 +625,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func updateAnnotations(completion: ((operationCompleted: Bool) -> Void)) {
                 
         if (self.updateInProgress) {
-            println("Update already in progress, cancelled!")
+            print("Update already in progress, cancelled!")
             completion(operationCompleted: false)
             return
         }
@@ -695,12 +695,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                         // spots that have left the screen need to be re-animated next time
                         // therefore, we remove spots that have not been fetched this time around
                         //
-                        var newSpotIDs = spots.map{(var spot: ParkingSpot) -> String in spot.identifier}
-                        self.spotIDsDrawnOnMap = self.spotIDsDrawnOnMap.filter({ (var spotID: String) -> Bool in
-                            contains(newSpotIDs, spotID)
+                        let newSpotIDs = spots.map{(spot: ParkingSpot) -> String in spot.identifier}
+                        self.spotIDsDrawnOnMap = self.spotIDsDrawnOnMap.filter({ (spotID: String) -> Bool in
+                            newSpotIDs.contains(spotID)
                         })
-                        self.lineSpotIDsDrawnOnMap = self.lineSpotIDsDrawnOnMap.filter({ (var spotID: String) -> Bool in
-                            contains(newSpotIDs, spotID)
+                        self.lineSpotIDsDrawnOnMap = self.lineSpotIDsDrawnOnMap.filter({ (spotID: String) -> Bool in
+                            newSpotIDs.contains(spotID)
                         })
                         
                         self.updateSpotAnnotations(spots, completion: completion)
@@ -762,7 +762,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         for spot in spots {
             let selected = (self.selectedObject != nil && self.selectedObject?.identifier == spot.identifier)
-            var generatedAnnotations = annotationForSpot(spot, selected: selected, addToMapView: false)
+            let generatedAnnotations = annotationForSpot(spot, selected: selected, addToMapView: false)
             tempAnnotations.append(generatedAnnotations.0)
             let buttons = generatedAnnotations.1
             tempAnnotations += buttons
@@ -804,7 +804,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         var centerButtons = [RMAnnotation]()
         
         let coordinate = spot.line.coordinates[0].coordinate
-        let shouldAddAnimationForLine = !contains(self.lineSpotIDsDrawnOnMap, spot.identifier)
+        let shouldAddAnimationForLine = !self.lineSpotIDsDrawnOnMap.contains(spot.identifier)
         annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: spot.identifier)
         annotation.setBoundingBoxFromLocations(spot.line.coordinates)
         annotation.userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForLine]
@@ -817,7 +817,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if (mapView.zoom >= 17.0) {
             
             for coordinate in spot.buttonLocations {
-                let shouldAddAnimationForButton = !contains(self.spotIDsDrawnOnMap, spot.identifier)
+                let shouldAddAnimationForButton = !self.spotIDsDrawnOnMap.contains(spot.identifier)
                 let centerButton = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: spot.identifier)
                 centerButton!.setBoundingBoxFromLocations(spot.line.coordinates)
                 centerButton!.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForButton]
@@ -841,7 +841,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         for lot in lots {
             let selected = (self.selectedObject != nil && self.selectedObject?.identifier == String(lot.identifier))
-            var generatedAnnotations = annotationForLot(lot, selected: selected, addToMapView: false)
+            let generatedAnnotations = annotationForLot(lot, selected: selected, addToMapView: false)
             tempAnnotations.append(generatedAnnotations)
             
         }
@@ -866,7 +866,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func zoomIntoClosestPins(numberOfPins: Int) {
         //order annotations by distance from map center
         let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
-        let orderedAnnotations = self.annotations.sorted { (first, second) -> Bool in
+        let orderedAnnotations = self.annotations.sort { (first, second) -> Bool in
             let firstLocation = CLLocation(latitude: first.coordinate.latitude, longitude: first.coordinate.longitude)
             let secondLocation = CLLocation(latitude: second.coordinate.latitude, longitude: second.coordinate.longitude)
             return mapCenter.distanceFromLocation(firstLocation) < mapCenter.distanceFromLocation(secondLocation)
@@ -915,8 +915,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func annotationForLot(lot: Lot, selected: Bool, addToMapView: Bool, animate: Bool? = nil) -> RMAnnotation {
         
-        let shouldAddAnimation = animate ?? !contains(self.spotIDsDrawnOnMap, lot.identifier)
-        var annotation = RMAnnotation(mapView: self.mapView, coordinate: lot.coordinate, andTitle: String(lot.identifier))
+        let shouldAddAnimation = animate ?? !self.spotIDsDrawnOnMap.contains(lot.identifier)
+        let annotation = RMAnnotation(mapView: self.mapView, coordinate: lot.coordinate, andTitle: String(lot.identifier))
         annotation.userInfo = ["type": "lot", "lot": lot, "selected": selected, "shouldAddAnimation": shouldAddAnimation]
         
         if addToMapView {
@@ -931,7 +931,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func addSearchResultMarker(searchResult: SearchResult) {
         
-        var annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: searchResult.location.coordinate, andTitle: searchResult.title)
+        let annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: searchResult.location.coordinate, andTitle: searchResult.title)
         annotation.subtitle = searchResult.subtitle
         annotation.userInfo = ["type": "searchResult", "details": searchResult]
         mapView.addAnnotation(annotation)
@@ -1040,13 +1040,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         let polygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(polygons, mapView: mapView)
 
-        var worldCorners: [CLLocation] = [
+        let worldCorners: [CLLocation] = [
             CLLocation(latitude: 85, longitude: -179),
             CLLocation(latitude: 85, longitude: 179),
             CLLocation(latitude: -85, longitude: 179),
             CLLocation(latitude: -85, longitude: -179),
             CLLocation(latitude: 85, longitude: -179)]
-        var annotation = RMPolygonAnnotation(mapView: mapView, points: worldCorners, interiorPolygons: polygonAnnotations)
+        let annotation = RMPolygonAnnotation(mapView: mapView, points: worldCorners, interiorPolygons: polygonAnnotations)
         annotation.userInfo = ["type": "polygon", "points": worldCorners, "interiorPolygons": polygonAnnotations]
         annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
         annotation.lineColor = Styles.Colors.red1
@@ -1055,7 +1055,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         let interiorPolygons = MKPolygon.interiorPolygons(polygons)
         let interiorPolygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(interiorPolygons, mapView: mapView)
         
-        var allAnnotationsToAdd = [annotation]
+        let allAnnotationsToAdd = [annotation]
         mapView.addAnnotations(allAnnotationsToAdd)
         
     }
@@ -1107,7 +1107,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if let spot = Settings.checkedInSpot() {
             let coordinate = spot.selectedButtonLocation ?? spot.buttonLocations.first!
             let name = spot.name
-            var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
+            let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
             annotation.userInfo = ["type": "previousCheckin"]
             myCarAnnotation = annotation
             self.mapView.addAnnotation(annotation)
@@ -1122,7 +1122,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
-        var annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
+        let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
         annotation.userInfo = ["type": "previousCheckin"]
         mapView.zoom = zoom ?? 17
         mapView.centerCoordinate = coordinate

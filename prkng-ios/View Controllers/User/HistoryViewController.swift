@@ -240,9 +240,9 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         var height:Float = currentHeaderHeight
         let dy = previousYPosition - yPos
         
-        println("dy : \(dy)")
-        println("previousYPosition : \(previousYPosition)")
-        println("yPos : \(yPos)")
+        print("dy : \(dy)")
+        print("previousYPosition : \(previousYPosition)")
+        print("yPos : \(yPos)")
         
         height += dy
         
@@ -257,8 +257,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             height = HEADER_MIN_HEIGHT
         }
         
-        println("header height : \(height)")
-        println("contentInset top : \(scrollView.contentInset.top)")
+        print("header height : \(height)")
+        print("contentInset top : \(scrollView.contentInset.top)")
 
         
         if (height == HEADER_MAX_HEIGHT) && (Float(scrollView.contentInset.top) + yPos <= 0.0) {

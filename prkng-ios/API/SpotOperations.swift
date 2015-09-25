@@ -14,7 +14,7 @@ struct SpotOperations {
         
         let url = APIUtility.APIConstants.rootURLString + "slots/" + spotId
         
-        request(.GET, url, parameters: nil).responseSwiftyJSON() {
+        request(.GET, URLString: url, parameters: nil).responseSwiftyJSON() {
             (request, response, json, error) in
             
             if (error == nil) {
@@ -64,7 +64,7 @@ struct SpotOperations {
         formatter.locale = NSLocale(localeIdentifier: "en_US")
         params["checkin"] = formatter.stringFromDate(time)
                 
-        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
             (request, response, json, error) in
 
             DDLoggerWrapper.logVerbose(String(format: "Request: %@", request))
@@ -128,8 +128,8 @@ struct SpotOperations {
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: nil).responseSwiftyJSON { (request, response, json, error) -> Void in
             
-            var checkinJsons: Array<JSON> = json.arrayValue
-            var checkins = checkinJsons.map({ (var checkinJson) -> Checkin in
+            let checkinJsons: Array<JSON> = json.arrayValue
+            let checkins = checkinJsons.map({ (checkinJson) -> Checkin in
                 Checkin(json: checkinJson)
             })
             

@@ -26,7 +26,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
 
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -41,7 +41,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
         
         let pre: AnyObject = NSLocale.preferredLanguages()[0]
         let str = "\(pre)"
-        let lang = str.substringToIndex(advance(str.startIndex, 2))
+        let lang = str.substringToIndex(str.startIndex.advancedBy(2))
         
         var url : NSURL
         if lang == "fr" {

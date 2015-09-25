@@ -68,12 +68,12 @@ extension MKPolygon {
             MKMapPoint(x: MKMapSizeWorld.width, y: MKMapSizeWorld.height),
             MKMapPoint(x: 0, y: MKMapSizeWorld.height),
             MKMapPoint(x: 0, y: 0)]
-        var worldCornersPointer = UnsafeMutablePointer<MKMapPoint>.alloc(worldCorners.count)
+        let worldCornersPointer = UnsafeMutablePointer<MKMapPoint>.alloc(worldCorners.count)
         for i in 0..<worldCorners.count {
             worldCornersPointer[i] = worldCorners[i]
         }
         
-        var polygon = MKPolygon(points: worldCornersPointer, count: worldCorners.count, interiorPolygons: polygons)
+        let polygon = MKPolygon(points: worldCornersPointer, count: worldCorners.count, interiorPolygons: polygons)
 
         return polygon
     }

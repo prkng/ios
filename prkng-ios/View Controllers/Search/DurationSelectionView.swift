@@ -43,7 +43,7 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -146,7 +146,7 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     
     
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView!) -> UIView {
+    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
         
         var pView = view as? UILabel
         
@@ -191,7 +191,7 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     
     func getHour() -> Int {
         var hour : Int = pickerView.selectedRowInComponent(0)
-        var am : Bool = (pickerView.selectedRowInComponent(0) == 0)
+        let am : Bool = (pickerView.selectedRowInComponent(0) == 0)
         
         if (!am) {
             hour += 12

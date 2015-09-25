@@ -81,7 +81,7 @@ class PRKTimeSpanView: UIView {
         self.setNeedsUpdateConstraints()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     

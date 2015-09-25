@@ -97,7 +97,7 @@ struct Settings {
     
     static func availableCityLocations() -> [CLLocation] {
         
-        return availableCities.map({ (var city) -> CLLocation in
+        return availableCities.map({ (city) -> CLLocation in
             let point = self.pointForCity(city)
             let location = CLLocation(latitude: point.latitude, longitude: point.longitude)
             return location
@@ -241,8 +241,8 @@ struct Settings {
     static func getCachedLots() -> [Lot] {
         if let archivedLots = NSUserDefaults.standardUserDefaults().objectForKey(LOCALLY_CACHED_LOTS) as? NSData {
             let json = JSON(data: archivedLots)
-            var lotJsons: [JSON] = json["features"].arrayValue
-            var lots = lotJsons.map({ (var lotJson) -> Lot in
+            let lotJsons: [JSON] = json["features"].arrayValue
+            let lots = lotJsons.map({ (lotJson) -> Lot in
                 Lot(json: lotJson)
             })
             return lots
@@ -390,7 +390,7 @@ struct Settings {
                 }
             }
             
-            distances.sort({ (one, two) -> Bool in return one < two })
+            distances.sortInPlace({ (one, two) -> Bool in return one < two })
             
             let isEdgePoint = (spot.line.coordinates.first != nil && spot.line.coordinates.first! == firstLocation)
                 || (spot.line.coordinates.last != nil && spot.line.coordinates.last! == firstLocation)

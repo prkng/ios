@@ -63,8 +63,8 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
         switch self.currentlyActiveRule.ruleType {
         case .Paid:
             let interval = self.currentlyActiveRuleEndTime
-            var currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
-            var numberString = NSMutableAttributedString(string: self.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
+            let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
+            let numberString = NSMutableAttributedString(string: self.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
             currencyString.appendAttributedString(numberString)
             return currencyString
         default:
@@ -115,7 +115,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
     var showsBottomLeftContainer: Bool { get { return self.currentlyActiveRule.ruleType == .Paid } }
 
     //MARK- Hashable
-    override var hashValue: Int { get { return identifier.toInt()! } }
+    override var hashValue: Int { get { return Int(identifier)! } }
     
     init(spot: ParkingSpot) {
         json = spot.json
@@ -209,7 +209,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
         let minutesString = String(format: "%ld minutes", minutes)
         
         let attrs = [NSFontAttributeName: font]
-        var attributedString = NSMutableAttributedString(string: minutesString, attributes: attrs)
+        let attributedString = NSMutableAttributedString(string: minutesString, attributes: attrs)
 
         return attributedString
     }
@@ -256,7 +256,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
         
     }
     
-    func availableUntilAttributed(#firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+    func availableUntilAttributed(firstPartFont firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         let availableTimeInterval = self.availableTimeInterval()
         return ParkingSpot.availableUntilAttributed(availableTimeInterval, firstPartFont: firstPartFont, secondPartFont: secondPartFont)
     }
@@ -267,7 +267,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
         
         let formatter = NSDateFormatter()
         
-        var dateFormatString = getDateFormatString(dateAtStartOfNextRule)
+        let dateFormatString = getDateFormatString(dateAtStartOfNextRule)
         
         formatter.dateFormat = dateFormatString
         var formattedDate = formatter.stringFromDate(dateAtStartOfNextRule)
@@ -278,13 +278,13 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
         //now we split the AM/PM part out to the second part
         var firstPart = formattedDate
         var secondPart = ""
-        if formattedDate[count(formattedDate) - 1] == "M" {
-            firstPart = formattedDate[0...count(formattedDate) - 4]
-            secondPart = formattedDate[count(formattedDate) - 3...count(formattedDate) - 1]
+        if formattedDate[formattedDate.characters.count - 1] == "M" {
+            firstPart = formattedDate[0...formattedDate.characters.count - 4]
+            secondPart = formattedDate[formattedDate.characters.count - 3...formattedDate.characters.count - 1]
         }
         
         let firstPartAttrs = [NSFontAttributeName: firstPartFont]
-        var attributedString = NSMutableAttributedString(string: firstPart, attributes: firstPartAttrs)
+        let attributedString = NSMutableAttributedString(string: firstPart, attributes: firstPartAttrs)
         
         let secondPartAttrs = [NSFontAttributeName: secondPartFont]
         attributedString.appendAttributedString(NSMutableAttributedString(string: secondPart, attributes: secondPartAttrs))
@@ -337,7 +337,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
                             //this is the next restriction. save it!
                             potentialNearestRules.append(SimplifiedParkingRule(timePeriod: period, day: i))
                         }
-                    } else if !contains(potentialNearestRules.map({ (var rule) -> TimePeriod in rule.timePeriod }), period) {
+                    } else if !potentialNearestRules.map({ (rule) -> TimePeriod in rule.timePeriod }).contains(period) {
                         //add this if it doesn't exist in another day
                         potentialNearestRules.append(SimplifiedParkingRule(timePeriod: period, day: i))
                     }
@@ -348,7 +348,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
         //ok, done with fetching all the rules. now let's find the nearest one!
         //if there is nothing in the future, but something in the past, pick the one in the past and make the day 7
         if potentialNearestRules.count == 0 {
-            potentialNearestRules = potentialPastRules.map { (var rule) -> SimplifiedParkingRule in
+            potentialNearestRules = potentialPastRules.map { (rule) -> SimplifiedParkingRule in
                 rule.day = 7
                 return rule
             }
@@ -420,7 +420,7 @@ class ParkingSpot: NSObject, Hashable, DetailObject {
             }
         }
         
-        activeRules.sort({ (first: ParkingRule, second: ParkingRule) -> Bool in
+        activeRules.sortInPlace({ (first: ParkingRule, second: ParkingRule) -> Bool in
             switch (first.ruleType, second.ruleType) {
                 
             case (.Restriction, .Free):         return true
@@ -479,7 +479,7 @@ class LineParkingSpot: MKPolyline, Hashable {
     var parkingSpot: ParkingSpot!
     
     //MARK- Hashable
-    override var hashValue: Int { get { return parkingSpot.identifier.toInt()! } }
+    override var hashValue: Int { get { return Int(parkingSpot.identifier)! } }
 
 //    convenience init(coordinates coords: UnsafeMutablePointer<CLLocationCoordinate2D>, count: Int, spot: ParkingSpot) {
 //        parkingSpot = spot

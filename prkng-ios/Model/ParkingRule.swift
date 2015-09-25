@@ -93,8 +93,8 @@ class ParkingRule: NSObject {
         // MONDAY
         
         var mon : Array<Float> = Array()
-        var monStart : Float? = agendaJson["1"][bsIndex][0].float
-        var monEnd : Float? = agendaJson["1"][bsIndex][1].float
+        let monStart : Float? = agendaJson["1"][bsIndex][0].float
+        let monEnd : Float? = agendaJson["1"][bsIndex][1].float
         
         var monTimePeriod : TimePeriod? = nil
         
@@ -108,8 +108,8 @@ class ParkingRule: NSObject {
         // TUESDAY
         
         var tue : Array<Float> = Array()
-        var tueStart : Float? = agendaJson["2"][bsIndex][0].float
-        var tueEnd : Float? = agendaJson["2"][bsIndex][1].float
+        let tueStart : Float? = agendaJson["2"][bsIndex][0].float
+        let tueEnd : Float? = agendaJson["2"][bsIndex][1].float
         
         var tueTimePeriod : TimePeriod? = nil
         
@@ -123,8 +123,8 @@ class ParkingRule: NSObject {
         // WEDNESDAY
         
         var wed : Array<Float> = Array()
-        var wedStart : Float? = agendaJson["3"][bsIndex][0].float
-        var wedEnd : Float? = agendaJson["3"][bsIndex][1].float
+        let wedStart : Float? = agendaJson["3"][bsIndex][0].float
+        let wedEnd : Float? = agendaJson["3"][bsIndex][1].float
         
         var wedTimePeriod : TimePeriod? = nil
         
@@ -138,8 +138,8 @@ class ParkingRule: NSObject {
         // THURSDAY
         
         var thu : Array<Float> = Array()
-        var thuStart : Float? = agendaJson["4"][bsIndex][0].float
-        var thuEnd : Float? = agendaJson["4"][bsIndex][1].float
+        let thuStart : Float? = agendaJson["4"][bsIndex][0].float
+        let thuEnd : Float? = agendaJson["4"][bsIndex][1].float
         
         var thuTimePeriod : TimePeriod? = nil
         
@@ -153,8 +153,8 @@ class ParkingRule: NSObject {
         // FRIDAY
         
         var fri : Array<Float> = Array()
-        var friStart : Float? = agendaJson["5"][bsIndex][0].float
-        var friEnd : Float? = agendaJson["5"][bsIndex][1].float
+        let friStart : Float? = agendaJson["5"][bsIndex][0].float
+        let friEnd : Float? = agendaJson["5"][bsIndex][1].float
         
         var friTimePeriod : TimePeriod? = nil
         
@@ -169,8 +169,8 @@ class ParkingRule: NSObject {
         // SATURDAY
         
         var sat : Array<Float> = Array()
-        var satStart : Float? = agendaJson["6"][bsIndex][0].float
-        var satEnd : Float? = agendaJson["6"][bsIndex][1].float
+        let satStart : Float? = agendaJson["6"][bsIndex][0].float
+        let satEnd : Float? = agendaJson["6"][bsIndex][1].float
         
         var satTimePeriod : TimePeriod? = nil
         
@@ -186,8 +186,8 @@ class ParkingRule: NSObject {
         // SUNDAY
         
         var sun : Array<Float> = Array()
-        var sunStart : Float? = agendaJson["7"][bsIndex][0].float
-        var sunEnd : Float? = agendaJson["7"][bsIndex][1].float
+        let sunStart : Float? = agendaJson["7"][bsIndex][0].float
+        let sunEnd : Float? = agendaJson["7"][bsIndex][1].float
         
         var sunTimePeriod : TimePeriod? = nil
         

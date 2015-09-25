@@ -80,7 +80,7 @@ class SpotDetailView: UIView {
         self.setNeedsUpdateConstraints()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -271,7 +271,7 @@ class SpotDetailView: UIView {
     
     func topContainerTapped (sender : AnyObject?) {
         
-        var tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Spot Details", action: "Check In Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
 
         if(delegate != nil) {
@@ -281,7 +281,7 @@ class SpotDetailView: UIView {
 
     func bottomContainerTapped (sender : AnyObject?) {
 
-        var tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Spot Details", action: "Agenda/Schedule Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
 
         if(delegate != nil) {

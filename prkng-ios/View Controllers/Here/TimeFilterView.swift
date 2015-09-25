@@ -71,7 +71,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         super.init(frame: frame)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -98,7 +98,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     func setupSubviews () {
         
         self.clipsToBounds = true
-        var tapRec = UITapGestureRecognizer(target: self, action: Selector("toggleSelectFromTap:"))
+        let tapRec = UITapGestureRecognizer(target: self, action: Selector("toggleSelectFromTap:"))
         tapRec.delegate = self
         self.addGestureRecognizer(tapRec)
 
@@ -181,7 +181,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         
         var leftViewToLabel: UIView = times[0].label
         for i in 1..<times.count {
-            var label = times[i].label
+            let label = times[i].label
             label.snp_makeConstraints({ (make) -> () in
                 make.centerY.equalTo(self.contentView)
                 make.left.equalTo(leftViewToLabel.snp_right).with.offset(30)
@@ -272,7 +272,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     func scrollToNearestLabel() {
 
         if enableSnapping {
-            var centerPoint = getScrollViewCenter()
+            let centerPoint = getScrollViewCenter()
             scrollToNearestLabel(centerPoint)
         }
     }
@@ -283,7 +283,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         var nearestLabelDistanceFromPoint = CGFloat.max
         var nearestLabelDistanceFromCenter = CGFloat.max
 
-        var nearestLabel: PRKLabel = getNearestLabel(centerPoint, nearestLabelDistanceFromPoint: &nearestLabelDistanceFromPoint, nearestLabelDistanceFromCenter: &nearestLabelDistanceFromCenter)
+        let nearestLabel: PRKLabel = getNearestLabel(centerPoint, nearestLabelDistanceFromPoint: &nearestLabelDistanceFromPoint, nearestLabelDistanceFromCenter: &nearestLabelDistanceFromCenter)
         
         //now scroll this label to the center
         if enableSnapping {
@@ -308,7 +308,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     
     func getNearestLabel(fromPoint: CGPoint, inout nearestLabelDistanceFromPoint: CGFloat, inout nearestLabelDistanceFromCenter: CGFloat) -> PRKLabel  {
         
-        var contentViewCurrentCenterPoint = getScrollViewCenter()
+        let contentViewCurrentCenterPoint = getScrollViewCenter()
         
         //get the label nearest to the centerPoint
         nearestLabelDistanceFromPoint = CGFloat.max
@@ -334,7 +334,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     func toggleSelectFromTap(recognizer: UITapGestureRecognizer) {
         
         if !Settings.shouldFilterForCarSharing() {
-            var tap = recognizer.locationInView(self.contentView)
+            let tap = recognizer.locationInView(self.contentView)
             toggleSelectFromPoint(tap)
         }
     }
@@ -352,7 +352,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     
     func toggleSelectFromPoint(point: CGPoint) {
         
-        var label = scrollToNearestLabel(point)
+        let label = scrollToNearestLabel(point)
         
         let time = times.filter { (time) -> Bool in
             time.label == label
@@ -366,15 +366,15 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     }
     
     func getScrollViewCenter() -> CGPoint {
-        var visibleRect = CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y, scrollView.bounds.size.width, scrollView.bounds.size.height)
-        var contentViewCurrentCenterPoint = CGPointMake(visibleRect.size.width/2 + scrollView.contentOffset.x, visibleRect.size.height/2 + scrollView.contentOffset.y);
+        let visibleRect = CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y, scrollView.bounds.size.width, scrollView.bounds.size.height)
+        let contentViewCurrentCenterPoint = CGPointMake(visibleRect.size.width/2 + scrollView.contentOffset.x, visibleRect.size.height/2 + scrollView.contentOffset.y);
 
         return contentViewCurrentCenterPoint
     }
 
     func getScrollViewLeft() -> CGPoint {
         var visibleRect = CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y, scrollView.bounds.size.width, scrollView.bounds.size.height)
-        var contentViewCurrentLeftPoint = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
+        let contentViewCurrentLeftPoint = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
         
         return contentViewCurrentLeftPoint
     }
@@ -384,7 +384,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 //        //order the labels by proximity to the center
 //        var contentViewCurrentCenterPoint = getScrollViewCenter()
 
-        var contentViewCurrentCenterPoint = getScrollViewLeft()
+        let contentViewCurrentCenterPoint = getScrollViewLeft()
         
         //get the label nearest to the centerPoint
         var nearestLabelDistance = CGFloat.max
@@ -399,7 +399,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             label.tag = Int(distance)
         }
 
-        timeLabels.sort { (var left: PRKLabel, var right: PRKLabel) -> Bool in
+        timeLabels.sortInPlace { (left: PRKLabel, right: PRKLabel) -> Bool in
             left.tag > right.tag
         }
         
@@ -431,7 +431,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
 protocol TimeFilterViewDelegate {
     
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
+    func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
     func filterLabelUpdate(labelText: String)
     func showCarSharingInfo()
 }

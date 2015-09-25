@@ -25,7 +25,7 @@ class SupportedArea: NSObject {
                 addresses.updateValue(addressSet.1.stringValue, forKey: addressSet.0)
             }
             
-            let key = version.0.toInt()!
+            let key = Int(version.0)!
             versions.updateValue(addresses, forKey: key)
         }
 

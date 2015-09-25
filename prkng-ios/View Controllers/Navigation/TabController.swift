@@ -54,7 +54,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -415,7 +415,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         if self.activeCarsharingPermit() {
             return 24
         }
-        var hours = hereViewController.filterVC.timeFilterView.selectedValueInHours()
+        let hours = hereViewController.filterVC.timeFilterView.selectedValueInHours()
         return hours
     }
     
@@ -500,25 +500,25 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         self.mapViewController.goToCoordinate(coordinate, named:name)
     }
     
-    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City) {
+    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City) {
         let coordinate = Settings.pointForCity(toCity)
         self.mapViewController.goToCoordinate(coordinate, named:toCity.rawValue, withZoom:13, showing: false)
     }
     
     // MARK: Location Manager Delegate stuff
     
-    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         locationManager.stopUpdatingLocation()
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if (locationFixAchieved == false) {
             locationFixAchieved = true
             var location = locations.last as! CLLocation
             var coord = location.coordinate
             
-            println(coord.latitude)
-            println(coord.longitude)
+            print(coord.latitude)
+            print(coord.longitude)
             
             manager.stopUpdatingLocation()
             
@@ -526,7 +526,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         }
     }
     
-    func locationManager(manager: CLLocationManager!,
+    func locationManager(manager: CLLocationManager,
         didChangeAuthorizationStatus status: CLAuthorizationStatus) {
             
             var locationStatus : NSString = "Not Started"

@@ -44,7 +44,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         scheduleItems = ScheduleHelper.processScheduleItems(scheduleItems)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -88,7 +88,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         scrollView.showsHorizontalScrollIndicator = false
         self.view.addSubview(scrollView)
         
-        var scheduleTimes = ScheduleTimeModel.getScheduleTimesFromItems(scheduleItems)
+        let scheduleTimes = ScheduleTimeModel.getScheduleTimesFromItems(scheduleItems)
         leftView = ScheduleLeftView(model: scheduleTimes)
         leftView.backgroundColor = Styles.Colors.cream2
         self.view.addSubview(leftView)
@@ -96,7 +96,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         scrollView.addSubview(contentView)
         
         for i in 0...6 {
-            var columnView : ScheduleColumnView = ScheduleColumnView()
+            let columnView : ScheduleColumnView = ScheduleColumnView()
             contentView.addSubview(columnView)
             columnViews.append(columnView)
             columnView.setActive(false)
@@ -105,7 +105,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         columnViews[0].setActive(true)
         
         for scheduleItem in scheduleItems {
-            var scheduleItemView : ScheduleItemView = ScheduleItemView(model : scheduleItem)
+            let scheduleItemView : ScheduleItemView = ScheduleItemView(model : scheduleItem)
             columnViews[scheduleItem.columnIndex!].addSubview(scheduleItemView)
             scheduleItemViews.append(scheduleItemView)
         }
@@ -161,9 +161,9 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         for itemView in scheduleItemViews {
             
             
-            var scheduleItem = scheduleItems[itemIndex]
+            let scheduleItem = scheduleItems[itemIndex]
             
-            var columnView = columnViews[scheduleItem.columnIndex!]
+            let columnView = columnViews[scheduleItem.columnIndex!]
             
             itemView.snp_makeConstraints({ (make) -> () in
                 make.top.equalTo(columnView).with.offset((self.ITEM_HOUR_HEIGHT * scheduleItem.yIndexMultiplier!) + self.COLUMN_HEADER_HEIGHT)
@@ -190,9 +190,9 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
     
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        var kMaxIndex : CGFloat  = 7
+        let kMaxIndex : CGFloat  = 7
         
-        var targetX : CGFloat = scrollView.contentOffset.x + velocity.x * 60.0
+        let targetX : CGFloat = scrollView.contentOffset.x + velocity.x * 60.0
         var targetIndex : CGFloat = round(targetX / COLUMN_SIZE)
         if (targetIndex < 0) {
             targetIndex = 0
@@ -206,7 +206,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
-        var maxOffset : Float = Float(COLUMN_SIZE * 4.0)
+        let maxOffset : Float = Float(COLUMN_SIZE * 4.0)
         var ratio : Float = 0.0
         
         if (scrollView.contentOffset.x != 0) {
@@ -248,7 +248,7 @@ class ScheduleHelper {
         
         //convert schedule items into agenda items
         for scheduleItem in scheduleItems {
-            var agendaItem = AgendaItem(startTime: NSTimeInterval(scheduleItem.startInterval), endTime: NSTimeInterval(scheduleItem.endInterval), dayIndex: scheduleItem.columnIndex!, timeLimit: Int(scheduleItem.limit), rule: scheduleItem.rule)
+            let agendaItem = AgendaItem(startTime: NSTimeInterval(scheduleItem.startInterval), endTime: NSTimeInterval(scheduleItem.endInterval), dayIndex: scheduleItem.columnIndex!, timeLimit: Int(scheduleItem.limit), rule: scheduleItem.rule)
             agendaItems.append(agendaItem)
             dayIndexes.insert(scheduleItem.columnIndex!)
 
@@ -260,7 +260,7 @@ class ScheduleHelper {
             agendaItems.append(agendaItem)
         }
         
-        agendaItems.sort { (first, second) -> Bool in
+        agendaItems.sortInPlace { (first, second) -> Bool in
             if first.dayIndex == second.dayIndex {
                 return first.startTime < second.startTime
             } else {
@@ -281,9 +281,9 @@ class ScheduleHelper {
             for period in dayAgenda.timePeriods {
                 
                 if (period != nil) {
-                    var startF : CGFloat = CGFloat(period!.start)
-                    var endF : CGFloat = CGFloat(period!.end)
-                    var scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit, rule: dayAgenda.rule)
+                    let startF : CGFloat = CGFloat(period!.start)
+                    let endF : CGFloat = CGFloat(period!.end)
+                    let scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit, rule: dayAgenda.rule)
                     scheduleItems.append(scheduleItem)
                 }
                 ++column
@@ -297,9 +297,9 @@ class ScheduleHelper {
         var newScheduleItems = [ScheduleItemModel]()
         
         for i in 0...6 {
-            var tempScheduleItems = scheduleItems.filter({ (var scheduleItem: ScheduleItemModel) -> Bool in
+            let tempScheduleItems = scheduleItems.filter({ (scheduleItem: ScheduleItemModel) -> Bool in
                 return scheduleItem.columnIndex! == i
-            }).sorted({ (var left: ScheduleItemModel, var right: ScheduleItemModel) -> Bool in
+            }).sort({ (left: ScheduleItemModel, right: ScheduleItemModel) -> Bool in
                 left.columnIndex! <= right.columnIndex!
                     && left.startInterval <= right.startInterval
                     && left.endInterval <= right.endInterval
@@ -307,7 +307,7 @@ class ScheduleHelper {
             })
             
             for scheduleItem in tempScheduleItems {
-                var lastScheduleItem = newScheduleItems.last
+                let lastScheduleItem = newScheduleItems.last
                 
                 //this loop is to see if this is the only item, potentially on other days of the week, in the schedule.
                 //we can then deduce that it's safe to alter it and make it taller without messing with other items.
@@ -334,7 +334,7 @@ class ScheduleHelper {
                     && lastScheduleItem!.limit == scheduleItem.limit
                     && lastScheduleItem!.rule.ruleType == scheduleItem.rule.ruleType) {
                         newScheduleItems.removeLast()
-                        var newScheduleItem = ScheduleItemModel(startF: lastScheduleItem!.startInterval, endF: scheduleItem.endInterval, column : scheduleItem.columnIndex!, limitInterval: scheduleItem.limit, rule: scheduleItem.rule)
+                        let newScheduleItem = ScheduleItemModel(startF: lastScheduleItem!.startInterval, endF: scheduleItem.endInterval, column : scheduleItem.columnIndex!, limitInterval: scheduleItem.limit, rule: scheduleItem.rule)
                         newScheduleItems.append(newScheduleItem)
                 }
                     //RULE: SPLIT (TIME MAXES OR PAID) IF A RESTRICTION OVERLAPS IT
@@ -367,8 +367,8 @@ class ScheduleHelper {
                             } else if restriction.startInterval > timeMax.startInterval
                                 && restriction.endInterval < timeMax.endInterval {
                                     //we have a total overlap, make 2 new time maxes
-                                    var timeMax1 = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
-                                    var timeMax2 = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
+                                    let timeMax1 = ScheduleItemModel(startF: timeMax.startInterval, endF: restriction.startInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
+                                    let timeMax2 = ScheduleItemModel(startF: restriction.endInterval, endF: timeMax.endInterval, column: timeMax.columnIndex!, limitInterval: timeMax.limit, rule: timeMax.rule)
                                     newScheduleItems.append(timeMax1)
                                     newScheduleItems.append(timeMax2)
                             } else if restriction.endInterval >= timeMax.endInterval {
@@ -456,14 +456,14 @@ class ScheduleItemModel {
     func topOffset() -> CGFloat {
         let maxInterval: CGFloat = 24
         let interval = startInterval / 3600
-        var offset = interval/maxInterval
+        let offset = interval/maxInterval
         return offset
     }
     
     func bottomOffset() -> CGFloat {
         let maxInterval: CGFloat = 24
         let interval = endInterval / 3600
-        var offset = interval/maxInterval
+        let offset = interval/maxInterval
         return offset
     }
     
@@ -551,8 +551,8 @@ class ScheduleTimeModel {
             endTimeHeightMultipliers.append(scheduleItem.heightMultiplier!)
         }
         
-        return Array(allTimeValues).map { (var interval: CGFloat) -> ScheduleTimeModel in
-            if let index = find(endTimeValues, interval) {
+        return Array(allTimeValues).map { (interval: CGFloat) -> ScheduleTimeModel in
+            if let index = endTimeValues.indexOf(interval) {
                 let heightOffsetInHours = endTimeHeightMultipliers[index] - ((endTimeValues[index] - startTimeValues[index]) / 3600)
                 return ScheduleTimeModel(interval: interval, heightOff: heightOffsetInHours)
             }

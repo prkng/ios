@@ -12,7 +12,7 @@ extension UIViewController {
     
     func presentViewControllerFromRight(viewController: UIViewController, completion: (() -> Void)?) {
         
-        var transition = CATransition()
+        let transition = CATransition()
         transition.duration = 0.2
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionPush
@@ -28,7 +28,7 @@ extension UIViewController {
 
     func dismissViewControllerFromLeft(completion: (() -> Void)?) {
         
-        var transition = CATransition()
+        let transition = CATransition()
         transition.duration = 0.2
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionPush

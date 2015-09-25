@@ -40,7 +40,7 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -65,8 +65,8 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     func setupViews() {
         
         for i in 0...(pageCount - 1) {
-            var backgroundImageName = ((i % 2) == 0) ? "bg_red_gradient" : "bg_blue_gradient"
-            var backgroundImage = UIImage(named: backgroundImageName)
+            let backgroundImageName = ((i % 2) == 0) ? "bg_red_gradient" : "bg_blue_gradient"
+            let backgroundImage = UIImage(named: backgroundImageName)
             let page = TutorialContentViewController(backgroundImage: backgroundImage!, image: images[i]!, text: texts[i], index : i)
             contentViewControllers.append(page)
         }
@@ -167,11 +167,11 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         return nil
     }
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [AnyObject]) {
+    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
         
     }
     
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [AnyObject], transitionCompleted completed: Bool) {
+    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         updateViews()
     }
     

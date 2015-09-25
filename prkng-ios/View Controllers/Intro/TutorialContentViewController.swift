@@ -26,16 +26,16 @@ class TutorialContentViewController: GAITrackedViewController {
         backgroundImageView.image = backgroundImage
         imageView.image = image
         
-        var paragraphStyle = NSMutableParagraphStyle()
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 6.5
-        var attrString = NSMutableAttributedString(string: text)
+        let attrString = NSMutableAttributedString(string: text)
         attrString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
         textLabel.attributedText = attrString
 
 
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     

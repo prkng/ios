@@ -53,7 +53,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -222,7 +222,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     func avatarButtonTapped(sender : UIButton) {
         
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
-            println("Button capture")
+            print("Button capture")
             
             imagePicker.delegate = self
             imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum;
@@ -257,7 +257,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         user.name = nameText
         user.email = emailText
         
-        var newPassword : String = passwordText
+        let newPassword : String = passwordText
         
         if let image = selectedImage {
             

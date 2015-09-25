@@ -39,10 +39,10 @@ class Checkin: NSObject {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        var dateStr = created.substringToIndex(advance(created.startIndex, 19))
+        let dateStr = created.substringToIndex(created.startIndex.advancedBy(19))
         date = formatter.dateFromString(dateStr)!
         
-        println(date)
+        print(date)
     }
     
    

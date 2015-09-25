@@ -30,7 +30,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -193,7 +193,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     
     // MARK: GPPSignInDelegate
     func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
-        println(auth)
+        print(auth)
         
         if error != nil {
             //error!

@@ -28,7 +28,7 @@ struct AuthUtility {
             if Settings.iOS8OrLater() {
                 UIApplication.sharedApplication().registerForRemoteNotifications()
             } else {
-                UIApplication.sharedApplication().registerForRemoteNotificationTypes(.Badge | .Sound | .Badge | .Alert)
+                UIApplication.sharedApplication().registerForRemoteNotificationTypes([.Badge, .Sound, .Badge, .Alert])
             }
         } else {
             NSUserDefaults.standardUserDefaults().removeObjectForKey(AUTH_TOKEN_KEY)

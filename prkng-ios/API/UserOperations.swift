@@ -17,7 +17,7 @@ struct UserOperations {
         
         let params = ["email" : email, "name" : name, "password" : password, "gender" : gender, "birthYear" : birthYear]
         
-        request(.POST, url, parameters: params).responseSwiftyJSON() {
+        request(.POST, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             let apiKey = json["apikey"].stringValue
@@ -43,7 +43,7 @@ struct UserOperations {
         
         let params = ["email" : email,  "password" : password]
         
-        request(.POST, url, parameters: params).responseSwiftyJSON() {
+        request(.POST, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             if (response?.statusCode == 200) {
@@ -66,7 +66,7 @@ struct UserOperations {
         
         let params = ["type" : "facebook", "access_token" : accessToken]
         
-        request(.POST, url, parameters: params).responseSwiftyJSON() {
+        request(.POST, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             let user = User(json: json)
@@ -86,7 +86,7 @@ struct UserOperations {
         
         let params = ["type" : "google", "access_token" : accessToken]
         
-        request(.POST, url, parameters: params).responseSwiftyJSON() {
+        request(.POST, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
             
             let user = User(json: json)
@@ -202,7 +202,7 @@ struct UserOperations {
         let url = APIUtility.APIConstants.rootURLString + "login/resetpass"
         let params = ["email" : email]
         
-        request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
+        request(.POST, URLString: url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
             
             completion(completed: response != nil && response!.statusCode != 400)
         }
@@ -216,7 +216,7 @@ struct UserOperations {
         let locale = NSLocale.currentLocale().objectForKey(NSLocaleLanguageCode) as? String ?? ""
         let deviceType = "ios"
         
-        var params: [String : AnyObject] = [
+        let params: [String : AnyObject] = [
             "device_type" : deviceType,
             "device_id" : (deviceTokenString ?? ""),
             "lang" : locale

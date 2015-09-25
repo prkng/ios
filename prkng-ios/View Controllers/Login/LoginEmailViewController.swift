@@ -42,7 +42,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -184,7 +184,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
             
             if let email = alertView.textFieldAtIndex(0)?.text {
                 
-                if Int(count(email)) > 4 {
+                if Int(email.characters.count) > 4 {
                     
                     SVProgressHUD.show()
                     

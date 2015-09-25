@@ -102,7 +102,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             category.setActions([yesAction, noAction], forContext: UIUserNotificationActionContext.Default)
             
             if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
-                application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: NSSet(object: category) as Set<NSObject>))
+                application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: NSSet(object: category) as Set<NSObject>))
             }
         }
 
@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             application.registerForRemoteNotifications()
             //the types are registered above with registerUserNotificationSettings
         } else {
-            application.registerForRemoteNotificationTypes(.Badge | .Sound | .Badge | .Alert)
+            application.registerForRemoteNotificationTypes([.Badge, .Sound, .Badge, .Alert])
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
@@ -165,9 +165,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         
-        if (url.scheme?.lowercaseString == "fb1043720578978201") {
+        if (url.scheme.lowercaseString == "fb1043720578978201") {
             return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
         } else  {
             return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
@@ -176,9 +176,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         
-        var characterSet: NSCharacterSet = NSCharacterSet( charactersInString: "<>" )
+        let characterSet: NSCharacterSet = NSCharacterSet( charactersInString: "<>" )
         
-        var deviceTokenString: String = ( deviceToken.description as NSString )
+        let deviceTokenString: String = ( deviceToken.description as NSString )
             .stringByTrimmingCharactersInSet( characterSet )
             .stringByReplacingOccurrencesOfString( " ", withString: "" ) as String
         
@@ -301,12 +301,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 //        
 //    }
     
-    func locationManager(manager: CLLocationManager!, didEnterRegion region: CLRegion!) {
+    func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
         handleRegionEntered((region as! CLCircularRegion).center)
 //        self.locationManager.startUpdatingLocation()
     }
 
-    func locationManager(manager: CLLocationManager!, didExitRegion region: CLRegion!) {
+    func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
         handleRegionExited((region as! CLCircularRegion).center)
 //        self.locationManager.stopUpdatingLocation()
     }
@@ -420,7 +420,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id999834216")!)
         } else if index == 1 {
             //send feedback?
-            var mailVC = MFMailComposeViewController()
+            let mailVC = MFMailComposeViewController()
             mailVC.mailComposeDelegate = self
             mailVC.setSubject("feedback".localizedString)
             mailVC.setToRecipients(["hello@prk.ng"])
@@ -429,7 +429,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
     }
     
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
 

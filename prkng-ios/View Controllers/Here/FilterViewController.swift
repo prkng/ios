@@ -54,7 +54,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -111,7 +111,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         self.searchFilterView.makeActive()
     }
 
-    func showFilters(#resettingTimeFilterValue: Bool) {
+    func showFilters(resettingTimeFilterValue resettingTimeFilterValue: Bool) {
         
         //whenever it's shown, reset the filter
         if resettingTimeFilterValue {
@@ -146,7 +146,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         
     }
     
-    func hideFilters(#completely: Bool) {
+    func hideFilters(completely completely: Bool) {
         
         let height = completely ? 0 : 40
         
@@ -181,7 +181,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     
     // MARK: TimeFilterViewDelegate
     
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
+    func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
         self.delegate?.filterValueWasChanged(hours: hours, selectedLabelText: selectedLabelText, permit: permit, fromReset: fromReset)
         self.searchFilterView.indicatorText = selectedLabelText
         if !fromReset {
@@ -271,7 +271,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
 protocol FilterViewControllerDelegate {
     
     //these functions match TimeViewControllerDelegate
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
+    func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
     func showCarSharingInfo()
 }
 

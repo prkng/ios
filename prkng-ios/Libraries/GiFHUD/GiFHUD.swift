@@ -36,7 +36,7 @@ extension UIImageView {
     
     // MARK: Method Overrides
     
-    override public func displayLayer(layer: CALayer!) {
+    override public func displayLayer(layer: CALayer) {
         if let image = animatableImage {
             if let frame = image.currentFrame {
                 layer.contents = frame.CGImage
@@ -52,7 +52,7 @@ extension UIImageView {
         layer.setNeedsDisplay()
     }
     
-    func setAnimatableImage(#data: NSData) {
+    func setAnimatableImage(data data: NSData) {
         image = AnimatedImage.imageWithData(data, delegate: self)
         layer.setNeedsDisplay()
     }
@@ -104,7 +104,7 @@ class AnimatedImage: UIImage {
         if !containsAnimatedGIF { return 0.0 }
         
         var duration = 0.0
-        let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, Int(index), nil) as NSDictionary
+        let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, Int(index), nil) as! NSDictionary
         let GIFProperties: NSDictionary? = imageProperties[String(kCGImagePropertyGIFDictionary)] as? NSDictionary
         
         if let properties = GIFProperties {
@@ -161,7 +161,7 @@ class AnimatedImage: UIImage {
     
     // MARK: Initializers
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -185,7 +185,7 @@ class AnimatedImage: UIImage {
     }
     
     class func imageWithData(data: NSData, delegate: UIImageView?) -> Self? {
-        return self(data: data, delegate: delegate)
+        return self.init(data: data, delegate: delegate)
     }
     
     
@@ -223,7 +223,7 @@ class AnimatedImage: UIImage {
     func frameAtIndex(index: Int) -> UIImage? {
         if Int(index) >= self.frames.count { return nil }
         
-        var image: UIImage? = self.frames[Int(index)]
+        let image: UIImage? = self.frames[Int(index)]
         updatePreloadedFramesAtIndex(index)
         
         return image
@@ -252,7 +252,7 @@ class AnimatedImage: UIImage {
         if !isAnimated { return }
         
         timeSinceLastFrameChange += min(maxTimeStep, displayLink.duration)
-        var frameDuration = frameDurations[currentFrameIndex]
+        let frameDuration = frameDurations[currentFrameIndex]
         
         while timeSinceLastFrameChange >= frameDuration {
             timeSinceLastFrameChange -= frameDuration
@@ -338,7 +338,7 @@ class GiFHUD: UIView {
         Window.addSubview(self)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

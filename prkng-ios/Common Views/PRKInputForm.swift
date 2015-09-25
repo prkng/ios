@@ -46,8 +46,8 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
             ("password_confirm".localizedString, PRKTextFieldType.Password),
         ]
         
-        var placeholderAttributes = [NSFontAttributeName: Styles.FontFaces.light(17), NSForegroundColorAttributeName: Styles.Colors.petrol1]
-        var textFont = Styles.FontFaces.light(17)
+        let placeholderAttributes = [NSFontAttributeName: Styles.FontFaces.light(17), NSForegroundColorAttributeName: Styles.Colors.petrol1]
+        let textFont = Styles.FontFaces.light(17)
         
         let inputForm = PRKInputForm(list: list, placeholderAttributes: placeholderAttributes, textFont: textFont)
 
@@ -93,7 +93,7 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

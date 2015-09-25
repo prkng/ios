@@ -64,7 +64,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         self.TOP_PARALLAX_HEIGHT -= CGFloat(self.SCROLL_HEIGHT)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -113,8 +113,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         view.addSubview(topGradient)
         topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
         
-        var operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-        var operatorString = NSMutableAttributedString(string: lot.lotOperator, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+        let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+        let operatorString = NSMutableAttributedString(string: lot.lotOperator, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
         operatedByString.appendAttributedString(operatorString)
         view.addSubview(topLabel)
         topLabel.textColor = Styles.Colors.cream1
@@ -136,8 +136,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
         subHeaderViewLabel.leftLabel.textColor = Styles.Colors.cream1
 
-        var currencyString = NSMutableAttributedString(string: "$" + String(Int(lot.hourlyRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
-        var numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
+        let currencyString = NSMutableAttributedString(string: "$" + String(Int(lot.hourlyRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+        let numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
         currencyString.appendAttributedString(numberString)
         subHeaderViewLabel.rightLabel.attributedText = currencyString
         subHeaderViewLabel.rightLabel.textColor = Styles.Colors.cream1
@@ -359,7 +359,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         if supportsGoogleMaps {
 
-            var alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
             
             alert.addAction(UIAlertAction(title: "directions_google_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
                 UIApplication.sharedApplication().openURL(NSURL(string: googleMapsURLString)!)

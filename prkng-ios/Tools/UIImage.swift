@@ -96,7 +96,7 @@ extension UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, Settings.screenScale)
         self.drawInRect(drawRect)
         label.drawTextInRect(drawRect)
-        var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
         
@@ -113,7 +113,7 @@ extension UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, Settings.screenScale)
         self.drawInRect(drawRect)
         label.drawTextInRect(labelDrawRect)
-        var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
         
@@ -133,7 +133,7 @@ extension UIImage {
         UIGraphicsBeginImageContextWithOptions(self.size, false, Settings.screenScale)
         self.drawInRect(drawRect)
         label.drawTextInRect(labelDrawRect)
-        var newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
         
@@ -141,7 +141,7 @@ extension UIImage {
     
     static func imageFromGradient(size: CGSize, fromColor: UIColor, toColor: UIColor) -> UIImage {
         
-        var layer = CAGradientLayer()
+        let layer = CAGradientLayer()
         layer.frame = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
         layer.colors = [fromColor.CGColor, toColor.CGColor]
         

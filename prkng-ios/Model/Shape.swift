@@ -14,7 +14,7 @@ class Shape: NSObject {
     var coordinates: Array<CLLocation>
     
     var coordinates2D: [CLLocationCoordinate2D] { get {
-        return coordinates.map({ (var location: CLLocation) -> CLLocationCoordinate2D in
+        return coordinates.map({ (location: CLLocation) -> CLLocationCoordinate2D in
             return location.coordinate
     }) } }
 
@@ -23,9 +23,9 @@ class Shape: NSObject {
         type = json["type"].stringValue
 
         coordinates = Array<CLLocation>()
-        var jsonCoordinates: Array<JSON> = json["coordinates"].arrayValue
+        let jsonCoordinates: Array<JSON> = json["coordinates"].arrayValue
         for jsonCoordinate in jsonCoordinates {
-            var coordinate = CLLocation(latitude: jsonCoordinate[1].doubleValue, longitude: jsonCoordinate[0].doubleValue)
+            let coordinate = CLLocation(latitude: jsonCoordinate[1].doubleValue, longitude: jsonCoordinate[0].doubleValue)
             coordinates.append(coordinate)
         }
 

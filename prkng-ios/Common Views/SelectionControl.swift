@@ -56,7 +56,7 @@ class SelectionControl: UIControl {
         super.init(frame: frame)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -214,7 +214,7 @@ class SelectionControl: UIControl {
             
             let attrs = [NSFontAttributeName: font]
             let maximumLabelSize = CGSizeMake(310, 9999);
-            let rect = (title as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs , context: nil)
+            let rect = (title as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs , context: nil)
             
             width += rect.width
             
@@ -323,7 +323,7 @@ class SelectionButton: UIControl {
     }
     
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     

@@ -52,7 +52,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -420,7 +420,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             forceShowSpotDetails = true
             
             if (activeDetailObject != nil) {
-                println("selected spot/lot : " + activeDetailObject!.identifier)
+                print("selected spot/lot : " + activeDetailObject!.identifier)
             }
             
             detailView.checkinImageView.image = UIImage(named: detailObject!.headerIconName)
@@ -544,7 +544,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         return false
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
     }
     
@@ -569,7 +569,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func modeSelectionValueChanged() {
         
         var mapMode = MapMode.StreetParking
-        var tracker = GAI.sharedInstance().defaultTracker
+        let tracker = GAI.sharedInstance().defaultTracker
         
         switch(self.modeSelection.selectedIndex) {
         case 0:
@@ -606,7 +606,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     // MARK: TimeFilterViewDelegate
     
-    func filterValueWasChanged(#hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
+    func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
         self.delegate?.updateMapAnnotations()
 //        filterButtonText = selectedLabelText
 //        filterButton.setLabelText(selectedLabelText)
@@ -624,7 +624,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
  
     // MARK: MapMessageViewDelegate
     
-    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City) {
+    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City) {
         self.delegate?.cityDidChange(fromCity: fromCity, toCity: toCity)
     }
     
@@ -679,6 +679,6 @@ protocol HereViewControllerDelegate {
     func loadMyCarTab()
     func loadSettingsTab()
     func updateMapAnnotations()
-    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City)
+    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City)
     func didSelectMapMode(mapMode: MapMode)
 }

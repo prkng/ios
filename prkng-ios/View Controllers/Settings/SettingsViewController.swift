@@ -88,7 +88,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("NSCoding not supported")
     }
     
@@ -397,12 +397,12 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
     }
     
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
 
     func historyButtonTapped() {
-        var historyViewController = HistoryViewController()
+        let historyViewController = HistoryViewController()
         historyViewController.settingsDelegate = self.delegate
         self.navigationController?.pushViewController(historyViewController, animated: true)
     }
@@ -544,5 +544,5 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 
 protocol SettingsViewControllerDelegate {
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String)
-    func cityDidChange(#fromCity: Settings.City, toCity: Settings.City)
+    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City)
 }
