@@ -91,7 +91,7 @@
 "first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation. Please keep an eye open.";
 "no_checkin_message" = "Please select \na segment first";
 "park_now" = "park now";
-"checked_in_message" = "you're checked-in at";
+"checked_in_message" = "you're checked-in on";
 "available_for" = "available for";
 "for" = "for";
 "available_until" = "available until";
@@ -142,7 +142,7 @@
 
 "here_firstuse_title" = "How it works.";
 "here_firstuse_subtitle" = "We know it’s your first time!";
-"here_firstuse_1" = "Click any of the authorized spots to discover their availability.";
+"here_firstuse_1" = "Tap on any of the spots to see their authorized periods.";
 "here_firstuse_2" = "Once you have found your spot, hit \“Check-in\” to be reminded when to move your car.";
 "free_spots" = "FREE SPOTS";
 "metered_spots" = "METERED SPOTS";
