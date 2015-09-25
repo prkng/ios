@@ -25,9 +25,6 @@
 		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
-		3E580BA71BB06B4C00322BC3 /* PRKModeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580BA41BB06B4C00322BC3 /* PRKModeSlider.swift */; };
-		3E580BA81BB06B4C00322BC3 /* PRKModeSliderThumbLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580BA51BB06B4C00322BC3 /* PRKModeSliderThumbLayer.swift */; };
-		3E580BA91BB06B4C00322BC3 /* PRKModeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E580BA61BB06B4C00322BC3 /* PRKModeSliderTrackLayer.swift */; };
 		3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */; };
 		3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E5B2EFF1BA359B500658A9A /* InfoPlist.strings */; };
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
@@ -39,7 +36,7 @@
 		3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB6041B83BE370081E30A /* FilterViewController.swift */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
 		3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */; };
-		3E79D01E1B7BB0CF009CF8A5 /* SliderSelectionControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */; };
+		3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */; };
 		3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */; };
 		3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
@@ -210,9 +207,6 @@
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
 		3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKPopupViewController.swift; sourceTree = "<group>"; };
-		3E580BA41BB06B4C00322BC3 /* PRKModeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModeSlider.swift; sourceTree = "<group>"; };
-		3E580BA51BB06B4C00322BC3 /* PRKModeSliderThumbLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModeSliderThumbLayer.swift; sourceTree = "<group>"; };
-		3E580BA61BB06B4C00322BC3 /* PRKModeSliderTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModeSliderTrackLayer.swift; sourceTree = "<group>"; };
 		3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsOperations.swift; sourceTree = "<group>"; };
 		3E5B2EFE1BA359B500658A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3E5B2F001BA359B700658A9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -226,7 +220,7 @@
 		3E6EB6041B83BE370081E30A /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
 		3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailObject.swift; sourceTree = "<group>"; };
-		3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderSelectionControl.swift; sourceTree = "<group>"; };
+		3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModeSlider.swift; sourceTree = "<group>"; };
 		3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLMapViewController.swift; sourceTree = "<group>"; };
 		3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRK_GMSPolyline.swift; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -477,16 +471,6 @@
 			path = GeoJsonParser;
 			sourceTree = "<group>";
 		};
-		3E580BA31BB06B4C00322BC3 /* CustomSlider */ = {
-			isa = PBXGroup;
-			children = (
-				3E580BA41BB06B4C00322BC3 /* PRKModeSlider.swift */,
-				3E580BA51BB06B4C00322BC3 /* PRKModeSliderThumbLayer.swift */,
-				3E580BA61BB06B4C00322BC3 /* PRKModeSliderTrackLayer.swift */,
-			);
-			path = CustomSlider;
-			sourceTree = "<group>";
-		};
 		3E6799061B4F2C8E003913CF /* Modal */ = {
 			isa = PBXGroup;
 			children = (
@@ -672,9 +656,8 @@
 		BF899B0A1AF2152D00E42DE8 /* Common Views */ = {
 			isa = PBXGroup;
 			children = (
-				3E580BA31BB06B4C00322BC3 /* CustomSlider */,
 				BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */,
-				3E79D01D1B7BB0CF009CF8A5 /* SliderSelectionControl.swift */,
+				3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */,
 				3E9509C51B56EE940088E336 /* PRKTextField.swift */,
 				3E9509C91B570A6A0088E336 /* PRKInputForm.swift */,
 				3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */,
@@ -1099,13 +1082,12 @@
 				3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
-				3E580BA91BB06B4C00322BC3 /* PRKModeSliderTrackLayer.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */,
 				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
 				3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */,
-				3E79D01E1B7BB0CF009CF8A5 /* SliderSelectionControl.swift in Sources */,
+				3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */,
 				3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
@@ -1188,7 +1170,6 @@
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
 				3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */,
-				3E580BA81BB06B4C00322BC3 /* PRKModeSliderThumbLayer.swift in Sources */,
 				3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */,
 				BF3282711B3847AE002ED8DF /* MKTableViewCell.swift in Sources */,
 				BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */,
@@ -1198,7 +1179,6 @@
 				3EA8126D1B977E58002987EC /* LotViewController.swift in Sources */,
 				3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */,
 				BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */,
-				3E580BA71BB06B4C00322BC3 /* PRKModeSlider.swift in Sources */,
 				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
 				3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */,

@@ -23,7 +23,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     var carSharingInfoVC: CarSharingInfoViewController?
 
     var statusBar: UIView
-    var modeSelection: SliderSelectionControl
+    var modeSelection: PRKModeSlider
 
     var activeDetailObject: DetailObject?
     var forceShowSpotDetails: Bool
@@ -45,7 +45,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         statusBar = UIView()
         filterButtonImageName = "icon_filter"
         filterButtonText = ""
-        modeSelection = SliderSelectionControl(titles: ["garages".localizedString, "on-street".localizedString, "car_sharing".localizedString])
+        modeSelection = PRKModeSlider(titles: ["garages".localizedString, "on-street".localizedString, "car_sharing".localizedString])
         forceShowSpotDetails = false
         verticalRec = PRKVerticalGestureRecognizer()
         isShowingModal = false
@@ -69,8 +69,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-
-        modeSelection.selectOption(modeSelection.buttons[modeSelection.selectedIndex], animated: false)
         
         if (Settings.firstMapUse()) {
             Settings.setFirstMapUsePassed(true)
@@ -153,7 +151,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
         
         modeSelection.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(SliderSelectionControl.HEIGHT)
+            make.height.equalTo(self.modeSelection.height)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
