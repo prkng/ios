@@ -532,10 +532,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         var tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Check Out Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
-        SpotOperations.checkout({ (completed) -> Void in
+//        SpotOperations.checkout({ (completed) -> Void in
             Settings.checkOut()
             self.delegate?.reloadMyCarTab()
-        })
+//        })
     }
     
     func reportButtonTapped(sender: UIButton) {
