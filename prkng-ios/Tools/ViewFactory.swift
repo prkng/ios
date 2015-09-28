@@ -114,12 +114,12 @@ struct ViewFactory {
         return hugeButton
     }
     
-    static func transparentRoundedButton () -> UIButton {
+    static func transparentRoundedButton() -> UIButton {
         let button = UIButton ()
         button.titleLabel?.font = Styles.FontFaces.light(12)
         button.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
         button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
-        button.layer.cornerRadius = 14
+        button.layer.cornerRadius = 13
         button.layer.borderColor = Styles.Colors.beige1.CGColor
         button.layer.borderWidth = 1
         button.backgroundColor = UIColor.clearColor()

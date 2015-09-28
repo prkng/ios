@@ -213,7 +213,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         view.addSubview(smallButtonContainer)
         
         reportButton.clipsToBounds = true
-        reportButton.layer.cornerRadius = 14
+        reportButton.layer.cornerRadius = 13
         reportButton.layer.borderWidth = 1
         reportButton.titleLabel?.font = Styles.FontFaces.light(12)
         reportButton.setTitle("report_an_error".localizedString.uppercaseString, forState: UIControlState.Normal)
