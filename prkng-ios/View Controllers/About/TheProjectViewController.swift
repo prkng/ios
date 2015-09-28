@@ -68,11 +68,11 @@ class TheProjectViewController: AbstractViewController {
         
         logoView.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.top.equalTo(self.view).with.offset(90)
+            make.top.equalTo(self.view).offset(90)
         }
         
         scrollView.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.view).with.offset(UIEdgeInsetsMake(202, 0, 0, 0))
+            make.edges.equalTo(self.view).offset(UIEdgeInsetsMake(202, 0, 0, 0))
         }
         
         container.snp_makeConstraints { (make) -> () in
@@ -81,29 +81,29 @@ class TheProjectViewController: AbstractViewController {
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.container).width.offset(20)
+            make.top.equalTo(self.container).offset(20)
             make.left.equalTo(self.container)
             make.right.equalTo(self.container)
         }
         
         textLabel1.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).width.offset(14)
-            make.left.equalTo(self.container).with.offset(40)
-            make.right.equalTo(self.container).with.offset(-40)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(14)
+            make.left.equalTo(self.container).offset(40)
+            make.right.equalTo(self.container).offset(-40)
         }
         
         textLabel2.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textLabel1.snp_bottom).width.offset(10)
-            make.left.equalTo(self.container).with.offset(40)
-            make.right.equalTo(self.container).with.offset(-40)
-            make.bottom.equalTo(self.container).with.offset(-51)
+            make.top.equalTo(self.textLabel1.snp_bottom).offset(10)
+            make.left.equalTo(self.container).offset(40)
+            make.right.equalTo(self.container).offset(-40)
+            make.bottom.equalTo(self.container).offset(-51)
         }
         
         
         backButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 80, height: 26))
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(-20)
+            make.bottom.equalTo(self.view).offset(-20)
         }
         
     }

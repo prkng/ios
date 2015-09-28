@@ -165,7 +165,7 @@ class DateSelectionView: UIView {
         
         for i in 1...6 {
             
-            weekButtons[i].snp_makeConstraints({ (make) -> () in
+            weekButtons[i].snp_makeConstraints(closure: { (make) -> () in
                 make.left.equalTo(self.weekButtons[i-1].snp_right)
                 make.width.equalTo(self.bottomContainer).multipliedBy(1.0/7.0)
                 make.top.equalTo(self.bottomContainer)

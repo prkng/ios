@@ -95,13 +95,13 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         }
 
         messageLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(30)
-            make.right.equalTo(self.view).with.offset(-30)
+            make.left.equalTo(self.view).offset(30)
+            make.right.equalTo(self.view).offset(-30)
             make.centerY.equalTo(self.view).multipliedBy(0.8)
         }
         
         reportButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.parkButton.snp_top).with.offset(-20)
+            make.bottom.equalTo(self.parkButton.snp_top).offset(-20)
             make.size.equalTo(CGSizeMake(155, 26))
             make.centerX.equalTo(self.view)
         }

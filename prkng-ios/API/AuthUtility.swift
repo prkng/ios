@@ -25,7 +25,7 @@ struct AuthUtility {
     static func saveAuthToken(token : String?) {
         if (token != nil) {
             NSUserDefaults.standardUserDefaults().setObject(token, forKey: AUTH_TOKEN_KEY)
-            if Settings.iOS8OrLater() {
+            if #available(iOS 8.0, *) {
                 UIApplication.sharedApplication().registerForRemoteNotifications()
             } else {
                 UIApplication.sharedApplication().registerForRemoteNotificationTypes([.Badge, .Sound, .Badge, .Alert])

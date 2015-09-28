@@ -129,27 +129,27 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         cancelButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view).multipliedBy(0.33)
             make.size.equalTo(CGSizeMake(24, 24))
-            make.bottom.equalTo(self.view).with.offset(-38.5)
+            make.bottom.equalTo(self.view).offset(-38.5)
         }
         
         
         sendButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
-            make.bottom.equalTo(self.view).with.offset(-20)
+            make.bottom.equalTo(self.view).offset(-20)
         }
         
         
         backButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view).multipliedBy(0.33)
             make.size.equalTo(CGSizeMake(24, 24))
-            make.bottom.equalTo(self.view).with.offset(-38.5)
+            make.bottom.equalTo(self.view).offset(-38.5)
         }
         
         captureButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(60, 60))
-            make.bottom.equalTo(self.view).with.offset(-20)
+            make.bottom.equalTo(self.view).offset(-20)
         }
     }
     
@@ -196,15 +196,19 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     }
     
     func alertToEnableCamera() {
-        let alert = UIAlertController(title: "camera".localizedString, message: "enable_camera_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
+        if #available(iOS 8.0, *) {
+            let alert = UIAlertController(title: "camera".localizedString, message: "enable_camera_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Default, handler: nil))
+            
+            alert.addAction(UIAlertAction(title: "allow".localizedString, style: .Cancel, handler: { (alert) -> Void in
+                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+            }))
+            self.navigationController?.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            // Fallback on earlier versions
+            //TODO: PUT SOMETHING HERE FOR IOS 7
+        }
         
-        alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Default, handler: nil))
-        
-        alert.addAction(UIAlertAction(title: "allow".localizedString, style: .Cancel, handler: { (alert) -> Void in
-            UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
-        }))
-        
-        self.navigationController?.presentViewController(alert, animated: true, completion: nil)
     }
     
     func beginSession() {
@@ -238,7 +242,9 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
                 }
                 
                 self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-                self.previewView.layer.addSublayer(self.previewLayer)
+                if self.previewLayer != nil {
+                    self.previewView.layer.addSublayer(self.previewLayer!)
+                }
                 
                 let width =  self.view.frame.height * (768.0 / 1024.0)
                 self.previewLayer?.frame = CGRectMake((self.view.frame.width - width) / 2, 0, width, self.view.frame.height)
@@ -384,7 +390,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         self.view.addSubview(notesVC!.view)
         notesVC!.didMoveToParentViewController(self)
         
-        notesVC!.view.snp_makeConstraints({ (make) -> () in
+        notesVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
         })
         
@@ -429,7 +435,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         if streetName == nil && !updatingLocation {
             
             updatingLocation = true
-            let location = locations.last as! CLLocation
+            let location = locations.last as CLLocation!
             self.location = location
             
             SearchOperations.getStreetName(location.coordinate, completion: { (result) -> Void in

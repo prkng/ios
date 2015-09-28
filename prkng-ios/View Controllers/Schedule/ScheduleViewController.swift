@@ -116,17 +116,17 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
     func setupConstraints () {
         
         leftView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(Styles.Sizes.modalViewHeaderHeight)
+            make.top.equalTo(self.view).offset(Styles.Sizes.modalViewHeaderHeight)
             make.left.equalTo(self.view)
             make.bottom.equalTo(self.view)
             make.width.equalTo(self.LEFT_VIEW_WIDTH)
         }
         
         for label in leftView.timeLabels {
-            label.snp_makeConstraints({ (make) -> () in
+            label.snp_makeConstraints(closure: { (make) -> () in
                 make.left.equalTo(self.leftView)
-                make.right.equalTo(self.leftView).with.offset(-7)
-                make.centerY.equalTo(self.leftView.snp_top).with.offset((self.ITEM_HOUR_HEIGHT * label.scheduleTimeModel!.yIndexMultiplier) + (label.scheduleTimeModel!.heightOffsetInHours * self.ITEM_HOUR_HEIGHT) + self.COLUMN_HEADER_HEIGHT)
+                make.right.equalTo(self.leftView).offset(-7)
+                make.centerY.equalTo(self.leftView.snp_top).offset((self.ITEM_HOUR_HEIGHT * label.scheduleTimeModel!.yIndexMultiplier) + (label.scheduleTimeModel!.heightOffsetInHours * self.ITEM_HOUR_HEIGHT) + self.COLUMN_HEADER_HEIGHT)
                 make.top.greaterThanOrEqualTo(self.leftView)
                 make.bottom.lessThanOrEqualTo(self.leftView)
             })
@@ -134,8 +134,8 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
 
         
         scrollView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(Styles.Sizes.modalViewHeaderHeight)
-            make.left.equalTo(self.view).with.offset(self.LEFT_VIEW_WIDTH)
+            make.top.equalTo(self.view).offset(Styles.Sizes.modalViewHeaderHeight)
+            make.left.equalTo(self.view).offset(self.LEFT_VIEW_WIDTH)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
         }
@@ -148,11 +148,11 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         
         var columnIndex = 0
         for column in columnViews {
-            column.snp_makeConstraints({ (make) -> () in
+            column.snp_makeConstraints(closure: { (make) -> () in
                 make.top.equalTo(self.contentView)
                 make.bottom.equalTo(self.contentView)
                 make.width.equalTo(self.COLUMN_SIZE)
-                make.left.equalTo(self.contentView).with.offset(self.COLUMN_SIZE * CGFloat(columnIndex))
+                make.left.equalTo(self.contentView).offset(self.COLUMN_SIZE * CGFloat(columnIndex))
             });
             columnIndex++;
         }
@@ -165,8 +165,8 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
             
             let columnView = columnViews[scheduleItem.columnIndex!]
             
-            itemView.snp_makeConstraints({ (make) -> () in
-                make.top.equalTo(columnView).with.offset((self.ITEM_HOUR_HEIGHT * scheduleItem.yIndexMultiplier!) + self.COLUMN_HEADER_HEIGHT)
+            itemView.snp_makeConstraints(closure: { (make) -> () in
+                make.top.equalTo(columnView).offset((self.ITEM_HOUR_HEIGHT * scheduleItem.yIndexMultiplier!) + self.COLUMN_HEADER_HEIGHT)
                 make.height.equalTo(self.ITEM_HOUR_HEIGHT * scheduleItem.heightMultiplier!)
                 make.left.equalTo(columnView)
                 make.right.equalTo(columnView)

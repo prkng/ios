@@ -68,7 +68,7 @@ class PRKPopupViewController: GAITrackedViewController {
         super.viewDidLoad()
         self.screenName = "Car Sharing Info View"
         
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
             let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
             let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
@@ -79,7 +79,7 @@ class PRKPopupViewController: GAITrackedViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             animate()
         }
     }
@@ -132,8 +132,8 @@ class PRKPopupViewController: GAITrackedViewController {
         
         containerView.snp_makeConstraints { (make) -> () in
             make.center.equalTo(self.view)
-            make.left.equalTo(self.view).with.offset(24)
-            make.right.equalTo(self.view).with.offset(-24)
+            make.left.equalTo(self.view).offset(24)
+            make.right.equalTo(self.view).offset(-24)
         }
         
         iconView.snp_makeConstraints { (make) -> () in
@@ -146,17 +146,17 @@ class PRKPopupViewController: GAITrackedViewController {
             make.top.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.subtitleLabel).with.offset(14)
+            make.bottom.equalTo(self.subtitleLabel).offset(14)
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleContainer).with.offset(25)
+            make.top.equalTo(self.titleContainer).offset(25)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
         
         subtitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(7)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(7)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
@@ -169,10 +169,10 @@ class PRKPopupViewController: GAITrackedViewController {
         }
         
         textLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textContainer).with.offset(14)
-            make.left.equalTo(self.textContainer).with.offset(24)
-            make.right.equalTo(self.textContainer).with.offset(-24)
-            make.bottom.equalTo(self.textContainer).with.offset(-22)
+            make.top.equalTo(self.textContainer).offset(14)
+            make.left.equalTo(self.textContainer).offset(24)
+            make.right.equalTo(self.textContainer).offset(-24)
+            make.bottom.equalTo(self.textContainer).offset(-22)
         }
 
         

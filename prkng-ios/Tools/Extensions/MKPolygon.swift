@@ -20,7 +20,7 @@ extension MKPolygon {
 
     func polygonToRMPolygonAnnotation(mapView: RMMapView) -> RMPolygonAnnotation {
         
-        var coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
+        let coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
         self.getCoordinates(coordsPointer, range: NSMakeRange(0, self.pointCount))
         var locations: [CLLocation] = []
         for i in 0..<self.pointCount {
@@ -29,12 +29,12 @@ extension MKPolygon {
         }
         
         var interiorRMPolygonAnnotations = [RMPolygonAnnotation]()
-        for interiorPolygon in self.interiorPolygons as! [MKPolygon] {
-            var interiorPolygonAnnotation = interiorPolygon.polygonToRMPolygonAnnotation(mapView)
+        for interiorPolygon in self.interiorPolygons as [MKPolygon]! {
+            let interiorPolygonAnnotation = interiorPolygon.polygonToRMPolygonAnnotation(mapView)
             interiorRMPolygonAnnotations.append(interiorPolygonAnnotation)
         }
         
-        var polygonAnnotation = RMPolygonAnnotation(mapView: mapView, points: locations, interiorPolygons: interiorRMPolygonAnnotations)
+        let polygonAnnotation = RMPolygonAnnotation(mapView: mapView, points: locations, interiorPolygons: interiorRMPolygonAnnotations)
         polygonAnnotation.userInfo = ["type": "polygon"]
         polygonAnnotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
         polygonAnnotation.lineColor = Styles.Colors.red1
@@ -82,7 +82,7 @@ extension MKPolygon {
 
         var interiorPolygons = [MKPolygon]()
         for polygon in polygons {
-            interiorPolygons += (polygon.interiorPolygons as! [MKPolygon])
+            interiorPolygons += (polygon.interiorPolygons as [MKPolygon]!)
         }
         return interiorPolygons
         

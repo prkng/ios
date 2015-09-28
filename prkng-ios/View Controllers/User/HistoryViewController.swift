@@ -124,7 +124,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         }
         
         iconView.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.titleLabel.snp_top).with.offset(-12)
+            make.bottom.equalTo(self.titleLabel.snp_top).offset(-12)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(68, 68))
         }
@@ -148,7 +148,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         backButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 80, height: 26))
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(-20)
+            make.bottom.equalTo(self.view).offset(-20)
         }
         
     }
@@ -169,7 +169,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         
         if let checkins = groupedCheckins {
             
-            let key = checkins.keys.array[section]
+            let key = Array(checkins.keys)[section]
             if let array = checkins[key] {
                 return array.count
             }
@@ -189,7 +189,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             cell = HistoryTableViewCell(style: .Default, reuseIdentifier: identifier)
         }
         
-        let key = groupedCheckins!.keys.array[indexPath.section]
+        let key = Array(groupedCheckins!.keys)[indexPath.section]
         let checkin = groupedCheckins![key]![indexPath.row]
         
         let formatter = NSDateFormatter()
@@ -210,7 +210,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        let key = groupedCheckins!.keys.array[indexPath.section]
+        let key = Array(groupedCheckins!.keys)[indexPath.section]
         let checkin = groupedCheckins![key]![indexPath.row]
         
         if settingsDelegate != nil {
@@ -229,7 +229,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let sectionHeader = HistorySectionTitleView()
-        sectionHeader.label.text = groupedCheckins!.keys.array[section].uppercaseString
+        sectionHeader.label.text = Array(groupedCheckins!.keys)[section].uppercaseString
         return sectionHeader
     }
     

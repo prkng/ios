@@ -274,16 +274,16 @@ struct ViewFactory {
         
         timeLimitLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(imageView)
-            make.centerY.equalTo(imageView).with.offset(-1) //plus moves down, minus moves up
+            make.centerY.equalTo(imageView).offset(-1) //plus moves down, minus moves up
             make.size.equalTo(CGSize(width: 15, height: 17))
         }
         
         if addMaxLabel {
             imageView.addSubview(maxLabel)
             
-            maxLabel.snp_makeConstraints({ (make) -> () in
+            maxLabel.snp_makeConstraints(closure: { (make) -> () in
                 make.centerX.equalTo(imageView)
-                make.centerY.equalTo(imageView).with.offset(25)
+                make.centerY.equalTo(imageView).offset(25)
             })
             
         }
@@ -310,9 +310,9 @@ struct ViewFactory {
         
         imageView.addSubview(maxLabel)
         
-        maxLabel.snp_makeConstraints({ (make) -> () in
+        maxLabel.snp_makeConstraints(closure: { (make) -> () in
             make.centerX.equalTo(imageView)
-            make.top.equalTo(imageView.snp_bottom).with.offset(2)
+            make.top.equalTo(imageView.snp_bottom).offset(2)
         })
         
         return imageView

@@ -47,8 +47,8 @@ class HistorySectionTitleView: UIView {
     func setupConstraints () {
         
         label.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self).with.offset(27)
-            make.right.equalTo(self).with.offset(-25)
+            make.left.equalTo(self).offset(27)
+            make.right.equalTo(self).offset(-25)
             make.top.equalTo(self)
             make.bottom.equalTo(self)
         }

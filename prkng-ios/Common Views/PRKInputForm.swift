@@ -137,7 +137,7 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
         for i in 0..<cells.count {
             
             let cell = cells[i]
-            cell.snp_makeConstraints({ (make) -> () in
+            cell.snp_makeConstraints(closure: { (make) -> () in
                 make.left.equalTo(self.containerView)
                 make.right.equalTo(self.containerView)
                 make.height.equalTo(self.FIELD_HEIGHT)

@@ -100,18 +100,18 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         
         pageControl.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(0 - TutorialViewController.PAGE_CONTROL_BOTTOM_OFFSET)
+            make.bottom.equalTo(self.view).offset(0 - TutorialViewController.PAGE_CONTROL_BOTTOM_OFFSET)
         }
         
         nextButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(-31)
+            make.bottom.equalTo(self.view).offset(-31)
             make.size.equalTo(CGSizeMake(40, 40))
         }
         
         getStartedButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(-31)
+            make.bottom.equalTo(self.view).offset(-31)
             make.size.equalTo(CGSizeMake(113, 26))
         }
         
@@ -119,11 +119,11 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     
     func nextButtonTapped() {
         
-        if pageViewController.viewControllers.count < 1 {
+        if pageViewController.viewControllers != nil && pageViewController.viewControllers!.count < 1 {
             return
         }
         
-        if let vc = pageViewController.viewControllers[0] as? TutorialContentViewController {
+        if let vc = pageViewController.viewControllers?.first as? TutorialContentViewController {
             
             let index = vc.pageIndex >= contentViewControllers.count ? contentViewControllers.count - 1 : vc.pageIndex + 1
             
@@ -177,7 +177,7 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     
     
     func updateViews() {
-        pageControl.currentPage = (pageViewController.viewControllers[0] as! TutorialContentViewController).pageIndex
+        pageControl.currentPage = (pageViewController.viewControllers?.first as! TutorialContentViewController).pageIndex
         
         if (pageControl.currentPage == pageCount - 1 && self.getStartedButton.hidden) {
             

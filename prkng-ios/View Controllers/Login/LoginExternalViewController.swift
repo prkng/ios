@@ -206,7 +206,7 @@ class LoginExternalViewController: AbstractViewController {
         
         profileContainer.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.scrollContentView)
-            make.centerY.equalTo(self.scrollContentView).with.offset(-self.BOTTOM_VIEW_HEIGHT)
+            make.centerY.equalTo(self.scrollContentView).offset(-self.BOTTOM_VIEW_HEIGHT)
         }
         
         avatarButton.snp_makeConstraints { (make) -> () in
@@ -217,28 +217,28 @@ class LoginExternalViewController: AbstractViewController {
         
         editProfileLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.profileContainer)
-            make.top.equalTo(self.avatarButton.snp_bottom).with.offset(16)
+            make.top.equalTo(self.avatarButton.snp_bottom).offset(16)
         }
         
         
         nameLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.editProfileLabel.snp_bottom).with.offset(9)
-            make.left.equalTo(self.profileContainer).with.offset(10)
-            make.right.equalTo(self.profileContainer).with.offset(-10)
+            make.top.equalTo(self.editProfileLabel.snp_bottom).offset(9)
+            make.left.equalTo(self.profileContainer).offset(10)
+            make.right.equalTo(self.profileContainer).offset(-10)
         }
         
         
         emailLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.nameLabel.snp_bottom).with.offset(25)
-            make.left.equalTo(self.profileContainer).with.offset(10)
-            make.right.equalTo(self.profileContainer).with.offset(-10)
+            make.top.equalTo(self.nameLabel.snp_bottom).offset(25)
+            make.left.equalTo(self.profileContainer).offset(10)
+            make.right.equalTo(self.profileContainer).offset(-10)
         }
         
         
         changeCityLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.cityContainer.snp_top).with.offset(-5)
-            make.left.equalTo(self.scrollContentView).with.offset(10)
-            make.right.equalTo(self.scrollContentView).with.offset(-10)
+            make.bottom.equalTo(self.cityContainer.snp_top).offset(-5)
+            make.left.equalTo(self.scrollContentView).offset(10)
+            make.right.equalTo(self.scrollContentView).offset(-10)
         }
         
         cityContainer.snp_makeConstraints { (make) -> () in
@@ -254,13 +254,13 @@ class LoginExternalViewController: AbstractViewController {
         
         prevCityButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(30, 30))
-            make.left.equalTo(self.cityContainer).with.offset(32)
+            make.left.equalTo(self.cityContainer).offset(32)
             make.centerY.equalTo(self.cityContainer)
         }
         
         nextCityButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(30, 30))
-            make.right.equalTo(self.cityContainer).with.offset(-32)
+            make.right.equalTo(self.cityContainer).offset(-32)
             make.centerY.equalTo(self.cityContainer)
         }
         
@@ -273,13 +273,13 @@ class LoginExternalViewController: AbstractViewController {
         }
         
         notificationsLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.notificationsContainer).with.offset(30)
+            make.left.equalTo(self.notificationsContainer).offset(30)
             make.centerY.equalTo(self.notificationsContainer)
         }
         
         notificationSelection.snp_makeConstraints { (make) -> () in
             make.width.greaterThanOrEqualTo(164) //42(15 min)+39(30 min)+23(off)+60(spacing is 3*20)
-            make.right.equalTo(self.notificationsContainer).with.offset(-20).priorityHigh()
+            make.right.equalTo(self.notificationsContainer).offset(-20).priorityHigh()
             make.top.equalTo(self.notificationsContainer)
             make.bottom.equalTo(self.notificationsContainer)
         }

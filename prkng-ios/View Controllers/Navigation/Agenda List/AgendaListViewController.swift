@@ -53,7 +53,7 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
     func setupConstraints() {
         
         tableView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(Styles.Sizes.modalViewHeaderHeight)
+            make.top.equalTo(self.view).offset(Styles.Sizes.modalViewHeaderHeight)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)

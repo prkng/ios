@@ -72,14 +72,14 @@ class HistoryTableViewCell: UITableViewCell {
         }
         
         dateLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.dayLabel.snp_right).with.offset(15)
-            make.right.equalTo(self.contentView).with.offset(-25)
-            make.top.equalTo(self.contentView).with.offset(5)
+            make.left.equalTo(self.dayLabel.snp_right).offset(15)
+            make.right.equalTo(self.contentView).offset(-25)
+            make.top.equalTo(self.contentView).offset(5)
             make.height.equalTo(17)            
         }
         
         addressLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.dateLabel.snp_bottom).with.offset(1.5)
+            make.top.equalTo(self.dateLabel.snp_bottom).offset(1.5)
             make.left.equalTo(self.dateLabel)
             make.right.equalTo(self.dateLabel)
         }
@@ -87,7 +87,7 @@ class HistoryTableViewCell: UITableViewCell {
         seperator.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.contentView)
             make.right.equalTo(self.contentView)
-            make.bottom.equalTo(self.contentView).with.offset(-1)
+            make.bottom.equalTo(self.contentView).offset(-1)
             make.height.equalTo(1)
         }
         

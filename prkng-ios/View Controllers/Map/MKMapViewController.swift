@@ -389,7 +389,7 @@ class MKMapViewController: MapViewController {
 //        trackUserButton.snp_updateConstraints{ (make) -> () in
 //            make.size.equalTo(CGSizeMake(0, 0))
 //            make.centerX.equalTo(self.view).multipliedBy(0.33)
-//            make.bottom.equalTo(self.view).with.offset(-48)
+//            make.bottom.equalTo(self.view).offset(-48)
 //        }
 //        animateTrackUserButton()
 //    }
@@ -399,7 +399,7 @@ class MKMapViewController: MapViewController {
 //        trackUserButton.snp_updateConstraints{ (make) -> () in
 //            make.size.equalTo(CGSizeMake(36, 36))
 //            make.centerX.equalTo(self.view).multipliedBy(0.33)
-//            make.bottom.equalTo(self.view).with.offset(-30)
+//            make.bottom.equalTo(self.view).offset(-30)
 //        }
 //        animateTrackUserButton()
 //    }

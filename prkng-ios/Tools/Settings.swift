@@ -207,7 +207,12 @@ struct Settings {
         
         if (spot != nil && time != nil) {
             Settings.incrementNumberOfCheckins()
-            NSUserDefaults.standardUserDefaults().setObject(spot!.json.rawData(), forKey: CHECKED_IN_SPOT_KEY)
+            do {
+                let rawData = try spot!.json.rawData()
+                NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: CHECKED_IN_SPOT_KEY)
+            } catch {
+                DDLoggerWrapper.logError("Could not save raw spot json data to user defaults. Sad face.")
+            }
             NSUserDefaults.standardUserDefaults().setObject(spot!.identifier, forKey: CHECKED_IN_SPOT_ID_KEY)
             NSUserDefaults.standardUserDefaults().setObject(time!, forKey: LAST_CHECKIN_TIME_KEY)
             NSUserDefaults.standardUserDefaults().setObject(spot?.availableTimeInterval(), forKey: LAST_CHECKIN_EXPIRE_KEY)
@@ -235,7 +240,12 @@ struct Settings {
     }
     
     static func cacheLotsJson(lots: JSON) {
-        NSUserDefaults.standardUserDefaults().setObject(lots.rawData(), forKey: LOCALLY_CACHED_LOTS)
+        do {
+            let rawData = try lots.rawData()
+            NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: LOCALLY_CACHED_LOTS)
+        } catch {
+            DDLoggerWrapper.logError("Could not save raw lots json data to user defaults. Sad face.")
+        }
     }
     
     static func getCachedLots() -> [Lot] {
@@ -263,7 +273,7 @@ struct Settings {
     static func lastCheckinTime() -> NSDate? {
         
         if (checkedIn()) {
-            var time = NSUserDefaults.standardUserDefaults().objectForKey(LAST_CHECKIN_TIME_KEY) as! NSDate
+            return NSUserDefaults.standardUserDefaults().objectForKey(LAST_CHECKIN_TIME_KEY) as? NSDate
         }
         
         return nil
@@ -360,7 +370,7 @@ struct Settings {
         if userLocation != nil {
             for location in locations {
                 //            NSLog("lat: %f, long: %f", location.coordinate.latitude, location.coordinate.longitude)
-                if userLocation.distanceFromLocation(location) < 10 {
+                if userLocation?.distanceFromLocation(location) < 10 {
                     //then use this as the only region
                     useUserLocationAsRegion = true
                 }
@@ -409,7 +419,7 @@ struct Settings {
         }
         
         if useUserLocationAsRegion {
-            let region = CLCircularRegion(center: userLocation.coordinate, radius: 5, identifier: "prkng_check_out_monitor")
+            let region = CLCircularRegion(center: userLocation!.coordinate, radius: 5, identifier: "prkng_check_out_monitor")
             delegate.locationManager.startMonitoringForRegion(region)
         } else {
             for region in regions {
@@ -430,8 +440,8 @@ struct Settings {
 
     
     static func cancelNotification() {
-        for notification in UIApplication.sharedApplication().scheduledLocalNotifications {
-            UIApplication.sharedApplication().cancelLocalNotification(notification as! UILocalNotification)
+        for notification in UIApplication.sharedApplication().scheduledLocalNotifications ?? [] {
+            UIApplication.sharedApplication().cancelLocalNotification(notification)
         }
         clearNotificationBadge()
     }
@@ -453,15 +463,6 @@ struct Settings {
             return filePath
         }
         return nil
-    }
-    
-    static func iOS8OrLater() -> Bool {
-        
-        if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_7_1) {
-            return false
-        } else {
-            return true
-        }
     }
     
     static func setMapUserMode(mode: MapUserMode) {

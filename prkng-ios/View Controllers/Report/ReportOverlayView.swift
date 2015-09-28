@@ -93,21 +93,21 @@ class ReportOverlayView: UIView {
         }
         
         streetNameLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.textLabel.snp_top).with.offset(-77)
+            make.bottom.equalTo(self.textLabel.snp_top).offset(-77)
             make.height.equalTo(34)
             make.left.equalTo(self)
             make.right.equalTo(self)
         }
         
         reportTitleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.streetNameLabel.snp_top).with.offset(-7)
+            make.bottom.equalTo(self.streetNameLabel.snp_top).offset(-7)
             make.height.equalTo(34)
             make.left.equalTo(self)
             make.right.equalTo(self)
         }
         
         thanksLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textLabel.snp_bottom).with.offset(98)
+            make.top.equalTo(self.textLabel.snp_bottom).offset(98)
             make.height.equalTo(17)
             make.left.equalTo(self)
             make.right.equalTo(self)

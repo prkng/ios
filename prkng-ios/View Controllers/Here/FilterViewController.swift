@@ -39,7 +39,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         searchFilterView = SearchFilterView()
         showingFilters = false
 
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
             backgroundView = UIVisualEffectView(effect: blurEffect)
             //            backgroundView.backgroundColor = Styles.Colors.cream1
@@ -78,9 +78,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     func setupConstraints() {
         
         containerView.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(12)
-            make.right.equalTo(self.view).with.offset(-12-46)
-            make.top.equalTo(self.view).with.offset(Styles.Sizes.statusBarHeight + 10)
+            make.left.equalTo(self.view).offset(12)
+            make.right.equalTo(self.view).offset(-12-46)
+            make.top.equalTo(self.view).offset(Styles.Sizes.statusBarHeight + 10)
             make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
         }
         
@@ -154,9 +154,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         
         //make the constraints to match the search bar
         containerView.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(12)
-            make.right.equalTo(self.view).with.offset(-12-46)
-            make.top.equalTo(self.view).with.offset(Styles.Sizes.statusBarHeight + 10)
+            make.left.equalTo(self.view).offset(12)
+            make.right.equalTo(self.view).offset(-12-46)
+            make.top.equalTo(self.view).offset(Styles.Sizes.statusBarHeight + 10)
             make.height.equalTo(height)
         }
         
@@ -240,7 +240,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
                 make.top.equalTo(self.searchFilterView.snp_bottom)
                 make.left.equalTo(self.view)
                 make.right.equalTo(self.view)
-                make.bottom.equalTo(self.view).with.offset(-height)
+                make.bottom.equalTo(self.view).offset(-height)
             }
             
             self.autocompleteVC?.view.alpha = 0

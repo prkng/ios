@@ -24,7 +24,7 @@ class PRKTextField: UIView, UITextFieldDelegate {
     }
     var text: String {
         get {
-            return textField.text
+            return textField.text ?? ""
         }
         set(newValue) {
             textField.text = newValue
@@ -150,22 +150,22 @@ class PRKTextField: UIView, UITextFieldDelegate {
         if fieldType != .PasswordWithForgotButton {
             
             textField.snp_makeConstraints { (make) -> () in
-                make.left.equalTo(self.containerView).with.offset(40)
-                make.right.equalTo(self.containerView).with.offset(-40)
+                make.left.equalTo(self.containerView).offset(40)
+                make.right.equalTo(self.containerView).offset(-40)
                 make.centerY.equalTo(self.containerView)
             }
 
         } else {
             
             textField.snp_makeConstraints { (make) -> () in
-                make.left.equalTo(self.containerView).with.offset(40)
-                make.right.equalTo(self.forgotButton.snp_left).with.offset(-15)
+                make.left.equalTo(self.containerView).offset(40)
+                make.right.equalTo(self.forgotButton.snp_left).offset(-15)
                 make.centerY.equalTo(self.containerView)
             }
             
             forgotButton.snp_makeConstraints { (make) -> () in
                 make.centerY.equalTo(self.containerView)
-                make.right.equalTo(self.containerView).with.offset(-25)
+                make.right.equalTo(self.containerView).offset(-25)
                 make.width.equalTo(82)
             }
 

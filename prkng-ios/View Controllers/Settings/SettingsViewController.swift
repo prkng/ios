@@ -249,13 +249,13 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         notificationsLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.notificationsContainer).with.offset(30)
+            make.left.equalTo(self.notificationsContainer).offset(30)
             make.centerY.equalTo(self.notificationsContainer)
         }
         
         notificationSelection.snp_makeConstraints { (make) -> () in
             make.width.equalTo(self.notificationSelection.calculatedWidth())
-            make.right.equalTo(self.notificationsContainer).with.offset(-20).priorityHigh()
+            make.right.equalTo(self.notificationsContainer).offset(-20).priorityHigh()
             make.top.equalTo(self.notificationsContainer)
             make.bottom.equalTo(self.notificationsContainer)
         }
@@ -291,19 +291,19 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 //        }
 //        
 //        carSharingLabel.snp_makeConstraints { (make) -> () in
-//            make.left.equalTo(self.carSharingContainer).with.offset(30)
+//            make.left.equalTo(self.carSharingContainer).offset(30)
 //            make.centerY.equalTo(self.carSharingContainer)
 //        }
 //
 //        carSharingButton.snp_makeConstraints { (make) -> () in
-//            make.left.equalTo(self.carSharingLabel.snp_right).with.offset(10)
+//            make.left.equalTo(self.carSharingLabel.snp_right).offset(10)
 //            make.centerY.equalTo(self.carSharingContainer)
 //            make.size.equalTo(CGSize(width: 18, height: 18))
 //        }
 //
 //        carSharingSelection.snp_makeConstraints { (make) -> () in
 //            make.width.equalTo(self.carSharingSelection.calculatedWidth())
-//            make.right.equalTo(self.carSharingContainer).with.offset(-20).priorityHigh()
+//            make.right.equalTo(self.carSharingContainer).offset(-20).priorityHigh()
 //            make.top.equalTo(self.carSharingContainer)
 //            make.bottom.equalTo(self.carSharingContainer)
 //        }
@@ -327,8 +327,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.centerX.equalTo(self.topContainer)
             make.centerY.equalTo(self.topContainer).multipliedBy(0.8).priorityLow()
             make.height.equalTo(150)
-            make.left.equalTo(self.topContainer).with.offset(20)
-            make.right.equalTo(self.topContainer).with.offset(-20)
+            make.left.equalTo(self.topContainer).offset(20)
+            make.right.equalTo(self.topContainer).offset(-20)
         }
         
         profileImageView.snp_makeConstraints { (make) -> () in
@@ -338,7 +338,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         profileTitleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.profileNameLabel.snp_top).with.offset(-3)
+            make.bottom.equalTo(self.profileNameLabel.snp_top).offset(-3)
             make.left.equalTo(self.profileContainer)
             make.right.equalTo(self.profileContainer)
         }
@@ -359,41 +359,42 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         prevCityButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(30, 30))
-            make.left.equalTo(self.cityContainer).with.offset(32)
+            make.left.equalTo(self.cityContainer).offset(32)
             make.centerY.equalTo(self.cityContainer)
         }
         
         nextCityButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(30, 30))
-            make.right.equalTo(self.cityContainer).with.offset(-32)
+            make.right.equalTo(self.cityContainer).offset(-32)
             make.centerY.equalTo(self.cityContainer)
         }
         
         historyButton.snp_makeConstraints { (make) -> () in
-            make.top.greaterThanOrEqualTo(self.profileContainer.snp_bottom).with.offset(5).priorityHigh()
-            make.bottom.equalTo(self.topContainer).with.offset(-15)
+            make.top.greaterThanOrEqualTo(self.profileContainer.snp_bottom).offset(5).priorityHigh()
+            make.bottom.equalTo(self.topContainer).offset(-15)
             make.centerX.equalTo(self.topContainer)
             make.size.equalTo(CGSizeMake(125, 26))
         }
         
         sendLogButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(24, 24))
-            make.top.equalTo(self.view).with.offset(14+20)
-            make.right.equalTo(self.view).with.offset(-20)
+            make.top.equalTo(self.view).offset(14+20)
+            make.right.equalTo(self.view).offset(-20)
         }
 
     }
     
     func sendLogButtonTapped(sender: UIButton) {
-        var mailVC = MFMailComposeViewController()
+        let mailVC = MFMailComposeViewController()
         mailVC.mailComposeDelegate = self
         let udid = NSUUID().UUIDString
         mailVC.setSubject("Support Ticket - " + udid)
         mailVC.setToRecipients(["ant@prk.ng"])
         if let filePath = Settings.logFilePath() {
-            let fileData = NSData(contentsOfFile: filePath)
-            mailVC.addAttachmentData(fileData, mimeType: "text", fileName: udid + ".log")
-            self.presentViewController(mailVC, animated: true, completion: nil)
+            if let fileData = NSData(contentsOfFile: filePath) {
+                mailVC.addAttachmentData(fileData, mimeType: "text", fileName: udid + ".log")
+                self.presentViewController(mailVC, animated: true, completion: nil)
+            }
         }
     }
     
@@ -506,7 +507,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 //        self.view.addSubview(carSharingInfoVC!.view)
 //        carSharingInfoVC!.didMoveToParentViewController(self)
 //        
-//        carSharingInfoVC!.view.snp_makeConstraints({ (make) -> () in
+//        carSharingInfoVC!.view.snp_makeConstraints(closure: { (make) -> () in
 //            make.edges.equalTo(self.view)
 //        })
 //        

@@ -10,7 +10,6 @@ import UIKit
 import MessageUI
 import Fabric
 import Crashlytics
-import GoogleMaps
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate, PRKDialogViewControllerDelegate, MFMailComposeViewControllerDelegate {
@@ -21,9 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
         
+        //used to debug app transport security
+        setenv("CFNETWORK_DIAGNOSTICS", "3", 1)
+        
 //        //register for background location usage for updates
         locationManager.delegate = self
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             locationManager.requestAlwaysAuthorization()
         }
         
@@ -84,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //
         //notification set up
         //
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let yesAction = UIMutableUserNotificationAction()
             yesAction.identifier = "yes"
             yesAction.title = "yes".localizedString
@@ -102,11 +104,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             category.setActions([yesAction, noAction], forContext: UIUserNotificationActionContext.Default)
             
             if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
-                application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: NSSet(object: category) as Set<NSObject>))
+                application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: (NSSet(object: category) as! Set<UIUserNotificationCategory>)))
             }
         }
 
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             application.registerForRemoteNotifications()
             //the types are registered above with registerUserNotificationSettings
         } else {
@@ -362,10 +364,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         //next create the alert
         let alert = UILocalNotification()
         alert.userInfo = ["identifier" : "prkng_check_out_monitor"]
-        alert.alertTitle = "on_the_go".localizedString
+        if #available(iOS 8.2, *) {
+            alert.alertTitle = "on_the_go".localizedString
+        }
         alert.alertBody = String(format: "left_spot_question".localizedString, spotName)
         alert.soundName = UILocalNotificationDefaultSoundName
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             alert.category = "prkng_check_out_monitor"
         }
         UIApplication.sharedApplication().presentLocalNotificationNow(alert)
@@ -386,7 +390,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         if answeredYes {
             
-            let spotIdentifier = Settings.checkedInSpot()?.identifier ?? ""
             SpotOperations.checkout({ (completed) -> Void in
                 Settings.checkOut()
 

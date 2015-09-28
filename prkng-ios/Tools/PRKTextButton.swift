@@ -150,8 +150,8 @@ class PRKTextButton: UIView {
             }
         } else {
             label.snp_remakeConstraints { (make) -> () in
-                make.left.equalTo(self).with.offset(12)
-                make.right.equalTo(self.imageView.snp_left).with.offset(2)
+                make.left.equalTo(self).offset(12)
+                make.right.equalTo(self.imageView.snp_left).offset(2)
                 make.centerY.equalTo(self)
             }
         }

@@ -121,7 +121,7 @@ class ScheduleItemView : UIView {
         imageView.snp_makeConstraints { (make) -> () in
             make.center.equalTo(self.containerView)
             make.size.lessThanOrEqualTo(CGSize(width: 25, height: 25))
-            make.size.lessThanOrEqualTo(self.containerView).with.offset(-2)
+            make.size.lessThanOrEqualTo(self.containerView).offset(-2)
         }
         
         didSetupConstraints = true

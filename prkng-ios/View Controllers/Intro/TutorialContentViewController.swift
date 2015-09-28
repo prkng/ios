@@ -80,17 +80,17 @@ class TutorialContentViewController: GAITrackedViewController {
         }
         
         imageView.snp_makeConstraints { (make) -> () in
-            make.top.lessThanOrEqualTo(self.view).with.offset(60)
-            make.left.equalTo(self.view).with.offset(35)
-            make.right.equalTo(self.view).with.offset(-35)
-            make.height.lessThanOrEqualTo(self.imageView.snp_width).with.offset(0 - self.SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE)
+            make.top.lessThanOrEqualTo(self.view).offset(60)
+            make.left.equalTo(self.view).offset(35)
+            make.right.equalTo(self.view).offset(-35)
+            make.height.lessThanOrEqualTo(self.imageView.snp_width).offset(0 - self.SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE)
         }
         
         textLabel.snp_makeConstraints { (make) -> () in
-            make.top.lessThanOrEqualTo(self.imageView.snp_bottom).with.offset(20)
-            make.left.equalTo(self.view).with.offset(40)
-            make.right.equalTo(self.view).with.offset(-40)
-            make.bottom.lessThanOrEqualTo(self.view).with.offset(-40 - TutorialViewController.PAGE_CONTROL_BOTTOM_OFFSET)
+            make.top.lessThanOrEqualTo(self.imageView.snp_bottom).offset(20)
+            make.left.equalTo(self.view).offset(40)
+            make.right.equalTo(self.view).offset(-40)
+            make.bottom.lessThanOrEqualTo(self.view).offset(-40 - TutorialViewController.PAGE_CONTROL_BOTTOM_OFFSET)
         }
         
     }

@@ -112,34 +112,34 @@ class RegisterEmailViewController: AbstractViewController {
         }
         
         backButton.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.scrollContentView.snp_left).with.offset(29)
+            make.centerX.equalTo(self.scrollContentView.snp_left).offset(29)
             make.centerY.equalTo(self.topLabel)
             make.size.equalTo(CGSize(width: 50, height: 50))
         }
 
         topLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.scrollContentView).with.offset(50)
+            make.top.equalTo(self.scrollContentView).offset(50)
             make.centerX.equalTo(self.scrollContentView)
         }
         
         inputForm.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.scrollContentView)
             make.right.equalTo(self.scrollContentView)
-            make.top.equalTo(self.scrollContentView).with.offset(97)
+            make.top.equalTo(self.scrollContentView).offset(97)
             make.height.greaterThanOrEqualTo(self.inputForm.height())
         }
         
         let registerButtonTopOffset = UIScreen.mainScreen().bounds.width == 320 ? 20 : 50
 
         registerButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.inputForm.snp_bottom).with.offset(registerButtonTopOffset)
-            make.left.equalTo(self.view).with.offset(Styles.Sizes.bigRoundedButtonSideMargin)
-            make.right.equalTo(self.view).with.offset(-Styles.Sizes.bigRoundedButtonSideMargin)
+            make.top.equalTo(self.inputForm.snp_bottom).offset(registerButtonTopOffset)
+            make.left.equalTo(self.view).offset(Styles.Sizes.bigRoundedButtonSideMargin)
+            make.right.equalTo(self.view).offset(-Styles.Sizes.bigRoundedButtonSideMargin)
             make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         
         loginButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.registerButton.snp_bottom).with.offset(16)
+            make.top.equalTo(self.registerButton.snp_bottom).offset(16)
             make.centerX.equalTo(self.scrollContentView)
         }
 

@@ -119,20 +119,20 @@ class AgendaTableViewCell: UITableViewCell {
         }
         
         dayLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.colorView.snp_right).with.offset(14)
+            make.left.equalTo(self.colorView.snp_right).offset(14)
             make.centerY.equalTo(self.contentView)
         }
         
         icon.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.dayLabel.snp_right).with.offset(10)
-            make.right.equalTo(self.contentView).with.offset(-114)
+            make.left.equalTo(self.dayLabel.snp_right).offset(10)
+            make.right.equalTo(self.contentView).offset(-114)
             make.centerY.equalTo(self.contentView)
             make.size.equalTo(CGSizeMake(25, 25))
         }
         
         hoursText.snp_makeConstraints { (make) -> () in
-            make.left.lessThanOrEqualTo(self.icon.snp_right).with.offset(10)
-            make.right.equalTo(self.contentView).with.offset(-40)
+            make.left.lessThanOrEqualTo(self.icon.snp_right).offset(10)
+            make.right.equalTo(self.contentView).offset(-40)
             make.centerY.equalTo(self.contentView)
         }
         

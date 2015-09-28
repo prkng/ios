@@ -52,7 +52,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         super.viewDidLoad()
         self.screenName = "Here - Checkin Message"
         
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
             let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
             let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
@@ -62,7 +62,7 @@ class CheckinMessageViewController: GAITrackedViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             animate()
         }
     }
@@ -117,8 +117,8 @@ class CheckinMessageViewController: GAITrackedViewController {
         
         containerView.snp_makeConstraints { (make) -> () in
             make.centerY.equalTo(self.view)
-            make.left.equalTo(self.view).with.offset(24)
-            make.right.equalTo(self.view).with.offset(-24)
+            make.left.equalTo(self.view).offset(24)
+            make.right.equalTo(self.view).offset(-24)
         }
         
         iconView.snp_makeConstraints { (make) -> () in
@@ -141,30 +141,30 @@ class CheckinMessageViewController: GAITrackedViewController {
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.imageView.snp_bottom).with.offset(17)
+            make.top.equalTo(self.imageView.snp_bottom).offset(17)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
         
         
         subtitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(7)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(7)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
         
         textContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textLabel).with.offset(-14)
+            make.top.equalTo(self.textLabel).offset(-14)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.textLabel).with.offset(14)
+            make.bottom.equalTo(self.textLabel).offset(14)
         }
         
         textLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.subtitleLabel.snp_bottom).with.offset(25)
-            make.left.equalTo(self.containerView).with.offset(24)
-            make.right.equalTo(self.containerView).with.offset(-24)
-            make.bottom.equalTo(self.containerView).with.offset(-14)
+            make.top.equalTo(self.subtitleLabel.snp_bottom).offset(25)
+            make.left.equalTo(self.containerView).offset(24)
+            make.right.equalTo(self.containerView).offset(-24)
+            make.bottom.equalTo(self.containerView).offset(-14)
         }
     
         

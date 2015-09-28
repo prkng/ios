@@ -1,7 +1,7 @@
 //
-//  Snap
+//  SnapKit
 //
-//  Copyright (c) 2011-2014 Masonry Team - https://github.com/Masonry
+//  Copyright (c) 2011-2015 SnapKit Team - https://github.com/SnapKit
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,8 @@ import AppKit
 #endif
 
 /**
- * ConstraintItem is a class that is used while building constraints.
- */
+    Used to assist in building a constraint
+*/
 public class ConstraintItem {
     
     internal init(object: AnyObject?, attributes: ConstraintAttributes) {
@@ -41,24 +41,13 @@ public class ConstraintItem {
     internal var attributes: ConstraintAttributes
     
     internal var view: View? {
-        get {
-            if let view = self.object as? View {
-                return view
-            }
-            return nil
-        }
+        return self.object as? View
     }
     
-    #if os(iOS)
-    internal var layoutSupport: UILayoutSupport? {
-        get {
-            if let layoutSupport = self.object as? UILayoutSupport {
-                return layoutSupport
-            }
-            return nil
-        }
+    @available(iOS 7.0, *)
+    internal var layoutSupport: LayoutSupport? {
+        return self.object as? LayoutSupport
     }
-    #endif
 }
 
 

@@ -11,14 +11,14 @@ import UIKit
 extension CALayer {
 
     func addScaleAnimation() {
-        var animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
+        let animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
         
         animation.values = [0,1]
         
         animation.duration = 0.6
         var timingFunctions: Array<CAMediaTimingFunction> = []
         
-        for i in 0...animation.values.count {
+        for _ in 0...animation.values!.count {
             timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
         }
         
@@ -32,7 +32,7 @@ extension CALayer {
     
     func wigglewigglewiggle() {
         
-        if let animation = self.animationForKey("wigglewigglewiggle") {
+        if let _ = self.animationForKey("wigglewigglewiggle") {
             self.removeAnimationForKey("wigglewigglewiggle")
         }
         

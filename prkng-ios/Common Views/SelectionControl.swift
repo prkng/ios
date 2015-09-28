@@ -139,7 +139,7 @@ class SelectionControl: UIControl {
         
         if(buttons.count == 1) {
             
-            buttons[0].snp_makeConstraints({ (make) -> () in
+            buttons[0].snp_makeConstraints(closure: { (make) -> () in
                 make.center.equalTo(self)
                 make.size.equalTo(self.buttonSize)
             })
@@ -152,13 +152,13 @@ class SelectionControl: UIControl {
                 
                 for index in 0...buttons.count-1 {
                     
-                    buttonContainers[index].snp_makeConstraints({ (make) -> () in
-                        make.left.equalTo(rightConstraint).with.offset(self.fixedWidth)
+                    buttonContainers[index].snp_makeConstraints(closure: { (make) -> () in
+                        make.left.equalTo(rightConstraint).offset(self.fixedWidth)
                         make.top.equalTo(self)
                         make.bottom.equalTo(self)
                     })
                     
-                    buttons[index].snp_makeConstraints({ (make) -> () in
+                    buttons[index].snp_makeConstraints(closure: { (make) -> () in
                         make.edges.equalTo(self.buttonContainers[index])
                         
                     })
@@ -173,7 +173,7 @@ class SelectionControl: UIControl {
                     let multiplier : Float = 2.0 * Float(index + 1) / (Float(buttons.count + 1) )  // MAGIC =)
                     NSLog("multiplier : %f", multiplier)
                     
-                    buttonContainers[index].snp_makeConstraints({ (make) -> () in
+                    buttonContainers[index].snp_makeConstraints(closure: { (make) -> () in
                         make.width.equalTo(self).multipliedBy(1.0 / Float(self.buttons.count))
                         make.height.equalTo(self)
                         make.centerX.equalTo(self).multipliedBy(multiplier)
@@ -182,7 +182,7 @@ class SelectionControl: UIControl {
                     })
                     
                     
-                    buttons[index].snp_makeConstraints({ (make) -> () in
+                    buttons[index].snp_makeConstraints(closure: { (make) -> () in
                         make.center.equalTo(self.buttonContainers[index])
                         make.size.equalTo(self.buttonSize)
                         
@@ -199,7 +199,7 @@ class SelectionControl: UIControl {
         
         selectionIndicator.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.buttons[self.selectedIndex])
-            make.centerY.equalTo(self.buttons[self.selectedIndex]).with.offset(12)
+            make.centerY.equalTo(self.buttons[self.selectedIndex]).offset(12)
             make.size.equalTo(self.selectionIndicatorSize)
         }
         
@@ -246,7 +246,7 @@ class SelectionControl: UIControl {
             
             selectionIndicator.snp_remakeConstraints { (make) -> () in
                 make.centerX.equalTo(self.buttons[self.selectedIndex])
-                make.centerY.equalTo(self.buttons[self.selectedIndex]).with.offset(12)
+                make.centerY.equalTo(self.buttons[self.selectedIndex]).offset(12)
                 make.size.equalTo(self.selectionIndicatorSize)
             }
             

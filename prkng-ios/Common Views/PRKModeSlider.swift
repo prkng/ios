@@ -46,7 +46,7 @@ class PRKModeSlider: UIControl {
         
         super.init(frame: CGRectZero)
         
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
             backgroundView = UIVisualEffectView(effect: blurEffect)
         } else {
@@ -97,8 +97,8 @@ class PRKModeSlider: UIControl {
         
         for i in 0..<titles.count {
             let label = labels[i]
-            label.snp_remakeConstraints({ (make) -> () in
-                make.left.equalTo(self).with.offset(CGFloat(i)*self.thumbWidth)
+            label.snp_remakeConstraints(closure: { (make) -> () in
+                make.left.equalTo(self).offset(CGFloat(i)*self.thumbWidth)
                 make.top.equalTo(self)
                 make.height.equalTo(self.height)
                 make.width.equalTo(self.thumbWidth)

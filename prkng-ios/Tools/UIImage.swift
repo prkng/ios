@@ -62,7 +62,7 @@ extension UIImage {
     class func imageFromView(view: UIView) -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, Settings.screenScale)
-        view.layer.renderInContext(UIGraphicsGetCurrentContext())
+        view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
         let viewImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return viewImage
@@ -146,7 +146,7 @@ extension UIImage {
         layer.colors = [fromColor.CGColor, toColor.CGColor]
         
         UIGraphicsBeginImageContext(size)
-        layer.renderInContext(UIGraphicsGetCurrentContext())
+        layer.renderInContext(UIGraphicsGetCurrentContext()!)
 //        let image = UIGraphicsGetImageFromCurrentContext()
         let image = UIGraphicsGetImageFromCurrentImageContext()
 
@@ -160,7 +160,7 @@ extension UIImage {
         let scale = UIScreen.mainScreen().scale
         let scaledDrawRect = CGRect(x: drawRect.origin.x * scale, y: drawRect.origin.y * scale, width: drawRect.size.width * scale, height: drawRect.size.height * scale)
         let croppedImage = CGImageCreateWithImageInRect(self.CGImage, scaledDrawRect)
-        return UIImage(CGImage: croppedImage, scale: scale, orientation: self.imageOrientation) ?? UIImage()
+        return UIImage(CGImage: croppedImage!, scale: scale, orientation: self.imageOrientation) ?? UIImage()
     }
 
     

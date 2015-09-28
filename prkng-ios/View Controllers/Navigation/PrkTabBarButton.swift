@@ -95,12 +95,12 @@ class PrkTabBarButton: UIControl {
         self.iconView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(30, 30))
             make.centerX.equalTo(self)
-            make.top.equalTo(self).with.offset(7)
+            make.top.equalTo(self).offset(7)
         }
         
         self.titleLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self)
-            make.top.equalTo(self.iconView.snp_bottom).with.offset(3)
+            make.top.equalTo(self.iconView.snp_bottom).offset(3)
         }        
         
         self.badge.snp_makeConstraints { (make) -> () in

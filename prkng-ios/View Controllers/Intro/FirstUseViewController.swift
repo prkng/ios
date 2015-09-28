@@ -88,13 +88,13 @@ class FirstUseViewController: AbstractViewController {
         parkNowButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(100, 26))
-            make.bottom.equalTo(self.tourButton.snp_top).with.offset(-20)
+            make.bottom.equalTo(self.tourButton.snp_top).offset(-20)
         }
         
         tourButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(Styles.Sizes.bigRoundedButtonSideMargin)
-            make.right.equalTo(self.view).with.offset(-Styles.Sizes.bigRoundedButtonSideMargin)
-            make.bottom.equalTo(self.view).with.offset(-60)
+            make.left.equalTo(self.view).offset(Styles.Sizes.bigRoundedButtonSideMargin)
+            make.right.equalTo(self.view).offset(-Styles.Sizes.bigRoundedButtonSideMargin)
+            make.bottom.equalTo(self.view).offset(-60)
             make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         

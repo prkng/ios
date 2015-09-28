@@ -146,45 +146,45 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         timeImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 20, height: 20))
             make.centerY.equalTo(self.containerView)
-            make.left.equalTo(self.containerView).with.offset(28.5)
+            make.left.equalTo(self.containerView).offset(28.5)
         }
         
         messageLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.timeImageView.snp_right).with.offset(15)
+            make.left.equalTo(self.timeImageView.snp_right).offset(15)
             make.right.equalTo(self.containerView)
             make.centerY.equalTo(self.containerView)
         }
         
         infoButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.containerView.snp_right).with.offset(-28.5)
+            make.right.equalTo(self.containerView.snp_right).offset(-28.5)
             make.centerY.equalTo(self.containerView)
             make.size.equalTo(CGSize(width: 18, height: 18))
         }
         
         scrollView.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.containerView).with.offset(28.5 + 20 + 14)
+            make.left.equalTo(self.containerView).offset(28.5 + 20 + 14)
             make.right.equalTo(self.containerView)
             make.top.equalTo(self.containerView)
             make.height.equalTo(TimeFilterView.SCROLL_HEIGHT)
         }
         
         contentView.snp_makeConstraints { (make) -> () in
-            make.width.greaterThanOrEqualTo(self.scrollView).multipliedBy(2).with.offset(70)
+            make.width.greaterThanOrEqualTo(self.scrollView).multipliedBy(2).offset(70)
             make.height.equalTo(self.scrollView)
             make.edges.equalTo(self.scrollView)
         }
         
-        times[0].label.snp_makeConstraints({ (make) -> () in
+        times[0].label.snp_makeConstraints(closure: { (make) -> () in
             make.centerY.equalTo(self.contentView)
-            make.left.equalTo(self.contentView).with.offset(-30)
+            make.left.equalTo(self.contentView).offset(-30)
         })
         
         var leftViewToLabel: UIView = times[0].label
         for i in 1..<times.count {
             let label = times[i].label
-            label.snp_makeConstraints({ (make) -> () in
+            label.snp_makeConstraints(closure: { (make) -> () in
                 make.centerY.equalTo(self.contentView)
-                make.left.equalTo(leftViewToLabel.snp_right).with.offset(30)
+                make.left.equalTo(leftViewToLabel.snp_right).offset(30)
             })
             leftViewToLabel = label
         }

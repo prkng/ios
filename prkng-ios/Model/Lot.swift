@@ -56,7 +56,7 @@ func ==(lhs: Lot, rhs: Lot) -> Bool {
     return lhs.identifier == rhs.identifier
 }
 
-class Lot: NSObject, Hashable, DetailObject {
+class Lot: NSObject, DetailObject {
    
     var json: JSON
     var identifier: String
@@ -283,8 +283,8 @@ class Lot: NSObject, Hashable, DetailObject {
                 let daily = item["daily"].float
                 
                 let floatList = item["hours"].arrayValue
-                var firstFloat: Float = floatList.first?.floatValue ?? 0
-                var secondFloat: Float = floatList.last?.floatValue ?? 0
+                let firstFloat: Float = floatList.first?.floatValue ?? 0
+                let secondFloat: Float = floatList.last?.floatValue ?? 0
                 
                 let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: hourly, max: max, daily: daily, start: NSTimeInterval(firstFloat*60*60), end: NSTimeInterval(secondFloat*60*60))
                 self.agenda.append(lotAgendaPeriod)

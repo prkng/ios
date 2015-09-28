@@ -184,20 +184,20 @@ class SpotDetailView: UIView {
         }
 
         headerTitleLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.topContainer).with.offset(25)
-            make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).with.offset(-15)
-            make.bottom.equalTo(self.titleLabel.snp_top).with.offset(1)
+            make.left.equalTo(self.topContainer).offset(25)
+            make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).offset(-15)
+            make.bottom.equalTo(self.titleLabel.snp_top).offset(1)
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.topContainer.snp_bottom).with.offset(self.TITLE_LABEL_BOTTOM_OFFSET)
-            make.left.equalTo(self.topContainer).with.offset(24)
-            make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).with.offset(-15)
+            make.bottom.equalTo(self.topContainer.snp_bottom).offset(self.TITLE_LABEL_BOTTOM_OFFSET)
+            make.left.equalTo(self.topContainer).offset(24)
+            make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).offset(-15)
         }
         
         topContainerRightView.snp_makeConstraints { (make) -> () in
             make.centerY.equalTo(self.topContainer)
-            make.right.equalTo(self.topContainer.snp_centerX).multipliedBy(1.66).with.offset(28)
+            make.right.equalTo(self.topContainer.snp_centerX).multipliedBy(1.66).offset(28)
             make.height.equalTo(Styles.Sizes.spotDetailViewTopPortionHeight)
             make.width.equalTo(56)
         }
@@ -205,12 +205,12 @@ class SpotDetailView: UIView {
         checkinImageView.snp_makeConstraints { (make) -> () in
             make.height.equalTo(24)
             make.centerX.equalTo(self.topContainerRightView)
-            make.top.equalTo(self.topContainerRightView).with.offset(27)
+            make.top.equalTo(self.topContainerRightView).offset(27)
         }
 
         checkinImageLabel.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.topContainerRightView)
-            make.bottom.equalTo(self.topContainerRightView).with.offset(-14)
+            make.bottom.equalTo(self.topContainerRightView).offset(-14)
         }
         
         bottomContainer.snp_makeConstraints { (make) -> () in
@@ -232,13 +232,13 @@ class SpotDetailView: UIView {
         }
         
         leftTopLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.bottomLeftContainer).with.offset(24)
-            make.top.equalTo(self.bottomLeftContainer).with.offset(self.VERTICAL_LABEL_SPACING)
+            make.left.equalTo(self.bottomLeftContainer).offset(24)
+            make.top.equalTo(self.bottomLeftContainer).offset(self.VERTICAL_LABEL_SPACING)
         }
         
         leftBottomLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.bottomLeftContainer).with.offset(24)
-            make.bottom.equalTo(self.bottomLeftContainer).with.offset(-self.VERTICAL_LABEL_SPACING)
+            make.left.equalTo(self.bottomLeftContainer).offset(24)
+            make.bottom.equalTo(self.bottomLeftContainer).offset(-self.VERTICAL_LABEL_SPACING)
         }
         
         bottomRightContainer.snp_makeConstraints { (make) -> () in
@@ -249,20 +249,20 @@ class SpotDetailView: UIView {
         }
         
         rightTopLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.bottomRightContainer).with.offset(24)
-            make.top.equalTo(self.bottomRightContainer).with.offset(self.VERTICAL_LABEL_SPACING)
+            make.left.equalTo(self.bottomRightContainer).offset(24)
+            make.top.equalTo(self.bottomRightContainer).offset(self.VERTICAL_LABEL_SPACING)
         }
         
         rightBottomLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.bottomRightContainer).with.offset(24)
-            make.bottom.equalTo(self.bottomRightContainer).with.offset(-self.VERTICAL_LABEL_SPACING)
+            make.left.equalTo(self.bottomRightContainer).offset(24)
+            make.bottom.equalTo(self.bottomRightContainer).offset(-self.VERTICAL_LABEL_SPACING)
             make.right.lessThanOrEqualTo(self.scheduleImageView.snp_left)
         }
         
         scheduleImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 22, height: Styles.Sizes.spotDetailViewBottomPortionHeight))// + 22))
             make.centerY.equalTo(self.bottomContainer)
-            make.right.equalTo(self.bottomContainer.snp_centerX).multipliedBy(1.66).with.offset(11)
+            make.right.equalTo(self.bottomContainer.snp_centerX).multipliedBy(1.66).offset(11)
         }
 
         didSetupConstraints = true

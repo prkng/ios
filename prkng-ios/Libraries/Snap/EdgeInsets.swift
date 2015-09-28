@@ -1,7 +1,7 @@
 //
-//  Snap
+//  SnapKit
 //
-//  Copyright (c) 2011-2014 Masonry Team - https://github.com/Masonry
+//  Copyright (c) 2011-2015 SnapKit Team - https://github.com/SnapKit
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -30,12 +30,7 @@ public func EdgeInsetsMake(top: CGFloat, left: CGFloat, bottom: CGFloat, right: 
 public let EdgeInsetsZero = EdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 #else
 import AppKit
-public struct EdgeInsets {
-    public var top: CGFloat // specify amount to inset (positive) for each of the edges. values can be negative to 'outset'
-    public var left: CGFloat
-    public var bottom: CGFloat
-    public var right: CGFloat
-}
+public typealias EdgeInsets = NSEdgeInsets
 public func EdgeInsetsMake(top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat) -> EdgeInsets {
     return EdgeInsets(top: top, left: left, bottom: bottom, right: right)
 }

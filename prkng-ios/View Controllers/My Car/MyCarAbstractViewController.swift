@@ -35,7 +35,7 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
         self.view.addSubview(popupVC!.view)
         popupVC!.didMoveToParentViewController(self)
         
-        popupVC!.view.snp_makeConstraints({ (make) -> () in
+        popupVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
         })
         

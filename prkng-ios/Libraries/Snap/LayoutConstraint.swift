@@ -1,7 +1,7 @@
 //
-//  Snap
+//  SnapKit
 //
-//  Copyright (c) 2011-2014 Masonry Team - https://github.com/Masonry
+//  Copyright (c) 2011-2015 SnapKit Team - https://github.com/SnapKit
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,13 +28,15 @@ import AppKit
 #endif
 
 /**
-* LayoutConstraint is a subclass of NSLayoutConstraint to assist Snap and also provide better debugging
+    Used to add extra information to the actual `NSLayoutConstraint`'s that will UIKit/AppKit will utilize
 */
 public class LayoutConstraint: NSLayoutConstraint {
-    internal var constraint: Constraint?
+    
+    internal var snp_constraint: Constraint? = nil
+    
 }
 
-public func ==(left: LayoutConstraint, right: LayoutConstraint) -> Bool {
+internal func ==(left: LayoutConstraint, right: LayoutConstraint) -> Bool {
     if left.firstItem !== right.firstItem {
         return false
     }
@@ -58,3 +60,4 @@ public func ==(left: LayoutConstraint, right: LayoutConstraint) -> Bool {
     }
     return true
 }
+

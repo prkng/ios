@@ -90,8 +90,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         
         trackUserButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.view).with.offset(-12)
-            make.top.equalTo(self.view).with.offset(Styles.Sizes.statusBarHeight + 10)
+            make.right.equalTo(self.view).offset(-12)
+            make.top.equalTo(self.view).offset(Styles.Sizes.statusBarHeight + 10)
             make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
             make.width.equalTo(46)
         }

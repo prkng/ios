@@ -135,34 +135,34 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         }
         
         headerTitleLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.leftImageView.snp_right).with.offset(5)
-            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).with.offset(-10)
-            make.right.lessThanOrEqualTo(self.rightView.snp_left).with.offset(-10)
-            make.bottom.equalTo(self.titleLabel.snp_top).with.offset(1)
+            make.left.equalTo(self.leftImageView.snp_right).offset(5)
+            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).offset(-10)
+            make.right.lessThanOrEqualTo(self.rightView.snp_left).offset(-10)
+            make.bottom.equalTo(self.titleLabel.snp_top).offset(1)
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.leftImageView.snp_right).with.offset(4)
-            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).with.offset(-10)
-            make.right.lessThanOrEqualTo(self.rightView.snp_left).with.offset(-10)
-            make.bottom.equalTo(self.topContainer).with.offset(-15)
+            make.left.equalTo(self.leftImageView.snp_right).offset(4)
+            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).offset(-10)
+            make.right.lessThanOrEqualTo(self.rightView.snp_left).offset(-10)
+            make.bottom.equalTo(self.topContainer).offset(-15)
         }
         
         leftImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(20, 20)) //real size is CGSizeMake(11, 9)
-            make.left.equalTo(self.topContainer).with.offset(10)
-            make.bottom.equalTo(self.topContainer).with.offset(-22)
+            make.left.equalTo(self.topContainer).offset(10)
+            make.bottom.equalTo(self.topContainer).offset(-22)
         }
 
         rightImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(17, 15))
-            make.right.equalTo(self.topContainer).with.offset(-33)
-            make.bottom.equalTo(self.topContainer).with.offset(-25)
+            make.right.equalTo(self.topContainer).offset(-33)
+            make.bottom.equalTo(self.topContainer).offset(-25)
         }
         
         rightView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width:34, height:40))
-            make.right.equalTo(self.topContainer).with.offset(-42)
+            make.right.equalTo(self.topContainer).offset(-42)
             make.centerY.equalTo(self.topContainer)
         }
         

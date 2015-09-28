@@ -98,16 +98,16 @@ class LoginMethodSelectionView: UIView {
         }
         
         facebookButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.containerView).with.offset(Styles.Sizes.bigRoundedButtonSideMargin)
-            make.right.equalTo(self.containerView).with.offset(-Styles.Sizes.bigRoundedButtonSideMargin)
-            make.top.equalTo(self.loginTitleLabel.snp_bottom).with.offset(14)
+            make.left.equalTo(self.containerView).offset(Styles.Sizes.bigRoundedButtonSideMargin)
+            make.right.equalTo(self.containerView).offset(-Styles.Sizes.bigRoundedButtonSideMargin)
+            make.top.equalTo(self.loginTitleLabel.snp_bottom).offset(14)
             make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         
         googleButton.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.containerView).with.offset(Styles.Sizes.bigRoundedButtonSideMargin)
-            make.right.equalTo(self.containerView).with.offset(-Styles.Sizes.bigRoundedButtonSideMargin)
-            make.bottom.equalTo(self.containerView).with.offset(-70)
+            make.left.equalTo(self.containerView).offset(Styles.Sizes.bigRoundedButtonSideMargin)
+            make.right.equalTo(self.containerView).offset(-Styles.Sizes.bigRoundedButtonSideMargin)
+            make.bottom.equalTo(self.containerView).offset(-70)
             make.height.equalTo(Styles.Sizes.bigRoundedButtonHeight)
         }
         

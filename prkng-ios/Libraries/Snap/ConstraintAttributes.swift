@@ -1,7 +1,7 @@
 //
-//  Snap
+//  SnapKit
 //
-//  Copyright (c) 2011-2014 Masonry Team - https://github.com/Masonry
+//  Copyright (c) 2011-2015 SnapKit Team - https://github.com/SnapKit
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,9 +28,9 @@ import AppKit
 #endif
 
 /**
- * ConstraintAttributes is an options set that maps to NSLayoutAttributes.
- */
-internal struct ConstraintAttributes: RawOptionSetType, BooleanType {
+    Used to define `NSLayoutAttributes` in a more concise and composite manner
+*/
+internal struct ConstraintAttributes: OptionSetType, BooleanType {
     
     internal init(rawValue: UInt) {
         self.rawValue = rawValue
@@ -43,124 +43,139 @@ internal struct ConstraintAttributes: RawOptionSetType, BooleanType {
     }
     
     internal private(set) var rawValue: UInt
-    internal static var allZeros: ConstraintAttributes { return self(0) }
-    internal static func convertFromNilLiteral() -> ConstraintAttributes { return self(0) }
+    internal static var allZeros: ConstraintAttributes { return self.init(0) }
+    internal static func convertFromNilLiteral() -> ConstraintAttributes { return self.init(0) }
     internal var boolValue: Bool { return self.rawValue != 0 }
     
-    func toRaw() -> UInt { return self.rawValue }
-    static func fromRaw(raw: UInt) -> ConstraintAttributes? { return self(raw) }
-    static func fromMask(raw: UInt) -> ConstraintAttributes { return self(raw) }
+    internal func toRaw() -> UInt { return self.rawValue }
+    internal static func fromRaw(raw: UInt) -> ConstraintAttributes? { return self.init(raw) }
+    internal static func fromMask(raw: UInt) -> ConstraintAttributes { return self.init(raw) }
     
     // normal
     
-    internal static var None: ConstraintAttributes { return self(0) }
-    internal static var Left: ConstraintAttributes { return self(1) }
-    internal static var Top: ConstraintAttributes {  return self(2) }
-    internal static var Right: ConstraintAttributes { return self(4) }
-    internal static var Bottom: ConstraintAttributes { return self(8) }
-    internal static var Leading: ConstraintAttributes { return self(16) }
-    internal static var Trailing: ConstraintAttributes { return self(32) }
-    internal static var Width: ConstraintAttributes { return self(64) }
-    internal static var Height: ConstraintAttributes { return self(128) }
-    internal static var CenterX: ConstraintAttributes { return self(256) }
-    internal static var CenterY: ConstraintAttributes { return self(512) }
-    internal static var Baseline: ConstraintAttributes { return self(1024) }
+    internal static var None: ConstraintAttributes { return self.init(0) }
+    internal static var Left: ConstraintAttributes { return self.init(1) }
+    internal static var Top: ConstraintAttributes {  return self.init(2) }
+    internal static var Right: ConstraintAttributes { return self.init(4) }
+    internal static var Bottom: ConstraintAttributes { return self.init(8) }
+    internal static var Leading: ConstraintAttributes { return self.init(16) }
+    internal static var Trailing: ConstraintAttributes { return self.init(32) }
+    internal static var Width: ConstraintAttributes { return self.init(64) }
+    internal static var Height: ConstraintAttributes { return self.init(128) }
+    internal static var CenterX: ConstraintAttributes { return self.init(256) }
+    internal static var CenterY: ConstraintAttributes { return self.init(512) }
+    internal static var Baseline: ConstraintAttributes { return self.init(1024) }
     
-    #if os(iOS)
-    internal static var FirstBaseline: ConstraintAttributes { return self(2048) }
-    internal static var LeftMargin: ConstraintAttributes { return self(4096) }
-    internal static var RightMargin: ConstraintAttributes { return self(8192) }
-    internal static var TopMargin: ConstraintAttributes { return self(16384) }
-    internal static var BottomMargin: ConstraintAttributes { return self(32768) }
-    internal static var LeadingMargin: ConstraintAttributes { return self(65536) }
-    internal static var TrailingMargin: ConstraintAttributes { return self(131072) }
-    internal static var CenterXWithinMargins: ConstraintAttributes { return self(262144) }
-    internal static var CenterYWithinMargins: ConstraintAttributes { return self(524288) }
-    #endif
+    @available(iOS 8.0, *)
+    internal static var FirstBaseline: ConstraintAttributes { return self.init(2048) }
+    @available(iOS 8.0, *)
+    internal static var LeftMargin: ConstraintAttributes { return self.init(4096) }
+    @available(iOS 8.0, *)
+    internal static var RightMargin: ConstraintAttributes { return self.init(8192) }
+    @available(iOS 8.0, *)
+    internal static var TopMargin: ConstraintAttributes { return self.init(16384) }
+    @available(iOS 8.0, *)
+    internal static var BottomMargin: ConstraintAttributes { return self.init(32768) }
+    @available(iOS 8.0, *)
+    internal static var LeadingMargin: ConstraintAttributes { return self.init(65536) }
+    @available(iOS 8.0, *)
+    internal static var TrailingMargin: ConstraintAttributes { return self.init(131072) }
+    @available(iOS 8.0, *)
+    internal static var CenterXWithinMargins: ConstraintAttributes { return self.init(262144) }
+    @available(iOS 8.0, *)
+    internal static var CenterYWithinMargins: ConstraintAttributes { return self.init(524288) }
     
     // aggregates
     
-    internal static var Edges: ConstraintAttributes { return self(15) }
-    internal static var Size: ConstraintAttributes { return self(192) }
-    internal static var Center: ConstraintAttributes { return self(768) }
+    internal static var Edges: ConstraintAttributes { return self.init(15) }
+    internal static var Size: ConstraintAttributes { return self.init(192) }
+    internal static var Center: ConstraintAttributes { return self.init(768) }
     
-    #if os(iOS)
-    internal static var Margins: ConstraintAttributes { return self(61440) }
-    internal static var CenterWithinMargins: ConstraintAttributes { return self(786432) }
-    #endif
+    @available(iOS 8.0, *)
+    internal static var Margins: ConstraintAttributes { return self.init(61440) }
     
-    internal var layoutAttributes:Array<NSLayoutAttribute> {
-        var attrs: Array<NSLayoutAttribute> = []
-            if (self & ConstraintAttributes.Left) {
-                attrs.append(.Left)
-            }
-            if (self & ConstraintAttributes.Top) {
-                attrs.append(.Top)
-            }
-            if (self & ConstraintAttributes.Right) {
-                attrs.append(.Right)
-            }
-            if (self & ConstraintAttributes.Bottom) {
-                attrs.append(.Bottom)
-            }
-            if (self & ConstraintAttributes.Leading) {
-                attrs.append(.Leading)
-            }
-            if (self & ConstraintAttributes.Trailing) {
-                attrs.append(.Trailing)
-            }
-            if (self & ConstraintAttributes.Width) {
-                attrs.append(.Width)
-            }
-            if (self & ConstraintAttributes.Height) {
-                attrs.append(.Height)
-            }
-            if (self & ConstraintAttributes.CenterX) {
-                attrs.append(.CenterX)
-            }
-            if (self & ConstraintAttributes.CenterY) {
-                attrs.append(.CenterY)
-            }
-            if (self & ConstraintAttributes.Baseline) {
-                attrs.append(.Baseline)
-            }
-            #if os(iOS)
-            if (self & ConstraintAttributes.FirstBaseline) {
-                attrs.append(.FirstBaseline)
-            }
-            if (self & ConstraintAttributes.LeftMargin) {
-                attrs.append(.LeftMargin)
-            }
-            if (self & ConstraintAttributes.RightMargin) {
-                attrs.append(.RightMargin)
-            }
-            if (self & ConstraintAttributes.TopMargin) {
-                attrs.append(.TopMargin)
-            }
-            if (self & ConstraintAttributes.BottomMargin) {
-                attrs.append(.BottomMargin)
-            }
-            if (self & ConstraintAttributes.LeadingMargin) {
-                attrs.append(.LeadingMargin)
-            }
-            if (self & ConstraintAttributes.TrailingMargin) {
-                attrs.append(.TrailingMargin)
-            }
-            if (self & ConstraintAttributes.CenterXWithinMargins) {
-                attrs.append(.CenterXWithinMargins)
-            }
-            if (self & ConstraintAttributes.CenterYWithinMargins) {
-                attrs.append(.CenterYWithinMargins)
-            }
-            #endif
+    @available(iOS 8.0, *)
+    internal static var CenterWithinMargins: ConstraintAttributes { return self.init(786432) }
+    
+    internal var layoutAttributes:[NSLayoutAttribute] {
+        var attrs = [NSLayoutAttribute]()
+        if (self.contains(ConstraintAttributes.Left)) {
+            attrs.append(.Left)
+        }
+        if (self.contains(ConstraintAttributes.Top)) {
+            attrs.append(.Top)
+        }
+        if (self.contains(ConstraintAttributes.Right)) {
+            attrs.append(.Right)
+        }
+        if (self.contains(ConstraintAttributes.Bottom)) {
+            attrs.append(.Bottom)
+        }
+        if (self.contains(ConstraintAttributes.Leading)) {
+            attrs.append(.Leading)
+        }
+        if (self.contains(ConstraintAttributes.Trailing)) {
+            attrs.append(.Trailing)
+        }
+        if (self.contains(ConstraintAttributes.Width)) {
+            attrs.append(.Width)
+        }
+        if (self.contains(ConstraintAttributes.Height)) {
+            attrs.append(.Height)
+        }
+        if (self.contains(ConstraintAttributes.CenterX)) {
+            attrs.append(.CenterX)
+        }
+        if (self.contains(ConstraintAttributes.CenterY)) {
+            attrs.append(.CenterY)
+        }
+        if (self.contains(ConstraintAttributes.Baseline)) {
+            attrs.append(.Baseline)
+        }
+        
+        #if os(iOS)
+        #if SNAPKIT_DEPLOYMENT_LEGACY
+        guard #available(iOS 8.0, *) else {
             return attrs
+        }
+        #endif
+        if (self.contains(ConstraintAttributes.FirstBaseline)) {
+            attrs.append(.FirstBaseline)
+        }
+        if (self.contains(ConstraintAttributes.LeftMargin)) {
+            attrs.append(.LeftMargin)
+        }
+        if (self.contains(ConstraintAttributes.RightMargin)) {
+            attrs.append(.RightMargin)
+        }
+        if (self.contains(ConstraintAttributes.TopMargin)) {
+            attrs.append(.TopMargin)
+        }
+        if (self.contains(ConstraintAttributes.BottomMargin)) {
+            attrs.append(.BottomMargin)
+        }
+        if (self.contains(ConstraintAttributes.LeadingMargin)) {
+            attrs.append(.LeadingMargin)
+        }
+        if (self.contains(ConstraintAttributes.TrailingMargin)) {
+            attrs.append(.TrailingMargin)
+        }
+        if (self.contains(ConstraintAttributes.CenterXWithinMargins)) {
+            attrs.append(.CenterXWithinMargins)
+        }
+        if (self.contains(ConstraintAttributes.CenterYWithinMargins)) {
+            attrs.append(.CenterYWithinMargins)
+        }
+        #endif
+        
+        return attrs
     }
 }
 internal func +=(inout left: ConstraintAttributes, right: ConstraintAttributes) {
-    left = (left | right)
+    left.unionInPlace(right)
 }
 internal func -=(inout left: ConstraintAttributes, right: ConstraintAttributes) {
-    left = left & ~right
+    left.subtractInPlace(right)
 }
 internal func ==(left: ConstraintAttributes, right: ConstraintAttributes) -> Bool {
     return left.rawValue == right.rawValue

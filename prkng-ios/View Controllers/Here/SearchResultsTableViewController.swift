@@ -77,7 +77,7 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
             make.edges.equalTo(self.view)
         }
 
-//        if Settings.iOS8OrLater() {
+//        if #available(iOS 8.0, *) {
 //            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Dark)
 //            let blurView = UIVisualEffectView(effect: blurEffect)
 //            blurView.frame = self.view.frame

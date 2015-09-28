@@ -109,34 +109,34 @@ class MapMessageView: UIView {
         }
         
         mapMessageViewImage.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.messageContainer).with.offset(34)
-            make.centerY.equalTo(self.messageContainer).with.offset(Styles.Sizes.statusBarHeight/2)
-            make.bottom.lessThanOrEqualTo(self.messageContainer).with.offset(-15)
+            make.left.equalTo(self.messageContainer).offset(34)
+            make.centerY.equalTo(self.messageContainer).offset(Styles.Sizes.statusBarHeight/2)
+            make.bottom.lessThanOrEqualTo(self.messageContainer).offset(-15)
             make.size.equalTo(CGSize(width: 20, height: 20))
         }
         
         mapMessageLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.mapMessageViewImage.snp_right).with.offset(16).priorityRequired()
-            make.right.equalTo(self.messageContainer).with.offset(-20).priorityRequired()
-            make.centerY.equalTo(self.messageContainer).with.offset(Styles.Sizes.statusBarHeight/2).priorityRequired()
-            make.bottom.greaterThanOrEqualTo(self.messageContainer).with.offset(-15).priorityRequired()
+            make.left.equalTo(self.mapMessageViewImage.snp_right).offset(16).priorityRequired()
+            make.right.equalTo(self.messageContainer).offset(-20).priorityRequired()
+            make.centerY.equalTo(self.messageContainer).offset(Styles.Sizes.statusBarHeight/2).priorityRequired()
+            make.bottom.greaterThanOrEqualTo(self.messageContainer).offset(-15).priorityRequired()
         }
         
         hideCityPicker()
         
         availableInLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.availableCityPicker).with.offset(34)
+            make.left.equalTo(self.availableCityPicker).offset(34)
             make.centerY.equalTo(self.availableCityPicker)
         }
         
         montrealButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.quebecCityButton.snp_left).with.offset(-15)
+            make.right.equalTo(self.quebecCityButton.snp_left).offset(-15)
             make.centerY.equalTo(self.availableCityPicker)
             make.size.equalTo(CGSizeMake(75, 20))
         }
 
         quebecCityButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.availableCityPicker).with.offset(-34)
+            make.right.equalTo(self.availableCityPicker).offset(-34)
             make.centerY.equalTo(self.availableCityPicker)
             make.size.equalTo(CGSizeMake(75, 20))
         }

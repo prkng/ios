@@ -33,7 +33,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     private var currentViewController: PRKModalViewControllerChild? {
         get {
-            return self.pageViewController.viewControllers[0] as? PRKModalViewControllerChild
+            return self.pageViewController.viewControllers?.first as? PRKModalViewControllerChild
         }
     }
     private(set) var HEADER_HEIGHT : CGFloat = Styles.Sizes.modalViewHeaderHeight

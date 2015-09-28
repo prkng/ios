@@ -153,7 +153,7 @@ struct SpotOperations {
                 
                 let accessUrl = json["access_url"].stringValue
                 
-                let data = UIImageJPEGRepresentation(image, 0.8)
+                let data = UIImageJPEGRepresentation(image, 0.8)!
                 
                 var headers = Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
                 headers["Content-Type"] = "image/jpeg"

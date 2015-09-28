@@ -66,34 +66,34 @@ class AboutViewController: AbstractViewController {
         }
         
         iconView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(viewHeight * 0.14)
+            make.top.equalTo(self.view).offset(viewHeight * 0.14)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(68, 68))
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.iconView.snp_bottom).with.offset(12)
+            make.top.equalTo(self.iconView.snp_bottom).offset(12)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
         
         faqButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(viewHeight * 0.08)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(viewHeight * 0.08)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
         
         termsButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.faqButton.snp_bottom).with.offset(viewHeight * 0.05)
+            make.top.equalTo(self.faqButton.snp_bottom).offset(viewHeight * 0.05)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
         
         shareButton.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.termsButton.snp_bottom).with.offset(viewHeight * 0.05)
+            make.top.equalTo(self.termsButton.snp_bottom).offset(viewHeight * 0.05)
             make.height.equalTo(34)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -102,7 +102,7 @@ class AboutViewController: AbstractViewController {
         backButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 80, height: 26))
             make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).with.offset(-20)
+            make.bottom.equalTo(self.view).offset(-20)
         }
         
     }
@@ -110,26 +110,26 @@ class AboutViewController: AbstractViewController {
     
     //MARK: Button Handlers
     func faqButtonTapped(sender: UIButton) {
-        let webViewController = PRKWebViewController(englishUrl: "http://prk.ng/faq/", frenchUrl: "http://prk.ng/fr/faq/")
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/faq/", frenchUrl: "https://prk.ng/fr/faq/")
         self.navigationController?.pushViewController(webViewController, animated: true)
         
     }
     
     func termsButtonTapped(sender: UIButton) {
-        let webViewController = PRKWebViewController(englishUrl: "http://prk.ng/terms/", frenchUrl: "http://prk.ng/fr/conditions/")
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/terms/", frenchUrl: "https://prk.ng/fr/conditions/")
         self.navigationController?.pushViewController(webViewController, animated: true)
         
     }
     
     func privacyButtonTapped(sender: UIButton) {
-        let webViewController = PRKWebViewController(englishUrl: "http://prk.ng/privacy", frenchUrl: "http://prk.ng/fr/privacy")
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/privacy", frenchUrl: "https://prk.ng/fr/privacy")
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
     func shareButtonTapped(sender: UIButton) {
         
         let text = "prkng_share_copy".localizedString
-        let url = NSURL(string:"http://prk.ng/")!
+        let url = NSURL(string:"https://prk.ng/")!
         
         let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
         self.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)

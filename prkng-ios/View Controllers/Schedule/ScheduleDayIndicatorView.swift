@@ -14,7 +14,7 @@ class ScheduleDayIndicatorView: UIView {
     
     var indicator : UIView
     
-    var indicatorXConstraint : Constraint?
+    var indicatorXConstraint : CGFloat?
     
     var minX : CGFloat?
     var maxX : CGFloat?
@@ -36,7 +36,7 @@ class ScheduleDayIndicatorView: UIView {
         indicatorWidth = 0.0
         super.init(frame: frame)
         
-        for i in 0...6 {
+        for _ in 0...6 {
             labels.append(dayLabel())
         }
     }
@@ -91,7 +91,7 @@ class ScheduleDayIndicatorView: UIView {
         didSetupConstraints = false
     }
     
-    func setupConstraints (){
+    func setupConstraints() {
         
         labels[0].snp_makeConstraints { (make) -> () in
             make.left.equalTo(self)
@@ -101,7 +101,7 @@ class ScheduleDayIndicatorView: UIView {
         
         for i in 1...6 {
             
-            labels[i].snp_makeConstraints({ (make) -> () in
+            labels[i].snp_makeConstraints(closure: { (make) -> () in
                 make.left.equalTo(self.labels[i-1].snp_right)
                 make.centerY.equalTo(self)
                 make.width.equalTo(self).multipliedBy(0.14)
@@ -110,11 +110,12 @@ class ScheduleDayIndicatorView: UIView {
         }
         
         indicator.snp_makeConstraints { (make) -> () in
-            self.indicatorXConstraint = make.left.equalTo(self).with.offset(6)
+            make.left.equalTo(self).offset(6)
             make.height.equalTo(26)
             make.width.equalTo(self.indicatorWidth)
-            make.centerY.equalTo(self).with.offset(-1)
+            make.centerY.equalTo(self).offset(-1)
         }
+        self.indicatorXConstraint = 6
         
     }
     
@@ -126,7 +127,7 @@ class ScheduleDayIndicatorView: UIView {
         }
     }
     
-    func dayLabel () -> UILabel {
+    func dayLabel() -> UILabel {
         let label : UILabel = UILabel()
         label.font = Styles.FontFaces.light(17)
         label.textColor = Styles.Colors.cream1
@@ -138,15 +139,16 @@ class ScheduleDayIndicatorView: UIView {
     func setPositionRatio (ratio : CGFloat) {
         
         let offset : CGFloat = ((maxX! - minX!) * ratio) + minX!
-        self.indicatorXConstraint?.offset(offset)
+//        self.indicatorXConstraint?.offset(offset)
         
         indicator.snp_remakeConstraints { (make) -> () in
-            self.indicatorXConstraint = make.left.equalTo(self).with.offset(offset)
+            make.left.equalTo(self).offset(offset)
             make.height.equalTo(26)
             make.width.equalTo(self.indicatorWidth)
-            make.centerY.equalTo(self).with.offset(-1)
+            make.centerY.equalTo(self).offset(-1)
         }
         
+        self.indicatorXConstraint = offset
     }
     
     

@@ -112,7 +112,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         super.viewWillAppear(animated)
         
         if (spot == nil) {
-            if Settings.iOS8OrLater() {
+            if #available(iOS 8.0, *) {
                 logoView.alpha = 0
                 containerView.alpha = 0
                 smallButtonContainer.alpha = 0
@@ -144,7 +144,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 SVProgressHUD.dismiss()
                 if (spot != nil) {
                     
-                    if Settings.iOS8OrLater() {
+                    if #available(iOS 8.0, *) {
                         self.animateAndShow()
                     }
                     
@@ -277,7 +277,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         containerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.logoView.snp_bottom).with.offset(self.largerVerticalMargin)
+            make.top.equalTo(self.logoView.snp_bottom).offset(self.largerVerticalMargin)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
         }
@@ -290,27 +290,27 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         locationLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.locationTitleLabel.snp_bottom).with.offset(self.smallerVerticalMargin)
-            make.left.equalTo(self.containerView).with.offset(15)
-            make.right.equalTo(self.containerView).with.offset(-15)
+            make.top.equalTo(self.locationTitleLabel.snp_bottom).offset(self.smallerVerticalMargin)
+            make.left.equalTo(self.containerView).offset(15)
+            make.right.equalTo(self.containerView).offset(-15)
         }
         
         availableTitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.locationLabel.snp_bottom).with.offset(self.largerVerticalMargin)
+            make.top.equalTo(self.locationLabel.snp_bottom).offset(self.largerVerticalMargin)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
         
         availableTimeLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.availableTitleLabel.snp_bottom).with.offset(self.smallerVerticalMargin)
+            make.top.equalTo(self.availableTitleLabel.snp_bottom).offset(self.smallerVerticalMargin)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
             make.bottom.equalTo(self.containerView)
         }
         
         smallButtonContainer.snp_makeConstraints { (make) -> () in
-            make.top.greaterThanOrEqualTo(self.containerView.snp_bottom).with.offset(self.largerVerticalMargin/2)
-            make.bottom.greaterThanOrEqualTo(self.bigButtonContainer.snp_top).with.offset(-self.largerVerticalMargin)
+            make.top.greaterThanOrEqualTo(self.containerView.snp_bottom).offset(self.largerVerticalMargin/2)
+            make.bottom.greaterThanOrEqualTo(self.bigButtonContainer.snp_top).offset(-self.largerVerticalMargin)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(26)
@@ -352,19 +352,23 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         bottomButtonLabel.snp_makeConstraints { (make) -> () in
             make.centerY.equalTo(self.bottomButtonContainer)
-            make.left.equalTo(self.bottomButtonContainer).with.offset(27)
+            make.left.equalTo(self.bottomButtonContainer).offset(27)
         }
         
         bottomPillButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 92, height: 24))
             make.centerY.equalTo(self.bottomButtonContainer)
-            make.right.equalTo(self.bottomButtonContainer).with.offset(-31)
+            make.right.equalTo(self.bottomButtonContainer).offset(-31)
         }
         
         bottomSelectionControl.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.bottomButtonContainer)
             make.centerY.equalTo(self.bottomButtonContainer)
-            make.left.equalTo(self.bottomButtonLabel.snp_rightMargin)
+            if #available(iOS 8.0, *) {
+                make.left.equalTo(self.bottomButtonLabel.snp_rightMargin)
+            } else {
+                make.left.equalTo(self.bottomButtonLabel.snp_right)
+            }
             make.right.equalTo(self.bottomButtonContainer)
         }
     }
@@ -460,7 +464,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         self.view.addSubview(checkinMessageVC!.view)
         checkinMessageVC!.didMoveToParentViewController(self)
         
-        checkinMessageVC!.view.snp_makeConstraints({ (make) -> () in
+        checkinMessageVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
         })
         

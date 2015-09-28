@@ -92,21 +92,21 @@ class LotHeaderView: UIView, UIGestureRecognizerDelegate {
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.leftImageView.snp_right).with.offset(4)
-            make.right.equalTo(self.rightView.snp_left).with.offset(-10)
-            make.bottom.equalTo(self.topContainer).with.offset(-20)
+            make.left.equalTo(self.leftImageView.snp_right).offset(4)
+            make.right.equalTo(self.rightView.snp_left).offset(-10)
+            make.bottom.equalTo(self.topContainer).offset(-20)
         }
         
         leftImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(20, 20)) //real size is CGSizeMake(11, 9)
-            make.left.equalTo(self.topContainer).with.offset(10)
-            make.bottom.equalTo(self.topContainer).with.offset(-22)
+            make.left.equalTo(self.topContainer).offset(10)
+            make.bottom.equalTo(self.topContainer).offset(-22)
         }
         
         rightView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(17, 15))
-            make.right.equalTo(self.topContainer).with.offset(-33)
-            make.bottom.equalTo(self.topContainer).with.offset(-25)
+            make.right.equalTo(self.topContainer).offset(-33)
+            make.bottom.equalTo(self.topContainer).offset(-25)
         }
         
         materialDesignButton.snp_makeConstraints { (make) -> () in

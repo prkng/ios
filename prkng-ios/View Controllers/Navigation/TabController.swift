@@ -278,7 +278,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         addChildViewController(newViewController)
         containerView.addSubview(newViewController.view)
         
-        newViewController.view.snp_remakeConstraints({ (make) -> () in
+        newViewController.view.snp_remakeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.containerView)
         })
         
@@ -387,7 +387,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
                     }
                     
                     self.hereViewController.filterVC.view.snp_updateConstraints { (make) -> () in
-                        make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).with.offset(-16)
+                        make.top.equalTo(self.hereViewController.mapMessageView.snp_bottom).offset(-16)
                     }
 
                 }
@@ -395,7 +395,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
                 let height: Int = message == nil ? 0 : Int(self.hereViewController.mapMessageView.bounds.height) - 16
                 
                 self.mapViewController.trackUserButton.snp_updateConstraints { (make) -> () in
-                    make.top.equalTo(self.mapViewController.view).with.offset(height + Styles.Sizes.statusBarHeight + 10)
+                    make.top.equalTo(self.mapViewController.view).offset(height + Styles.Sizes.statusBarHeight + 10)
                 }
                 
                 self.hereViewController.view.layoutIfNeeded()
@@ -514,8 +514,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if (locationFixAchieved == false) {
             locationFixAchieved = true
-            var location = locations.last as! CLLocation
-            var coord = location.coordinate
+            let location = locations.last as CLLocation!
+            let coord = location.coordinate
             
             print(coord.latitude)
             print(coord.longitude)

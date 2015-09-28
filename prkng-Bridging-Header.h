@@ -10,6 +10,7 @@
 #define prkng_ios_prkng_Bridging_Header_h
 
 #import <UIKit/UIKit.h>
+#import <GoogleMaps/GoogleMaps.h>
 #import <MBXMapKit/MBXMapKit.h>
 #import <MapKit/MapKit.h>
 #import <Mapbox.h>

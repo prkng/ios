@@ -15,6 +15,19 @@
 		3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDACB1B276A2B00872667 /* libc++.dylib */; };
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
 		3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */; };
+		3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3881BB63A450067DA8C /* Constraint.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B3991BB63A450067DA8C /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38B1BB63A450067DA8C /* ConstraintItem.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B39A1BB63A450067DA8C /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38C1BB63A450067DA8C /* ConstraintMaker.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B39B1BB63A450067DA8C /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38D1BB63A450067DA8C /* ConstraintRelation.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B39C1BB63A450067DA8C /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38E1BB63A450067DA8C /* Debugging.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B39D1BB63A450067DA8C /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38F1BB63A450067DA8C /* EdgeInsets.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B39E1BB63A450067DA8C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E20B3901BB63A450067DA8C /* Info.plist */; settings = {ASSET_TAGS = (); }; };
+		3E20B39F1BB63A450067DA8C /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3911BB63A450067DA8C /* LayoutConstraint.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3931BB63A450067DA8C /* SnapKit.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3941BB63A450067DA8C /* View+SnapKit.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */; settings = {ASSET_TAGS = (); }; };
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
 		3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */; };
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
@@ -34,6 +47,9 @@
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB6041B83BE370081E30A /* FilterViewController.swift */; };
+		3E7499D31BB9AA26007C78AC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */; settings = {ASSET_TAGS = (); }; };
+		3E7499D41BB9AA26007C78AC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */; settings = {ASSET_TAGS = (); }; };
+		3E7499D51BB9AA26007C78AC /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D21BB9AA26007C78AC /* GooglePlus.framework */; settings = {ASSET_TAGS = (); }; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
 		3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */; };
 		3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */; };
@@ -141,9 +157,6 @@
 		BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C21AF2E83700789022 /* Settings.swift */; };
 		BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD6B6C41AF2F09E00789022 /* DateUtil.swift */; };
 		BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFD9CB681A9C942300BFA836 /* Shape.swift */; };
-		BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF1031B035FDD00E8C59E /* GoogleOpenSource.framework */; };
-		BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BFDDF1041B035FDD00E8C59E /* GooglePlus.bundle */; };
-		BFDDF1081B035FDD00E8C59E /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF1051B035FDD00E8C59E /* GooglePlus.framework */; };
 		BFDDF10A1B03612600E8C59E /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF1091B03612600E8C59E /* AddressBook.framework */; };
 		BFDDF10C1B03612D00E8C59E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF10B1B03612D00E8C59E /* MediaPlayer.framework */; };
 		BFDDF10E1B03613300E8C59E /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFDDF10D1B03613300E8C59E /* AssetsLibrary.framework */; };
@@ -156,14 +169,6 @@
 		BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */; };
 		BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */; };
 		BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A581A9E2E76001F063E /* Alamofire.swift */; };
-		BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9A1A9E2E81001F063E /* Constraint.swift */; };
-		BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9B1A9E2E81001F063E /* ConstraintAttributes.swift */; };
-		BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9C1A9E2E81001F063E /* ConstraintItem.swift */; };
-		BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9D1A9E2E81001F063E /* ConstraintMaker.swift */; };
-		BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9E1A9E2E81001F063E /* ConstraintRelation.swift */; };
-		BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A9F1A9E2E81001F063E /* EdgeInsets.swift */; };
-		BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AA01A9E2E81001F063E /* LayoutConstraint.swift */; };
-		BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AA21A9E2E81001F063E /* View+Snap.swift */; };
 		BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */; };
 		BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */; };
 		BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BFF568E91ACC62CA0018F62F /* Localizable.strings */; };
@@ -195,6 +200,20 @@
 		3E0FDACB1B276A2B00872667 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		3E0FDAD31B27921400872667 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotOperations.swift; sourceTree = "<group>"; };
+		3E20B3881BB63A450067DA8C /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
+		3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
+		3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintDescription.swift; sourceTree = "<group>"; };
+		3E20B38B1BB63A450067DA8C /* ConstraintItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintItem.swift; sourceTree = "<group>"; };
+		3E20B38C1BB63A450067DA8C /* ConstraintMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintMaker.swift; sourceTree = "<group>"; };
+		3E20B38D1BB63A450067DA8C /* ConstraintRelation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintRelation.swift; sourceTree = "<group>"; };
+		3E20B38E1BB63A450067DA8C /* Debugging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debugging.swift; sourceTree = "<group>"; };
+		3E20B38F1BB63A450067DA8C /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
+		3E20B3901BB63A450067DA8C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E20B3911BB63A450067DA8C /* LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutConstraint.swift; sourceTree = "<group>"; };
+		3E20B3921BB63A450067DA8C /* SnapKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SnapKit.h; sourceTree = "<group>"; };
+		3E20B3931BB63A450067DA8C /* SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapKit.swift; sourceTree = "<group>"; };
+		3E20B3941BB63A450067DA8C /* View+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+SnapKit.swift"; sourceTree = "<group>"; };
+		3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+SnapKit.swift"; sourceTree = "<group>"; };
 		3E3199581B31D4F600CB118D /* TimeFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFilterView.swift; sourceTree = "<group>"; };
 		3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
 		3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextButton.swift; sourceTree = "<group>"; };
@@ -218,6 +237,9 @@
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E6EB6041B83BE370081E30A /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
+		3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
+		3E7499D21BB9AA26007C78AC /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
 		3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailObject.swift; sourceTree = "<group>"; };
 		3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModeSlider.swift; sourceTree = "<group>"; };
@@ -331,9 +353,6 @@
 		BFD6B6C21AF2E83700789022 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		BFD6B6C41AF2F09E00789022 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 		BFD9CB681A9C942300BFA836 /* Shape.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
-		BFDDF1031B035FDD00E8C59E /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
-		BFDDF1041B035FDD00E8C59E /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
-		BFDDF1051B035FDD00E8C59E /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		BFDDF1091B03612600E8C59E /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		BFDDF10B1B03612D00E8C59E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		BFDDF10D1B03613300E8C59E /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -347,15 +366,6 @@
 		BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotOperations.swift; sourceTree = "<group>"; };
 		BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire-SwiftyJSON.swift"; sourceTree = "<group>"; };
 		BFEA6A581A9E2E76001F063E /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
-		BFEA6A9A1A9E2E81001F063E /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
-		BFEA6A9B1A9E2E81001F063E /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
-		BFEA6A9C1A9E2E81001F063E /* ConstraintItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintItem.swift; sourceTree = "<group>"; };
-		BFEA6A9D1A9E2E81001F063E /* ConstraintMaker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintMaker.swift; sourceTree = "<group>"; };
-		BFEA6A9E1A9E2E81001F063E /* ConstraintRelation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintRelation.swift; sourceTree = "<group>"; };
-		BFEA6A9F1A9E2E81001F063E /* EdgeInsets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeInsets.swift; sourceTree = "<group>"; };
-		BFEA6AA01A9E2E81001F063E /* LayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutConstraint.swift; sourceTree = "<group>"; };
-		BFEA6AA11A9E2E81001F063E /* Snap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Snap.h; sourceTree = "<group>"; };
-		BFEA6AA21A9E2E81001F063E /* View+Snap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+Snap.swift"; sourceTree = "<group>"; };
 		BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		BFF568E81ACC62CA0018F62F /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -374,10 +384,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */,
+				3E7499D51BB9AA26007C78AC /* GooglePlus.framework in Frameworks */,
 				BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */,
 				3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */,
 				3E0FDAC81B276A0700872667 /* ImageIO.framework in Frameworks */,
 				3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */,
+				3E7499D31BB9AA26007C78AC /* GoogleOpenSource.framework in Frameworks */,
 				3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */,
 				3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */,
 				3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */,
@@ -393,9 +405,7 @@
 				BFDDF10C1B03612D00E8C59E /* MediaPlayer.framework in Frameworks */,
 				BFDDF10A1B03612600E8C59E /* AddressBook.framework in Frameworks */,
 				BF2891E61AFF9DFD0041B04C /* FBSDKCoreKit.framework in Frameworks */,
-				BFDDF1081B035FDD00E8C59E /* GooglePlus.framework in Frameworks */,
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
-				BFDDF1061B035FDD00E8C59E /* GoogleOpenSource.framework in Frameworks */,
 				834EE6C7AA0F31AC7EF11445 /* libPods-prkng-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -438,17 +448,17 @@
 				BFDDF10D1B03613300E8C59E /* AssetsLibrary.framework */,
 				BFDDF10B1B03612D00E8C59E /* MediaPlayer.framework */,
 				BFDDF1091B03612600E8C59E /* AddressBook.framework */,
-				BFDDF1031B035FDD00E8C59E /* GoogleOpenSource.framework */,
-				BFDDF1041B035FDD00E8C59E /* GooglePlus.bundle */,
-				BFDDF1051B035FDD00E8C59E /* GooglePlus.framework */,
-				BF2891E71AFF9ED60041B04C /* FBSDKLoginKit.framework */,
-				BF2891E51AFF9DFD0041B04C /* FBSDKCoreKit.framework */,
 				BFDF22C01A85122D000380DA /* Crashlytics.framework */,
 				BFA8D1721A83D36F005F4054 /* libz.dylib */,
 				BFA8D1701A83D364005F4054 /* libsqlite3.dylib */,
 				BFA8D16E1A83D356005F4054 /* QuartzCore.framework */,
 				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
 				33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */,
+				BF2891E71AFF9ED60041B04C /* FBSDKLoginKit.framework */,
+				BF2891E51AFF9DFD0041B04C /* FBSDKCoreKit.framework */,
+				3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */,
+				3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */,
+				3E7499D21BB9AA26007C78AC /* GooglePlus.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -864,15 +874,20 @@
 		BFEA6A991A9E2E81001F063E /* Snap */ = {
 			isa = PBXGroup;
 			children = (
-				BFEA6A9A1A9E2E81001F063E /* Constraint.swift */,
-				BFEA6A9B1A9E2E81001F063E /* ConstraintAttributes.swift */,
-				BFEA6A9C1A9E2E81001F063E /* ConstraintItem.swift */,
-				BFEA6A9D1A9E2E81001F063E /* ConstraintMaker.swift */,
-				BFEA6A9E1A9E2E81001F063E /* ConstraintRelation.swift */,
-				BFEA6A9F1A9E2E81001F063E /* EdgeInsets.swift */,
-				BFEA6AA01A9E2E81001F063E /* LayoutConstraint.swift */,
-				BFEA6AA11A9E2E81001F063E /* Snap.h */,
-				BFEA6AA21A9E2E81001F063E /* View+Snap.swift */,
+				3E20B3881BB63A450067DA8C /* Constraint.swift */,
+				3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */,
+				3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */,
+				3E20B38B1BB63A450067DA8C /* ConstraintItem.swift */,
+				3E20B38C1BB63A450067DA8C /* ConstraintMaker.swift */,
+				3E20B38D1BB63A450067DA8C /* ConstraintRelation.swift */,
+				3E20B38E1BB63A450067DA8C /* Debugging.swift */,
+				3E20B38F1BB63A450067DA8C /* EdgeInsets.swift */,
+				3E20B3901BB63A450067DA8C /* Info.plist */,
+				3E20B3911BB63A450067DA8C /* LayoutConstraint.swift */,
+				3E20B3921BB63A450067DA8C /* SnapKit.h */,
+				3E20B3931BB63A450067DA8C /* SnapKit.swift */,
+				3E20B3941BB63A450067DA8C /* View+SnapKit.swift */,
+				3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */,
 			);
 			path = Snap;
 			sourceTree = "<group>";
@@ -1001,13 +1016,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */,
+				3E7499D41BB9AA26007C78AC /* GooglePlus.bundle in Resources */,
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */,
 				3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */,
-				BFDDF1071B035FDD00E8C59E /* GooglePlus.bundle in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
+				3E20B39E1BB63A450067DA8C /* Info.plist in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
 				3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */,
 				3E954A5E1B6AA82E00B81738 /* Intro-Light.otf in Resources */,
@@ -1079,17 +1095,18 @@
 			files = (
 				3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */,
 				BF32826F1B3847AE002ED8DF /* MKLabel.swift in Sources */,
+				3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */,
 				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
 				3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */,
-				BFEA6AAA1A9E2E81001F063E /* View+Snap.swift in Sources */,
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
 				3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */,
 				3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */,
 				3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */,
+				3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
 				BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */,
@@ -1108,15 +1125,15 @@
 				3E7523071B693DF70096755F /* MapMessageView.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
 				BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */,
-				BFEA6AA71A9E2E81001F063E /* ConstraintRelation.swift in Sources */,
 				BF7170B41AE4303D00B922CA /* HereViewController.swift in Sources */,
 				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
+				3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */,
+				3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
 				BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */,
 				3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */,
 				BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */,
 				BF32826E1B3847AE002ED8DF /* MKImageView.swift in Sources */,
-				BFEA6AA51A9E2E81001F063E /* ConstraintItem.swift in Sources */,
 				BFE1AB781A839F5800B77F2E /* AbstractViewController.swift in Sources */,
 				BF4567FE1AD842B9006D7C23 /* ScheduleColumnView.swift in Sources */,
 				BFC7648D1A7644AC008F2B26 /* AppDelegate.swift in Sources */,
@@ -1137,7 +1154,6 @@
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,
 				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,
 				BF6981B81B30800E00E0EF62 /* HistorySectionTitleView.swift in Sources */,
-				BFEA6AA81A9E2E81001F063E /* EdgeInsets.swift in Sources */,
 				BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
 				3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */,
@@ -1146,12 +1162,14 @@
 				3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */,
 				3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
+				3E20B39C1BB63A450067DA8C /* Debugging.swift in Sources */,
 				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,
 				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,
 				3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */,
 				3EBCF0591B67FA8E00E925A0 /* CarSharingInfoViewController.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
+				3E20B39D1BB63A450067DA8C /* EdgeInsets.swift in Sources */,
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
 				BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */,
 				BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */,
@@ -1159,6 +1177,7 @@
 				BF73AE531B289D0200F4CD79 /* EditProfileViewController.swift in Sources */,
 				3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */,
 				BF2891EA1AFFC0590041B04C /* User.swift in Sources */,
+				3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */,
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,
 				3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
@@ -1168,8 +1187,9 @@
 				BFC850FA1B2F618A006383AC /* UIImage.swift in Sources */,
 				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,
 				3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */,
+				3E20B39F1BB63A450067DA8C /* LayoutConstraint.swift in Sources */,
+				3E20B39A1BB63A450067DA8C /* ConstraintMaker.swift in Sources */,
 				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
-				BFEA6AA31A9E2E81001F063E /* Constraint.swift in Sources */,
 				3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */,
 				3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */,
 				BF3282711B3847AE002ED8DF /* MKTableViewCell.swift in Sources */,
@@ -1179,22 +1199,21 @@
 				BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */,
 				3EA8126D1B977E58002987EC /* LotViewController.swift in Sources */,
 				3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */,
-				BFEA6AA61A9E2E81001F063E /* ConstraintMaker.swift in Sources */,
 				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
 				3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */,
 				BF9C46F51B32E30600DCF858 /* TheProjectViewController.swift in Sources */,
 				3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */,
-				BFEA6AA41A9E2E81001F063E /* ConstraintAttributes.swift in Sources */,
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */,
-				BFEA6AA91A9E2E81001F063E /* LayoutConstraint.swift in Sources */,
 				3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */,
 				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
 				BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */,
+				3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
 				BFE1AB7A1A839F6A00B77F2E /* RMMapViewController.swift in Sources */,
+				3E20B39B1BB63A450067DA8C /* ConstraintRelation.swift in Sources */,
 				BF982C991B149BD100A635A1 /* TutorialContentViewController.swift in Sources */,
 				3E9509C61B56EE940088E336 /* PRKTextField.swift in Sources */,
 				BF3A9F8F1AC1BA7400D6BD99 /* Styles.swift in Sources */,
@@ -1203,6 +1222,7 @@
 				3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */,
 				3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */,
 				3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */,
+				3E20B3991BB63A450067DA8C /* ConstraintItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1352,6 +1372,7 @@
 					"-ObjC",
 					"$(inherited)",
 				);
+				OTHER_SWIFT_FLAGS = "-DSNAPKIT_DEPLOYMENT_LEGACY";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
@@ -1385,6 +1406,7 @@
 					"$(PROJECT_DIR)/prkng-ios/Libraries/MapboxGL0.3.4",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "-DSNAPKIT_DEPLOYMENT_LEGACY";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;

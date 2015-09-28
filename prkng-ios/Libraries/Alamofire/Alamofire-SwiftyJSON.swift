@@ -20,7 +20,7 @@ extension Request {
     :returns: The request.
     */
     public func responseSwiftyJSON(completionHandler: (NSURLRequest, NSHTTPURLResponse?, JSON, NSError?) -> Void) -> Self {
-        return responseSwiftyJSONAsync(queue:nil, options:NSJSONReadingOptions.AllowFragments, completionHandler:completionHandler)
+        return responseSwiftyJSONAsync(nil, options:NSJSONReadingOptions.AllowFragments, completionHandler:completionHandler)
     }
     
     /**
@@ -34,13 +34,13 @@ extension Request {
     */
     public func responseSwiftyJSONAsync(queue: dispatch_queue_t? = nil, options: NSJSONReadingOptions = .AllowFragments, completionHandler: (NSURLRequest, NSHTTPURLResponse?, JSON, NSError?) -> Void) -> Self {
         
-        return response(queue: queue, serializer: Request.JSONResponseSerializer(options: options), completionHandler: { (request, response, object, error) -> Void in
+        return response(queue, serializer: Request.JSONResponseSerializer(options), completionHandler: { (request, response, object, error) -> Void in
             
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 
                 var responseJSON: JSON
                 if error != nil || object == nil{
-                    responseJSON = JSON.nullJSON
+                    responseJSON = JSON.null
                 } else {
                     responseJSON = JSON(object!)
                 }
@@ -52,5 +52,4 @@ extension Request {
         })
     }
 }
-
 

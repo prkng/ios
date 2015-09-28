@@ -58,7 +58,7 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
         super.viewDidLoad()
         self.screenName = "Report View - Notes"
         
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
             containerView.layer.transform = translateTransform
         }
@@ -66,7 +66,7 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             animate()
         }
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(300 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
@@ -114,7 +114,7 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
         let topOffset = UIScreen.mainScreen().bounds.height / 3
         
         containerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(topOffset)
+            make.top.equalTo(self.view).offset(topOffset)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
@@ -130,11 +130,11 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
             make.top.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.titleLabel).with.offset(14)
+            make.bottom.equalTo(self.titleLabel).offset(14)
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleContainer).with.offset(25)
+            make.top.equalTo(self.titleContainer).offset(25)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
@@ -147,9 +147,9 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
         }
         
         textView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textContainer).with.offset(14)
-            make.left.equalTo(self.textContainer).with.offset(24)
-            make.right.equalTo(self.textContainer).with.offset(-24)
+            make.top.equalTo(self.textContainer).offset(14)
+            make.left.equalTo(self.textContainer).offset(24)
+            make.right.equalTo(self.textContainer).offset(-24)
             make.height.greaterThanOrEqualTo(88)
         }
 

@@ -112,23 +112,23 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func setupConstraints () {
         
         searchFieldView.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self).with.offset(12)
-            make.right.equalTo(self).with.offset(-12)
-            make.bottom.equalTo(self).with.offset(-10)
+            make.left.equalTo(self).offset(12)
+            make.right.equalTo(self).offset(-12)
+            make.bottom.equalTo(self).offset(-10)
             make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
         }
         
         searchField.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.searchImageView.snp_right).with.offset(14)
-            make.right.equalTo(self).with.offset(-12)
-            make.bottom.equalTo(self).with.offset(-10)
+            make.left.equalTo(self.searchImageView.snp_right).offset(14)
+            make.right.equalTo(self).offset(-12)
+            make.bottom.equalTo(self).offset(-10)
             make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
         }
         
         searchImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSize(width: 20, height: 20))
             make.centerY.equalTo(self.searchField)
-            make.left.equalTo(self).with.offset(17 + 12)
+            make.left.equalTo(self).offset(17 + 12)
         }
         
         topLine.snp_makeConstraints { (make) -> () in
@@ -163,7 +163,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let resultString = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        let resultString = ((textField.text ?? "") as NSString).stringByReplacingCharactersInRange(range, withString: string)
         if resultString.characters.count >= 2 {
             SearchOperations.searchWithInput(resultString, forAutocomplete: true, completion: { (results) -> Void in
                 self.delegate?.didGetAutocompleteResults(results)
@@ -177,10 +177,9 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         textField.endEditing(true)
-        SearchOperations.searchWithInput(textField.text, forAutocomplete: false, completion: { (results) -> Void in
+        SearchOperations.searchWithInput((textField.text ?? ""), forAutocomplete: false, completion: { (results) -> Void in
             
-            let today = DateUtil.dayIndexOfTheWeek()
-            var date : NSDate = NSDate()
+            let date : NSDate = NSDate()
             
             self.delegate!.displaySearchResults(results, checkinTime : date)
             
@@ -190,7 +189,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if self.searchField.text.isEmpty {
+        if (self.searchField.text ?? "").isEmpty {
             endSearch()
         } else {
             delegate?.didGetAutocompleteResults([])

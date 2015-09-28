@@ -136,27 +136,27 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         markerIcon.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(49, 60))
-            make.bottom.equalTo(self.containerView).with.offset(-357)
+            make.bottom.equalTo(self.containerView).offset(-357)
             make.centerX.equalTo(self.containerView)
         }
         
         textLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.containerView).with.offset(-262)
+            make.bottom.equalTo(self.containerView).offset(-262)
             make.centerX.equalTo(self.containerView)
         }
         
         searchField.snp_makeConstraints { (make) -> () in
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.containerView).with.offset(12)
-            make.right.equalTo(self.containerView).with.offset(-12)
-            make.bottom.equalTo(self.containerView).with.offset(-160)
+            make.left.equalTo(self.containerView).offset(12)
+            make.right.equalTo(self.containerView).offset(-12)
+            make.bottom.equalTo(self.containerView).offset(-160)
         }
         
         dateSelectionView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
             make.height.equalTo(110)
-            make.top.equalTo(self.searchField.snp_bottom).with.offset(12)
+            make.top.equalTo(self.searchField.snp_bottom).offset(12)
         }
         
         durationSelectionView.snp_makeConstraints { (make) -> () in
@@ -168,7 +168,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         downButton.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(60, 60))
-            make.bottom.equalTo(self.containerView).with.offset(-20)
+            make.bottom.equalTo(self.containerView).offset(-20)
             make.centerX.equalTo(self.containerView)
 
         }
@@ -208,16 +208,11 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         textField.endEditing(false)
-        SearchOperations.searchWithInput(textField.text, forAutocomplete: false, completion: { (results) -> Void in
+        SearchOperations.searchWithInput(textField.text ?? "", forAutocomplete: false, completion: { (results) -> Void in
             
             self.markerIcon.hidden = true
             
-            
-            let weekDay = self.dateSelectionView.selectedDay
-            
-            let today = DateUtil.dayIndexOfTheWeek()
-            
-            var date : NSDate = NSDate()
+            let date : NSDate = NSDate()
             
             self.delegate!.displaySearchResults(results, checkinTime : date)
             
@@ -235,10 +230,10 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         }
         
         searchField.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.containerView).with.offset(40)
+            make.top.equalTo(self.containerView).offset(40)
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.containerView).with.offset(12)
-            make.right.equalTo(self.containerView).with.offset(-12)
+            make.left.equalTo(self.containerView).offset(12)
+            make.right.equalTo(self.containerView).offset(-12)
         }
         
         markerIcon.snp_remakeConstraints { (make) -> () in
@@ -276,8 +271,8 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         searchField.snp_remakeConstraints { (make) -> () in
             make.centerY.equalTo(self.containerView)
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.containerView).with.offset(12)
-            make.right.equalTo(self.containerView).with.offset(-12)
+            make.left.equalTo(self.containerView).offset(12)
+            make.right.equalTo(self.containerView).offset(-12)
         }
         
         markerIcon.snp_remakeConstraints { (make) -> () in
@@ -290,7 +285,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
             make.height.equalTo(110)
-            make.top.equalTo(self.searchField.snp_bottom).with.offset(12)
+            make.top.equalTo(self.searchField.snp_bottom).offset(12)
         }
         
         
@@ -331,10 +326,10 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         }
         
         searchField.snp_remakeConstraints { (make) -> () in
-            make.bottom.equalTo(self.dateSelectionView.snp_top).with.offset(-12)
+            make.bottom.equalTo(self.dateSelectionView.snp_top).offset(-12)
             make.height.equalTo(Styles.Sizes.searchTextFieldHeight)
-            make.left.equalTo(self.containerView).with.offset(12)
-            make.right.equalTo(self.containerView).with.offset(-12)
+            make.left.equalTo(self.containerView).offset(12)
+            make.right.equalTo(self.containerView).offset(-12)
         }
         
         markerIcon.snp_remakeConstraints { (make) -> () in
@@ -393,20 +388,26 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         delegate?.setSearchParameters(NSDate(), duration: 1)
         searchField.endEditing(false)
         
-        SearchOperations.searchWithInput(searchField.text, forAutocomplete: false, completion: { (results) -> Void in
+        SearchOperations.searchWithInput(searchField.text ?? "", forAutocomplete: false, completion: { (results) -> Void in
             
             self.markerIcon.hidden = true
             
             var date : NSDate = NSDate()
             
-            var gregorian:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!;
-            var unit : NSCalendarUnit = ([NSCalendarUnit.NSYearCalendarUnit, NSCalendarUnit.NSMonthCalendarUnit, NSCalendarUnit.NSDayCalendarUnit, NSCalendarUnit.NSHourCalendarUnit, NSCalendarUnit.NSMinuteCalendarUnit]);
+            let gregorian:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!;
+            let unit : NSCalendarUnit = ([NSCalendarUnit.NSYearCalendarUnit, NSCalendarUnit.NSMonthCalendarUnit, NSCalendarUnit.NSDayCalendarUnit, NSCalendarUnit.NSHourCalendarUnit, NSCalendarUnit.NSMinuteCalendarUnit]);
             
-            var comps:NSDateComponents = gregorian.components(unit, fromDate: date);
+            let comps:NSDateComponents = gregorian.components(unit, fromDate: date);
             
-            comps.setValue(self.durationSelectionView.getHour(), forComponent: NSCalendarUnit.NSHourCalendarUnit);
-            comps.setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendarUnit.NSMinuteCalendarUnit);
-            comps.setValue(self.dateSelectionView.selectedDay, forComponent: NSCalendarUnit.NSWeekdayCalendarUnit)
+            if #available(iOS 8.0, *) {
+                comps.setValue(self.durationSelectionView.getHour(), forComponent: NSCalendarUnit.NSHourCalendarUnit)
+                comps.setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendarUnit.NSMinuteCalendarUnit);
+                comps.setValue(self.dateSelectionView.selectedDay, forComponent: NSCalendarUnit.NSWeekdayCalendarUnit)
+            } else {
+                comps.hour = self.durationSelectionView.getHour()
+                comps.minute = self.durationSelectionView.getMinutes()
+                comps.day = self.dateSelectionView.selectedDay
+            };
             
             date = gregorian.dateFromComponents(comps)!;
                         

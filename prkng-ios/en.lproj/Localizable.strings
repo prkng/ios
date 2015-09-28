@@ -105,7 +105,7 @@
 "off" = "Off";
 "yes" = "Yes";
 "no" = "No";
-"share_location_copy" = "I parked on: \"[street_name]\", with prkng app. http://prk.ng";
+"share_location_copy" = "I parked on: \"[street_name]\", with prkng app. https://prk.ng";
 "pay_reminder" = "Hey, don't forget to pay!";
 "pay" = "Pay";
 "p_service_mobile_user" = "Via P$ Service Mobile";

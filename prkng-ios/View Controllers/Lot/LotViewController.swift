@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import GoogleMaps
 
 class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegate, PRKVerticalGestureRecognizerDelegate {
     
@@ -220,18 +219,18 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         }
         
         topLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.view).with.offset(34)
-            make.bottom.equalTo(self.headerView.snp_top).with.offset(-24)
+            make.left.equalTo(self.view).offset(34)
+            make.bottom.equalTo(self.headerView.snp_top).offset(-24)
         }
         
         directionsButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.view).with.offset(-30)
-            make.bottom.equalTo(self.headerView.snp_top).with.offset(-16)
+            make.right.equalTo(self.view).offset(-30)
+            make.bottom.equalTo(self.headerView.snp_top).offset(-16)
         }
         
         
         headerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(self.TOP_PARALLAX_HEIGHT)
+            make.top.equalTo(self.view).offset(self.TOP_PARALLAX_HEIGHT)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(LotViewController.HEADER_HEIGHT)
@@ -245,8 +244,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         }
 
         subHeaderViewLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.subHeaderView).with.offset(34)
-            make.right.equalTo(self.subHeaderView).with.offset(-40)
+            make.left.equalTo(self.subHeaderView).offset(34)
+            make.right.equalTo(self.subHeaderView).offset(-40)
             make.centerY.equalTo(self.subHeaderView)
         }
         
@@ -258,7 +257,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         }
         
         timeIconView.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.todayTimeHeaderView).with.offset(34)
+            make.left.equalTo(self.todayTimeHeaderView).offset(34)
             make.centerY.equalTo(self.todayTimeHeaderView)
         }
         
@@ -269,9 +268,9 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.right.equalTo(self.view)
         }
         
-        timeSpanLabels[0].snp_makeConstraints({ (make) -> () in
-            make.left.equalTo(self.todayTimeHeaderView).with.offset(66.5)
-            make.right.equalTo(self.todayTimeHeaderView).with.offset(-40)
+        timeSpanLabels[0].snp_makeConstraints(closure: { (make) -> () in
+            make.left.equalTo(self.todayTimeHeaderView).offset(66.5)
+            make.right.equalTo(self.todayTimeHeaderView).offset(-40)
             make.centerY.equalTo(self.todayTimeHeaderView)
         })
 
@@ -279,10 +278,10 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         for i in 1..<7 {
             let timeSpanLabel = timeSpanLabels[i]
             let listTopOffset = i == 1 ? 14 : 10
-            timeSpanLabel.snp_makeConstraints({ (make) -> () in
-                make.top.equalTo(topConstraint).with.offset(listTopOffset)
-                make.left.equalTo(self.timeListContentView).with.offset(34)
-                make.right.equalTo(self.timeListContentView).with.offset(-40)
+            timeSpanLabel.snp_makeConstraints(closure: { (make) -> () in
+                make.top.equalTo(topConstraint).offset(listTopOffset)
+                make.left.equalTo(self.timeListContentView).offset(34)
+                make.right.equalTo(self.timeListContentView).offset(-40)
             })
             topConstraint = timeSpanLabel.snp_bottom
         }
@@ -306,7 +305,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             }
             
             let attributesViewContainer = attributesViewContainers[i]
-            attributesViewContainer.snp_makeConstraints({ (make) -> () in
+            attributesViewContainer.snp_makeConstraints(closure: { (make) -> () in
                 make.left.equalTo(leftConstraint)
                 make.top.equalTo(self.attributesView)
                 make.bottom.equalTo(self.attributesView)
@@ -316,27 +315,27 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             let label = attributesViewLabels[i]
 
             if i == 1 {
-                label.snp_makeConstraints({ (make) -> () in
+                label.snp_makeConstraints(closure: { (make) -> () in
                     make.left.equalTo(attributesViewContainer.snp_left)
-                    make.bottom.equalTo(self.attributesView).with.offset(-4.5)
+                    make.bottom.equalTo(self.attributesView).offset(-4.5)
                 })
             } else if i == 2 {
-                label.snp_makeConstraints({ (make) -> () in
+                label.snp_makeConstraints(closure: { (make) -> () in
                     make.right.equalTo(attributesViewContainer.snp_right)
-                    make.bottom.equalTo(self.attributesView).with.offset(-4.5)
+                    make.bottom.equalTo(self.attributesView).offset(-4.5)
                 })
             } else {
-                label.snp_makeConstraints({ (make) -> () in
+                label.snp_makeConstraints(closure: { (make) -> () in
                     make.centerX.equalTo(attributesViewContainer.snp_centerX)
-                    make.bottom.equalTo(self.attributesView).with.offset(-4.5)
+                    make.bottom.equalTo(self.attributesView).offset(-4.5)
                 })
             }
             
             let imageView = attributesViewImages[i]
-            imageView.snp_makeConstraints({ (make) -> () in
+            imageView.snp_makeConstraints(closure: { (make) -> () in
                 make.size.equalTo(CGSize(width: 21, height: 25))
                 make.centerX.equalTo(label.snp_centerX)
-                make.bottom.equalTo(label.snp_top).with.offset(-3.5)
+                make.bottom.equalTo(label.snp_top).offset(-3.5)
             })
             
             leftConstraint = attributesViewContainer.snp_right
@@ -359,19 +358,20 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         if supportsGoogleMaps {
 
-            let alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
-            
-            alert.addAction(UIAlertAction(title: "directions_google_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
-                UIApplication.sharedApplication().openURL(NSURL(string: googleMapsURLString)!)
-            }))
-
-            alert.addAction(UIAlertAction(title: "directions_apple_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
-                UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
-            }))
-
-            alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Cancel, handler: nil))
-            
-            self.presentViewController(alert, animated: true, completion: nil)
+            if #available(iOS 8.0, *) {
+                let alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "directions_google_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
+                    UIApplication.sharedApplication().openURL(NSURL(string: googleMapsURLString)!)
+                }))
+                alert.addAction(UIAlertAction(title: "directions_apple_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
+                    UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
+                }))
+                alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Cancel, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                // Fallback on earlier versions
+                //TODO: PUT SOMETHING HERE FOR IOS 7
+            }
 
         } else {
 
@@ -430,7 +430,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
                 //parallax for the top image/street view!
                 let topViewOffset = (-newYDistanceFromBeginTap / self.FULL_HEIGHT) * self.TOP_PARALLAX_HEIGHT
                 topImageView.snp_updateConstraints { (make) -> () in
-                    make.top.equalTo(self.view).with.offset(topViewOffset)
+                    make.top.equalTo(self.view).offset(topViewOffset)
                 }
                 topImageView.layoutIfNeeded()
             }
@@ -453,7 +453,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         //fix parallax effect just in case
         self.topParallaxView?.snp_updateConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(-self.topOffset)
+            make.top.equalTo(self.view).offset(-self.topOffset)
         }
         UIView.animateWithDuration(0.2,
             animations: { () -> Void in
@@ -481,11 +481,11 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     func adjustTopOffsetForTimeList(animate: Bool) {
         
         topImageView.snp_updateConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(-self.topOffset)
+            make.top.equalTo(self.view).offset(-self.topOffset)
         }
         
         self.headerView.snp_updateConstraints { (make) -> () in
-            make.top.equalTo(self.view).with.offset(self.TOP_PARALLAX_HEIGHT - CGFloat(self.topOffset))
+            make.top.equalTo(self.view).offset(self.TOP_PARALLAX_HEIGHT - CGFloat(self.topOffset))
         }
         
         self.view.setNeedsLayout()

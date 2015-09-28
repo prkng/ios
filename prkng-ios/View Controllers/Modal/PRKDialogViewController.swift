@@ -139,7 +139,7 @@ class PRKDialogViewController: AbstractViewController {
         super.viewDidLoad()
         self.screenName = "Geofence Notification View"
         
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
             let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
             let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)            
@@ -149,7 +149,7 @@ class PRKDialogViewController: AbstractViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             animate()
         }
     }
@@ -236,9 +236,9 @@ class PRKDialogViewController: AbstractViewController {
         }
         
         centerContainerView.snp_makeConstraints { (make) -> () in
-            make.center.equalTo(self.view).with.offset(-self.bottomContainerHeight/2)
-            make.left.equalTo(self.view).with.offset(24)
-            make.right.equalTo(self.view).with.offset(-24)
+            make.center.equalTo(self.view).offset(-self.bottomContainerHeight/2)
+            make.left.equalTo(self.view).offset(24)
+            make.right.equalTo(self.view).offset(-24)
         }
         
         iconView.snp_makeConstraints { (make) -> () in
@@ -270,29 +270,29 @@ class PRKDialogViewController: AbstractViewController {
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.headerImageView.snp_bottom).with.offset(10)
+            make.top.equalTo(self.headerImageView.snp_bottom).offset(10)
             make.left.equalTo(self.centerContainerView)
             make.right.equalTo(self.centerContainerView)
         }
         
         subtitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(7)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(7)
             make.left.equalTo(self.centerContainerView)
             make.right.equalTo(self.centerContainerView)
         }
         
         textLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.subtitleLabel.snp_bottom).with.offset(7)
-            make.left.equalTo(self.centerContainerView).with.offset(24)
-            make.right.equalTo(self.centerContainerView).with.offset(-24)
-            make.bottom.equalTo(self.centerContainerView).with.offset(-22)
+            make.top.equalTo(self.subtitleLabel.snp_bottom).offset(7)
+            make.left.equalTo(self.centerContainerView).offset(24)
+            make.right.equalTo(self.centerContainerView).offset(-24)
+            make.bottom.equalTo(self.centerContainerView).offset(-22)
         }
         
         // yes/no stuff
         
         yesNoContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.yesNoContainerHeight)
-            make.top.equalTo(self.textLabel.snp_bottom).with.offset(14)
+            make.top.equalTo(self.textLabel.snp_bottom).offset(14)
             make.left.equalTo(self.centerContainerView)
             make.right.equalTo(self.centerContainerView)
         }
@@ -329,7 +329,7 @@ class PRKDialogViewController: AbstractViewController {
         
         listButtonsContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.listButtonContainerHeight)
-            make.top.equalTo(self.textLabel.snp_bottom).with.offset(14)
+            make.top.equalTo(self.textLabel.snp_bottom).offset(14)
             make.left.equalTo(self.centerContainerView)
             make.right.equalTo(self.centerContainerView)
         }
@@ -341,14 +341,14 @@ class PRKDialogViewController: AbstractViewController {
             let button = listButtons[i]
             let sep = listButtonSeparators[i]
             
-            button.snp_makeConstraints({ (make) -> () in
+            button.snp_makeConstraints(closure: { (make) -> () in
                 make.top.equalTo(topConstraint)
                 make.left.equalTo(self.listButtonsContainer)
                 make.right.equalTo(self.listButtonsContainer)
                 make.height.equalTo(50)
             })
         
-            sep.snp_makeConstraints({ (make) -> () in
+            sep.snp_makeConstraints(closure: { (make) -> () in
                 make.top.equalTo(topConstraint)
                 make.left.equalTo(self.listButtonsContainer)
                 make.right.equalTo(self.listButtonsContainer)
@@ -391,7 +391,7 @@ class PRKDialogViewController: AbstractViewController {
         viewController.view.addSubview(self.view)
         self.didMoveToParentViewController(viewController)
         
-        self.view.snp_makeConstraints({ (make) -> () in
+        self.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(viewController.view)
         })
         

@@ -137,7 +137,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
         
         detailView.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(180)
+            make.bottom.equalTo(self.view).offset(180)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.height.equalTo(Styles.Sizes.spotDetailViewHeight)
@@ -169,7 +169,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         self.view.addSubview(firstUseMessageVC!.view)
         firstUseMessageVC!.didMoveToParentViewController(self)
         
-        firstUseMessageVC!.view.snp_makeConstraints({ (make) -> () in
+        firstUseMessageVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
         })
         
@@ -236,7 +236,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         //parallax for the top image/street view!
         let topViewOffset = (yDistanceFromBeginTap / prkModalViewController!.FULL_HEIGHT) * prkModalViewController!.TOP_PARALLAX_HEIGHT
         prkModalViewController?.topParallaxView?.snp_updateConstraints { (make) -> () in
-            make.top.equalTo(self.prkModalViewController!.view).with.offset(prkModalViewController!.TOP_PARALLAX_HEIGHT - topViewOffset)
+            make.top.equalTo(self.prkModalViewController!.view).offset(prkModalViewController!.TOP_PARALLAX_HEIGHT - topViewOffset)
         }
         prkModalViewController?.topParallaxView?.layoutIfNeeded()
 
@@ -270,7 +270,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
             
-            self.prkModalViewController!.view.snp_makeConstraints({ (make) -> () in
+            self.prkModalViewController!.view.snp_makeConstraints(closure: { (make) -> () in
                 make.top.equalTo(self.detailView.snp_bottom)
                 make.size.equalTo(self.view)
                 make.left.equalTo(self.view)
@@ -285,7 +285,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
             
-            self.prkModalViewController!.view.snp_makeConstraints({ (make) -> () in
+            self.prkModalViewController!.view.snp_makeConstraints(closure: { (make) -> () in
                 make.top.equalTo(self.detailView.snp_bottom)
                 make.size.equalTo(self.view)
                 make.left.equalTo(self.view)
@@ -324,11 +324,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         
         detailView.snp_updateConstraints {
             (make) -> () in
-            make.bottom.equalTo(self.view).with.offset(0)
+            make.bottom.equalTo(self.view).offset(0)
         }
         
-        self.prkModalViewController?.view.snp_updateConstraints({ (make) -> () in
-            make.top.equalTo(self.detailView.snp_bottom).with.offset(0)
+        self.prkModalViewController?.view.snp_updateConstraints(closure: { (make) -> () in
+            make.top.equalTo(self.detailView.snp_bottom).offset(0)
         })
         
         UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -425,7 +425,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             
             detailView.checkinImageView.image = UIImage(named: detailObject!.headerIconName)
             detailView.checkinImageLabel.text = detailObject!.headerIconSubtitle
-            detailView.bottomLeftContainer.snp_updateConstraints({ (make) -> () in
+            detailView.bottomLeftContainer.snp_updateConstraints(closure: { (make) -> () in
                 make.width.equalTo(detailObject!.showsBottomLeftContainer ? detailObject!.bottomLeftWidth : 0)
             })
             if let iconName = detailObject!.bottomRightIconName {
@@ -483,21 +483,21 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             
             detailView.snp_updateConstraints {
                 (make) -> () in
-                make.bottom.equalTo(self.view).with.offset(distance + parallaxOffset)
+                make.bottom.equalTo(self.view).offset(distance + parallaxOffset)
             }
 
-            self.prkModalViewController?.view.snp_updateConstraints({ (make) -> () in
-                make.top.equalTo(self.detailView.snp_bottom).with.offset(-parallaxOffset)
+            self.prkModalViewController?.view.snp_updateConstraints(closure: { (make) -> () in
+                make.top.equalTo(self.detailView.snp_bottom).offset(-parallaxOffset)
             })
         } else {
             
             detailView.snp_updateConstraints {
                 (make) -> () in
-                make.bottom.equalTo(self.view).with.offset(distance)
+                make.bottom.equalTo(self.view).offset(distance)
             }
 
-            self.prkModalViewController?.view.snp_updateConstraints({ (make) -> () in
-                make.top.equalTo(self.detailView.snp_bottom).with.offset(-2*parallaxOffset)
+            self.prkModalViewController?.view.snp_updateConstraints(closure: { (make) -> () in
+                make.top.equalTo(self.detailView.snp_bottom).offset(-2*parallaxOffset)
             })
         }
 
@@ -530,8 +530,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func isSpotDetailsHidden() -> Bool {
         //we know if the view is hidden based on the bottom offset, as can be seen in the two methods above
-        //make.bottom.equalTo(self.view).with.offset(180) is to hide it and
-        //make.bottom.equalTo(self.view).with.offset(0) is to show it
+        //make.bottom.equalTo(self.view).offset(180) is to hide it and
+        //make.bottom.equalTo(self.view).offset(0) is to show it
 
         for constraint: LayoutConstraint in detailView.snp_installedLayoutConstraints {
             if constraint.firstItem.isEqual(self.detailView)
@@ -638,7 +638,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         self.view.addSubview(carSharingInfoVC!.view)
         carSharingInfoVC!.didMoveToParentViewController(self)
         
-        carSharingInfoVC!.view.snp_makeConstraints({ (make) -> () in
+        carSharingInfoVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
         })
         

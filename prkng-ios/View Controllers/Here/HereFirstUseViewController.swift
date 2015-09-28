@@ -73,7 +73,7 @@ class HereFirstUseViewController: GAITrackedViewController {
         super.viewDidLoad()
         self.screenName = "Here - First Use View"
         
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             let translateTransform = CATransform3DMakeTranslation(X_TRANSFORM, Y_TRANSFORM, 0)
             let rotateTransform = CATransform3DMakeRotation(CGFloat(-M_PI_4), 0, 0, 1)
             let scaleTransform = CATransform3DMakeScale(0.5, 0.5, 1)
@@ -83,7 +83,7 @@ class HereFirstUseViewController: GAITrackedViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if Settings.iOS8OrLater() {
+        if #available(iOS 8.0, *) {
             animate()
         }
     }
@@ -152,27 +152,27 @@ class HereFirstUseViewController: GAITrackedViewController {
         
         containerView.snp_makeConstraints { (make) -> () in
             make.centerY.equalTo(self.view)
-            make.left.equalTo(self.view).with.offset(24)
-            make.right.equalTo(self.view).with.offset(-24)
+            make.left.equalTo(self.view).offset(24)
+            make.right.equalTo(self.view).offset(-24)
         }
         
         titleContainer.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.containerView)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.subtitleLabel).with.offset(10)
+            make.bottom.equalTo(self.subtitleLabel).offset(10)
         }
         
 
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleContainer).with.offset(25)
+            make.top.equalTo(self.titleContainer).offset(25)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
         
         
         subtitleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.titleLabel.snp_bottom).with.offset(7)
+            make.top.equalTo(self.titleLabel.snp_bottom).offset(7)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
         }
@@ -187,19 +187,19 @@ class HereFirstUseViewController: GAITrackedViewController {
             make.top.equalTo(self.titleContainer.snp_bottom)
             make.left.equalTo(self.containerView)
             make.right.equalTo(self.containerView)
-            make.bottom.equalTo(self.textLabel1).with.offset(29)
+            make.bottom.equalTo(self.textLabel1).offset(29)
         }
         
         imageView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textContainer1).with.offset(21)
+            make.top.equalTo(self.textContainer1).offset(21)
             make.left.equalTo(self.textContainer1)
             make.right.equalTo(self.textContainer1)
         }
         
         textLabel1.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.imageView.snp_bottom).with.offset(9)
-            make.left.equalTo(self.textContainer1).with.offset(24)
-            make.right.equalTo(self.textContainer1).with.offset(-24)
+            make.top.equalTo(self.imageView.snp_bottom).offset(9)
+            make.left.equalTo(self.textContainer1).offset(24)
+            make.right.equalTo(self.textContainer1).offset(-24)
         }
         
         
@@ -217,10 +217,10 @@ class HereFirstUseViewController: GAITrackedViewController {
         }
         
         textLabel2.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.textContainer2).with.offset(29)
-            make.left.equalTo(self.textContainer2).with.offset(24)
-            make.right.equalTo(self.textContainer2).with.offset(-24)
-            make.bottom.equalTo(self.textContainer2).with.offset(-22)
+            make.top.equalTo(self.textContainer2).offset(29)
+            make.left.equalTo(self.textContainer2).offset(24)
+            make.right.equalTo(self.textContainer2).offset(-24)
+            make.bottom.equalTo(self.textContainer2).offset(-22)
         }
         
         

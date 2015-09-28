@@ -12,7 +12,7 @@ func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-class ParkingSpot: NSObject, Hashable, DetailObject {
+class ParkingSpot: NSObject, DetailObject {
     
     var json: JSON
     var identifier: String
@@ -473,7 +473,7 @@ func ==(lhs: LineParkingSpot, rhs: LineParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-class LineParkingSpot: MKPolyline, Hashable {
+class LineParkingSpot: MKPolyline {
     
     var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } }//to maintain backwards compatibility with mapbox
     var parkingSpot: ParkingSpot!

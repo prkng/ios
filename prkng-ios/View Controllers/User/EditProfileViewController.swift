@@ -142,7 +142,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         profileContainer.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.centerY.equalTo(self.view).with.offset(-self.BOTTOM_VIEW_HEIGHT/2)
+            make.centerY.equalTo(self.view).offset(-self.BOTTOM_VIEW_HEIGHT/2)
             make.height.equalTo(PROFILE_VIEW_HEIGHT)
         }
         
@@ -157,29 +157,29 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         }
 
         nameTextField.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.profileContainer).with.offset(20)
-            make.right.equalTo(self.profileContainer).with.offset(-20)
-            make.top.equalTo(self.editProfileLabel.snp_bottom).with.offset(10)
+            make.left.equalTo(self.profileContainer).offset(20)
+            make.right.equalTo(self.profileContainer).offset(-20)
+            make.top.equalTo(self.editProfileLabel.snp_bottom).offset(10)
             make.height.equalTo(35)
         }
         
         loginMessageLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.profileContainer)
             make.right.equalTo(self.profileContainer)
-            make.top.equalTo(self.nameTextField.snp_bottom).with.offset(2)
+            make.top.equalTo(self.nameTextField.snp_bottom).offset(2)
         }
 
         editProfileLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.profileContainer).with.offset(20)
-            make.right.equalTo(self.profileContainer).with.offset(-20)
-            make.top.equalTo(self.avatarImageView.snp_bottom).with.offset(20)
+            make.left.equalTo(self.profileContainer).offset(20)
+            make.right.equalTo(self.profileContainer).offset(-20)
+            make.top.equalTo(self.avatarImageView.snp_bottom).offset(20)
             make.height.equalTo(Styles.Sizes.formLabelHeight)
         }
 
         inputForm.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.profileContainer)
             make.right.equalTo(self.profileContainer)
-            make.top.equalTo(self.editProfileLabel.snp_bottom).with.offset(20)
+            make.top.equalTo(self.editProfileLabel.snp_bottom).offset(20)
             make.height.greaterThanOrEqualTo(self.inputForm.height())
         }
         
@@ -200,7 +200,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         logoutButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(120, 26))
-            make.bottom.equalTo(self.saveButton.snp_top).with.offset(-20)
+            make.bottom.equalTo(self.saveButton.snp_top).offset(-20)
         }
         
     }
