@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
         
         //used to debug app transport security
-        setenv("CFNETWORK_DIAGNOSTICS", "3", 1)
+//        setenv("CFNETWORK_DIAGNOSTICS", "3", 1)
         
 //        //register for background location usage for updates
         locationManager.delegate = self

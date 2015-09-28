@@ -53,6 +53,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.zoom = 17
         mapView.maxZoom = 19
         mapView.minZoom = 9
+        mapView.setCenterCoordinate(Settings.pointForCity(Settings.selectedCity()), animated: false)
         userLastChangedMap = 0
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
