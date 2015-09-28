@@ -34,12 +34,12 @@ class Checkin: NSObject {
         spotId = json["slot_id"].stringValue
         active = json["active"].boolValue
 
-        let created = json["created"].stringValue
+        let checkinTime = json["checkin_time"].stringValue
         
         let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         formatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        let dateStr = created.substringToIndex(created.startIndex.advancedBy(19))
+        let dateStr = checkinTime.substringToIndex(checkinTime.startIndex.advancedBy(19))
         date = formatter.dateFromString(dateStr)!
         
         print(date)
