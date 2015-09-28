@@ -15,19 +15,19 @@
 		3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDACB1B276A2B00872667 /* libc++.dylib */; };
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
 		3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */; };
-		3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3881BB63A450067DA8C /* Constraint.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B3991BB63A450067DA8C /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38B1BB63A450067DA8C /* ConstraintItem.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B39A1BB63A450067DA8C /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38C1BB63A450067DA8C /* ConstraintMaker.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B39B1BB63A450067DA8C /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38D1BB63A450067DA8C /* ConstraintRelation.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B39C1BB63A450067DA8C /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38E1BB63A450067DA8C /* Debugging.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B39D1BB63A450067DA8C /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38F1BB63A450067DA8C /* EdgeInsets.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B39E1BB63A450067DA8C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E20B3901BB63A450067DA8C /* Info.plist */; settings = {ASSET_TAGS = (); }; };
-		3E20B39F1BB63A450067DA8C /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3911BB63A450067DA8C /* LayoutConstraint.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3931BB63A450067DA8C /* SnapKit.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3941BB63A450067DA8C /* View+SnapKit.swift */; settings = {ASSET_TAGS = (); }; };
-		3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */; settings = {ASSET_TAGS = (); }; };
+		3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3881BB63A450067DA8C /* Constraint.swift */; };
+		3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */; };
+		3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */; };
+		3E20B3991BB63A450067DA8C /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38B1BB63A450067DA8C /* ConstraintItem.swift */; };
+		3E20B39A1BB63A450067DA8C /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38C1BB63A450067DA8C /* ConstraintMaker.swift */; };
+		3E20B39B1BB63A450067DA8C /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38D1BB63A450067DA8C /* ConstraintRelation.swift */; };
+		3E20B39C1BB63A450067DA8C /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38E1BB63A450067DA8C /* Debugging.swift */; };
+		3E20B39D1BB63A450067DA8C /* EdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38F1BB63A450067DA8C /* EdgeInsets.swift */; };
+		3E20B39E1BB63A450067DA8C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E20B3901BB63A450067DA8C /* Info.plist */; };
+		3E20B39F1BB63A450067DA8C /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3911BB63A450067DA8C /* LayoutConstraint.swift */; };
+		3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3931BB63A450067DA8C /* SnapKit.swift */; };
+		3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3941BB63A450067DA8C /* View+SnapKit.swift */; };
+		3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */; };
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
 		3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */; };
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
@@ -47,9 +47,9 @@
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB6041B83BE370081E30A /* FilterViewController.swift */; };
-		3E7499D31BB9AA26007C78AC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */; settings = {ASSET_TAGS = (); }; };
-		3E7499D41BB9AA26007C78AC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */; settings = {ASSET_TAGS = (); }; };
-		3E7499D51BB9AA26007C78AC /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D21BB9AA26007C78AC /* GooglePlus.framework */; settings = {ASSET_TAGS = (); }; };
+		3E7499D31BB9AA26007C78AC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */; };
+		3E7499D41BB9AA26007C78AC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */; };
+		3E7499D51BB9AA26007C78AC /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D21BB9AA26007C78AC /* GooglePlus.framework */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
 		3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */; };
 		3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */; };
@@ -1270,6 +1270,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1312,6 +1313,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
