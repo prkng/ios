@@ -95,7 +95,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
 
         scrollView.addSubview(contentView)
         
-        for i in 0...6 {
+        for _ in 0...6 {
             let columnView : ScheduleColumnView = ScheduleColumnView()
             contentView.addSubview(columnView)
             columnViews.append(columnView)
@@ -204,17 +204,17 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         targetContentOffset.memory.x = targetIndex * (self.COLUMN_SIZE)
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        let maxOffset : Float = Float(COLUMN_SIZE * 4.0)
-        var ratio : Float = 0.0
-        
-        if (scrollView.contentOffset.x != 0) {
-            ratio = Float(scrollView.contentOffset.x) / maxOffset
-        }
-        
-    }
-        
+//    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        
+//        let maxOffset : Float = Float(COLUMN_SIZE * 4.0)
+//        var ratio : Float = 0.0
+//        
+//        if (scrollView.contentOffset.x != 0) {
+//            ratio = Float(scrollView.contentOffset.x) / maxOffset
+//        }
+//        
+//    }
+    
     
     //MARK: Helper functions directly related to this view controller
     

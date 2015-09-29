@@ -146,8 +146,6 @@ class Lot: NSObject, DetailObject {
             return currentPeriod
         }
         
-        let currentDay = DateUtil.dayIndexOfTheWeek()
-        let currentTimeInterval = DateUtil.timeIntervalSinceDayStart()
         let sortedAgenda = self.sortedAgenda
         
         var nextOpenPeriod: LotAgendaPeriod?

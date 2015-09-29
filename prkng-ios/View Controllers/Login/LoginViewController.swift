@@ -99,7 +99,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
         let login =  FBSDKLoginManager()
         let permissions = ["email", "public_profile"]
-        login.logInWithReadPermissions(permissions, handler: { (result, error) -> Void in
+        login.logInWithReadPermissions(permissions, fromViewController: self) { (result, error) -> Void in
             
             if (error != nil || result.isCancelled) {
                 // Handle errors and cancellations
@@ -124,7 +124,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                 })
             }
             
-        })
+        }
         
         selectedMethod = LoginMethod.Facebook
         

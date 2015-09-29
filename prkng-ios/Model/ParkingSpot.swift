@@ -62,7 +62,6 @@ class ParkingSpot: NSObject, DetailObject {
         
         switch self.currentlyActiveRule.ruleType {
         case .Paid:
-            let interval = self.currentlyActiveRuleEndTime
             let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
             let numberString = NSMutableAttributedString(string: self.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
             currencyString.appendAttributedString(numberString)

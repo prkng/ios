@@ -90,7 +90,7 @@ class SelectionControl: UIControl {
         selectionIndicator.layer.cornerRadius =  self.selectionIndicatorSize.height / 2.0
         addSubview(selectionIndicator)
         
-        for title in titles {
+        for _ in titles {
             
             let buttonContainer = UIView()
             addSubview(buttonContainer)

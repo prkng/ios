@@ -184,8 +184,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
         let annotationType = userInfo!["type"] as! String
         
-        let addAnimation = annotationType
-        
         switch annotationType {
             
         case "line":
@@ -473,10 +471,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             self.delegate?.didSelectObject(selectedObject as! Lot)
 
         } else if (type == "searchResult") {
-            
-            var result = userInfo!["spot"] as! ParkingSpot?
-            
-            
+            // do nothing for the time being
+//            var result = userInfo!["spot"] as! ParkingSpot?
         }
         
         isSelecting = false
@@ -731,11 +727,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     LotOperations.sharedInstance.findLots(self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
                 }
                 break
-            default:
-                self.updateInProgress = false
-                self.removeLinesAndButtons()
-                completion(operationCompleted: true)
-                break
+//            default:
+//                self.updateInProgress = false
+//                self.removeLinesAndButtons()
+//                completion(operationCompleted: true)
+//                break
             }
             
         } else {
@@ -758,7 +754,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func updateSpotAnnotations(spots: [ParkingSpot], completion: ((operationCompleted: Bool) -> Void)) {
         
-        let duration = self.delegate?.activeFilterDuration()
         var tempAnnotations = [RMAnnotation]()
         
         for spot in spots {
@@ -1052,9 +1047,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         annotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
         annotation.lineColor = Styles.Colors.red1
         annotation.lineWidth = 4.0
-        
-        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
-        let interiorPolygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(interiorPolygons, mapView: mapView)
         
         let allAnnotationsToAdd = [annotation]
         mapView.addAnnotations(allAnnotationsToAdd)

@@ -72,8 +72,8 @@ struct SpotOperations {
 //            DDLoggerWrapper.logVerbose(String(format: "Json: %@", json.description))
             DDLoggerWrapper.logVerbose(String(format: "error: %@", error ?? ""))
             
-            var spotJsons: Array<JSON> = json["features"].arrayValue
-            var spots = spotJsons.map({ (var spotJson) -> ParkingSpot in
+            let spotJsons: Array<JSON> = json["features"].arrayValue
+            let spots = spotJsons.map({ (spotJson) -> ParkingSpot in
                 ParkingSpot(json: spotJson)
             })
             

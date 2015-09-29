@@ -56,7 +56,6 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
         
         let screenview = UIImageView(image: screenshot)
         screenview.contentMode = UIViewContentMode.Center
-        let blurredview = UIImageView(image: blur)
         
         blurView.frame = self.view.bounds
         blurView.image = blur

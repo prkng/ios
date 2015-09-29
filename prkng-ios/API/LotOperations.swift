@@ -38,7 +38,7 @@ import UIKit
         
         let radiusStr = NSString(format: "%.0f", 30000.0)//radius)
         
-        var params = ["latitude": coordinate.latitude,
+        let params = ["latitude": coordinate.latitude,
             "longitude": coordinate.longitude,
             "radius" : radiusStr,
         ]
@@ -51,8 +51,8 @@ import UIKit
 //            DDLoggerWrapper.logVerbose(String(format: "Json: %@", json.description))
             DDLoggerWrapper.logVerbose(String(format: "error: %@", error ?? ""))
             
-            var lotJsons: [JSON] = json["features"].arrayValue
-            self.lots = lotJsons.map({ (var lotJson) -> Lot in
+            let lotJsons: [JSON] = json["features"].arrayValue
+            self.lots = lotJsons.map({ (lotJson) -> Lot in
                 Lot(json: lotJson)
             })
             

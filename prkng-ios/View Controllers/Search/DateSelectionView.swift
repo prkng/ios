@@ -32,7 +32,7 @@ class DateSelectionView: UIView {
         tomorrowButton = DayButton()
         weekButtons = []
         
-        for i in 0...6 {
+        for _ in 0...6 {
             weekButtons.append(DayOfWeekButton())
         }
         

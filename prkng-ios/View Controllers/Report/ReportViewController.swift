@@ -262,7 +262,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     
     func takePicture() {
         
-        if let videoConnection = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
+        if let _ = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
             
             if !(captureDevice!.adjustingWhiteBalance || captureDevice!.adjustingExposure ) {
                 

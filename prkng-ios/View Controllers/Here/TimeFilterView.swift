@@ -373,22 +373,13 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     }
 
     func getScrollViewLeft() -> CGPoint {
-        var visibleRect = CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y, scrollView.bounds.size.width, scrollView.bounds.size.height)
         let contentViewCurrentLeftPoint = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
-        
         return contentViewCurrentLeftPoint
     }
 
     func recolorLabels() {
 
-//        //order the labels by proximity to the center
-//        var contentViewCurrentCenterPoint = getScrollViewCenter()
-
         let contentViewCurrentCenterPoint = getScrollViewLeft()
-        
-        //get the label nearest to the centerPoint
-        var nearestLabelDistance = CGFloat.max
-        var nearestLabelDifferenceFromCenter = CGFloat.max
         
         var timeLabels = times.map { (time) -> PRKLabel in
             time.label

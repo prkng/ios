@@ -50,7 +50,6 @@ extension UIImage {
     
     class func getRoundedRectImageFromImage(image: UIImage, rect:CGRect, cornerRadius:CGFloat) -> UIImage {
         
-        let screenScale = UIScreen.mainScreen().scale
         UIGraphicsBeginImageContextWithOptions(rect.size, false, Settings.screenScale)
         UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius).addClip()
         image.drawInRect(rect)
@@ -71,7 +70,6 @@ extension UIImage {
     
     class func screenshot(viewController: UIViewController?) -> UIImage {
 
-        let screenHeight = UIScreen.mainScreen().bounds.height
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let root = viewController ?? delegate.window?.rootViewController
         let bounds = CGRect(x: 0, y: 0, width: root!.view.bounds.width, height: root!.view.bounds.height)
@@ -147,7 +145,6 @@ extension UIImage {
         
         UIGraphicsBeginImageContext(size)
         layer.renderInContext(UIGraphicsGetCurrentContext()!)
-//        let image = UIGraphicsGetImageFromCurrentContext()
         let image = UIGraphicsGetImageFromCurrentImageContext()
 
         UIGraphicsEndImageContext()

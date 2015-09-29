@@ -409,9 +409,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 case Settings.City.QuebecCity:
                     bottomButtonLabel.text = "copilote_mobile_user".localizedString.uppercaseString
                     break
-                default:
-                    bottomButtonLabel.text = ""
-                    break
+//                default:
+//                    bottomButtonLabel.text = ""
+//                    break
                 }
 
                 
@@ -566,8 +566,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             if !UIApplication.sharedApplication().canOpenURL(url!) {
                 url = NSURL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
             }
-            break
-        default:
             break
         }
 
