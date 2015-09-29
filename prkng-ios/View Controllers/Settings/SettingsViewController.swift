@@ -266,8 +266,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         profileImageView.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.profileContainer)
-            make.top.equalTo(self.profileContainer)
+            make.centerX.equalTo(self.view)
+            make.centerY.equalTo(self.view).multipliedBy(0.3)
             make.size.equalTo(CGSizeMake(68, 68))
         }
         

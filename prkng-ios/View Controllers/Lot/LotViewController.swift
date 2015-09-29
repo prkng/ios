@@ -184,7 +184,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             attributesViewLabels.append(attributeLabel)
             
             let attributeImageView = UIImageView(image: UIImage(named: imageName)!)
-            attributeImageView.contentMode = .Bottom
+            attributeImageView.contentMode = .Center
             attributesViewImages.append(attributeImageView)
             
             attributesViewContainer.addSubview(attributeLabel)
@@ -246,7 +246,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         subHeaderViewLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.subHeaderView).offset(34)
             make.right.equalTo(self.subHeaderView).offset(-40)
-            make.centerY.equalTo(self.subHeaderView)
+            make.top.equalTo(self.subHeaderView)
+            make.height.equalTo(self.subHeaderView)
         }
         
         todayTimeHeaderView.snp_makeConstraints { (make) -> () in

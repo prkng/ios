@@ -91,7 +91,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         logoView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(68, 68))
             make.centerX.equalTo(self.view)
-            make.centerY.equalTo(self.view).multipliedBy(0.4)
+            make.centerY.equalTo(self.view).multipliedBy(0.3)
         }
 
         messageLabel.snp_makeConstraints { (make) -> () in
