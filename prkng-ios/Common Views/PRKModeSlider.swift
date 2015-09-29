@@ -7,7 +7,6 @@
 //
 
 
-//TODO: THIS NEEDS TO BE CLEANED UP!! We should only use PRKModeSlider and add a tap recognizer for tapping. Get rid of everything else.
 import UIKit
 
 class PRKModeSlider: UIControl {

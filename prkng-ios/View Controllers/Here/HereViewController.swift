@@ -69,6 +69,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+
+        modeSelection.setValue(Double(modeSelection.selectedIndex), animated: true)
         
         if (Settings.firstMapUse()) {
             Settings.setFirstMapUsePassed(true)
