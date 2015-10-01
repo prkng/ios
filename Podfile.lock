@@ -47,7 +47,6 @@ PODS:
   - SDWebImage/Core (3.7.2)
   - SMCalloutView (2.0)
   - SVProgressHUD (HEAD based on 1.1.3)
-  - SZTextView (1.2.1)
 
 DEPENDENCIES:
   - CocoaLumberjack
@@ -62,7 +61,6 @@ DEPENDENCIES:
   - pop (~> 1.0)
   - SDWebImage (= 3.7.2)
   - SVProgressHUD (HEAD)
-  - SZTextView
 
 SPEC CHECKSUMS:
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
@@ -86,6 +84,5 @@ SPEC CHECKSUMS:
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SMCalloutView: f758edd824b18bf4f42de00df1e299861a2d1950
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
-  SZTextView: 906df45afd3c1b24fc5252088d5ef8061513c238
 
 COCOAPODS: 0.38.2

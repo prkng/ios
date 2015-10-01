@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
+class ReportViewController: AbstractViewController, NotesModalViewControllerDelegate, CLLocationManagerDelegate {
     
 
     let captureSession = AVCaptureSession()
@@ -321,7 +321,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
     }
     
     
-    func sendButtonTapped(sender : UIButton) {
+    func sendButtonTapped(sender : UIButton?) {
         
         if notesVC == nil {
             showNotes()
@@ -333,7 +333,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         
         let resized = capturedImage!.resizeImage(CGSizeMake(1024, 768))
         
-        SpotOperations.reportParkingRule(resized, location: location!.coordinate, notes: notesVC?.textView.text ?? "", spotId: spotId, completion: { (completed) -> Void in
+        SpotOperations.reportParkingRule(resized, location: location!.coordinate, notes: notesVC?.textField.text ?? "", spotId: spotId, completion: { (completed) -> Void in
             
             if (completed) {
                 SVProgressHUD.dismiss()
@@ -385,6 +385,7 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
         self.view.bringSubviewToFront(sendButton)
         
         notesVC = NotesModalViewController()
+        notesVC!.delegate = self
         
         self.addChildViewController(notesVC!)
         self.view.addSubview(notesVC!.view)
@@ -446,6 +447,11 @@ class ReportViewController: AbstractViewController, CLLocationManagerDelegate {
             
         }
         
+    }
+    
+    //MARK: NotesModalViewControllerDelegate
+    func didFinishWritingNotes() {
+        sendButtonTapped(nil)
     }
     
 }

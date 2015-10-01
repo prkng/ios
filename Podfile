@@ -15,7 +15,7 @@ pod 'MarqueeLabel'
 pod 'CocoaLumberjack'
 pod 'GoogleMaps'
 pod 'Google/Analytics'
-pod 'SZTextView'
+#pod 'SZTextView' #no longer used, gives a uitextview with placeholder text
 
 #the pods below should only be enabled if we move to ios 8
 #use_frameworks!

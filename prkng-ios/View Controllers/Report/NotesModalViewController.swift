@@ -8,18 +8,19 @@
 
 import UIKit
 
-class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
+class NotesModalViewController: GAITrackedViewController, UITextFieldDelegate {
 
-    var containerView: UIView
+    var containerView = UIView()
     
+    var iconView = UIImageView()
     
-    var iconView : UIImageView
+    var titleContainer = UIView()
+    var titleLabel = UILabel()
     
-    var titleContainer : UIView
-    var titleLabel : UILabel
+    var textContainer = UIView()
+    var textField = UITextField()
     
-    var textContainer : UIView
-    var textView : SZTextView
+    var delegate: NotesModalViewControllerDelegate?
     
     let X_TRANSFORM = CGFloat(0)
     let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
@@ -28,18 +29,7 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
     let titleText = "report_notes_title".localizedString
     let placeholderText = "report_notes_placeholder".localizedString
     
-    init() {
-
-        containerView = UIView()
-        
-        iconView = UIImageView()
-        
-        titleContainer = UIView()
-        titleLabel = UILabel()
-        
-        textContainer = UIView()
-        textView = SZTextView()
-        
+    init() {        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,12 +60,14 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
             animate()
         }
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(300 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
-            self.textView.becomeFirstResponder()
+            self.textField.becomeFirstResponder()
         })
     }
     
     func setupSubviews() {
         
+        let tapRec = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tapRec)
         view.addSubview(containerView)
         
         titleContainer.backgroundColor = Styles.Colors.cream2
@@ -96,28 +88,29 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
         textContainer.layer.borderWidth = 0.5
         containerView.addSubview(textContainer)
         
-        let placeholder = NSAttributedString(string: placeholderText, attributes: [NSFontAttributeName: Styles.FontFaces.regular(15)])
-        textView.delegate = self
-        textView.attributedPlaceholder = placeholder
-        textView.placeholderTextColor = Styles.Colors.greyish
-        textView.font = Styles.FontFaces.light(15)
-        textView.textColor = Styles.Colors.petrol2
-        textView.keyboardAppearance = UIKeyboardAppearance.Default
-        textView.textAlignment = NSTextAlignment.Left
-        textView.backgroundColor = Styles.Colors.cream2
-        containerView.addSubview(textView)
+        let placeholder = NSAttributedString(string: placeholderText, attributes: [NSFontAttributeName: Styles.FontFaces.regular(15), NSForegroundColorAttributeName: Styles.Colors.greyish])
+        textField.delegate = self
+        textField.returnKeyType = .Send
+        textField.attributedPlaceholder = placeholder
+        textField.font = Styles.FontFaces.light(15)
+        textField.textColor = Styles.Colors.petrol2
+        textField.keyboardAppearance = UIKeyboardAppearance.Default
+        textField.textAlignment = NSTextAlignment.Left
+        textField.backgroundColor = Styles.Colors.cream2
+        containerView.addSubview(textField)
         
     }
     
     func setupConstraints () {
         
-        let topOffset = UIScreen.mainScreen().bounds.height / 3
+        let lastKeyboardHeight = (NSUserDefaults.standardUserDefaults().valueForKey("last_keyboard_height") as? CGFloat ?? 216)
+        let marginHeight = UIScreen.mainScreen().bounds.height - lastKeyboardHeight - 200
         
         containerView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view).offset(topOffset)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.view)
+            make.top.equalTo(self.view).offset(marginHeight/2)
+            make.height.equalTo(200 + marginHeight/2)
         }
         
         iconView.snp_makeConstraints { (make) -> () in
@@ -146,7 +139,7 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
             make.bottom.equalTo(self.containerView)
         }
         
-        textView.snp_makeConstraints { (make) -> () in
+        textField.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.textContainer).offset(14)
             make.left.equalTo(self.textContainer).offset(24)
             make.right.equalTo(self.textContainer).offset(-24)
@@ -166,4 +159,19 @@ class NotesModalViewController: GAITrackedViewController, UITextViewDelegate {
         containerView.layer.pop_addAnimation(translateAnimation, forKey: "translateAnimation")
     }
     
+    func dismissKeyboard() {
+        self.textField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+
+        textField.resignFirstResponder()
+        self.delegate?.didFinishWritingNotes()
+        return true
+    }
+    
+}
+
+protocol NotesModalViewControllerDelegate {
+    func didFinishWritingNotes()
 }
