@@ -131,16 +131,24 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         subHeaderView.backgroundColor = Styles.Colors.lipstick
         
         subHeaderView.addSubview(subHeaderViewLabel)
-        subHeaderViewLabel.leftLabel.text = String(format: "capacity_x_places".localizedString, lot.capacity)
-        subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
-        subHeaderViewLabel.leftLabel.textColor = Styles.Colors.cream1
-
-        let currencyString = NSMutableAttributedString(string: "$" + String(Int(lot.hourlyRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
-        let numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
-        currencyString.appendAttributedString(numberString)
-        subHeaderViewLabel.rightLabel.attributedText = currencyString
-        subHeaderViewLabel.rightLabel.textColor = Styles.Colors.cream1
-
+        
+        if let capacity = lot.capacity {
+            subHeaderViewLabel.leftLabel.text = String(format: "capacity_x_places".localizedString, capacity)
+            subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
+            subHeaderViewLabel.leftLabel.textColor = Styles.Colors.cream1
+        } else {
+            subHeaderViewLabel.leftLabel.text = ""
+        }
+        
+        if let hourly = lot.hourlyRate {
+            let currencyString = NSMutableAttributedString(string: "$" + String(Int(hourly)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+            let numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
+            currencyString.appendAttributedString(numberString)
+            subHeaderViewLabel.rightLabel.attributedText = currencyString
+            subHeaderViewLabel.rightLabel.textColor = Styles.Colors.cream1
+        } else {
+            subHeaderViewLabel.rightLabel.text = ""
+        }
         
         timeIconView.image = timeIconView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         timeIconView.tintColor = Styles.Colors.midnight1

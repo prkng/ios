@@ -97,9 +97,9 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
         self.methodSelectionView.userInteractionEnabled = false
         
-        let login =  FBSDKLoginManager()
+        let login = FBSDKLoginManager()
         let permissions = ["email", "public_profile"]
-        login.logInWithReadPermissions(permissions, fromViewController: self) { (result, error) -> Void in
+        login.logInWithReadPermissions(permissions) { (result, error) -> Void in
             
             if (error != nil || result.isCancelled) {
                 // Handle errors and cancellations

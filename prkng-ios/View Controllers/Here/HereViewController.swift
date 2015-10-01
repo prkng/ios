@@ -377,7 +377,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 Settings.saveCheckInData(activeSpot, time: NSDate())
                 
                 if (Settings.notificationTime() > 0) {
-                    Settings.cancelNotification()
+                    Settings.cancelScheduledNotifications()
                     if activeSpot.currentlyActiveRule.ruleType != .Paid {
                         Settings.scheduleNotification(NSDate(timeIntervalSinceNow: activeSpot.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
                     }

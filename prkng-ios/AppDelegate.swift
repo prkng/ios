@@ -210,7 +210,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             alert.message = notification.alertBody
             alert.addButtonWithTitle("OK")
             alert.show()
-            Settings.cancelNotification()
+            Settings.cancelScheduledNotifications()
         } else if identifier == "prkng_check_out_monitor" {
 
             //present the custom dialog
@@ -351,19 +351,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if !found {
             return
         }
+        
+        //we are exiting after having entered... deliver the notification
 
         //stop monitoring ALL regions
-        for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
-            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
-                self.locationManager.stopMonitoringForRegion(monitoredRegion)
-            }
-        }
+        Settings.clearRegionsMonitored()
         
         let spotName = Settings.checkedInSpot()?.name ?? ""
         
         //next create the alert
         let alert = UILocalNotification()
         alert.userInfo = ["identifier" : "prkng_check_out_monitor"]
+        alert.applicationIconBadgeNumber = 1
         if #available(iOS 8.2, *) {
             alert.alertTitle = "on_the_go".localizedString
         }
@@ -386,7 +385,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     func geofencingNotificationResponse(answeredYes: Bool) {
         
         NSUserDefaults.standardUserDefaults().removeObjectForKey("prkng_check_out_monitor_notification")
-        Settings.cancelNotification()
+        Settings.clearRegionsMonitored()
+        Settings.clearNotificationBadgeAndNotificationCenter()
         
         if answeredYes {
             

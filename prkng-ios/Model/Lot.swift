@@ -63,7 +63,7 @@ class Lot: NSObject, DetailObject {
     var name: String
     var lotOperator: String
     var address: String
-    var capacity: Int
+    var capacity: Int?
     var attributes: [LotAttribute]
     var agenda: [LotAgendaPeriod]
     var coordinate: CLLocationCoordinate2D
@@ -99,8 +99,8 @@ class Lot: NSObject, DetailObject {
         }
     }
     
-    var hourlyRate: Float {
-        return self.currentOrNextOpenPeriod?.hourlyRate ?? 0
+    var hourlyRate: Float? {
+        return self.currentOrNextOpenPeriod?.hourlyRate
     }
     
     //returns the periods flattened and ordered by day, then by start time
@@ -265,7 +265,7 @@ class Lot: NSObject, DetailObject {
         self.identifier = json["id"].stringValue
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
         self.address = json["properties"]["address"].stringValue
-        self.capacity = json["properties"]["capacity"].intValue
+        self.capacity = json["properties"]["capacity"].int
         
         self.agenda = [LotAgendaPeriod]()
         for attr in json["properties"]["agenda"] {

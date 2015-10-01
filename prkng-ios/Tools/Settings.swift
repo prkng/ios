@@ -192,7 +192,8 @@ struct Settings {
     static func checkOut() {
         Settings.setCheckInId(0)
         Settings.saveCheckInData(nil, time: nil)
-        Settings.cancelNotification()
+        Settings.cancelScheduledNotifications()
+        
     }
     
     static func setCheckInId(checkinId: Int) {
@@ -333,7 +334,7 @@ struct Settings {
     
     static func scheduleNotification(time : NSDate) {
         
-        Settings.cancelNotification()
+        Settings.cancelScheduledNotifications()
         
         let alarmTime = time.dateByAddingTimeInterval(NSTimeInterval(-time.seconds()))
         let alarm = UILocalNotification()
@@ -348,7 +349,7 @@ struct Settings {
 
     static func scheduleNotification(spot : ParkingSpot) {
         
-        Settings.cancelNotification()
+        Settings.clearRegionsMonitored()
         
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
@@ -439,15 +440,30 @@ struct Settings {
     }
 
     
-    static func cancelNotification() {
+    /**
+    Cancels only the scheduled notifications that are used for checkout reminders
+    */
+    static func cancelScheduledNotifications() {
         for notification in UIApplication.sharedApplication().scheduledLocalNotifications ?? [] {
             UIApplication.sharedApplication().cancelLocalNotification(notification)
         }
-        clearNotificationBadge()
+        clearNotificationBadgeAndNotificationCenter()
+    }
+
+    static func clearNotificationBadgeAndNotificationCenter() {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 1
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
     
-    static func clearNotificationBadge() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+    static func clearRegionsMonitored() {
+
+        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+
+        for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
+            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
+                delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
+            }
+        }
     }
     
     static func hasNotificationBadge() -> Bool {
