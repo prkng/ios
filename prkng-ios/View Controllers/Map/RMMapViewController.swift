@@ -191,7 +191,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let selected = userInfo!["selected"] as! Bool
             let spot = userInfo!["spot"] as! ParkingSpot
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
-            let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
+            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
             let shape = RMShape(view: mapView)
             
             if selected {
@@ -202,7 +202,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 shape.lineColor = Styles.Colors.lineBlue
             }
             
-            if mapView.zoom >= 15.0 && mapView.zoom < 16.0 {
+            if mapView.zoom >= 15.0 && mapView.zoom < 17.0 {
                 shape.lineWidth = 2.6
             } else {
                 shape.lineWidth = 4.4
@@ -224,7 +224,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
             let selected = userInfo!["selected"] as! Bool
             let spot = userInfo!["spot"] as! ParkingSpot
-            let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
+            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             
             var imageName = "button_line_"
@@ -714,10 +714,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             switch(self.mapMode) {
             case MapMode.CarSharing:
-                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
+                SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.StreetParking:
-                SpotOperations.findSpots(self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
+                SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.Garage:
                 if self.annotations.count > 0 {

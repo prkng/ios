@@ -150,7 +150,7 @@ class MGLMapViewController: MapViewController {
 //            let userInfo = lineOverlay.userInfo
 //            let selected = userInfo["selected"] as! Bool
 //            let spot = userInfo["spot"] as! ParkingSpot
-//            let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
+//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
 //            
 //            if selected {
 //                return Styles.Colors.red2
@@ -201,7 +201,7 @@ class MGLMapViewController: MapViewController {
 //            let userInfo = lineOverlay.userInfo
 //            let selected = userInfo["selected"] as! Bool
 //            let spot = userInfo["spot"] as! ParkingSpot
-//            let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
+//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
 //            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
 //            
 //            var coordinates = spot.line.coordinates2D

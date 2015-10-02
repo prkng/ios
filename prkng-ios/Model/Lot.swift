@@ -59,6 +59,7 @@ func ==(lhs: Lot, rhs: Lot) -> Bool {
 class Lot: NSObject, DetailObject {
    
     var json: JSON
+    var compact: Bool
     var identifier: String
     var name: String
     var lotOperator: String
@@ -246,6 +247,7 @@ class Lot: NSObject, DetailObject {
     
     init(lot: Lot) {
         self.json = lot.json
+        self.compact = lot.compact
         self.identifier = lot.identifier
         self.coordinate = lot.coordinate
         self.streetViewPanoramaId = lot.streetViewPanoramaId
@@ -262,6 +264,7 @@ class Lot: NSObject, DetailObject {
     init(json: JSON) {
         
         self.json = json
+        self.compact = false
         self.identifier = json["id"].stringValue
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
         self.address = json["properties"]["address"].stringValue

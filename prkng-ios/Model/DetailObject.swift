@@ -10,6 +10,7 @@ import UIKit
 
 protocol DetailObject {
    
+    var compact: Bool { get }
     var identifier: String { get }
     
     var headerText: String { get }
@@ -28,4 +29,32 @@ protocol DetailObject {
     var showsBottomLeftContainer: Bool { get //{ return bottomLeftTitleText == nil && bottomLeftPrimaryText == nil } 
         }
     
+}
+
+class DetailObjectLoading: DetailObject {
+    
+    private var parent: DetailObject
+    
+    init(parent: DetailObject) {
+        self.parent = parent
+    }
+    
+    var compact: Bool { get { return parent.compact } }
+    var identifier: String { get { return parent.identifier } }
+    
+    var headerText: String { get { return parent.headerText } }
+    var headerIconName: String { return parent.headerIconName }
+    var doesHeaderIconWiggle: Bool { get { return parent.doesHeaderIconWiggle } }
+    var headerIconSubtitle: String { get { return parent.headerIconSubtitle } }
+    
+    var bottomLeftTitleText: String? { get { return nil } }
+    var bottomLeftPrimaryText: NSAttributedString? { get { return nil } }
+    var bottomLeftWidth: Int { get { return parent.bottomLeftWidth } }
+    
+    var bottomRightTitleText: String { get { return "" } }
+    var bottomRightPrimaryText: NSAttributedString { get { return NSAttributedString(string: "loading".localizedString, attributes: [NSFontAttributeName: Styles.Fonts.h3, NSBaselineOffsetAttributeName: 5]) } }
+    var bottomRightIconName: String? { get { return nil } }
+    
+    var showsBottomLeftContainer: Bool { get { return parent.showsBottomLeftContainer } }
+
 }

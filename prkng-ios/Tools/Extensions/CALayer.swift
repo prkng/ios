@@ -15,7 +15,7 @@ extension CALayer {
         
         animation.values = [0,1]
         
-        animation.duration = 0.6
+        animation.duration = 0.4
         var timingFunctions: Array<CAMediaTimingFunction> = []
         
         for _ in 0...animation.values!.count {
@@ -29,7 +29,27 @@ extension CALayer {
         
         //        NSLog("Added a scale animation")
     }
-    
+
+    func addFadeAnimation() {
+        let animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "opacity")
+        
+        animation.values = [0,1]
+        
+        animation.duration = 0.3
+        var timingFunctions: Array<CAMediaTimingFunction> = []
+        
+        for _ in 0...animation.values!.count {
+            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        }
+        
+        animation.timingFunctions = timingFunctions
+        animation.removedOnCompletion = true
+        
+        self.addAnimation(animation, forKey: "opacity")
+        
+        //        NSLog("Added a scale animation")
+    }
+
     func wigglewigglewiggle() {
         
         if let _ = self.animationForKey("wigglewigglewiggle") {

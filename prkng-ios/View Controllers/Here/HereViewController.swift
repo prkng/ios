@@ -205,6 +205,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func topContainerTapped() {
+
+        if shouldIgnoreSwipe(CGPointZero) {
+            return
+        }
+
         if activeDetailObject != nil &&  activeDetailObject is Lot {
             showModalView(activeDetailObject)
         } else {
@@ -213,6 +218,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     func bottomContainerTapped() {
+        
+        if shouldIgnoreSwipe(CGPointZero) {
+            return
+        }
+
         if activeDetailObject != nil {
             showModalView(activeDetailObject)
         }
@@ -222,7 +232,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
     func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
-        return false
+        return activeDetailObject?.compact == true
     }
     
     func swipeDidBegin() {
@@ -378,7 +388,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 
                 if (Settings.notificationTime() > 0) {
                     Settings.cancelScheduledNotifications()
-                    if activeSpot.currentlyActiveRule.ruleType != .Paid {
+                    if activeSpot.currentlyActiveRuleType != .Paid {
                         Settings.scheduleNotification(NSDate(timeIntervalSinceNow: activeSpot.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
                     }
                 }

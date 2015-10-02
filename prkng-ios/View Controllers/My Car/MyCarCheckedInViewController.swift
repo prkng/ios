@@ -377,7 +377,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         locationLabel.text = spot?.name
         
         if self.spot != nil {
-            switch self.spot!.currentlyActiveRule.ruleType {
+            switch self.spot!.currentlyActiveRuleType {
             case .Paid:
                 let interval = self.spot!.currentlyActiveRuleEndTime
                 logoView.image = UIImage(named: "icon_checkin_metered")
@@ -605,7 +605,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func setDefaultTimeDisplay() {
         
         if self.spot != nil {
-            switch self.spot!.currentlyActiveRule.ruleType {
+            switch self.spot!.currentlyActiveRuleType {
             case .Paid:
                 availableTitleLabel.text = "pay_reminder".localizedString.uppercaseString
                 break

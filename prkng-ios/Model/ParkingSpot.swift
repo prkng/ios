@@ -15,6 +15,7 @@ func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
 class ParkingSpot: NSObject, DetailObject {
     
     var json: JSON
+    var compact: Bool
     var identifier: String
     var code: String
     var name : String
@@ -25,6 +26,7 @@ class ParkingSpot: NSObject, DetailObject {
     var buttonLocations: [CLLocationCoordinate2D]
     var rules: Array<ParkingRule>
     var line: Shape
+    private var parkingRuleType: ParkingRuleType
     
     var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
         
@@ -39,7 +41,7 @@ class ParkingSpot: NSObject, DetailObject {
     var headerText: String { get { return name } }
     var headerIconName: String {
         get {
-            if self.currentlyActiveRule.ruleType == .Paid {
+            if self.currentlyActiveRuleType == .Paid {
                 return "icon_checkin_pin_pay"
             } else {
                 return "icon_checkin_pin"
@@ -49,7 +51,7 @@ class ParkingSpot: NSObject, DetailObject {
     var doesHeaderIconWiggle: Bool { get { return true } }
     var headerIconSubtitle: String {
         get {
-            if self.currentlyActiveRule.ruleType == .Paid {
+            if self.currentlyActiveRuleType == .Paid {
                 return "check-in-pay".localizedString
             } else {
                 return "check-in".localizedString
@@ -60,7 +62,7 @@ class ParkingSpot: NSObject, DetailObject {
     var bottomLeftTitleText: String? { get { return "hourly".localizedString.uppercaseString } }
     var bottomLeftPrimaryText: NSAttributedString? { get {
         
-        switch self.currentlyActiveRule.ruleType {
+        switch self.currentlyActiveRuleType {
         case .Paid:
             let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
             let numberString = NSMutableAttributedString(string: self.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
@@ -76,7 +78,7 @@ class ParkingSpot: NSObject, DetailObject {
     var bottomLeftWidth: Int { get { return UIScreen.mainScreen().bounds.width == 320 ? 100 : 110 } }
     
     var bottomRightTitleText: String { get {
-        switch self.currentlyActiveRule.ruleType {
+        switch self.currentlyActiveRuleType {
         case .Paid:
             return "metered".localizedString.uppercaseString
         default:
@@ -93,7 +95,7 @@ class ParkingSpot: NSObject, DetailObject {
         }
     }
     var bottomRightPrimaryText: NSAttributedString { get {
-        switch self.currentlyActiveRule.ruleType {
+        switch self.currentlyActiveRuleType {
         case .Paid:
             let interval = self.currentlyActiveRuleEndTime
             return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
@@ -111,13 +113,14 @@ class ParkingSpot: NSObject, DetailObject {
     }
     var bottomRightIconName: String? { get { return "btn_schedule" } }
     
-    var showsBottomLeftContainer: Bool { get { return self.currentlyActiveRule.ruleType == .Paid } }
+    var showsBottomLeftContainer: Bool { get { return self.currentlyActiveRuleType == .Paid } }
 
     //MARK- Hashable
     override var hashValue: Int { get { return Int(identifier)! } }
     
     init(spot: ParkingSpot) {
         json = spot.json
+        compact = spot.compact
         identifier = spot.identifier
         code = spot.code
         name = spot.name
@@ -128,14 +131,16 @@ class ParkingSpot: NSObject, DetailObject {
         rules = spot.rules
         line = spot.line
         userInfo = spot.userInfo
+        parkingRuleType = spot.parkingRuleType
     }
     
     init(json: JSON) {
         
         self.json = json
+        compact = json["properties"]["compact"].boolValue
         identifier = json["id"].stringValue
         code = json["code"].stringValue
-        name = json["properties"]["rules"][0]["address"].stringValue.abbreviatedString
+        name = json["properties"]["way_name"].stringValue.abbreviatedString
         desc = json["properties"]["rules"][0]["description"].stringValue
         maxParkingTime = json["time_max_parking"].intValue
         duration = json["duration"].intValue
@@ -175,6 +180,8 @@ class ParkingSpot: NSObject, DetailObject {
             }
             
         }
+        
+        parkingRuleType = json["properties"]["restrict_typ"].stringValue == "paid" ? .Paid : .Free
         
         line = Shape(json: json["geometry"])
         userInfo = [String:AnyObject]()
@@ -448,6 +455,15 @@ class ParkingSpot: NSObject, DetailObject {
         return activeRules.first ?? ParkingRule(ruleType: ParkingRuleType.Free)
     }
     
+    var currentlyActiveRuleType: ParkingRuleType {
+        
+        if self.compact {
+            return self.parkingRuleType
+        } else {
+            return currentlyActiveRule.ruleType
+        }
+    }
+    
     var currentlyActiveRuleEndTime: NSTimeInterval {
         var endTime: NSTimeInterval = 0
         let today = DateUtil.dayIndexOfTheWeek()
@@ -577,7 +593,7 @@ class LineParkingSpot: MKPolyline {
 //        let userInfo = buttonParkingSpotAnnotation.userInfo
 //        let selected = userInfo["selected"] as! Bool
 //        let spot = userInfo["spot"] as! ParkingSpot
-//        let isCurrentlyPaidSpot = spot.currentlyActiveRule.ruleType == .Paid
+//        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
 //        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
 //        
 //        if shouldAddAnimation {

@@ -29,15 +29,18 @@ struct SpotOperations {
     }
     
     
-    static func findSpots(location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, carsharing: Bool = false, completion: ((spots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+    static func findSpots(compact compact: Bool, location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, carsharing: Bool = false, completion: ((spots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "slots"
         
         let radiusStr = NSString(format: "%.0f", radius)
         
+        let compactString = compact ? "true" : "false"
+
         let carsharingString = carsharing ? "true" : "false"
         
-        var params = ["latitude": location.latitude,
+        var params = ["compact": compactString,
+            "latitude": location.latitude,
             "longitude": location.longitude,
             "radius" : radiusStr,
             "permit" : "all",
