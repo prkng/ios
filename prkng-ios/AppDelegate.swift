@@ -218,6 +218,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             
             let dialogVC = PRKDialogViewController(titleIconName: "icon_howto_checkin", headerImageName: "checkout_question_header", titleText: "on_the_go".localizedString, subTitleText: "left_this_spot_question".localizedString, messageText: "\"" + spotName + "\"")
 
+            Settings.clearNotificationBadgeAndNotificationCenter()
+
+            if window?.rootViewController != nil && window!.rootViewController!.childViewControllers .contains({ (vc: UIViewController) -> Bool in
+                vc is PRKDialogViewController && (vc as! PRKDialogViewController).titleText == "on_the_go".localizedString
+            }) {
+                //the dialog is already showing, don't show it again
+                return
+            }
+            
             if let tabController = window?.rootViewController as? TabController {
                 dialogVC.showOnViewController(tabController)
             }
@@ -372,7 +381,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             alert.category = "prkng_check_out_monitor"
         }
         UIApplication.sharedApplication().presentLocalNotificationNow(alert)
-        
+
         let data = NSKeyedArchiver.archivedDataWithRootObject(alert)
         NSUserDefaults.standardUserDefaults().setObject(data, forKey: "prkng_check_out_monitor_notification")
         
