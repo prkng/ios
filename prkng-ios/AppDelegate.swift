@@ -342,6 +342,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
                 self.locationManager.stopMonitoringForRegion(monitoredRegion)
                 let newMonitoredRegion = CLCircularRegion(center: monitoredRegion.center, radius: monitoredRegion.radius, identifier: "prkng_check_out_monitor_entered_region")
                 self.locationManager.startMonitoringForRegion(newMonitoredRegion)
+                DDLoggerWrapper.logVerbose("Turned region monitoring id from " + monitoredRegion.identifier + " to " + newMonitoredRegion.identifier)
             }
         }
         
@@ -366,6 +367,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             }
         }
         if !found {
+            DDLoggerWrapper.logVerbose("Region monitoring id prkng_check_out_monitor_entered_region not found.")
             return
         }
         
@@ -388,6 +390,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         if #available(iOS 8.0, *) {
             alert.category = "prkng_check_out_monitor"
         }
+        
+        DDLoggerWrapper.logVerbose("Presenting local notification for a monitored region.")
         UIApplication.sharedApplication().presentLocalNotificationNow(alert)
 
         let data = NSKeyedArchiver.archivedDataWithRootObject(alert)

@@ -357,6 +357,7 @@ struct Settings {
         for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
             if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
                 delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
+                DDLoggerWrapper.logWarning("Found a region that should have already been removed... ")
             }
         }
 
@@ -422,10 +423,11 @@ struct Settings {
         if useUserLocationAsRegion {
             let region = CLCircularRegion(center: userLocation!.coordinate, radius: 5, identifier: "prkng_check_out_monitor")
             delegate.locationManager.startMonitoringForRegion(region)
+            DDLoggerWrapper.logVerbose("Started monitoring region from user location with id: " + region.identifier)
         } else {
             for region in regions {
-//                NSLog("starting monitoring for region %@", region.identifier)
                 delegate.locationManager.startMonitoringForRegion(region)
+                DDLoggerWrapper.logVerbose("Started monitoring region with id: " + region.identifier)
             }
         }
         
@@ -453,17 +455,21 @@ struct Settings {
     static func clearNotificationBadgeAndNotificationCenter() {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 1
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        DDLoggerWrapper.logInfo("Cleared applicaiton icon badge and notification center")
     }
     
     static func clearRegionsMonitored() {
 
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        DDLoggerWrapper.logVerbose(String(format: "Clearing %d monitored regions.", delegate.locationManager.monitoredRegions.count))
 
         for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
             if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
                 delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
+                DDLoggerWrapper.logVerbose("   Stopped monitoring region with id: " + monitoredRegion.identifier)
             }
         }
+        DDLoggerWrapper.logVerbose(String(format: "There are now %d monitored regions.", delegate.locationManager.monitoredRegions.count))
     }
     
     static func hasNotificationBadge() -> Bool {

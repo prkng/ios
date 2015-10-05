@@ -10,6 +10,7 @@
 
 @interface DDLoggerWrapper : NSObject
 + (void) logVerbose:(NSString *)message;
++ (void) logWarning:(NSString *)message;
 + (void) logError:(NSString *)message;
 + (void) logInfo:(NSString *)message;
 @end

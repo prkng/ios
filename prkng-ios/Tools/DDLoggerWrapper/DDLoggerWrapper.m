@@ -26,6 +26,10 @@ static const int ddLogLevel = LOG_LEVEL_INFO;
     DDLogVerbose(message);
 }
 
++ (void) logWarning:(NSString *)message {
+    DDLogWarn(message);
+}
+
 + (void) logError:(NSString *)message {
     DDLogError(message);
 }
