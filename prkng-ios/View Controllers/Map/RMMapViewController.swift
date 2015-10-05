@@ -294,22 +294,15 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 spotIDsDrawnOnMap.append(lot.identifier)
             }
             
-//            if (selected) {
-//                var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-//                pulseAnimation.duration = 0.7
-//                pulseAnimation.fromValue = 0.95
-//                pulseAnimation.toValue = 1.10
-//                pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//                pulseAnimation.autoreverses = true
-//                pulseAnimation.repeatCount = FLT_MAX
-//                circleMarker.addAnimation(pulseAnimation, forKey: nil)
-//            }
-            
             return circleMarker
 
         case "searchResult":
             
             let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
+            let button = ViewFactory.directionsButton()
+            button.bounds = CGRect(x: 0, y: 0, width: 57, height: 44) //actual width of image is 53.5 points
+            button.imageView?.contentMode = .Left
+//            marker.rightCalloutAccessoryView = button
             marker.canShowCallout = true
             return marker
             
@@ -322,6 +315,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         default:
             return nil
             
+        }
+    }
+    
+    func tapOnCalloutAccessoryControl(control: UIControl!, forAnnotation annotation: RMAnnotation!, onMap map: RMMapView!) {
+        
+        if let userInfo: [String:AnyObject] = annotation.userInfo as? [String:AnyObject] {
+            if let annotationType = userInfo["type"] as? String {
+                if annotationType == "searchResult" {
+                    DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
+                }
+            }
         }
     }
     

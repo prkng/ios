@@ -28,7 +28,6 @@ class DirectionsAction {
             let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
             let region = CLCircularRegion(center: coordinate, radius: 100, identifier: self.prkng_directions_monitor)
             delegate.locationManager.startMonitoringForRegion(region)
-            
         }
 
         if supportsGoogleMaps {
@@ -80,7 +79,12 @@ class DirectionsAction {
     }
     
     static func handleDirectionRegionEntered() {
-        //TODO: Send notification, maybe switch on the blue top bars indicator?
         self.removeDirectionRegionMonitoring()
+        
+        //next create the alert
+        let alert = UILocalNotification()
+        alert.alertBody = "return_to_app".localizedString
+        alert.soundName = UILocalNotificationDefaultSoundName
+        UIApplication.sharedApplication().presentLocalNotificationNow(alert)
     }
 }
