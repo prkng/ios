@@ -313,12 +313,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
 //    }
     
     func locationManager(manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        handleRegionEntered((region as! CLCircularRegion).center)
+        if region.identifier == DirectionsAction.prkng_directions_monitor {
+            DirectionsAction.handleDirectionRegionEntered()
+        } else {
+            handleCheckOutRegionEntered((region as! CLCircularRegion).center)
+        }
 //        self.locationManager.startUpdatingLocation()
     }
 
     func locationManager(manager: CLLocationManager, didExitRegion region: CLRegion) {
-        handleRegionExited((region as! CLCircularRegion).center)
+        if region.identifier == DirectionsAction.prkng_directions_monitor {
+            DirectionsAction.removeDirectionRegionMonitoring()
+        } else {
+            handleCheckOutRegionExited((region as! CLCircularRegion).center)
+        }
 //        self.locationManager.stopUpdatingLocation()
     }
     
@@ -326,7 +334,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     //this is what we consider to be an estimated checkout
     //take all the monitored regions and turn them into checkout regions
-    func handleRegionEntered(center: CLLocationCoordinate2D) {
+    func handleCheckOutRegionEntered(center: CLLocationCoordinate2D) {
         
         //stop monitoring regions, turn the identifiers into "prkng_check_out_monitor_entered_region"
         for monitoredRegion in self.locationManager.monitoredRegions as! Set<CLCircularRegion> {
@@ -346,7 +354,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     //this is what we consider to be an estimated checkout
     //if we are leaving AFTER having entered, then we execute! 
     //otherwise we do nothing and simply wait for the region to be entered
-    func handleRegionExited(center: CLLocationCoordinate2D) {
+    func handleCheckOutRegionExited(center: CLLocationCoordinate2D) {
         
         //see if there are regions that the user exited after entering
         var found = false

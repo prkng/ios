@@ -33,6 +33,7 @@
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
 		3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */; };
 		3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4123E41B8B67DB002553D7 /* Lot.swift */; };
+		3E41F0511BBEFA43004A4A60 /* DirectionsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */; };
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
 		3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E52EB721B9F45E6004183FD /* AddressSplitting.strings */; };
 		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
@@ -220,6 +221,7 @@
 		3E411C4E1B55B5510000BB18 /* DDLoggerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLoggerWrapper.h; sourceTree = "<group>"; };
 		3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLoggerWrapper.m; sourceTree = "<group>"; };
 		3E4123E41B8B67DB002553D7 /* Lot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lot.swift; sourceTree = "<group>"; };
+		3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsAction.swift; sourceTree = "<group>"; };
 		3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
 		3E52EB721B9F45E6004183FD /* AddressSplitting.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = AddressSplitting.strings; sourceTree = "<group>"; };
 		3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
@@ -671,6 +673,7 @@
 				3E9509C51B56EE940088E336 /* PRKTextField.swift */,
 				3E9509C91B570A6A0088E336 /* PRKInputForm.swift */,
 				3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */,
+				3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */,
 			);
 			path = "Common Views";
 			sourceTree = "<group>";
@@ -1163,6 +1166,7 @@
 				3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
 				3E20B39C1BB63A450067DA8C /* Debugging.swift in Sources */,
+				3E41F0511BBEFA43004A4A60 /* DirectionsAction.swift in Sources */,
 				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,
 				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,

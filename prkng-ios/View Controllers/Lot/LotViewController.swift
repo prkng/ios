@@ -141,7 +141,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         }
         
         if let hourly = lot.hourlyRate {
-            let currencyString = NSMutableAttributedString(string: "$" + String(Int(hourly)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+            let currencyString = NSMutableAttributedString(string: String(format: "$%.2f", hourly), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
             let numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
             currencyString.appendAttributedString(numberString)
             subHeaderViewLabel.rightLabel.attributedText = currencyString
@@ -356,37 +356,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     //MARK: Helper methods
     
     func directionsButtonTapped(sender: UIButton) {
-        
-        let coordinateString = String(stringInterpolationSegment: self.lot.coordinate.latitude) + "," + String(stringInterpolationSegment: self.lot.coordinate.longitude)
-        
-        let appleMapsURLString = "http://maps.apple.com/?saddr=Current%20Location&daddr=" + coordinateString
-        
-        let googleMapsURLString = "comgooglemaps-x-callback://?saddr=&daddr=" + coordinateString + "&x-success=ng.prk.prkng-ios://?returningFromGoogleMaps=true&x-source=Prkng"
-
-        let supportsGoogleMaps = UIApplication.sharedApplication().canOpenURL(NSURL(string: "comgooglemaps://")!)
-        
-        if supportsGoogleMaps {
-
-            if #available(iOS 8.0, *) {
-                let alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "directions_google_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
-                    UIApplication.sharedApplication().openURL(NSURL(string: googleMapsURLString)!)
-                }))
-                alert.addAction(UIAlertAction(title: "directions_apple_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
-                    UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
-                }))
-                alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Cancel, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
-            } else {
-                // Fallback on earlier versions
-                //TODO: PUT SOMETHING HERE FOR IOS 7
-            }
-
-        } else {
-
-            UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
-
-        }
+        DirectionsAction.perform(onViewController: self, withCoordinate: self.lot.coordinate, shouldCallback: false)
     }
     
     
