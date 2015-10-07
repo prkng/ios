@@ -29,6 +29,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     var selectedObject: DetailObject?
     var isSelecting: Bool
     var radius : Float
+    var recoloringLotPins: Bool = false
     
     private(set) var MOVE_DELTA_IN_METERS : Double
     
@@ -1045,6 +1046,18 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     func recolorLotPinsIfNeeded() {
         if self.mapMode == .Garage {
             
+            recoloringLotPins = true
+            
+            //in 150 ms if we haven't finished the operation, show a loader
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+                Int64(150 * Double(NSEC_PER_MSEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                if self.recoloringLotPins {
+                    SVProgressHUD.show()
+                }
+            })
+
+            
             let before = NSDate().timeIntervalSince1970
             
             //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.
@@ -1075,6 +1088,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
             NSLog("Recolor took a total of %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
             
+            SVProgressHUD.dismiss()
+            recoloringLotPins = false
         }
         
     }
