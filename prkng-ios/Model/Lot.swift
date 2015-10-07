@@ -70,7 +70,9 @@ class Lot: NSObject, DetailObject {
     var coordinate: CLLocationCoordinate2D
     var streetViewPanoramaId: String?
     var streetViewHeading: Double?
-
+    
+    var isCheaper: Bool
+    
     var isCurrentlyOpen: Bool {
         
         if let period = self.currentPeriod {
@@ -80,7 +82,13 @@ class Lot: NSObject, DetailObject {
     }
     
     //returns the "main" rate ie the one we want to display
-    var mainRate: Float {
+    private var cachedMainRate: Float = -1
+    
+    func mainRate(preferreCached preferreCached: Bool = false) -> Float {
+        
+        if preferreCached && cachedMainRate > -1 {
+            return cachedMainRate
+        }
         
         let period = currentOrNextOpenPeriod
         
@@ -89,15 +97,17 @@ class Lot: NSObject, DetailObject {
         let maxDaily: Float = currentOrNextOpenPeriod?.dailyRate ?? 0
         
         if maxMax > 0 {
-            return maxMax
+            cachedMainRate = maxMax
         } else if maxDaily > 0 {
-            return maxDaily
+            cachedMainRate = maxDaily
         } else if maxHourly > 0 {
             let hours = ((period?.endHour ?? 0) - (period?.startHour ?? 0)) / 3600
-            return maxHourly * Float(hours)
+            cachedMainRate = maxHourly * Float(hours)
         } else {
-            return 0
+            cachedMainRate = 0
         }
+        
+        return cachedMainRate
     }
     
     var hourlyRate: Float? {
@@ -208,7 +218,7 @@ class Lot: NSObject, DetailObject {
     var bottomLeftTitleText: String? { get { return "daily".localizedString.uppercaseString } }
     var bottomLeftPrimaryText: NSAttributedString? { get {
         let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
-        let numberString = NSMutableAttributedString(string: String(Int(self.mainRate)), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
+        let numberString = NSMutableAttributedString(string: String(Int(self.mainRate())), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         currencyString.appendAttributedString(numberString)
         return currencyString
         }
@@ -241,6 +251,18 @@ class Lot: NSObject, DetailObject {
     var showsBottomLeftContainer: Bool { get { return true } }
 
     
+    //MARK: Other...
+    
+    func markerImageNamed(imageName: String) -> UIImage {
+        var markerImage = UIImage(named: imageName)
+        if self.bottomLeftPrimaryText != nil && self.bottomLeftPrimaryText!.string != "$0" {
+            let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
+            let numberString = NSMutableAttributedString(string: String(Int(self.mainRate())), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
+            currencyString.appendAttributedString(numberString)
+            markerImage = markerImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
+        }
+        return markerImage!
+    }
     
     //MARK- Hashable
     override var hashValue: Int { get { return Int(identifier)! } }
@@ -258,6 +280,7 @@ class Lot: NSObject, DetailObject {
         self.attributes = lot.attributes
         self.name = lot.name
         self.lotOperator = lot.lotOperator
+        self.isCheaper = lot.isCheaper
         
     }
     
@@ -311,6 +334,8 @@ class Lot: NSObject, DetailObject {
 //        self.streetViewCoordinate = CLLocationCoordinate2D(latitude: json["properties"]["street_view"]["lat"].doubleValue, longitude: json["properties"]["street_view"]["long"].doubleValue)
         self.streetViewPanoramaId = json["properties"]["street_view"]["id"].string
         self.streetViewHeading = json["properties"]["street_view"]["head"].double
+
+        self.isCheaper = false
     }
 
 

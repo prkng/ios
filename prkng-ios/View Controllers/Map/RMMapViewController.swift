@@ -266,33 +266,39 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         case "lot":
             
             let selected = userInfo!["selected"] as! Bool
+            let cheaper = userInfo!["cheaper"] as! Bool
             let lot = userInfo!["lot"] as! Lot
-            let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool && !selected
+            let shouldAddFadeAnimation = userInfo!["fadeAnimation"] as? Bool ?? false
+            let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool && !selected && !shouldAddFadeAnimation
             
             var imageName = "lot_pin_closed"
+            var zPosition: CGFloat = 0 //this doesn't work!! See?
             
             if lot.isCurrentlyOpen {
                 imageName = "lot_pin_open"
+                zPosition = 50
+                
+                if cheaper && !selected {
+                    imageName += "_cheaper"
+                    zPosition = 100
+                }
             }
 
             if selected {
                 imageName += "_selected"
+                zPosition = 150
             }
             
-            var circleImage = UIImage(named: imageName)
-            if lot.bottomLeftPrimaryText != nil && lot.bottomLeftPrimaryText!.string != "$0" {
-                let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
-                let numberString = NSMutableAttributedString(string: String(Int(lot.mainRate)), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
-                currencyString.appendAttributedString(numberString)
-                circleImage = circleImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
-            }
-            
-            let circleMarker: RMMarker = RMMarker(UIImage: circleImage, anchorPoint: CGPoint(x: 0.5, y: 1))
+            let circleMarker: RMMarker = RMMarker(UIImage: lot.markerImageNamed(imageName), anchorPoint: CGPoint(x: 0.5, y: 1))
             
             if shouldAddAnimation {
                 circleMarker.addScaleAnimation()
                 spotIDsDrawnOnMap.append(lot.identifier)
+            } else if shouldAddFadeAnimation {
+                circleMarker.addFadeAnimation()//lot.markerImageNamed("lot_pin_open"))
             }
+            
+            circleMarker.zPosition = zPosition
             
             return circleMarker
 
@@ -724,6 +730,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.Garage:
+                self.recolorLotPinsIfNeeded()
                 if self.annotations.count > 0 {
                     self.updateInProgress = false
                     completion(operationCompleted: true)
@@ -917,7 +924,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         let shouldAddAnimation = animate ?? !self.spotIDsDrawnOnMap.contains(lot.identifier)
         let annotation = RMAnnotation(mapView: self.mapView, coordinate: lot.coordinate, andTitle: String(lot.identifier))
-        annotation.userInfo = ["type": "lot", "lot": lot, "selected": selected, "shouldAddAnimation": shouldAddAnimation]
+        annotation.userInfo = ["type": "lot", "lot": lot, "selected": selected, "cheaper": lot.isCheaper, "shouldAddAnimation": shouldAddAnimation]
         
         if addToMapView {
             mapView.addAnnotation(annotation)
@@ -1035,6 +1042,42 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         addMyCarMarker()
     }
     
+    func recolorLotPinsIfNeeded() {
+        if self.mapMode == .Garage {
+            
+            let before = NSDate().timeIntervalSince1970
+            
+            //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.
+            let boundingBox = self.mapView.latitudeLongitudeBoundingBoxFor(self.mapView.bounds)
+            let maxLatitude = boundingBox.northEast.latitude
+            let minLatitude = boundingBox.southWest.latitude
+            let maxLongitude = boundingBox.northEast.longitude
+            let minLongitude = boundingBox.southWest.longitude
+            
+            let visibleLotAnnotations = (self.mapView.visibleAnnotations as! [RMAnnotation]).filter({ (annotation) -> Bool in
+                if annotation.coordinate.latitude >= minLatitude && annotation.coordinate.latitude <= maxLatitude
+                    && annotation.coordinate.longitude >= minLongitude && annotation.coordinate.longitude <= maxLongitude {
+                        if let userInfo = annotation.userInfo as? [String:AnyObject] {
+                            return userInfo["type"] as? String == "lot" && userInfo["selected"] as? Bool == false
+                        }
+                }
+                return false
+            })
+            NSLog("\n\ngetting proper visible lot annotations took %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+
+            let changedLotAnnotations = LotOperations.processCheapestLots(visibleLotAnnotations)
+            self.mapView.removeAnnotations(changedLotAnnotations)
+            self.annotations.remove(changedLotAnnotations)
+            self.annotations += changedLotAnnotations
+            self.mapView.addAnnotations(changedLotAnnotations)
+            
+            NSLog("re-adding changed lots took %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+
+            NSLog("Recolor took a total of %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+            
+        }
+        
+    }
     
     override func addCityOverlaysCallback(polygons: [MKPolygon]) {
         
