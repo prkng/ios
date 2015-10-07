@@ -296,7 +296,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 circleMarker.addScaleAnimation()
                 spotIDsDrawnOnMap.append(lot.identifier)
             } else if shouldAddFadeAnimation {
-                circleMarker.addFadeAnimation()//lot.markerImageNamed("lot_pin_open"))
+                let fromImageName = imageName == "lot_pin_open" ? "lot_pin_open_cheaper" : "lot_pin_open"
+                circleMarker.addCrossFadeAnimationFromImage(lot.markerImageNamed(fromImageName), toImage:lot.markerImageNamed(imageName))
             }
             
             circleMarker.zPosition = zPosition
@@ -1057,7 +1058,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 }
             })
 
-            
             let before = NSDate().timeIntervalSince1970
             
             //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.

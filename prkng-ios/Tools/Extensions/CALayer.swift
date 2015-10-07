@@ -30,6 +30,14 @@ extension CALayer {
         //        NSLog("Added a scale animation")
     }
 
+    func addCrossFadeAnimationFromImage(fromImage: UIImage, toImage: UIImage) {
+        let crossFade = CABasicAnimation(keyPath: "contents")
+        crossFade.duration = 0.3
+        crossFade.fromValue = fromImage.CGImage!
+        crossFade.toValue = toImage.CGImage
+        self.addAnimation(crossFade, forKey: "animateContents")
+    }
+    
     func addFadeAnimation() {
         let animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "opacity")
         
