@@ -570,8 +570,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if (closestAnnotation != nil && minimumDistance < minimumDistanceRadius) {
             mapView.selectAnnotation(closestAnnotation, animated: true)
         } else {
-            customDeselectAnnotation()
             self.delegate?.mapDidTapIdly()
+            customDeselectAnnotation()
         }
 
     }

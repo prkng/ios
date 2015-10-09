@@ -126,6 +126,9 @@ import UIKit
             if (userInfo["cheaper"] as! Bool) == false {
                 userInfo["cheaper"] = true
                 userInfo["fadeAnimation"] = true
+                let lot = (userInfo["lot"] as! Lot)
+                lot.isCheaper = true
+                userInfo["lot"] = lot
                 sortedLots[i].userInfo = userInfo
                 changedLots.append(sortedLots[i])
             }
@@ -135,6 +138,9 @@ import UIKit
             if (userInfo["cheaper"] as! Bool) == true {
                 userInfo["cheaper"] = false
                 userInfo["fadeAnimation"] = true
+                let lot = (userInfo["lot"] as! Lot)
+                lot.isCheaper = false
+                userInfo["lot"] = lot
                 sortedLots[i].userInfo = userInfo
                 changedLots.append(sortedLots[i])
             }
