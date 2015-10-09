@@ -24,7 +24,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 
     var statusBar: UIView
     var modeSelection: PRKModeSlider
-
+    var showModeSelection: Bool = true
+    
     var activeDetailObject: DetailObject?
     var forceShowSpotDetails: Bool
     
@@ -153,7 +154,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
         
         modeSelection.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(self.modeSelection.height)
+            make.height.equalTo(60)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
@@ -589,12 +590,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             mapMode = .Garage
             self.screenName = "Here - General View - ParkingLot"
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "Parking Lot", value: nil).build() as [NSObject: AnyObject])
+            filterVC.showingCarSharingTabBar = false
+            filterVC.shouldShowTimeFilter = false
             break
         case 1:
             //oh. em. gee. you wanna see street parking!
             mapMode = .StreetParking
             self.screenName = "Here - General View - On-Street"
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "On Street", value: nil).build() as [NSObject: AnyObject])
+            filterVC.showingCarSharingTabBar = false
+            filterVC.shouldShowTimeFilter = true
             break
         case 2:
             //oh. em. geeeeeeee you wanna see car sharing spots!
@@ -605,14 +610,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             }
             self.screenName = "Here - General View - CarSharing"
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "CarSharing", value: nil).build() as [NSObject: AnyObject])
+            filterVC.showingCarSharingTabBar = true
+            filterVC.shouldShowTimeFilter = false
             break
         default:break
         }
         
         AnalyticsOperations.sendMapModeChange(mapMode)
+        Settings.setShouldFilterForCarSharing(mapMode == .CarSharing)
         self.delegate?.didSelectMapMode(mapMode)
-        self.filterVC.hideFilters(completely: false)
-        self.filterVC.shouldShowTimeFilter = mapMode == .StreetParking
+        self.filterVC.hideFilters(completely: false, resettingTimeFilterValue: true)
 
     }
     
@@ -632,6 +639,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func didTapCarSharing() {
         self.delegate?.loadSettingsTab()
+    }
+    
+    func didTapTrackUserButton() {
+        self.delegate?.didTapTrackUserButton()
     }
  
     // MARK: MapMessageViewDelegate
@@ -693,4 +704,5 @@ protocol HereViewControllerDelegate {
     func updateMapAnnotations()
     func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City)
     func didSelectMapMode(mapMode: MapMode)
+    func didTapTrackUserButton()
 }

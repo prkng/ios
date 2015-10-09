@@ -34,7 +34,6 @@ class MapViewController: AbstractViewController {
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    Settings.setShouldFilterForCarSharing(self.mapMode == .CarSharing)
                     self.didSetMapMode()
                     
                     //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
@@ -65,7 +64,9 @@ class MapViewController: AbstractViewController {
     
     var delegate: MapViewControllerDelegate?
     
-    var trackUserButton = UIButton()
+    func didTapTrackUserButton () { }
+    func trackUser() { }
+    func dontTrackUser() { }
 
     var canShowMapMessage: Bool = false
     var updateInProgress: Bool = false {
@@ -235,12 +236,13 @@ class MapViewController: AbstractViewController {
 
 protocol MapViewControllerDelegate {
     
+    var trackUserButton: UIButton { get }
+    
     func mapDidDismissSelection(byUser wasUserAction: Bool)
+    func mapDidTapIdly()
     
     func didSelectObject (detailsObject : DetailObject)
-    
-    func shouldShowUserTrackingButton() -> Bool
-    
+        
     func showMapMessage(message: String?)
     func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool, showCityPicker: Bool)
     

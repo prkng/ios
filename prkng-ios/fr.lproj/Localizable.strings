@@ -198,6 +198,8 @@
 "handicap" = "Handicapé";
 "card" = "Carte";
 "operated_by" = "Par";
+"find_a_car" = "***Find a car";
+"find_a_spot" = "***Find a spot";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
 "car_sharing_enabled_text" = "Autopartage est sélectionné";

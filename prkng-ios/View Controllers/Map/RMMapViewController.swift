@@ -82,22 +82,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         addCityOverlays()
         
-        trackUserButton.backgroundColor = Styles.Colors.cream2
-        trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
-        trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(trackUserButton)
-        
         mapView.snp_makeConstraints {  (make) -> () in
             make.edges.equalTo(self.view)
         }
-        
-        trackUserButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.view).offset(-12)
-            make.top.equalTo(self.view).offset(Styles.Sizes.statusBarHeight + 10)
-            make.height.equalTo(SearchFilterView.FIELD_HEIGHT)
-            make.width.equalTo(46)
-        }
-
     }
     
     override func viewDidLoad() {
@@ -360,9 +347,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if (mapView.userTrackingMode.rawValue == RMUserTrackingModeFollow.rawValue) {
             self.trackUser()
         } else {
-            if delegate?.shouldShowUserTrackingButton() ?? false {
-                self.dontTrackUser()
-            }
+            self.dontTrackUser()
         }
         
     }
@@ -374,7 +359,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(0.31 * Double(NSEC_PER_SEC)))
+            Int64(0.16 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
 
             self.removeSelectedAnnotationIfExists()
@@ -385,7 +370,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let differenceInMeters = lastMapCenterLocation.distanceFromLocation(newMapCenterLocation)
             //        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
             if differenceInMeters > self.MOVE_DELTA_IN_METERS
-                && self.getTimeSinceLastMapMovement() > 300 {
+                && self.getTimeSinceLastMapMovement() > 150 {
                     self.updateAnnotations()
                     self.lastMapCenterCoordinate = map.centerCoordinate
             }
@@ -406,7 +391,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
 
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(0.31 * Double(NSEC_PER_SEC)))
+            Int64(0.16 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
             
             self.radius = (20.0 - map.zoom) * 100
@@ -419,7 +404,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 self.spotIDsDrawnOnMap = []
             }
             
-            if self.getTimeSinceLastMapMovement() > 300 {
+            if self.getTimeSinceLastMapMovement() > 150 {
                 self.updateAnnotations()
             }
             
@@ -513,17 +498,34 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func singleTapOnMap(map: RMMapView!, at point: CGPoint) {
 
-        var minimumDistanceRadius: CGFloat = 60
+        let before = NSDate().timeIntervalSince1970
+
+        var minimumDistanceRadius: CGFloat = 40
 
         if self.mapMode == .Garage {
             minimumDistanceRadius = 40
         }
         
-        var minimumDistance = CGFloat(Float.infinity)
-        var closestAnnotation : RMAnnotation? = nil
+        var minimumDistance = CGFloat.infinity
+        var closestAnnotation: RMAnnotation? = nil
         let loopThroughLines = mapView.zoom < 17.0
-
-        for annotation: RMAnnotation in map.visibleAnnotations as! [RMAnnotation] {
+        
+        //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.
+        let tapRect = CGRect(x: point.x - (minimumDistanceRadius*Settings.screenScale)/2,
+            y: point.y - (minimumDistanceRadius*Settings.screenScale)/2,
+            width: minimumDistanceRadius*Settings.screenScale,
+            height: minimumDistanceRadius*Settings.screenScale)
+        
+        //note: on screen annotations are not just those contained within the bounding box, but also those that pass in it at some point (because we can be dealing with lines here!)
+        let onScreenAnnotations = (self.mapView.visibleAnnotations as! [RMAnnotation]).filter({ (annotation) -> Bool in
+            return !annotation.isUserLocationAnnotation
+                && !annotation.isKindOfClass(RMPolygonAnnotation)
+                && !annotation.isClusterAnnotation
+                && annotation.isAnnotationWithinBounds(tapRect)
+        })
+        
+        //old way
+        for annotation: RMAnnotation in onScreenAnnotations {
             
             if (annotation.isUserLocationAnnotation || annotation.isKindOfClass(RMPolygonAnnotation) || annotation.isClusterAnnotation) {
                 continue
@@ -531,9 +533,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
             let annotationType = userInfo!["type"] as! String
-
-            if annotationType == "button" || annotationType == "searchResult" || annotationType == "lot" {
             
+            if annotationType == "button" || annotationType == "searchResult" || annotationType == "lot" {
+                
                 let annotationPoint = map.coordinateToPixel(annotation.coordinate)
                 let distance = annotationPoint.distanceToPoint(point)
                 
@@ -541,7 +543,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     minimumDistance = distance
                     closestAnnotation = annotation
                 }
-
+                
             } else if loopThroughLines && annotationType == "line" {
                 
                 let spot = userInfo!["spot"] as! ParkingSpot
@@ -563,10 +565,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
         }
         
+        NSLog("Took %f ms to find the right annotation", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+        
         if (closestAnnotation != nil && minimumDistance < minimumDistanceRadius) {
             mapView.selectAnnotation(closestAnnotation, animated: true)
         } else {
             customDeselectAnnotation()
+            self.delegate?.mapDidTapIdly()
         }
 
     }
@@ -574,7 +579,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     // MARK: Helper Methods
     
-    func trackUserButtonTapped () {
+    override func didTapTrackUserButton () {
         if self.mapView.userTrackingMode.rawValue == RMUserTrackingModeFollow.rawValue {
             dontTrackUser()
         } else {
@@ -582,16 +587,16 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
     
-    func trackUser() {
+    override func trackUser() {
         if self.mapView.userTrackingMode.rawValue != RMUserTrackingModeFollow.rawValue {
-            trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
+            self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
             self.mapView.setZoom(17, animated: false)
             self.mapView.userTrackingMode = RMUserTrackingModeFollow
         }
     }
     
-    func dontTrackUser() {
-        trackUserButton.setImage(UIImage(named:"btn_geo_off"), forState: UIControlState.Normal)
+    override func dontTrackUser() {
+        self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_off"), forState: UIControlState.Normal)
         self.mapView.userTrackingMode = RMUserTrackingModeNone
     }
     
@@ -1061,21 +1066,15 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let before = NSDate().timeIntervalSince1970
             
             //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.
-            let boundingBox = self.mapView.latitudeLongitudeBoundingBoxFor(self.mapView.bounds)
-            let maxLatitude = boundingBox.northEast.latitude
-            let minLatitude = boundingBox.southWest.latitude
-            let maxLongitude = boundingBox.northEast.longitude
-            let minLongitude = boundingBox.southWest.longitude
-            
             let visibleLotAnnotations = (self.mapView.visibleAnnotations as! [RMAnnotation]).filter({ (annotation) -> Bool in
-                if annotation.coordinate.latitude >= minLatitude && annotation.coordinate.latitude <= maxLatitude
-                    && annotation.coordinate.longitude >= minLongitude && annotation.coordinate.longitude <= maxLongitude {
-                        if let userInfo = annotation.userInfo as? [String:AnyObject] {
-                            return userInfo["type"] as? String == "lot" && userInfo["selected"] as? Bool == false
-                        }
+                if annotation.isAnnotationWithinBounds(self.mapView.bounds) {
+                    if let userInfo = annotation.userInfo as? [String:AnyObject] {
+                        return userInfo["type"] as? String == "lot" && userInfo["selected"] as? Bool == false
+                    }
                 }
                 return false
             })
+            
             NSLog("\n\ngetting proper visible lot annotations took %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
 
             let changedLotAnnotations = LotOperations.processCheapestLots(visibleLotAnnotations)

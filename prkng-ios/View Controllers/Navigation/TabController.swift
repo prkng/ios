@@ -265,7 +265,11 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             mapViewController.mapMode = mapMode
         }
     }
-    
+
+    func didTapTrackUserButton() {
+        self.mapViewController.didTapTrackUserButton()
+    }
+
     func switchActiveViewController  (newViewController : UIViewController, completion : ((finished:Bool) -> Void)) {
         
         if switchingMainView {
@@ -315,22 +319,48 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     
-    // MapViewControllerDelegate
+    //MARK: MapViewControllerDelegate
+    
+    var trackUserButton: UIButton { return self.hereViewController.filterVC.trackUserButton }
     func mapDidDismissSelection(byUser wasUserAction: Bool) {
-        
-//        if(selectedTab == PrkTab.Search) {
-//            searchViewController?.transformToStepTwo()
-//            
-//            SearchOperations.getStreetName(center.coordinate, completion: { (result) -> Void in
-//                searchViewController?.showStreetName(result)
-//            })
-//        } else if (selectedTab == PrkTab.Here) {
         if wasUserAction {
             hereViewController.updateDetails(nil)
             hereViewController.filterVC.hideFilters(completely: false)
         }
-//        }
+    }
+
+    //used to show and hide the bottom slider
+    func mapDidTapIdly() {
+        
+        if hereViewController.activeDetailObject == nil {
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
                 
+                if self.hereViewController.showModeSelection  {
+                    self.hereViewController.modeSelection.snp_remakeConstraints { (make) -> () in
+                        make.height.equalTo(60)
+                        make.left.equalTo(self.hereViewController.view)
+                        make.right.equalTo(self.hereViewController.view)
+                        make.top.equalTo(self.hereViewController.view.snp_bottom)
+                    }
+                    self.hereViewController.showModeSelection = false
+                } else {
+                    self.hereViewController.modeSelection.snp_remakeConstraints { (make) -> () in
+                        make.height.equalTo(60)
+                        make.left.equalTo(self.hereViewController.view)
+                        make.right.equalTo(self.hereViewController.view)
+                        make.bottom.equalTo(self.hereViewController.view)
+                    }
+                    self.hereViewController.showModeSelection = true
+                    
+                }
+                
+                self.hereViewController.view.setNeedsLayout()
+                self.hereViewController.view.layoutIfNeeded()
+                }, completion: { (completed) -> Void in
+            })
+        }
+        
     }
     
     func didSelectObject (detailsObject : DetailObject) {
@@ -355,11 +385,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         }
         
     }
-    
-    func shouldShowUserTrackingButton() -> Bool {
-        return selectedTab == PrkTab.Here
-    }
-    
+        
     func showMapMessage(message: String?) {
         showMapMessage(message, onlyIfPreviouslyShown: false, showCityPicker: false)
     }
@@ -408,14 +434,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
                 }
                 
-                let height: Int = message == nil ? 0 : Int(self.hereViewController.mapMessageView.bounds.height) - 16
-                
-                self.mapViewController.trackUserButton.snp_updateConstraints { (make) -> () in
-                    make.top.equalTo(self.mapViewController.view).offset(height + Styles.Sizes.statusBarHeight + 10)
-                }
-                
                 self.hereViewController.view.layoutIfNeeded()
-                self.mapViewController.view.layoutIfNeeded()
 
             })
         }

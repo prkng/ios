@@ -9,24 +9,24 @@
 
 import UIKit
 
-class PRKModeSlider: UIControl {
+class PRKTopTabBar: UIControl {
     
     let trackTextColor = Styles.Colors.petrol2
-    let thumbTextColor = Styles.Colors.cream1
-    let thumbBackgroundColor = Styles.Colors.red2
-    let font = Styles.FontFaces.regular(14)
+    let indicatorTextColor = Styles.Colors.red2
+    let indicatorBottomColor = Styles.Colors.red2
+    let font = Styles.FontFaces.regular(16)
     
     private(set) var titles = [String]()
     
     private var backgroundView = UIView()
     private var labels = [UILabel]()
-    private var thumbView = PRKModeSliderThumbView()
+    private var indicatorView = PRKTopTabIndicatorView()
 
     var selectedIndex: Int {
         return Int(self.value)
     }
 
-    var thumbWidth: CGFloat {
+    var indicatorWidth: CGFloat {
         return UIScreen.mainScreen().bounds.width/CGFloat(self.titles.count)
     }
     
@@ -35,12 +35,12 @@ class PRKModeSlider: UIControl {
     private var value: Double {
         didSet {
             //do this to update the frame after an animation, also good for
-            updateThumb()
+            updateindicator()
         }
     }
     private var previousLocation = CGPoint()
     private var animationInProgress: Bool = false
-    
+
     init(titles: [String]) {
         
         value = 0
@@ -50,13 +50,13 @@ class PRKModeSlider: UIControl {
         super.init(frame: CGRectZero)
         
         value = floor(maximumValue/2)
-        
-        if #available(iOS 8.0, *) {
-            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
-            backgroundView = UIVisualEffectView(effect: blurEffect)
-        } else {
-            backgroundView.backgroundColor = Styles.Colors.cream1
-        }
+
+//        if #available(iOS 8.0, *) {
+//            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+//            backgroundView = UIVisualEffectView(effect: blurEffect)
+//        } else {
+//            backgroundView.backgroundColor = Styles.Colors.cream1
+//        }
         backgroundView.userInteractionEnabled = false
         self.addSubview(backgroundView)
 
@@ -66,7 +66,7 @@ class PRKModeSlider: UIControl {
         for i in 0..<titles.count {
             let title = titles[i]
             let attributedTitle = NSMutableAttributedString(string: title, attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: trackTextColor])
-            let labelRect = CGRect(x: (CGFloat(i)*thumbWidth), y: 0, width: thumbWidth, height: bounds.height)
+            let labelRect = CGRect(x: (CGFloat(i)*indicatorWidth), y: 0, width: indicatorWidth, height: bounds.height)
             
             let label = UILabel(frame: labelRect)
             label.attributedText = attributedTitle
@@ -77,9 +77,9 @@ class PRKModeSlider: UIControl {
             labels.append(label)
         }
 
-        thumbView.prkModeSlider = self
-        thumbView.userInteractionEnabled = false
-        self.addSubview(thumbView)
+        indicatorView.prkModeSlider = self
+        indicatorView.userInteractionEnabled = false
+        self.addSubview(indicatorView)
         
         let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
         self.addGestureRecognizer(tapRec)
@@ -103,10 +103,10 @@ class PRKModeSlider: UIControl {
         for i in 0..<titles.count {
             let label = labels[i]
             label.snp_remakeConstraints(closure: { (make) -> () in
-                make.left.equalTo(self).offset(CGFloat(i)*self.thumbWidth)
+                make.left.equalTo(self).offset(CGFloat(i)*self.indicatorWidth)
                 make.top.equalTo(self)
                 make.height.equalTo(self.snp_height)
-                make.width.equalTo(self.thumbWidth)
+                make.width.equalTo(self.indicatorWidth)
             })
         }
 
@@ -114,19 +114,23 @@ class PRKModeSlider: UIControl {
     
     //MARK: Helper functions
     
+    func refresh() {
+        setValue(self.value, animated: false)
+    }
+    
     func setValue(newValue: Double, animated: Bool) {
 
         if self.animationInProgress {
             return
         }
-        
+
         self.animationInProgress = true
         let animationDuration = animated ? 0.4 : 0
         UIView.animateWithDuration(animationDuration, delay: 0.0, usingSpringWithDamping: 7, initialSpringVelocity: 15, options: [], animations: { () -> Void in
-            let thumbLeft = CGFloat(newValue) * self.thumbWidth
-            self.thumbView.frame = CGRect(x: thumbLeft, y: 0, width: self.thumbWidth, height: self.bounds.height)
-            self.thumbView.setNeedsLayout()
-            self.thumbView.layoutIfNeeded()
+            let indicatorLeft = CGFloat(newValue) * self.indicatorWidth
+            self.indicatorView.frame = CGRect(x: indicatorLeft, y: 0, width: self.indicatorWidth, height: self.bounds.height)
+            self.indicatorView.setNeedsLayout()
+            self.indicatorView.layoutIfNeeded()
             }) { (Bool) -> Void in
                 let valueChanged = self.selectedIndex != Int(newValue)
                 self.value = newValue
@@ -138,48 +142,10 @@ class PRKModeSlider: UIControl {
         
     }
     
-    func updateThumb() {
-        let thumbLeft = CGFloat(self.value) * self.thumbWidth
-        self.thumbView.frame = CGRect(x: thumbLeft, y: 0 , width: self.thumbWidth, height: self.bounds.height)
-        self.thumbView.setNeedsLayout()
-    }
-    
-    //MARK: UIControl functions
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        previousLocation = touch.locationInView(self)
-        
-        if thumbView.frame.contains(previousLocation) {
-            thumbView.touching = true
-        }
-        
-        return thumbView.touching
-    }
-    
-    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        let location = touch.locationInView(self)
-        
-        // Track how much user has dragged
-        let deltaLocation = Double(location.x - previousLocation.x)
-        let deltaValue = (maximumValue - minimumValue) * deltaLocation / Double(bounds.width - thumbView.frame.width)
-        
-        previousLocation = location
-        
-        // update value
-        if thumbView.touching {
-            value += deltaValue
-            value = clipValue(value)
-        }
-        
-        return thumbView.touching
-    }
-    
-    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
-        thumbView.touching = false
-        self.setValue(round(self.value), animated: true)
-    }
-    
-    func clipValue(value: Double) -> Double {
-        return min(max(value, minimumValue ), maximumValue)
+    func updateindicator() {
+        let indicatorLeft = CGFloat(self.value) * self.indicatorWidth
+        self.indicatorView.frame = CGRect(x: indicatorLeft, y: 0 , width: self.indicatorWidth, height: self.bounds.height)
+        self.indicatorView.setNeedsLayout()
     }
     
     //MARK: UIGestureRecognizer function
@@ -193,26 +159,29 @@ class PRKModeSlider: UIControl {
 
 }
 
-class PRKModeSliderThumbView: UIView {
+class PRKTopTabIndicatorView: UIView {
     
-    private weak var prkModeSlider : PRKModeSlider? {
+    private weak var prkModeSlider : PRKTopTabBar? {
         didSet {
             
             if let slider = prkModeSlider {
                 
-                self.backgroundColor = slider.thumbBackgroundColor
-                
                 //layers for all the text
                 for i in 0..<slider.titles.count {
                     let title = slider.titles[i]
-                    let attributedTitle = NSMutableAttributedString(string: title, attributes: [NSFontAttributeName: slider.font, NSForegroundColorAttributeName: slider.thumbTextColor])
-                    let labelRect = CGRect(x: (CGFloat(i)*slider.thumbWidth), y: 0, width: slider.thumbWidth, height: slider.bounds.height)
+                    let attributedTitle = NSMutableAttributedString(string: title, attributes: [NSFontAttributeName: slider.font, NSForegroundColorAttributeName: slider.indicatorTextColor])
+                    let labelRect = CGRect(x: (CGFloat(i)*slider.indicatorWidth), y: 0, width: slider.indicatorWidth, height: slider.bounds.height)
                     
                     let label = UILabel(frame: labelRect)
                     label.attributedText = attributedTitle
                     label.textAlignment = NSTextAlignment.Center
                     self.addSubview(label)
                 }
+                
+                //add the bottom view
+                let bottomView = UIView(frame: CGRect(x: 0, y: slider.bounds.height - 2, width: slider.indicatorWidth, height: 2))
+                bottomView.backgroundColor = slider.indicatorBottomColor
+                self.addSubview(bottomView)
             }
         }
     }
@@ -226,12 +195,19 @@ class PRKModeSliderThumbView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         if let slider = prkModeSlider {
-            self.frame = CGRect(x: self.frame.origin.x, y: 0, width: slider.thumbWidth, height: slider.bounds.height)
+            
+            self.frame = CGRect(x: self.frame.origin.x, y: 0, width: slider.indicatorWidth, height: slider.bounds.height)
+
             let value = self.frame.origin.x / self.bounds.width
             for i in 0..<self.subviews.count {
-                let labelRect = CGRect(x: (CGFloat(i)*slider.thumbWidth) - (CGFloat(value) * slider.thumbWidth), y: 0, width: slider.thumbWidth, height: slider.bounds.height)
-                let subview = self.subviews[i] 
-                subview.frame = labelRect
+                let subview = self.subviews[i]
+                if subview is UILabel {
+                    let labelRect = CGRect(x: (CGFloat(i)*slider.indicatorWidth) - (CGFloat(value) * slider.indicatorWidth), y: 0, width: slider.indicatorWidth, height: slider.bounds.height)
+                    subview.frame = labelRect
+                } else {
+                    let bottomViewFrame = CGRect(x: 0, y: slider.bounds.height - 2, width: slider.indicatorWidth, height: 2)
+                    subview.frame = bottomViewFrame
+                }
             }
         }
     }

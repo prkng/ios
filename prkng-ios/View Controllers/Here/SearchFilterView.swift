@@ -25,6 +25,16 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     }
     var delegate : SearchViewControllerDelegate?
 
+    var showingSmall: Bool = true {
+        didSet {
+            if showingSmall {
+                self.searchFieldView.backgroundColor = UIColor.clearColor()
+            } else {
+                self.searchFieldView.backgroundColor = Styles.Colors.cream1
+            }
+        }
+    }
+
     private var shouldCloseFilters: Bool
     
     private var didsetupSubviews : Bool
@@ -288,14 +298,5 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         self.searchField.text = result.title
         self.delegate!.displaySearchResults([result], checkinTime : NSDate())
     }
-    
-    func changeAppearance(small small: Bool) {
-        if small {
-            self.searchFieldView.backgroundColor = UIColor.clearColor()
-        } else {
-            self.searchFieldView.backgroundColor = Styles.Colors.cream1
-        }
-    }
-
 
 }

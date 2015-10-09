@@ -80,6 +80,7 @@
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */; };
+		3ED440901BC6C83A008FE5B4 /* PRKTopTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */; };
 		3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF9F4E1BB45F550036BDBC /* UIViewController.swift */; };
@@ -269,6 +270,7 @@
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
 		3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewController.swift; sourceTree = "<group>"; };
+		3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTopTabBar.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
 		3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
@@ -670,6 +672,7 @@
 			children = (
 				BF899B0B1AF223C500E42DE8 /* SelectionControl.swift */,
 				3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */,
+				3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */,
 				3E9509C51B56EE940088E336 /* PRKTextField.swift */,
 				3E9509C91B570A6A0088E336 /* PRKInputForm.swift */,
 				3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */,
@@ -1097,6 +1100,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */,
+				3ED440901BC6C83A008FE5B4 /* PRKTopTabBar.swift in Sources */,
 				BF32826F1B3847AE002ED8DF /* MKLabel.swift in Sources */,
 				3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */,
 				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
