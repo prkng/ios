@@ -18,28 +18,28 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     
     var trackUserButton = UIButton()
 
-    var shouldShowTimeFilter: Bool = true {
-        didSet {
-            timeFilterView.snp_remakeConstraints { (make) -> () in
-                make.top.equalTo(self.searchFilterView.snp_bottom)
-                make.left.equalTo(self.view)
-                make.right.equalTo(self.view)
-                make.height.equalTo(shouldShowTimeFilter ? TimeFilterView.TOTAL_HEIGHT : 0)
-            }
-            timeFilterView.hidden = !shouldShowTimeFilter
+    var shouldShowTimeFilter: Bool = true
+    func updateTimeFilterDisplay() {
+        self.timeFilterView.snp_remakeConstraints { (make) -> () in
+            make.top.equalTo(self.searchFilterView.snp_bottom)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(self.shouldShowTimeFilter ? TimeFilterView.TOTAL_HEIGHT : 0)
         }
+        self.timeFilterView.hidden = !self.shouldShowTimeFilter
     }
-    var showingCarSharingTabBar: Bool = false {
-        didSet {
-            carSharingFilterView.snp_remakeConstraints(closure: { (make) -> Void in
-                make.top.equalTo(self.searchFilterView.snp_bottom)
-                make.left.equalTo(self.view)
-                make.right.equalTo(self.view)
-                make.height.equalTo(showingCarSharingTabBar ? 40 : 0)
-            })
-            carSharingFilterView.refresh()
-            carSharingFilterView.hidden = !showingCarSharingTabBar
-        }
+    var showingCarSharingTabBar: Bool = false
+    func updateCarSharingTabBarDisplay() {
+        self.carSharingFilterView.snp_remakeConstraints(closure: { (make) -> Void in
+            make.top.equalTo(self.searchFilterView.snp_bottom)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(self.showingCarSharingTabBar ? 45 : 0)
+        })
+        self.carSharingFilterView.setNeedsLayout()
+        self.carSharingFilterView.layoutIfNeeded()
+        self.carSharingFilterView.refresh()
+        self.carSharingFilterView.hidden = !self.showingCarSharingTabBar
     }
 
     var autocompleteVC: SearchResultsTableViewController?
@@ -140,7 +140,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             make.top.equalTo(self.searchFilterView.snp_bottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(showingCarSharingTabBar ? 40 : 0)
+            make.height.equalTo(showingCarSharingTabBar ? 45 : 0)
         })
         
         trackUserButton.snp_makeConstraints { (make) -> () in
@@ -180,6 +180,8 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
                 self.searchFilterView.showingSmall = false
             },
             completion: { (completed:Bool) -> Void in
+                self.updateTimeFilterDisplay()
+                self.updateCarSharingTabBarDisplay()
         })
         
     }
@@ -192,6 +194,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             timeFilterView.update()
         }
         
+        self.updateTimeFilterDisplay()
+        self.updateCarSharingTabBarDisplay()
+
         UIView.animateWithDuration(0.2,
             delay: 0,
             options: UIViewAnimationOptions.CurveEaseInOut,
@@ -211,7 +216,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     private func showBigHeader() {
        
         var height: CGFloat = shouldShowTimeFilter ? TimeFilterView.TOTAL_HEIGHT : 0
-        height += showingCarSharingTabBar ? 40 : 0
+        height += showingCarSharingTabBar ? 45 : 0
         
         containerView.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.view)

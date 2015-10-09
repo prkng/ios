@@ -591,6 +591,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.screenName = "Here - General View - ParkingLot"
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "Parking Lot", value: nil).build() as [NSObject: AnyObject])
             filterVC.showingCarSharingTabBar = false
+            Settings.setShouldFilterForCarSharing(mapMode == .CarSharing)
+            self.delegate?.didSelectMapMode(mapMode)
+            self.filterVC.hideFilters(completely: false, resettingTimeFilterValue: true)
             filterVC.shouldShowTimeFilter = false
             break
         case 1:
@@ -599,6 +602,9 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.screenName = "Here - General View - On-Street"
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "On Street", value: nil).build() as [NSObject: AnyObject])
             filterVC.showingCarSharingTabBar = false
+            Settings.setShouldFilterForCarSharing(mapMode == .CarSharing)
+            self.delegate?.didSelectMapMode(mapMode)
+            self.filterVC.hideFilters(completely: false, resettingTimeFilterValue: true)
             filterVC.shouldShowTimeFilter = true
             break
         case 2:
@@ -612,14 +618,14 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             tracker.send(GAIDictionaryBuilder.createEventWithCategory("Here - General View", action: "Mode Slider Value Changed", label: "CarSharing", value: nil).build() as [NSObject: AnyObject])
             filterVC.showingCarSharingTabBar = true
             filterVC.shouldShowTimeFilter = false
+            Settings.setShouldFilterForCarSharing(mapMode == .CarSharing)
+            self.delegate?.didSelectMapMode(mapMode)
+            self.filterVC.hideFilters(completely: false, resettingTimeFilterValue: true)
             break
         default:break
         }
         
         AnalyticsOperations.sendMapModeChange(mapMode)
-        Settings.setShouldFilterForCarSharing(mapMode == .CarSharing)
-        self.delegate?.didSelectMapMode(mapMode)
-        self.filterVC.hideFilters(completely: false, resettingTimeFilterValue: true)
 
     }
     

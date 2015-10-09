@@ -51,12 +51,6 @@ class PRKTopTabBar: UIControl {
         
         value = floor(maximumValue/2)
 
-//        if #available(iOS 8.0, *) {
-//            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
-//            backgroundView = UIVisualEffectView(effect: blurEffect)
-//        } else {
-//            backgroundView.backgroundColor = Styles.Colors.cream1
-//        }
         backgroundView.userInteractionEnabled = false
         self.addSubview(backgroundView)
 
