@@ -334,6 +334,11 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             hereViewController.filterVC.hideFilters(completely: false)
         }
     }
+    
+    func carSharingMode() -> CarSharingMode {
+        return self.hereViewController.filterVC.carSharingMode()
+    }
+
 
     //used to show and hide the bottom slider
     func mapDidTapIdly() {

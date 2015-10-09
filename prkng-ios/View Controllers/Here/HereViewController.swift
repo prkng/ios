@@ -650,6 +650,10 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func didTapTrackUserButton() {
         self.delegate?.didTapTrackUserButton()
     }
+    
+    func didChangeCarSharingMode(mode: CarSharingMode) {
+        self.delegate?.updateMapAnnotations()
+    }
  
     // MARK: MapMessageViewDelegate
     

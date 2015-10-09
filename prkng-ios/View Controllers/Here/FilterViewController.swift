@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum CarSharingMode: Int {
+    case None = 0
+    case FindCar
+    case FindSpot
+}
+
 class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, SearchResultsTableViewControllerDelegate {
 
     private var containerView: UIView
@@ -15,6 +21,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     var searchFilterView: SearchFilterView
     var timeFilterView: TimeFilterView
     private var carSharingFilterView = PRKTopTabBar(titles: ["find_a_car".localizedString, "find_a_spot".localizedString])
+    private var lastCarSharingMode: CarSharingMode = .FindCar
     
     var trackUserButton = UIButton()
 
@@ -100,6 +107,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         containerView.addSubview(timeFilterView)
         timeFilterView.clipsToBounds = true
         containerView.addSubview(carSharingFilterView)
+        carSharingFilterView.addTarget(self, action: "didChangeCarSharingMode", forControlEvents: UIControlEvents.ValueChanged)
         carSharingFilterView.clipsToBounds = true
         
         trackUserButton.backgroundColor = Styles.Colors.cream2
@@ -243,6 +251,21 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         }
     }
     
+    func carSharingMode() -> CarSharingMode {
+        return lastCarSharingMode
+    }
+    
+    func didChangeCarSharingMode() {
+        switch(self.carSharingFilterView.selectedIndex) {
+        case 0:
+            lastCarSharingMode = .FindCar
+            break
+        default:
+            lastCarSharingMode = .FindSpot
+            break
+        }
+        self.delegate?.didChangeCarSharingMode(lastCarSharingMode)
+    }
     
     // MARK: TimeFilterViewDelegate
     
@@ -339,5 +362,6 @@ protocol FilterViewControllerDelegate {
     func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
     func showCarSharingInfo()
     func didTapTrackUserButton()
+    func didChangeCarSharingMode(mode: CarSharingMode)
 }
 

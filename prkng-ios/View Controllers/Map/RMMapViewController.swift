@@ -291,6 +291,19 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             return circleMarker
 
+        case "carsharing":
+            
+            let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
+            let button = ViewFactory.directionsButton()
+            button.bounds = CGRect(x: 0, y: 0, width: 55, height: 44) //actual width of image is 53.5 points
+            button.imageView?.contentMode = .Left
+            let testView = UIView(frame: CGRect(x: 0, y: 0, width: 135, height: 44))
+            testView.backgroundColor = Styles.Colors.red2
+            marker.leftCalloutAccessoryView = testView
+            marker.rightCalloutAccessoryView = button
+            marker.canShowCallout = true
+            return marker
+
         case "searchResult":
             
             let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
@@ -570,7 +583,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if (closestAnnotation != nil && minimumDistance < minimumDistanceRadius) {
             mapView.selectAnnotation(closestAnnotation, animated: true)
         } else {
-            self.delegate?.mapDidTapIdly()
+            if onScreenAnnotations.count == 0 {
+                self.delegate?.mapDidTapIdly()
+            }
             customDeselectAnnotation()
         }
 
@@ -731,7 +746,21 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             switch(self.mapMode) {
             case MapMode.CarSharing:
-                SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
+                if self.delegate?.carSharingMode() == .FindSpot {
+                    SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
+                } else {
+                    self.updateInProgress = false
+                    self.removeLinesAndButtons()
+//                    let coordinate = Settings.pointForCity(Settings.City.Montreal)
+//                    let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: "")
+//                    annotation.userInfo = ["type": "carsharing"]
+//                    mapView.zoom = 17
+//                    mapView.centerCoordinate = coordinate
+//                    removeAllAnnotations()
+//                    searchAnnotations.append(annotation)
+//                    self.mapView.addAnnotation(annotation)
+                    completion(operationCompleted: true)
+                }
                 break
             case MapMode.StreetParking:
                 SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
