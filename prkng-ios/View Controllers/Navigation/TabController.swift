@@ -186,6 +186,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             return;
         }
         
+        UIApplication.sharedApplication().idleTimerDisabled = true
+        
         mapViewController.removeSelectedAnnotationIfExists()
         mapViewController.clearSearchResults()
         mapViewController.showUserLocation(true)
@@ -210,6 +212,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         if (selectedTab == PrkTab.MyCar || switchingMainView) {
             return;
         }
+        
+        UIApplication.sharedApplication().idleTimerDisabled = false
 
         var myCarViewController : AbstractViewController?
         
@@ -236,6 +240,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             return;
         }
         
+        UIApplication.sharedApplication().idleTimerDisabled = false
+
         if(settingsViewController == nil) {
             settingsViewController = SettingsViewController()
         }
