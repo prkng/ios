@@ -83,6 +83,7 @@ class MapViewController: AbstractViewController {
     var searchCheckinDate : NSDate?
     var searchDuration : Float?
     var wasShown : Bool = false
+    var shouldCancelTap = false
     
     override func viewDidLoad() {
         super.viewDidLoad()

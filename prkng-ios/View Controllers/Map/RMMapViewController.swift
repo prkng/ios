@@ -293,13 +293,38 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
         case "carsharing":
             
-            let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
-            let button = ViewFactory.directionsButton()
+            let selected = userInfo!["selected"] as! Bool
+            
+            let marker = RMMarker(UIImage: UIImage(named: selected ? "carsharing_pin_car2go_selected" : "carsharing_pin_car2go"))
+            
+            let button = UIButton()
+            button.setImage(UIImage(named:"btn_reserve".localizedString), forState: .Normal)
             button.bounds = CGRect(x: 0, y: 0, width: 55, height: 44) //actual width of image is 53.5 points
             button.imageView?.contentMode = .Left
-            let testView = UIView(frame: CGRect(x: 0, y: 0, width: 135, height: 44))
-            testView.backgroundColor = Styles.Colors.red2
-            marker.leftCalloutAccessoryView = testView
+            
+            let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 135, height: 44))
+            let percentageLabel = UILabel(frame: CGRect(x: 10, y: 0, width: 52, height: 44))
+            percentageLabel.textAlignment = .Left
+            percentageLabel.font = Styles.Fonts.h1r
+            percentageLabel.textColor = Styles.Colors.red2
+            percentageLabel.text = "66%"
+            leftView.addSubview(percentageLabel)
+            
+            let car2go = UILabel(frame: CGRect(x: 72, y: 0, width: 52, height: 30))
+            car2go.textAlignment = .Left
+            car2go.font = Styles.FontFaces.regular(14)
+            car2go.textColor = Styles.Colors.red2
+            car2go.text = "Car2go"
+            leftView.addSubview(car2go)
+            
+            let serialNumber = UILabel(frame: CGRect(x: 72, y: 14, width: 52, height: 30))
+            serialNumber.textAlignment = .Left
+            serialNumber.font = Styles.FontFaces.light(12)
+            serialNumber.textColor = Styles.Colors.red2
+            serialNumber.text = "FJH5504"
+            leftView.addSubview(serialNumber)
+            
+            marker.leftCalloutAccessoryView = leftView
             marker.rightCalloutAccessoryView = button
             marker.canShowCallout = true
             return marker
@@ -448,6 +473,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
         
         isSelecting = true
+        shouldCancelTap = true
         
         removeSelectedAnnotationIfExists()
         
@@ -483,17 +509,40 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         } else if (type == "searchResult") {
             // do nothing for the time being
 //            var result = userInfo!["spot"] as! ParkingSpot?
+        } else if type == "carsharing" {
+            annotation.userInfo = ["type": "carsharing", "selected": true]
+            (annotation.layer as! RMMarker).replaceUIImage(UIImage(named: "carsharing_pin_car2go_selected"))
         }
         
         isSelecting = false
 
     }
     
-    func customDeselectAnnotation() {
+    func mapView(mapView: RMMapView!, didDeselectAnnotation annotation: RMAnnotation!) {
         
+        shouldCancelTap = true
+        
+        if annotation.isUserLocationAnnotation || annotation.isClusterAnnotation {
+            return
+        }
+        
+        var userInfo: [String:AnyObject]? = (annotation as RMAnnotation).userInfo as? [String:AnyObject]
+        let type: String = userInfo!["type"] as! String
+        if type == "line" || type == "button" || type == "lot" {
+            removeSelectedAnnotationIfExists()
+            shouldCancelTap = false
+        } else if (type == "searchResult") {
+            //then the callout was shown, so do nothing because it will dismiss on automatically
+        } else if type == "carsharing" {
+            annotation.userInfo = ["type": "carsharing", "selected": false]
+            (annotation.layer as! RMMarker).replaceUIImage(UIImage(named: "carsharing_pin_car2go"))
+        }
+        
+    }
+    
+    func customDeselectAnnotation() {
         removeSelectedAnnotationIfExists()
         self.delegate?.mapDidDismissSelection(byUser: true)
-
     }
     
     func mapView(mapView: RMMapView!, didUpdateUserLocation userLocation: RMUserLocation!) {
@@ -510,6 +559,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     func singleTapOnMap(map: RMMapView!, at point: CGPoint) {
+
+        if shouldCancelTap {
+            shouldCancelTap = false
+            return
+        }
+        
+        if let selected = self.mapView.selectedAnnotation {
+            if selected.layer.frame.contains(point) {
+                return
+            }
+        }
 
         let before = NSDate().timeIntervalSince1970
 
@@ -537,7 +597,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 && annotation.isAnnotationWithinBounds(tapRect)
         })
         
-        //old way
         for annotation: RMAnnotation in onScreenAnnotations {
             
             if (annotation.isUserLocationAnnotation || annotation.isKindOfClass(RMPolygonAnnotation) || annotation.isClusterAnnotation) {
@@ -583,9 +642,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if (closestAnnotation != nil && minimumDistance < minimumDistanceRadius) {
             mapView.selectAnnotation(closestAnnotation, animated: true)
         } else {
-            if onScreenAnnotations.count == 0 {
-                self.delegate?.mapDidTapIdly()
-            }
+            self.delegate?.mapDidTapIdly()
             customDeselectAnnotation()
         }
 
@@ -747,25 +804,21 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             switch(self.mapMode) {
             case MapMode.CarSharing:
                 if self.delegate?.carSharingMode() == .FindSpot {
+                    car2goDemoRemove()
                     SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 } else {
                     self.updateInProgress = false
                     self.removeLinesAndButtons()
-//                    let coordinate = Settings.pointForCity(Settings.City.Montreal)
-//                    let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: "")
-//                    annotation.userInfo = ["type": "carsharing"]
-//                    mapView.zoom = 17
-//                    mapView.centerCoordinate = coordinate
-//                    removeAllAnnotations()
-//                    searchAnnotations.append(annotation)
-//                    self.mapView.addAnnotation(annotation)
+                    self.car2goDemo(selected: false)
                     completion(operationCompleted: true)
                 }
                 break
             case MapMode.StreetParking:
+                car2goDemoRemove()
                 SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.Garage:
+                car2goDemoRemove()
                 self.recolorLotPinsIfNeeded()
                 if self.annotations.count > 0 {
                     self.updateInProgress = false
@@ -1238,6 +1291,24 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
 
-    
+    var car2GoDemoAnnotation: RMAnnotation? = nil
+    func car2goDemo(selected selected: Bool) {
+        let coordinate = Settings.pointForCity(Settings.City.Montreal)
+        let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: "")
+        annotation.userInfo = ["type": "carsharing", "selected": selected]
+        if car2GoDemoAnnotation == nil {
+            mapView.zoom = 17
+            mapView.centerCoordinate = coordinate
+        }
+        removeAllAnnotations()
+        self.mapView.addAnnotation(annotation)
+        car2GoDemoAnnotation = annotation
+    }
+    func car2goDemoRemove() {
+        if car2GoDemoAnnotation != nil {
+            self.mapView.removeAnnotation(car2GoDemoAnnotation)
+        }
+    }
+
 }
 

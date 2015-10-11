@@ -231,6 +231,7 @@
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
+"btn_reserve" = "btn_reserve_fr";
 
 //this section is for format strings
 "capacity_x_places" = "Capacité: %d places";
