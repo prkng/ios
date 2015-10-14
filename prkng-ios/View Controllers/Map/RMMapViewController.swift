@@ -511,7 +511,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 //            var result = userInfo!["spot"] as! ParkingSpot?
         } else if type == "carsharing" {
             annotation.userInfo = ["type": "carsharing", "selected": true]
-            (annotation.layer as! RMMarker).replaceUIImage(UIImage(named: "carsharing_pin_car2go_selected"))
+            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: "carsharing_pin_car2go_selected"))
         }
         
         isSelecting = false
@@ -535,7 +535,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             //then the callout was shown, so do nothing because it will dismiss on automatically
         } else if type == "carsharing" {
             annotation.userInfo = ["type": "carsharing", "selected": false]
-            (annotation.layer as! RMMarker).replaceUIImage(UIImage(named: "carsharing_pin_car2go"))
+            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: "carsharing_pin_car2go"))
         }
         
     }
