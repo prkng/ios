@@ -304,11 +304,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
         case "searchResult":
             
+            let searchResult = userInfo!["searchresult"] as! SearchResult
             let marker = RMMarker(UIImage: UIImage(named: "pin_pointer_result"))
-            let button = ViewFactory.directionsButton()
-            button.bounds = CGRect(x: 0, y: 0, width: 57, height: 44) //actual width of image is 53.5 points
-            button.imageView?.contentMode = .Left
-//            marker.rightCalloutAccessoryView = button
+            let calloutView = searchResult.calloutView()
+            marker.leftCalloutAccessoryView = calloutView.0
+            marker.rightCalloutAccessoryView = calloutView.1
             marker.canShowCallout = true
             return marker
             
@@ -1004,9 +1004,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func addSearchResultMarker(searchResult: SearchResult) {
         
-        let annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: searchResult.location.coordinate, andTitle: searchResult.title)
-        annotation.subtitle = searchResult.subtitle
-        annotation.userInfo = ["type": "searchResult", "details": searchResult]
+        let annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: searchResult.location.coordinate, andTitle: "")
+        annotation.userInfo = ["type": "searchResult", "searchresult": searchResult]
         mapView.addAnnotation(annotation)
         searchAnnotations.append(annotation)
     }

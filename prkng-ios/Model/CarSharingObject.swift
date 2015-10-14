@@ -76,7 +76,7 @@ class CarSharingObject: NSObject {
         rightView.bounds = CGRect(x: 0, y: 0, width: 55, height: 44) //actual width of image is 53.5 points
         rightView.imageView?.contentMode = .Left
         
-        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 135, height: 44))
+        let leftView = UIView()
 
         let percentageLabel = UILabel(frame: CGRect(x: 10, y: 0, width: 52, height: 44))
         percentageLabel.textAlignment = .Left
@@ -85,14 +85,14 @@ class CarSharingObject: NSObject {
         percentageLabel.text = self.percentageText
         leftView.addSubview(percentageLabel)
 
-        let typeLabel = UILabel(frame: CGRect(x: 72, y: 0, width: 52, height: 30))
+        let typeLabel = UILabel()
         typeLabel.textAlignment = .Left
         typeLabel.font = Styles.FontFaces.regular(14)
         typeLabel.textColor = Styles.Colors.red2
         typeLabel.text = self.carSharingTypeName
         leftView.addSubview(typeLabel)
 
-        let serialNumber = UILabel(frame: CGRect(x: 72, y: 14, width: 52, height: 30))
+        let serialNumber = UILabel()
         serialNumber.textAlignment = .Left
         serialNumber.font = Styles.FontFaces.light(12)
         serialNumber.textColor = Styles.Colors.red2
@@ -103,8 +103,13 @@ class CarSharingObject: NSObject {
         let labelWidth = min(minLabelWidth, CGFloat(maxTitleWidth))
         leftView.frame = CGRect(x: 0, y: 0, width: (labelWidth + CGFloat(leftViewLabelBuffer)), height: 44)
         typeLabel.frame = CGRect(x: 72, y: 0, width: labelWidth, height: 30)
-        serialNumber.frame = CGRect(x: 72, y: 14, width: labelWidth, height: 30)
+        serialNumber.frame = CGRect(x: 72, y: 15, width: labelWidth, height: 30)
         
+        //the separator was manually placed because for the mapbox callout, we don't know exactly how the left and right views are placed.
+        let separator = UIView(frame: CGRect(x: leftView.bounds.width + 5, y: 0, width: 1, height: leftView.bounds.height))
+        separator.backgroundColor = Styles.Colors.transparentBlack
+        leftView.addSubview(separator)
+
         return (leftView, rightView)
     }
     
