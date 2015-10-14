@@ -81,6 +81,7 @@
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */; };
 		3ED440901BC6C83A008FE5B4 /* PRKTopTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */; };
+		3ED501C41BCEB9B400A5AA45 /* CarSharingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */; };
 		3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF9F4E1BB45F550036BDBC /* UIViewController.swift */; };
@@ -271,6 +272,7 @@
 		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
 		3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewController.swift; sourceTree = "<group>"; };
 		3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTopTabBar.swift; sourceTree = "<group>"; };
+		3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarSharingObject.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
 		3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
@@ -543,6 +545,7 @@
 				3EC55E671B472195001A1B2B /* SupportedArea.swift */,
 				3E4123E41B8B67DB002553D7 /* Lot.swift */,
 				3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */,
+				3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1192,6 +1195,7 @@
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
 				3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */,
 				3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */,
+				3ED501C41BCEB9B400A5AA45 /* CarSharingObject.swift in Sources */,
 				BFC850FA1B2F618A006383AC /* UIImage.swift in Sources */,
 				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,
 				3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */,
