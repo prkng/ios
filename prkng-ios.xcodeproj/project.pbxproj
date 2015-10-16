@@ -38,6 +38,8 @@
 		3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E52EB721B9F45E6004183FD /* AddressSplitting.strings */; };
 		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
+		3E54B3B11BCF034900879528 /* CityOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E54B3B01BCF034900879528 /* CityOperations.swift */; settings = {ASSET_TAGS = (); }; };
+		3E54B3B31BCF050F00879528 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E54B3B21BCF050F00879528 /* City.swift */; settings = {ASSET_TAGS = (); }; };
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
 		3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */; };
 		3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E5B2EFF1BA359B500658A9A /* InfoPlist.strings */; };
@@ -229,6 +231,8 @@
 		3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		3E530C8D1B445BA0001309E8 /* GeoJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeoJsonParser.h; sourceTree = "<group>"; };
 		3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeoJsonParser.m; sourceTree = "<group>"; };
+		3E54B3B01BCF034900879528 /* CityOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityOperations.swift; sourceTree = "<group>"; };
+		3E54B3B21BCF050F00879528 /* City.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKPopupViewController.swift; sourceTree = "<group>"; };
 		3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsOperations.swift; sourceTree = "<group>"; };
 		3E5B2EFE1BA359B500658A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -536,16 +540,17 @@
 		BF0B47221A7E903900E94B3C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				BFD9CB681A9C942300BFA836 /* Shape.swift */,
+				3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */,
+				BF6981B11B30701600E0EF62 /* Checkin.swift */,
+				3E54B3B21BCF050F00879528 /* City.swift */,
+				3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */,
+				3E4123E41B8B67DB002553D7 /* Lot.swift */,
 				BF72984A1A9C8C5D00B8F4AE /* ParkingRule.swift */,
 				BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */,
-				BF4568011AD85761006D7C23 /* SearchResult.swift */,
 				BF2891E91AFFC0590041B04C /* User.swift */,
-				BF6981B11B30701600E0EF62 /* Checkin.swift */,
+				BF4568011AD85761006D7C23 /* SearchResult.swift */,
+				BFD9CB681A9C942300BFA836 /* Shape.swift */,
 				3EC55E671B472195001A1B2B /* SupportedArea.swift */,
-				3E4123E41B8B67DB002553D7 /* Lot.swift */,
-				3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */,
-				3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -847,13 +852,14 @@
 		BFE956651A8E4B7D00C2C117 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */,
 				BFE956681A8E59DF00C2C117 /* APIUtility.swift */,
 				BF1C2B581AFCBBA00070085A /* AuthUtility.swift */,
-				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
+				3E54B3B01BCF034900879528 /* CityOperations.swift */,
 				3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */,
 				BF4567FF1AD85722006D7C23 /* SearchOperations.swift */,
+				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
 				BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */,
-				3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1110,6 +1116,7 @@
 				3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
+				3E54B3B11BCF034900879528 /* CityOperations.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */,
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
@@ -1157,6 +1164,7 @@
 				3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */,
 				BF6981B21B30701600E0EF62 /* Checkin.swift in Sources */,
 				BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */,
+				3E54B3B31BCF050F00879528 /* City.swift in Sources */,
 				BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */,
 				3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */,
 				3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */,

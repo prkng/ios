@@ -210,7 +210,7 @@ class MapViewController: AbstractViewController {
         
         let centerLocation = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
         
-        for location in Settings.availableCityLocations() {
+        for location in CityOperations.sharedInstance.availableCityLocations() {
             let distanceInKm = centerLocation.distanceFromLocation(location) as Double / 1000
             if distanceInKm < 40 {
                 inAnAvailableCity = true

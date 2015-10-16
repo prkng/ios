@@ -54,7 +54,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.zoom = 17
         mapView.maxZoom = 19
         mapView.minZoom = 9
-        mapView.setCenterCoordinate(Settings.pointForCity(Settings.selectedCity()), animated: false)
+        mapView.setCenterCoordinate(Settings.selectedCity().coordinate, animated: false)
         userLastChangedMap = 0
         lastMapZoom = 0
         lastUserLocation = CLLocation(latitude: 0, longitude: 0)
@@ -1269,7 +1269,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
     var car2GoDemoAnnotation: RMAnnotation? = nil
     func car2goDemo() {
-        let coordinate = Settings.pointForCity(Settings.City.Montreal)
+        let coordinate = CityOperations.sharedInstance.montreal!.coordinate
         let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: "")
         annotation.userInfo = ["type": "carsharing", "selected": false, "carsharingobject": CarSharingObject()]
         if car2GoDemoAnnotation == nil {

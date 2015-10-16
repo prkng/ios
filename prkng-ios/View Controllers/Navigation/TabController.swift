@@ -546,9 +546,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         self.mapViewController.goToCoordinate(coordinate, named:name)
     }
     
-    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City) {
-        let coordinate = Settings.pointForCity(toCity)
-        self.mapViewController.goToCoordinate(coordinate, named:toCity.rawValue, withZoom:13, showing: false)
+    func cityDidChange(fromCity fromCity: City, toCity: City) {
+        let coordinate = Settings.selectedCity().coordinate
+        self.mapViewController.goToCoordinate(coordinate, named:toCity.displayName, withZoom:13, showing: false)
     }
     
     // MARK: Location Manager Delegate stuff
@@ -568,7 +568,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             
             manager.stopUpdatingLocation()
             
-            Settings.setClosestSelectedCity(coord)
+            CityOperations.sharedInstance.setClosestSelectedCity(coord)
         }
     }
     

@@ -95,7 +95,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.cityLabel.text = Settings.selectedCity().rawValue
+        self.cityLabel.text = Settings.selectedCity().displayName
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -351,9 +351,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         
         var index : Int = 0
-        for city in Settings.availableCities {
+        for city in CityOperations.sharedInstance.availableCities {
             
-            if (Settings.selectedCity() == city) {
+            if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
             index++
@@ -362,24 +362,24 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         index -= 1 // previous
         
         if index < 0 {
-            index = Settings.availableCities.count - 1
+            index = CityOperations.sharedInstance.availableCities.count - 1
         }
         
         let previousCity = Settings.selectedCity()
         
-        Settings.setSelectedCity(Settings.availableCities[index])
+        Settings.setSelectedCity(CityOperations.sharedInstance.availableCities[index])
         
-        cityLabel.text = Settings.selectedCity().rawValue
+        cityLabel.text = Settings.selectedCity().displayName
         
-        delegate!.cityDidChange(fromCity: previousCity, toCity: Settings.availableCities[index])
+        delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
     }
     
     func nextCityButtonTapped () {
         
         var index : Int = 0
-        for city in Settings.availableCities {
+        for city in CityOperations.sharedInstance.availableCities {
             
-            if (Settings.selectedCity() == city) {
+            if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
             index++
@@ -387,17 +387,17 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         index++ // get next
         
-        if (index > Settings.availableCities.count - 1) {
+        if (index > CityOperations.sharedInstance.availableCities.count - 1) {
             index = 0
         }
         
         let previousCity = Settings.selectedCity()
 
-        Settings.setSelectedCity(Settings.availableCities[index])
+        Settings.setSelectedCity(CityOperations.sharedInstance.availableCities[index])
         
-        cityLabel.text = Settings.selectedCity().rawValue
+        cityLabel.text = Settings.selectedCity().displayName
         
-        delegate!.cityDidChange(fromCity: previousCity, toCity: Settings.availableCities[index])
+        delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
     }
     
     func notificationSelectionValueChanged() {
@@ -423,5 +423,5 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 
 protocol SettingsViewControllerDelegate {
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String)
-    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City)
+    func cityDidChange(fromCity fromCity: City, toCity: City)
 }

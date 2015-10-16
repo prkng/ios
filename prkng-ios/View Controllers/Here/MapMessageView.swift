@@ -172,11 +172,11 @@ class MapMessageView: UIView {
     }
     
     func montrealButtonTapped() {
-        self.delegate?.cityDidChange(fromCity: Settings.City.Montreal, toCity: Settings.City.Montreal)
+        self.delegate?.cityDidChange(fromCity: Settings.selectedCity(), toCity: CityOperations.sharedInstance.montreal!)
     }
     
     func quebecCityButtonTapped() {
-        self.delegate?.cityDidChange(fromCity: Settings.City.QuebecCity, toCity: Settings.City.QuebecCity)
+        self.delegate?.cityDidChange(fromCity: Settings.selectedCity(), toCity: CityOperations.sharedInstance.quebecCity!)
     }
     
     func height() -> CGFloat {
@@ -193,5 +193,5 @@ class MapMessageView: UIView {
 }
 
 protocol MapMessageViewDelegate {
-    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City)
+    func cityDidChange(fromCity fromCity: City, toCity: City)
 }

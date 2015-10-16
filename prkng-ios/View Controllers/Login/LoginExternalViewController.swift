@@ -151,7 +151,7 @@ class LoginExternalViewController: AbstractViewController {
         
         cityLabel.font = Styles.Fonts.h1
         cityLabel.textColor = Styles.Colors.cream1
-        cityLabel.text = Settings.selectedCity().rawValue
+        cityLabel.text = Settings.selectedCity().displayName
         cityContainer.addSubview(cityLabel)
         
         prevCityButton.setImage(UIImage(named: "btn_left"), forState: UIControlState.Normal)
@@ -311,7 +311,7 @@ class LoginExternalViewController: AbstractViewController {
     
     func loginButtonTapped () {
         
-        Settings.setSelectedCity(Settings.City(rawValue: cityLabel.text!)!)
+//        Settings.setSelectedCity(Settings.City(rawValue: cityLabel.text!)!)
         
         if self.delegate != nil {
             delegate!.didLoginExternal(logintype)
@@ -323,9 +323,9 @@ class LoginExternalViewController: AbstractViewController {
         
         
         var index : Int = 0
-        for city in Settings.availableCities {
+        for city in CityOperations.sharedInstance.availableCities {
             
-            if (Settings.selectedCity() == city) {
+            if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
             index++
@@ -334,12 +334,13 @@ class LoginExternalViewController: AbstractViewController {
         index -= 1 // previous
         
         if index < 0 {
-            index = Settings.availableCities.count - 1
+            index = CityOperations.sharedInstance.availableCities.count - 1
         }
         
-        Settings.setSelectedCity(Settings.availableCities[index])
+        let selectedCity = CityOperations.sharedInstance.availableCities[index]
+        Settings.setSelectedCity(selectedCity)
         
-        cityLabel.text = Settings.selectedCity().rawValue
+        cityLabel.text = selectedCity.displayName
         
         
     }
@@ -347,9 +348,9 @@ class LoginExternalViewController: AbstractViewController {
     func nextCityButtonTapped () {
         
         var index : Int = 0
-        for city in Settings.availableCities {
+        for city in CityOperations.sharedInstance.availableCities {
             
-            if (Settings.selectedCity() == city) {
+            if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
             index++
@@ -357,13 +358,14 @@ class LoginExternalViewController: AbstractViewController {
         
         index++ // get next
         
-        if (index > Settings.availableCities.count - 1) {
+        if (index > CityOperations.sharedInstance.availableCities.count - 1) {
             index = 0
         }
         
-        Settings.setSelectedCity(Settings.availableCities[index])
+        let selectedCity = CityOperations.sharedInstance.availableCities[index]
+        Settings.setSelectedCity(selectedCity)
         
-        cityLabel.text = Settings.selectedCity().rawValue
+        cityLabel.text = selectedCity.displayName
         
     }
     

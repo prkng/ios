@@ -402,16 +402,16 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 bottomButtonContainer.hidden = false
                 bottomSelectionControl.hidden = true
                 
-                switch Settings.selectedCity() {
-                case Settings.City.Montreal:
+                switch Settings.selectedCity().name {
+                case "montreal":
                     bottomButtonLabel.text = "p_service_mobile_user".localizedString.uppercaseString
                     break
-                case Settings.City.QuebecCity:
+                case "quebec":
                     bottomButtonLabel.text = "copilote_mobile_user".localizedString.uppercaseString
                     break
-//                default:
-//                    bottomButtonLabel.text = ""
-//                    break
+                default:
+                    bottomButtonLabel.text = ""
+                    break
                 }
 
                 
@@ -557,15 +557,17 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
 
         var url = NSURL(string: "")
 
-        switch Settings.selectedCity() {
-        case Settings.City.Montreal:
+        switch Settings.selectedCity().displayName {
+        case "montreal":
             url = NSURL(string: "https://itunes.apple.com/ca/app/p-service-mobile/id535957293")
             break
-        case Settings.City.QuebecCity:
+        case "quebec":
             url = NSURL(string: "copilote://")
             if !UIApplication.sharedApplication().canOpenURL(url!) {
                 url = NSURL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
             }
+            break
+        default:
             break
         }
 

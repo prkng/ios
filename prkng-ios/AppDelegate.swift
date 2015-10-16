@@ -263,7 +263,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         Settings.setLastAppVersionString(version)
 
         Settings.setCachedLotDataFresh(false)
-        LotOperations.sharedInstance.findLots(Settings.selectedCityPoint(), radius: 1.0) { (lots, underMaintenance, outsideServiceArea, error) -> Void in }
+        LotOperations.sharedInstance.findLots(Settings.selectedCity().coordinate, radius: 1.0) { (lots, underMaintenance, outsideServiceArea, error) -> Void in }
         
         GiFHUD.setGif("loader.gif")
 

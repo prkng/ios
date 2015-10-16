@@ -74,7 +74,7 @@ class SearchOperations {
         
         let url = "https://nominatim.openstreetmap.org/search"
         
-        let params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity().rawValue, "country" : "Canada", "q" : input]
+        let params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity().displayName, "country" : "Canada", "q" : input]
         
         let numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
@@ -117,8 +117,8 @@ class SearchOperations {
     private class func mapboxPlacesSearchWithInput(input : String , forAutocomplete: Bool, completion : (results : Array<SearchResult>) -> Void) {
         
         let escapedInput = input.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
-        let lat = String(stringInterpolationSegment: Settings.selectedCityPoint().latitude)
-        let lon = String(stringInterpolationSegment: Settings.selectedCityPoint().longitude)
+        let lat = String(stringInterpolationSegment: Settings.selectedCity().coordinate.latitude)
+        let lon = String(stringInterpolationSegment: Settings.selectedCity().coordinate.longitude)
 
         let url = String(format: "https://api.mapbox.com/v4/geocode/mapbox.places/%@.json?proximity=%@,%@&access_token=pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA", escapedInput ?? "", lon, lat)
         
@@ -155,10 +155,10 @@ class SearchOperations {
                 }
                 
                 var matchesCity = false
-                if Settings.selectedCity() == Settings.City.Montreal {
+                if Settings.selectedCity().name == "montreal" {
                     matchesCity = city.lowercaseString.rangeOfString("montreal") != nil
                         || city.lowercaseString.rangeOfString("montréal") != nil
-                } else if Settings.selectedCity() == Settings.City.QuebecCity {
+                } else if Settings.selectedCity().name == "quebec" {
                     matchesCity = city.lowercaseString.rangeOfString("quebec") != nil
                         || city.lowercaseString.rangeOfString("québec") != nil
                 }
@@ -234,7 +234,7 @@ class SearchOperations {
         }
         
         let params  = ["query" : input,
-            "near" : Settings.selectedCity().rawValue,
+            "near" : Settings.selectedCity().displayName,
             "v" : "20150813",
             "client_id" : "E5BZKWTZRKG2NN0RPC0WFFOYQRNS31PUSL0XCTUFWTCUFF4S",
             "client_secret" : "JM1LAQRGMBBUWP00FM2YQ10WQZRT2OR1SEJLL1DDG1S2VFRB"]

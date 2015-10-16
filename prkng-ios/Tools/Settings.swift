@@ -10,11 +10,6 @@ import UIKit
 
 struct Settings {
     
-    enum City: String {
-        case Montreal = "Montréal"
-        case QuebecCity = "Québec City"
-    }
-    
     static let SELECTED_CITY_KEY = "prkng_selected_city"
     static let LOCATION_MANAGER_LAST_STATUS_KEY = "location_manager_last_status"
     static let TUTORIAL_PASSED_KEY = "prkng_tutorial_passed_key"
@@ -41,67 +36,28 @@ struct Settings {
     static let LAST_APP_VERSION_KEY = "prkng_last_app_version"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
-    static let availableCities = [City.Montreal, City.QuebecCity]
     
     static let iosVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
     static let screenScale: CGFloat = UIScreen.mainScreen().scale
     
     static func selectedCity() -> City  {
         
-        var city = NSUserDefaults.standardUserDefaults().objectForKey(SELECTED_CITY_KEY) as? String
-        
-        if (city == nil) {
-            city = availableCities[0].rawValue
-            NSUserDefaults.standardUserDefaults().setObject(city, forKey: SELECTED_CITY_KEY)
+        if let archivedCity = NSUserDefaults.standardUserDefaults().objectForKey(SELECTED_CITY_KEY) as? NSData {
+            let json = JSON(data: archivedCity)
+            return City(json: json)
         }
         
-        let actualCity = City(rawValue: city!)
-        
-        return actualCity!
+        return CityOperations.sharedInstance.montreal!
     }
     
     static func setSelectedCity (city : City) {
-        NSUserDefaults.standardUserDefaults().setObject(city.rawValue, forKey: SELECTED_CITY_KEY)
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
-    
-    static func selectedCityPoint() -> CLLocationCoordinate2D {
-        return pointForCity(selectedCity())
-    }
-    
-    static func pointForCity(city: City) -> CLLocationCoordinate2D {
-        switch city {
-        case .Montreal:
-            return CLLocationCoordinate2D(latitude: 45.5016889, longitude: -73.567256)
-        case .QuebecCity:
-            return CLLocationCoordinate2D(latitude: 46.82053904, longitude: -71.22943997)
+        do {
+            let rawData = try city.json.rawData()
+            NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: SELECTED_CITY_KEY)
+            NSUserDefaults.standardUserDefaults().synchronize()
+        } catch {
+            DDLoggerWrapper.logError("Could not save raw spot json data to user defaults. Sad face.")
         }
-    }
-    
-    static func setClosestSelectedCity(point: CLLocationCoordinate2D) {
-        var shortestDistance = Double.infinity
-        var closestCity: City?
-        let location = CLLocation(latitude: point.latitude, longitude: point.longitude)
-        for city in availableCities {
-            let cityPoint = pointForCity(city)
-            let cityLocation = CLLocation(latitude: cityPoint.latitude, longitude: cityPoint.longitude)
-            let distance = cityLocation.distanceFromLocation(location)
-            if distance < shortestDistance {
-                shortestDistance = distance
-                closestCity = city
-            }
-        }
-        
-        setSelectedCity(closestCity!)
-    }
-    
-    static func availableCityLocations() -> [CLLocation] {
-        
-        return availableCities.map({ (city) -> CLLocation in
-            let point = self.pointForCity(city)
-            let location = CLLocation(latitude: point.latitude, longitude: point.longitude)
-            return location
-        })
     }
 
     static func logout() {

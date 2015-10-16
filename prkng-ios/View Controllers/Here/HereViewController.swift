@@ -657,7 +657,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
  
     // MARK: MapMessageViewDelegate
     
-    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City) {
+    func cityDidChange(fromCity fromCity: City, toCity: City) {
         self.delegate?.cityDidChange(fromCity: fromCity, toCity: toCity)
     }
     
@@ -712,7 +712,7 @@ protocol HereViewControllerDelegate {
     func loadMyCarTab()
     func loadSettingsTab()
     func updateMapAnnotations()
-    func cityDidChange(fromCity fromCity: Settings.City, toCity: Settings.City)
+    func cityDidChange(fromCity fromCity: City, toCity: City)
     func didSelectMapMode(mapMode: MapMode)
     func didTapTrackUserButton()
 }
