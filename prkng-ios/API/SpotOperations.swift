@@ -14,7 +14,7 @@ struct SpotOperations {
         
         let url = APIUtility.APIConstants.rootURLString + "slots/" + spotId
         
-        request(.GET, URLString: url, parameters: nil).responseSwiftyJSON() {
+        APIUtility.authenticatedManager().request(.GET, url, parameters: nil).responseSwiftyJSON() {
             (request, response, json, error) in
             
             if (error == nil) {

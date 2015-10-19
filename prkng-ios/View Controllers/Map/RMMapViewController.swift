@@ -28,11 +28,18 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     var searchAnnotations: [RMAnnotation]
     var selectedObject: DetailObject?
     var isSelecting: Bool
-    var radius : Float
     var recoloringLotPins: Bool = false
     
-    private(set) var MOVE_DELTA_IN_METERS : Double
+    private(set) var MOVE_DELTA_PERCENTAGE : Double
     
+    var radius: Float {
+        //get a corner of the map and calculate the meters from the center
+        let center = self.mapView.centerProjectedPoint
+        let topLeft = self.mapView.projectedOrigin
+        let meters = RMEuclideanDistanceBetweenProjectedPoints(center, topLeft)
+        return Float(meters)
+    }
+
     convenience init() {
         self.init(nibName: nil, bundle: nil)
     }
@@ -64,9 +71,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         lineSpotIDsDrawnOnMap = []
         annotations = []
         searchAnnotations = []
-        radius = 300
-                
-        MOVE_DELTA_IN_METERS = 100
+        
+        MOVE_DELTA_PERCENTAGE = 0.20 //20%
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -294,9 +300,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         case "carsharing":
             
             let selected = userInfo!["selected"] as! Bool
-            let carSharingObject = userInfo!["carsharingobject"] as! CarSharingObject
-            let marker = RMMarker(UIImage: UIImage(named: carSharingObject.pinName(selected)))
-            let calloutView = carSharingObject.calloutView()
+            let carShare = userInfo!["carshare"] as! CarShare
+            let marker = RMMarker(UIImage: UIImage(named: carShare.pinName(selected)))
+            let calloutView = carShare.calloutView()
             marker.leftCalloutAccessoryView = calloutView.0
             marker.rightCalloutAccessoryView = calloutView.1
             marker.canShowCallout = true
@@ -379,8 +385,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let lastMapCenterLocation = CLLocation(latitude: self.lastMapCenterCoordinate.latitude, longitude: self.lastMapCenterCoordinate.longitude)
             let newMapCenterLocation = CLLocation(latitude: map.centerCoordinate.latitude, longitude: map.centerCoordinate.longitude)
             let differenceInMeters = lastMapCenterLocation.distanceFromLocation(newMapCenterLocation)
+            let mapWidth = map.viewSizeToProjectedSize(map.bounds.size).width //this is the width of the current map in meters
             //        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
-            if differenceInMeters > self.MOVE_DELTA_IN_METERS
+            if differenceInMeters/mapWidth > self.MOVE_DELTA_PERCENTAGE
                 && self.getTimeSinceLastMapMovement() > 150 {
                     self.updateAnnotations()
                     self.lastMapCenterCoordinate = map.centerCoordinate
@@ -404,12 +411,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         let delayTime = dispatch_time(DISPATCH_TIME_NOW,
             Int64(0.16 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) {
-            
-            self.radius = (20.0 - map.zoom) * 100
-            
-            if(map.zoom < 15.0) {
-                self.radius = 0
-            }
             
             if (abs(self.lastMapZoom - map.zoom) >= 1) {
                 self.spotIDsDrawnOnMap = []
@@ -485,8 +486,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         } else if type == "carsharing" {
             userInfo["selected"] = true
             annotation.userInfo = userInfo
-            let carSharingObject = userInfo["carsharingobject"] as! CarSharingObject
-            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carSharingObject.pinName(true)))
+            let carShare = userInfo["carshare"] as! CarShare
+            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.pinName(true)))
         }
         
         isSelecting = false
@@ -511,8 +512,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         } else if type == "carsharing" {
             userInfo["selected"] = false
             annotation.userInfo = userInfo
-            let carSharingObject = userInfo["carsharingobject"] as! CarSharingObject
-            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carSharingObject.pinName(false)))
+            let carShare = userInfo["carshare"] as! CarShare
+            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.pinName(false)))
         }
         
     }
@@ -527,7 +528,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if let userCLLocation = userLocation.location {
             let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
             
-            if differenceInMeters > MOVE_DELTA_IN_METERS/10 * 5
+            if differenceInMeters > 50 //50 meters
                 && mapView.userTrackingMode.rawValue == RMUserTrackingModeFollow.rawValue {
                 updateAnnotations()
                 lastUserLocation = userCLLocation
@@ -707,7 +708,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             self.updateInProgress = false
             completion(operationCompleted: true)
             
-        } else if self.mapView.zoom >= 15.0 || self.mapMode == MapMode.Garage {
+        } else if self.mapView.zoom >= 15.0 || self.mapMode == .Garage || (self.mapView.zoom >= 13.0 && self.mapMode == .CarSharing) {
             
             self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true, showCityPicker: false)
             
@@ -770,9 +771,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     }
                     
                     if let lots = objects as? [Lot] {
-                        
                         self.updateLotAnnotations(lots, completion: completion)
-                        
+                    }
+                    
+                    if let carShares = objects as? [CarShare] {
+                        self.updateCarShareAnnotations(carShares, completion: completion)
                     }
                     
                 })
@@ -781,21 +784,15 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             switch(self.mapMode) {
             case MapMode.CarSharing:
                 if self.delegate?.carSharingMode() == .FindSpot {
-                    car2goDemoRemove()
                     SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 } else {
-                    self.updateInProgress = false
-                    self.removeLinesAndButtons()
-                    self.car2goDemo()
-                    completion(operationCompleted: true)
+                    CarSharingOperations.getCarShares(location: self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
                 }
                 break
             case MapMode.StreetParking:
-                car2goDemoRemove()
                 SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.Garage:
-                car2goDemoRemove()
                 self.recolorLotPinsIfNeeded()
                 if self.annotations.count > 0 {
                     self.updateInProgress = false
@@ -935,7 +932,34 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         })
         
     }
-    
+
+    func updateCarShareAnnotations(carShares: [CarShare], completion: ((operationCompleted: Bool) -> Void)) {
+        
+        var tempAnnotations = [RMAnnotation]()
+        
+        for carShare in carShares {
+            let annotation = RMAnnotation(mapView: self.mapView, coordinate: carShare.coordinate, andTitle: "")
+            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare]
+            tempAnnotations.append(annotation)
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            
+            self.removeLinesAndButtons()
+            
+            self.annotations = tempAnnotations
+            
+            self.mapView.addAnnotations(self.annotations)
+            
+            SVProgressHUD.dismiss()
+            self.updateInProgress = false
+            
+            completion(operationCompleted: true)
+            
+        })
+        
+    }
+
     func zoomIntoClosestPins(numberOfPins: Int) {
         //order annotations by distance from map center
         let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
@@ -1264,26 +1288,6 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func removeRegularAnnotations() {
         self.removeLinesAndButtons()
-    }
-
-
-    var car2GoDemoAnnotation: RMAnnotation? = nil
-    func car2goDemo() {
-        let coordinate = CityOperations.sharedInstance.montreal!.coordinate
-        let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: "")
-        annotation.userInfo = ["type": "carsharing", "selected": false, "carsharingobject": CarSharingObject()]
-        if car2GoDemoAnnotation == nil {
-            mapView.zoom = 17
-            mapView.centerCoordinate = coordinate
-        }
-        removeAllAnnotations()
-        self.mapView.addAnnotation(annotation)
-        car2GoDemoAnnotation = annotation
-    }
-    func car2goDemoRemove() {
-        if car2GoDemoAnnotation != nil {
-            self.mapView.removeAnnotation(car2GoDemoAnnotation)
-        }
     }
 
 }

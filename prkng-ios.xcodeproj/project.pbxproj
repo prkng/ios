@@ -38,8 +38,8 @@
 		3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E52EB721B9F45E6004183FD /* AddressSplitting.strings */; };
 		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
 		3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E530C8E1B445BA0001309E8 /* GeoJsonParser.m */; };
-		3E54B3B11BCF034900879528 /* CityOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E54B3B01BCF034900879528 /* CityOperations.swift */; settings = {ASSET_TAGS = (); }; };
-		3E54B3B31BCF050F00879528 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E54B3B21BCF050F00879528 /* City.swift */; settings = {ASSET_TAGS = (); }; };
+		3E54B3B11BCF034900879528 /* CityOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E54B3B01BCF034900879528 /* CityOperations.swift */; };
+		3E54B3B31BCF050F00879528 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E54B3B21BCF050F00879528 /* City.swift */; };
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
 		3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */; };
 		3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E5B2EFF1BA359B500658A9A /* InfoPlist.strings */; };
@@ -83,7 +83,7 @@
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */; };
 		3ED440901BC6C83A008FE5B4 /* PRKTopTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */; };
-		3ED501C41BCEB9B400A5AA45 /* CarSharingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */; };
+		3ED501C41BCEB9B400A5AA45 /* CarShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED501C31BCEB9B400A5AA45 /* CarShare.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
 		3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */; };
 		3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF9F4E1BB45F550036BDBC /* UIViewController.swift */; };
@@ -92,6 +92,7 @@
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
+		3EFF0A601BD16BFF00D6DBB8 /* CarSharingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */; };
 		834EE6C7AA0F31AC7EF11445 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
@@ -276,7 +277,7 @@
 		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
 		3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewController.swift; sourceTree = "<group>"; };
 		3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTopTabBar.swift; sourceTree = "<group>"; };
-		3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarSharingObject.swift; sourceTree = "<group>"; };
+		3ED501C31BCEB9B400A5AA45 /* CarShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarShare.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
 		3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
@@ -287,6 +288,7 @@
 		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKVerticalGestureRecognizer.swift; sourceTree = "<group>"; };
+		3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarSharingOperations.swift; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
 		BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
@@ -540,7 +542,7 @@
 		BF0B47221A7E903900E94B3C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				3ED501C31BCEB9B400A5AA45 /* CarSharingObject.swift */,
+				3ED501C31BCEB9B400A5AA45 /* CarShare.swift */,
 				BF6981B11B30701600E0EF62 /* Checkin.swift */,
 				3E54B3B21BCF050F00879528 /* City.swift */,
 				3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */,
@@ -855,6 +857,7 @@
 				3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */,
 				BFE956681A8E59DF00C2C117 /* APIUtility.swift */,
 				BF1C2B581AFCBBA00070085A /* AuthUtility.swift */,
+				3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */,
 				3E54B3B01BCF034900879528 /* CityOperations.swift */,
 				3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */,
 				BF4567FF1AD85722006D7C23 /* SearchOperations.swift */,
@@ -1175,6 +1178,7 @@
 				BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
 				3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */,
+				3EFF0A601BD16BFF00D6DBB8 /* CarSharingOperations.swift in Sources */,
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
 				3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */,
@@ -1203,7 +1207,7 @@
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
 				3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */,
 				3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */,
-				3ED501C41BCEB9B400A5AA45 /* CarSharingObject.swift in Sources */,
+				3ED501C41BCEB9B400A5AA45 /* CarShare.swift in Sources */,
 				BFC850FA1B2F618A006383AC /* UIImage.swift in Sources */,
 				3EBDC5ED1B29442000CB4A68 /* MKMapViewController.swift in Sources */,
 				3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */,
