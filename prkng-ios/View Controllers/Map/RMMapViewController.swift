@@ -86,6 +86,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         view.addSubview(mapView)
         mapView.delegate = self
         
+        self.showUserLocation(true)
+        
         addCityOverlays()
         
         mapView.snp_makeConstraints {  (make) -> () in
@@ -95,7 +97,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.mapView.userTrackingMode = RMUserTrackingModeFollow
+        self.trackUser()
         self.screenName = "Map - General MapBox View"
     }
     
@@ -626,6 +628,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
     }
     
+    func mapView(mapView: RMMapView!, didFailToLocateUserWithError error: NSError!) {
+        dontTrackUser()
+    }
     
     // MARK: Helper Methods
     
