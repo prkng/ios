@@ -53,4 +53,47 @@ class CarSharingOperations {
         }
     }
 
+    static func getCarShareLots(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShareLots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "carshare_lots"
+        
+        let radiusStr = NSString(format: "%.0f", radius)
+        
+        let params = [
+            "latitude": location.latitude,
+            "longitude": location.longitude,
+            "radius" : radiusStr,
+            "permit" : "all",
+        ]
+        
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+            (request, response, json, error) in
+            
+            DDLoggerWrapper.logVerbose(String(format: "Request: %@", request))
+            DDLoggerWrapper.logVerbose(String(format: "Response: %@", response ?? ""))
+            //            DDLoggerWrapper.logVerbose(String(format: "Json: %@", json.description))
+            DDLoggerWrapper.logVerbose(String(format: "error: %@", error ?? ""))
+            
+            let carShareLotJsons: Array<JSON> = json["features"].arrayValue
+            let carShareLots = carShareLotJsons.map({ (carShareLotJson) -> CarShareLot in
+                CarShareLot(json: carShareLotJson)
+            })
+            
+            let underMaintenance = response != nil && response!.statusCode == 503
+            let outsideServiceArea = response != nil && response!.statusCode == 404
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                () -> Void in
+                completion(carShareLots: carShareLots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
+                
+                if response != nil && response?.statusCode == 401 {
+                    DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))
+                    Settings.logout()
+                }
+                
+            })
+            
+        }
+    }
+
 }

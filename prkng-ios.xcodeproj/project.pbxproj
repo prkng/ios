@@ -62,6 +62,7 @@
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3E90A92E1BA9C8FF00CCEB41 /* loader.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3E90A92D1BA9C8FF00CCEB41 /* loader.gif */; };
 		3E90A9311BA9C9B200CCEB41 /* GiFHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E90A9301BA9C9B200CCEB41 /* GiFHUD.swift */; };
+		3E9362801BD57F9E001A8EF8 /* CarShareLot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E93627F1BD57F9E001A8EF8 /* CarShareLot.swift */; };
 		3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E9509C31B56B5DC0088E336 /* MessageUI.framework */; };
 		3E9509C61B56EE940088E336 /* PRKTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C51B56EE940088E336 /* PRKTextField.swift */; };
 		3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C91B570A6A0088E336 /* PRKInputForm.swift */; };
@@ -258,6 +259,7 @@
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E90A92D1BA9C8FF00CCEB41 /* loader.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loader.gif; sourceTree = "<group>"; };
 		3E90A9301BA9C9B200CCEB41 /* GiFHUD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiFHUD.swift; sourceTree = "<group>"; };
+		3E93627F1BD57F9E001A8EF8 /* CarShareLot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarShareLot.swift; sourceTree = "<group>"; };
 		3E9509C31B56B5DC0088E336 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3E9509C51B56EE940088E336 /* PRKTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextField.swift; sourceTree = "<group>"; };
 		3E9509C91B570A6A0088E336 /* PRKInputForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKInputForm.swift; sourceTree = "<group>"; };
@@ -543,6 +545,7 @@
 			isa = PBXGroup;
 			children = (
 				3ED501C31BCEB9B400A5AA45 /* CarShare.swift */,
+				3E93627F1BD57F9E001A8EF8 /* CarShareLot.swift */,
 				BF6981B11B30701600E0EF62 /* Checkin.swift */,
 				3E54B3B21BCF050F00879528 /* City.swift */,
 				3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */,
@@ -1141,6 +1144,7 @@
 				3EA8126F1B978490002987EC /* LotHeaderView.swift in Sources */,
 				3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */,
 				3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */,
+				3E9362801BD57F9E001A8EF8 /* CarShareLot.swift in Sources */,
 				3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */,
 				3E7523071B693DF70096755F /* MapMessageView.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,

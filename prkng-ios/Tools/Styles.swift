@@ -22,6 +22,9 @@ struct Styles {
         
         static let facebookBlue = UIColor(red: 69/255, green: 99/255, blue: 151/255, alpha: 1)
         
+        static let turtleGreen = UIColor(rgba: "#81b347")
+        static let azuro = UIColor(rgba: "#09adf1")
+        
         static let beige1 = UIColor(rgba: "#E5E0DA")
         static let beige2 = UIColor(rgba: "#DBD4CE")
         

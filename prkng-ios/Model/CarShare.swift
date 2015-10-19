@@ -13,18 +13,9 @@ enum CarSharingType: String {
     case Car2Go = "car2go"
     case Communauto = "communauto"
     case Generic = "generic"
-}
-
-class CarShare: NSObject {
     
-    var coordinate: CLLocationCoordinate2D
-    var fuelPercentage: Int?
-    var electric: Bool
-    var licensePlate: String
-    var carSharingType: CarSharingType
-    
-    private var carSharingTypeName: String {
-        switch self.carSharingType {
+    var name: String {
+        switch self {
         case .Car2Go:
             return "Car2Go"
         case .Communauto:
@@ -35,6 +26,16 @@ class CarShare: NSObject {
             return "CarSharing"
         }
     }
+
+}
+
+class CarShare: NSObject {
+    
+    var coordinate: CLLocationCoordinate2D
+    var fuelPercentage: Int?
+    var electric: Bool
+    var name: String //sometimes car model, sometimes license plate
+    var carSharingType: CarSharingType
     
     private var fuelPercentageText: String {
         if fuelPercentage != nil {
@@ -43,7 +44,7 @@ class CarShare: NSObject {
         return ""
     }
     
-    func pinName(selected: Bool) -> String {
+    func mapPinName(selected: Bool) -> String {
         var pinName = "carsharing_pin"
         switch self.carSharingType {
         case .Car2Go:
@@ -67,7 +68,7 @@ class CarShare: NSObject {
     init(json: JSON) {
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
         self.carSharingType = CarSharingType(rawValue: json["properties"]["company"].stringValue) ?? CarSharingType.Generic
-        self.licensePlate = json["properties"]["name"].stringValue
+        self.name = json["properties"]["name"].stringValue
         self.fuelPercentage = json["properties"]["fuel"].int
         self.electric = json["properties"]["electric"].boolValue
     }
@@ -75,7 +76,7 @@ class CarShare: NSObject {
     override init() {
         self.coordinate = Settings.selectedCity().coordinate
         self.carSharingType = CarSharingType.Car2Go
-        self.licensePlate = "FJH5504"
+        self.name = "FJH5504"
         self.fuelPercentage = 66
         self.electric = false
     }
@@ -106,25 +107,25 @@ class CarShare: NSObject {
         let maxTitleWidth = maximumTotalWidth - rightViewWidth - leftViewLabelBuffer
         let minTitleWidth = 135 - leftViewLabelBuffer - (self.fuelPercentage == nil ? 52 : 0)
 
-        let typeLabel = UILabel()
-        typeLabel.textAlignment = .Left
-        typeLabel.font = Styles.FontFaces.regular(14)
-        typeLabel.textColor = Styles.Colors.red2
-        typeLabel.text = self.carSharingTypeName
-        leftView.addSubview(typeLabel)
+        let titleLabel = UILabel()
+        titleLabel.textAlignment = .Left
+        titleLabel.font = Styles.FontFaces.regular(14)
+        titleLabel.textColor = Styles.Colors.red2
+        titleLabel.text = self.carSharingType.name
+        leftView.addSubview(titleLabel)
 
-        let licensePlate = UILabel()
-        licensePlate.textAlignment = .Left
-        licensePlate.font = Styles.FontFaces.light(12)
-        licensePlate.textColor = Styles.Colors.red2
-        licensePlate.text = self.licensePlate
-        leftView.addSubview(licensePlate)
+        let subtitleLabel = UILabel()
+        subtitleLabel.textAlignment = .Left
+        subtitleLabel.font = Styles.FontFaces.light(12)
+        subtitleLabel.textColor = Styles.Colors.red2
+        subtitleLabel.text = self.name
+        leftView.addSubview(subtitleLabel)
         
-        let minLabelWidth = max(licensePlate.intrinsicContentSize().width, typeLabel.intrinsicContentSize().width, CGFloat(minTitleWidth))
+        let minLabelWidth = max(subtitleLabel.intrinsicContentSize().width, titleLabel.intrinsicContentSize().width, CGFloat(minTitleWidth))
         let labelWidth = min(minLabelWidth, CGFloat(maxTitleWidth))
         leftView.frame = CGRect(x: 0, y: 0, width: (labelWidth + CGFloat(leftViewLabelBuffer)), height: 44)
-        typeLabel.frame = CGRect(x: CGFloat(leftViewLabelBuffer), y: 0, width: labelWidth, height: 30)
-        licensePlate.frame = CGRect(x: CGFloat(leftViewLabelBuffer), y: 15, width: labelWidth, height: 30)
+        titleLabel.frame = CGRect(x: CGFloat(leftViewLabelBuffer), y: 0, width: labelWidth, height: 30)
+        subtitleLabel.frame = CGRect(x: CGFloat(leftViewLabelBuffer), y: 15, width: labelWidth, height: 30)
         
         //the separator was manually placed because for the mapbox callout, we don't know exactly how the left and right views are placed.
 //        let separator = UIView(frame: CGRect(x: leftView.bounds.width + 5, y: 0, width: 1, height: leftView.bounds.height))
