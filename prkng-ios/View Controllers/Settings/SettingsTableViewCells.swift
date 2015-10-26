@@ -139,16 +139,27 @@ class SettingsSwitchCell: UITableViewCell {
     var parentVC: UIViewController?
     var selector: String?
     
+    private var cellBackgroundColor: UIColor {
+        return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
+    }
+    
+    func enabledSwitchValueChanged() {
+        UIView.animateWithDuration(0.2) { () -> Void in
+            self.backgroundColor = self.cellBackgroundColor
+        }
+    }
+
     override func layoutSubviews() {
         
         if !didLayoutSubviews {
-            self.backgroundColor = Styles.Colors.cream1
+            self.backgroundColor = cellBackgroundColor
             
             enabledSwitch.tintColor = Styles.Colors.stone
             enabledSwitch.onTintColor = Styles.Colors.cream1
             enabledSwitch.onTintColor = Styles.Colors.red2
             if (parentVC != nil && selector != nil) {
                 enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
+                enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
             }
             contentView.addSubview(enabledSwitch)
             
@@ -318,10 +329,27 @@ class SettingsServiceSwitchCell: UITableViewCell {
         }
     }
 
+    private var titleTextColor: UIColor {
+        return enabledSwitch.isOn() ? Styles.Colors.red2 : Styles.Colors.midnight2
+    }
+    
+    private var cellBackgroundColor: UIColor {
+        return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
+    }
+    
+    func enabledSwitchValueChanged() {
+        UIView.animateWithDuration(0.2) { () -> Void in
+            self.backgroundColor = self.cellBackgroundColor
+        }
+        UIView.transitionWithView(self.title, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            self.title.textColor = self.titleTextColor
+            }, completion: nil)
+    }
+
     override func layoutSubviews() {
         
         if !didLayoutSubviews {
-            self.backgroundColor = Styles.Colors.cream1
+            self.backgroundColor = cellBackgroundColor
             
             enabledSwitch.tintColor = Styles.Colors.stone
             enabledSwitch.onTintColor = Styles.Colors.cream1
@@ -330,6 +358,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
 
             if (parentVC != nil && selector != nil) {
                 enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
+                enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
             }
 
             button.layer.cornerRadius = 10
@@ -338,7 +367,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
             contentView.addSubview(button)
             
             title.font = Styles.FontFaces.regular(14)
-            title.textColor = Styles.Colors.midnight2
+            title.textColor = titleTextColor
             title.textAlignment = .Left
             contentView.addSubview(title)
 
