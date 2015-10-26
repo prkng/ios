@@ -149,7 +149,7 @@ class LoginExternalViewController: AbstractViewController {
         cityContainer.backgroundColor = Styles.Colors.red2
         scrollContentView.addSubview(cityContainer)
         
-        cityLabel.font = Styles.Fonts.h1
+        cityLabel.font = Styles.Fonts.h3
         cityLabel.textColor = Styles.Colors.cream1
         cityLabel.text = Settings.selectedCity().displayName
         cityContainer.addSubview(cityLabel)
@@ -253,14 +253,14 @@ class LoginExternalViewController: AbstractViewController {
         }
         
         prevCityButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(30, 30))
-            make.left.equalTo(self.cityContainer).offset(32)
+            make.size.equalTo(CGSize(width: 5, height: 10))
+            make.left.equalTo(self.cityContainer).offset(20)
             make.centerY.equalTo(self.cityContainer)
         }
         
         nextCityButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(30, 30))
-            make.right.equalTo(self.cityContainer).offset(-32)
+            make.size.equalTo(CGSize(width: 5, height: 10))
+            make.right.equalTo(self.cityContainer).offset(-20)
             make.centerY.equalTo(self.cityContainer)
         }
         

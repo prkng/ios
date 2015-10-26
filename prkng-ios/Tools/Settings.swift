@@ -18,6 +18,10 @@ struct Settings {
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
     static let FIRST_CAR_SHARING_USE_PASSED_KEY = "prkng_first_car_sharing_use_passed"
     static let DID_PROMPT_USER_TO_RATE_APP_KEY = "prkng_did_prompt_user_to_rate_app"
+    static let PARKING_LOTS_PRICE_DAILY = "prkng_parking_lots_price_daily"
+    static let HIDE_CAR2GO = "prkng_hide_car2go"
+    static let HIDE_COMMUNAUTO = "prkng_hide_communauto"
+    static let HIDE_AUTOMOBILE = "prkng_hide_automobile"
     static let CHECKIN_COUNT = "prkng_checkin_count"
     static let APP_LAUNCH_COUNT = "prkng_app_launch_count"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
@@ -122,6 +126,7 @@ struct Settings {
     }
     
     static func setNotificationTime(notificationTime : Int) {
+        DDLoggerWrapper.logInfo("Set notification time to " + String(notificationTime))
         NSUserDefaults.standardUserDefaults().setObject(notificationTime, forKey: NOTIFICATION_TIME_KEY)
     }
     
@@ -469,6 +474,41 @@ struct Settings {
         return NSUserDefaults.standardUserDefaults().stringForKey(LAST_APP_VERSION_KEY) ?? ""
     }
 
+    static func lotMainRateIsHourly() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(PARKING_LOTS_PRICE_DAILY)
+    }
+    
+    static func setLotMainRateIsHourly(isHourly : Bool)  {
+        DDLoggerWrapper.logInfo("Set lot main rate to " + (isHourly ? "hourly" : "daily"))
+        NSUserDefaults.standardUserDefaults().setBool(isHourly, forKey: PARKING_LOTS_PRICE_DAILY)
+    }
+
+    static func hideCar2Go() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_CAR2GO)
+    }
+    
+    static func setHideCar2Go(hide : Bool)  {
+        DDLoggerWrapper.logInfo("Car2go is now " + (hide ? "hidden" : "shown"))
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_CAR2GO)
+    }
+
+    static func hideAutomobile() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_AUTOMOBILE)
+    }
+    
+    static func setHideAutomobile(hide : Bool)  {
+        DDLoggerWrapper.logInfo("Automobile is now " + (hide ? "hidden" : "shown"))
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_AUTOMOBILE)
+    }
+
+    static func hideCommunauto() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_COMMUNAUTO)
+    }
+    
+    static func setHideCommunauto(hide : Bool)  {
+        DDLoggerWrapper.logInfo("Communauto is now " + (hide ? "hidden" : "shown"))
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_COMMUNAUTO)
+    }
 
 
 }

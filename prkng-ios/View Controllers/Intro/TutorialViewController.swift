@@ -10,7 +10,7 @@ import UIKit
 
 class TutorialViewController: GAITrackedViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    var parent : FirstUseViewController?
+    var delegate: TutorialViewControllerDelegate?
     var pageViewController : UIPageViewController
     var pageControl : UIPageControl
     var nextButton : UIButton
@@ -141,7 +141,7 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     
     func getStartedButtonTapped() {
         dismissViewControllerAnimated(true, completion: { () -> Void in
-            self.parent?.parkNowButtonTapped()
+            self.delegate?.didFinishAndDismissTutorial()
         })
     }
     
@@ -194,4 +194,8 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     }
     
     
+}
+
+protocol TutorialViewControllerDelegate {
+    func didFinishAndDismissTutorial()
 }

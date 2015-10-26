@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class SettingsViewController: AbstractViewController, MFMailComposeViewControllerDelegate {
+class SettingsViewController: AbstractViewController, MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_settings"))
     
@@ -26,22 +26,15 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     var nextCityButton : UIButton
     var cityLabel : UILabel
     
-    var notificationsContainer : UIView
-    var notificationsLabel : UILabel
-    var notificationSelection : SelectionControl
-
-    var separator1: UIView
-    var separator2: UIView
-    var separator3: UIView
-
-    var historyButton : UIButton
-    var aboutButton : UIButton
+    let tableView = UITableView()
 
     var sendLogButton : UIButton
     
     var delegate: SettingsViewControllerDelegate?
     
-    private(set) var CITY_CONTAINER_HEIGHT = UIScreen.mainScreen().bounds.height == 480 ? 54 : 60
+    private(set) var CITY_CONTAINER_HEIGHT = 48
+    private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
+    private(set) var BIG_CELL_HEIGHT: CGFloat = 61
     
     init() {
         
@@ -53,24 +46,11 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         profileTitleLabel = ViewFactory.formLabel()
         profileNameLabel = UILabel()
         
-        historyButton = ViewFactory.transparentRoundedButton()
-        
-        cityContainer = UIView()
+        cityContainer = TouchForwardingView()
         prevCityButton = UIButton()
         nextCityButton = UIButton()
         cityLabel = UILabel()
         
-        notificationsContainer = UIView()
-        notificationsLabel = UILabel()
-        notificationSelection = SelectionControl(titles: ["15 " + "minutes_short".localizedString.uppercaseString,
-            "30 " + "minutes_short".localizedString.uppercaseString,
-            "off".localizedString.uppercaseString])
-
-        separator1 = UIView()
-        separator2 = UIView()
-        separator3 = UIView()
-        
-        aboutButton = ViewFactory.hugeCreamButton()
         sendLogButton = ViewFactory.exclamationButton()
         
         super.init(nibName: nil, bundle: nil)
@@ -90,6 +70,15 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.screenName = "Settings View"
+        
+        if (AuthUtility.loginType() == .Facebook){
+            profileTitleLabel.text = "login_edit_message_facebook".localizedString.uppercaseString
+        } else if (AuthUtility.loginType() == .Google){
+            profileTitleLabel.text = "login_edit_message_google".localizedString.uppercaseString
+        } else {
+            profileTitleLabel.text = "edit_profile".localizedString.uppercaseString
+        }
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -103,15 +92,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         let debugFeaturesOn = NSUserDefaults.standardUserDefaults().boolForKey("enable_debug_features")
         sendLogButton.hidden = !debugFeaturesOn
-        
-        // TODO find a better way
-        var i : Int = 2 // OFF
-        if (Settings.notificationTime() == 15) {
-            i = 0
-        } else if (Settings.notificationTime() == 30) {
-            i = 1
-        }
-        self.notificationSelection.selectOption(self.notificationSelection.buttons[i], animated: false)
         
         if let user = AuthUtility.getUser() {
             self.profileNameLabel.text = user.name
@@ -127,33 +107,39 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         backgroundImageView.contentMode = .ScaleAspectFill
         view.addSubview(backgroundImageView)
         
+        view.addSubview(tableView)
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + 120)))
+        tableView.backgroundColor = UIColor.clearColor()
+        tableView.separatorStyle = .None
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.clipsToBounds = true
+
         view.addSubview(topContainer)
         
         topContainer.addSubview(profileContainer)
         
-        profileImageView.layer.cornerRadius = 34
+        profileImageView.layer.cornerRadius = 18
         profileImageView.clipsToBounds = true
         profileContainer.addSubview(profileImageView)
         
-        profileTitleLabel.text = "my_profile".localizedString.uppercaseString
+        profileTitleLabel.font = Styles.FontFaces.regular(10)
+        profileTitleLabel.textColor = Styles.Colors.anthracite1
+        profileTitleLabel.textAlignment = .Left
         profileContainer.addSubview(profileTitleLabel)
         
-        profileNameLabel.font = Styles.Fonts.h1
+        profileNameLabel.font = Styles.Fonts.h3
         profileNameLabel.textColor = Styles.Colors.cream1
-        profileNameLabel.textAlignment = NSTextAlignment.Center
+        profileNameLabel.textAlignment = .Left
         profileContainer.addSubview(profileNameLabel)
         
         profileButton.addTarget(self, action: "profileButtonTapped:", forControlEvents: .TouchUpInside)
         topContainer.addSubview(profileButton)
         
-        historyButton.setTitle("my_history".localizedString.uppercaseString, forState: .Normal)
-        historyButton.addTarget(self, action: "historyButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        topContainer.addSubview(historyButton)
-        
         cityContainer.backgroundColor = Styles.Colors.red2
-        view.addSubview(cityContainer)
+        topContainer.addSubview(cityContainer)
         
-        cityLabel.font = Styles.Fonts.h1
+        cityLabel.font = Styles.Fonts.h3
         cityLabel.textColor = Styles.Colors.cream1
         cityContainer.addSubview(cityLabel)
         
@@ -165,33 +151,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         nextCityButton.addTarget(self, action: "nextCityButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         cityContainer.addSubview(nextCityButton)
         
-        notificationsContainer.backgroundColor = Styles.Colors.stone
-        view.addSubview(notificationsContainer)
-        
-        notificationsLabel.textColor = Styles.Colors.midnight2
-        notificationsLabel.font = Styles.FontFaces.light(12)
-        notificationsLabel.text = "notifications".localizedString.uppercaseString
-        notificationsLabel.textAlignment = NSTextAlignment.Left
-        notificationsContainer.addSubview(notificationsLabel)
-        
-        notificationSelection.buttonSize = CGSizeMake(90, 28)
-        notificationSelection.addTarget(self, action: "notificationSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
-        notificationSelection.fixedWidth = 20
-        notificationsContainer.addSubview(notificationSelection)
-        
-        aboutButton.setTitle("about".localizedString, forState: UIControlState.Normal)
-        aboutButton.addTarget(self, action: "aboutButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(aboutButton)
-        
         sendLogButton.addTarget(self, action: "sendLogButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(sendLogButton)
-        
-        separator1.backgroundColor = Styles.Colors.transparentBlack
-        separator2.backgroundColor = Styles.Colors.transparentWhite
-        separator3.backgroundColor = Styles.Colors.transparentBlack
-        view.addSubview(separator1)
-        view.addSubview(separator2)
-        view.addSubview(separator3)
         
     }
     
@@ -201,86 +162,43 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.edges.equalTo(self.view)
         }
         
-        aboutButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.bottom.equalTo(self.view)
-        }
-        
-        
-        notificationsContainer.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(60)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.bottom.equalTo(self.aboutButton.snp_top)
-        }
-        
-        notificationsLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.notificationsContainer).offset(30)
-            make.centerY.equalTo(self.notificationsContainer)
-        }
-        
-        notificationSelection.snp_makeConstraints { (make) -> () in
-            make.width.equalTo(self.notificationSelection.calculatedWidth())
-            make.right.equalTo(self.notificationsContainer).offset(-20).priorityHigh()
-            make.top.equalTo(self.notificationsContainer)
-            make.bottom.equalTo(self.notificationsContainer)
-        }
-
-        
-        separator1.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(0.5)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.top.equalTo(self.notificationsContainer.snp_bottom)
-        }
-        
-        separator2.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(0.5)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.top.equalTo(self.separator1.snp_bottom)
-        }
-        
         cityContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.CITY_CONTAINER_HEIGHT)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.bottom.equalTo(self.notificationsContainer.snp_top)
+            make.left.equalTo(self.topContainer)
+            make.right.equalTo(self.topContainer)
+            make.top.equalTo(self.profileContainer.snp_bottom)
         }
         
         topContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.view)
+            make.top.equalTo(self.snp_topLayoutGuideBottom)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.bottom.equalTo(self.cityContainer.snp_top)
+            make.height.equalTo(120+self.CITY_CONTAINER_HEIGHT)
         }
         
         profileContainer.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.topContainer)
-            make.centerY.equalTo(self.topContainer).multipliedBy(0.8).priorityLow()
-            make.height.equalTo(150)
-            make.left.equalTo(self.topContainer).offset(20)
-            make.right.equalTo(self.topContainer).offset(-20)
+            make.top.equalTo(self.topContainer)
+            make.height.equalTo(120)
+            make.left.equalTo(self.topContainer)
+            make.right.equalTo(self.topContainer)
         }
         
         profileImageView.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.view)
-            make.centerY.equalTo(self.view).multipliedBy(0.3)
-            make.size.equalTo(CGSizeMake(68, 68))
+            make.left.equalTo(self.view).offset(34)
+            make.centerY.equalTo(self.profileContainer)
+            make.size.equalTo(CGSizeMake(36, 36))
         }
         
         profileTitleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.profileNameLabel.snp_top).offset(-3)
-            make.left.equalTo(self.profileContainer)
+            make.left.equalTo(self.profileImageView.snp_right).offset(20)
+            make.bottom.equalTo(self.profileImageView).offset(1)
             make.right.equalTo(self.profileContainer)
         }
         
         profileNameLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.profileContainer)
+            make.left.equalTo(self.profileImageView.snp_right).offset(20)
+            make.top.equalTo(self.profileImageView).offset(-2)
             make.right.equalTo(self.profileContainer)
-            make.bottom.equalTo(self.profileContainer)
         }
         
         profileButton.snp_makeConstraints { (make) -> () in
@@ -292,22 +210,22 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         prevCityButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(30, 30))
-            make.left.equalTo(self.cityContainer).offset(32)
+            make.size.equalTo(CGSize(width: 30, height: 30))
+            make.left.equalTo(self.cityContainer).offset(5)
             make.centerY.equalTo(self.cityContainer)
         }
         
         nextCityButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(30, 30))
-            make.right.equalTo(self.cityContainer).offset(-32)
+            make.size.equalTo(CGSize(width: 30, height: 30))
+            make.right.equalTo(self.cityContainer).offset(-5)
             make.centerY.equalTo(self.cityContainer)
         }
         
-        historyButton.snp_makeConstraints { (make) -> () in
-            make.top.greaterThanOrEqualTo(self.profileContainer.snp_bottom).offset(5).priorityHigh()
-            make.bottom.equalTo(self.topContainer).offset(-15)
-            make.centerX.equalTo(self.topContainer)
-            make.size.equalTo(CGSizeMake(125, 26))
+        tableView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self.snp_topLayoutGuideBottom)
+            make.bottom.equalTo(self.view)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
         }
         
         sendLogButton.snp_makeConstraints { (make) -> () in
@@ -342,10 +260,52 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         self.navigationController?.pushViewController(historyViewController, animated: true)
     }
     
-    func aboutButtonTapped() {
+    func showSupport() {
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/support/", frenchUrl: "https://prk.ng/fr/support/")
+        self.navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    func showAbout() {
         self.navigationController?.pushViewController(AboutViewController(), animated: true)
     }
     
+    func showGettingStarted() {
+        let tutorialVC = TutorialViewController()
+        self.presentViewController(tutorialVC, animated: true, completion: nil)
+    }
+    
+    func sendToAppStore() {
+        UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id999834216")!)
+    }
+    
+    func showFaq() {
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/faq/", frenchUrl: "https://prk.ng/fr/faq/")
+        self.navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    func showTerms() {
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/terms/", frenchUrl: "https://prk.ng/fr/conditions/")
+        self.navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    func showPrivacy() {
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/privacy", frenchUrl: "https://prk.ng/fr/privacy")
+        self.navigationController?.pushViewController(webViewController, animated: true)
+    }
+    
+    func showShareSheet() {
+        
+        let text = "prkng_share_copy".localizedString
+        let url = NSURL(string:"https://prk.ng/")!
+        
+        let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
+        self.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+
+    func signOut() {
+        SVProgressHUD.show()
+        Settings.logout()
+    }
     
     func prevCityButtonTapped() {
         
@@ -401,22 +361,201 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     }
     
     func notificationSelectionValueChanged() {
-        switch(notificationSelection.selectedIndex) {
-        case 0:
-            Settings.setNotificationTime(15)
-            break
-        case 1:
+        if Settings.notificationTime() == 0 {
             Settings.setNotificationTime(30)
-            break
-        case 2 :
+        } else {
             Settings.setNotificationTime(0)
-            break
-        default:break
         }
+    }
+
+    func hideCar2GoValueChanged() {
+        let currentValue = Settings.hideCar2Go()
+        Settings.setHideCar2Go(!currentValue)
+    }
+
+    func hideAutomobileValueChanged() {
+        let currentValue = Settings.hideAutomobile()
+        Settings.setHideAutomobile(!currentValue)
+    }
+
+    func hideCommunautoValueChanged() {
+        let currentValue = Settings.hideCommunauto()
+        Settings.setHideCommunauto(!currentValue)
+    }
+    
+    func lotRateDisplayValueChanged() {
+        let currentValue = Settings.lotMainRateIsHourly()
+        Settings.setLotMainRateIsHourly(!currentValue)
     }
     
     func profileButtonTapped(sender: UIButton) {
-        self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
+        if AuthUtility.loginType()! == LoginType.Email {
+            self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
+        }
+    }
+    
+    //MARK: UITableViewDataSource
+        
+    var tableSource: [(String, [SettingsCell])] {
+        
+        let firstRow = ("", [SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "Alert", subtitleText: "Get notified 30 minutes before to avoid a ticket.", parentVC: self, selector: "notificationSelectionValueChanged"),
+//            SettingsCell(switchValue: Settings.notificationTime() == 0, titleText: "Snow Removal", subtitleText: "Information about snow and street availability.")
+        ])
+        
+//        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
+//            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
+        let thirdRow = ("car_sharing".localizedString,
+            [SettingsCell(titleText: "Car2Go", signedIn: false, switchValue: !Settings.hideCar2Go(), parentVC: self, selector: "hideCar2GoValueChanged"),
+                SettingsCell(titleText: "Communauto", signedIn: false, switchValue: !Settings.hideCommunauto(), parentVC: self, selector: "hideCommunautoValueChanged"),
+                SettingsCell(titleText: "Automobile", signedIn: false, switchValue: !Settings.hideAutomobile(), parentVC: self, selector: "hideAutomobileValueChanged")])
+        
+        let fourthRow = ("general".localizedString, [SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, selector: "showSupport"),
+            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, selector: "showGettingStarted"),
+            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, selector: "showShareSheet"),
+            SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, selector: "sendToAppStore"),
+            SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, selector: "showFaq"),
+            SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, selector: "showTerms"),
+            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, parentVC: self, selector: "signOut")])
+
+        return [firstRow, thirdRow, fourthRow]
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return tableSource.count
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableSource[section].1.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+        switch settingsCell.cellType {
+            
+        case .Switch:
+            var cell = tableView.dequeueReusableCellWithIdentifier("switch") as? SettingsSwitchCell
+            if cell == nil {
+                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: "switch")
+            }
+            cell!.titleText = settingsCell.titleText
+            cell!.subtitleText = settingsCell.subtitleText
+            cell!.switchOn = settingsCell.switchValue ?? false
+            cell!.parentVC = settingsCell.parentVC
+            cell!.selector = settingsCell.selector
+            return cell!
+            
+        case .Segmented:
+            var cell = tableView.dequeueReusableCellWithIdentifier("segmented") as? SettingsSegmentedCell
+            if cell == nil {
+                cell = SettingsSegmentedCell(segments: settingsCell.segments, reuseIdentifier: "segmented", parentVC: settingsCell.parentVC, selector: settingsCell.selector)
+            }
+            cell!.titleText = settingsCell.titleText
+            cell!.selectedSegment = settingsCell.defaultSegment
+            return cell!
+            
+        case .Service, .ServiceSwitch:
+            var cell = tableView.dequeueReusableCellWithIdentifier("service") as? SettingsServiceSwitchCell
+            if cell == nil {
+                cell = SettingsServiceSwitchCell(style: .Default, reuseIdentifier: "service")
+            }
+            cell!.titleText = settingsCell.titleText
+            cell!.signedIn = settingsCell.signedIn
+            if let switchValue = settingsCell.switchValue {
+                cell!.shouldShowSwitch = true
+                cell!.switchValue = switchValue
+                cell!.parentVC = settingsCell.parentVC
+                cell!.selector = settingsCell.selector
+            } else {
+                cell!.shouldShowSwitch = false
+            }
+            cell!.shouldShowSwitch = settingsCell.cellType == SettingsTableViewCellType.ServiceSwitch
+
+            return cell!
+            
+        case .Basic:
+            var cell = tableView.dequeueReusableCellWithIdentifier("basic") as? SettingsBasicCell
+            if cell == nil {
+                cell = SettingsBasicCell(style: .Default, reuseIdentifier: "basic")
+            }
+            cell!.titleText = settingsCell.titleText
+            cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 3
+            return cell!
+        }
+    }
+    
+    
+    //MARK: UITableViewDelegate
+    
+    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return tableSource[indexPath.section].0 == "general".localizedString
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+        if settingsCell.parentVC != nil && settingsCell.selector != nil {
+            settingsCell.parentVC!.performSelector(Selector(settingsCell.selector!))
+        }
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 0: return BIG_CELL_HEIGHT
+//        case 1:
+//            switch indexPath.row {
+//            case 0: return BIG_CELL_HEIGHT
+//            case 1: return SMALL_CELL_HEIGHT
+//            default: return 0
+//            }
+        case 1: return SMALL_CELL_HEIGHT
+        case 2: return SMALL_CELL_HEIGHT
+        default: return 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 0: return 0
+        default: return BIG_CELL_HEIGHT
+        }
+
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let headerText = tableSource[section].0
+
+        if headerText == "" {
+            return nil
+        }
+        
+        let sectionHeader = UIView()
+        sectionHeader.backgroundColor = Styles.Colors.stone
+        let headerTitle = UILabel()
+        headerTitle.font = Styles.FontFaces.bold(12)
+        headerTitle.textColor = Styles.Colors.petrol2
+        headerTitle.text = headerText
+        sectionHeader.addSubview(headerTitle)
+        headerTitle.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(sectionHeader).offset(20)
+            make.right.equalTo(sectionHeader).offset(-20)
+            make.bottom.equalTo(sectionHeader).offset(-10)
+        }
+        return sectionHeader
+
+    }
+    
+    //MARK: scroll view delegate for the tableview
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+//        NSLog("scroll view content offset is (%f,%f)", scrollView.contentOffset.x, scrollView.contentOffset.y)
+        let yOffset = scrollView.contentOffset.y
+        topContainer.snp_remakeConstraints { (make) -> () in
+            make.top.equalTo(self.snp_topLayoutGuideBottom).offset(-yOffset)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(120+self.CITY_CONTAINER_HEIGHT)
+        }
+
     }
     
 }

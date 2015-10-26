@@ -50,7 +50,7 @@ class SearchOperations {
                             let totalResults = results1 + results2
                             dispatch_async(dispatch_get_main_queue(), {
                                 () -> Void in
-                                AnalyticsOperations.sendSearchQueryToAnalytics(input)
+                                AnalyticsOperations.sendSearchQueryToAnalytics(input, navigate: false)
                                 completion(results: totalResults)
                             })
                             

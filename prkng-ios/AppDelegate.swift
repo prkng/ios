@@ -186,14 +186,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         DDLoggerWrapper.logInfo(String(format: "Did Register for Remote Notifications with Device Token (%@), stringified: %@", deviceToken, deviceTokenString))
         
-        UserOperations.hello(deviceTokenString) { (completed) -> Void in
+        UserOperations.helloItsMe(deviceTokenString) { (completed) -> Void in
         }
 
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         DDLoggerWrapper.logError(String(format: "Did Fail to Register for Remote Notifications.\n Error: %@, %@", error, error.localizedDescription))
-        UserOperations.hello(nil) { (completed) -> Void in
+        UserOperations.helloItsMe(nil) { (completed) -> Void in
         }
     }
     

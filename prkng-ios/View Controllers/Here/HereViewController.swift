@@ -321,7 +321,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         }
         UIView.animateWithDuration(0.2,
             animations: { () -> Void in
-                prkModalViewController?.topParallaxView?.updateConstraints()
+                self.prkModalViewController?.topParallaxView?.updateConstraints()
             },
             completion: nil
         )

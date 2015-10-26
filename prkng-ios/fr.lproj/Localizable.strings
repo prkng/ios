@@ -9,6 +9,8 @@
 "park_now" = "SE STATIONNER";
 "take_the_tour" = "débuter";
 
+"sign_in" = "***Sign In";
+"sign_out" = "***Sign Out";
 "sign_up" = "S'INSCRIRE";
 "login_with" = "CONNEXION AVEC";
 "login_with_facebook" = "FACEBOOK";
@@ -170,10 +172,13 @@
 "available_in" = "Disponible à:";
 "about" = "à propos";
 "the_project" = "le projet";
-"terms_conditions" = "conditions d'utilisation";
-"faq" = "faq";
-"privacy_policy" = "politique de confidentialité";
-"share" = "partager";
+"terms_conditions" = "Conditions d'utilisation";
+"faq" = "FAQ";
+"privacy_policy" = "Politique de confidentialité";
+"share" = "Partager";
+"support" = "***Support";
+"getting_started_tour" = "***Getting Started Tour";
+"rate_us_message" = "***Like prkng? Rate us in the App Store";
 "the_project_part_one" = "prkng is a service to find easily a legal parking spot. we try our best to solve traffic issue and incomprehension in north american metropole. our service is powered by Yellow Pages Group Canada. more cities are coming soon.";
 "the_project_part_two" = "Information that we collect from you, when you use the service including your name, contact details (such as telephone and mobile numbers and e-mail address), and/or other personally identifiable information (the \"personal information\") are only use for internal diagnostics and our main partners.";
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec! https://prk.ng";
@@ -228,6 +233,7 @@
 
 "on-street" = "Sur-rue";
 "garages" = "Hors-rue";
+"general" = "***Généralités";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";

@@ -9,6 +9,8 @@
 "park_now" = "PARK NOW";
 "take_the_tour" = "start";
 
+"sign_in" = "Sign In";
+"sign_out" = "Sign Out";
 "sign_up" = "SIGN UP";
 "login_with" = "LOGIN WITH";
 "login_with_facebook" = "FACEBOOK";
@@ -168,10 +170,13 @@
 "available_in" = "Available in:";
 "about" = "about";
 "the_project" = "the project";
-"terms_conditions" = "terms of use";
-"faq" = "faq";
-"privacy_policy" = "privacy policy";
-"share" = "share";
+"terms_conditions" = "Terms of Use";
+"faq" = "FAQ";
+"privacy_policy" = "Privacy Policy";
+"share" = "Share";
+"support" = "Support";
+"getting_started_tour" = "Getting Started Tour";
+"rate_us_message" = "Like prkng? Rate us in the App Store";
 "the_project_part_one" = "prkng is a service that helps you easily find an authorized parking spot. We're trying our best to solve traffic issue and parking misunderstandings in North American cities. Our service is powered by Yellow Pages Group Canada. More cities coming soon!";
 "the_project_part_two" = "Information that we collect from you while you use prkng include your name, contact details (such as phone number and e-mail address), and/or other personally identifiable information (the \"personal information\") is only used for internal diagnostics and shared with our primary partners.";
 "prkng_share_copy" = "With prkng app, parking has never been so easy. Available in Montreal & Quebec!";
@@ -226,6 +231,7 @@
 
 "on-street" = "On-Street";
 "garages" = "Parking lots";
+"general" = "General";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";

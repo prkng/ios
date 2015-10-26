@@ -14,10 +14,14 @@ class AnalyticsOperations {
     
     private var lastUsedCoordinate: CLLocationCoordinate2D?
     
-    class func sendSearchQueryToAnalytics(query: String) {
+    class func sendSearchQueryToAnalytics(query: String, navigate: Bool) {
+        
+        if query == "" {
+            return
+        }
         
         let url = APIUtility.APIConstants.rootURLString + "analytics/search"
-        let params = ["query" : query]
+        let params = ["query": query, "navigate": (navigate ? "true" : "false") ]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in

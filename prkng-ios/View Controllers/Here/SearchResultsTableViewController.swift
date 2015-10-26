@@ -152,7 +152,7 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        AnalyticsOperations.sendSearchQueryToAnalytics(searchResultValues[indexPath.row].title!)
+        AnalyticsOperations.sendSearchQueryToAnalytics(searchResultValues[indexPath.row].title!, navigate: false)
         delegate?.didSelectSearchResult(searchResultValues[indexPath.row])
     }
 

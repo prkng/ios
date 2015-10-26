@@ -16,11 +16,15 @@ class CarSharingOperations {
         
         let radiusStr = NSString(format: "%.0f", radius)
         
+        let companies: [String?] = [!Settings.hideCar2Go() ? "car2go" : nil, !Settings.hideCommunauto() ? "communauto" : nil, !Settings.hideAutomobile() ? "auto-mobile" : nil]
+        let companiesString = Array.filterNils(companies).joinWithSeparator(",")
+        
         let params = [
             "latitude": location.latitude,
             "longitude": location.longitude,
             "radius" : radiusStr,
             "permit" : "all",
+            "company" : companiesString
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
@@ -59,11 +63,15 @@ class CarSharingOperations {
         
         let radiusStr = NSString(format: "%.0f", radius)
         
+        let companies: [String?] = [!Settings.hideCar2Go() ? "car2go" : nil, !Settings.hideCommunauto() ? "communauto" : nil, !Settings.hideAutomobile() ? "auto-mobile" : nil]
+        let companiesString = Array.filterNils(companies).joinWithSeparator(",")
+
         let params = [
             "latitude": location.latitude,
             "longitude": location.longitude,
             "radius" : radiusStr,
             "permit" : "all",
+            "company" : companiesString
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {

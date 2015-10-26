@@ -344,6 +344,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         if let userInfo: [String:AnyObject] = annotation.userInfo as? [String:AnyObject] {
             if let annotationType = userInfo["type"] as? String {
                 if annotationType == "searchResult" {
+                    AnalyticsOperations.sendSearchQueryToAnalytics(annotation.title, navigate: true)
                     DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
                 }
             }

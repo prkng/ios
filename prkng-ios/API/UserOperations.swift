@@ -209,7 +209,7 @@ struct UserOperations {
         
     }
     
-    static func hello(deviceTokenString: String?, completion : ((completed : Bool) -> Void)) {
+    static func helloItsMe(deviceTokenString: String?, completion : ((completed : Bool) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "hello"
         

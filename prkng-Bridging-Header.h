@@ -28,6 +28,8 @@
 #import "DDLoggerWrapper.h"
 #import "GoogleAnalytics/GAI.h"
 #import "GoogleAnalytics/GAIDictionaryBuilder.h"
+#import "SevenSwitch/SevenSwitch.h"
+#import "DVSwitch.h"
 //#import "MapboxGL.h"
 #import "KMLParser.h"
 #import "GeoJsonParser.h"

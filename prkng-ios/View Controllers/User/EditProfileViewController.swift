@@ -16,7 +16,6 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     let nameTextField = ViewFactory.formTextField()
     let editProfileLabel = ViewFactory.formLabel()
     var inputForm : PRKInputForm
-    let logoutButton = ViewFactory.transparentRoundedButton()
     let saveButton = ViewFactory.hugeButton()
     let backButton = ViewFactory.hugeButton()
     
@@ -26,8 +25,8 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     
     var selectedImage : UIImage?
     
-    //2 bottom buttons, 20 point space, 26 point hight logout button, tabbar
-    private var BOTTOM_VIEW_HEIGHT = 26 + 20 + 2*Styles.Sizes.hugeButtonHeight //+ Styles.Sizes.tabbarHeight - Styles.Sizes.statusBarHeight
+    //2 bottom buttons, tabbar
+    private var BOTTOM_VIEW_HEIGHT = 2*Styles.Sizes.hugeButtonHeight //+ Styles.Sizes.tabbarHeight - Styles.Sizes.statusBarHeight
 
     private var nameText: String {
         return inputForm.textForFieldNamed("name".localizedString)
@@ -115,10 +114,6 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         loginMessageLabel.textAlignment = .Center
         profileContainer.addSubview(loginMessageLabel)
         
-        logoutButton.setTitle("logout".localizedString.uppercaseString, forState: .Normal)
-        logoutButton.addTarget(self, action: "logoutButtonTapped:", forControlEvents: .TouchUpInside)
-        view.addSubview(logoutButton)
-        
         saveButton.setTitle("save".localizedString, forState: .Normal)
         saveButton.addTarget(self, action: "saveButtonTapped:", forControlEvents: .TouchUpInside)
         view.addSubview(saveButton)
@@ -197,12 +192,6 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             make.height.equalTo(Styles.Sizes.hugeButtonHeight)
         }
 
-        logoutButton.snp_makeConstraints { (make) -> () in
-            make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(120, 26))
-            make.bottom.equalTo(self.saveButton.snp_top).offset(-20)
-        }
-        
     }
     
     func updateValues() {
@@ -232,11 +221,6 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
             })
         }
         
-    }
-    
-    func logoutButtonTapped(sender : UIButton) {
-        SVProgressHUD.show()
-        Settings.logout()
     }
     
     func saveButtonTapped(sender : UIButton) {

@@ -85,7 +85,7 @@ class Lot: NSObject, DetailObject {
     private var cachedMainRate: Float = -1
     
     func mainRate(preferreCached preferreCached: Bool = false) -> Float {
-        
+                
         if preferreCached && cachedMainRate > -1 {
             return cachedMainRate
         }
@@ -96,15 +96,23 @@ class Lot: NSObject, DetailObject {
         let maxMax: Float = currentOrNextOpenPeriod?.maxRate ?? 0
         let maxDaily: Float = currentOrNextOpenPeriod?.dailyRate ?? 0
         
-        if maxMax > 0 {
-            cachedMainRate = maxMax
-        } else if maxDaily > 0 {
-            cachedMainRate = maxDaily
-        } else if maxHourly > 0 {
-            let hours = ((period?.endHour ?? 0) - (period?.startHour ?? 0)) / 3600
-            cachedMainRate = maxHourly * Float(hours)
+        if Settings.lotMainRateIsHourly() {
+            
+            cachedMainRate = maxHourly
+
         } else {
-            cachedMainRate = 0
+            
+            if maxMax > 0 {
+                cachedMainRate = maxMax
+            } else if maxDaily > 0 {
+                cachedMainRate = maxDaily
+            } else if maxHourly > 0 {
+                let hours = ((period?.endHour ?? 0) - (period?.startHour ?? 0)) / 3600
+                cachedMainRate = maxHourly * Float(hours)
+            } else {
+                cachedMainRate = 0
+            }
+
         }
         
         return cachedMainRate

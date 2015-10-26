@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstUseViewController: AbstractViewController {
+class FirstUseViewController: AbstractViewController, TutorialViewControllerDelegate {
 
     var backgroundImageView : UIImageView
     var logoView : UIImageView
@@ -64,7 +64,7 @@ class FirstUseViewController: AbstractViewController {
         view.addSubview(logoView)
         
         parkNowButton.setTitle(NSLocalizedString("park_now", comment : ""), forState: UIControlState.Normal)
-        parkNowButton.addTarget(self, action: "parkNowButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        parkNowButton.addTarget(self, action: "didFinishTutorial", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(parkNowButton)
         parkNowButton.hidden = true
         
@@ -101,23 +101,21 @@ class FirstUseViewController: AbstractViewController {
     }
     
     
-    
-    func parkNowButtonTapped() {
+    func didFinishAndDismissTutorial() {
         self.presentViewController(LoginViewController(), animated: true) { () -> Void in
             Settings.setTutorialPassed(true)
         }
     }
     
-    
     func tourButtonTapped() {
         
         if Settings.tutorialPassed() {
             
-            self.parkNowButtonTapped()
+            self.didFinishAndDismissTutorial()
             
         } else {
             let tutorial = TutorialViewController()
-            tutorial.parent = self
+            tutorial.delegate = self
             
             self.presentViewController(tutorial, animated: true) { () -> Void in
                 

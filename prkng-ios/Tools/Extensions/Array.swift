@@ -29,5 +29,9 @@ extension Array {
             }
         }
     }
+    
+    static func filterNils(array: [Element?]) -> [Element] {
+        return array.filter { $0 != nil }.map { $0! }
+    }
 
 }
