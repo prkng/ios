@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		10CD02B82A2693CE54C5BFA9 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */; };
 		3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */; };
 		3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */; };
 		3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC51B2769FF00872667 /* GLKit.framework */; };
@@ -96,7 +97,6 @@
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
 		3EFF0A601BD16BFF00D6DBB8 /* CarSharingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */; };
-		834EE6C7AA0F31AC7EF11445 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */; };
 		BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
 		BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055961ACF100500413F16 /* ScheduleItemView.swift */; };
@@ -200,7 +200,6 @@
 
 /* Begin PBXFileReference section */
 		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
-		33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesModalViewController.swift; sourceTree = "<group>"; };
 		3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3E0FDAC51B2769FF00872667 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -297,6 +296,7 @@
 		3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKVerticalGestureRecognizer.swift; sourceTree = "<group>"; };
 		3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarSharingOperations.swift; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
+		A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		BF1055961ACF100500413F16 /* ScheduleItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleItemView.swift; sourceTree = "<group>"; };
@@ -425,7 +425,7 @@
 				BFDDF10A1B03612600E8C59E /* AddressBook.framework in Frameworks */,
 				BF2891E61AFF9DFD0041B04C /* FBSDKCoreKit.framework in Frameworks */,
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
-				834EE6C7AA0F31AC7EF11445 /* libPods-prkng-ios.a in Frameworks */,
+				10CD02B82A2693CE54C5BFA9 /* libPods-prkng-ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,12 +472,12 @@
 				BFA8D1701A83D364005F4054 /* libsqlite3.dylib */,
 				BFA8D16E1A83D356005F4054 /* QuartzCore.framework */,
 				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
-				33AD9A399EB9D81DE30C9BCF /* libPods-prkng-ios.a */,
 				BF2891E71AFF9ED60041B04C /* FBSDKLoginKit.framework */,
 				BF2891E51AFF9DFD0041B04C /* FBSDKCoreKit.framework */,
 				3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */,
 				3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */,
 				3E7499D21BB9AA26007C78AC /* GooglePlus.framework */,
+				A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

@@ -24,6 +24,19 @@ class CarShareLot: NSObject {
         self.carsCapacity = json["properties"]["capacity"].intValue
     }
     
+    var reuseIdentifier: String {
+        
+        var anchorImageName = "carsharing_lot_pin_anchor"
+        switch self.carSharingType {
+        case .Car2Go:
+            anchorImageName += "_blue"
+        default:
+            anchorImageName += "_green"
+        }
+        
+        return anchorImageName + String(self.carsAvailable)
+    }
+    
     var mapPinImage: UIImage {
         
         let roundPImage = UIImage(named: "carsharing_lot_pin_P")! //14pts by 14pts
@@ -54,7 +67,7 @@ class CarShareLot: NSObject {
         let bubbleHeight: CGFloat = 27
         let bubbleRect = CGRect(x: 0, y: 0, width: bubbleWidth, height: bubbleHeight)
         
-        let totalSize = CGSize(width: bubbleWidth, height: bubbleHeight + 4)
+        let totalSize = CGSize(width: round(bubbleWidth), height: round(bubbleHeight + 4))
         
         UIGraphicsBeginImageContextWithOptions(bubbleRect.size, false, Settings.screenScale)
         //set size and shape (rounded!)

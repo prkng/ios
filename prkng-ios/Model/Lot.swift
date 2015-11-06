@@ -261,15 +261,24 @@ class Lot: NSObject, DetailObject {
     
     //MARK: Other...
     
-    func markerImageNamed(imageName: String) -> UIImage {
-        var markerImage = UIImage(named: imageName)
+    private var currencyString: NSAttributedString {
         if self.bottomLeftPrimaryText != nil && self.bottomLeftPrimaryText!.string != "$0" {
             let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
             let numberString = NSMutableAttributedString(string: String(Int(self.mainRate())), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
             currencyString.appendAttributedString(numberString)
-            markerImage = markerImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
+            return currencyString
         }
+        return NSAttributedString(string: "")
+    }
+    
+    func markerImageNamed(imageName: String) -> UIImage {
+        var markerImage = UIImage(named: imageName)
+        markerImage = markerImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
         return markerImage!
+    }
+    
+    func markerReuseIdentifierWithImageNamed(imageName: String) -> String {
+        return imageName + String(currencyString)
     }
     
     //MARK- Hashable

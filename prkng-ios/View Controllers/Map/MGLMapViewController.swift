@@ -12,770 +12,1122 @@ import Foundation
 /* to avoid build errors but to keep external annotation code in other files, 
 we define some classes here. These should be uncommented if we import mapbox gl
 */
-protocol MGLPolyline: MGLAnnotation {
-    
-}
-
-protocol MGLAnnotation: NSObjectProtocol {
-    
-}
-
-class MGLMapViewController: MapViewController {
-    
-}
-
-//class MGLMapViewController: MapViewController, MGLMapViewDelegate {
-//    
-//    let mapSource = "arnaudspuhler.l54pj66f"
-//    
-//    var mapView: MGLMapView
-//    
-//    var lastMapZoom: Double
-//    var lastUserLocation: CLLocation
-//    var lastMapCenterCoordinate: CLLocationCoordinate2D
-//    var spotIdentifiersDrawnOnMap: Array<String>
-//    var lineAnnotations: Array<MGLLineParkingSpot>
-//    var centerButtonAnnotations: Array<ButtonParkingSpot>
-//    var searchAnnotations: Array<MKAnnotation>
-//    var selectedSpot: ParkingSpot?
-//    var isSelecting: Bool
-//    var radius : Double
-//    var updateInProgress : Bool
-//    
-//    var trackUserButton : UIButton
-//        
-//    private(set) var MOVE_DELTA_IN_METERS : Double
-//    
-//    convenience init() {
-//        self.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
-//        
-//        mapView = MGLMapView(frame: CGRectMake(0, 0, 100, 100))
-//        
-//        mapView.userTrackingMode = MGLUserTrackingMode.Follow
-//        
-//        mapView.tintColor = Styles.Colors.red2
-//        lastMapZoom = 0
-//        lastUserLocation = CLLocation(latitude: 0, longitude: 0)
-//        lastMapCenterCoordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-//        isSelecting = false
-//        spotIdentifiersDrawnOnMap = []
-//        lineAnnotations = []
-//        centerButtonAnnotations = []
-//        searchAnnotations = []
-//        radius = 300
-//        updateInProgress = false
-//        
-//        trackUserButton = UIButton()
-//        
-//        MOVE_DELTA_IN_METERS = 100
-//        
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//    
-//    required init(coder aDecoder: NSCoder) {
-//        fatalError("NSCoding not supported")
-//    }
-//    
-//    override func loadView() {
-//        view = UIView()
-//        view.addSubview(mapView)
-//        mapView.delegate = self
-//        
-//        addCityOverlays()
-//
-//        trackUserButton.setImage(UIImage(named: "track_user"), forState: UIControlState.Normal)
-//        trackUserButton.addTarget(self, action: "trackUserButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-//        view.addSubview(trackUserButton)
-//        
-//        mapView.snp_makeConstraints {  (make) -> () in
-//            make.edges.equalTo(self.view)
-//        }
-//        
-//        showTrackUserButton()
-//
-//    }
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        self.mapView.userTrackingMode = MGLUserTrackingMode.Follow
-//        self.screenName = "Map - General Apple View"
-//    }
-//    
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-//            Int64(1.5 * Double(NSEC_PER_SEC)))
-//        dispatch_after(delayTime, dispatch_get_main_queue()) {
-//            self.canShowMapMessage = true
-//            self.updateAnnotations()
-//        }
-//
-//    }
-//    
-//    override func showForFirstTime() {
-//        if !wasShown {
-//            
-//            if let checkIn = Settings.checkedInSpot() {
-//                let coordinate = checkIn.buttonLocation.coordinate
-//                self.mapView.userTrackingMode = MGLUserTrackingMode.None
-//                goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
-//            }
-//            
-//            wasShown = true
-//        }
-//    }
-//
-//    
-//    func updateMapCenterIfNecessary () {
-//        
-//    }
-//
-//    func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
-//        if let polygonOverlay = annotation as? MGLPolygon {
-//            return 0.7
-//        }
-//
-//        return 1
-//    
-//    }
-//    
-//    func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
-//        
-//        if let lineOverlay = annotation as? MGLLineParkingSpot {
-//            
-//            let userInfo = lineOverlay.userInfo
-//            let selected = userInfo["selected"] as! Bool
-//            let spot = userInfo["spot"] as! ParkingSpot
-//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
-//            
-//            if selected {
-//                return Styles.Colors.red2
-//            } else if isCurrentlyPaidSpot {
-//                return Styles.Colors.curry
-//            } else {
-//                return Styles.Colors.petrol2
-//            }
-//            
-//        }
-//        
-//        if let polygonOverlay = annotation as? MGLPolygon {
-//            return Styles.Colors.red1
-//        }
-//        
-//        return UIColor.blackColor()
-//    }
-//    
-//    func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
-//            return Styles.Colors.beige1//.colorWithAlphaComponent(0.7)
-//    }
-//    
-//    func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
-//        if let lineOverlay = annotation as? MGLLineParkingSpot {
-//            
-//            if mapView.zoomLevel >= 15.0 && mapView.zoomLevel <= 16.0 {
-//                return 1.6
-//            } else {
-//                return 3.4
-//            }
-//        }
-//        
-//        return 1.0
-//    }
-//    
-//    func mapView(mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-//        if annotation is SearchResult
-//            || annotation is PreviousCheckinSpot {
-//                return true
-//        }
-//        return false
-//    }
-//    
-//    func mapView(mapView: MGLMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-////    func mapView(mapView: MGLMapView!, viewForOverlay overlay: MKOverlay!) -> MKOverlayView! {
-//        if let lineOverlay = overlay as? LineParkingSpot {
-//
-//            let userInfo = lineOverlay.userInfo
-//            let selected = userInfo["selected"] as! Bool
-//            let spot = userInfo["spot"] as! ParkingSpot
-//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
-//            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
-//            
-//            var coordinates = spot.line.coordinates2D
-//            
-//            var shape = MKPolylineRenderer(polyline: lineOverlay)
-////            var shape = MKPolylineView(overlay: polyline)
-//            shape.alpha = 0.5
-//            if selected {
-//                shape.strokeColor = Styles.Colors.red2
-//            } else if isCurrentlyPaidSpot {
-//                shape.strokeColor = Styles.Colors.curry
-//            } else {
-//                shape.strokeColor = Styles.Colors.petrol2
-//            }
-//            
-//            if mapView.zoomLevel >= 15.0 && mapView.zoomLevel <= 16.0 {
-//                shape.lineWidth = 1.6
-//            } else {
-//                shape.lineWidth = 3.4
-//            }
-//            
-//            
-//            if shouldAddAnimation {
-////                addScaleAnimationtoView(shape.layer)
-//                spotIdentifiersDrawnOnMap.append(spot.identifier)
-//            }
-//            
-//            return shape
-//            
-//        } else if let polygon = overlay as? MKPolygon {
-//            var shape = MKPolygonRenderer(polygon: polygon)
-//            shape.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
-//            shape.strokeColor = Styles.Colors.red1
-//            shape.lineWidth = 4.0
-//            return shape
-//        }
-//        
-//        return nil
-//    }
-//
-//    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
-//        
-//        if let buttonAnnotation = annotation as? ButtonParkingSpot {
-//            var view = ButtonParkingSpotView(mapboxGLAnnotation: buttonAnnotation, reuseIdentifier: "button", mbxZoomLevel: mapView.zoomLevel)
-//            return view.annotationImage
-//        } else if let searchResultAnnotation = annotation as? SearchResult {
-//            var searchResultImage = MGLAnnotationImage(image: UIImage(named: "pin_pointer_result")!, reuseIdentifier: "searchresult")
-//            //note: this can show a callout
-//            return searchResultImage
-//        } else if let previousCheckinAnnotation = annotation as? PreviousCheckinSpot {
-//            var previousCheckinImage = MGLAnnotationImage(image: UIImage(named: "pin_round_p")!, reuseIdentifier: "previouscheckin")
-//            //note: this can show a callout
-//            return previousCheckinImage
-//        }
-//        
-//        return nil
-//    }
-//        
-//    func mapView(mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
-//        
-//        if (mapView.userTrackingMode == MGLUserTrackingMode.Follow ) {
-//            self.hideTrackUserButton()
-//        } else {
-//            toggleTrackUserButton(!(delegate != nil && !delegate!.shouldShowUserTrackingButton()))
-//            self.mapView.userTrackingMode = MGLUserTrackingMode.None
-//        }
-//        
-//    }
-//    
-//    func afterMapMove(map: MGLMapView!, byUser wasUserAction: Bool) {
-//
-//    }
-//    
-//    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-//
-//        //the following used to happen after a zoom
-//        self.radius = (20.0 - mapView.zoomLevel) * 100
-//        
-//        if(mapView.zoomLevel < 15.0) {
-//            self.radius = 0
-//        }
-//        
-//        if (abs(self.lastMapZoom - mapView.zoomLevel) >= 1) {
-//            self.spotIdentifiersDrawnOnMap = []
-//        }
-//        
-//        if self.lastMapZoom != mapView.zoomLevel {
-//            self.updateAnnotations()
-//            self.lastMapZoom = mapView.zoomLevel
-//            return
-//        }
-//        
-//        //the following used to happen after a map move
-//        removeSelectedAnnotationIfExists()
-//        
-//        //reload if the map has moved sufficiently...
-//        let lastMapCenterLocation = CLLocation(latitude: self.lastMapCenterCoordinate.latitude, longitude: self.lastMapCenterCoordinate.longitude)
-//        let newMapCenterLocation = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
-//        let differenceInMeters = lastMapCenterLocation.distanceFromLocation(newMapCenterLocation)
-//        //        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
-//        if differenceInMeters > self.MOVE_DELTA_IN_METERS {
-//            self.updateAnnotations()
-//            self.lastMapCenterCoordinate = mapView.centerCoordinate
-//        }
-//        
-//        self.delegate?.mapDidDismissSelection()
-//        
-//    }
-//    
-//    func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
-//        
-//        if var button = annotation as? ButtonParkingSpot {
-//            removeSelectedAnnotationIfExists()
-//            isSelecting = true
-//            var annotationsToUpdate = self.findAnnotations(button.identifier)
-//            mapView.removeAnnotations(annotationsToUpdate)
-//            addSpotAnnotation(button, selected: true)
-//            selectedSpot = button
-//            self.delegate?.didSelectSpot(selectedSpot!)
-//        }
-//
-//    }
-//
-//    func mapView(mapView: MGLMapView, didDeselectAnnotation annotation: MGLAnnotation) {
-//
-//        if var button = annotation as? ButtonParkingSpot {
-//            if !isSelecting {
-//                removeSelectedAnnotationIfExists()
-//                addSpotAnnotation(button, selected: false)
-//                self.delegate?.mapDidDismissSelection()
-//            }
-//            isSelecting = false
-//        }
-//
-//    }
-//    
-//    func mapView(mapView: MGLMapView, didUpdateUserLocation userLocation: MGLUserLocation?) {
-//        //this will run too often, so only run it if we've changed by any significant amount
-//        if let userCLLocation = userLocation?.location {
-//            let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
-//            
-//            if differenceInMeters > MOVE_DELTA_IN_METERS/10
-//                && mapView.userTrackingMode == MGLUserTrackingMode.Follow {
-//                updateAnnotations()
-//                lastUserLocation = userCLLocation
-//            }
-//        }
-//    }
-//    
-//
-//    
-////    func singleTapOnMap(map: MGLMapView!, at point: CGPoint) {
-////        var minimumDistance = CGFloat(Float.infinity)
-////        var closestAnnotation : MKAnnotation? = nil
-////        //loop through the annotations to see if we touched a line or a button
-////        for annotation in lineAnnotations {
-////        }
-////        for annotation: MKAnnotation in map.annotations as! [MKAnnotation] {
-////            
-////            if (annotation == mapView.userLocation) {
-////                continue
-////            }
-////            
-////            var userInfo: [String:AnyObject]? = annotation.userInfo as? [String:AnyObject]
-////            var annotationType = userInfo!["type"] as! String
-////            
-////            if (annotationType == "button") {
-////                var annotationPoint = map.coordinateToPixel(annotation.coordinate)
-////                let xDist = (annotationPoint.x - point.x);
-////                let yDist = (annotationPoint.y - point.y);
-////                let distance = sqrt((xDist * xDist) + (yDist * yDist));
-////                
-////                if (distance < minimumDistance) {
-////                    minimumDistance = distance
-////                    closestAnnotation = annotation
-////                }
-////            }
-////        }
-////        
-////        if (closestAnnotation != nil && minimumDistance < 60) {
-////            map.selectAnnotation(closestAnnotation, animated: true)
-////        }
-////
-////    }
-//    
-//    
-//    // MARK: Helper Methods
-//    
-//    override func removeSelectedAnnotationIfExists() {
-//        if (selectedSpot != nil) {
-//            NSLog("called removeSelectedAnnotationIfExists, id is %@", selectedSpot!.identifier)
-//            let annotationsToRemove = findAnnotations(selectedSpot!.identifier)
-//            self.mapView.removeAnnotations(annotationsToRemove)
-//            addSpotAnnotation(selectedSpot!, selected: false)
-//            selectedSpot = nil
-//        }
-//    }
-//
-//    func trackUserButtonTapped () {
-//        self.mapView.userTrackingMode = MGLUserTrackingMode.Follow
-//        hideTrackUserButton()
-//    }
-//    
-//    
-//    func toggleTrackUserButton(shouldShowButton: Bool) {
-//        if (shouldShowButton) {
-//            showTrackUserButton()
-//        } else {
-//            hideTrackUserButton()
-//        }
-//    }
-//    
-//    func hideTrackUserButton() {
-//        
-//        trackUserButton.snp_updateConstraints{ (make) -> () in
-//            make.size.equalTo(CGSizeMake(0, 0))
-//            make.centerX.equalTo(self.view).multipliedBy(0.33)
-//            make.bottom.equalTo(self.view).offset(-48)
-//        }
-//        animateTrackUserButton()
-//    }
-//    
-//    func showTrackUserButton() {
-//        
-//        trackUserButton.snp_updateConstraints{ (make) -> () in
-//            make.size.equalTo(CGSizeMake(36, 36))
-//            make.centerX.equalTo(self.view).multipliedBy(0.33)
-//            make.bottom.equalTo(self.view).offset(-30)
-//        }
-//        animateTrackUserButton()
-//    }
-//    
-//    func animateTrackUserButton() {
-//        self.trackUserButton.setNeedsLayout()
-//        UIView.animateWithDuration(0.2,
-//            delay: 0,
-//            options: UIViewAnimationOptions.CurveEaseInOut,
-//            animations: { () -> Void in
-//                self.trackUserButton.layoutIfNeeded()
-//            },
-//            completion: { (completed:Bool) -> Void in
-//        })
-//    }
-//    
-//    override func updateAnnotations() {
-//        
-//        if (updateInProgress) {
-//            println("Update already in progress, cancelled!")
-//            return
-//        }
-//        
-//        updateInProgress = true
-//        
-//        removeMyCarMarker()
-//        addMyCarMarker()
-//        
-//        //only show the spinner if this map is active
-//        if let tabController = self.parentViewController as? TabController {
-//            if tabController.activeTab() == PrkTab.Here {
-////                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-////                SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
-//            }
-//        }
-//        
-//        if isFarAwayFromAvailableCities(mapView.centerCoordinate) {
-//            
-//            if canShowMapMessage {
-//                self.delegate?.mapDidMoveFarAwayFromAvailableCities()
-//            }
-//            
-//            updateInProgress = false
-//            
-//        } else if (mapView.zoomLevel >= 15.0) {
-//            
-//            self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true)
-//
-//            var checkinTime = searchCheckinDate
-//            var duration = searchDuration
-//            
-//            if (checkinTime == nil) {
-//                checkinTime = NSDate()
-//            }
-//            
-//            if (duration == nil) {
-//                duration = self.delegate?.activeFilterDuration()
-//            }
-//            
-//            if duration != nil {
-//                NSLog("updating with duration: %f",duration!)
-//            } else {
-//                NSLog("updating with duration: nil")
-//            }
-//            
-//            let permit = self.delegate?.activeFilterPermit() ?? false
-//
-//            SpotOperations.findSpots(self.mapView.centerCoordinate, radius: Float(radius), duration: duration, checkinTime: checkinTime!, permit: permit, completion:
-//                { (spots, underMaintenance, outsideServiceArea, error) -> Void in
-//                    
-//                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-//                        //only show the spinner if this map is active
-//                        if let tabController = self.parentViewController as? TabController {
-//                            if tabController.activeTab() == PrkTab.Here {
-//                                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-//                                SVProgressHUD.showWithMaskType(SVProgressHUDMaskType.Clear)
-//                                
-//                                if self.canShowMapMessage {
-//                                    if underMaintenance {
-//                                        self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
-//                                    } else if error {
-//                                        self.delegate?.showMapMessage("map_message_error".localizedString)
-//                                    } else if outsideServiceArea {
-//                                        self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
-//                                    } else if spots.count == 0 {
-//                                        self.delegate?.showMapMessage("map_message_no_spots".localizedString)
-//                                    } else {
-//                                        self.delegate?.showMapMessage(nil)
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    })
-//
-//                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
-//                        
-//                        //
-//                        // spots that have left the screen need to be re-animated next time
-//                        // therefore, we remove spots that have not been fetched this time around
-//                        //
-//                        var newSpotIDs = spots.map{(var spot: ParkingSpot) -> String in spot.identifier}
-//                        self.spotIdentifiersDrawnOnMap = self.spotIdentifiersDrawnOnMap.filter({ (var spotID: String) -> Bool in
-//                            contains(newSpotIDs, spotID)
-//                        })
-//                        
-//                        self.updateSpotAnnotations(spots)
-//                        
-//                        self.updateInProgress = false
-//                        
-//                        SVProgressHUD.dismiss()
-//                        
-//                    })
-//
-//                    
-//            })
-//            
-//        } else {
-//            
-//            mapView.removeAnnotations(lineAnnotations)
-//            lineAnnotations = []
-//            
-//            mapView.removeAnnotations(centerButtonAnnotations)
-//            centerButtonAnnotations = []
-//            
-//            updateInProgress = false
-//            
-//            SVProgressHUD.dismiss()
-//            
-//            self.delegate?.showMapMessage("map_message_too_zoomed_out".localizedString)
-//
-//        }
-//        
-//        
-//    }
-//    
-//    
-//    func updateSpotAnnotations(spots: [ParkingSpot]) {
-//
-//        var tempLineAnnotations = [MGLLineParkingSpot]()
-//        var tempButtonAnnotations = [ButtonParkingSpot]()
-//        let zoomLevel = mapView.zoomLevel
-//        
-//        for spot in spots {
-//            let selected = (self.selectedSpot != nil && self.selectedSpot?.identifier == spot.identifier)
-//            var annotations = self.annotationForSpot(spot, selected: selected, addToMapView: false)
-//            tempLineAnnotations.append(annotations.0)
-//            if let button = annotations.1 {
-//                tempButtonAnnotations.append(button)
-//            }
-//
-//        }
-//
-//        dispatch_async(dispatch_get_main_queue(), {
-//            
-//            self.removeLinesAndButtons()
-//            
-//            self.lineAnnotations = tempLineAnnotations
-//            self.centerButtonAnnotations = tempButtonAnnotations
-//
-//            self.mapView.addAnnotations(self.lineAnnotations)
-//            self.mapView.addAnnotations(self.centerButtonAnnotations)
-//            
-//            SVProgressHUD.dismiss()
-//            self.updateInProgress = false
-//
-//        })
-//    }
-//
-//    func addSpotAnnotation(spot: ParkingSpot, selected: Bool) {
-//        annotationForSpot(spot, selected: selected, addToMapView: true)
-//    }
-//
-//    func annotationForSpot(spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (MGLLineParkingSpot, ButtonParkingSpot?) {
-//        
-//        var annotation: MGLLineParkingSpot
-//        var centerButton: ButtonParkingSpot?
-//        
-//        let shouldAddAnimation = !contains(self.spotIdentifiersDrawnOnMap, spot.identifier)
-//        
-//        var userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
-//        var coordinates = spot.line.coordinates2D
-//        
-//        //create the proper polyline
-//        annotation = MGLLineParkingSpot(coordinates: &coordinates, count: UInt(coordinates.count))
-//        spot.userInfo = userInfo
-//        annotation.parkingSpot = spot
-//        
-//        if addToMapView {
-//            self.mapView.addAnnotation(annotation)
-//            lineAnnotations.append(annotation)
-//        }
-//
-//        if (mapView.zoomLevel >= 17.0) {
-//            centerButton = spot.buttonSpot
-//            centerButton!.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
-//            
-//            if addToMapView {
-//                self.mapView.addAnnotation(centerButton!)
-//                centerButtonAnnotations.append(centerButton!)
-//            }
-//
-//        }
-//        
-//        return (annotation, centerButton)
-//    }
-//    
-//    func addSearchResultMarker(searchResult: SearchResult) {
-//        
-////        var annotation: MKAnnotation = MKAnnotation(mapView: self.mapView, coordinate: searchResult.location.coordinate, andTitle: searchResult.title)
-//        searchResult.userInfo = ["type": "searchResult", "details": searchResult]
-//        mapView.addAnnotation(searchResult)
-//        searchAnnotations.append(searchResult)
-//    }
-//    
-//    
-//    func findAnnotations(identifier: String) -> [AnyObject] {
-//        
-//        var foundAnnotations = [AnyObject]()
-//        
-//        for annotation in lineAnnotations {
-//            
-//            if annotation.title == identifier {
-//                foundAnnotations.append(annotation)
-//            }
-//        }
-//        
-//        
-//        for annotation in centerButtonAnnotations {
-//            
-//            var userData: [String:AnyObject]? = (annotation as ButtonParkingSpot).userInfo as? [String:AnyObject]
-//            var spot = userData!["spot"] as! ParkingSpot
-//            
-//            if spot.identifier == identifier {
-//                foundAnnotations.append(annotation)
-//            }
-//        }
-//        
-//        return foundAnnotations
-//    }
-//
-//    
-//    
-//    override func addCityOverlaysCallback(polygons: [MKPolygon]) {
-//        
-//        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
-//        let invertedPolygon = MKPolygon.invertPolygons(polygons)
-////        mapView.addAnnotation(invertedPolygon.toMGLPolygon())
-//        mapView.addAnnotations(MKPolygon.toMGLPolygons(interiorPolygons))
-//    }
-//    
-//    // MARK: SpotDetailViewDelegate
-//    
-//    override func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) {
-//        
-//        
-//        if (results.count == 0) {
-//            let alert = UIAlertView()
-//            alert.title = "No results found"
-//            alert.message = "We couldn't find anything matching the criteria"
-//            alert.addButtonWithTitle("Close")
-//            alert.show()
-//            return
-//        }
-//        
-//        mapView.setCenterCoordinate(results[0].location.coordinate, zoomLevel: 17, animated: true)
-//        
-//        searchAnnotations = []
-//
-//        lineAnnotations = []
-//        centerButtonAnnotations = []
-//        removeAllAnnotations()
-//        
-//        for result in results {
-//            addSearchResultMarker(result)
-//        }
-//        
-//        self.searchCheckinDate = checkinTime
-//        
-//        updateAnnotations()
-//        
-//    }
-//    
-//    override func clearSearchResults() {
-//        mapView.removeAnnotations(self.searchAnnotations)
-//    }
-//    
-//    override func showUserLocation(shouldShow: Bool) {
-//        self.mapView.showsUserLocation = shouldShow
-//    }
-//    
-//    override func trackUser(shouldTrack: Bool) {
-//        self.mapView.userTrackingMode = shouldTrack ? MGLUserTrackingMode.Follow : MGLUserTrackingMode.None
-//        
-//    }
-//    
-//    override func addMyCarMarker() {
-//        if let spot = Settings.checkedInSpot() {
-//            var annotation = PreviousCheckinSpot(spot: spot)
-////            annotation.icon = UIImage(named: "pin_round_p")
-////            annotation.groundAnchor = CGPoint(x: 0.5, y: 0.5)
-////            annotation.tappable = false
-////            annotation.zIndex = 10
-//            myCarAnnotation = annotation
-//            self.mapView.addAnnotation(annotation)
-//        }
-//    }
-//    
-//    override func removeMyCarMarker() {
-//        if myCarAnnotation != nil {
-//            self.mapView.removeAnnotation(myCarAnnotation as! PreviousCheckinSpot)
-//            myCarAnnotation = nil
-//        }
-//    }
-//    
-//    //shows a checkin on the map as a regular marker
-//    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
-//        var annotation = PreviousCheckinSpot(coordinate: coordinate, title: name)
-////        annotation.icon = UIImage(named: "pin_round_p")
-////        annotation.groundAnchor = CGPoint(x: 0.5, y: 0.5)
-////        annotation.tappable = false
-////        annotation.zIndex = 10
-//        self.mapView.setCenterCoordinate(coordinate, zoomLevel: Double(zoom ?? 17), animated: true)
-//        removeAllAnnotations()
-//        if showing {
-//            searchAnnotations.append(annotation)
-//            self.mapView.addAnnotation(annotation)
-//        }
-//    }
-//
-//    
-//    func removeAllAnnotations() {
-//        mapView.removeAnnotations(self.centerButtonAnnotations)
-//        mapView.removeAnnotations(self.searchAnnotations)
-//        mapView.removeAnnotations(self.lineAnnotations)
-//        searchAnnotations = []
-//        lineAnnotations = []
-//        centerButtonAnnotations = []
-//        removeMyCarMarker()
-//        addMyCarMarker()
-//    }
-//    
-//    func removeLinesAndButtons() {
-//        mapView.removeAnnotations(self.centerButtonAnnotations)
-//        mapView.removeAnnotations(self.lineAnnotations)
-//        searchAnnotations = []
-//        lineAnnotations = []
-//    }
+//protocol MGLPolyline: MGLAnnotation {
 //    
 //}
+//
+//protocol MGLAnnotation: NSObjectProtocol {
+//    
+//}
+
+//class MGLMapViewController: MapViewController {
+//    
+//}
+
+class MGLMapViewController: MapViewController, MGLMapViewDelegate, UIGestureRecognizerDelegate {
+    
+    var mapView: MGLMapView
+    var userLastChangedMap: Double = 0
+    var lastMapZoom: Double = 0
+    var lastUserLocation: CLLocation = CLLocation(latitude: 0, longitude: 0)
+    var lastMapCenterCoordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+    var spotIDsDrawnOnMap = [String]()
+    var lineSpotIDsDrawnOnMap = [String]()
+    var annotations = [AnyObject]()
+    var searchAnnotations = [MGLAnnotation]()
+    var selectedObject: DetailObject?
+    var isSelecting: Bool = false
+    var recoloringLotPins: Bool = false
+    
+    let MOVE_DELTA_PERCENTAGE : Double = 0.2
+
+    
+    var radius: Float {
+        //get a corner of the map and calculate the meters from the center
+        let center = CLLocation(latitude: self.mapView.centerCoordinate.latitude, longitude: self.mapView.centerCoordinate.longitude)
+        let topRight = CLLocation(latitude: self.mapView.visibleCoordinateBounds.ne.latitude, longitude: self.mapView.visibleCoordinateBounds.ne.longitude)
+        let meters = center.distanceFromLocation(topRight)
+        return Float(meters)
+    }
+
+    convenience init() {
+        self.init(nibName: nil, bundle: nil)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+        
+        mapView = MGLMapView(frame: CGRectMake(0, 0, 100, 100), styleURL: NSURL(string: "mapbox://styles/arnaudspuhler/cigfc11g0000dcnm73r4o3pi1"))
+        mapView.userTrackingMode = MGLUserTrackingMode.Follow
+        mapView.tintColor = Styles.Colors.red2
+        mapView.setCenterCoordinate(Settings.selectedCity().coordinate, zoomLevel: 17, animated: false)
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("NSCoding not supported")
+    }
+    
+    override func loadView() {
+        view = UIView()
+        view.addSubview(mapView)
+        mapView.delegate = self
+        
+        self.showUserLocation(true)
+        
+        addCityOverlays()
+        
+        mapView.snp_makeConstraints {  (make) -> () in
+            make.edges.equalTo(self.view)
+        }
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.trackUser()
+        self.screenName = "Map - General Mapbox GL View"
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: "singleTapOnMap:")
+        tapRecognizer.delegate = self
+        self.mapView.addGestureRecognizer(tapRecognizer)
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.removeSelectedAnnotationIfExists()
+        
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+            Int64(1.5 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            self.canShowMapMessage = true
+            self.updateAnnotations()
+        }
+        
+    }
+    
+    override func showForFirstTime() {
+        
+        if !wasShown {
+            if let checkIn = Settings.checkedInSpot() {
+                let coordinate = checkIn.selectedButtonLocation ?? checkIn.buttonLocations.first!
+                self.dontTrackUser()
+                goToCoordinate(coordinate, named: "", withZoom: 16, showing: false)
+            }
+            
+            wasShown = true
+            
+        }
+    }
+    
+    func updateMapCenterIfNecessary () {
+        
+    }
+
+    func mapView(mapView: MGLMapView, alphaForShapeAnnotation annotation: MGLShape) -> CGFloat {
+        if annotation is MGLPolygon {
+            return 0.7
+        }
+
+        return 1
+    
+    }
+    
+    func mapView(mapView: MGLMapView, strokeColorForShapeAnnotation annotation: MGLShape) -> UIColor {
+        
+        if let line = annotation as? MGLLineParkingSpot {
+            return line.lineColorWithZoom(mapView.zoomLevel)
+        }
+        
+        if annotation is MGLPolygon {
+            return Styles.Colors.red1
+        }
+        
+        return UIColor.blackColor()
+    }
+    
+    func mapView(mapView: MGLMapView, fillColorForPolygonAnnotation annotation: MGLPolygon) -> UIColor {
+            return Styles.Colors.beige1//.colorWithAlphaComponent(0.7)
+    }
+    
+    func mapView(mapView: MGLMapView, lineWidthForPolylineAnnotation annotation: MGLPolyline) -> CGFloat {
+        
+        if let line = annotation as? MGLLineParkingSpot {
+            return line.lineWidthWithZoom(mapView.zoomLevel)
+        }
+        
+        return 1.0
+    }
+    
+    func mapView(mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
+        if let genericAnnotation = annotation as? GenericMGLAnnotation {
+            return genericAnnotation.canShowCallout
+        }
+        return false
+    }
+    
+    func mapView(mapView: MGLMapView, leftCalloutAccessoryViewForAnnotation annotation: MGLAnnotation) -> UIView? {
+        if let genericAnnotation = annotation as? GenericMGLAnnotation {
+            return genericAnnotation.leftCalloutAccessoryView
+        }
+        return nil
+    }
+    
+    func mapView(mapView: MGLMapView, rightCalloutAccessoryViewForAnnotation annotation: MGLAnnotation) -> UIView? {
+        if let genericAnnotation = annotation as? GenericMGLAnnotation {
+            return genericAnnotation.rightCalloutAccessoryView
+        }
+        return nil
+    }
+    
+    func mapView(mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
+        if let genericAnnotation = annotation as? GenericMGLAnnotation {
+            if let annotationType = genericAnnotation.userInfo["type"] as? String {
+                if annotationType == "searchResult" {
+                    AnalyticsOperations.sendSearchQueryToAnalytics(genericAnnotation.title ?? "", navigate: true)
+                    DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
+                }
+            }
+        }
+    }
+
+    func mapView(mapView: MGLMapView, imageForAnnotation annotation: MGLAnnotation) -> MGLAnnotationImage? {
+        
+        if let genericAnnotation = annotation as? GenericMGLAnnotation {
+            let imageView = genericAnnotation.annotationImageWithZoom(mapView.zoomLevel)
+            let reuseIdentifier = genericAnnotation.reuseIdentifierWithZoom(mapView.zoomLevel)
+            return MGLAnnotationImage(image: imageView, reuseIdentifier: reuseIdentifier)
+        }
+        
+        return nil
+    }
+
+    func mapView(mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
+        
+        if (mapView.userTrackingMode == MGLUserTrackingMode.Follow ) {
+            self.trackUser()
+        } else {
+            self.dontTrackUser()
+        }
+        
+    }
+    
+    func afterMapMove(map: MGLMapView!, byUser wasUserAction: Bool) {
+
+    }
+    
+    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
+
+        //the following used to happen after a zoom
+        if self.mapMode == .Garage {
+//            mapView.clusteringEnabled = map.zoom <= 12
+            //TODO: clustering on MGLMapView...
+        }
+        
+        //        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+        //            Int64(0.16 * Double(NSEC_PER_SEC)))
+        //        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        //
+                    if (abs(self.lastMapZoom - mapView.zoomLevel) >= 1) {
+                        self.spotIDsDrawnOnMap = []
+                    }
+        
+//                    if self.getTimeSinceLastMapMovement() > 150 {
+                        self.updateAnnotations()
+//                    }
+        
+                    self.lastMapZoom = mapView.zoomLevel
+        //        }
+        
+        //the following used to happen after a map move
+        
+//                let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+//                    Int64(0.16 * Double(NSEC_PER_SEC)))
+//                dispatch_after(delayTime, dispatch_get_main_queue()) {
+        
+                    self.removeSelectedAnnotationIfExists()
+        
+                    //reload if the map has moved sufficiently...
+                    let lastMapCenterLocation = CLLocation(latitude: self.lastMapCenterCoordinate.latitude, longitude: self.lastMapCenterCoordinate.longitude)
+                    let newMapCenterLocation = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+        let centerLatitudeDelta = abs(lastMapCenterLocation.coordinate.latitude - newMapCenterLocation.coordinate.latitude)
+        let centerLongitudeDelta = abs(lastMapCenterLocation.coordinate.longitude - newMapCenterLocation.coordinate.longitude)
+        
+        let latitudeDeltaInDegrees = MGLCoordinateBoundsGetCoordinateSpan(mapView.visibleCoordinateBounds).latitudeDelta
+        let longitudeDeltaInDegrees = MGLCoordinateBoundsGetCoordinateSpan(mapView.visibleCoordinateBounds).longitudeDelta
+        
+                    //        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
+                    if centerLatitudeDelta/latitudeDeltaInDegrees > self.MOVE_DELTA_PERCENTAGE
+                        || centerLongitudeDelta/longitudeDeltaInDegrees > self.MOVE_DELTA_PERCENTAGE {
+                            self.updateAnnotations()
+                            self.lastMapCenterCoordinate = mapView.centerCoordinate
+                    }
+                    self.delegate?.mapDidDismissSelection(byUser: true)
+                    
+//                }
+        
+    }
+
+    func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
+
+        if (isSelecting || annotation is MGLUserLocation) {
+            return
+//        } else if annotation.isClusterAnnotation {
+//            
+//            let nonClusteredAnnotations = getAnnotationsInCluster(annotation)
+//            let southWestAndNorthEast = getSouthWestAndNorthEastFromAnnotations(nonClusteredAnnotations, centerCoordinate: annotation.coordinate)
+//            let southWest = southWestAndNorthEast.0
+//            let northEast = southWestAndNorthEast.1
+//            
+//            if southWest.latitude == northEast.latitude
+//                && southWest.longitude == northEast.longitude {
+//                    self.mapView.zoomInToNextNativeZoomAt(annotation.position, animated: true)
+//            } else {
+//                self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
+//            }
+//            return
+        }
+        
+        isSelecting = true
+        shouldCancelTap = true
+        
+        removeSelectedAnnotationIfExists()
+        
+        if annotation is UserInfo {
+
+            var userInfo = (annotation as! UserInfo).userInfo
+            
+            let type: String = userInfo["type"] as? String ?? ""
+            
+            if type == "line" || type == "button" {
+                
+                let spot = userInfo["spot"] as! ParkingSpot
+                
+                let foundAnnotations = findAnnotations(spot.identifier)
+                for annotation in foundAnnotations {
+                    self.mapView.removeAnnotation(annotation as! MGLAnnotation)
+                }
+                
+                addSpotAnnotation(spot, selected: true)
+                
+                spot.selectedButtonLocation = annotation.coordinate
+                spot.json["selectedButtonLocation"].dictionaryObject = ["lat" : annotation.coordinate.latitude, "long" : annotation.coordinate.longitude]
+                selectedObject = spot
+                
+                self.delegate?.didSelectObject(selectedObject as! ParkingSpot)
+                
+            } else if type == "lot" {
+                
+                let lot = userInfo["lot"] as! Lot
+                
+                let foundAnnotations = findAnnotations(lot.identifier)
+                for annotation in foundAnnotations {
+                    self.mapView.removeAnnotation(annotation as! MGLAnnotation)
+                }
+                
+                annotationForLot(lot, selected: true, addToMapView: true, animate: false)
+                selectedObject = lot
+                
+                self.delegate?.didSelectObject(selectedObject as! Lot)
+                
+            } else if (type == "searchResult") {
+                // do nothing for the time being
+                //            var result = userInfo!["spot"] as! ParkingSpot?
+            } else if type == "carsharing" {
+                let newAnnotation = GenericMGLAnnotation(coordinate: annotation.coordinate, title: "", subtitle: nil)
+                newAnnotation.userInfo = ["type": "carsharing", "selected": true, "carshare": (userInfo["carshare"] as! CarShare)]
+                annotations.append(newAnnotation)
+                self.mapView.addAnnotation(newAnnotation)
+                self.mapView.selectAnnotation(newAnnotation, animated: false)
+                self.annotations.remove(annotation as! GenericMGLAnnotation)
+                self.mapView.removeAnnotation(annotation)
+            }
+            
+        }
+        isSelecting = false
+        
+    }
+    func mapView(mapView: MGLMapView, didDeselectAnnotation annotation: MGLAnnotation) {
+        
+        if annotation is MGLUserLocation || isSelecting {//|| annotation.isClusterAnnotation {
+            return
+        }
+        
+        shouldCancelTap = true
+        
+        if annotation is UserInfo {
+            
+            var userInfo = (annotation as! UserInfo).userInfo
+            let type: String = userInfo["type"] as? String ?? ""
+            if type == "line" || type == "button" || type == "lot" {
+                removeSelectedAnnotationIfExists()
+                shouldCancelTap = false
+            } else if (type == "searchResult") {
+                //then the callout was shown, so do nothing because it will dismiss on automatically
+            } else if type == "carsharing" {
+                let newAnnotation = GenericMGLAnnotation(coordinate: annotation.coordinate, title: "", subtitle: nil)
+                newAnnotation.userInfo = ["type": "carsharing", "selected": false, "carshare": (userInfo["carshare"] as! CarShare)]
+                annotations.append(newAnnotation)
+                self.mapView.addAnnotation(newAnnotation)
+                self.annotations.remove(annotation as! GenericMGLAnnotation)
+                self.mapView.removeAnnotation(annotation)
+            }
+        }
+    }
+    
+    func customDeselectAnnotation() {
+        removeSelectedAnnotationIfExists()
+        self.delegate?.mapDidDismissSelection(byUser: true)
+    }
+
+    func mapView(mapView: MGLMapView, didUpdateUserLocation userLocation: MGLUserLocation?) {
+        //this will run too often, so only run it if we've changed by any significant amount
+        if let userCLLocation = userLocation?.location {
+            let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
+            
+            if differenceInMeters > 50 //50 meters
+                && mapView.userTrackingMode == MGLUserTrackingMode.Follow {
+                    updateAnnotations()
+                    lastUserLocation = userCLLocation
+            }
+        }
+    }
+    
+    
+    
+    func singleTapOnMap(tapRec: UITapGestureRecognizer) {
+
+        let point = tapRec.locationInView(self.mapView)
+
+        if shouldCancelTap {
+            shouldCancelTap = false
+            return
+        }
+        
+        let before = NSDate().timeIntervalSince1970
+        
+        var minimumDistanceRadius: CGFloat = 40
+        
+        if self.mapMode == .Garage {
+            minimumDistanceRadius = 40
+        }
+        
+        var minimumDistance = CGFloat.infinity
+        var closestAnnotation: MGLAnnotation? = nil
+        let loopThroughLines = mapView.zoomLevel < 17.0
+        
+        //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.
+        let tapRect = CGRect(x: point.x - (minimumDistanceRadius*Settings.screenScale)/2,
+            y: point.y - (minimumDistanceRadius*Settings.screenScale)/2,
+            width: minimumDistanceRadius*Settings.screenScale,
+            height: minimumDistanceRadius*Settings.screenScale)
+        
+        //note: on screen annotations are not just those contained within the bounding box, but also those that pass in it at some point (because we can be dealing with lines here!)
+        let onScreenAnnotations = self.annotations.filter({ (annotation) -> Bool in
+            let annotationPoint = self.mapView.convertCoordinate(annotation.coordinate, toPointToView: self.mapView)
+
+            return !(annotation is MGLUserLocation)
+                && !annotation.isKindOfClass(MGLPolygon)
+//                && !annotation.isClusterAnnotation
+                && tapRect.contains(annotationPoint)
+        })
+        
+        for annotation: MGLAnnotation in onScreenAnnotations as! [MGLAnnotation] {
+            
+            if annotation is UserInfo {
+                var userInfo: [String:AnyObject]? = (annotation as! UserInfo).userInfo
+                let annotationType = userInfo!["type"] as! String
+                
+                if annotationType == "button" || annotationType == "searchResult" || annotationType == "lot" {
+                    
+                    let annotationPoint = self.mapView.convertCoordinate(annotation.coordinate, toPointToView: self.mapView)
+                    let distance = annotationPoint.distanceToPoint(point)
+                    
+                    if (distance < minimumDistance) {
+                        minimumDistance = distance
+                        closestAnnotation = annotation
+                    }
+                    
+                } else if loopThroughLines && annotationType == "line" {
+                    
+                    let spot = userInfo!["spot"] as! ParkingSpot
+                    let coordinates = spot.line.coordinates2D + spot.buttonLocations
+                    
+                    let distances = coordinates.map{(coordinate: CLLocationCoordinate2D) -> CGFloat in
+                        let annotationPoint = self.mapView.convertCoordinate(annotation.coordinate, toPointToView: self.mapView)
+                        let distance = annotationPoint.distanceToPoint(point)
+                        return distance
+                    }
+                    
+                    for distance in distances {
+                        if (distance < minimumDistance) {
+                            minimumDistance = distance
+                            closestAnnotation = annotation
+                        }
+                    }
+                    
+                }
+            }
+        }
+        
+        NSLog("Took %f ms to find the right annotation", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+        
+        if (closestAnnotation != nil && minimumDistance < minimumDistanceRadius) {
+            mapView.selectAnnotation(closestAnnotation!, animated: true)
+        } else {
+            self.delegate?.mapDidTapIdly()
+            customDeselectAnnotation()
+        }
+        
+    }
+    
+    func mapView(mapView: MGLMapView, didFailToLocateUserWithError error: NSError) {
+        dontTrackUser()
+    }
+    
+    // MARK: Helper Methods
+    
+    override func didTapTrackUserButton () {
+        if self.mapView.userTrackingMode == MGLUserTrackingMode.Follow {
+            dontTrackUser()
+        } else {
+            trackUser()
+        }
+    }
+    
+    override func trackUser() {
+        if self.mapView.userTrackingMode != MGLUserTrackingMode.Follow {
+            self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
+            self.mapView.setZoomLevel(17, animated: false)
+            self.mapView.userTrackingMode = MGLUserTrackingMode.Follow
+        }
+    }
+    
+    override func dontTrackUser() {
+        self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_off"), forState: UIControlState.Normal)
+        self.mapView.userTrackingMode = MGLUserTrackingMode.None
+    }
+    
+    override func updateAnnotations(completion: ((operationCompleted: Bool) -> Void)) {
+        
+        if (self.updateInProgress) {
+            print("Update already in progress, cancelled!")
+            completion(operationCompleted: false)
+            return
+        }
+        
+        self.updateInProgress = true
+        
+        self.removeMyCarMarker()
+        self.addMyCarMarker()
+        
+        if self.isFarAwayFromAvailableCities(self.mapView.centerCoordinate) {
+            
+            if self.canShowMapMessage {
+                self.delegate?.mapDidMoveFarAwayFromAvailableCities()
+            }
+            
+            self.updateInProgress = false
+            completion(operationCompleted: true)
+            
+        } else if self.mapView.zoomLevel >= 15.0
+            || self.mapMode == .Garage
+            || (self.mapView.zoomLevel >= 13.0 && self.mapMode == .CarSharing && self.delegate?.carSharingMode() == .FindCar) {
+                
+                self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true, showCityPicker: false)
+                
+                var checkinTime = self.searchCheckinDate
+                var duration = self.searchDuration
+                
+                if (checkinTime == nil) {
+                    checkinTime = NSDate()
+                }
+                
+                if (duration == nil) {
+                    duration = self.delegate?.activeFilterDuration()
+                }
+                
+                let carsharing = self.delegate?.activeCarsharingPermit() ?? false
+                
+                let operationCompletion = { (objects: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void in
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        //only show the spinner if this map is active
+                        if let tabController = self.parentViewController as? TabController {
+                            if tabController.activeTab() == PrkTab.Here {
+                                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                                SVProgressHUD.show()
+                                //                            GiFHUD.show()
+                                
+                                if self.canShowMapMessage {
+                                    if underMaintenance {
+                                        self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
+                                    } else if error {
+                                        self.delegate?.showMapMessage("map_message_error".localizedString)
+                                    } else if outsideServiceArea {
+                                        self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
+                                    } else if objects.count == 0 {
+                                        self.delegate?.showMapMessage("map_message_no_spots".localizedString)
+                                    } else {
+                                        self.delegate?.showMapMessage(nil)
+                                    }
+                                }
+                            }
+                        }
+                    })
+                    
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+                        
+                        if let spots = objects as? [ParkingSpot] {
+                            //
+                            // spots that have left the screen need to be re-animated next time
+                            // therefore, we remove spots that have not been fetched this time around
+                            //
+                            let newSpotIDs = spots.map{(spot: ParkingSpot) -> String in spot.identifier}
+                            self.spotIDsDrawnOnMap = self.spotIDsDrawnOnMap.filter({ (spotID: String) -> Bool in
+                                newSpotIDs.contains(spotID)
+                            })
+                            self.lineSpotIDsDrawnOnMap = self.lineSpotIDsDrawnOnMap.filter({ (spotID: String) -> Bool in
+                                newSpotIDs.contains(spotID)
+                            })
+                            
+                            self.updateSpotAnnotations(spots, completion: completion)
+                        }
+                        
+                        if let lots = objects as? [Lot] {
+                            self.updateLotAnnotations(lots, completion: completion)
+                        }
+                        
+                        if let carShares = objects as? [CarShare] {
+                            self.updateCarShareAnnotations(carShares, completion: completion)
+                        }
+                        
+                        if let dualObjectsSpecialCase = objects as? [[NSObject]] {
+                            if dualObjectsSpecialCase.count == 2 {
+                                let carShareLots = dualObjectsSpecialCase[0] as? [CarShareLot] ?? []
+                                let spots = dualObjectsSpecialCase[1] as? [ParkingSpot] ?? []
+                                self.updateCarShareLotAnnotations(carShareLots, spots: spots, completion: completion)
+                            }
+                        }
+                        
+                    })
+                }
+                
+                switch(self.mapMode) {
+                case MapMode.CarSharing:
+                    if self.delegate?.carSharingMode() == .FindSpot {
+                        CarSharingOperations.getCarShareLots(location: self.mapView.centerCoordinate, radius: self.radius, completion: { (carShareLots, underMaintenance1, outsideServiceArea1, error1) -> Void in
+                            
+                            SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: { (spots, underMaintenance2, outsideServiceArea2, error2) -> Void in
+                                
+                                operationCompletion([carShareLots, spots], underMaintenance1 || underMaintenance2, outsideServiceArea1 || outsideServiceArea2, error2)
+                            })
+                            
+                        })
+                    } else {
+                        CarSharingOperations.getCarShares(location: self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
+                    }
+                    break
+                case MapMode.StreetParking:
+                    SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
+                    break
+                case MapMode.Garage:
+                    self.recolorLotPinsIfNeeded()
+                    if self.annotations.count > 0 {
+                        self.updateInProgress = false
+                        completion(operationCompleted: true)
+                    } else {
+                        LotOperations.sharedInstance.findLots(self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
+                    }
+                    break
+                    //            default:
+                    //                self.updateInProgress = false
+                    //                self.removeAnnotations()
+                    //                completion(operationCompleted: true)
+                    //                break
+                }
+                
+        } else {
+            
+            self.removeAnnotations()
+            
+            self.spotIDsDrawnOnMap = []
+            self.lineSpotIDsDrawnOnMap = []
+            
+            self.updateInProgress = false
+            
+            self.delegate?.showMapMessage("map_message_too_zoomed_out".localizedString)
+            
+            completion(operationCompleted: true)
+        }
+        
+        
+    }
+    
+    func spotAnnotations(spots: [ParkingSpot]) -> [AnyObject] {
+        
+        var tempLineAnnotations = [MGLLineParkingSpot]()
+        var tempButtonAnnotations = [GenericMGLAnnotation]()
+        
+        for spot in spots {
+            let selected = (self.selectedObject != nil && self.selectedObject?.identifier == spot.identifier)
+            let generatedAnnotations = annotationForSpot(spot, selected: selected, addToMapView: false)
+            tempLineAnnotations.append(generatedAnnotations.0)
+            let buttons = generatedAnnotations.1
+            tempButtonAnnotations += buttons
+            
+        }
+        
+        let tempAnnotations = (tempLineAnnotations as [AnyObject]) + (tempButtonAnnotations as [AnyObject])
+        return tempAnnotations
+    }
+
+    func updateSpotAnnotations(spots: [ParkingSpot], completion: ((operationCompleted: Bool) -> Void)) {
+        
+        let tempAnnotations = spotAnnotations(spots)
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            
+            self.removeAnnotations()
+            
+            self.annotations = tempAnnotations
+            for annotation in self.annotations {
+                self.mapView.addAnnotation(annotation as! MGLAnnotation)
+            }
+            
+            SVProgressHUD.dismiss()
+            self.updateInProgress = false
+            
+            completion(operationCompleted: true)
+            
+        })
+        
+    }
+
+    func addAnnotation(detailObject: DetailObject, selected: Bool, animate: Bool? = nil) {
+        if detailObject is ParkingSpot {
+            addSpotAnnotation(detailObject as! ParkingSpot, selected: selected)
+        } else if detailObject is Lot {
+            annotationForLot(detailObject as! Lot, selected: selected, addToMapView: true, animate: animate)
+        }
+    }
+
+    func addSpotAnnotation(spot: ParkingSpot, selected: Bool) {
+        annotationForSpot(spot, selected: selected, addToMapView: true)
+    }
+    
+    func annotationForSpot(spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (MGLLineParkingSpot, [GenericMGLAnnotation]) {
+        
+        var lineAnnotation: MGLLineParkingSpot
+        var invisibleButtonAnnotations = [GenericMGLAnnotation]()
+        var buttonAnnotations = [GenericMGLAnnotation]()
+        
+        let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(spot.identifier)
+        
+        let userInfo = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimation]
+        var coordinates = spot.line.coordinates2D
+        
+        //create the proper polyline
+        lineAnnotation = MGLLineParkingSpot(coordinates: &coordinates, count: UInt(coordinates.count))
+        spot.userInfo = userInfo
+        lineAnnotation.parkingSpot = spot
+        
+        let invisibleButtonCoordinates = spot.line.coordinates2D + spot.buttonLocations
+        for coordinate in invisibleButtonCoordinates {
+            let shouldAddAnimationForButton = !self.spotIDsDrawnOnMap.contains(spot.identifier)
+            let centerButton = GenericMGLAnnotation(coordinate: coordinate, title: spot.identifier)
+            centerButton.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForButton, "invisible": true]
+            invisibleButtonAnnotations.append(centerButton)
+        }
+        
+        if addToMapView {
+            self.mapView.addAnnotations(invisibleButtonAnnotations)
+            self.annotations += invisibleButtonAnnotations as [AnyObject]
+
+            self.mapView.addAnnotation(lineAnnotation)
+            annotations.append(lineAnnotation)
+        }
+
+        if (mapView.zoomLevel >= 17.0) {
+
+            for coordinate in spot.buttonLocations {
+                let shouldAddAnimationForButton = !self.spotIDsDrawnOnMap.contains(spot.identifier)
+                let centerButton = GenericMGLAnnotation(coordinate: coordinate, title: spot.identifier)
+                centerButton.userInfo = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForButton]
+                buttonAnnotations.append(centerButton)
+            }
+            
+            if addToMapView {
+                self.mapView.addAnnotations(buttonAnnotations)
+                self.annotations += buttonAnnotations as [AnyObject]
+            }
+
+        }
+        
+        return (lineAnnotation, buttonAnnotations+invisibleButtonAnnotations)
+    }
+    
+    func updateLotAnnotations(lots: [Lot], completion: ((operationCompleted: Bool) -> Void)) {
+
+        var tempAnnotations = [MGLAnnotation]()
+
+        for lot in lots {
+            let selected = (self.selectedObject != nil && self.selectedObject?.identifier == String(lot.identifier))
+            let generatedAnnotations = annotationForLot(lot, selected: selected, addToMapView: false)
+            tempAnnotations.append(generatedAnnotations)
+
+        }
+
+        dispatch_async(dispatch_get_main_queue(), {
+
+            self.removeAnnotations()
+
+            self.annotations = tempAnnotations
+
+            self.mapView.addAnnotations(self.annotations as! [MGLAnnotation])
+
+            SVProgressHUD.dismiss()
+            self.updateInProgress = false
+
+            completion(operationCompleted: true)
+
+        })
+
+    }
+
+    func updateCarShareAnnotations(carShares: [CarShare], completion: ((operationCompleted: Bool) -> Void)) {
+
+        var tempAnnotations = [MGLAnnotation]()
+
+        for carShare in carShares {
+            let annotation = GenericMGLAnnotation(coordinate: carShare.coordinate, title: "", subtitle: nil)
+            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare]
+            tempAnnotations.append(annotation)
+        }
+
+        dispatch_async(dispatch_get_main_queue(), {
+
+            self.removeAnnotations()
+
+            self.annotations = tempAnnotations
+
+            self.mapView.addAnnotations(self.annotations as! [MGLAnnotation])
+
+            SVProgressHUD.dismiss()
+            self.updateInProgress = false
+
+            completion(operationCompleted: true)
+
+        })
+
+    }
+
+    func updateCarShareLotAnnotations(carShareLots: [CarShareLot], spots: [ParkingSpot], completion: ((operationCompleted: Bool) -> Void)) {
+
+        var tempAnnotations = [AnyObject]()
+
+        for carShareLot in carShareLots {
+            let annotation = GenericMGLAnnotation(coordinate: carShareLot.coordinate, title: "", subtitle: nil)
+            annotation.userInfo = ["type": "carsharinglot", "carsharelot": carShareLot]
+            tempAnnotations.append(annotation)
+        }
+
+        tempAnnotations += spotAnnotations(spots)
+
+        dispatch_async(dispatch_get_main_queue(), {
+
+            self.removeAnnotations()
+
+            self.annotations = tempAnnotations
+
+            self.mapView.addAnnotations(self.annotations as! [MGLAnnotation])
+
+            SVProgressHUD.dismiss()
+            self.updateInProgress = false
+
+            completion(operationCompleted: true)
+
+        })
+
+    }
+
+    func zoomIntoClosestPins(numberOfPins: Int) {
+        //order annotations by distance from map center
+        let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+        let orderedAnnotations = (self.annotations as! [MGLAnnotation]).sort { (first, second) -> Bool in
+            let firstLocation = CLLocation(latitude: first.coordinate.latitude, longitude: first.coordinate.longitude)
+            let secondLocation = CLLocation(latitude: second.coordinate.latitude, longitude: second.coordinate.longitude)
+            return mapCenter.distanceFromLocation(firstLocation) < mapCenter.distanceFromLocation(secondLocation)
+        }
+
+        var annotationsToZoom = [MGLAnnotation]()
+        let newNumberOfPins = orderedAnnotations.count < numberOfPins ? orderedAnnotations.count : numberOfPins
+        for i in 0..<newNumberOfPins {
+            annotationsToZoom.append(orderedAnnotations[i])
+        }
+
+//        let southWestAndNorthEast = getSouthWestAndNorthEastFromAnnotations(annotationsToZoom, centerCoordinate: mapCenter.coordinate)
+//        let southWest = southWestAndNorthEast.0
+//        let northEast = southWestAndNorthEast.1
+
+        self.mapView.showAnnotations(annotationsToZoom, animated: true)
+    }
+
+    func getSouthWestAndNorthEastFromAnnotations(annots: [MGLAnnotation], centerCoordinate: CLLocationCoordinate2D) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
+
+        //determine the southwest and northeast coordinates!
+        var southWest = centerCoordinate
+        var northEast = centerCoordinate
+
+        for annotation in annots {
+            let lat = annotation.coordinate.latitude
+            let long = annotation.coordinate.longitude
+
+            if southWest.latitude > fabs(lat) { southWest.latitude = lat }
+            if southWest.longitude > fabs(long) { southWest.longitude = long }
+
+            if northEast.latitude < fabs(lat) { northEast.latitude = lat }
+            if northEast.longitude < fabs(long) { northEast.longitude = long }
+        }
+
+        //add some padding to the coordinates
+        let latDelta = abs(southWest.latitude - northEast.latitude) / 2
+        let longDelta = abs(southWest.longitude - northEast.longitude) / 2
+        southWest.latitude -= latDelta
+        southWest.longitude -= longDelta
+        northEast.latitude += latDelta
+        northEast.longitude += longDelta
+
+        return (southWest, northEast)
+    }
+
+    func annotationForLot(lot: Lot, selected: Bool, addToMapView: Bool, animate: Bool? = nil) -> MGLAnnotation {
+
+        let shouldAddAnimation = animate ?? !self.spotIDsDrawnOnMap.contains(lot.identifier)
+        let annotation = GenericMGLAnnotation(coordinate: lot.coordinate, title: String(lot.identifier), subtitle: nil)
+        annotation.userInfo = ["type": "lot", "lot": lot, "selected": selected, "cheaper": lot.isCheaper, "shouldAddAnimation": shouldAddAnimation]
+
+        if addToMapView {
+            mapView.addAnnotation(annotation)
+            annotations.append(annotation)
+        }
+        
+        return annotation
+        
+    }
+
+    
+    func addSearchResultMarker(searchResult: SearchResult) {
+        
+        let annotation = GenericMGLAnnotation(coordinate: searchResult.location.coordinate, title: "", subtitle: nil)
+        annotation.userInfo = ["type": "searchResult", "searchresult": searchResult]
+        mapView.addAnnotation(annotation)
+        searchAnnotations.append(annotation)
+    }
+    
+    
+    func findAnnotations(identifier: String) -> [AnyObject] {
+        
+        var foundAnnotations = [AnyObject]()
+        
+        for annotation in annotations {
+            
+            var userInfo: [String:AnyObject]? = annotation.userInfo
+            
+            if let spot = userInfo!["spot"] as? ParkingSpot {
+                
+                if spot.identifier == identifier {
+                    foundAnnotations.append(annotation)
+                }
+            } else if let lot = userInfo!["lot"] as? Lot {
+                
+                if lot.identifier == identifier {
+                    foundAnnotations.append(annotation)
+                }
+            }
+        }
+        
+        return foundAnnotations
+        
+    }
+
+    
+    
+    override func addCityOverlaysCallback(polygons: [MKPolygon]) {
+        //TODO
+//        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
+        let invertedPolygon = MKPolygon.invertPolygons(polygons)
+//        mapView.addAnnotation(invertedPolygon.toMGLPolygon())
+//        mapView.addAnnotations(MKPolygon.toMGLPolygons(interiorPolygons))
+        mapView.addAnnotations(MKPolygon.toMGLPolygons(invertedPolygon))
+    }
+    
+    // MARK: SpotDetailViewDelegate
+    
+    override func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) {
+        
+        mapView.zoomLevel = 17
+        
+        if (results.count == 0) {
+            let alert = UIAlertView()
+            alert.title = "No results found"
+            alert.message = "We couldn't find anything matching the criteria"
+            alert.addButtonWithTitle("Close")
+            alert.show()
+            return
+        }
+        
+        mapView.centerCoordinate = results[0].location.coordinate
+        
+        removeAllAnnotations()
+        
+        for result in results {
+            addSearchResultMarker(result)
+        }
+        
+        self.searchCheckinDate = checkinTime
+        
+        updateAnnotations()
+        
+    }
+    
+    override func clearSearchResults() {
+        mapView.removeAnnotations(self.searchAnnotations)
+    }
+    
+    override func showUserLocation(shouldShow: Bool) {
+        self.mapView.showsUserLocation = shouldShow
+    }
+    
+    override func setMapUserMode(mode: MapUserMode) {
+        self.mapView.userTrackingMode = mode == MapUserMode.Follow ? MGLUserTrackingMode.Follow : MGLUserTrackingMode.None
+        Settings.setMapUserMode(mode)
+    }
+    
+    
+    override func addMyCarMarker() {
+        if let spot = Settings.checkedInSpot() {
+            let coordinate = spot.selectedButtonLocation ?? spot.buttonLocations.first!
+            let name = spot.name
+            let annotation = GenericMGLAnnotation(coordinate: coordinate, title: name, subtitle: nil)
+            annotation.userInfo = ["type": "previousCheckin"]
+            myCarAnnotation = annotation
+            self.mapView.addAnnotation(annotation)
+        }
+    }
+    
+    override func removeMyCarMarker() {
+        if myCarAnnotation != nil {
+            self.mapView.removeAnnotation(myCarAnnotation as! UserInfo)
+            myCarAnnotation = nil
+        }
+    }
+    
+    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
+        let annotation = GenericMGLAnnotation(coordinate: coordinate, title: name, subtitle: nil)
+        annotation.userInfo = ["type": "previousCheckin"]
+        mapView.zoomLevel = Double(zoom ?? 17)
+        mapView.centerCoordinate = coordinate
+        removeAllAnnotations()
+        if showing {
+            searchAnnotations.append(annotation)
+            self.mapView.addAnnotation(annotation)
+        }
+    }
+    
+    //note: mapbox gl calls deselect annotation when we remove an annotaion, so the order in which we execute the operations here matters.
+    override func removeSelectedAnnotationIfExists() {
+        if (selectedObject != nil) {
+            let foundAnnotations = findAnnotations(selectedObject!.identifier)
+            addAnnotation(selectedObject!, selected: false, animate: false)
+            selectedObject = nil
+            for annotation in foundAnnotations {
+                self.mapView.removeAnnotation(annotation as! MGLAnnotation)
+            }
+        }
+    }
+    
+    override func mapModeDidChange(completion: (() -> Void)) {
+        updateAnnotations({ (operationCompleted: Bool) -> Void in
+            completion()
+            if self.mapMode == .Garage {
+                self.zoomIntoClosestPins(5)
+            }
+        })
+    }
+    
+    override func removeRegularAnnotations() {
+        self.removeAnnotations()
+    }
+    
+    func removeAllAnnotations() {
+        mapView.removeAnnotations(self.annotations as! [MGLAnnotation])
+        mapView.removeAnnotations(self.searchAnnotations)
+        searchAnnotations = []
+        annotations = []
+        removeMyCarMarker()
+        addMyCarMarker()
+    }
+    
+    func removeAnnotations() {
+
+        for annotation in self.annotations {
+            self.mapView.removeAnnotation(annotation as! MGLAnnotation)
+        }
+        annotations = []
+    }
+    
+    func recolorLotPinsIfNeeded() {
+        if self.mapMode == .Garage {
+            
+            if self.annotations.count == 0 {
+                return
+            }
+            
+            recoloringLotPins = true
+            
+            //in 150 ms if we haven't finished the operation, show a loader
+            let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+                Int64(150 * Double(NSEC_PER_MSEC)))
+            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                if self.recoloringLotPins {
+                    SVProgressHUD.show()
+                }
+            })
+            
+            let before = NSDate().timeIntervalSince1970
+            
+            //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.
+            let visibleLotAnnotations = self.annotations.filter({ (annotation) -> Bool in
+                let annotationPoint = self.mapView.convertCoordinate(annotation.coordinate, toPointToView: self.mapView)
+                if self.mapView.bounds.contains(annotationPoint) {
+                    let userInfo = (annotation as! UserInfo).userInfo
+                    return userInfo["type"] as? String == "lot" && userInfo["selected"] as? Bool == false
+                }
+                return false
+            })
+            
+            NSLog("\n\ngetting proper visible lot annotations took %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+            
+            let changedLotAnnotations = LotOperations.processCheapestLots(visibleLotAnnotations as? [GenericMGLAnnotation] ?? [])
+            self.mapView.removeAnnotations(changedLotAnnotations)
+            self.annotations.remove(changedLotAnnotations)
+            self.annotations += changedLotAnnotations as [AnyObject]
+            self.mapView.addAnnotations(changedLotAnnotations)
+            
+            NSLog("re-adding changed lots took %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+            
+            NSLog("Recolor took a total of %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+            
+            SVProgressHUD.dismiss()
+            recoloringLotPins = false
+        }
+        
+    }
+
+    
+}

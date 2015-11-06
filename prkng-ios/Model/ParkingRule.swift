@@ -18,7 +18,7 @@ enum ParkingRuleType: String {
 
 class ParkingRule: NSObject {
 
-    var restrictionType: String
+    var restrictionTypes: [String]
     var paidHourlyRate: Float
     var code: String
     var maxParkingTime: Int
@@ -43,7 +43,7 @@ class ParkingRule: NSObject {
         if bullshitRule {
             return .Free
         }
-        if restrictionType == "paid" {
+        if restrictionTypes.contains("paid") {
             return .Paid
         }
         if self.maxParkingTime > 0 {
@@ -56,7 +56,7 @@ class ParkingRule: NSObject {
     
     init(ruleType: ParkingRuleType) {
         _ruleType = ruleType
-        restrictionType = ""
+        restrictionTypes = []
         code = ""
         paidHourlyRate = 0
         maxParkingTime = 0
@@ -69,7 +69,9 @@ class ParkingRule: NSObject {
     // bsIndex is a stupid parameter, because the data structure sucks. There may be two rule sets. Remove it when the data structure is fixed.
     init(json: JSON, bsIndex : Int) {
 
-        restrictionType = json["restrict_typ"].stringValue
+        restrictionTypes = json["restrict_types"].arrayValue.map({ (json: JSON) -> String in
+            json.stringValue
+        })
         code = json["code"].stringValue
         paidHourlyRate = json["paid_hourly_rate"].floatValue
         

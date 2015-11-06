@@ -170,18 +170,20 @@ class ParkingSpot: NSObject, DetailObject {
             let rule1 = ParkingRule(json: ruleJson.1, bsIndex: 0)
             
             let permit = Settings.shouldFilterForCarSharing()
-            if !permit || rule1.restrictionType != "permit" {
+            if !permit || !rule1.restrictionTypes.contains("permit") {
                 rules.append(rule1)
             }
             
             let rule2 = ParkingRule(json: ruleJson.1, bsIndex: 1)
-            if (!rule2.bullshitRule && (!permit || rule2.restrictionType != "permit")) {
+            if (!rule2.bullshitRule && (!permit || !rule2.restrictionTypes.contains("permit"))) {
                 rules.append(rule2)
             }
             
         }
         
-        parkingRuleType = json["properties"]["restrict_typ"].stringValue == "paid" ? .Paid : .Free
+        parkingRuleType = json["properties"]["restrict_types"].arrayValue.map({ (json: JSON) -> String in
+            json.stringValue
+        }).contains("paid") ? .Paid : .Free
         
         line = Shape(json: json["geometry"])
         userInfo = [String:AnyObject]()
@@ -484,159 +486,261 @@ struct DayArray {
 }
 
 
-func ==(lhs: LineParkingSpot, rhs: LineParkingSpot) -> Bool {
+func ==(lhs: MGLLineParkingSpot, rhs: MGLLineParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue
 }
 
-class LineParkingSpot: MKPolyline {
+class MGLLineParkingSpot: MGLPolyline, UserInfo {
     
-    var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } }//to maintain backwards compatibility with mapbox
+    var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } set(newValue) { parkingSpot.userInfo = newValue } }//to maintain backwards compatibility with mapbox
     var parkingSpot: ParkingSpot!
     
-    //MARK- Hashable
-    override var hashValue: Int { get { return Int(parkingSpot.identifier)! } }
+    
+    private var lineWidth: CGFloat = 0
+    func lineWidthWithZoom(zoom: Double) -> CGFloat {
+        setupWithZoom(zoom)
+        return lineWidth
+    }
+    private var lineColor: UIColor = UIColor.clearColor()
+    func lineColorWithZoom(zoom: Double) -> UIColor {
+        setupWithZoom(zoom)
+        return lineColor
+    }
 
-//    convenience init(coordinates coords: UnsafeMutablePointer<CLLocationCoordinate2D>, count: Int, spot: ParkingSpot) {
-//        parkingSpot = spot
-//        self.init(coordinates: coords, count: count)
-//    }
-//    
-//    init(coordinates coords: UnsafeMutablePointer<CLLocationCoordinate2D>, count: Int) {
-//        super.init(coordinates: coords, count: count)
-//    }
+    
+    //MARK- Hashable
+    
+    override var hashValue: Int { get { return Int(parkingSpot.identifier)! } }
+    
     override init() {
         super.init()
     }
+    
+    func setupWithZoom(zoom: Double) {
+        
+        let selected = userInfo["selected"] as! Bool
+        let spot = userInfo["spot"] as! ParkingSpot
+        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+        
+        if selected {
+            lineColor = Styles.Colors.red2
+        } else if isCurrentlyPaidSpot {
+            lineColor = Styles.Colors.curry
+        } else {
+            lineColor = Styles.Colors.lineBlue
+        }
+        
+        if zoom >= 15.0 && zoom < 17.0 {
+            lineWidth = 2.6
+        } else {
+            lineWidth = 4.4
+        }
+        
+//        for location in spot.line.coordinates as Array<CLLocation> {
+//            shape.addLineToCoordinate(location.coordinate)
+//        }
+        
+//        if shouldAddAnimation {
+//            shape.addScaleAnimation()
+//            lineSpotIDsDrawnOnMap.append(spot.identifier)
+//        }
+        
+    }
 }
 
-//func ==(lhs: MGLLineParkingSpot, rhs: MGLLineParkingSpot) -> Bool {
-//    return lhs.hashValue == rhs.hashValue
-//}
-//
-//class MGLLineParkingSpot: MGLPolyline, Hashable {
-//    
-//    var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } }//to maintain backwards compatibility with mapbox
-//    var parkingSpot: ParkingSpot!
-//    
-//    //MARK- Hashable
-//    override var hashValue: Int { get { return parkingSpot.identifier.toInt()! } }
-//    
-//    override init() {
-//        super.init()
-//    }
-//}
+protocol UserInfo: MGLAnnotation {
+    var userInfo: [String:AnyObject] { get set }//to maintain backwards compatibility with mapbox
+}
 
-//class ButtonParkingSpot: ParkingSpot, MKAnnotation, MGLAnnotation {
-//    var coordinate: CLLocationCoordinate2D { get { return buttonLocation.coordinate } }
-//}
+class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
+    
+    @objc var coordinate: CLLocationCoordinate2D { get { return _coordinate } }
+    @objc var title: String? { get { return _title } }
+    @objc var subtitle: String? { get { return _subtitle } }
+    
+    private var _coordinate: CLLocationCoordinate2D
+    private var _title: String?
+    private var _subtitle: String?
+    
+    var userInfo = [String:AnyObject]()
+    
+    private var annotationImage: UIImage?
+    func annotationImageWithZoom(zoom: Double) -> UIImage {
+        setupWithZoom(zoom)
+        return annotationImage!
+    }
+    private var reuseIdentifier: String = ""
+    func reuseIdentifierWithZoom(zoom: Double) -> String {
+        setupWithZoom(zoom)
+        return reuseIdentifier
+    }
+    
+    var leftCalloutAccessoryView: UIView?
+    var rightCalloutAccessoryView: UIView?
+    
+    var canShowCallout: Bool {
+        
+        let annotationType = userInfo["type"] as! String
+        if annotationType == "carsharing"
+            || annotationType == "searchResult"
+            || annotationType == "previousCheckin" {
+                return true
+        }
+        
+        return false
+
+    }
+    
+    init(coordinate: CLLocationCoordinate2D, title: String? = nil, subtitle: String? = nil) {
+        self._coordinate = coordinate
+        self._title = title
+        self._subtitle = subtitle
+    }
+    
+    func setupWithZoom(zoom: Double) {
+        
+        let annotationType = userInfo["type"] as! String
+
+        switch annotationType {
+
+        case "button":
+
+            let selected = userInfo["selected"] as! Bool
+            let spot = userInfo["spot"] as! ParkingSpot
+            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+            let invisible = userInfo["invisible"] as? Bool ?? false
+            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+            
+            if invisible {
+                let invisibleImage = UIImage.transparentImageWithSize(CGSize(width: 16, height: 16))
+                annotationImage = invisibleImage
+                reuseIdentifier = "invisible"
+                return
+            }
+            
+            var imageName = "button_line_"
+            
+            if zoom < 18 {
+                imageName += "small_"
+            }
+            if isCurrentlyPaidSpot {
+                imageName += "metered_"
+            }
+            if !selected {
+                imageName += "in"
+            }
+            
+            imageName += "active"
+            
+            let circleImage = UIImage(named: imageName)
+            annotationImage = circleImage!
+            reuseIdentifier = imageName
+            return
+            
+//                    let circleMarker: RMMarker = RMMarker(UIImage: circleImage)
+//            //
+//            //        if shouldAddAnimation {
+//            //            circleMarker.addScaleAnimation()
+//            //            spotIDsDrawnOnMap.append(spot.identifier)
+//            //        }
+//            
+//                    if (selected) {
+//                        let pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
+//                        pulseAnimation.duration = 0.7
+//                        pulseAnimation.fromValue = 0.95
+//                        pulseAnimation.toValue = 1.10
+//                        pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+//                        pulseAnimation.autoreverses = true
+//                        pulseAnimation.repeatCount = FLT_MAX
+//                        circleMarker.addAnimation(pulseAnimation, forKey: nil)
+//                    }
+//                    
+//                    return circleMarker
+
+        case "lot":
+
+            let selected = userInfo["selected"] as! Bool
+            let cheaper = userInfo["cheaper"] as! Bool
+            let lot = userInfo["lot"] as! Lot
+            let shouldAddFadeAnimation = userInfo["fadeAnimation"] as? Bool ?? false
+            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool && !selected && !shouldAddFadeAnimation
+
+            var imageName = "lot_pin_closed"
+            var zPosition: CGFloat = 0 //this doesn't work!! See?
+
+            if lot.isCurrentlyOpen {
+                imageName = "lot_pin_open"
+                zPosition = 50
+
+                if cheaper && !selected {
+                    imageName += "_cheaper"
+                    zPosition = 100
+                }
+            }
+
+            if selected {
+                imageName += "_selected"
+                zPosition = 150
+            }
+
+//            let circleMarker: RMMarker = RMMarker(UIImage: lot.markerImageNamed(imageName), anchorPoint: CGPoint(x: 0.5, y: 1))
 //
-//class PreviousCheckinSpot: NSObject, MKAnnotation, MGLAnnotation {
-//    var coordinate: CLLocationCoordinate2D //{ get { return buttonLocation.coordinate } }
-//    var title: String! //{ get { return name } }
-//    var spot: ParkingSpot?
-//    
-//    init(coordinate: CLLocationCoordinate2D, title: String) {
-//        self.coordinate = coordinate
-//        self.title = title
-//    }
-//    
-//    init(spot: ParkingSpot) {
-//        self.spot = spot
-//        self.coordinate = spot.buttonLocation.coordinate
-//        self.title = spot.name
-//    }
-//}
-//
-//class LineParkingSpotRenderer: MKPolylineRenderer {
-//    
-//    override func drawMapRect(mapRect: MKMapRect, zoomScale: MKZoomScale, inContext context: CGContext!) {
-//        super.drawMapRect(mapRect, zoomScale: zoomScale, inContext: context)
-//    }
-//    
-//}
-//
-//class ButtonParkingSpotView: MKAnnotationView {
-//    
-//    var imageName: String = ""
-//    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//    }
-//    
-//    init!(mapboxGLAnnotation: MGLAnnotation!, reuseIdentifier: String!, mbxZoomLevel: Double) {
-//        super.init(annotation: mapboxGLAnnotation as! MKAnnotation, reuseIdentifier: reuseIdentifier)
-//        setup(CGFloat(mbxZoomLevel))
-//    }
-//    
-//    init!(annotation: MKAnnotation!, reuseIdentifier: String!, mbxZoomLevel: CGFloat) {
-//        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
-//        setup(mbxZoomLevel)
-//    }
-//
-//    required init(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//    }
-//
-//    var buttonParkingSpotAnnotation : ButtonParkingSpot!
-//    
-//    override var annotation: MKAnnotation! {
-//        get { return buttonParkingSpotAnnotation }
-//        set { if newValue == nil || newValue is ButtonParkingSpot {
-//            buttonParkingSpotAnnotation = newValue as? ButtonParkingSpot
-//        } else {
-//            println("Incorrect annotation type for ButtonParkingSpotView")
+//            if shouldAddAnimation {
+//                circleMarker.addScaleAnimation()
+//                spotIDsDrawnOnMap.append(lot.identifier)
+//            } else if shouldAddFadeAnimation {
+//                let fromImageName = imageName == "lot_pin_open" ? "lot_pin_open_cheaper" : "lot_pin_open"
+//                circleMarker.addCrossFadeAnimationFromImage(lot.markerImageNamed(fromImageName), toImage:lot.markerImageNamed(imageName))
 //            }
-//        }
-//    }
-//    
-//    func setup(mbxZoomLevel: CGFloat) {
-//        let userInfo = buttonParkingSpotAnnotation.userInfo
-//        let selected = userInfo["selected"] as! Bool
-//        let spot = userInfo["spot"] as! ParkingSpot
-//        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
-//        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
-//        
-//        if shouldAddAnimation {
-//           self.layer.addScaleAnimation()
-////            spotIdentifiersDrawnOnMap.append(spot.identifier)
-//        }
-//        
-//        imageName = "button_line_"
-//        
-//        if mbxZoomLevel < 18 {
-//            imageName += "small_"
-//        }
-//        if isCurrentlyPaidSpot {
-//            imageName += "metered_"
-//        }
-//        if !selected {
-//            imageName += "in"
-//        }
-//        
-//        imageName += "active"
-//        
-//        var circleImage = UIImage(named: imageName)
-//        
-//        self.image = circleImage
-//        
-//        if (selected) {
-//            var pulseAnimation:CABasicAnimation = CABasicAnimation(keyPath: "transform.scale")
-//            pulseAnimation.duration = 0.7
-//            pulseAnimation.fromValue = 0.95
-//            pulseAnimation.toValue = 1.10
-//            pulseAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
-//            pulseAnimation.autoreverses = true
-//            pulseAnimation.repeatCount = FLT_MAX
-//            self.layer.addAnimation(pulseAnimation, forKey: "pulse")
-//        } else {
-//            self.layer.removeAnimationForKey("pulse")
-//        }
 //
-//    }
-//
-//    var annotationImage: MGLAnnotationImage {
-//        return MGLAnnotationImage(image: self.image, reuseIdentifier: self.reuseIdentifier + self.imageName)
-//    }
-//    
-//}
+//            circleMarker.zPosition = zPosition
+            
+            annotationImage = lot.markerImageNamed(imageName)
+            reuseIdentifier = lot.markerReuseIdentifierWithImageNamed(imageName)
+            return
 
+
+        case "carsharing":
+
+            let selected = userInfo["selected"] as! Bool
+            let carShare = userInfo["carshare"] as! CarShare
+            let calloutView = carShare.calloutView()
+            leftCalloutAccessoryView = calloutView.0
+            rightCalloutAccessoryView = calloutView.1
+            reuseIdentifier = carShare.mapPinName(selected)
+            annotationImage = UIImage(named: reuseIdentifier)
+            return
+
+
+        case "carsharinglot":
+            
+            let carShareLot = userInfo["carsharelot"] as! CarShareLot
+//            let marker = RMMarker(UIImage: carShareLot.mapPinImage, anchorPoint: CGPoint(x: 0.5, y: 1))
+            reuseIdentifier = carShareLot.reuseIdentifier
+            annotationImage = carShareLot.mapPinImage
+            return
+
+        case "searchResult":
+            
+            let searchResult = userInfo["searchresult"] as! SearchResult
+            let calloutView = searchResult.calloutView()
+            leftCalloutAccessoryView = calloutView.0
+            rightCalloutAccessoryView = calloutView.1
+            reuseIdentifier = "pin_pointer_result"
+            annotationImage = UIImage(named: reuseIdentifier)!
+            return
+            
+        case "previousCheckin":
+            reuseIdentifier = "pin_round_p"
+            annotationImage = UIImage(named: reuseIdentifier)!
+            return
+
+            
+        default:
+            return
+            
+        }
+
+    }
+}

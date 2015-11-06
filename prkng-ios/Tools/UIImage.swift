@@ -57,6 +57,15 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return finalImage
     }
+    
+    class func transparentImageWithSize(size: CGSize) -> UIImage {
+        
+        UIGraphicsBeginImageContextWithOptions(size, false, Settings.screenScale)
+        let viewImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return viewImage
+        
+    }
 
     class func imageFromView(view: UIView) -> UIImage {
         

@@ -363,7 +363,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
 
             button.layer.cornerRadius = 10
             button.titleLabel?.font = Styles.FontFaces.regular(10)
-//            button.addTarget(self, action: "montrealButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+//            button.addTarget(self, action: "test", forControlEvents: UIControlEvents.TouchUpInside)
             contentView.addSubview(button)
             
             title.font = Styles.FontFaces.regular(14)
@@ -407,6 +407,11 @@ class SettingsServiceSwitchCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 74, height: 20))
         }
 
+    }
+    
+    func test() {
+        let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")
+        self.parentVC?.navigationController?.pushViewController(vc, animated: true)
     }
     
 }

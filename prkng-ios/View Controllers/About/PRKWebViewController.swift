@@ -19,11 +19,16 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
     
     let backButton = ViewFactory.hugeButton()
     
+    init(url: String) {
+        self.englishUrl = url
+        self.frenchUrl = url
+        super.init(nibName: nil, bundle: nil)
+    }
+
     init(englishUrl: String, frenchUrl: String) {
         self.englishUrl = englishUrl
         self.frenchUrl = frenchUrl
         super.init(nibName: nil, bundle: nil)
-
     }
 
     required init?(coder aDecoder: NSCoder) {
