@@ -201,8 +201,8 @@
 "handicap" = "Handicap";
 "card" = "Card";
 "operated_by" = "By";
-"find_a_car" = "Find a car";
-"find_a_spot" = "Find a spot";
+"find_a_car" = "Car";
+"find_a_spot" = "Spot";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";
 "car_sharing_enabled_text" = "Car sharing is enabled";

@@ -45,7 +45,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //            mapViewController = GoogleMapViewController()
 //            break
         default:
-            mapViewController = MGLMapViewController()
+            mapViewController = RMMapViewController()
             Settings.setShouldFilterForCarSharing(mapViewController.mapMode == .CarSharing)
             break
         }

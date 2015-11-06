@@ -493,68 +493,68 @@ struct DayArray {
 }
 
 
-func ==(lhs: MGLLineParkingSpot, rhs: MGLLineParkingSpot) -> Bool {
-    return lhs.hashValue == rhs.hashValue
-}
-
-class MGLLineParkingSpot: MGLPolyline, UserInfo {
-    
-    var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } set(newValue) { parkingSpot.userInfo = newValue } }//to maintain backwards compatibility with mapbox
-    var parkingSpot: ParkingSpot!
-    
-    
-    private var lineWidth: CGFloat = 0
-    func lineWidthWithZoom(zoom: Double) -> CGFloat {
-        setupWithZoom(zoom)
-        return lineWidth
-    }
-    private var lineColor: UIColor = UIColor.clearColor()
-    func lineColorWithZoom(zoom: Double) -> UIColor {
-        setupWithZoom(zoom)
-        return lineColor
-    }
-
-    
-    //MARK- Hashable
-    
-    override var hashValue: Int { get { return Int(parkingSpot.identifier)! } }
-    
-    override init() {
-        super.init()
-    }
-    
-    func setupWithZoom(zoom: Double) {
-        
-        let selected = userInfo["selected"] as! Bool
-        let spot = userInfo["spot"] as! ParkingSpot
-        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
-        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
-        
-        if selected {
-            lineColor = Styles.Colors.red2
-        } else if isCurrentlyPaidSpot {
-            lineColor = Styles.Colors.curry
-        } else {
-            lineColor = Styles.Colors.lineBlue
-        }
-        
-        if zoom >= 15.0 && zoom < 17.0 {
-            lineWidth = 2.6
-        } else {
-            lineWidth = 4.4
-        }
-        
-//        for location in spot.line.coordinates as Array<CLLocation> {
-//            shape.addLineToCoordinate(location.coordinate)
+//func ==(lhs: MGLLineParkingSpot, rhs: MGLLineParkingSpot) -> Bool {
+//    return lhs.hashValue == rhs.hashValue
+//}
+//
+//class MGLLineParkingSpot: MGLPolyline, UserInfo {
+//    
+//    var userInfo: [String:AnyObject] { get { return parkingSpot.userInfo } set(newValue) { parkingSpot.userInfo = newValue } }//to maintain backwards compatibility with mapbox
+//    var parkingSpot: ParkingSpot!
+//    
+//    
+//    private var lineWidth: CGFloat = 0
+//    func lineWidthWithZoom(zoom: Double) -> CGFloat {
+//        setupWithZoom(zoom)
+//        return lineWidth
+//    }
+//    private var lineColor: UIColor = UIColor.clearColor()
+//    func lineColorWithZoom(zoom: Double) -> UIColor {
+//        setupWithZoom(zoom)
+//        return lineColor
+//    }
+//
+//    
+//    //MARK- Hashable
+//    
+//    override var hashValue: Int { get { return Int(parkingSpot.identifier)! } }
+//    
+//    override init() {
+//        super.init()
+//    }
+//    
+//    func setupWithZoom(zoom: Double) {
+//        
+//        let selected = userInfo["selected"] as! Bool
+//        let spot = userInfo["spot"] as! ParkingSpot
+//        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+//        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+//        
+//        if selected {
+//            lineColor = Styles.Colors.red2
+//        } else if isCurrentlyPaidSpot {
+//            lineColor = Styles.Colors.curry
+//        } else {
+//            lineColor = Styles.Colors.lineBlue
 //        }
-        
-//        if shouldAddAnimation {
-//            shape.addScaleAnimation()
-//            lineSpotIDsDrawnOnMap.append(spot.identifier)
+//        
+//        if zoom >= 15.0 && zoom < 17.0 {
+//            lineWidth = 2.6
+//        } else {
+//            lineWidth = 4.4
 //        }
-        
-    }
-}
+//        
+////        for location in spot.line.coordinates as Array<CLLocation> {
+////            shape.addLineToCoordinate(location.coordinate)
+////        }
+//        
+////        if shouldAddAnimation {
+////            shape.addScaleAnimation()
+////            lineSpotIDsDrawnOnMap.append(spot.identifier)
+////        }
+//        
+//    }
+//}
 
 protocol UserInfo: MGLAnnotation {
     var userInfo: [String:AnyObject] { get set }//to maintain backwards compatibility with mapbox

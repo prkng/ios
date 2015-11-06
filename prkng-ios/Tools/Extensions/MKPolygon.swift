@@ -8,57 +8,57 @@
 
 extension MKPolygon {
    
-//    static func polygonsToRMPolygonAnnotations(polygons: [MKPolygon], mapView: RMMapView) -> [RMPolygonAnnotation] {
-//
-//        var polygonAnnotations = [RMPolygonAnnotation]()
-//        for polygon in polygons {
-//            let polygonAnnotation = polygon.polygonToRMPolygonAnnotation(mapView)
-//            polygonAnnotations.append(polygonAnnotation)
-//        }
-//        return polygonAnnotations
-//    }
-//
-//    func polygonToRMPolygonAnnotation(mapView: RMMapView) -> RMPolygonAnnotation {
-//        
-//        let coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
-//        self.getCoordinates(coordsPointer, range: NSMakeRange(0, self.pointCount))
-//        var locations: [CLLocation] = []
-//        for i in 0..<self.pointCount {
-//            let coord = coordsPointer[i]
-//            locations.append(CLLocation(latitude: coord.latitude, longitude: coord.longitude))
-//        }
-//        
-//        var interiorRMPolygonAnnotations = [RMPolygonAnnotation]()
-//        for interiorPolygon in self.interiorPolygons as [MKPolygon]! {
-//            let interiorPolygonAnnotation = interiorPolygon.polygonToRMPolygonAnnotation(mapView)
-//            interiorRMPolygonAnnotations.append(interiorPolygonAnnotation)
-//        }
-//        
-//        let polygonAnnotation = RMPolygonAnnotation(mapView: mapView, points: locations, interiorPolygons: interiorRMPolygonAnnotations)
-//        polygonAnnotation.userInfo = ["type": "polygon"]
-//        polygonAnnotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
-//        polygonAnnotation.lineColor = Styles.Colors.red1
-//        polygonAnnotation.lineWidth = 4.0
-//
-//        return polygonAnnotation
-//    }
-    
-    func toMGLPolygon() -> MGLPolygon {
-        let coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
-        self.getCoordinates(coordsPointer, range: NSMakeRange(0, self.pointCount))
-        let mglPolygon = MGLPolygon(coordinates: coordsPointer, count: UInt(self.pointCount))
-        return mglPolygon
+    static func polygonsToRMPolygonAnnotations(polygons: [MKPolygon], mapView: RMMapView) -> [RMPolygonAnnotation] {
+
+        var polygonAnnotations = [RMPolygonAnnotation]()
+        for polygon in polygons {
+            let polygonAnnotation = polygon.polygonToRMPolygonAnnotation(mapView)
+            polygonAnnotations.append(polygonAnnotation)
+        }
+        return polygonAnnotations
     }
 
-    static func toMGLPolygons(polygons: [MKPolygon]) -> [MGLPolygon] {
+    func polygonToRMPolygonAnnotation(mapView: RMMapView) -> RMPolygonAnnotation {
         
-        var mglPolygons = [MGLPolygon]()
-        for polygon in polygons {
-            let mglPolygon = polygon.toMGLPolygon()
-            mglPolygons.append(mglPolygon)
+        let coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
+        self.getCoordinates(coordsPointer, range: NSMakeRange(0, self.pointCount))
+        var locations: [CLLocation] = []
+        for i in 0..<self.pointCount {
+            let coord = coordsPointer[i]
+            locations.append(CLLocation(latitude: coord.latitude, longitude: coord.longitude))
         }
-        return mglPolygons
+        
+        var interiorRMPolygonAnnotations = [RMPolygonAnnotation]()
+        for interiorPolygon in self.interiorPolygons as [MKPolygon]! {
+            let interiorPolygonAnnotation = interiorPolygon.polygonToRMPolygonAnnotation(mapView)
+            interiorRMPolygonAnnotations.append(interiorPolygonAnnotation)
+        }
+        
+        let polygonAnnotation = RMPolygonAnnotation(mapView: mapView, points: locations, interiorPolygons: interiorRMPolygonAnnotations)
+        polygonAnnotation.userInfo = ["type": "polygon"]
+        polygonAnnotation.fillColor = Styles.Colors.beige1.colorWithAlphaComponent(0.7)
+        polygonAnnotation.lineColor = Styles.Colors.red1
+        polygonAnnotation.lineWidth = 4.0
+
+        return polygonAnnotation
     }
+    
+//    func toMGLPolygon() -> MGLPolygon {
+//        let coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
+//        self.getCoordinates(coordsPointer, range: NSMakeRange(0, self.pointCount))
+//        let mglPolygon = MGLPolygon(coordinates: coordsPointer, count: UInt(self.pointCount))
+//        return mglPolygon
+//    }
+//
+//    static func toMGLPolygons(polygons: [MKPolygon]) -> [MGLPolygon] {
+//        
+//        var mglPolygons = [MGLPolygon]()
+//        for polygon in polygons {
+//            let mglPolygon = polygon.toMGLPolygon()
+//            mglPolygons.append(mglPolygon)
+//        }
+//        return mglPolygons
+//    }
     
     static func invertPolygons(polygons: [MKPolygon]) -> MKPolygon {
         
