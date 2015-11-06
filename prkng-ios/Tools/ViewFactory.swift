@@ -243,7 +243,19 @@ struct ViewFactory {
                 image = UIImage(named: "icon_timemax_90")
                 break
             case 120:
-                image = UIImage(named: "icon_timemax_120")
+                image = UIImage(named: "icon_timemax_2")
+                break
+            case 180:
+                image = UIImage(named: "icon_timemax_3")
+                break
+            case 240:
+                image = UIImage(named: "icon_timemax_4")
+                break
+            case 300:
+                image = UIImage(named: "icon_timemax_5")
+                break
+            case 360:
+                image = UIImage(named: "icon_timemax_6")
                 break
             default:
                 timeLimitLabel.text = String(minutes)

@@ -959,11 +959,11 @@ class MGLMapViewController: MapViewController, MGLMapViewDelegate, UIGestureReco
     
     override func addCityOverlaysCallback(polygons: [MKPolygon]) {
         //TODO
-//        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
+        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
         let invertedPolygon = MKPolygon.invertPolygons(polygons)
 //        mapView.addAnnotation(invertedPolygon.toMGLPolygon())
-//        mapView.addAnnotations(MKPolygon.toMGLPolygons(interiorPolygons))
-        mapView.addAnnotations(MKPolygon.toMGLPolygons(invertedPolygon))
+        mapView.addAnnotations(MKPolygon.toMGLPolygons(interiorPolygons))
+//        mapView.addAnnotations(MKPolygon.toMGLPolygons(polygons))
     }
     
     // MARK: SpotDetailViewDelegate

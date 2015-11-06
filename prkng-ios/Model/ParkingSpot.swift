@@ -105,7 +105,7 @@ class ParkingSpot: NSObject, DetailObject {
             if (interval > 2*3600) { // greater than 2 hours = show available until... by default
                 return ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
             } else {
-                return ParkingSpot.availableMinutesStringAttributed(interval, font: Styles.Fonts.h2rVariable)
+                return ParkingSpot.availableMinutesOrHoursStringAttributed(interval, font: Styles.Fonts.h2rVariable)
             }
             
         }
@@ -206,18 +206,25 @@ class ParkingSpot: NSObject, DetailObject {
         return String(format: "%02ld:%02ld", hours, minutes)
     }
 
-    //returns "30 minutes" or similar
-    func availableMinutesStringAttributed(font: UIFont) -> NSAttributedString {
+    //returns "30 minutes" or "2 hours" or similar
+    func availableMinutesOrHoursStringAttributed(font: UIFont) -> NSAttributedString {
         let interval = availableTimeInterval()
-        return ParkingSpot.availableMinutesStringAttributed(interval, font: font)
+        return ParkingSpot.availableMinutesOrHoursStringAttributed(interval, font: font)
     }
     
-    static func availableMinutesStringAttributed(interval: NSTimeInterval, font: UIFont) -> NSAttributedString {
+    static func availableMinutesOrHoursStringAttributed(interval: NSTimeInterval, font: UIFont) -> NSAttributedString {
         let minutes  = Int(interval / 60)
-        let minutesString = String(format: "%ld minutes", minutes)
+        
+        var timeString = String(format: "%ld minutes", minutes)
+
+        if minutes > 60 && minutes % 60 == 0 {
+            //show how many hours
+            timeString = String(format: "%ld hours", minutes/60)
+        }
+        
         
         let attrs = [NSFontAttributeName: font]
-        let attributedString = NSMutableAttributedString(string: minutesString, attributes: attrs)
+        let attributedString = NSMutableAttributedString(string: timeString, attributes: attrs)
 
         return attributedString
     }
