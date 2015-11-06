@@ -13,13 +13,6 @@ class MapMessageView: UIView {
     var messageContainer: UIView
     private var mapMessageViewImage: UIImageView
     var mapMessageLabel: UILabel
-
-    var availableCityPicker: UIView
-    private var availableInLabel: UILabel
-    private var montrealButton: UIButton
-    private var quebecCityButton: UIButton
-
-    var delegate : MapMessageViewDelegate?
     
     private var didsetupSubviews : Bool
     private var didSetupConstraints : Bool
@@ -29,11 +22,6 @@ class MapMessageView: UIView {
         messageContainer = UIView()
         mapMessageViewImage = UIImageView(image: UIImage(named:"icon_exclamation"))
         mapMessageLabel = UILabel()
-        
-        availableCityPicker = UIView()
-        availableInLabel = UILabel()
-        montrealButton = ViewFactory.transparentRoundedButton()
-        quebecCityButton = ViewFactory.transparentRoundedButton()
         
         didsetupSubviews = false
         didSetupConstraints = true
@@ -74,28 +62,6 @@ class MapMessageView: UIView {
         mapMessageLabel.textAlignment = .Left
         messageContainer.addSubview(mapMessageLabel)
         
-        availableCityPicker.backgroundColor = Styles.Colors.stone.colorWithAlphaComponent(0.8)
-        self.addSubview(availableCityPicker)
-        
-        availableInLabel.text = "available_in".localizedString
-        availableInLabel.textColor = Styles.Colors.petrol2
-        availableInLabel.font = Styles.Fonts.s3r
-        availableCityPicker.addSubview(availableInLabel)
-
-        montrealButton.setTitleColor(Styles.Colors.petrol2, forState: UIControlState.Normal)
-        montrealButton.layer.borderColor = Styles.Colors.petrol2.CGColor
-        montrealButton.layer.cornerRadius = 10
-        montrealButton.setTitle("Montréal", forState: .Normal)
-        montrealButton.addTarget(self, action: "montrealButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        availableCityPicker.addSubview(montrealButton)
-        
-        quebecCityButton.setTitleColor(Styles.Colors.petrol2, forState: UIControlState.Normal)
-        quebecCityButton.layer.borderColor = Styles.Colors.petrol2.CGColor
-        quebecCityButton.layer.cornerRadius = 10
-        quebecCityButton.setTitle("Québec", forState: .Normal)
-        quebecCityButton.addTarget(self, action: "quebecCityButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        availableCityPicker.addSubview(quebecCityButton)
-
         didsetupSubviews = true
         didSetupConstraints = false
     }
@@ -106,6 +72,7 @@ class MapMessageView: UIView {
             make.left.equalTo(self)
             make.right.equalTo(self)
             make.top.equalTo(self)
+            make.bottom.equalTo(self)
         }
         
         mapMessageViewImage.snp_makeConstraints { (make) -> () in
@@ -122,76 +89,6 @@ class MapMessageView: UIView {
             make.bottom.greaterThanOrEqualTo(self.messageContainer).offset(-15).priorityRequired()
         }
         
-        hideCityPicker()
-        
-        availableInLabel.snp_makeConstraints { (make) -> () in
-            make.left.equalTo(self.availableCityPicker).offset(34)
-            make.centerY.equalTo(self.availableCityPicker)
-        }
-        
-        montrealButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.quebecCityButton.snp_left).offset(-15)
-            make.centerY.equalTo(self.availableCityPicker)
-            make.size.equalTo(CGSizeMake(75, 20))
-        }
-
-        quebecCityButton.snp_makeConstraints { (make) -> () in
-            make.right.equalTo(self.availableCityPicker).offset(-34)
-            make.centerY.equalTo(self.availableCityPicker)
-            make.size.equalTo(CGSizeMake(75, 20))
-        }
-        
-    }
-    
-    func showCityPicker() {
-        
-        availableCityPicker.hidden = false
-
-        availableCityPicker.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self)
-            make.right.equalTo(self)
-            make.top.equalTo(self.messageContainer.snp_bottom)
-            make.height.equalTo(50)
-            make.bottom.equalTo(self)
-        }
-    }
-    
-    func hideCityPicker() {
-        
-        availableCityPicker.hidden = true
-        
-        availableCityPicker.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self)
-            make.right.equalTo(self)
-            make.top.equalTo(self.messageContainer.snp_bottom)
-            make.height.equalTo(0)
-            make.bottom.equalTo(self)
-
-        }
-
-    }
-    
-    func montrealButtonTapped() {
-        self.delegate?.cityDidChange(fromCity: Settings.selectedCity(), toCity: CityOperations.sharedInstance.montreal!)
-    }
-    
-    func quebecCityButtonTapped() {
-        self.delegate?.cityDidChange(fromCity: Settings.selectedCity(), toCity: CityOperations.sharedInstance.quebecCity!)
-    }
-    
-    func height() -> CGFloat {
-        
-//        let attrs = [NSFontAttributeName: indicatorButton.titleLabel!.font]
-//        let maximumLabelSize = CGSize(width: rightViewWidth - locationButtonWidth - 10, height: 20)
-//        let rect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions.allZeros, attributes: attrs, context: nil)
-//
-//        return Styles.Sizes.statusBarHeight +
-
-        return 0
     }
         
-}
-
-protocol MapMessageViewDelegate {
-    func cityDidChange(fromCity fromCity: City, toCity: City)
 }

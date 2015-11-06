@@ -44,6 +44,7 @@
 		3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E568EA11B6C159100E744FA /* PRKPopupViewController.swift */; };
 		3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */; };
 		3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E5B2EFF1BA359B500658A9A /* InfoPlist.strings */; };
+		3E5C12041BED2C8B0070709F /* CityPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E5C12031BED2C8B0070709F /* CityPickerViewController.swift */; };
 		3E5FB36B1BD94E260002D705 /* DVSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E5FB36A1BD94E260002D705 /* DVSwitch.m */; };
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
@@ -240,6 +241,7 @@
 		3E5B2EF21BA3482D00658A9A /* AnalyticsOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsOperations.swift; sourceTree = "<group>"; };
 		3E5B2EFE1BA359B500658A9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3E5B2F001BA359B700658A9A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3E5C12031BED2C8B0070709F /* CityPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityPickerViewController.swift; sourceTree = "<group>"; };
 		3E5FB3691BD94E260002D705 /* DVSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DVSwitch.h; sourceTree = "<group>"; };
 		3E5FB36A1BD94E260002D705 /* DVSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DVSwitch.m; sourceTree = "<group>"; };
 		3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
@@ -845,6 +847,7 @@
 				3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */,
 				BF2A40A61AC468450055D785 /* SpotDetailView.swift */,
 				3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */,
+				3E5C12031BED2C8B0070709F /* CityPickerViewController.swift */,
 			);
 			path = Map;
 			sourceTree = "<group>";
@@ -1192,6 +1195,7 @@
 				BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */,
 				3E54B3B31BCF050F00879528 /* City.swift in Sources */,
 				BF7170AE1AE3F04D00B922CA /* TouchForwardingView.swift in Sources */,
+				3E5C12041BED2C8B0070709F /* CityPickerViewController.swift in Sources */,
 				3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */,
 				3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */,
 				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,

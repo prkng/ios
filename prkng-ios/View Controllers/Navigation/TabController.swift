@@ -410,9 +410,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         if !onlyIfPreviouslyShown {
 
             if showCityPicker {
-                hereViewController.mapMessageView.showCityPicker()
-            } else {
-                hereViewController.mapMessageView.hideCityPicker()
+                let cityPickerVC = CityPickerViewController(parent: self)
+                cityPickerVC.showOnViewController(self)
             }
             
             UIView.animateWithDuration(0.2, animations: { () -> Void in
@@ -547,6 +546,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     func cityDidChange(fromCity fromCity: City, toCity: City) {
+        Settings.setSelectedCity(toCity)
         let coordinate = Settings.selectedCity().coordinate
         self.mapViewController.goToCoordinate(coordinate, named:toCity.displayName, withZoom:13, showing: false)
     }

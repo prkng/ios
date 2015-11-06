@@ -233,6 +233,9 @@
 "garages" = "Parking lots";
 "general" = "General";
 
+"city_picker_title" = "Available Cities";
+"city_picker_subtitle" = "We are currently available in:";
+
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";
 "btn_reserve" = "btn_reserve_en";

@@ -216,60 +216,54 @@ class MGLMapViewController: MapViewController, MGLMapViewDelegate, UIGestureReco
         
     }
     
-    func afterMapMove(map: MGLMapView!, byUser wasUserAction: Bool) {
-
+    func getTimeSinceLastMapMovement() -> NSTimeInterval {
+        let currentTime = NSDate().timeIntervalSince1970 * 1000
+        let difference = currentTime - userLastChangedMap
+        return difference
     }
     
     func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
 
-        //the following used to happen after a zoom
         if self.mapMode == .Garage {
 //            mapView.clusteringEnabled = map.zoom <= 12
             //TODO: clustering on MGLMapView...
         }
         
-        //        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-        //            Int64(0.16 * Double(NSEC_PER_SEC)))
-        //        dispatch_after(delayTime, dispatch_get_main_queue()) {
-        //
-                    if (abs(self.lastMapZoom - mapView.zoomLevel) >= 1) {
-                        self.spotIDsDrawnOnMap = []
-                    }
-        
-//                    if self.getTimeSinceLastMapMovement() > 150 {
-                        self.updateAnnotations()
-//                    }
-        
-                    self.lastMapZoom = mapView.zoomLevel
-        //        }
-        
-        //the following used to happen after a map move
-        
-//                let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-//                    Int64(0.16 * Double(NSEC_PER_SEC)))
-//                dispatch_after(delayTime, dispatch_get_main_queue()) {
-        
-                    self.removeSelectedAnnotationIfExists()
-        
-                    //reload if the map has moved sufficiently...
-                    let lastMapCenterLocation = CLLocation(latitude: self.lastMapCenterCoordinate.latitude, longitude: self.lastMapCenterCoordinate.longitude)
-                    let newMapCenterLocation = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
-        let centerLatitudeDelta = abs(lastMapCenterLocation.coordinate.latitude - newMapCenterLocation.coordinate.latitude)
-        let centerLongitudeDelta = abs(lastMapCenterLocation.coordinate.longitude - newMapCenterLocation.coordinate.longitude)
-        
-        let latitudeDeltaInDegrees = MGLCoordinateBoundsGetCoordinateSpan(mapView.visibleCoordinateBounds).latitudeDelta
-        let longitudeDeltaInDegrees = MGLCoordinateBoundsGetCoordinateSpan(mapView.visibleCoordinateBounds).longitudeDelta
-        
-                    //        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
-                    if centerLatitudeDelta/latitudeDeltaInDegrees > self.MOVE_DELTA_PERCENTAGE
-                        || centerLongitudeDelta/longitudeDeltaInDegrees > self.MOVE_DELTA_PERCENTAGE {
-                            self.updateAnnotations()
-                            self.lastMapCenterCoordinate = mapView.centerCoordinate
-                    }
-                    self.delegate?.mapDidDismissSelection(byUser: true)
-                    
-//                }
-        
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
+            Int64(0.16 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            //
+            if (abs(self.lastMapZoom - mapView.zoomLevel) >= 1) {
+                self.spotIDsDrawnOnMap = []
+            }
+            
+            let zoomChanged = self.lastMapZoom != mapView.zoomLevel
+            
+            self.removeSelectedAnnotationIfExists()
+            
+            //reload if the map has moved sufficiently...
+            let lastMapCenterLocation = CLLocation(latitude: self.lastMapCenterCoordinate.latitude, longitude: self.lastMapCenterCoordinate.longitude)
+            let newMapCenterLocation = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+            let centerLatitudeDelta = abs(lastMapCenterLocation.coordinate.latitude - newMapCenterLocation.coordinate.latitude)
+            let centerLongitudeDelta = abs(lastMapCenterLocation.coordinate.longitude - newMapCenterLocation.coordinate.longitude)
+            
+            let latitudeDeltaInDegrees = MGLCoordinateBoundsGetCoordinateSpan(mapView.visibleCoordinateBounds).latitudeDelta
+            let longitudeDeltaInDegrees = MGLCoordinateBoundsGetCoordinateSpan(mapView.visibleCoordinateBounds).longitudeDelta
+            
+            //        NSLog("Map moved " + String(stringInterpolationSegment: differenceInMeters) + " meters.")
+            if self.getTimeSinceLastMapMovement() > 150 && (zoomChanged
+                || centerLatitudeDelta/latitudeDeltaInDegrees > self.MOVE_DELTA_PERCENTAGE
+                || centerLongitudeDelta/longitudeDeltaInDegrees > self.MOVE_DELTA_PERCENTAGE) {
+                    self.updateAnnotations()
+                    self.lastMapCenterCoordinate = mapView.centerCoordinate
+            }
+
+            self.delegate?.mapDidDismissSelection(byUser: true)
+            
+            self.lastMapZoom = mapView.zoomLevel
+            
+        }
+    
     }
 
     func mapView(mapView: MGLMapView, didSelectAnnotation annotation: MGLAnnotation) {
@@ -695,9 +689,10 @@ class MGLMapViewController: MapViewController, MGLMapViewDelegate, UIGestureReco
             self.removeAnnotations()
             
             self.annotations = tempAnnotations
-            for annotation in self.annotations {
-                self.mapView.addAnnotation(annotation as! MGLAnnotation)
-            }
+//            for annotation in self.annotations {
+//                self.mapView.addAnnotation(annotation as! MGLAnnotation)
+//            }
+            self.mapView.addAnnotations(self.annotations as! [MGLAnnotation])
             
             SVProgressHUD.dismiss()
             self.updateInProgress = false

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate, MapMessageViewDelegate, FilterViewControllerDelegate {
+class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKModalViewControllerDelegate, CLLocationManagerDelegate, UITextFieldDelegate, PRKVerticalGestureRecognizerDelegate, FilterViewControllerDelegate {
 
     var showFiltersOnAppear: Bool = false
     
@@ -116,7 +116,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         self.view.addSubview(self.filterVC.view)
         self.filterVC.willMoveToParentViewController(self)
 
-        mapMessageView.delegate = self
         view.addSubview(mapMessageView)
         
         modeSelection.addTarget(self, action: "modeSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
@@ -653,12 +652,6 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func didChangeCarSharingMode(mode: CarSharingMode) {
         self.delegate?.updateMapAnnotations()
-    }
- 
-    // MARK: MapMessageViewDelegate
-    
-    func cityDidChange(fromCity fromCity: City, toCity: City) {
-        self.delegate?.cityDidChange(fromCity: fromCity, toCity: toCity)
     }
     
     // MARK: Car sharing popup

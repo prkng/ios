@@ -13,14 +13,14 @@ struct ViewFactory {
     
     // MARK: Buttons
 
-    static func scheduleButton () -> UIButton {
+    static func scheduleButton() -> UIButton {
         let scheduleButton : UIButton =  UIButton()
         scheduleButton.setImage(UIImage(named: "btn_schedule_active"), forState: UIControlState.Normal)
         scheduleButton.setImage(UIImage(named: "btn_schedule"), forState: UIControlState.Highlighted)
         return scheduleButton
     }
     
-    static func mapReturnButton () -> UIButton {
+    static func mapReturnButton() -> UIButton {
         let scheduleButton : UIButton =  UIButton()
         scheduleButton.setImage(UIImage(named: "btn_map_return"), forState: UIControlState.Normal)
         return scheduleButton
@@ -38,19 +38,25 @@ struct ViewFactory {
 
     static func redRoundedButtonWithHeight(height: CGFloat, font: UIFont, text: String) -> UIButton {
         
-        let button = UIButton ()
+        let button = roundedButtonWithHeight(height, backgroundColor: Styles.Colors.red2, font: font, text: text, textColor: Styles.Colors.beige1, highlightedTextColor: Styles.Colors.beige2)
+        return button
+    }
+
+    static func roundedButtonWithHeight(height: CGFloat, backgroundColor: UIColor, font: UIFont, text: String, textColor: UIColor, highlightedTextColor: UIColor) -> UIButton {
+        
+        let button = UIButton()
         button.titleLabel?.font = font
         button.setTitle(text, forState: UIControlState.Normal)
-        button.setTitleColor(Styles.Colors.beige1, forState: UIControlState.Normal)
-        button.setTitleColor(Styles.Colors.beige2, forState: UIControlState.Highlighted)
+        button.setTitleColor(textColor, forState: UIControlState.Normal)
+        button.setTitleColor(highlightedTextColor, forState: UIControlState.Highlighted)
         button.layer.cornerRadius = height/2
-        button.backgroundColor = Styles.Colors.red2
+        button.backgroundColor = backgroundColor
         button.clipsToBounds = true
         return button
     }
-    
 
-    static func hugeButton () -> MKButton {
+
+    static func hugeButton() -> MKButton {
         
         let hugeButton = MKButton()
         hugeButton.titleLabel?.font = Styles.Fonts.h1
@@ -70,7 +76,7 @@ struct ViewFactory {
         return hugeButton
     }
     
-    static func hugeCreamButton () -> MKButton {
+    static func hugeCreamButton() -> MKButton {
         
         let hugeCreamButton = hugeButton()
         hugeCreamButton.backgroundColor = Styles.Colors.cream2
@@ -115,7 +121,7 @@ struct ViewFactory {
     }
     
     static func transparentRoundedButton() -> UIButton {
-        let button = UIButton ()
+        let button = UIButton()
         button.titleLabel?.font = Styles.FontFaces.light(12)
         button.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
         button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
@@ -127,14 +133,14 @@ struct ViewFactory {
         return button
     }
     
-    static func exclamationButton () -> UIButton {
-        let button = UIButton ()
+    static func exclamationButton() -> UIButton {
+        let button = UIButton()
         button.setImage(UIImage(named: "btn_report"), forState: .Normal)
         return button
     }
 
-    static func infoButton () -> UIButton {
-        let button = UIButton ()
+    static func infoButton() -> UIButton {
+        let button = UIButton()
         button.setImage(UIImage(named: "btn_info_outline"), forState: .Normal)
         return button
     }
@@ -145,8 +151,8 @@ struct ViewFactory {
         return button
     }
 
-    static func bigTransparentButton () -> UIButton {
-        let button = UIButton ()
+    static func bigTransparentButton() -> UIButton {
+        let button = UIButton()
         button.titleLabel?.font = Styles.Fonts.h1
         button.setTitleColor(Styles.Colors.cream1, forState: .Normal)
         button.setTitleColor(Styles.Colors.anthracite1, forState: .Highlighted)
@@ -161,7 +167,7 @@ struct ViewFactory {
     }
     
     static func redBackButton() -> UIButton {
-        let button = UIButton ()
+        let button = UIButton()
         button.backgroundColor = Styles.Colors.red2
         button.layer.cornerRadius = 13
         button.clipsToBounds = true
@@ -284,7 +290,7 @@ struct ViewFactory {
         maxLabel.numberOfLines = 1
         maxLabel.sizeToFit()
         
-        timeLimitLabel.snp_makeConstraints { (make) -> () in
+        timeLimitLabel.snp_makeConstraints { (make) ->() in
             make.centerX.equalTo(imageView)
             make.centerY.equalTo(imageView).offset(-1) //plus moves down, minus moves up
             make.size.equalTo(CGSize(width: 15, height: 17))
@@ -293,7 +299,7 @@ struct ViewFactory {
         if addMaxLabel {
             imageView.addSubview(maxLabel)
             
-            maxLabel.snp_makeConstraints(closure: { (make) -> () in
+            maxLabel.snp_makeConstraints(closure: { (make) ->() in
                 make.centerX.equalTo(imageView)
                 make.centerY.equalTo(imageView).offset(25)
             })
@@ -322,7 +328,7 @@ struct ViewFactory {
         
         imageView.addSubview(maxLabel)
         
-        maxLabel.snp_makeConstraints(closure: { (make) -> () in
+        maxLabel.snp_makeConstraints(closure: { (make) ->() in
             make.centerX.equalTo(imageView)
             make.top.equalTo(imageView.snp_bottom).offset(2)
         })

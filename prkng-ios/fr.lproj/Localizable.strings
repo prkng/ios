@@ -235,6 +235,9 @@
 "garages" = "Hors-rue";
 "general" = "***Généralités";
 
+"city_picker_title" = "***Available Cities";
+"city_picker_subtitle" = "***We are currently available in:";
+
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
 "btn_reserve" = "btn_reserve_fr";

@@ -54,6 +54,7 @@ struct Styles {
         static let dark30 = UIColor(rgba: "#13171A30")
         
         static let lightfx = UIColor(rgba: "#141719")
+        static let lightGrey = UIColor(rgba: "#e5e1dc")
         
         static let redTransparent = UIColor(rgba: "#A63A3A")
         
