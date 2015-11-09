@@ -410,9 +410,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
         
-        if self.mapMode == .Garage {
-            map.clusteringEnabled = map.zoom <= 12
-        }
+//        if self.mapMode == .Garage {
+//            map.clusteringEnabled = map.zoom <= 12
+//        }
         
         if wasUserAction {
             userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
@@ -688,16 +688,16 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         return hash
     }
     
-    override func didSetMapMode() {
-        switch (self.mapMode) {
-        case .Garage:
-            self.mapView.clusteringEnabled = self.mapView.zoom <= 12
-            break
-        default:
-            self.mapView.clusteringEnabled = false
-            break
-        }
-    }
+//    override func didSetMapMode() {
+//        switch (self.mapMode) {
+//        case .Garage:
+//            self.mapView.clusteringEnabled = self.mapView.zoom <= 12
+//            break
+//        default:
+//            self.mapView.clusteringEnabled = false
+//            break
+//        }
+//    }
     
     override func updateAnnotations(completion: ((operationCompleted: Bool) -> Void)) {
                 
@@ -722,7 +722,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             completion(operationCompleted: true)
             
         } else if self.mapView.zoom >= 15.0
-            || self.mapMode == .Garage
+            || (self.mapMode == .Garage && self.mapView.zoom >= 14.0)
             || (self.mapView.zoom >= 13.0 && self.mapMode == .CarSharing && self.delegate?.carSharingMode() == .FindCar) {
             
             self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true, showCityPicker: false)
@@ -823,13 +823,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
             case MapMode.Garage:
-                self.recolorLotPinsIfNeeded()
-                if self.annotations.count > 0 {
-                    self.updateInProgress = false
-                    completion(operationCompleted: true)
-                } else {
+//                self.recolorLotPinsIfNeeded()
+//                if self.annotations.count > 0 {
+//                    self.updateInProgress = false
+//                    completion(operationCompleted: true)
+//                } else {
                     LotOperations.sharedInstance.findLots(self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
-                }
+//                }
                 break
 //            default:
 //                self.updateInProgress = false

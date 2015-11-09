@@ -262,8 +262,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
         Settings.setLastAppVersionString(version)
 
-        Settings.setCachedLotDataFresh(false)
-        LotOperations.sharedInstance.findLots(Settings.selectedCity().coordinate, radius: 1.0) { (lots, underMaintenance, outsideServiceArea, error) -> Void in }
+        //we used to do this when we cached the lots...
+//        Settings.setCachedLotDataFresh(false)
+//        LotOperations.sharedInstance.findLots(Settings.selectedCity().coordinate, radius: 1.0) { (lots, underMaintenance, outsideServiceArea, error) -> Void in }
         
         GiFHUD.setGif("loader.gif")
 

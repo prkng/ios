@@ -62,9 +62,11 @@ class Lot: NSObject, DetailObject {
     var compact: Bool
     var identifier: String
     var name: String
-    var lotOperator: String
+    var lotOperator: String?
     var address: String
     var capacity: Int?
+    var lotPartner: String?
+    var availability: Int?
     var attributes: [LotAttribute]
     var agenda: [LotAgendaPeriod]
     var coordinate: CLLocationCoordinate2D
@@ -74,6 +76,10 @@ class Lot: NSObject, DetailObject {
     var isCheaper: Bool
     
     var isCurrentlyOpen: Bool {
+        
+        if self.availability != nil && self.availability! == 0 {
+            return false
+        }
         
         if let period = self.currentPeriod {
             return period.isOpen
@@ -184,22 +190,55 @@ class Lot: NSObject, DetailObject {
 
     //aggregates the open times and returns a list of 7 nullable tuples with the total open times
     //optionally sorted
+    //assumes there is only one open time
     func openTimes(sortedByToday: Bool) -> [(NSTimeInterval, NSTimeInterval)] {
         
         var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
         let chosenAgenda = sortedByToday ? self.sortedAgenda : self.agenda
-        let groupedAgenda = LotAgendaPeriod.groupedAgenda(chosenAgenda)
-        for group in groupedAgenda {
+        var groupedAgenda = LotAgendaPeriod.groupedAgenda(chosenAgenda)
+        for i in 0..<groupedAgenda.count {
             
-            var earliestStartTime: NSTimeInterval = 24*3600
-            var latestEndTime: NSTimeInterval = 0
+            let group = groupedAgenda[i]
+            let groupOpenPeriods = group.filter({ (period) -> Bool in return period.isOpen })
             
-            for item in group {
+            var openTimes = groupOpenPeriods
+            
+            /*we assume there is only one open period in a day, so if there is more than 1 
+            then pick the longest one and extend it (if it ends at midnight) with the next day's first open period.
+            */
+            
+            if groupOpenPeriods.count > 0 && groupOpenPeriods.last!.endHour == 24*3600 {
+                let nextIndex = (i+1)%7
+                let nextGroup = groupedAgenda[nextIndex]
+                var nextGroupOpenPeriods = nextGroup.filter({ (period) -> Bool in return period.isOpen })
+                
+                if nextGroupOpenPeriods.count > 0
+                    && nextGroupOpenPeriods.first!.startHour == 0
+                    && groupOpenPeriods.last!.hourlyRate == nextGroupOpenPeriods.first!.hourlyRate
+                    && groupOpenPeriods.last!.dailyRate == nextGroupOpenPeriods.first!.dailyRate
+                    && groupOpenPeriods.last!.maxRate == nextGroupOpenPeriods.first!.maxRate {
+                    //aha! This group's only time period should be, ex, 6pm to 2am the following day! 
+                    //That's what we'll return, for display purposes
+                    let period = LotAgendaPeriod(day: groupOpenPeriods.last!.dayIndex, hourly: groupOpenPeriods.last!.hourlyRate, max: groupOpenPeriods.last!.maxRate, daily: groupOpenPeriods.last!.dailyRate, start: groupOpenPeriods.last!.startHour, end: nextGroupOpenPeriods.first!.endHour)
+                    openTimes = [period]
+                    //delete the first open period of the next day if it doesn't end at midnight, since we've consolidated it in this one and this rule won't apply to tomorrow
+                    if nextGroupOpenPeriods.count > 1 && nextGroupOpenPeriods.last!.endHour < 24*3600 {
+                        nextGroupOpenPeriods.removeFirst()
+                        groupedAgenda[nextIndex] = nextGroupOpenPeriods
+                    }
+                }
+
+            }
+
+            var earliestStartTime: Double = 24*3600
+            var latestEndTime: Double = 0
+            
+            for item in openTimes {
                 if item.isOpen {
-                    if item.startHour < earliestStartTime {
+                    if item.startHour < NSTimeInterval(earliestStartTime) {
                         earliestStartTime = item.startHour
                     }
-                    if item.endHour > latestEndTime {
+                    if item.endHour > NSTimeInterval(latestEndTime) {
                         latestEndTime = item.endHour
                     }
                 }
@@ -250,7 +289,7 @@ class Lot: NSObject, DetailObject {
             return NSAttributedString(string: "24 hour".localizedString.lowercaseString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         }
 
-        let interval = currentPeriod!.endHour
+        let interval = self.openTimes(true).first!.1
         return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
         }
     }
@@ -298,6 +337,8 @@ class Lot: NSObject, DetailObject {
         self.name = lot.name
         self.lotOperator = lot.lotOperator
         self.isCheaper = lot.isCheaper
+        self.lotPartner = lot.lotPartner
+        self.availability = lot.availability
         
     }
     
@@ -347,10 +388,12 @@ class Lot: NSObject, DetailObject {
         }
 
         self.name = json["properties"]["name"].stringValue
-        self.lotOperator = json["properties"]["operator"].stringValue
+        self.lotOperator = json["properties"]["operator"].string
 //        self.streetViewCoordinate = CLLocationCoordinate2D(latitude: json["properties"]["street_view"]["lat"].doubleValue, longitude: json["properties"]["street_view"]["long"].doubleValue)
         self.streetViewPanoramaId = json["properties"]["street_view"]["id"].string
         self.streetViewHeading = json["properties"]["street_view"]["head"].double
+        self.lotPartner = json["properties"]["partner_name"].string
+        self.availability = json["properties"]["available"].int
 
         self.isCheaper = false
     }

@@ -16,7 +16,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     
     var loginEmailViewController : LoginEmailViewController?
     var registerEmailViewController : RegisterEmailViewController?
-    var loginExternalViewController : LoginExternalViewController?
+//    var loginExternalViewController : LoginExternalViewController?
     
     var selectedMethod : LoginMethod?
     
@@ -115,12 +115,10 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
                 self.methodSelectionView.userInteractionEnabled = false
                 
                 UserOperations.loginWithFacebook(FBSDKAccessToken.currentAccessToken().tokenString, completion: { (user, apiKey) -> Void in
-                    
                     AuthUtility.saveUser(user)
                     AuthUtility.saveAuthToken(apiKey)
-                    
-                    self.displayExternalInfo(user, loginType: .Facebook)
-                    
+//                    self.displayExternalInfo(user, loginType: .Facebook)
+                    self.didLoginExternal(.Facebook)
                 })
             }
             
@@ -158,38 +156,39 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         selectedMethod = LoginMethod.Email
     }
     
-    func displayExternalInfo(user: User, loginType : LoginType) {
-        
-        loginExternalViewController = LoginExternalViewController(usr : user, loginType : loginType)
-        loginExternalViewController!.delegate = self
-        self.addChildViewController(loginExternalViewController!)
-        self.view.insertSubview(loginExternalViewController!.view, belowSubview: methodSelectionView)
-        loginExternalViewController!.didMoveToParentViewController(self)
-        
-        
-        loginExternalViewController!.view.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.methodSelectionView.snp_bottom)
-            make.centerX.equalTo(self.view)
-            make.size.equalTo(self.view)
-        }
-        self.loginExternalViewController!.view.layoutIfNeeded()
-        
-        
-        methodSelectionView.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.top.equalTo(self.view)
-            make.height.equalTo(0)
-        }
-        
-        
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            }) { (finished) -> Void in
-                
-        }
-        
-    }
+    //used to show a view controller, now we just log in right away
+//    func displayExternalInfo(user: User, loginType : LoginType) {
+//        
+//        loginExternalViewController = LoginExternalViewController(usr : user, loginType : loginType)
+//        loginExternalViewController!.delegate = self
+//        self.addChildViewController(loginExternalViewController!)
+//        self.view.insertSubview(loginExternalViewController!.view, belowSubview: methodSelectionView)
+//        loginExternalViewController!.didMoveToParentViewController(self)
+//        
+//        
+//        loginExternalViewController!.view.snp_makeConstraints { (make) -> () in
+//            make.top.equalTo(self.methodSelectionView.snp_bottom)
+//            make.centerX.equalTo(self.view)
+//            make.size.equalTo(self.view)
+//        }
+//        self.loginExternalViewController!.view.layoutIfNeeded()
+//        
+//        
+//        methodSelectionView.snp_remakeConstraints { (make) -> () in
+//            make.left.equalTo(self.view)
+//            make.right.equalTo(self.view)
+//            make.top.equalTo(self.view)
+//            make.height.equalTo(0)
+//        }
+//        
+//        
+//        UIView.animateWithDuration(0.15, animations: { () -> Void in
+//            self.view.layoutIfNeeded()
+//            }) { (finished) -> Void in
+//                
+//        }
+//        
+//    }
     
     // MARK: GPPSignInDelegate
     func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
@@ -210,7 +209,8 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             UserOperations.loginWithGoogle(auth.accessToken, completion: { (user, apiKey) -> Void in
                 AuthUtility.saveUser(user)
                 AuthUtility.saveAuthToken(apiKey)
-                self.displayExternalInfo(user, loginType : .Google)
+//                self.displayExternalInfo(user, loginType : .Google)
+                self.didLoginExternal(.Google)
             })
 
             

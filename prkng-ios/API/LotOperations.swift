@@ -13,9 +13,9 @@ import UIKit
     static let sharedInstance = LotOperations()
     static let threshholdCheaperLotPercentage = 0.3 //20% of lots should be marked cheaper
     
-    var sema = dispatch_semaphore_create(0)
-    var inProgress = false
-    var lots = [Lot]()
+    private var sema = dispatch_semaphore_create(0)
+    private var inProgress = false
+    private var lots = [Lot]()
     
     func findLots(coordinate: CLLocationCoordinate2D, radius : Float, completion: ((lots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
         
@@ -25,19 +25,19 @@ import UIKit
         
         inProgress = true
         
-        if Settings.isCachedLotDataFresh() {
-            dispatch_async(dispatch_get_main_queue(), {
-                () -> Void in
-                completion(lots: self.lots, underMaintenance: false, outsideServiceArea: false, error: false)
-            })
-            inProgress = false
-            dispatch_semaphore_signal(self.sema)
-            return
-        }
+//        if Settings.isCachedLotDataFresh() {
+//            dispatch_async(dispatch_get_main_queue(), {
+//                () -> Void in
+//                completion(lots: self.lots, underMaintenance: false, outsideServiceArea: false, error: false)
+//            })
+//            inProgress = false
+//            dispatch_semaphore_signal(self.sema)
+//            return
+//        }
         
         let url = APIUtility.APIConstants.rootURLString + "lots"
         
-        let radiusStr = NSString(format: "%.0f", 30000.0)//radius)
+        let radiusStr = NSString(format: "%.0f", radius)
         
         let params = ["latitude": coordinate.latitude,
             "longitude": coordinate.longitude,
@@ -53,17 +53,19 @@ import UIKit
             DDLoggerWrapper.logVerbose(String(format: "error: %@", error ?? ""))
             
             let lotJsons: [JSON] = json["features"].arrayValue
-            self.lots = lotJsons.map({ (lotJson) -> Lot in
+            var tempLots = lotJsons.map({ (lotJson) -> Lot in
                 Lot(json: lotJson)
             })
+            tempLots = LotOperations.processCheapestLots(tempLots)
+            self.lots = tempLots
             
             let underMaintenance = response != nil && response!.statusCode == 503
             let outsideServiceArea = response != nil && response!.statusCode == 404
 
-            if error == nil && self.lots.count > 0 {
-                Settings.cacheLotsJson(json)
-                Settings.setCachedLotDataFresh(true)
-            }
+//            if error == nil && self.lots.count > 0 {
+//                Settings.cacheLotsJson(json)
+//                Settings.setCachedLotDataFresh(true)
+//            }
 
             self.inProgress = false
             dispatch_semaphore_signal(self.sema)

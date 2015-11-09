@@ -242,3 +242,4 @@
 
 //this section is for format strings
 "capacity_x_places" = "Capacity: %d spaces";
+"availability_x_places" = "Availability: %d spaces";

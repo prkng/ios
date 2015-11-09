@@ -244,3 +244,4 @@
 
 //this section is for format strings
 "capacity_x_places" = "Capacité: %d places";
+"availability_x_places" = "***Disponibilité: %d places";

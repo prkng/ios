@@ -112,12 +112,19 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         view.addSubview(topGradient)
         topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
         
-        let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-        let operatorString = NSMutableAttributedString(string: lot.lotOperator, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-        operatedByString.appendAttributedString(operatorString)
+        if lot.lotOperator != nil {
+            let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+            let operatorString = NSMutableAttributedString(string: lot.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+            operatedByString.appendAttributedString(operatorString)
+            topLabel.attributedText = operatedByString
+        } else if lot.lotPartner != nil {
+            let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+            let partnerString = NSMutableAttributedString(string: lot.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+            operatedByString.appendAttributedString(partnerString)
+            topLabel.attributedText = operatedByString
+        }
         view.addSubview(topLabel)
         topLabel.textColor = Styles.Colors.cream1
-        topLabel.attributedText = operatedByString
         
         directionsButton.addTarget(self, action: "directionsButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(directionsButton)
@@ -132,13 +139,16 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         subHeaderView.addSubview(subHeaderViewLabel)
         
-        if let capacity = lot.capacity {
+        if let availability = lot.availability {
+            subHeaderViewLabel.leftLabel.text = String(format: "availability_x_places".localizedString, availability)
+        } else if let capacity = lot.capacity {
             subHeaderViewLabel.leftLabel.text = String(format: "capacity_x_places".localizedString, capacity)
-            subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
-            subHeaderViewLabel.leftLabel.textColor = Styles.Colors.cream1
         } else {
             subHeaderViewLabel.leftLabel.text = ""
         }
+        subHeaderViewLabel.leftLabel.font = Styles.FontFaces.regular(11)
+        subHeaderViewLabel.leftLabel.textColor = Styles.Colors.cream1
+
         
         if let hourly = lot.hourlyRate {
             let currencyString = NSMutableAttributedString(string: String(format: "$%.2f", hourly), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])

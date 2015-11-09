@@ -224,10 +224,10 @@ class MGLMapViewController: MapViewController {
 //    
 //    func mapView(mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
 //
-//        if self.mapMode == .Garage {
+////      if self.mapMode == .Garage {
 ////            mapView.clusteringEnabled = map.zoom <= 12
-//            //TODO: clustering on MGLMapView...
-//        }
+////          //TODO: clustering on MGLMapView...
+////      }
 //        
 //        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
 //            Int64(0.16 * Double(NSEC_PER_SEC)))
@@ -529,7 +529,7 @@ class MGLMapViewController: MapViewController {
 //            completion(operationCompleted: true)
 //            
 //        } else if self.mapView.zoomLevel >= 15.0
-//            || self.mapMode == .Garage
+//            || (self.mapMode == .Garage && self.mapView.zoomLevel >= 14.0)
 //            || (self.mapView.zoomLevel >= 13.0 && self.mapMode == .CarSharing && self.delegate?.carSharingMode() == .FindCar) {
 //                
 //                self.delegate?.showMapMessage("map_message_loading".localizedString, onlyIfPreviouslyShown: true, showCityPicker: false)
@@ -630,13 +630,13 @@ class MGLMapViewController: MapViewController {
 //                    SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
 //                    break
 //                case MapMode.Garage:
-//                    self.recolorLotPinsIfNeeded()
-//                    if self.annotations.count > 0 {
-//                        self.updateInProgress = false
-//                        completion(operationCompleted: true)
-//                    } else {
+////                  self.recolorLotPinsIfNeeded()
+////                  if self.annotations.count > 0 {
+////                      self.updateInProgress = false
+////                      completion(operationCompleted: true)
+////                  } else {
 //                        LotOperations.sharedInstance.findLots(self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
-//                    }
+////                  }
 //                    break
 //                    //            default:
 //                    //                self.updateInProgress = false
