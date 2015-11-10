@@ -36,7 +36,7 @@ struct AuthUtility {
     }
     
     
-    static func getUser () -> User? {
+    static func getUser() -> User? {
         if let encodedUser : NSData = NSUserDefaults.standardUserDefaults().objectForKey(USER_KEY) as? NSData  {
             return NSKeyedUnarchiver.unarchiveObjectWithData(encodedUser) as? User
         }
@@ -44,7 +44,7 @@ struct AuthUtility {
         return nil
     }
     
-    static func saveUser (user : User?) {
+    static func saveUser(user : User?) {
         
         if (user != nil) {
             let encodedUser = NSKeyedArchiver.archivedDataWithRootObject(user!)
@@ -55,12 +55,12 @@ struct AuthUtility {
         
     }
     
-    static func saveLoginType(loginType : LoginType) {
+    static func saveLoginType(loginType: LoginType) {
         NSUserDefaults.standardUserDefaults().setObject(loginType.rawValue, forKey: LOGIN_TYPE)
     }
     
     
-    static func loginType () -> LoginType?{
+    static func loginType() -> LoginType? {
         if let type =  NSUserDefaults.standardUserDefaults().stringForKey(LOGIN_TYPE) {
             return LoginType(rawValue: type)
         }
@@ -70,7 +70,7 @@ struct AuthUtility {
     
 }
 
-enum LoginType : String {
+enum LoginType: String {
     case Facebook = "Facebook"
     case Google = "Google"
     case Email = "Email"

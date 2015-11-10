@@ -55,6 +55,7 @@
 "login_error_title_facebook" = "Facebook Login Failed";
 "login_error_title_google" = "Google Login Failure";
 "login_error_message" = "Please try again with one of the services below.";
+"login_permissions_bottom_text" = "Because there is nothing nicer than a ticket-free windshield!";
 "register_error_title" = "Registration Error";
 "register_error_message_generic" = "Could not register at this time. Please try again later.";
 "register_error_message_user_exists" = "This user already exists. Please try again with different credentials.";

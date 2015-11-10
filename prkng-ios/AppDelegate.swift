@@ -17,12 +17,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     var window: UIWindow?
     var locationManager = CLLocationManager()
 
-
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
-        
-        //used to debug app transport security
-//        setenv("CFNETWORK_DIAGNOSTICS", "3", 1)
-        
+    func loggedInOperations() {
+        if AuthUtility.loggedIn() {
+            initiateLocationManagerAndPermissions()
+            initiateNotificationPermissions()
+        }
+    }
+    
+    func initiateLocationManagerAndPermissions() {
 //        //register for background location usage for updates
         locationManager.delegate = self
         if #available(iOS 8.0, *) {
@@ -39,6 +41,51 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             })
         }
         locationManager.startUpdatingLocation()
+    }
+    
+    func initiateNotificationPermissions() {
+        //
+        //notification set up
+        //
+        let application = UIApplication.sharedApplication()
+        
+        if #available(iOS 8.0, *) {
+            let yesAction = UIMutableUserNotificationAction()
+            yesAction.identifier = "yes"
+            yesAction.title = "yes".localizedString
+            yesAction.activationMode = .Background
+            yesAction.authenticationRequired = false
+            
+            let noAction = UIMutableUserNotificationAction()
+            noAction.identifier = "no"
+            noAction.title = "no".localizedString
+            noAction.activationMode = .Background
+            noAction.authenticationRequired = false
+            
+            let category = UIMutableUserNotificationCategory()
+            category.identifier = "prkng_check_out_monitor"
+            category.setActions([yesAction, noAction], forContext: UIUserNotificationActionContext.Default)
+            
+            if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
+                application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: (NSSet(object: category) as! Set<UIUserNotificationCategory>)))
+            }
+        }
+        
+        if #available(iOS 8.0, *) {
+            application.registerForRemoteNotifications()
+            //the types are registered above with registerUserNotificationSettings
+        } else {
+            application.registerForRemoteNotificationTypes([.Badge, .Sound, .Badge, .Alert])
+        }
+        
+    }
+
+    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
+        
+        //used to debug app transport security
+//        setenv("CFNETWORK_DIAGNOSTICS", "3", 1)
+        
+        loggedInOperations()
         
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -82,38 +129,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
 
         // Override point for customization after application launch.
-        
-        //
-        //notification set up
-        //
-        if #available(iOS 8.0, *) {
-            let yesAction = UIMutableUserNotificationAction()
-            yesAction.identifier = "yes"
-            yesAction.title = "yes".localizedString
-            yesAction.activationMode = .Background
-            yesAction.authenticationRequired = false
-            
-            let noAction = UIMutableUserNotificationAction()
-            noAction.identifier = "no"
-            noAction.title = "no".localizedString
-            noAction.activationMode = .Background
-            noAction.authenticationRequired = false
-            
-            let category = UIMutableUserNotificationCategory()
-            category.identifier = "prkng_check_out_monitor"
-            category.setActions([yesAction, noAction], forContext: UIUserNotificationActionContext.Default)
-            
-            if(UIApplication.instancesRespondToSelector(Selector("registerUserNotificationSettings:"))){
-                application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: (NSSet(object: category) as! Set<UIUserNotificationCategory>)))
-            }
-        }
-
-        if #available(iOS 8.0, *) {
-            application.registerForRemoteNotifications()
-            //the types are registered above with registerUserNotificationSettings
-        } else {
-            application.registerForRemoteNotificationTypes([.Badge, .Sound, .Badge, .Alert])
-        }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWasShown:", name: UIKeyboardDidShowNotification, object: nil)
         
@@ -174,6 +189,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         } else  {
             return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
         }        
+    }
+    
+    @available(iOS 8.0, *)
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        NSNotificationCenter.defaultCenter().postNotificationName("registeredUserNotificationSettings", object: nil)
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -291,6 +311,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     
     // MARK: CLLocationManagerDelegate methods
 
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        NSNotificationCenter.defaultCenter().postNotificationName("changedLocationPermissions", object: nil)
+    }
+    
 //    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
 //        
 //        //test this instead of region updates...

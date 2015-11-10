@@ -243,19 +243,37 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     
     func didLogin() {
         AuthUtility.saveLoginType(.Email)
-        dismiss()
+        askForPermissions()
     }
     
     // MARK: LoginExternalViewControllerDelegate
     func didLoginExternal(loginType : LoginType) {
         AuthUtility.saveLoginType(loginType)
-        dismiss()
+        askForPermissions()
     }
     
     // MARK: RegisterEmailViewControllerDelegate
     func didRegister() {
         AuthUtility.saveLoginType(.Email)
-        dismiss()
+        askForPermissions()
+    }
+    
+    func askForPermissions() {
+        //shows the permissions view controller
+        let permissionsVC = LoginPermissionsViewController(work: { () -> Void in
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.loggedInOperations()
+            }) { () -> Void in
+                self.dismiss()
+        }
+
+        let hasLocationPermission = CLLocationManager.authorizationStatus() != .NotDetermined
+        if !hasLocationPermission {
+            self.presentViewController(permissionsVC, animated: true, completion: nil)
+        } else {
+            self.dismiss()
+        }
+
     }
     
     func showLogin() {

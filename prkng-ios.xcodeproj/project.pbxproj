@@ -78,6 +78,7 @@
 		3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */; };
 		3EA8126D1B977E58002987EC /* LotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA8126C1B977E58002987EC /* LotViewController.swift */; };
 		3EA8126F1B978490002987EC /* LotHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA8126E1B978490002987EC /* LotHeaderView.swift */; };
+		3EAF217C1BF2534000C137DA /* LoginPermissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAF217B1BF2534000C137DA /* LoginPermissionsViewController.swift */; };
 		3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EAF45191B59388D003010D6 /* GeneralHelper.swift */; };
 		3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */; };
 		3EBB61D71B3DBD3400A8984A /* NSTimeInterval.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */; };
@@ -275,6 +276,7 @@
 		3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolygon.swift; sourceTree = "<group>"; };
 		3EA8126C1B977E58002987EC /* LotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotViewController.swift; sourceTree = "<group>"; };
 		3EA8126E1B978490002987EC /* LotHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotHeaderView.swift; sourceTree = "<group>"; };
+		3EAF217B1BF2534000C137DA /* LoginPermissionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPermissionsViewController.swift; sourceTree = "<group>"; };
 		3EAF45191B59388D003010D6 /* GeneralHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralHelper.swift; sourceTree = "<group>"; };
 		3EBB61D41B3DAFB200A8984A /* Abbreviations.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Abbreviations.strings; sourceTree = "<group>"; };
 		3EBB61D61B3DBD3400A8984A /* NSTimeInterval.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimeInterval.swift; sourceTree = "<group>"; };
@@ -730,6 +732,7 @@
 				BFFDE4621AFBA4380035DF54 /* LoginEmailViewController.swift */,
 				BFFDE4641AFBA48D0035DF54 /* RegisterEmailViewController.swift */,
 				BF3CFA291AFE98E2003D104D /* LoginExternalViewController.swift */,
+				3EAF217B1BF2534000C137DA /* LoginPermissionsViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1218,6 +1221,7 @@
 				BF779A331AD4042E00F76E0A /* ScheduleDayIndicatorView.swift in Sources */,
 				3E530C8F1B445BA0001309E8 /* GeoJsonParser.m in Sources */,
 				3EBCF0591B67FA8E00E925A0 /* CarSharingInfoViewController.swift in Sources */,
+				3EAF217C1BF2534000C137DA /* LoginPermissionsViewController.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
 				3E20B39D1BB63A450067DA8C /* EdgeInsets.swift in Sources */,
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,

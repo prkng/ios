@@ -55,6 +55,7 @@
 "login_error_title_facebook" = "Connexion Facebook échouée";
 "login_error_title_google" = "Connexion Google échouée";
 "login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
+"login_permissions_bottom_text" = "***Because there is nothing nicer than a ticket-free windshield!";
 "register_error_title" = "Erreur d'inscription";
 "register_error_message_generic" = "Inscription impossible. merci de réessayer.";
 "register_error_message_user_exists" = "Ce nom d'utilisateur est déjà pris. Essayez avec un autre nom.";
