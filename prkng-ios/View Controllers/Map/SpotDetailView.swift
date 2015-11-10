@@ -33,6 +33,24 @@ class SpotDetailView: UIView {
             let splitAddressString = topText.splitAddressString
             headerTitleLabel.text = splitAddressString.0
             titleLabel.text = splitAddressString.1
+            
+            if (headerTitleLabel.text ?? "") == "" {
+                
+                titleLabel.snp_remakeConstraints { (make) -> () in
+                    make.centerY.equalTo(self.topContainer)
+                    make.left.equalTo(self.topContainer).offset(24)
+                    make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).offset(-15)
+                }
+
+            } else {
+                
+                titleLabel.snp_remakeConstraints { (make) -> () in
+                    make.bottom.equalTo(self.topContainer.snp_bottom).offset(self.TITLE_LABEL_BOTTOM_OFFSET)
+                    make.left.equalTo(self.topContainer).offset(24)
+                    make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).offset(-15)
+                }
+
+            }
         }
     }
     
@@ -190,7 +208,7 @@ class SpotDetailView: UIView {
         }
 
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.topContainer.snp_bottom).offset(self.TITLE_LABEL_BOTTOM_OFFSET)
+//            make.bottom.equalTo(self.topContainer.snp_bottom).offset(self.TITLE_LABEL_BOTTOM_OFFSET)
             make.left.equalTo(self.topContainer).offset(24)
             make.right.lessThanOrEqualTo(self.topContainerRightView.snp_left).offset(-15)
         }

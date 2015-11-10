@@ -13,6 +13,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     private var topContainer: UIView
     private var headerTitleLabel: MarqueeLabel
     private var titleLabel: MarqueeLabel
+    private var titleLabelCentered: MarqueeLabel
     private var leftImageView: UIImageView
     private var rightImageView: UIImageView
     private var rightView: UIView
@@ -28,6 +29,13 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
             let splitAddressString = topText.splitAddressString
             headerTitleLabel.text = splitAddressString.0
             titleLabel.text = splitAddressString.1
+            titleLabelCentered.text = ""
+            
+            if (headerTitleLabel.text ?? "") == "" {
+                titleLabel.text = ""
+                titleLabelCentered.text = splitAddressString.1
+            }
+
         }
     }
     
@@ -52,6 +60,7 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         topContainer = UIView ()
         headerTitleLabel = MarqueeLabel()
         titleLabel = MarqueeLabel()
+        titleLabelCentered = MarqueeLabel()
         leftImageView = UIImageView()
         rightImageView = UIImageView()
         rightView = UIView()
@@ -95,7 +104,12 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         titleLabel.textColor = Styles.Colors.cream2
         titleLabel.textAlignment = NSTextAlignment.Left
         topContainer.addSubview(titleLabel)
-        
+
+        titleLabelCentered.font = Styles.Fonts.h2Variable
+        titleLabelCentered.textColor = Styles.Colors.cream2
+        titleLabelCentered.textAlignment = NSTextAlignment.Left
+        topContainer.addSubview(titleLabelCentered)
+
         leftImageView.image = UIImage(named: "btn_back_outline")
         leftImageView.contentMode = UIViewContentMode.Center
         topContainer.addSubview(leftImageView)
@@ -141,13 +155,20 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
             make.bottom.equalTo(self.titleLabel.snp_top).offset(1)
         }
 
-        titleLabel.snp_makeConstraints { (make) -> () in
+        titleLabel.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.leftImageView.snp_right).offset(4)
             make.right.lessThanOrEqualTo(self.rightImageView.snp_left).offset(-10)
             make.right.lessThanOrEqualTo(self.rightView.snp_left).offset(-10)
             make.bottom.equalTo(self.topContainer).offset(-15)
         }
-        
+
+        titleLabelCentered.snp_remakeConstraints { (make) -> () in
+            make.left.equalTo(self.leftImageView.snp_right).offset(4)
+            make.right.lessThanOrEqualTo(self.rightImageView.snp_left).offset(-10)
+            make.right.lessThanOrEqualTo(self.rightView.snp_left).offset(-10)
+            make.centerY.equalTo(self.topContainer).offset(Styles.Sizes.statusBarHeight/2)
+        }
+
         leftImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(20, 20)) //real size is CGSizeMake(11, 9)
             make.left.equalTo(self.topContainer).offset(10)

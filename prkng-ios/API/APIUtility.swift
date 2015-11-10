@@ -11,7 +11,8 @@ import UIKit
 class APIUtility: NSObject {
 
     struct APIConstants {
-        static let rootURLString = NSUserDefaults.standardUserDefaults().boolForKey("use_test_server") ? "https://test.prk.ng/v1/" : "https://api.prk.ng/v1/"
+//        static let rootURLString = NSUserDefaults.standardUserDefaults().boolForKey("use_test_server") ? "https://test.prk.ng/v1/" : "https://api.prk.ng/v1/"
+        static let rootURLString = "https://test.prk.ng/v1/"
     }
     
     //set test server in debug console with NSUserDefaults.standardUserDefaults().setObject(true, forKey:"use_test_server")
