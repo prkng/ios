@@ -41,7 +41,7 @@ class ParkingSpot: NSObject, DetailObject {
     var headerText: String { get { return name } }
     var headerIconName: String {
         get {
-            if self.currentlyActiveRuleType == .Paid {
+            if self.currentlyActiveRuleType == .Paid || self.currentlyActiveRuleType == .PaidTimeMax {
                 return "icon_checkin_pin_pay"
             } else {
                 return "icon_checkin_pin"
@@ -51,7 +51,7 @@ class ParkingSpot: NSObject, DetailObject {
     var doesHeaderIconWiggle: Bool { get { return true } }
     var headerIconSubtitle: String {
         get {
-            if self.currentlyActiveRuleType == .Paid {
+            if self.currentlyActiveRuleType == .Paid || self.currentlyActiveRuleType == .PaidTimeMax {
                 return "check-in-pay".localizedString
             } else {
                 return "check-in".localizedString
@@ -63,7 +63,7 @@ class ParkingSpot: NSObject, DetailObject {
     var bottomLeftPrimaryText: NSAttributedString? { get {
         
         switch self.currentlyActiveRuleType {
-        case .Paid:
+        case .Paid, .PaidTimeMax:
             let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
             let numberString = NSMutableAttributedString(string: self.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
             currencyString.appendAttributedString(numberString)
@@ -113,7 +113,7 @@ class ParkingSpot: NSObject, DetailObject {
     }
     var bottomRightIconName: String? { get { return "btn_schedule" } }
     
-    var showsBottomLeftContainer: Bool { get { return self.currentlyActiveRuleType == .Paid } }
+    var showsBottomLeftContainer: Bool { get { return self.currentlyActiveRuleType == .Paid  || self.currentlyActiveRuleType == .PaidTimeMax} }
 
     //MARK- Hashable
     override var hashValue: Int { get { return Int(identifier)! } }
@@ -442,21 +442,31 @@ class ParkingSpot: NSObject, DetailObject {
             case (.Restriction, .Restriction):  return true
             case (.Restriction, .Paid):         return true
             case (.Restriction, .TimeMax):      return true
+            case (.Restriction, .PaidTimeMax):  return true
                 
+            case (.PaidTimeMax, .Free):         return true
+            case (.PaidTimeMax, .Restriction):  return false
+            case (.PaidTimeMax, .Paid):         return true
+            case (.PaidTimeMax, .TimeMax):      return true
+            case (.PaidTimeMax, .PaidTimeMax):  return true
+
             case (.Paid, .Free):                return true
             case (.Paid, .Restriction):         return false
             case (.Paid, .Paid):                return true
             case (.Paid, .TimeMax):             return true
+            case (.Paid, .PaidTimeMax):         return false
                 
             case (.TimeMax, .Free):             return true
             case (.TimeMax, .Restriction):      return false
             case (.TimeMax, .Paid):             return false
             case (.TimeMax, .TimeMax):          return true
+            case (.TimeMax, .PaidTimeMax):      return false
                 
             case (.Free, .Free):                return true
             case (.Free, .Restriction):         return false
             case (.Free, .Paid):                return false
             case (.Free, .TimeMax):             return false
+            case (.Free, .PaidTimeMax):         return false
                 
             }
         })
@@ -528,7 +538,7 @@ struct DayArray {
 //        let selected = userInfo["selected"] as! Bool
 //        let spot = userInfo["spot"] as! ParkingSpot
 //        let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
-//        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+//        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid || spot.currentlyActiveRuleType == .PaidTimeMax
 //        
 //        if selected {
 //            lineColor = Styles.Colors.red2
@@ -615,7 +625,7 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
 
             let selected = userInfo["selected"] as! Bool
             let spot = userInfo["spot"] as! ParkingSpot
-            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid || spot.currentlyActiveRuleType == .PaidTimeMax
             let invisible = userInfo["invisible"] as? Bool ?? false
             let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
             

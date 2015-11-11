@@ -388,7 +388,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 
                 if (Settings.notificationTime() > 0) {
                     Settings.cancelScheduledNotifications()
-                    if activeSpot.currentlyActiveRuleType != .Paid {
+                    if activeSpot.currentlyActiveRuleType != .Paid && activeSpot.currentlyActiveRuleType != .PaidTimeMax {
                         Settings.scheduleNotification(NSDate(timeIntervalSinceNow: activeSpot.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
                     }
                 }

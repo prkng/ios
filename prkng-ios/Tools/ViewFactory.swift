@@ -227,7 +227,7 @@ struct ViewFactory {
         return imageView
     }
     
-    static func timeMaxIcon(minutes: Int, addMaxLabel: Bool, color: UIColor) -> UIImageView {
+    static func timeMaxIcon(minutes: Int, addMaxLabel: Bool, color: UIColor, secondLineString: String? = nil) -> UIImageView {
         
         let imageView = UIImageView()
         let timeLimitLabel = UILabel()
@@ -282,12 +282,17 @@ struct ViewFactory {
         timeLimitLabel.sizeToFit()
         imageView.addSubview(timeLimitLabel)
 
-        maxLabel.text = "max".localizedString.uppercaseString
+        if secondLineString != nil {
+            maxLabel.text = "max".localizedString.uppercaseString + "\n" + secondLineString!
+            maxLabel.numberOfLines = 2
+        } else {
+            maxLabel.text = "max".localizedString.uppercaseString
+            maxLabel.numberOfLines = 1
+        }
         maxLabel.font = Styles.FontFaces.regular(12)
         maxLabel.textAlignment = NSTextAlignment.Center
-        maxLabel.textColor = Styles.Colors.white
+        maxLabel.textColor = color
         maxLabel.adjustsFontSizeToFitWidth = true
-        maxLabel.numberOfLines = 1
         maxLabel.sizeToFit()
         
         timeLimitLabel.snp_makeConstraints { (make) ->() in
@@ -301,7 +306,7 @@ struct ViewFactory {
             
             maxLabel.snp_makeConstraints(closure: { (make) ->() in
                 make.centerX.equalTo(imageView)
-                make.centerY.equalTo(imageView).offset(25)
+                make.centerY.equalTo(imageView).offset(maxLabel.numberOfLines == 1 ? 25 : 30)
             })
             
         }

@@ -40,6 +40,13 @@ class ScheduleItemView : UIView {
             }
             imageView = ViewFactory.paidIcon(rateString, color: Styles.Colors.curry)
             break
+        case .PaidTimeMax:
+            var rateString: String? = model.rule.paidHourlyRateString + "/H"
+            if model.endInterval - model.startInterval < 4*3600 {
+                rateString = nil
+            }
+            imageView = ViewFactory.timeMaxIcon(Int(model.limit/60), addMaxLabel: true, color: Styles.Colors.curry, secondLineString: rateString)
+            break
         }
         
     }
@@ -98,10 +105,7 @@ class ScheduleItemView : UIView {
         case .Restriction:
             self.backgroundColor = Styles.Colors.red2
             break
-        case .TimeMax:
-            self.backgroundColor = Styles.Colors.midnight1
-            break
-        case .Paid:
+        case .TimeMax, .Paid, .PaidTimeMax:
             self.backgroundColor = Styles.Colors.midnight1
             break
         }

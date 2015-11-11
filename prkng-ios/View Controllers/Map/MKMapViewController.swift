@@ -135,7 +135,7 @@ class MKMapViewController: MapViewController {
 //            let userInfo = lineOverlay.userInfo
 //            let selected = userInfo["selected"] as! Bool
 //            let spot = userInfo["spot"] as! ParkingSpot
-//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid || spot.currentlyActiveRuleType == .PaidTimeMax
 //            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
 //            
 //            var coordinates = spot.line.coordinates2D

@@ -12,6 +12,7 @@ enum ParkingRuleType: String {
     case TimeMax = "TimeMax"
     case Restriction = "Restriction"
     case Paid = "Paid"
+    case PaidTimeMax = "PaidTimeMax"
     case Free = "Free"
 }
 
@@ -44,6 +45,9 @@ class ParkingRule: NSObject {
             return .Free
         }
         if restrictionTypes.contains("paid") {
+            if self.maxParkingTime > 0 {
+                return .PaidTimeMax
+            }
             return .Paid
         }
         if self.maxParkingTime > 0 {

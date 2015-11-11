@@ -581,7 +581,7 @@ class GoogleMapViewController: MapViewController {
 //        annotation = PRK_GMSPolyline(path: path, title: spot.identifier, spot: spot)
 ////        annotation.userData = ["type": "line", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForLine]
 //        let shouldAddAnimation = shouldAddAnimationForLine
-//        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+//        let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid || spot.currentlyActiveRuleType == .PaidTimeMax
 //        
 //        if selected {
 //            annotation.strokeColor = Styles.Colors.red2
@@ -615,7 +615,7 @@ class GoogleMapViewController: MapViewController {
 //            centerButton!.userData = ["type": "button", "spot": spot, "selected": selected, "shouldAddAnimation" : shouldAddAnimationForButton]
 //            
 //            //move this somewhere so selections conitnue to work...
-//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+//            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid || spot.currentlyActiveRuleType == .PaidTimeMax
 //            let shouldAddAnimation = shouldAddAnimationForButton
 //            
 //            var imageName = "button_line_"

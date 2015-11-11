@@ -76,6 +76,10 @@ class AgendaTableViewCell: UITableViewCell {
             colorView.backgroundColor = Styles.Colors.curry
             imageView = ViewFactory.paidIcon("", color: Styles.Colors.curry)
             break
+        case .PaidTimeMax:
+            colorView.backgroundColor = Styles.Colors.curry
+            imageView = ViewFactory.timeMaxIcon(agendaItem.timeLimit/60, addMaxLabel: false, color: Styles.Colors.curry)
+            break
         }
         
         icon.image = imageView.image

@@ -63,7 +63,12 @@ class CarSharingOperations {
         
         let radiusStr = NSString(format: "%.0f", radius)
         
-        let companies: [String?] = [!Settings.hideCar2Go() ? "car2go" : nil, !Settings.hideCommunauto() ? "communauto" : nil, !Settings.hideAutomobile() ? "auto-mobile" : nil]
+        let companies: [String?] = [
+            !Settings.hideCar2Go() ? "car2go" : nil,
+            !Settings.hideCommunauto() ? "communauto" : nil,
+            !Settings.hideAutomobile() ? "auto-mobile" : nil,
+            !Settings.hideZipCar() ? "zipcar" : nil,
+        ]
         let companiesString = Array.filterNils(companies).joinWithSeparator(",")
 
         let params = [

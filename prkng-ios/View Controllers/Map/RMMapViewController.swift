@@ -187,7 +187,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let selected = userInfo!["selected"] as! Bool
             let spot = userInfo!["spot"] as! ParkingSpot
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
-            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid || spot.currentlyActiveRuleType == .PaidTimeMax
             let shape = RMShape(view: mapView)
             
             if selected {
@@ -220,7 +220,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
             let selected = userInfo!["selected"] as! Bool
             let spot = userInfo!["spot"] as! ParkingSpot
-            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid
+            let isCurrentlyPaidSpot = spot.currentlyActiveRuleType == .Paid || spot.currentlyActiveRuleType == .PaidTimeMax
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             
             var imageName = "button_line_"
