@@ -47,6 +47,16 @@ class CityOperations {
         }
         return nil
     }
+
+    var newYorkCity: City? {
+        for city in availableCities {
+            if city.name == "newyork" {
+                return city
+            }
+        }
+        return nil
+    }
+
     
     func getCities(completion : (completed : Bool, cities: [City]) -> Void) {
         

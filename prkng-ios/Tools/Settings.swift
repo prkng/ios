@@ -22,9 +22,11 @@ struct Settings {
     static let HIDE_CAR2GO = "prkng_hide_car2go"
     static let HIDE_COMMUNAUTO = "prkng_hide_communauto"
     static let HIDE_AUTOMOBILE = "prkng_hide_automobile"
+    static let HIDE_ZIPCAR = "prkng_hide_zipcar"
     static let CHECKIN_COUNT = "prkng_checkin_count"
     static let APP_LAUNCH_COUNT = "prkng_app_launch_count"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
+    static let COMMERCIAL_PERMIT_FILTER_KEY = "prkng_commercial_permit_filter"
     static let GEOFENCE_LAST_SET_DATE_KEY = "prkng_geofence_last_set_date"
     static let NOTIFICATION_NIGHT_BEFORE_KEY = "prkng_notification_night_before"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
@@ -283,6 +285,14 @@ struct Settings {
         NSUserDefaults.standardUserDefaults().setBool(value, forKey: CAR_SHARING_FILTER_KEY)
     }
 
+    static func shouldFilterForCommercialPermit() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(COMMERCIAL_PERMIT_FILTER_KEY)
+    }
+    
+    static func setShouldFilterForCommercialPermit(value: Bool) {
+        DDLoggerWrapper.logInfo("Setting commercial permit " + (value ? "ON" : "OFF"))
+        NSUserDefaults.standardUserDefaults().setBool(value, forKey: COMMERCIAL_PERMIT_FILTER_KEY)
+    }
     
     static func shouldNotifyTheNightBefore() -> Bool {
         return NSUserDefaults.standardUserDefaults().boolForKey(NOTIFICATION_NIGHT_BEFORE_KEY)
@@ -510,5 +520,13 @@ struct Settings {
         NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_COMMUNAUTO)
     }
 
+    static func hideZipCar() -> Bool {
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_ZIPCAR)
+    }
+    
+    static func setHideZipCar(hide : Bool)  {
+        DDLoggerWrapper.logInfo("ZipCar is now " + (hide ? "hidden" : "shown"))
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_ZIPCAR)
+    }
 
 }

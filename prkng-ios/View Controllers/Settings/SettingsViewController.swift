@@ -100,6 +100,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             }
             
         }
+        
+        self.tableView.reloadData()
     }
     
     func setupViews () {
@@ -332,6 +334,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         cityLabel.text = Settings.selectedCity().displayName
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
+        
+        self.tableView.reloadData()
+
     }
     
     func nextCityButtonTapped () {
@@ -358,6 +363,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         cityLabel.text = Settings.selectedCity().displayName
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
+        
+        self.tableView.reloadData()
+
     }
     
     func notificationSelectionValueChanged() {
@@ -366,6 +374,11 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         } else {
             Settings.setNotificationTime(0)
         }
+    }
+
+    func commercialPermitFilterValueChanged() {
+        let currentValue = Settings.shouldFilterForCommercialPermit()
+        Settings.setShouldFilterForCommercialPermit(!currentValue)
     }
 
     func hideCar2GoValueChanged() {
@@ -383,6 +396,11 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         Settings.setHideCommunauto(!currentValue)
     }
     
+    func hideZipCarValueChanged() {
+        let currentValue = Settings.hideZipCar()
+        Settings.setHideZipCar(!currentValue)
+    }
+    
     func lotRateDisplayValueChanged() {
         let currentValue = Settings.lotMainRateIsHourly()
         Settings.setLotMainRateIsHourly(!currentValue)
@@ -398,26 +416,44 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
     var tableSource: [(String, [SettingsCell])] {
         
-        let firstRow = ("", [SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "Alert", subtitleText: "Get notified 30 minutes before to avoid a ticket.", parentVC: self, selector: "notificationSelectionValueChanged"),
-//            SettingsCell(switchValue: Settings.notificationTime() == 0, titleText: "Snow Removal", subtitleText: "Information about snow and street availability.")
-        ])
+        var firstSection = [SettingsCell]()
+        var carSharingSection = [SettingsCell]()
+        
+        let alertCell = SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "settings_alert".localizedString, subtitleText: "settings_alert_text".localizedString, parentVC: self, selector: "notificationSelectionValueChanged")
+        let commercialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForCommercialPermit(), titleText: "settings_commercial_permit".localizedString, subtitleText: "settings_commercial_permit_text".localizedString, parentVC: self, selector: "commercialPermitFilterValueChanged")
+//        let snowRemovalCell = SettingsCell(switchValue: Settings.notificationTime() == 0, titleText: "Snow Removal", subtitleText: "Information about snow and street availability.")
         
 //        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
-        let thirdRow = ("car_sharing".localizedString,
-            [SettingsCell(titleText: "Car2Go", signedIn: false, switchValue: !Settings.hideCar2Go(), parentVC: self, selector: "hideCar2GoValueChanged"),
-                SettingsCell(titleText: "Communauto", signedIn: false, switchValue: !Settings.hideCommunauto(), parentVC: self, selector: "hideCommunautoValueChanged"),
-                SettingsCell(titleText: "Automobile", signedIn: false, switchValue: !Settings.hideAutomobile(), parentVC: self, selector: "hideAutomobileValueChanged")])
+
+        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: false, switchValue: !Settings.hideCar2Go(), parentVC: self, selector: "hideCar2GoValueChanged")
+        let automobileCell = SettingsCell(titleText: "Automobile", signedIn: false, switchValue: !Settings.hideAutomobile(), parentVC: self, selector: "hideAutomobileValueChanged")
+        let communautoCell = SettingsCell(titleText: "Communauto", signedIn: false, switchValue: !Settings.hideCommunauto(), parentVC: self, selector: "hideCommunautoValueChanged")
+        let zipcarCell = SettingsCell(titleText: "ZipCar", signedIn: nil, switchValue: !Settings.hideZipCar(), parentVC: self, selector: "hideZipCarValueChanged")
         
-        let fourthRow = ("general".localizedString, [SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, selector: "showSupport"),
+        firstSection = [alertCell]
+        
+        if Settings.selectedCity().name == "montreal" {
+            carSharingSection = [car2goCell, automobileCell, communautoCell]
+        } else if Settings.selectedCity().name == "quebec" {
+            carSharingSection = [automobileCell, communautoCell]
+        } else if Settings.selectedCity().name == "newyork" {
+            firstSection.append(commercialPermitCell)
+            carSharingSection = [car2goCell, zipcarCell]
+        }
+        
+        let generalSection = [SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, selector: "showSupport"),
             SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, selector: "showGettingStarted"),
             SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, selector: "showShareSheet"),
             SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, selector: "sendToAppStore"),
             SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, selector: "showFaq"),
             SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, selector: "showTerms"),
-            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, parentVC: self, selector: "signOut")])
-
-        return [firstRow, thirdRow, fourthRow]
+            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, parentVC: self, selector: "signOut")]
+        
+        return [("", firstSection),
+            ("car_sharing".localizedString, carSharingSection),
+            ("general".localizedString, generalSection)
+        ]
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -433,9 +469,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         switch settingsCell.cellType {
             
         case .Switch:
-            var cell = tableView.dequeueReusableCellWithIdentifier("switch") as? SettingsSwitchCell
+            var cell = tableView.dequeueReusableCellWithIdentifier("switch" + settingsCell.titleText) as? SettingsSwitchCell
             if cell == nil {
-                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: "switch")
+                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: "switch" + settingsCell.titleText)
             }
             cell!.titleText = settingsCell.titleText
             cell!.subtitleText = settingsCell.subtitleText
@@ -445,18 +481,18 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             return cell!
             
         case .Segmented:
-            var cell = tableView.dequeueReusableCellWithIdentifier("segmented") as? SettingsSegmentedCell
+            var cell = tableView.dequeueReusableCellWithIdentifier("segmented" + settingsCell.titleText) as? SettingsSegmentedCell
             if cell == nil {
-                cell = SettingsSegmentedCell(segments: settingsCell.segments, reuseIdentifier: "segmented", parentVC: settingsCell.parentVC, selector: settingsCell.selector)
+                cell = SettingsSegmentedCell(segments: settingsCell.segments, reuseIdentifier: "segmented" + settingsCell.titleText, parentVC: settingsCell.parentVC, selector: settingsCell.selector)
             }
             cell!.titleText = settingsCell.titleText
             cell!.selectedSegment = settingsCell.defaultSegment
             return cell!
             
         case .Service, .ServiceSwitch:
-            var cell = tableView.dequeueReusableCellWithIdentifier("service") as? SettingsServiceSwitchCell
+            var cell = tableView.dequeueReusableCellWithIdentifier("service" + settingsCell.titleText) as? SettingsServiceSwitchCell
             if cell == nil {
-                cell = SettingsServiceSwitchCell(style: .Default, reuseIdentifier: "service")
+                cell = SettingsServiceSwitchCell(style: .Default, reuseIdentifier: "service" + settingsCell.titleText)
             }
             cell!.titleText = settingsCell.titleText
             cell!.signedIn = settingsCell.signedIn
@@ -473,9 +509,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             return cell!
             
         case .Basic:
-            var cell = tableView.dequeueReusableCellWithIdentifier("basic") as? SettingsBasicCell
+            var cell = tableView.dequeueReusableCellWithIdentifier("basic" + settingsCell.titleText) as? SettingsBasicCell
             if cell == nil {
-                cell = SettingsBasicCell(style: .Default, reuseIdentifier: "basic")
+                cell = SettingsBasicCell(style: .Default, reuseIdentifier: "basic" + settingsCell.titleText)
             }
             cell!.titleText = settingsCell.titleText
             cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 3

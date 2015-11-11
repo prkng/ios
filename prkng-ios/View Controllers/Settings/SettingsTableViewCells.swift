@@ -21,7 +21,7 @@ class SettingsCell {
     var subtitleText: String = ""
     var segments: [String] = []
     var defaultSegment: Int = 0
-    var signedIn: Bool = false
+    var signedIn: Bool?
     var switchValue: Bool?
     var parentVC: UIViewController?
     var selector: String?
@@ -44,7 +44,7 @@ class SettingsCell {
     }
 
     //this init infers Service/ServiceSwitch types
-    init(titleText: String, signedIn: Bool, switchValue: Bool?, parentVC: UIViewController? = nil, selector: String? = nil) {
+    init(titleText: String, signedIn: Bool?, switchValue: Bool?, parentVC: UIViewController? = nil, selector: String? = nil) {
         self.cellType = switchValue != nil ? .ServiceSwitch : .Service
         self.titleText = titleText
         self.signedIn = signedIn
@@ -133,6 +133,7 @@ class SettingsSwitchCell: UITableViewCell {
     var switchOn: Bool = false {
         didSet {
             enabledSwitch.on = switchOn
+            enabledSwitchValueChanged(animated: false)
         }
     }
     
@@ -142,10 +143,22 @@ class SettingsSwitchCell: UITableViewCell {
     private var cellBackgroundColor: UIColor {
         return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
     }
-    
+
     func enabledSwitchValueChanged() {
-        UIView.animateWithDuration(0.2) { () -> Void in
+        enabledSwitchValueChanged(animated: true)
+    }
+    
+    func enabledSwitchValueChanged(animated animated: Bool) {
+        UIView.animateWithDuration(animated ? 0.2 : 0) { () -> Void in
             self.backgroundColor = self.cellBackgroundColor
+        }
+    }
+    
+    func resetSelector() {
+        enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+        if (parentVC != nil && selector != nil) {
+            enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
+            enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
         }
     }
 
@@ -157,10 +170,7 @@ class SettingsSwitchCell: UITableViewCell {
             enabledSwitch.tintColor = Styles.Colors.stone
             enabledSwitch.onTintColor = Styles.Colors.cream1
             enabledSwitch.onTintColor = Styles.Colors.red2
-            if (parentVC != nil && selector != nil) {
-                enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
-                enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
-            }
+            resetSelector()
             contentView.addSubview(enabledSwitch)
             
             title.font = Styles.FontFaces.regular(14)
@@ -295,8 +305,16 @@ class SettingsServiceSwitchCell: UITableViewCell {
     private let button = ViewFactory.transparentRoundedButton()
     private var didLayoutSubviews: Bool = false
     
-    var parentVC: UIViewController?
-    var selector: String?
+    var parentVC: UIViewController? {
+        didSet {
+            resetSelector()
+        }
+    }
+    var selector: String? {
+        didSet {
+            resetSelector()
+        }
+    }
     
     var shouldShowSwitch: Bool = false {
         didSet {
@@ -309,16 +327,21 @@ class SettingsServiceSwitchCell: UITableViewCell {
         set(value) { self.title.text = value }
     }
 
-    var signedIn: Bool = false {
+    var signedIn: Bool? {
         didSet {
-            if signedIn {
-                button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Normal)
-                button.layer.borderColor = Styles.Colors.anthracite1.CGColor
-                button.setTitle("sign_out".localizedString.uppercaseString, forState: .Normal)
+            if signedIn == nil {
+                button.hidden = true
             } else {
-                button.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
-                button.layer.borderColor = Styles.Colors.red2.CGColor
-                button.setTitle("sign_in".localizedString.uppercaseString, forState: .Normal)
+                button.hidden = false
+                if signedIn! {
+                    button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Normal)
+                    button.layer.borderColor = Styles.Colors.anthracite1.CGColor
+                    button.setTitle("sign_out".localizedString.uppercaseString, forState: .Normal)
+                } else {
+                    button.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
+                    button.layer.borderColor = Styles.Colors.red2.CGColor
+                    button.setTitle("sign_in".localizedString.uppercaseString, forState: .Normal)
+                }
             }
         }
     }
@@ -326,6 +349,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
     var switchValue: Bool = false {
         didSet {
             enabledSwitch.on = switchValue
+            enabledSwitchValueChanged(animated: false)
         }
     }
 
@@ -338,12 +362,24 @@ class SettingsServiceSwitchCell: UITableViewCell {
     }
     
     func enabledSwitchValueChanged() {
-        UIView.animateWithDuration(0.2) { () -> Void in
+        enabledSwitchValueChanged(animated: true)
+    }
+    
+    func enabledSwitchValueChanged(animated animated: Bool) {
+        UIView.animateWithDuration(animated ? 0.2 : 0) { () -> Void in
             self.backgroundColor = self.cellBackgroundColor
         }
-        UIView.transitionWithView(self.title, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+        UIView.transitionWithView(self.title, duration: (animated ? 0.2 : 0), options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
             self.title.textColor = self.titleTextColor
             }, completion: nil)
+    }
+    
+    func resetSelector() {
+        enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+        if (parentVC != nil && selector != nil) {
+            enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
+            enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
+        }
     }
 
     override func layoutSubviews() {
@@ -356,11 +392,8 @@ class SettingsServiceSwitchCell: UITableViewCell {
             enabledSwitch.onTintColor = Styles.Colors.red2
             contentView.addSubview(enabledSwitch)
 
-            if (parentVC != nil && selector != nil) {
-                enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
-                enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
-            }
-
+            resetSelector()
+            
             button.layer.cornerRadius = 10
             button.titleLabel?.font = Styles.FontFaces.regular(10)
 //            button.addTarget(self, action: "test", forControlEvents: UIControlEvents.TouchUpInside)

@@ -43,10 +43,12 @@ struct SpotOperations {
             "latitude": location.latitude,
             "longitude": location.longitude,
             "radius" : radiusStr,
-            "permit" : "all",
             "carsharing" : carsharingString
         ]
         
+        if Settings.shouldFilterForCommercialPermit() {
+            params["permit"] = "commercial"
+        }
         
         if(duration != nil) {
             let durationStr = NSString(format: "%.1f", duration!)
