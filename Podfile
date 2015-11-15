@@ -16,6 +16,8 @@ pod 'CocoaLumberjack'
 pod 'GoogleMaps'
 pod 'Google/Analytics'
 pod 'SevenSwitch', '~>1.4'
+pod 'AFOAuth1Client'
+pod 'TDOAuth'
 #pod 'SZTextView' #no longer used, gives a uitextview with placeholder text
 
 #the pods below should only be enabled if we move to ios 8

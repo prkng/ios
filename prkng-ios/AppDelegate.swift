@@ -87,6 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         loggedInOperations()
         
+        NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = .Always
+                
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         RMConfiguration.sharedInstance().accessToken = "pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA"
@@ -186,6 +188,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         if (url.scheme.lowercaseString == "fb1043720578978201") {
             return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+        } else if url.relativeString ?? "" == "ng.prk.prkng-ios://oauth-car2go-success" {
+            return true
         } else  {
             return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
         }        

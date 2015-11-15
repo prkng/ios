@@ -346,6 +346,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 if annotationType == "searchResult" {
                     AnalyticsOperations.sendSearchQueryToAnalytics(annotation.title, navigate: true)
                     DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
+                } else if annotationType == "carsharing" {
+                    
+//                    let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp?callback=ng.prk.prkng-ios://communauto-signed-in&URLEnd=URLEnd")
+////                    let vc = PRKWebViewController(url: "https://www.reservauto.net/WCF/LSI/LSIBookingService.asmx/GetCurrentBooking?Callback=ng.prk.prkng-ios://book&CustomerID=%22%22")
+//                    self.presentViewController(vc, animated: true, completion: nil)
                 }
             }
         }

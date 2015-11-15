@@ -34,5 +34,7 @@
 #import "pop/POP.h"
 #import "MarqueeLabel/MarqueeLabel.h"
 #import "UIImage+ImageEffects.h"
+#import "AFOAuth1Client.h"
+#import "TDOAuth.h"
 
 #endif

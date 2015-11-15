@@ -29,12 +29,34 @@ enum CarSharingType: String {
 
 }
 
+class ISO8610DateFormatter {
+    
+    static let sharedInstance = ISO8610DateFormatter()
+    
+    var dateFormatter: NSDateFormatter {
+        if _dateFormatter == nil {
+            generateDateFormatter()
+        }
+        return _dateFormatter!
+    }
+    private var _dateFormatter: NSDateFormatter?
+    private func generateDateFormatter() {
+        let formatter = NSDateFormatter()
+        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        _dateFormatter = formatter
+    }
+    
+
+}
+
 class CarShare: NSObject {
     
     var coordinate: CLLocationCoordinate2D
     var fuelPercentage: Int?
     var electric: Bool
     var name: String //sometimes car model, sometimes license plate
+    var availableUntil: NSDate?
     var carSharingType: CarSharingType
     
     private var fuelPercentageText: String {
@@ -71,6 +93,7 @@ class CarShare: NSObject {
         self.name = json["properties"]["name"].stringValue
         self.fuelPercentage = json["properties"]["fuel"].int
         self.electric = json["properties"]["electric"].boolValue
+        self.availableUntil = ISO8610DateFormatter.sharedInstance.dateFormatter.dateFromString(json["properties"]["until"].stringValue)
     }
     
     override init() {
@@ -85,11 +108,12 @@ class CarShare: NSObject {
 
         let maximumTotalWidth = UIScreen.mainScreen().bounds.width - 40
         
-        let rightViewWidth: CGFloat = 0//55
+        let rightViewWidth: CGFloat = 55
         let rightView = UIButton()
         rightView.setImage(UIImage(named:"btn_reserve".localizedString), forState: .Normal)
         rightView.bounds = CGRect(x: 0, y: 0, width: rightViewWidth, height: 44) //actual width of image is 53.5 points
         rightView.imageView?.contentMode = .Left
+        rightView.tag = 200
         
         let leftView = UIView()
 
@@ -132,7 +156,7 @@ class CarShare: NSObject {
 //        separator.backgroundColor = Styles.Colors.transparentBlack
 //        leftView.addSubview(separator)
 
-        return (leftView, nil)
+        return (leftView, rightView)
     }
     
 }

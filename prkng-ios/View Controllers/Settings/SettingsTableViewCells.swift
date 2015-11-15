@@ -24,33 +24,37 @@ class SettingsCell {
     var signedIn: Bool?
     var switchValue: Bool?
     var parentVC: UIViewController?
-    var selector: String?
+    var switchSelector: String?
+    var buttonSelector: String?
     var cellType: SettingsTableViewCellType = .Basic
     
-    init(switchValue: Bool, titleText: String, subtitleText: String, parentVC: UIViewController? = nil, selector: String? = nil) {
+    init(switchValue: Bool, titleText: String, subtitleText: String, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil) {
         self.cellType = .Switch
         self.switchValue = switchValue
         self.titleText = titleText
         self.subtitleText = subtitleText
         self.parentVC = parentVC
-        self.selector = selector
+        self.switchSelector = switchSelector
+        self.buttonSelector = buttonSelector
     }
 
-    init(cellType: SettingsTableViewCellType, titleText: String, parentVC: UIViewController? = nil, selector: String? = nil) {
+    init(cellType: SettingsTableViewCellType, titleText: String, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil) {
         self.cellType = cellType
         self.titleText = titleText
         self.parentVC = parentVC
-        self.selector = selector
+        self.switchSelector = switchSelector
+        self.buttonSelector = buttonSelector
     }
 
     //this init infers Service/ServiceSwitch types
-    init(titleText: String, signedIn: Bool?, switchValue: Bool?, parentVC: UIViewController? = nil, selector: String? = nil) {
+    init(titleText: String, signedIn: Bool?, switchValue: Bool?, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil) {
         self.cellType = switchValue != nil ? .ServiceSwitch : .Service
         self.titleText = titleText
         self.signedIn = signedIn
         self.switchValue = switchValue
         self.parentVC = parentVC
-        self.selector = selector
+        self.switchSelector = switchSelector
+        self.buttonSelector = buttonSelector
     }
 
     //this init infers Switch type
@@ -61,13 +65,13 @@ class SettingsCell {
     }
 
     //this init infers Segmented type
-    init(titleText: String, segments: [String], defaultSegment: Int, parentVC: UIViewController? = nil, selector: String? = nil) {
+    init(titleText: String, segments: [String], defaultSegment: Int, parentVC: UIViewController? = nil, switchSelector: String? = nil) {
         self.cellType = .Segmented
         self.titleText = titleText
         self.segments = segments
         self.defaultSegment = defaultSegment
         self.parentVC = parentVC
-        self.selector = selector
+        self.switchSelector = switchSelector
     }
 
 }
@@ -310,12 +314,18 @@ class SettingsServiceSwitchCell: UITableViewCell {
             resetSelector()
         }
     }
-    var selector: String? {
+    var switchSelector: String? {
         didSet {
             resetSelector()
         }
     }
-    
+
+    var buttonSelector: String? {
+        didSet {
+            resetSelector()
+        }
+    }
+
     var shouldShowSwitch: Bool = false {
         didSet {
             enabledSwitch.hidden = !shouldShowSwitch
@@ -376,10 +386,14 @@ class SettingsServiceSwitchCell: UITableViewCell {
     
     func resetSelector() {
         enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-        if (parentVC != nil && selector != nil) {
-            enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
+        if (parentVC != nil && switchSelector != nil) {
+            enabledSwitch.addTarget(parentVC!, action: Selector(switchSelector!), forControlEvents: .ValueChanged)
             enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
         }
+        if (parentVC != nil && buttonSelector != nil) {
+            button.addTarget(parentVC!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
+        }
+
     }
 
     override func layoutSubviews() {
@@ -396,7 +410,6 @@ class SettingsServiceSwitchCell: UITableViewCell {
             
             button.layer.cornerRadius = 10
             button.titleLabel?.font = Styles.FontFaces.regular(10)
-//            button.addTarget(self, action: "test", forControlEvents: UIControlEvents.TouchUpInside)
             contentView.addSubview(button)
             
             title.font = Styles.FontFaces.regular(14)
@@ -441,10 +454,4 @@ class SettingsServiceSwitchCell: UITableViewCell {
         }
 
     }
-    
-    func test() {
-        let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")
-        self.parentVC?.navigationController?.pushViewController(vc, animated: true)
-    }
-    
 }

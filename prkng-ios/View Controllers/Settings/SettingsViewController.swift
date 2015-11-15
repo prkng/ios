@@ -412,6 +412,72 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
     }
     
+    func loginWithCommunauto() {
+        let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")
+        vc.didFinishLoadingCallback = { () -> Bool in
+            
+            let url = NSURL(string: "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp")
+            let request = NSURLRequest(URL: url!)
+            var response: NSURLResponse?
+            do {
+                let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
+                var stringData = String(data: data, encoding: NSUTF8StringEncoding) ?? "  "
+                stringData = stringData[1..<stringData.length()-1]
+                if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
+                    let json = JSON(data: properData)
+                    //if the id string is present, then return true, else return false
+                    if let customerID = json["data"][0]["CustomerID"].string {
+                        print("Communauto/Auto-mobile Customer ID is ", customerID)
+                        return true//and we have our custoer ID! Hooray!
+                    }
+                    return true
+                }
+            } catch (let e) {
+                print(e)
+                return false
+            }
+            
+            return false
+
+        }
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+
+    func loginWithCar2Go() {
+        //        NXOAuth2AccountStore.sharedStore().requestAccessToAccountWithType("car2go", username: "peakwinter", password: "AnthonyHello")
+        
+        //        let callbackURL = NSURL(string:"ng.prk.prkng-ios://oauth-car2go-success")
+        
+        //        var params = [NSObject : AnyObject]()
+        //        let dict = ["oauth_callback": "oob"] //type is [NSObject : AnyObject]()
+        //        let tokenRequest = TDOAuth.URLRequestForPath("/reqtoken", POSTParameters: dict, host: "www.car2go.com/api", consumerKey: "TemirlanTentimishov", consumerSecret: "QPCvPebF5P11mWX9", accessToken: nil, tokenSecret: nil)
+        //        var response: NSURLResponse?
+        //        do {
+        ////            let connection = NSURLConnection(request: tokenRequest, delegate: self)
+        //            let data = try NSURLConnection.sendSynchronousRequest(tokenRequest, returningResponse: &response)
+        //            let stringData = String(data: data, encoding: NSUTF8StringEncoding)
+        //            let stringArray = stringData?.componentsSeparatedByString("&") ?? []
+        //            for substring in stringArray {
+        //                let secondArray = substring.componentsSeparatedByString("=")
+        //                params[secondArray[0]] = secondArray[1]
+        //            }
+        //            let token = params["oauth_token"]
+        //            let tokenSecret = params["oauth_token_secret"]
+        //        } catch (let e) {
+        //            print(e)
+        //        }
+        
+        //        let car2goOauth1 = AFOAuth1Client(baseURL: NSURL(string: "https://www.car2go.com/api"), key: "TemirlanTentimishov", secret: "QPCvPebF5P11mWX9")
+        //        NSLog(String(car2goOauth1.signatureMethod.rawValue))
+        //        car2goOauth1.authorizeUsingOAuthWithRequestTokenPath("reqtoken", userAuthorizationPath: "authorize", callbackURL: NSURL(string: "oob"), accessTokenPath: "accesstoken", accessMethod: "POST", scope: nil, success: { (token, responseObject) -> Void in
+        //            NSLog(token.description)
+        //            }) { (error) -> Void in
+        //                NSLog(error.description)
+        //        }
+        
+        //        let car2goOauth1 = OAuth1Swift(consumerKey: "prkng", consumerSecret: "crUKsH0t4RQeyKYOy>]6", requestTokenUrl: "https://www.car2go.com/api/reqtoken", authorizeUrl: "https://www.car2go.com/api/authorize", accessTokenUrl: "https://www.car2go.com/api/accesstoken")
+    }
+
     //MARK: UITableViewDataSource
         
     var tableSource: [(String, [SettingsCell])] {
@@ -419,17 +485,17 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         var firstSection = [SettingsCell]()
         var carSharingSection = [SettingsCell]()
         
-        let alertCell = SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "settings_alert".localizedString, subtitleText: "settings_alert_text".localizedString, parentVC: self, selector: "notificationSelectionValueChanged")
-        let commercialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForCommercialPermit(), titleText: "settings_commercial_permit".localizedString, subtitleText: "settings_commercial_permit_text".localizedString, parentVC: self, selector: "commercialPermitFilterValueChanged")
+        let alertCell = SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "settings_alert".localizedString, subtitleText: "settings_alert_text".localizedString, parentVC: self, switchSelector: "notificationSelectionValueChanged")
+        let commercialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForCommercialPermit(), titleText: "settings_commercial_permit".localizedString, subtitleText: "settings_commercial_permit_text".localizedString, parentVC: self, switchSelector: "commercialPermitFilterValueChanged")
 //        let snowRemovalCell = SettingsCell(switchValue: Settings.notificationTime() == 0, titleText: "Snow Removal", subtitleText: "Information about snow and street availability.")
         
 //        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
 
-        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: false, switchValue: !Settings.hideCar2Go(), parentVC: self, selector: "hideCar2GoValueChanged")
-        let automobileCell = SettingsCell(titleText: "Automobile", signedIn: false, switchValue: !Settings.hideAutomobile(), parentVC: self, selector: "hideAutomobileValueChanged")
-        let communautoCell = SettingsCell(titleText: "Communauto", signedIn: false, switchValue: !Settings.hideCommunauto(), parentVC: self, selector: "hideCommunautoValueChanged")
-        let zipcarCell = SettingsCell(titleText: "ZipCar", signedIn: nil, switchValue: !Settings.hideZipCar(), parentVC: self, selector: "hideZipCarValueChanged")
+        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: false, switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "loginWithCar2Go")
+        let automobileCell = SettingsCell(titleText: "Automobile", signedIn: false, switchValue: !Settings.hideAutomobile(), parentVC: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "loginWithCommunauto")
+        let communautoCell = SettingsCell(titleText: "Communauto", signedIn: false, switchValue: !Settings.hideCommunauto(), parentVC: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "loginWithCommunauto")
+        let zipcarCell = SettingsCell(titleText: "ZipCar", signedIn: nil, switchValue: !Settings.hideZipCar(), parentVC: self, switchSelector: "hideZipCarValueChanged")
         
         firstSection = [alertCell]
         
@@ -442,13 +508,13 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             carSharingSection = [car2goCell, zipcarCell]
         }
         
-        let generalSection = [SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, selector: "showSupport"),
-            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, selector: "showGettingStarted"),
-            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, selector: "showShareSheet"),
-            SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, selector: "sendToAppStore"),
-            SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, selector: "showFaq"),
-            SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, selector: "showTerms"),
-            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, parentVC: self, selector: "signOut")]
+        let generalSection = [SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, switchSelector: "showSupport"),
+            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, switchSelector: "showGettingStarted"),
+            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, switchSelector: "showShareSheet"),
+            SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, switchSelector: "sendToAppStore"),
+            SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, switchSelector: "showFaq"),
+            SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, switchSelector: "showTerms"),
+            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, parentVC: self, switchSelector: "signOut")]
         
         return [("", firstSection),
             ("car_sharing".localizedString, carSharingSection),
@@ -477,13 +543,13 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             cell!.subtitleText = settingsCell.subtitleText
             cell!.switchOn = settingsCell.switchValue ?? false
             cell!.parentVC = settingsCell.parentVC
-            cell!.selector = settingsCell.selector
+            cell!.selector = settingsCell.switchSelector
             return cell!
             
         case .Segmented:
             var cell = tableView.dequeueReusableCellWithIdentifier("segmented" + settingsCell.titleText) as? SettingsSegmentedCell
             if cell == nil {
-                cell = SettingsSegmentedCell(segments: settingsCell.segments, reuseIdentifier: "segmented" + settingsCell.titleText, parentVC: settingsCell.parentVC, selector: settingsCell.selector)
+                cell = SettingsSegmentedCell(segments: settingsCell.segments, reuseIdentifier: "segmented" + settingsCell.titleText, parentVC: settingsCell.parentVC, selector: settingsCell.switchSelector)
             }
             cell!.titleText = settingsCell.titleText
             cell!.selectedSegment = settingsCell.defaultSegment
@@ -500,7 +566,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
                 cell!.shouldShowSwitch = true
                 cell!.switchValue = switchValue
                 cell!.parentVC = settingsCell.parentVC
-                cell!.selector = settingsCell.selector
+                cell!.switchSelector = settingsCell.switchSelector
+                cell!.buttonSelector = settingsCell.buttonSelector
             } else {
                 cell!.shouldShowSwitch = false
             }
@@ -528,8 +595,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
-        if settingsCell.parentVC != nil && settingsCell.selector != nil {
-            settingsCell.parentVC!.performSelector(Selector(settingsCell.selector!))
+        if settingsCell.parentVC != nil && settingsCell.switchSelector != nil {
+            settingsCell.parentVC!.performSelector(Selector(settingsCell.switchSelector!))
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

@@ -8,16 +8,18 @@
 
 import UIKit
 
-class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
+class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate {
     
-    let backgroundImageView = UIImageView(image: UIImage(named: "bg_login"))
-    var statusBar = UIView()
-    let webView = UIWebView()
+    private let backgroundImageView = UIImageView(image: UIImage(named: "bg_login"))
+    private var statusBar = UIView()
+    private let webView = UIWebView()
     
-    var englishUrl: String
-    var frenchUrl: String
+    private var englishUrl: String
+    private var frenchUrl: String
     
-    let backButton = ViewFactory.hugeButton()
+    var didFinishLoadingCallback: (() -> Bool)?
+    
+    private let backButton = ViewFactory.hugeButton()
     
     init(url: String) {
         self.englishUrl = url
@@ -72,7 +74,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
         view.addSubview(webView)
         
         backButton.setTitle("back".localizedString, forState: .Normal)
-        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
+        backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside)
         
         backButton.layer.masksToBounds = false
         backButton.layer.shadowOffset = CGSizeMake(0, -1.0)
@@ -114,15 +116,52 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate {
     
     // MARK: Button Handlers
     
-    func backButtonTapped(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func backButtonTapped() {
+        if let navVC = self.navigationController {
+            navVC.popViewControllerAnimated(true)
+        } else {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     
     // MARK: UIWebViewDelegate
     
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        //this commented out part is to put saved cookies back into the cookie jar, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
+//        let cookieCount = NSUserDefaults.standardUserDefaults().integerForKey("prkng_cookie_count")
+//        for i in 0..<cookieCount {
+//            if let cookieProperties = NSUserDefaults.standardUserDefaults().objectForKey("prkng_cookie_"+String(i)) as? [String : AnyObject] {
+//                if cookieProperties["Name"] as? String ?? "" == "mySession" {
+//                    NSLog("MY SESH")
+//                }
+//                if let cookie = NSHTTPCookie(properties: cookieProperties) {
+//                    NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
+//                }
+//            }
+//        }
+
+        return true
+    }
+    
     func webViewDidFinishLoad(webView: UIWebView) {
         SVProgressHUD.dismiss()
+        
+//        let response = NSURLCache.sharedURLCache().cachedResponseForRequest(webView.request!)?.response
+        
+        //this commented out part is to save cookies, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
+//        let capturedCookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string: englishUrl)!) ?? []
+//        for i in 0..<capturedCookies.count {
+//            let cookie = capturedCookies[i]
+//            NSUserDefaults.standardUserDefaults().setObject(cookie.properties, forKey: "prkng_cookie_"+String(i))
+//            NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+//        }
+//        NSUserDefaults.standardUserDefaults().setInteger(capturedCookies.count, forKey: "prkng_cookie_count")
+        
+        if didFinishLoadingCallback?() ?? false {
+            backButtonTapped()
+        }
     }
     
     

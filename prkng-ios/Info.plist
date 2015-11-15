@@ -36,6 +36,16 @@
 				<string>ng.prk.prkng-ios</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>ng.prk.prkng-ios</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>oauth-car2go-success</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>68</string>
