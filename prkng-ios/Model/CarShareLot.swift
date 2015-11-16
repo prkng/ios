@@ -31,13 +31,17 @@ class CarShareLot: NSObject {
     var reuseIdentifier: String {
         
         var anchorImageName = "carsharing_lot_pin_anchor"
-        switch self.carSharingType {
-        case .Car2Go:
-            anchorImageName += "_blue"
-        default:
-            anchorImageName += "_green"
-        }
         
+        if self.carsAvailable == 0 {
+            anchorImageName += "_grey"
+        } else {
+            switch self.carSharingType {
+            case .Car2Go:
+                anchorImageName += "_blue"
+            default:
+                anchorImageName += "_green"
+            }
+        }
         return anchorImageName + String(self.carsAvailable)
     }
     
@@ -48,12 +52,18 @@ class CarShareLot: NSObject {
         var pinColor = Styles.Colors.turtleGreen
         
         var anchorImageName = "carsharing_lot_pin_anchor"
-        switch self.carSharingType {
-        case .Car2Go:
-            anchorImageName += "_blue"
-            pinColor = Styles.Colors.azuro
-        default:
-            anchorImageName += "_green"
+        
+        if self.carsAvailable == 0 {
+            anchorImageName += "_grey"
+            pinColor = Styles.Colors.pinGrey
+        } else {
+            switch self.carSharingType {
+            case .Car2Go:
+                anchorImageName += "_blue"
+                pinColor = Styles.Colors.azuro
+            default:
+                anchorImageName += "_green"
+            }
         }
         let anchorImage = UIImage(named: anchorImageName)!
         
