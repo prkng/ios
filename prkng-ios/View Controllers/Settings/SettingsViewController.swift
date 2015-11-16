@@ -416,7 +416,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         if CarSharingOperations.getAndSaveCommunautoCustomerID() == nil {
             //we need to ask the user to log in
-            let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")
+            let vc = PRKWebViewController(englishUrl: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=2", frenchUrl: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=1")
             vc.didFinishLoadingCallback = { () -> Bool in
                 if let _ = CarSharingOperations.getAndSaveCommunautoCustomerID() {
                     return true
