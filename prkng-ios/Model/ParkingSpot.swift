@@ -722,20 +722,31 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
 
             let selected = userInfo["selected"] as! Bool
             let carShare = userInfo["carshare"] as! CarShare
+            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+//            let marker = RMMarker(UIImage: UIImage(named: carShare.mapPinName(selected)), anchorPoint: CGPoint(x: 0.5, y: 1))
             let calloutView = carShare.calloutView()
             leftCalloutAccessoryView = calloutView.0
             rightCalloutAccessoryView = calloutView.1
             reuseIdentifier = carShare.mapPinName(selected)
             annotationImage = UIImage(named: reuseIdentifier)
+//            if shouldAddAnimation {
+//                marker.addScaleAnimation()
+//                spotIDsDrawnOnMap.append(carShare.identifier)
+//            }
             return
 
 
         case "carsharinglot":
             
             let carShareLot = userInfo["carsharelot"] as! CarShareLot
+            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
 //            let marker = RMMarker(UIImage: carShareLot.mapPinImage, anchorPoint: CGPoint(x: 0.5, y: 1))
             reuseIdentifier = carShareLot.reuseIdentifier
             annotationImage = carShareLot.mapPinImage
+//            if shouldAddAnimation {
+//                marker.addScaleAnimation()
+//                spotIDsDrawnOnMap.append(carShareLot.identifier)
+//            }
             return
 
         case "searchResult":

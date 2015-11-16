@@ -190,6 +190,7 @@ class MGLMapViewController: MapViewController {
 //                if annotationType == "searchResult" {
 //                    AnalyticsOperations.sendSearchQueryToAnalytics(genericAnnotation.title ?? "", navigate: true)
 //                    DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
+//                } else if annotationType == "carsharing" {
 //                }
 //            }
 //        }
@@ -799,8 +800,9 @@ class MGLMapViewController: MapViewController {
 //        var tempAnnotations = [MGLAnnotation]()
 //
 //        for carShare in carShares {
+//            let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShare.identifier)
 //            let annotation = GenericMGLAnnotation(coordinate: carShare.coordinate, title: "", subtitle: nil)
-//            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare]
+//            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare, "shouldAddAnimation" : shouldAddAnimation]
 //            tempAnnotations.append(annotation)
 //        }
 //
@@ -826,8 +828,9 @@ class MGLMapViewController: MapViewController {
 //        var tempAnnotations = [AnyObject]()
 //
 //        for carShareLot in carShareLots {
+//            let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShareLot.identifier)
 //            let annotation = GenericMGLAnnotation(coordinate: carShareLot.coordinate, title: "", subtitle: nil)
-//            annotation.userInfo = ["type": "carsharinglot", "carsharelot": carShareLot]
+//            annotation.userInfo = ["type": "carsharinglot", "carsharelot": carShareLot, "shouldAddAnimation" : shouldAddAnimation]
 //            tempAnnotations.append(annotation)
 //        }
 //

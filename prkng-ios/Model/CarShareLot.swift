@@ -16,6 +16,10 @@ class CarShareLot: NSObject {
     var name: String
     var carSharingType: CarSharingType
     
+    var identifier: String {
+        return name + carSharingType.name + coordinate.latitude.description + coordinate.longitude.description
+    }
+
     init(json: JSON) {
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
         self.carSharingType = CarSharingType(rawValue: json["properties"]["company"].stringValue) ?? CarSharingType.Generic

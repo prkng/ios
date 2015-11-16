@@ -59,6 +59,10 @@ class CarShare: NSObject {
     var availableUntil: NSDate?
     var carSharingType: CarSharingType
     
+    var identifier: String {
+        return name + carSharingType.name + coordinate.latitude.description + coordinate.longitude.description
+    }
+    
     private var fuelPercentageText: String {
         if fuelPercentage != nil {
             return String(format: "%d%%", fuelPercentage!)

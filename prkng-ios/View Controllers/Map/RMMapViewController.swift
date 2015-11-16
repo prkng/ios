@@ -303,18 +303,28 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             let selected = userInfo!["selected"] as! Bool
             let carShare = userInfo!["carshare"] as! CarShare
-            let marker = RMMarker(UIImage: UIImage(named: carShare.mapPinName(selected)))
+            let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
+            let marker = RMMarker(UIImage: UIImage(named: carShare.mapPinName(selected)), anchorPoint: CGPoint(x: 0.5, y: 1))
             let calloutView = carShare.calloutView()
             marker.leftCalloutAccessoryView = calloutView.0
             marker.rightCalloutAccessoryView = calloutView.1
             marker.canShowCallout = true
+            if shouldAddAnimation {
+                marker.addScaleAnimation()
+                spotIDsDrawnOnMap.append(carShare.identifier)
+            }
             return marker
 
         case "carsharinglot":
             
             let carShareLot = userInfo!["carsharelot"] as! CarShareLot
+            let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
             let marker = RMMarker(UIImage: carShareLot.mapPinImage, anchorPoint: CGPoint(x: 0.5, y: 1))
             marker.canShowCallout = false
+            if shouldAddAnimation {
+                marker.addScaleAnimation()
+                spotIDsDrawnOnMap.append(carShareLot.identifier)
+            }
             return marker
 
         case "searchResult":
@@ -980,8 +990,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         var tempAnnotations = [RMAnnotation]()
         
         for carShare in carShares {
+            let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShare.identifier)
             let annotation = RMAnnotation(mapView: self.mapView, coordinate: carShare.coordinate, andTitle: "")
-            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare]
+            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare, "shouldAddAnimation" : shouldAddAnimation]
             tempAnnotations.append(annotation)
         }
         
@@ -1007,8 +1018,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         var tempAnnotations = [RMAnnotation]()
         
         for carShareLot in carShareLots {
+            let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShareLot.identifier)
             let annotation = RMAnnotation(mapView: self.mapView, coordinate: carShareLot.coordinate, andTitle: "")
-            annotation.userInfo = ["type": "carsharinglot", "carsharelot": carShareLot]
+            annotation.userInfo = ["type": "carsharinglot", "carsharelot": carShareLot, "shouldAddAnimation" : shouldAddAnimation]
             tempAnnotations.append(annotation)
         }
         
