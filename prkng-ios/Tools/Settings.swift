@@ -19,6 +19,7 @@ struct Settings {
     static let FIRST_CAR_SHARING_USE_PASSED_KEY = "prkng_first_car_sharing_use_passed"
     static let DID_PROMPT_USER_TO_RATE_APP_KEY = "prkng_did_prompt_user_to_rate_app"
     static let PARKING_LOTS_PRICE_DAILY = "prkng_parking_lots_price_daily"
+    static let COMMUNAUTO_CUSTOMER_ID = "prkng_communauto_customer_id"
     static let HIDE_CAR2GO = "prkng_hide_car2go"
     static let HIDE_COMMUNAUTO = "prkng_hide_communauto"
     static let HIDE_AUTOMOBILE = "prkng_hide_automobile"
@@ -491,6 +492,14 @@ struct Settings {
     static func setLotMainRateIsHourly(isHourly : Bool)  {
         DDLoggerWrapper.logInfo("Set lot main rate to " + (isHourly ? "hourly" : "daily"))
         NSUserDefaults.standardUserDefaults().setBool(isHourly, forKey: PARKING_LOTS_PRICE_DAILY)
+    }
+
+    static func communautoCustomerID() -> String? {
+        return NSUserDefaults.standardUserDefaults().stringForKey(COMMUNAUTO_CUSTOMER_ID)
+    }
+
+    static func setCommunautoCustomerID(customerID: String?) {
+        NSUserDefaults.standardUserDefaults().setObject(customerID, forKey: COMMUNAUTO_CUSTOMER_ID)
     }
 
     static func hideCar2Go() -> Bool {

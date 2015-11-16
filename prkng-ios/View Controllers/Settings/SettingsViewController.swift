@@ -412,35 +412,25 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
     }
     
-    func loginWithCommunauto() {
-        let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")
-        vc.didFinishLoadingCallback = { () -> Bool in
-            
-            let url = NSURL(string: "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp")
-            let request = NSURLRequest(URL: url!)
-            var response: NSURLResponse?
-            do {
-                let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
-                var stringData = String(data: data, encoding: NSUTF8StringEncoding) ?? "  "
-                stringData = stringData[1..<stringData.length()-1]
-                if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
-                    let json = JSON(data: properData)
-                    //if the id string is present, then return true, else return false
-                    if let customerID = json["data"][0]["CustomerID"].string {
-                        print("Communauto/Auto-mobile Customer ID is ", customerID)
-                        return true//and we have our custoer ID! Hooray!
-                    }
+    func handleCommunautoSignInButtonTap() {
+        
+        if CarSharingOperations.getAndSaveCommunautoCustomerID() == nil {
+            //we need to ask the user to log in
+            let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")
+            vc.didFinishLoadingCallback = { () -> Bool in
+                if let _ = CarSharingOperations.getAndSaveCommunautoCustomerID() {
                     return true
                 }
-            } catch (let e) {
-                print(e)
                 return false
             }
-            
-            return false
-
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            //we have a value, so perform a log out
+            //calling getAndSaveCommunautoCustomerID already logged us out, so just update the cell
+            CarSharingOperations.deleteCommunautoCustomerID()
+            self.tableView.reloadData()
         }
-        self.navigationController?.pushViewController(vc, animated: true)
+
     }
 
     func loginWithCar2Go() {
@@ -493,8 +483,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
 
         let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: false, switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "loginWithCar2Go")
-        let automobileCell = SettingsCell(titleText: "Automobile", signedIn: false, switchValue: !Settings.hideAutomobile(), parentVC: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "loginWithCommunauto")
-        let communautoCell = SettingsCell(titleText: "Communauto", signedIn: false, switchValue: !Settings.hideCommunauto(), parentVC: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "loginWithCommunauto")
+        let automobileCell = SettingsCell(titleText: "Automobile", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideAutomobile(), parentVC: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
+        let communautoCell = SettingsCell(titleText: "Communauto", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideCommunauto(), parentVC: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
         let zipcarCell = SettingsCell(titleText: "ZipCar", signedIn: nil, switchValue: !Settings.hideZipCar(), parentVC: self, switchSelector: "hideZipCarValueChanged")
         
         firstSection = [alertCell]
