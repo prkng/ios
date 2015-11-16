@@ -39,6 +39,7 @@ extension String {
         return newString
     }
 
+    //the second string in the tuple is the "main" one ie ("RUE ", "de la commune")
     var splitAddressString: (String, String) {
         
         let myself = self.abbreviatedString
@@ -64,6 +65,10 @@ extension String {
         }
         
         firstString = firstString.uppercaseString
+        
+        if secondString.length() <= 6 {
+            return ("", myself)
+        }
         
         return (firstString, secondString)
     }
