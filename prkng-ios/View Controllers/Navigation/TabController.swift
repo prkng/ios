@@ -98,6 +98,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func setupViews() {
         
+        //making the background white makes the odd blur view not bleed in with the regular black that's normally below it. Take this out and experiment with hiding/showing the bottom slider to see what I mean :)
+        self.view.backgroundColor = Styles.Colors.white
+        
         containerView.clipsToBounds = true
         view.addSubview(containerView)
 
@@ -283,6 +286,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         }
         
         switchingMainView = true
+        if let abstractVC = self.activeViewController as? AbstractViewController {
+            abstractVC.addTransitionView()
+        }
         newViewController.view.alpha = 0.0;
         newViewController.willMoveToParentViewController(self)
         addChildViewController(newViewController)
@@ -301,6 +307,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
                 self.activeViewController.view.removeFromSuperview()
                 self.activeViewController.willMoveToParentViewController(nil)
                 self.activeViewController = newViewController
+                if let abstractVC = self.activeViewController as? AbstractViewController {
+                    abstractVC.removeTransitionView()
+                }
                 self.switchingMainView = false
                 completion(finished: finished)
         }

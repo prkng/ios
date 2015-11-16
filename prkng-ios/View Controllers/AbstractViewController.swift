@@ -19,5 +19,19 @@ class AbstractViewController: GAITrackedViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    private var transitionView: UIView?
+    func removeTransitionView() {
+        //remove the transition view if it exists
+        transitionView?.removeFromSuperview()
+        transitionView = nil
+    }
+    
+    func addTransitionView() {
+        //create and add the transition view: A screenshot of the current UIScreen
+        removeTransitionView()
+        transitionView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(true)
+        self.view.addSubview(transitionView!)
+    }
 
 }

@@ -79,6 +79,8 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     
     func setupSubviews() {
         
+        previewView.backgroundColor = Styles.Colors.white
+
         view.addSubview(previewView)
         
         previewViewOverlay.backgroundColor = Styles.Colors.transparentBackground
