@@ -109,74 +109,105 @@ class CarSharingOperations {
         }
     }
     
-    static func getAndSaveCommunautoCustomerID() -> String? {
-
-        let url = NSURL(string: "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp")
-        let request = NSURLRequest(URL: url!)
-        var response: NSURLResponse?
-        do {
-            let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
-            var stringData = String(data: data, encoding: NSUTF8StringEncoding) ?? "  "
-            stringData = stringData[1..<stringData.length()-1]
-            if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
-                let json = JSON(data: properData)
-                //if the id string is present, then return true, else return false
-                if let customerID = json["data"][0]["CustomerID"].string {
-                    if customerID != "" {
-                        print("Communauto/Auto-mobile Customer ID is ", customerID)
-                        Settings.setCommunautoCustomerID(customerID)
-                        saveCommunautoCookies()
-                        return customerID//and we have our custoer ID! Hooray!
+    struct CommunautoAutomobile {
+        
+        static let loginApiUrl =        "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp"
+        static let loginWebUrl =        "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp"
+        static let loginWebUrlEnglish = "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=2"
+        static let loginWebUrlFrench =  "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=1"
+        
+        static var loginVC: PRKWebViewController {
+            let vc = PRKWebViewController(englishUrl: loginWebUrlEnglish, frenchUrl: loginWebUrlFrench)
+            vc.didFinishLoadingCallback = { () -> Bool in
+                if let _ = getAndSaveCommunautoCustomerID() {
+                    return true
+                }
+                return false
+            }
+            return vc
+        }
+        
+        static func getAndSaveCommunautoCustomerID() -> String? {
+            
+            let url = NSURL(string: loginApiUrl)
+            let request = NSURLRequest(URL: url!)
+            var response: NSURLResponse?
+            do {
+                let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
+                var stringData = String(data: data, encoding: NSUTF8StringEncoding) ?? "  "
+                stringData = stringData[1..<stringData.length()-1]
+                if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
+                    let json = JSON(data: properData)
+                    //if the id string is present, then return true, else return false
+                    if let customerID = json["data"][0]["CustomerID"].string {
+                        if customerID != "" {
+                            print("Communauto/Auto-mobile Customer ID is ", customerID)
+                            Settings.setCommunautoCustomerID(customerID)
+                            saveCommunautoCookies()
+                            return customerID//and we have our custoer ID! Hooray!
+                        }
                     }
                 }
+            } catch (let e) {
+                print(e)
+                deleteCommunautoCustomerID()
+                return nil
             }
-        } catch (let e) {
-            print(e)
+            
             deleteCommunautoCustomerID()
             return nil
+            
         }
         
-        deleteCommunautoCustomerID()
-        return nil
-
+        static func deleteCommunautoCustomerID() {
+            Settings.setCommunautoCustomerID(nil)
+            deleteCommunautoCookies()
+        }
+        
+        private static func saveCommunautoCookies() {
+            //this part is to save cookies, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
+            let capturedCookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string: loginWebUrl)!) ?? []
+            for i in 0..<capturedCookies.count {
+                let cookie = capturedCookies[i]
+                NSUserDefaults.standardUserDefaults().setObject(cookie.properties, forKey: "prkng_communauto_cookie_"+String(i))
+            }
+            NSUserDefaults.standardUserDefaults().setInteger(capturedCookies.count, forKey: "prkng_communauto_cookie_count")
+            
+        }
+        
+        private static func deleteCommunautoCookies() {
+            
+            let capturedCookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string: loginWebUrl)!) ?? []
+            for cookie in capturedCookies {
+                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+            }
+            
+            //this commented out part is to put saved cookies back into the cookie jar, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
+            //        let cookieCount = NSUserDefaults.standardUserDefaults().integerForKey("prkng_communauto_cookie_count")
+            //        for i in 0..<cookieCount {
+            //            if let cookieProperties = NSUserDefaults.standardUserDefaults().objectForKey("prkng_communauto_cookie_"+String(i)) as? [String : AnyObject] {
+            ////                if cookieProperties["Name"] as? String ?? "" == "mySession" {
+            ////                    NSLog("MY SESH")
+            ////                }
+            //                if let cookie = NSHTTPCookie(properties: cookieProperties) {
+            //                    NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
+            //                }
+            //            }
+            //        }
+            
+        }
+        
+        static func reserveCommunauto() -> Bool {
+            
+            if let customerID = getAndSaveCommunautoCustomerID() {
+                //we are logged in, let's goooo
+                
+            } else {
+                //we are not logged in, present a login screen to the user
+            }
+            
+            return false
+        }
     }
     
-    static func deleteCommunautoCustomerID() {
-        Settings.setCommunautoCustomerID(nil)
-        deleteCommunautoCookies()
-    }
-    
-    private static func saveCommunautoCookies() {
-        //this part is to save cookies, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
-        let capturedCookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")!) ?? []
-        for i in 0..<capturedCookies.count {
-            let cookie = capturedCookies[i]
-            NSUserDefaults.standardUserDefaults().setObject(cookie.properties, forKey: "prkng_communauto_cookie_"+String(i))
-        }
-        NSUserDefaults.standardUserDefaults().setInteger(capturedCookies.count, forKey: "prkng_communauto_cookie_count")
-
-    }
-
-    private static func deleteCommunautoCookies() {
-        
-        let capturedCookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp")!) ?? []
-        for cookie in capturedCookies {
-            NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
-        }
-        
-        //this commented out part is to put saved cookies back into the cookie jar, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
-//        let cookieCount = NSUserDefaults.standardUserDefaults().integerForKey("prkng_communauto_cookie_count")
-//        for i in 0..<cookieCount {
-//            if let cookieProperties = NSUserDefaults.standardUserDefaults().objectForKey("prkng_communauto_cookie_"+String(i)) as? [String : AnyObject] {
-////                if cookieProperties["Name"] as? String ?? "" == "mySession" {
-////                    NSLog("MY SESH")
-////                }
-//                if let cookie = NSHTTPCookie(properties: cookieProperties) {
-//                    NSHTTPCookieStorage.sharedHTTPCookieStorage().setCookie(cookie)
-//                }
-//            }
-//        }
-        
-    }
-
 }

@@ -414,20 +414,14 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func handleCommunautoSignInButtonTap() {
         
-        if CarSharingOperations.getAndSaveCommunautoCustomerID() == nil {
+        if CarSharingOperations.CommunautoAutomobile.getAndSaveCommunautoCustomerID() == nil {
             //we need to ask the user to log in
-            let vc = PRKWebViewController(englishUrl: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=2", frenchUrl: "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=1")
-            vc.didFinishLoadingCallback = { () -> Bool in
-                if let _ = CarSharingOperations.getAndSaveCommunautoCustomerID() {
-                    return true
-                }
-                return false
-            }
+            let vc = CarSharingOperations.CommunautoAutomobile.loginVC
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             //we have a value, so perform a log out
             //calling getAndSaveCommunautoCustomerID already logged us out, so just update the cell
-            CarSharingOperations.deleteCommunautoCustomerID()
+            CarSharingOperations.CommunautoAutomobile.deleteCommunautoCustomerID()
             self.tableView.reloadData()
         }
 
