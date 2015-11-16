@@ -357,10 +357,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     AnalyticsOperations.sendSearchQueryToAnalytics(annotation.title, navigate: true)
                     DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
                 } else if annotationType == "carsharing" {
-                    
-//                    let vc = PRKWebViewController(url: "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp?callback=ng.prk.prkng-ios://communauto-signed-in&URLEnd=URLEnd")
-////                    let vc = PRKWebViewController(url: "https://www.reservauto.net/WCF/LSI/LSIBookingService.asmx/GetCurrentBooking?Callback=ng.prk.prkng-ios://book&CustomerID=%22%22")
-//                    self.presentViewController(vc, animated: true, completion: nil)
+                    if let carShare = userInfo["carshare"] as? CarShare {
+                        CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+                    }
                 }
             }
         }
@@ -512,7 +511,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             userInfo["selected"] = true
             annotation.userInfo = userInfo
             let carShare = userInfo["carshare"] as! CarShare
-            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.mapPinName(true)))
+            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.mapPinName(true)), anchorPoint: CGPoint(x: 0.5, y: 1))
         }
         
         isSelecting = false
@@ -538,7 +537,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             userInfo["selected"] = false
             annotation.userInfo = userInfo
             let carShare = userInfo["carshare"] as! CarShare
-            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.mapPinName(false)))
+            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.mapPinName(false)), anchorPoint: CGPoint(x: 0.5, y: 1))
+
         }
         
     }

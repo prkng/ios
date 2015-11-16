@@ -191,6 +191,9 @@ class MGLMapViewController: MapViewController {
 //                    AnalyticsOperations.sendSearchQueryToAnalytics(genericAnnotation.title ?? "", navigate: true)
 //                    DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
 //                } else if annotationType == "carsharing" {
+//                    if let carShare = userInfo["carshare"] as? CarShare {
+//                        CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+//                    }
 //                }
 //            }
 //        }

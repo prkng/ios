@@ -109,13 +109,55 @@ class CarSharingOperations {
         }
     }
     
+    static func reserveCarShare(carShare: CarShare, fromVC: UIViewController) {
+        
+        switch carShare.carSharingType {
+        case .CommunautoAutomobile:
+            let reserveResult = CarSharingOperations.CommunautoAutomobile.reserveAutomobile(carShare)
+            switch reserveResult {
+            case .Reserved:
+                let alert = UIAlertView()
+                alert.message = "RESERVED!!!!"
+                alert.addButtonWithTitle("OK")
+                alert.show()
+                
+            case .FailedError:
+                let alert = UIAlertView()
+                alert.message = "could_not_reserve".localizedString
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            case .FailedNotLoggedIn:
+                let alert = UIAlertView()
+                alert.message = "could_not_reserve_not_logged_in".localizedString
+                alert.addButtonWithTitle("OK")
+                alert.show()
+                let vc = CarSharingOperations.CommunautoAutomobile.loginVC
+                fromVC.presentViewController(vc, animated: true, completion: nil)
+            }
+            
+        default:
+            print("This car share type cannot be reserved.")
+        }
+
+    }
+    
     struct CommunautoAutomobile {
         
         static let loginApiUrl =        "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp"
         static let loginWebUrl =        "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp"
         static let loginWebUrlEnglish = "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=2"
         static let loginWebUrlFrench =  "https://www.reservauto.net/Scripts/Client/Mobile/Login.asp?BranchID=1&CurrentLanguageID=1"
+
+        static let communautoReserveUrlEnglish = "https://www.reservauto.net/Scripts/Client/Mobile/ReservationAdd.asp?BranchID=1&CurrentLanguageID=2"
+        static let communautoReserveUrlFrench =  "https://www.reservauto.net/Scripts/Client/Mobile/ReservationAdd.asp?BranchID=1&CurrentLanguageID=1"
+
+//        static let communautoReserveUrl = "https://www.reservauto.net/Scripts/Client/ReservationAdd.asp?Step=2&CurrentLanguageID="+ lang +"&IgnoreError=False&NbrStation=0&ReservationCityID="+ iRes[0] +"&CarID="+ lngCarID +"&StartYear="+ sD[2] +"&StartMonth="+ sD[1] +"&StartDay="+ sD[0] +"&StartHour="+ iRes[2] +"&StartMinute="+ iRes[3] +"&EndYear="+ eD[2] +"&EndMonth="+ eD[1] +"&EndDay="+ eD[0] +"&EndHour="+ iRes[5] +"&EndMinute="+ iRes[6] +"&StationID="+ StationID +"&OrderBy=2&Accessories="+ iRes[7] +"&Brand="+ iRes[8] +"&ShowGrid=False&ShowMap=True&FeeType="+ iRes[9] +"&DestinationID="+ iRes[10] +"&CustomerLocalizationID="
         
+        //note: customerID is actually providerNo
+        static let automobileCurrentBookingUrl = "https://www.reservauto.net/WCF/LSI/LSIBookingService.asmx/GetCurrentBooking"//?CustomerID=%@"
+        static let automobileCreateBookingUrl = "https://www.reservauto.net/WCF/LSI/LSIBookingService.asmx/CreateBooking"//?CustomerID=%@&VehicleID=%@"
+        static let automobileCancelBookingUrl = "https://www.reservauto.net/WCF/LSI/LSIBookingService.asmx/CancelBooking"//?CustomerID=%@&VehicleID=%@"
+
         static var loginVC: PRKWebViewController {
             let vc = PRKWebViewController(englishUrl: loginWebUrlEnglish, frenchUrl: loginWebUrlFrench)
             vc.didFinishLoadingCallback = { () -> Bool in
@@ -139,13 +181,27 @@ class CarSharingOperations {
                 if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
                     let json = JSON(data: properData)
                     //if the id string is present, then return true, else return false
+                    var returnString: String?
+                    if let providerNo = json["data"][0]["ProviderNo"].string {
+                        if providerNo != "" {
+                            print("Auto-mobile ProviderNo is ", providerNo)
+                            Settings.setAutomobileProviderNo(providerNo)
+                            saveCommunautoCookies()
+                            returnString = providerNo
+                        }
+                    }
                     if let customerID = json["data"][0]["CustomerID"].string {
                         if customerID != "" {
                             print("Communauto/Auto-mobile Customer ID is ", customerID)
                             Settings.setCommunautoCustomerID(customerID)
                             saveCommunautoCookies()
-                            return customerID//and we have our custoer ID! Hooray!
+                            if returnString == nil {
+                                returnString = customerID
+                            }
                         }
+                    }
+                    if returnString != nil {
+                        return returnString
                     }
                 }
             } catch (let e) {
@@ -197,17 +253,56 @@ class CarSharingOperations {
             
         }
         
-        static func reserveCommunauto() -> Bool {
+        static func reserveCommunauto() -> ReserveStatus {
             
             if let customerID = getAndSaveCommunautoCustomerID() {
                 //we are logged in, let's goooo
-                
+                //this is where we do the actual reservation
+                return .Reserved
             } else {
                 //we are not logged in, present a login screen to the user
+                return .FailedNotLoggedIn
             }
             
-            return false
+            return .FailedError
         }
+
+        static func reserveAutomobile(carShare: CarShare) -> ReserveStatus {
+            
+            if let providerNo = getAndSaveCommunautoCustomerID() {
+                //we are logged in, let's goooo
+                //this is where we do the actual reservation
+                
+                let url = NSURL(string: String(format: automobileCreateBookingUrl))//, providerNo, carShare.vin ?? ""))
+                let request = NSMutableURLRequest(URL: url!)
+                request.HTTPMethod = "POST"
+                request.HTTPBody = String(format:"CustomerID=%@&VehicleID=%@", providerNo, carShare.vin ?? "").dataUsingEncoding(NSUTF8StringEncoding)
+                var response: NSURLResponse?
+                do {
+                    let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
+                    let stringData = (String(data: data, encoding: NSUTF8StringEncoding) ?? "  ").lowercaseString
+                    if !stringData.containsString("true") {
+                        DDLoggerWrapper.logError(stringData)
+                        return .FailedError
+                    }
+                } catch (let e) {
+                    print(e)
+                    return .FailedError
+                }
+                
+                return .Reserved
+            } else {
+                //we are not logged in, present a login screen to the user
+                return .FailedNotLoggedIn
+            }
+        }
+    
+    }
+    
+    enum ReserveStatus {
+        case FailedNotLoggedIn
+        case FailedError
+        case Reserved
     }
     
 }

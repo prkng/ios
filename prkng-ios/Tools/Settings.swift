@@ -19,6 +19,7 @@ struct Settings {
     static let FIRST_CAR_SHARING_USE_PASSED_KEY = "prkng_first_car_sharing_use_passed"
     static let DID_PROMPT_USER_TO_RATE_APP_KEY = "prkng_did_prompt_user_to_rate_app"
     static let PARKING_LOTS_PRICE_DAILY = "prkng_parking_lots_price_daily"
+    static let AUTOMOBILE_PROVIDER_NO = "prkng_automobile_provider_no"
     static let COMMUNAUTO_CUSTOMER_ID = "prkng_communauto_customer_id"
     static let HIDE_CAR2GO = "prkng_hide_car2go"
     static let HIDE_COMMUNAUTO = "prkng_hide_communauto"
@@ -500,6 +501,14 @@ struct Settings {
 
     static func setCommunautoCustomerID(customerID: String?) {
         NSUserDefaults.standardUserDefaults().setObject(customerID, forKey: COMMUNAUTO_CUSTOMER_ID)
+    }
+
+    static func automobileProviderNo() -> String? {
+        return NSUserDefaults.standardUserDefaults().stringForKey(AUTOMOBILE_PROVIDER_NO)
+    }
+
+    static func setAutomobileProviderNo(providerNo: String?) {
+        NSUserDefaults.standardUserDefaults().setObject(providerNo, forKey: AUTOMOBILE_PROVIDER_NO)
     }
 
     static func hideCar2Go() -> Bool {

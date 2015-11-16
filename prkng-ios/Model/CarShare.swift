@@ -58,6 +58,8 @@ class CarShare: NSObject {
     var name: String //sometimes car model, sometimes license plate
     var availableUntil: NSDate?
     var carSharingType: CarSharingType
+    var partnerId: String?
+    var vin: String?
     
     var identifier: String {
         return name + carSharingType.name + coordinate.latitude.description + coordinate.longitude.description
@@ -95,6 +97,8 @@ class CarShare: NSObject {
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
         self.carSharingType = CarSharingType(rawValue: json["properties"]["company"].stringValue) ?? CarSharingType.Generic
         self.name = json["properties"]["name"].stringValue
+        self.partnerId = json["properties"]["partner_id"].string
+        self.vin = json["properties"]["vin"].string
         self.fuelPercentage = json["properties"]["fuel"].int
         self.electric = json["properties"]["electric"].boolValue
         self.availableUntil = ISO8610DateFormatter.sharedInstance.dateFormatter.dateFromString(json["properties"]["until"].stringValue)
