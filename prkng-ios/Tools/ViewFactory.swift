@@ -13,6 +13,12 @@ struct ViewFactory {
     
     // MARK: Buttons
 
+    static func shareButton() -> UIButton {
+        let button = UIButton()
+        button.setImage(UIImage(named: "btn_share"), forState: .Normal)
+        return button
+    }
+    
     static func scheduleButton() -> UIButton {
         let scheduleButton : UIButton =  UIButton()
         scheduleButton.setImage(UIImage(named: "btn_schedule_active"), forState: UIControlState.Normal)
@@ -178,6 +184,21 @@ struct ViewFactory {
         return button
     }
     
+    // MARK: Segmented Controls
+    
+    static func nowOrHistorySwitch() -> DVSwitch {
+        let segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString])
+        segmentedControl.backgroundView.layer.borderWidth = 1
+        segmentedControl.backgroundView.layer.borderColor = Styles.Colors.stone.CGColor
+        segmentedControl.sliderColor = Styles.Colors.red2
+        segmentedControl.backgroundColor = UIColor.clearColor()
+        segmentedControl.labelTextColorInsideSlider = Styles.Colors.white
+        segmentedControl.labelTextColorOutsideSlider = Styles.Colors.stone
+        segmentedControl.font = Styles.FontFaces.regular(9)
+        segmentedControl.cornerRadius = 10
+        return segmentedControl
+    }
+    
     // MARK: Labels
     
     static func formLabel() -> UILabel {
@@ -190,7 +211,7 @@ struct ViewFactory {
     
     static func bigMessageLabel() -> UILabel {
         let label = UILabel()
-        label.font = Styles.Fonts.h1
+        label.font = Styles.Fonts.h3
         label.textColor = Styles.Colors.cream1
         label.textAlignment = NSTextAlignment.Center
         label.numberOfLines = 0

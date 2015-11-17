@@ -92,7 +92,8 @@
 "first_checkin_title" = "Here we are!";
 "first_checkin_subtitle" = "Your first check-in";
 "first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation. Please keep an eye open.";
-"no_checkin_message" = "Please select \na segment first";
+"no_checkin_message" = "You haven't checked-in yet.\nPlease select a spot first.";
+"now" = "now";
 "park_now" = "park now";
 "checked_in_message" = "you're parked on";
 "available_for" = "available for";
@@ -182,6 +183,7 @@
 "the_project_part_two" = "Information that we collect from you while you use prkng include your name, contact details (such as phone number and e-mail address), and/or other personally identifiable information (the \"personal information\") is only used for internal diagnostics and shared with our primary partners.";
 "prkng_share_copy" = "With prkng app, parking has never been so easy. Available in Montreal & Quebec!";
 
+"show_the_map" = "show the map";
 "all" = "all";
 "24 hour" = "24 hour";
 "hour" = "hour";

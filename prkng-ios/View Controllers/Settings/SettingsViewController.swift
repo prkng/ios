@@ -106,17 +106,19 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func setupViews () {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
-        view.addSubview(backgroundImageView)
+//        backgroundImageView.contentMode = .ScaleAspectFill
+//        view.addSubview(backgroundImageView)
+        view.backgroundColor = Styles.Colors.midnight1
         
         view.addSubview(tableView)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + 120)))
-        tableView.backgroundColor = UIColor.clearColor()
+        tableView.backgroundColor = Styles.Colors.stone
         tableView.separatorStyle = .None
         tableView.dataSource = self
         tableView.delegate = self
         tableView.clipsToBounds = true
 
+        topContainer.backgroundColor = Styles.Colors.midnight1
         view.addSubview(topContainer)
         
         topContainer.addSubview(profileContainer)
@@ -160,9 +162,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func setupConstraints () {
         
-        backgroundImageView.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.view)
-        }
+//        backgroundImageView.snp_makeConstraints { (make) -> () in
+//            make.edges.equalTo(self.view)
+//        }
         
         cityContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.CITY_CONTAINER_HEIGHT)
@@ -255,12 +257,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
-
-    func historyButtonTapped() {
-        let historyViewController = HistoryViewController()
-        historyViewController.settingsDelegate = self.delegate
-        self.navigationController?.pushViewController(historyViewController, animated: true)
-    }
     
     func showSupport() {
         let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/support/", frenchUrl: "https://prk.ng/fr/support/")
@@ -335,7 +331,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Right)
+        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
 
     }
     
@@ -364,7 +360,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Left)
+        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
 
     }
     

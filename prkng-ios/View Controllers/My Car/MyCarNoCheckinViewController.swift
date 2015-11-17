@@ -16,18 +16,18 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
     var messageLabel : UILabel
     
     var reportButton : UIButton
-
-    var parkButton : UIButton
-    var searchButton : UIButton
+    var mapButton : UIButton
     
     var delegate : MyCarNoCheckinViewControllerDelegate?
     
+    let BOTTOM_BUTTON_HEIGHT: CGFloat = 36
+    
     init() {
+        
         logoView = UIImageView()
         messageLabel = ViewFactory.bigMessageLabel()
-        parkButton = ViewFactory.hugeButton()
-        searchButton = ViewFactory.hugeButton()
-        reportButton = UIButton()
+        mapButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "show_the_map".localizedString.uppercaseString)
+        reportButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "report_an_error".localizedString.uppercaseString, textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -53,7 +53,11 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
 
     func setupViews () {
         
+        backgroundImageView.contentMode = .ScaleAspectFill
         view.addSubview(backgroundImageView)
+        
+        segmentedControl.setPressedHandler(segmentedControlTapped)
+        self.view.addSubview(segmentedControl)
         
         logoView.image = UIImage(named: "icon_checkin")
         view.addSubview(logoView)
@@ -61,25 +65,11 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         messageLabel.text = "no_checkin_message".localizedString
         view.addSubview(messageLabel)
         
-        reportButton.clipsToBounds = true
-        reportButton.layer.cornerRadius = 13
-        reportButton.layer.borderWidth = 1
-        reportButton.titleLabel?.font = Styles.FontFaces.light(12)
-        reportButton.setTitle("report_an_error".localizedString.uppercaseString, forState: UIControlState.Normal)
-        reportButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
-        reportButton.layer.borderColor = Styles.Colors.red2.CGColor
-        reportButton.backgroundColor = Styles.Colors.red2
         reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(reportButton)
         
-        searchButton.setTitle("search".localizedString.lowercaseString, forState: UIControlState.Normal)
-        searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        searchButton.setTitleColor(Styles.Colors.petrol2, forState: .Normal)
-        view.addSubview(searchButton)
-        
-        parkButton.setTitle("park_now".localizedString.lowercaseString, forState: UIControlState.Normal)
-        parkButton.addTarget(self, action: "parkButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        view.addSubview(parkButton)
+        mapButton.addTarget(self, action: "mapButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        view.addSubview(mapButton)
     }
     
     func setupConstraints () {
@@ -88,10 +78,16 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
             make.edges.equalTo(self.view)
         }
         
+        segmentedControl.snp_makeConstraints { (make) -> Void in
+            make.size.equalTo(CGSize(width: 120, height: 20))
+            make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
+            make.centerX.equalTo(self.view)
+        }
+        
         logoView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(68, 68))
             make.centerX.equalTo(self.view)
-            make.centerY.equalTo(self.view).multipliedBy(0.3)
+            make.top.equalTo(self.segmentedControl.snp_bottom).offset(40)
         }
 
         messageLabel.snp_makeConstraints { (make) -> () in
@@ -101,28 +97,23 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         }
         
         reportButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.parkButton.snp_top).offset(-20)
-            make.size.equalTo(CGSizeMake(155, 26))
-            make.centerX.equalTo(self.view)
+            make.height.equalTo(BOTTOM_BUTTON_HEIGHT)
+            make.bottom.equalTo(self.mapButton.snp_top).offset(-14)
+            make.left.equalTo(self.view).offset(50)
+            make.right.equalTo(self.view).offset(-50)
+
         }
 
-        parkButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-            make.bottom.equalTo(self.searchButton.snp_top)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-        }
-        
-        searchButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-            make.bottom.equalTo(self.view)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
+        mapButton.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(BOTTOM_BUTTON_HEIGHT)
+            make.bottom.equalTo(self.view).offset(-20)
+            make.left.equalTo(self.view).offset(50)
+            make.right.equalTo(self.view).offset(-50)
         }
         
     }
     
-    func parkButtonTapped() {
+    func mapButtonTapped() {
         self.delegate?.loadHereTab()
     }
     

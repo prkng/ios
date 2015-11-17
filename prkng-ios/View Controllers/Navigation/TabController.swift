@@ -52,6 +52,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         hereViewController = HereViewController()
         activeViewController = hereViewController
         super.init(nibName: nil, bundle: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "goToCoordinateNotificationPosted:", name: "goToCoordinate", object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -546,6 +547,14 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
 
     
+    func goToCoordinateNotificationPosted(notification: NSNotification) {
+        if let userInfo = notification.userInfo as? [String: AnyObject] {
+            if let location = userInfo["location"] as? CLLocation, let name = userInfo["name"] as? String {
+                goToCoordinate(location.coordinate, named: name)
+            }
+        }
+    }
+
     // MARK: SettingsViewControllerDelegate
     
     func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) {

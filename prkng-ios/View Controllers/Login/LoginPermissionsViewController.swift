@@ -35,7 +35,7 @@ class LoginPermissionsViewController: AbstractViewController {
         if notification.name == "registeredUserNotificationSettings" {
             centerImageView.image = UIImage(named: "img_permissions_location")
             let transition = CATransition()
-            transition.duration = 0.4
+            transition.duration = 0.7
             transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             transition.type = kCATransitionFade
             centerImageView.layer.addAnimation(transition, forKey: nil)

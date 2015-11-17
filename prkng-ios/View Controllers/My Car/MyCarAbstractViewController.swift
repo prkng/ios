@@ -64,8 +64,51 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
             })
             
         }
-        
-        
     }
+    
+    //MARK: common view-based code
+
+    var segmentedControl = ViewFactory.nowOrHistorySwitch()
+    
+    var historyVC: HistoryViewController?
+    
+    func segmentedControlTapped(index: UInt) {
+        if index == 0 {
+            //transition to NOW
+            if historyVC != nil {
+                
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.historyVC!.view.alpha = 0.0
+                    }, completion: { (completed) -> Void in
+                        self.historyVC!.removeFromParentViewController()
+                        self.historyVC!.view.removeFromSuperview()
+                        self.historyVC!.willMoveToParentViewController(nil)
+                        self.historyVC = nil
+                })
+                
+                
+            }
+        } else if index == 1 {
+            //transition to HISTORY
+            if historyVC == nil {
+                historyVC = HistoryViewController()
+                historyVC!.view.alpha = 0.0
+                historyVC!.willMoveToParentViewController(self)
+                self.addChildViewController(historyVC!)
+                self.view.addSubview(historyVC!.view)
+                
+                historyVC!.view.snp_remakeConstraints(closure: { (make) -> () in
+                    make.edges.equalTo(self.view)
+                })
+                
+                self.view.bringSubviewToFront(self.segmentedControl)
+                
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    self.historyVC!.view.alpha = 1.0
+                })
+            }
+        }
+    }
+
     
 }

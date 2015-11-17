@@ -13,7 +13,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     var spot: ParkingSpot?
     
     var backgroundImageView: UIImageView
-    
+
+    var shareButton: UIButton
+
     var logoView: UIImageView
     
     var containerView: UIView
@@ -22,9 +24,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var availableTitleLabel: UILabel
     var availableTimeLabel: UILabel //ex: 24+
-
-    var smallButtonContainer: UIView
-    var reportButton: UIButton
     
     var bottomButtonContainer: UIView
     var bottomButtonLabel: UILabel
@@ -32,7 +31,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     var bottomSelectionControl: SelectionControl
     
     var bigButtonContainer: UIView
-    var shareButton: UIButton
+    var reportButton: UIButton
     var leaveButton: UIButton
     
     var checkinMessageVC: CheckinMessageViewController?
@@ -48,12 +47,16 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     private var smallerVerticalMargin: Int = 0
     private var largerVerticalMargin: Int = 0
 
-    private let BUTTONS_TRANSLATION_X = CGFloat(2*Styles.Sizes.hugeButtonHeight + 60)
+    private let BUTTONS_TRANSLATION_X = CGFloat(2*36 + 20 + 14)
     
-    
+    let BOTTOM_BUTTON_HEIGHT: CGFloat = 36
+
     init() {
         
         backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
+
+        shareButton = ViewFactory.shareButton()
+
         logoView = UIImageView()
         
         containerView = UIView()
@@ -70,11 +73,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         bottomSelectionControl = SelectionControl(titles: ["yes".localizedString.uppercaseString, "no".localizedString.uppercaseString])
 
         bigButtonContainer = UIView()
-        shareButton = ViewFactory.hugeButton()
-        leaveButton = ViewFactory.hugeButton()
+        leaveButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "cancel".localizedString.uppercaseString)
         
-        smallButtonContainer = UIView()
-        reportButton = UIButton()
+        reportButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "report_an_error".localizedString.uppercaseString, textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -115,7 +116,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             if #available(iOS 8.0, *) {
                 logoView.alpha = 0
                 containerView.alpha = 0
-                smallButtonContainer.alpha = 0
                 bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
             }
         }
@@ -190,8 +190,15 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
 //        let blur = screenshot.applyBlurWithRadius(3, tintColor: UIColor.blackColor().colorWithAlphaComponent(0.85), saturationDeltaFactor: 1, maskImage: UIImage(named:"bg_mycar"))
 //        
 //        backgroundImageView.image = blur
+        backgroundImageView.contentMode = .ScaleAspectFill
         view.addSubview(backgroundImageView)
         
+        segmentedControl.setPressedHandler(segmentedControlTapped)
+        self.view.addSubview(segmentedControl)
+        
+        shareButton.addTarget(self, action: "shareButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        self.view.addSubview(shareButton)
+
         logoView.image = UIImage(named: "icon_checkin")
         view.addSubview(logoView)
         
@@ -209,19 +216,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         availableTimeLabel.text = "0:00"
         availableTimeLabel.textAlignment = NSTextAlignment.Center
         containerView.addSubview(availableTimeLabel)
-        
-        view.addSubview(smallButtonContainer)
-        
-        reportButton.clipsToBounds = true
-        reportButton.layer.cornerRadius = 13
-        reportButton.layer.borderWidth = 1
-        reportButton.titleLabel?.font = Styles.FontFaces.light(12)
-        reportButton.setTitle("report_an_error".localizedString.uppercaseString, forState: UIControlState.Normal)
-        reportButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
-        reportButton.layer.borderColor = Styles.Colors.red2.CGColor
-        reportButton.backgroundColor = Styles.Colors.red2
-        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        smallButtonContainer.addSubview(reportButton)
         
         view.addSubview(bigButtonContainer)
         
@@ -245,14 +239,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         bottomSelectionControl.addTarget(self, action: "nightBeforeSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
         bottomButtonContainer.addSubview(bottomSelectionControl)
         
-        leaveButton.setTitle("leave_spot".localizedString.lowercaseString, forState: UIControlState.Normal)
+        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        bigButtonContainer.addSubview(reportButton)
+
         leaveButton.addTarget(self, action: "leaveButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         bigButtonContainer.addSubview(leaveButton)
-        
-        shareButton.setTitle("share_car_location".localizedString.lowercaseString, forState: UIControlState.Normal)
-        shareButton.addTarget(self, action: "shareButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        shareButton.setTitleColor(Styles.Colors.petrol2, forState: .Normal)
-        bigButtonContainer.addSubview(shareButton)
         
     }
     
@@ -270,10 +261,22 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.edges.equalTo(self.view)
         }
         
+        segmentedControl.snp_makeConstraints { (make) -> Void in
+            make.size.equalTo(CGSize(width: 120, height: 20))
+            make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
+            make.centerX.equalTo(self.view)
+        }
+        
+        shareButton.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
+            make.centerY.equalTo(self.segmentedControl)
+            make.right.equalTo(self.view).offset(-50)
+        }
+        
         logoView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(68, 68))
             make.centerX.equalTo(self.view)
-            make.centerY.equalTo(self.view).multipliedBy(0.3)
+            make.top.equalTo(self.segmentedControl.snp_bottom).offset(40)
         }
         
         containerView.snp_makeConstraints { (make) -> () in
@@ -308,20 +311,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.bottom.equalTo(self.containerView)
         }
         
-        smallButtonContainer.snp_makeConstraints { (make) -> () in
-            make.top.greaterThanOrEqualTo(self.containerView.snp_bottom).offset(self.largerVerticalMargin/2)
-            make.bottom.greaterThanOrEqualTo(self.bigButtonContainer.snp_top).offset(-self.largerVerticalMargin)
-            make.left.equalTo(self.view)
-            make.right.equalTo(self.view)
-            make.height.equalTo(26)
-        }
-        
-        reportButton.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.smallButtonContainer)
-            make.size.equalTo(CGSizeMake(155, 26))
-            make.centerX.equalTo(self.smallButtonContainer)
-        }
-        
         bigButtonContainer.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -329,22 +318,22 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             make.height.equalTo(self.BUTTONS_TRANSLATION_X)
         }
         
-        leaveButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-            make.bottom.equalTo(self.bigButtonContainer)
-            make.left.equalTo(self.bigButtonContainer)
-            make.right.equalTo(self.bigButtonContainer)
+        reportButton.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(BOTTOM_BUTTON_HEIGHT)
+            make.bottom.equalTo(self.leaveButton.snp_top).offset(-14)
+            make.left.equalTo(self.bigButtonContainer).offset(50)
+            make.right.equalTo(self.bigButtonContainer).offset(-50)
         }
         
-        shareButton.snp_makeConstraints { (make) -> () in
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
-            make.bottom.equalTo(self.leaveButton.snp_top)
-            make.left.equalTo(self.bigButtonContainer)
-            make.right.equalTo(self.bigButtonContainer)
+        leaveButton.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(BOTTOM_BUTTON_HEIGHT)
+            make.bottom.equalTo(self.bigButtonContainer).offset(-20)
+            make.left.equalTo(self.bigButtonContainer).offset(50)
+            make.right.equalTo(self.bigButtonContainer).offset(-50)
         }
         
         bottomButtonContainer.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.shareButton.snp_top)
+            make.top.equalTo(self.availableTimeLabel.snp_bottom).offset(14)
             make.left.equalTo(self.bigButtonContainer)
             make.right.equalTo(self.bigButtonContainer)
             make.height.equalTo(50)
@@ -705,13 +694,6 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         self.containerView.layer.pop_addAnimation(containerFadeInAnimation, forKey: "containerFadeInAnimation")
 
-        
-        let smallButtonsFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
-        smallButtonsFadeInAnimation.fromValue = NSNumber(int: 0)
-        smallButtonsFadeInAnimation.toValue = NSNumber(int: 1)
-        smallButtonsFadeInAnimation.duration = 0.3
-        smallButtonsFadeInAnimation.beginTime = CACurrentMediaTime() + 0.3
-        self.smallButtonContainer.layer.pop_addAnimation(smallButtonsFadeInAnimation, forKey: "smallButtonsFadeInAnimation")
     }
     
 }

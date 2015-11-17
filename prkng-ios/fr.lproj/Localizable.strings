@@ -93,7 +93,8 @@
 "first_checkin_subtitle" = "Votre premier check-in";
 "first_checkin_text" = "Prenez note que la règlementation sur rue prévaut toujours, et peut différer de notre donnée.\nGardez donc un oeil ouvert!";
 
-"no_checkin_message" = "Sélectionnez \nd'abord un segment";
+"no_checkin_message" = "***You haven't checked-in yet.\nPlease select a spot first.";
+"now" = "***now";
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
 "available_for" = "disponible pour";
@@ -184,6 +185,7 @@
 "the_project_part_two" = "Information that we collect from you, when you use the service including your name, contact details (such as telephone and mobile numbers and e-mail address), and/or other personally identifiable information (the \"personal information\") are only use for internal diagnostics and our main partners.";
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec! https://prk.ng";
 
+"show_the_map" = "***show the map";
 "all" = "tous";
 "24 hour" = "24 heures";
 "hour" = "heure";

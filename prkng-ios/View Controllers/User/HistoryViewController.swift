@@ -10,7 +10,7 @@ import UIKit
 
 class HistoryViewController: AbstractViewController, UITableViewDataSource, UITableViewDelegate {
     
-    let backgroundImageView = UIImageView(image: UIImage(named:"bg_blue_gradient"))
+    let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
     
     let headerView = UIView()
     let headerImageView = UIImageView()
@@ -22,11 +22,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     let iconView = UIImageView(image: UIImage(named: "icon_history"))
     let titleLabel = UILabel()
     let tableView = UITableView()
-    let backButton = ViewFactory.redBackButton()
     
     var groupedCheckins : Dictionary<String, Array<Checkin>>?
-    
-    var settingsDelegate: SettingsViewControllerDelegate?
     
     override func loadView() {
         view = UIView()
@@ -92,7 +89,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         
         view.addSubview(headerView)
         
-        headerImageView.image = UIImage(named:"bg_blue_gradient")
+        headerImageView.image = UIImage(named:"bg_mycar")
         headerImageView.contentMode = .ScaleAspectFill
         headerView.addSubview(headerImageView)
         headerView.clipsToBounds = true
@@ -103,9 +100,6 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         titleLabel.textAlignment = .Center
         titleLabel.text = "history".localizedString
         headerView.addSubview(titleLabel)
-        
-        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
-        view.addSubview(backButton)
         
     }
     
@@ -124,13 +118,13 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         }
         
         iconView.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.titleLabel.snp_top).offset(-12)
+            make.top.equalTo(self.headerView).offset(20+40+30+20)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(68, 68))
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
-            make.bottom.equalTo(self.headerView).multipliedBy(0.70)
+            make.top.equalTo(self.iconView.snp_bottom).offset(12)
             make.height.equalTo(34)
             make.left.equalTo(self.headerView)
             make.right.equalTo(self.headerView)
@@ -144,12 +138,6 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         
         let tableViewHeight = screenHeight - CGFloat(HEADER_MIN_HEIGHT)
         tableView.frame = CGRectMake(0, CGFloat(HEADER_MIN_HEIGHT), screenWidth, tableViewHeight)
-        
-        backButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSize(width: 80, height: 26))
-            make.centerX.equalTo(self.view)
-            make.bottom.equalTo(self.view).offset(-20)
-        }
         
     }
     
@@ -212,11 +200,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         
         let key = Array(groupedCheckins!.keys)[indexPath.section]
         let checkin = groupedCheckins![key]![indexPath.row]
-        
-        if settingsDelegate != nil {
-            settingsDelegate?.goToCoordinate(checkin.location.coordinate, named:checkin.name) 
-        }
-        
+        let userInfo: [String: AnyObject] = ["location": checkin.location, "name": checkin.name]
+        NSNotificationCenter.defaultCenter().postNotificationName("goToCoordinate", object: nil, userInfo: userInfo)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -276,16 +261,19 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             tableView.delegate = self
             
             currentHeaderHeight = height
-            iconView.alpha = CGFloat((height / HEADER_MAX_HEIGHT))
+            var alpha = CGFloat((height / HEADER_MAX_HEIGHT))
             
-            if(iconView.alpha > 0.9) {
-                iconView.alpha = 1
-            } else if(iconView.alpha < 0.5) {
-                iconView.alpha = iconView.alpha / 2
+            if(alpha > 0.9) {
+                alpha = 1
+            } else if(alpha < 0.5) {
+                alpha = alpha / 2
             }
-            if(iconView.alpha < 0.2) {
-                iconView.alpha = 0
+            if(alpha < 0.2) {
+                alpha = 0
             }
+            
+            iconView.alpha = alpha
+            titleLabel.alpha = alpha
             
             headerView.layoutIfNeeded()
         }
