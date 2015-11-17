@@ -76,7 +76,7 @@
 
 "tabbar_search" = "SEARCH";
 "tabbar_here" = "MAP";
-"tabbar_mycar" = "MY CAR";
+"tabbar_mycar" = "ACTIVITY";
 "tabbar_settings" = "SETTINGS";
 
 // Search
@@ -94,13 +94,13 @@
 "first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation. Please keep an eye open.";
 "no_checkin_message" = "Please select \na segment first";
 "park_now" = "park now";
-"checked_in_message" = "you're checked-in on";
+"checked_in_message" = "you're parked on";
 "available_for" = "available for";
 "for" = "for";
 "available_until" = "available until";
 "until" = "Until";
 "share_car_location" = "share my location";
-"leave_spot" = "check out";
+"leave_spot" = "Adios!";
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
 "notified_night_before" = "Get notified the night before";
@@ -146,7 +146,7 @@
 "here_firstuse_title" = "How it works.";
 "here_firstuse_subtitle" = "We know it’s your first time!";
 "here_firstuse_1" = "Tap on any of the spots to see their authorized periods.";
-"here_firstuse_2" = "Once you have found your spot, hit \“Check-in\” to be reminded when to move your car.";
+"here_firstuse_2" = "Once you have found your spot, hit \“Reminder\” to be reminded when to move your car.";
 "free_spots" = "FREE SPOTS";
 "metered_spots" = "METERED SPOTS";
 
@@ -188,8 +188,8 @@
 "hourly" = "hourly";
 "daily" = "Daily";
 "metered" = "metered";
-"check-in" = "Check-in";
-"check-in-pay" = "Check-in + Pay";
+"check-in" = "Parked!";
+"check-in-pay" = "Parked!";
 "authorized_for" = "Authorized for";
 "search" = "Search";
 "search_bar_text" = "Search or filter";
@@ -202,8 +202,8 @@
 "handicap" = "Handicap";
 "card" = "Card";
 "operated_by" = "By";
-"find_a_car" = "Car";
-"find_a_spot" = "Spot";
+"find_a_car" = "Cars";
+"find_a_spot" = "Spots";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";
 "car_sharing_enabled_text" = "Car sharing is enabled";
