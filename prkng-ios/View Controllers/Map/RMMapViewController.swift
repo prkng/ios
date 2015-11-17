@@ -358,7 +358,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
                 } else if annotationType == "carsharing" {
                     if let carShare = userInfo["carshare"] as? CarShare {
-                        CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+                        if control.tag == 100 {
+                            //reserve!
+                            CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+                        } else if control.tag == 200 {
+                            //cancel!
+                            CarSharingOperations.cancelCarShare(carShare, fromVC: self)
+                        }
+                        self.updateAnnotations()
                     }
                 }
             }

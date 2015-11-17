@@ -244,12 +244,18 @@
 "city_picker_title" = "***Available Cities";
 "city_picker_subtitle" = "***We are currently available in:";
 
+//car sharing reservations
+"cancelled_reservation" = "***Your reservation was successfully cancelled.";
+"could_not_cancel_reservation" = "***Your reservation could not be cancelled.";
+"could_not_cancel_not_logged_in" = "***Your cancellation could not be completed because you aren't logged in. Log in, then try again.";
+"reserved_car_share" = "***Your reservation was completed.";
 "could_not_reserve" = "***Could not complete the reservation";
 "could_not_reserve_not_logged_in" = "***Your reservation could not be completed because you aren't logged in. Log in, then try again.";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
 "btn_reserve" = "btn_reserve_fr";
+"btn_cancel" = "btn_cancel_fr";
 
 //this section is for format strings
 "capacity_x_places" = "Capacité: %d places";

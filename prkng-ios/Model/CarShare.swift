@@ -52,6 +52,7 @@ class ISO8610DateFormatter {
 
 class CarShare: NSObject {
     
+    var identifier: String
     var coordinate: CLLocationCoordinate2D
     var fuelPercentage: Int?
     var electric: Bool
@@ -60,10 +61,7 @@ class CarShare: NSObject {
     var carSharingType: CarSharingType
     var partnerId: String?
     var vin: String?
-    
-    var identifier: String {
-        return name + carSharingType.name + coordinate.latitude.description + coordinate.longitude.description
-    }
+    var json: JSON
     
     private var fuelPercentageText: String {
         if fuelPercentage != nil {
@@ -94,6 +92,8 @@ class CarShare: NSObject {
     }
     
     init(json: JSON) {
+        self.json = json
+        self.identifier = String(json["id"].intValue)
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
         self.carSharingType = CarSharingType(rawValue: json["properties"]["company"].stringValue) ?? CarSharingType.Generic
         self.name = json["properties"]["name"].stringValue
@@ -103,25 +103,26 @@ class CarShare: NSObject {
         self.electric = json["properties"]["electric"].boolValue
         self.availableUntil = ISO8610DateFormatter.sharedInstance.dateFormatter.dateFromString(json["properties"]["until"].stringValue)
     }
-    
-    override init() {
-        self.coordinate = Settings.selectedCity().coordinate
-        self.carSharingType = CarSharingType.Car2Go
-        self.name = "FJH5504"
-        self.fuelPercentage = 66
-        self.electric = false
-    }
- 
+     
     func calloutView() -> (UIView, UIView?) {
 
         let maximumTotalWidth = UIScreen.mainScreen().bounds.width - 40
         
         let rightViewWidth: CGFloat = 55
+        var shouldShowRightView = true
         let rightView = UIButton()
         rightView.setImage(UIImage(named:"btn_reserve".localizedString), forState: .Normal)
+        rightView.tag = 100
+        if let reservedCarShare = Settings.getReservedCarShare() {
+            if self.identifier == reservedCarShare.identifier {
+                rightView.setImage(UIImage(named:"btn_cancel".localizedString), forState: .Normal)
+                rightView.tag = 200
+            } else {
+                shouldShowRightView = false
+            }
+        }
         rightView.bounds = CGRect(x: 0, y: 0, width: rightViewWidth, height: 44) //actual width of image is 53.5 points
         rightView.imageView?.contentMode = .Left
-        rightView.tag = 200
         
         let leftView = UIView()
 
@@ -164,7 +165,7 @@ class CarShare: NSObject {
 //        separator.backgroundColor = Styles.Colors.transparentBlack
 //        leftView.addSubview(separator)
 
-        return (leftView, rightView)
+        return (leftView, shouldShowRightView ? rightView : nil)
     }
     
 }

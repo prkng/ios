@@ -18,15 +18,17 @@ struct Settings {
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
     static let FIRST_CAR_SHARING_USE_PASSED_KEY = "prkng_first_car_sharing_use_passed"
     static let DID_PROMPT_USER_TO_RATE_APP_KEY = "prkng_did_prompt_user_to_rate_app"
-    static let PARKING_LOTS_PRICE_DAILY = "prkng_parking_lots_price_daily"
-    static let AUTOMOBILE_PROVIDER_NO = "prkng_automobile_provider_no"
-    static let COMMUNAUTO_CUSTOMER_ID = "prkng_communauto_customer_id"
-    static let HIDE_CAR2GO = "prkng_hide_car2go"
-    static let HIDE_COMMUNAUTO = "prkng_hide_communauto"
-    static let HIDE_AUTOMOBILE = "prkng_hide_automobile"
-    static let HIDE_ZIPCAR = "prkng_hide_zipcar"
-    static let CHECKIN_COUNT = "prkng_checkin_count"
-    static let APP_LAUNCH_COUNT = "prkng_app_launch_count"
+    static let PARKING_LOTS_PRICE_DAILY_KEY = "prkng_parking_lots_price_daily"
+    static let RESERVED_CARSHARE_KEY = "prkng_reserved_carshare"
+    static let RESERVED_CARSHARE_SAVED_TIME_KEY = "prkng_reserved_carshare_saved_time"
+    static let AUTOMOBILE_PROVIDER_NO_KEY = "prkng_automobile_provider_no"
+    static let COMMUNAUTO_CUSTOMER_ID_KEY = "prkng_communauto_customer_id"
+    static let HIDE_CAR2GO_KEY = "prkng_hide_car2go"
+    static let HIDE_COMMUNAUTO_KEY = "prkng_hide_communauto"
+    static let HIDE_AUTOMOBILE_KEY = "prkng_hide_automobile"
+    static let HIDE_ZIPCAR_KEY = "prkng_hide_zipcar"
+    static let CHECKIN_COUNT_KEY = "prkng_checkin_count"
+    static let APP_LAUNCH_COUNT_KEY = "prkng_app_launch_count"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
     static let COMMERCIAL_PERMIT_FILTER_KEY = "prkng_commercial_permit_filter"
     static let GEOFENCE_LAST_SET_DATE_KEY = "prkng_geofence_last_set_date"
@@ -38,9 +40,9 @@ struct Settings {
     static let LAST_CHECKIN_TIME_KEY = "prkng_last_checkin_time"
     static let LAST_CHECKIN_EXPIRE_KEY = "prkng_last_checkin_expire_interval"
     static let LOG_FILE_PATH_KEY = "prkng_last_log_file_path"
-    static let MAP_USER_MODE = "prkng_map_user_mode"
-    static let LOCALLY_CACHED_LOTS = "prkng_locally_cached_lots"
-    static let LOCALLY_CACHED_LOTS_FRESH = "prkng_locally_cached_lots_fresh"
+    static let MAP_USER_MODE_KEY = "prkng_map_user_mode"
+    static let LOCALLY_CACHED_LOTS_KEY = "prkng_locally_cached_lots"
+    static let LOCALLY_CACHED_LOTS_FRESH_KEY = "prkng_locally_cached_lots_fresh"
     static let LAST_APP_VERSION_KEY = "prkng_last_app_version"
 
     static let DEFAULT_NOTIFICATION_TIME = 30
@@ -187,7 +189,6 @@ struct Settings {
             NSUserDefaults.standardUserDefaults().removeObjectForKey(CHECKED_IN_SPOT_ID_KEY)
             NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_TIME_KEY)
             NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_EXPIRE_KEY)
-
         }
         
         NSUserDefaults.standardUserDefaults().synchronize()
@@ -208,14 +209,14 @@ struct Settings {
     static func cacheLotsJson(lots: JSON) {
         do {
             let rawData = try lots.rawData()
-            NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: LOCALLY_CACHED_LOTS)
+            NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: LOCALLY_CACHED_LOTS_KEY)
         } catch {
             DDLoggerWrapper.logError("Could not save raw lots json data to user defaults. Sad face.")
         }
     }
     
     static func getCachedLots() -> [Lot] {
-        if let archivedLots = NSUserDefaults.standardUserDefaults().objectForKey(LOCALLY_CACHED_LOTS) as? NSData {
+        if let archivedLots = NSUserDefaults.standardUserDefaults().objectForKey(LOCALLY_CACHED_LOTS_KEY) as? NSData {
             let json = JSON(data: archivedLots)
             let lotJsons: [JSON] = json["features"].arrayValue
             let lots = lotJsons.map({ (lotJson) -> Lot in
@@ -229,11 +230,11 @@ struct Settings {
     }
     
     static func isCachedLotDataFresh() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(LOCALLY_CACHED_LOTS_FRESH)
+        return NSUserDefaults.standardUserDefaults().boolForKey(LOCALLY_CACHED_LOTS_FRESH_KEY)
     }
     
     static func setCachedLotDataFresh(fresh: Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(fresh, forKey: LOCALLY_CACHED_LOTS_FRESH)
+        NSUserDefaults.standardUserDefaults().setBool(fresh, forKey: LOCALLY_CACHED_LOTS_FRESH_KEY)
     }
     
     static func lastCheckinTime() -> NSDate? {
@@ -245,18 +246,45 @@ struct Settings {
         return nil
         
     }
+    
+    static func saveReservedCarShare(carShare: CarShare?) {
+        if carShare != nil {
+            do {
+                let rawData = try carShare!.json.rawData()
+                NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: RESERVED_CARSHARE_KEY)
+                NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: RESERVED_CARSHARE_SAVED_TIME_KEY)
+            } catch {
+                DDLoggerWrapper.logError("Could not save raw car share json data to user defaults. Sad face.")
+            }
+        } else {
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(RESERVED_CARSHARE_KEY)
+            NSUserDefaults.standardUserDefaults().removeObjectForKey(RESERVED_CARSHARE_SAVED_TIME_KEY)
+        }
+    }
+    
+    static func getReservedCarShare() -> CarShare? {
+        if let archivedCarShare = NSUserDefaults.standardUserDefaults().objectForKey(RESERVED_CARSHARE_KEY) as? NSData {
+            let json = JSON(data: archivedCarShare)
+            return CarShare(json: json)
+        }
+        return nil
+    }
+
+    static func getReservedCarShareTime() -> NSDate? {
+        return NSUserDefaults.standardUserDefaults().objectForKey(RESERVED_CARSHARE_SAVED_TIME_KEY) as? NSDate
+    }
 
     static func resetPromptConditions() {
-        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: APP_LAUNCH_COUNT)
-        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: CHECKIN_COUNT)
+        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: APP_LAUNCH_COUNT_KEY)
+        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: CHECKIN_COUNT_KEY)
         NSUserDefaults.standardUserDefaults().setBool(false, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
     }
     
     static func shouldPromptUserToRateApp() -> Bool {
         
         let alreadyPromptedUser = NSUserDefaults.standardUserDefaults().boolForKey(DID_PROMPT_USER_TO_RATE_APP_KEY)
-        let appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT)
-        let numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT)
+        let appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT_KEY)
+        let numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT_KEY)
         
         if !alreadyPromptedUser && (appLaunches > 5 || numberOfCheckins > 2) {
             
@@ -268,13 +296,13 @@ struct Settings {
     }
     
     static func incrementAppLaunches() {
-        var appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT)
-        NSUserDefaults.standardUserDefaults().setInteger(++appLaunches, forKey: APP_LAUNCH_COUNT)
+        var appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT_KEY)
+        NSUserDefaults.standardUserDefaults().setInteger(++appLaunches, forKey: APP_LAUNCH_COUNT_KEY)
     }
 
     static func incrementNumberOfCheckins() {
-        var numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT)
-        NSUserDefaults.standardUserDefaults().setInteger(++numberOfCheckins, forKey: CHECKIN_COUNT)
+        var numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT_KEY)
+        NSUserDefaults.standardUserDefaults().setInteger(++numberOfCheckins, forKey: CHECKIN_COUNT_KEY)
     }
 
     
@@ -461,11 +489,11 @@ struct Settings {
     }
     
     static func setMapUserMode(mode: MapUserMode) {
-        NSUserDefaults.standardUserDefaults().setValue(mode.rawValue, forKey: MAP_USER_MODE)
+        NSUserDefaults.standardUserDefaults().setValue(mode.rawValue, forKey: MAP_USER_MODE_KEY)
     }
     
     static func getMapUserMode() -> MapUserMode {
-        let rawValue = (NSUserDefaults.standardUserDefaults().valueForKey(MAP_USER_MODE) as? String) ?? "None"
+        let rawValue = (NSUserDefaults.standardUserDefaults().valueForKey(MAP_USER_MODE_KEY) as? String) ?? "None"
         return MapUserMode(rawValue: rawValue)!
     }
 
@@ -487,64 +515,64 @@ struct Settings {
     }
 
     static func lotMainRateIsHourly() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(PARKING_LOTS_PRICE_DAILY)
+        return NSUserDefaults.standardUserDefaults().boolForKey(PARKING_LOTS_PRICE_DAILY_KEY)
     }
     
     static func setLotMainRateIsHourly(isHourly : Bool)  {
         DDLoggerWrapper.logInfo("Set lot main rate to " + (isHourly ? "hourly" : "daily"))
-        NSUserDefaults.standardUserDefaults().setBool(isHourly, forKey: PARKING_LOTS_PRICE_DAILY)
+        NSUserDefaults.standardUserDefaults().setBool(isHourly, forKey: PARKING_LOTS_PRICE_DAILY_KEY)
     }
 
     static func communautoCustomerID() -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(COMMUNAUTO_CUSTOMER_ID)
+        return NSUserDefaults.standardUserDefaults().stringForKey(COMMUNAUTO_CUSTOMER_ID_KEY)
     }
 
     static func setCommunautoCustomerID(customerID: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(customerID, forKey: COMMUNAUTO_CUSTOMER_ID)
+        NSUserDefaults.standardUserDefaults().setObject(customerID, forKey: COMMUNAUTO_CUSTOMER_ID_KEY)
     }
 
     static func automobileProviderNo() -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(AUTOMOBILE_PROVIDER_NO)
+        return NSUserDefaults.standardUserDefaults().stringForKey(AUTOMOBILE_PROVIDER_NO_KEY)
     }
 
     static func setAutomobileProviderNo(providerNo: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(providerNo, forKey: AUTOMOBILE_PROVIDER_NO)
+        NSUserDefaults.standardUserDefaults().setObject(providerNo, forKey: AUTOMOBILE_PROVIDER_NO_KEY)
     }
 
     static func hideCar2Go() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_CAR2GO)
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_CAR2GO_KEY)
     }
     
     static func setHideCar2Go(hide : Bool)  {
         DDLoggerWrapper.logInfo("Car2go is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_CAR2GO)
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_CAR2GO_KEY)
     }
 
     static func hideAutomobile() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_AUTOMOBILE)
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_AUTOMOBILE_KEY)
     }
     
     static func setHideAutomobile(hide : Bool)  {
         DDLoggerWrapper.logInfo("Automobile is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_AUTOMOBILE)
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_AUTOMOBILE_KEY)
     }
 
     static func hideCommunauto() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_COMMUNAUTO)
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_COMMUNAUTO_KEY)
     }
     
     static func setHideCommunauto(hide : Bool)  {
         DDLoggerWrapper.logInfo("Communauto is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_COMMUNAUTO)
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_COMMUNAUTO_KEY)
     }
 
     static func hideZipCar() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_ZIPCAR)
+        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_ZIPCAR_KEY)
     }
     
     static func setHideZipCar(hide : Bool)  {
         DDLoggerWrapper.logInfo("ZipCar is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_ZIPCAR)
+        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_ZIPCAR_KEY)
     }
 
 }

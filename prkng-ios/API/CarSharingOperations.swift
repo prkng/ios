@@ -110,17 +110,17 @@ class CarSharingOperations {
     }
     
     static func reserveCarShare(carShare: CarShare, fromVC: UIViewController) {
-        
+
         switch carShare.carSharingType {
         case .CommunautoAutomobile:
             let reserveResult = CarSharingOperations.CommunautoAutomobile.reserveAutomobile(carShare)
             switch reserveResult {
-            case .Reserved:
+            case .Success:
                 let alert = UIAlertView()
-                alert.message = "RESERVED!!!!"
+                alert.message = "reserved_car_share".localizedString
                 alert.addButtonWithTitle("OK")
                 alert.show()
-                
+                Settings.saveReservedCarShare(carShare)
             case .FailedError:
                 let alert = UIAlertView()
                 alert.message = "could_not_reserve".localizedString
@@ -140,7 +140,39 @@ class CarSharingOperations {
         }
 
     }
-    
+
+    static func cancelCarShare(carShare: CarShare, fromVC: UIViewController) {
+        
+        switch carShare.carSharingType {
+        case .CommunautoAutomobile:
+            let cancelResult = CarSharingOperations.CommunautoAutomobile.cancelAutomobile(carShare)
+            switch cancelResult {
+            case .Success:
+                let alert = UIAlertView()
+                alert.message = "cancelled_reservation".localizedString
+                alert.addButtonWithTitle("OK")
+                alert.show()
+                Settings.saveReservedCarShare(nil)
+            case .FailedError:
+                let alert = UIAlertView()
+                alert.message = "could_not_cancel_reservation".localizedString
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            case .FailedNotLoggedIn:
+                let alert = UIAlertView()
+                alert.message = "could_not_cancel_not_logged_in".localizedString
+                alert.addButtonWithTitle("OK")
+                alert.show()
+                let vc = CarSharingOperations.CommunautoAutomobile.loginVC
+                fromVC.presentViewController(vc, animated: true, completion: nil)
+            }
+            
+        default:
+            print("This car share type cannot be cancelled.")
+        }
+        
+    }
+
     struct CommunautoAutomobile {
         
         static let loginApiUrl =        "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp"
@@ -253,12 +285,12 @@ class CarSharingOperations {
             
         }
         
-        static func reserveCommunauto() -> ReserveStatus {
+        static func reserveCommunauto() -> ReturnStatus {
             
             if let customerID = getAndSaveCommunautoCustomerID() {
                 //we are logged in, let's goooo
                 //this is where we do the actual reservation
-                return .Reserved
+                return .Success
             } else {
                 //we are not logged in, present a login screen to the user
                 return .FailedNotLoggedIn
@@ -267,13 +299,21 @@ class CarSharingOperations {
             return .FailedError
         }
 
-        static func reserveAutomobile(carShare: CarShare) -> ReserveStatus {
+        static func reserveAutomobile(carShare: CarShare) -> ReturnStatus {
+            return automobileCustomerIDVehicleIDOperation(automobileCreateBookingUrl, carShare: carShare)
+        }
+
+        static func cancelAutomobile(carShare: CarShare) -> ReturnStatus {
+            return automobileCustomerIDVehicleIDOperation(automobileCancelBookingUrl, carShare: carShare)
+        }
+        
+        private static func automobileCustomerIDVehicleIDOperation(urlString: String, carShare: CarShare) -> ReturnStatus {
             
             if let providerNo = getAndSaveCommunautoCustomerID() {
                 //we are logged in, let's goooo
                 //this is where we do the actual reservation
                 
-                let url = NSURL(string: String(format: automobileCreateBookingUrl))//, providerNo, carShare.vin ?? ""))
+                let url = NSURL(string: String(format: urlString))//, providerNo, carShare.vin ?? ""))
                 let request = NSMutableURLRequest(URL: url!)
                 request.HTTPMethod = "POST"
                 request.HTTPBody = String(format:"CustomerID=%@&VehicleID=%@", providerNo, carShare.vin ?? "").dataUsingEncoding(NSUTF8StringEncoding)
@@ -290,19 +330,20 @@ class CarSharingOperations {
                     return .FailedError
                 }
                 
-                return .Reserved
+                return .Success
             } else {
                 //we are not logged in, present a login screen to the user
                 return .FailedNotLoggedIn
             }
+
         }
-    
     }
     
-    enum ReserveStatus {
+    
+    enum ReturnStatus {
         case FailedNotLoggedIn
         case FailedError
-        case Reserved
+        case Success
     }
-    
+
 }
