@@ -304,7 +304,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let selected = userInfo!["selected"] as! Bool
             let carShare = userInfo!["carshare"] as! CarShare
             let shouldAddAnimation = userInfo!["shouldAddAnimation"] as! Bool
-            let marker = RMMarker(UIImage: UIImage(named: carShare.mapPinName(selected)), anchorPoint: CGPoint(x: 0.5, y: 1))
+            let marker = RMMarker(UIImage: carShare.mapPinImageAndReuseIdentifier(selected).0, anchorPoint: CGPoint(x: 0.5, y: 1))
             let calloutView = carShare.calloutView()
             marker.leftCalloutAccessoryView = calloutView.0
             marker.rightCalloutAccessoryView = calloutView.1
@@ -521,7 +521,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             userInfo["selected"] = true
             annotation.userInfo = userInfo
             let carShare = userInfo["carshare"] as! CarShare
-            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.mapPinName(true)), anchorPoint: CGPoint(x: 0.5, y: 1))
+            (annotation.layer as? RMMarker)?.replaceUIImage(carShare.mapPinImageAndReuseIdentifier(true).0, anchorPoint: CGPoint(x: 0.5, y: 1))
         }
         
         isSelecting = false
@@ -547,7 +547,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             userInfo["selected"] = false
             annotation.userInfo = userInfo
             let carShare = userInfo["carshare"] as! CarShare
-            (annotation.layer as? RMMarker)?.replaceUIImage(UIImage(named: carShare.mapPinName(false)), anchorPoint: CGPoint(x: 0.5, y: 1))
+            (annotation.layer as? RMMarker)?.replaceUIImage(carShare.mapPinImageAndReuseIdentifier(false).0, anchorPoint: CGPoint(x: 0.5, y: 1))
 
         }
         
@@ -995,14 +995,19 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
 
+    func annotationForCarShare(carShare: CarShare) -> RMAnnotation {
+        let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShare.identifier)
+        let annotation = RMAnnotation(mapView: self.mapView, coordinate: carShare.coordinate, andTitle: "")
+        annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare, "shouldAddAnimation" : shouldAddAnimation]
+        return annotation
+    }
+    
     func updateCarShareAnnotations(carShares: [CarShare], completion: ((operationCompleted: Bool) -> Void)) {
         
         var tempAnnotations = [RMAnnotation]()
         
         for carShare in carShares {
-            let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShare.identifier)
-            let annotation = RMAnnotation(mapView: self.mapView, coordinate: carShare.coordinate, andTitle: "")
-            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare, "shouldAddAnimation" : shouldAddAnimation]
+            let annotation = annotationForCarShare(carShare)
             tempAnnotations.append(annotation)
         }
         
@@ -1333,6 +1338,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
     
     override func addMyCarMarker() {
+        if let reservedCarShare = Settings.getReservedCarShare() {
+            let annotation = annotationForCarShare(reservedCarShare)
+            myCarAnnotation = annotation
+            self.mapView.addAnnotation(annotation)
+            return
+        }
         if let spot = Settings.checkedInSpot() {
             let coordinate = spot.selectedButtonLocation ?? spot.buttonLocations.first!
             let name = spot.name

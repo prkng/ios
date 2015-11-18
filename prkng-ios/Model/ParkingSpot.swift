@@ -727,8 +727,8 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
             let calloutView = carShare.calloutView()
             leftCalloutAccessoryView = calloutView.0
             rightCalloutAccessoryView = calloutView.1
-            reuseIdentifier = carShare.mapPinName(selected)
-            annotationImage = UIImage(named: reuseIdentifier)
+            reuseIdentifier = carShare.mapPinImageAndReuseIdentifier(selected).1
+            annotationImage = carShare.mapPinImageAndReuseIdentifier(selected).0
 //            if shouldAddAnimation {
 //                marker.addScaleAnimation()
 //                spotIDsDrawnOnMap.append(carShare.identifier)

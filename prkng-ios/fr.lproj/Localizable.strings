@@ -249,6 +249,7 @@
 "city_picker_subtitle" = "***We are currently available in:";
 
 //car sharing reservations
+"reserved" = "***Reserved";
 "cancelled_reservation" = "***Your reservation was successfully cancelled.";
 "could_not_cancel_reservation" = "***Your reservation could not be cancelled.";
 "could_not_cancel_not_logged_in" = "***Your cancellation could not be completed because you aren't logged in. Log in, then try again.";

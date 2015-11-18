@@ -168,6 +168,21 @@ extension UIImage {
         let croppedImage = CGImageCreateWithImageInRect(self.CGImage, scaledDrawRect)
         return UIImage(CGImage: croppedImage!, scale: scale, orientation: self.imageOrientation) ?? UIImage()
     }
+    
+//percentToMoveIntoImage is how much you wish it to be overlayed. so 0 means that you would have 2 boxes, where one's upper right corner touches the other's bottom left corner.
+    func addImageToTopRight(imageToAdd: UIImage, valueToMoveIntoImage: CGFloat) -> UIImage {
+        let denominator = 1/(valueToMoveIntoImage == 0 ? 0.001 : valueToMoveIntoImage)
+        let bigDrawRect = CGRectMake(0, 0, self.size.width+imageToAdd.size.width/denominator, self.size.height+imageToAdd.size.height/denominator)
+        let imageDrawRect = CGRectMake(0, imageToAdd.size.height/denominator, self.size.width, self.size.height)
+        let imageToAddDrawRect = CGRectMake(bigDrawRect.width-imageToAdd.size.width, 0, imageToAdd.size.width, imageToAdd.size.height)
+        
+        UIGraphicsBeginImageContextWithOptions(bigDrawRect.size, false, Settings.screenScale)
+        self.drawInRect(imageDrawRect)
+        imageToAdd.drawInRect(imageToAddDrawRect)
+        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 
     
 }

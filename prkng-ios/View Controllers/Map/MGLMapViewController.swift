@@ -808,14 +808,20 @@ class MGLMapViewController: MapViewController {
 //
 //    }
 //
+//
+//    func annotationForCarShare(carShare: CarShare) -> GenericMGLAnnotation {
+//        let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShare.identifier)
+//        let annotation = GenericMGLAnnotation(coordinate: carShare.coordinate, title: "", subtitle: nil)
+//        annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare, "shouldAddAnimation" : shouldAddAnimation]
+//        return annotation
+//    }
+//
 //    func updateCarShareAnnotations(carShares: [CarShare], completion: ((operationCompleted: Bool) -> Void)) {
 //
 //        var tempAnnotations = [MGLAnnotation]()
 //
 //        for carShare in carShares {
-//            let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShare.identifier)
-//            let annotation = GenericMGLAnnotation(coordinate: carShare.coordinate, title: "", subtitle: nil)
-//            annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare, "shouldAddAnimation" : shouldAddAnimation]
+//            let annotation = annotationForCarShare(carShare)
 //            tempAnnotations.append(annotation)
 //        }
 //
@@ -1021,6 +1027,12 @@ class MGLMapViewController: MapViewController {
 //    
 //    
 //    override func addMyCarMarker() {
+//        if let reservedCarShare = Settings.getReservedCarShare() {
+//            let annotation = annotationForCarShare(reservedCarShare)
+//            myCarAnnotation = annotation
+//            self.mapView.addAnnotation(annotation)
+//            return
+//        }
 //        if let spot = Settings.checkedInSpot() {
 //            let coordinate = spot.selectedButtonLocation ?? spot.buttonLocations.first!
 //            let name = spot.name
@@ -1030,7 +1042,7 @@ class MGLMapViewController: MapViewController {
 //            self.mapView.addAnnotation(annotation)
 //        }
 //    }
-//    
+//
 //    override func removeMyCarMarker() {
 //        if myCarAnnotation != nil {
 //            self.mapView.removeAnnotation(myCarAnnotation as! UserInfo)

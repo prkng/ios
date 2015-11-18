@@ -12,6 +12,7 @@ enum CarSharingType: String {
     case CommunautoAutomobile = "auto-mobile"
     case Car2Go = "car2go"
     case Communauto = "communauto"
+    case ZipCar = "zipcar"
     case Generic = "generic"
     
     var name: String {
@@ -22,6 +23,8 @@ enum CarSharingType: String {
             return "Communauto"
         case .CommunautoAutomobile:
             return "Auto-mobile"
+        case .ZipCar:
+            return "ZipCar"
         case .Generic:
             return "CarSharing"
         }
@@ -46,8 +49,37 @@ class ISO8610DateFormatter {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         _dateFormatter = formatter
     }
-    
+}
 
+class WeekDayAndTimeDateFormatter {
+    
+    static let sharedInstance = WeekDayAndTimeDateFormatter()
+    
+    var dateFormatter: NSDateFormatter {
+        if _dateFormatter == nil {
+            generateDateFormatter()
+        }
+        return _dateFormatter!
+    }
+    private var _dateFormatter: NSDateFormatter?
+    private func generateDateFormatter() {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "EEEE"
+        _dateFormatter = formatter
+    }
+
+    var timeFormatter: NSDateFormatter {
+        if _timeFormatter == nil {
+            generateTimeFormatter()
+        }
+        return _timeFormatter!
+    }
+    private var _timeFormatter: NSDateFormatter?
+    private func generateTimeFormatter() {
+        let formatter = NSDateFormatter()
+        formatter.timeStyle = .ShortStyle
+        _timeFormatter = formatter
+    }
 }
 
 class CarShare: NSObject {
@@ -70,25 +102,54 @@ class CarShare: NSObject {
         return ""
     }
     
-    func mapPinName(selected: Bool) -> String {
-        var pinName = "carsharing_pin"
+    var subtitle: String {
+
+        if let reservedCarShare = Settings.getReservedCarShare() {
+            if reservedCarShare.identifier == self.identifier {
+                return "reserved".localizedString
+            }
+        }
+        
+        if self.carSharingType == .Communauto {
+            //format something like "name - Until (available Until date pretty printed)
+            return self.name + " - " + "until".localizedString + " " + WeekDayAndTimeDateFormatter.sharedInstance.dateFormatter.stringFromDate(self.availableUntil ?? NSDate()) + " " + WeekDayAndTimeDateFormatter.sharedInstance.timeFormatter.stringFromDate(self.availableUntil ?? NSDate())
+        } else {
+            return self.name
+        }
+    }
+    
+    func mapPinImageAndReuseIdentifier(selected: Bool) -> (UIImage, String) {
+        var reuseIdentifier = "carsharing_pin"
         switch self.carSharingType {
         case .Car2Go:
-            pinName += "_car2go"
+            reuseIdentifier += "_car2go"
         case .Communauto:
-            pinName += "_communauto"
+            reuseIdentifier += "_communauto"
         case .CommunautoAutomobile:
-            pinName += "_automobile"
+            reuseIdentifier += "_automobile"
+        case .ZipCar:
+            reuseIdentifier += "_zipcar"
         case .Generic:
-            pinName += "_automobile"
+        reuseIdentifier += "_automobile"
         }
         if electric {
-            pinName += "_electric"
+            reuseIdentifier += "_electric"
         }
         if selected {
-            pinName += "_selected"
+            reuseIdentifier += "_selected"
         }
-        return pinName
+        
+        var image = UIImage(named: reuseIdentifier)!
+        
+        if let reservedCarShare = Settings.getReservedCarShare() {
+            if reservedCarShare.identifier == self.identifier {
+                let imageToAdd = UIImage(named: "carsharing_pin_reserved_badge")!
+                image = image.addImageToTopRight(imageToAdd, valueToMoveIntoImage: 0.25)
+                reuseIdentifier += "_reserved"
+            }
+        }
+
+        return (image, reuseIdentifier)
     }
     
     init(json: JSON) {
@@ -151,7 +212,7 @@ class CarShare: NSObject {
         subtitleLabel.textAlignment = .Left
         subtitleLabel.font = Styles.FontFaces.light(12)
         subtitleLabel.textColor = Styles.Colors.red2
-        subtitleLabel.text = self.name
+        subtitleLabel.text = self.subtitle
         leftView.addSubview(subtitleLabel)
         
         let minLabelWidth = max(subtitleLabel.intrinsicContentSize().width, titleLabel.intrinsicContentSize().width, CGFloat(minTitleWidth))
