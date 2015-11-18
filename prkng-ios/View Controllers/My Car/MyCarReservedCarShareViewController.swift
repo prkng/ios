@@ -156,7 +156,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
 //        shareButton.addTarget(self, action: "shareButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
 //        self.view.addSubview(shareButton)
 
-        logoView.image = UIImage(named: "icon_checkin")
+        logoView.image = UIImage(named: "icon_carshare")
         view.addSubview(logoView)
         
         view.addSubview(containerView)
@@ -274,7 +274,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         locationLabel.text = (carShare?.carSharingType.name ?? "") + " - " + (carShare?.name ?? "")
         
         if self.carShare != nil {
-            logoView.image = UIImage(named: "icon_checkin")
+            logoView.image = UIImage(named: "icon_carshare")
             let interval = Settings.getReservedCarShareTime()?.timeIntervalSinceNow ?? 0
             availableTimeLabel.text = String(Int(interval / 60)) + " minutes".localizedString
             availableTimeLabel.font = Styles.Fonts.h1r
