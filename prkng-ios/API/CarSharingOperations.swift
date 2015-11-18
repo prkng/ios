@@ -16,7 +16,12 @@ class CarSharingOperations {
         
         let radiusStr = NSString(format: "%.0f", radius)
         
-        let companies: [String?] = [!Settings.hideCar2Go() ? "car2go" : nil, !Settings.hideCommunauto() ? "communauto" : nil, !Settings.hideAutomobile() ? "auto-mobile" : nil]
+        let companies: [String?] = [
+            !Settings.hideCar2Go() ? "car2go" : nil,
+            !Settings.hideCommunauto() ? "communauto" : nil,
+            !Settings.hideAutomobile() ? "auto-mobile" : nil,
+            !Settings.hideZipCar() ? "zipcar" : nil,
+        ]
         let companiesString = Array.filterNils(companies).joinWithSeparator(",")
         
         let params = [
@@ -138,8 +143,19 @@ class CarSharingOperations {
                 let vc = CarSharingOperations.CommunautoAutomobile.loginVC
                 fromVC.presentViewController(vc, animated: true, completion: nil)
             }
-            
-        default:
+        case .Communauto:
+            //open the web view
+            let vc = PRKWebViewController(englishUrl: CommunautoAutomobile.loginWebUrlEnglish, frenchUrl: CommunautoAutomobile.loginWebUrlFrench)
+            fromVC.presentViewController(vc, animated: true, completion: nil)
+        case .ZipCar:
+            //open the zip car app if applicable
+            ZipCar.goToAppOrAppStore()
+            break
+        case .Car2Go:
+            //open the zip car app if applicable
+            Car2Go.goToAppOrAppStore()
+            break
+        case .Generic:
             print("This car share type cannot be reserved.")
         }
         
@@ -173,12 +189,38 @@ class CarSharingOperations {
                 fromVC.presentViewController(vc, animated: true, completion: nil)
             }
             
-        default:
+        case .Communauto, .ZipCar, .Car2Go, .Generic:
             print("This car share type cannot be cancelled.")
         }
         
     }
 
+    struct Car2Go {
+        
+        static func goToAppOrAppStore() {
+            let url = NSURL(string: "car2go://")!
+            let isUrlSupported = UIApplication.sharedApplication().canOpenURL(url)
+            if isUrlSupported {
+                UIApplication.sharedApplication().openURL(url)
+            } else {
+                UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id514921710")!)
+            }
+        }
+    }
+
+    struct ZipCar {
+        
+        static func goToAppOrAppStore() {
+            let url = NSURL(string: "zipcar://")!
+            let isUrlSupported = UIApplication.sharedApplication().canOpenURL(url)
+            if isUrlSupported {
+                UIApplication.sharedApplication().openURL(url)
+            } else {
+                UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id329384702")!)
+            }
+        }
+    }
+    
     struct CommunautoAutomobile {
         
         static let loginApiUrl =        "https://www.reservauto.net/Scripts/Client/Ajax/Mobile/Login.asp"

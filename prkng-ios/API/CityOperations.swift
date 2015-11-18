@@ -48,15 +48,23 @@ class CityOperations {
         return nil
     }
 
-    var newYorkCity: City? {
-        for city in availableCities {
-            if city.name == "newyork" {
-                return city
-            }
-        }
-        return nil
-    }
-
+//    var newYorkCity: City? {
+//        for city in availableCities {
+//            if city.name == "newyork" {
+//                return city
+//            }
+//        }
+//        return nil
+//    }
+//
+//    var seattle: City? {
+//        for city in availableCities {
+//            if city.name == "seattle" {
+//                return city
+//            }
+//        }
+//        return nil
+//    }
     
     func getCities(completion : (completed : Bool, cities: [City]) -> Void) {
         
@@ -101,6 +109,6 @@ class CityOperations {
         })
     }
 
-    private var citiesString: String { return "[   {      \"urban_area_radius\" : 30,      \"lat\" : 45.5016889,      \"name\" : \"montreal\",      \"long\" : -73.567256,      \"id\" : 2,      \"display_name\" : \"Montréal\"   },   {      \"urban_area_radius\" : 20,      \"lat\" : 46.82053904,      \"name\" : \"quebec\",      \"long\" : -71.22943997,      \"id\" : 1,      \"display_name\" : \"Québec\"   },   {      \"urban_area_radius\" : 30,      \"lat\" : 40.712784,      \"name\" : \"newyork\",      \"long\" : -74.005941,      \"id\" : 3,      \"display_name\" : \"New York\"   }]" }
+    private var citiesString: String { return "[    {        \"display_name\": \"Québec\",         \"id\": \"1\",         \"lat\": 46.82053904,         \"long\": -71.22943997,         \"name\": \"quebec\",         \"urban_area_radius\": 20    },     {        \"display_name\": \"Montréal\",         \"id\": \"2\",         \"lat\": 45.5016889,         \"long\": -73.567256,         \"name\": \"montreal\",         \"urban_area_radius\": 30    },     {        \"display_name\": \"Seattle\",         \"id\": \"3\",         \"lat\": 47.615025,         \"long\": -122.335956,         \"name\": \"seattle\",         \"urban_area_radius\": 30    },     {        \"display_name\": \"New York\",         \"id\": \"4\",         \"lat\": 40.712784,         \"long\": -74.005941,         \"name\": \"newyork\",         \"urban_area_radius\": 30    }]" }
     private var citiesData: NSData { return citiesString.dataUsingEncoding(NSUTF8StringEncoding)! }
 }

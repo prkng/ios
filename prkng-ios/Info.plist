@@ -48,7 +48,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>68</string>
+	<string>69</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -69,7 +69,13 @@
 	<string>prkng</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>fbapi</string>
+        <string>car2go</string>
+        <string>zipcar</string>
+        <string>comgooglemaps</string>
+        <string>comgooglemaps-x-callback</string>
+        <string>copilote</string>
+        <string>itms-apps</string>
+        <string>fbapi</string>
 		<string>fbapi20130214</string>
 		<string>fbapi20130410</string>
 		<string>fbapi20130702</string>

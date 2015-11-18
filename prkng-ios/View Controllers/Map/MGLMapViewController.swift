@@ -187,7 +187,7 @@ class MGLMapViewController: MapViewController {
 //    func mapView(mapView: MGLMapView, annotation: MGLAnnotation, calloutAccessoryControlTapped control: UIControl) {
 //        if let genericAnnotation = annotation as? GenericMGLAnnotation {
 //            if let annotationType = genericAnnotation.userInfo["type"] as? String {
-//                if annotationType == "searchResult" {
+//                if annotationType == "searchResult" || annotationType == "carsharinglot" {
 //                    AnalyticsOperations.sendSearchQueryToAnalytics(genericAnnotation.title ?? "", navigate: true)
 //                    DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
 //                } else if annotationType == "carsharing" {

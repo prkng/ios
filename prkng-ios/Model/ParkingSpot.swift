@@ -600,6 +600,7 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
         
         let annotationType = userInfo["type"] as! String
         if annotationType == "carsharing"
+            || annotationType == "carsharinglot"
             || annotationType == "searchResult"
             || annotationType == "previousCheckin" {
                 return true
@@ -741,6 +742,9 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
             let carShareLot = userInfo["carsharelot"] as! CarShareLot
             let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
 //            let marker = RMMarker(UIImage: carShareLot.mapPinImage, anchorPoint: CGPoint(x: 0.5, y: 1))
+            let calloutView = carShareLot.calloutView()
+            leftCalloutAccessoryView = calloutView.0
+            rightCalloutAccessoryView = calloutView.1
             reuseIdentifier = carShareLot.reuseIdentifier
             annotationImage = carShareLot.mapPinImage
 //            if shouldAddAnimation {
