@@ -36,7 +36,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var checkinMessageVC: CheckinMessageViewController?
     
-    var delegate: MyCarCheckedInViewControllerDelegate?
+    var delegate: MyCarAbstractViewControllerDelegate?
     
     private var timer: NSTimer?
     
@@ -698,8 +698,3 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
 }
 
-
-protocol MyCarCheckedInViewControllerDelegate {
-    func reloadMyCarTab()
-    func showSpotOnMap(spot: ParkingSpot)
-}

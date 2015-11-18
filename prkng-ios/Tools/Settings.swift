@@ -252,7 +252,7 @@ struct Settings {
             do {
                 let rawData = try carShare!.json.rawData()
                 NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: RESERVED_CARSHARE_KEY)
-                NSUserDefaults.standardUserDefaults().setObject(NSDate(), forKey: RESERVED_CARSHARE_SAVED_TIME_KEY)
+                NSUserDefaults.standardUserDefaults().setObject(NSDate().dateByAddingMinutes(30), forKey: RESERVED_CARSHARE_SAVED_TIME_KEY)
             } catch {
                 DDLoggerWrapper.logError("Could not save raw car share json data to user defaults. Sad face.")
             }
@@ -263,9 +263,16 @@ struct Settings {
     }
     
     static func getReservedCarShare() -> CarShare? {
-        if let archivedCarShare = NSUserDefaults.standardUserDefaults().objectForKey(RESERVED_CARSHARE_KEY) as? NSData {
-            let json = JSON(data: archivedCarShare)
-            return CarShare(json: json)
+        if let archivedCarShare = NSUserDefaults.standardUserDefaults().objectForKey(RESERVED_CARSHARE_KEY) as? NSData,
+        let time = getReservedCarShareTime() {
+            let minutes = time.timeIntervalSinceNow / 60
+            if minutes < 0 {
+                saveReservedCarShare(nil)
+                return nil
+            } else {
+                let json = JSON(data: archivedCarShare)
+                return CarShare(json: json)
+            }
         }
         return nil
     }

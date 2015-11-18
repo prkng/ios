@@ -10,7 +10,7 @@ import UIKit
 import QuartzCore
 
 
-class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarNoCheckinViewControllerDelegate, MyCarCheckedInViewControllerDelegate, SettingsViewControllerDelegate, CLLocationManagerDelegate {
+class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControllerDelegate, SearchViewControllerDelegate, HereViewControllerDelegate, MyCarAbstractViewControllerDelegate, SettingsViewControllerDelegate, CLLocationManagerDelegate {
     
     var selectedTab : PrkTab
     
@@ -83,7 +83,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             make.edges.equalTo(self.containerView)
         }
         
-        if Settings.checkedIn() {
+        if Settings.checkedIn() || Settings.getReservedCarShare() != nil {
             loadMyCarTab()
         }
         
@@ -221,7 +221,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
         var myCarViewController : AbstractViewController?
         
-        if (Settings.checkedIn()) {
+        if Settings.getReservedCarShare() != nil {
+            myCarViewController = MyCarReservedCarShareViewController()
+            (myCarViewController as! MyCarReservedCarShareViewController).delegate = self
+        } else if (Settings.checkedIn()) {
             myCarViewController = MyCarCheckedInViewController()
             (myCarViewController as! MyCarCheckedInViewController).delegate = self
         } else {
@@ -522,7 +525,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
         var myCarViewController : AbstractViewController?
         
-        if (Settings.checkedIn()) {
+        if Settings.getReservedCarShare() != nil {
+            myCarViewController = MyCarReservedCarShareViewController()
+            (myCarViewController as! MyCarReservedCarShareViewController).delegate = self
+        } else if (Settings.checkedIn()) {
             myCarViewController = MyCarCheckedInViewController()
             (myCarViewController as! MyCarCheckedInViewController).delegate = self
         } else {

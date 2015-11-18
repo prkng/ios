@@ -249,6 +249,8 @@ protocol MapViewControllerDelegate {
     
     func mapDidMoveFarAwayFromAvailableCities()
     
+    func loadMyCarTab()
+    
     //returns the number of hours to search for as a minimum parking duration
     func activeFilterDuration() -> Float?
     func activeCarsharingPermit() -> Bool

@@ -68,6 +68,7 @@
 "female" = "femme";
 "invalid_name" = "Merci d’entrer votre nom";
 
+"minutes" = "minutes";
 "minutes_short" = "min";
 "notifications" = "notifications";
 
@@ -97,6 +98,7 @@
 "now" = "***now";
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
+"reserved_car_share_message" = "***You have reserved a";
 "available_for" = "disponible pour";
 "for" = "pour";
 "available_until" = "disponible jusqu'à";

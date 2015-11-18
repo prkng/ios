@@ -18,7 +18,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
     var reportButton : UIButton
     var mapButton : UIButton
     
-    var delegate : MyCarNoCheckinViewControllerDelegate?
+    var delegate : MyCarAbstractViewControllerDelegate?
     
     let BOTTOM_BUTTON_HEIGHT: CGFloat = 36
     
@@ -125,10 +125,4 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         loadReportScreen(nil)
     }
     
-}
-
-
-protocol MyCarNoCheckinViewControllerDelegate {
-    func loadHereTab()
-    func loadSearchInHereTab()
 }

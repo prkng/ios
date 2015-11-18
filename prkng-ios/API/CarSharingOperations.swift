@@ -109,18 +109,22 @@ class CarSharingOperations {
         }
     }
     
-    static func reserveCarShare(carShare: CarShare, fromVC: UIViewController) {
+    static func reserveCarShare(carShare: CarShare, fromVC: UIViewController) -> Bool {
 
         switch carShare.carSharingType {
         case .CommunautoAutomobile:
             let reserveResult = CarSharingOperations.CommunautoAutomobile.reserveAutomobile(carShare)
             switch reserveResult {
             case .Success:
-                let alert = UIAlertView()
-                alert.message = "reserved_car_share".localizedString
-                alert.addButtonWithTitle("OK")
-                alert.show()
+//                let alert = UIAlertView()
+//                alert.message = "reserved_car_share".localizedString
+//                alert.addButtonWithTitle("OK")
+//                alert.show()
                 Settings.saveReservedCarShare(carShare)
+                SpotOperations.checkout({ (completed) -> Void in
+                    Settings.checkOut()
+                })
+                return true
             case .FailedError:
                 let alert = UIAlertView()
                 alert.message = "could_not_reserve".localizedString
@@ -138,6 +142,8 @@ class CarSharingOperations {
         default:
             print("This car share type cannot be reserved.")
         }
+        
+        return false
 
     }
 

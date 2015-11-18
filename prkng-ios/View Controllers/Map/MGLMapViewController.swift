@@ -191,8 +191,18 @@ class MGLMapViewController: MapViewController {
 //                    AnalyticsOperations.sendSearchQueryToAnalytics(genericAnnotation.title ?? "", navigate: true)
 //                    DirectionsAction.perform(onViewController: self, withCoordinate: annotation.coordinate, shouldCallback: true)
 //                } else if annotationType == "carsharing" {
-//                    if let carShare = userInfo["carshare"] as? CarShare {
-//                        CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+//                    if let carShare = genericAnnotation.userInfo["carshare"] as? CarShare {
+//                        if control.tag == 100 {
+//                            //reserve!
+//                            let didReserve = CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+//                            if didReserve {
+//                                self.delegate?.loadMyCarTab()
+//                            }
+//                        } else if control.tag == 200 {
+//                            //cancel!
+//                            CarSharingOperations.cancelCarShare(carShare, fromVC: self)
+//                        }
+//                        self.updateAnnotations()
 //                    }
 //                }
 //            }

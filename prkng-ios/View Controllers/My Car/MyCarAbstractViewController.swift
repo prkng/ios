@@ -109,6 +109,12 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
             }
         }
     }
-
     
+}
+
+protocol MyCarAbstractViewControllerDelegate {
+    func loadHereTab()
+    func loadSearchInHereTab()
+    func reloadMyCarTab()
+    func showSpotOnMap(spot: ParkingSpot)
 }

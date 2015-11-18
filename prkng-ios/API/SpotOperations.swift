@@ -107,6 +107,7 @@ struct SpotOperations {
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
             let checkinId = json != nil ? json["id"].intValue : 0
             Settings.setCheckInId(checkinId)
+            Settings.saveReservedCarShare(nil)
             completion(completed: error == nil)
         }
     }

@@ -360,7 +360,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     if let carShare = userInfo["carshare"] as? CarShare {
                         if control.tag == 100 {
                             //reserve!
-                            CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+                            let didReserve = CarSharingOperations.reserveCarShare(carShare, fromVC: self)
+                            if didReserve {
+                                self.delegate?.loadMyCarTab()
+                            }
                         } else if control.tag == 200 {
                             //cancel!
                             CarSharingOperations.cancelCarShare(carShare, fromVC: self)
