@@ -263,3 +263,4 @@
 //this section is for format strings
 "capacity_x_places" = "Capacity: %d spaces";
 "availability_x_places" = "Availability: %d spaces";
+"up_to_x_cars_available" = "Up to %d cars available";

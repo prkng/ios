@@ -93,6 +93,7 @@ class CarShare: NSObject {
     var carSharingType: CarSharingType
     var partnerId: String?
     var vin: String?
+    var quantity: Int
     var json: JSON
     
     private var fuelPercentageText: String {
@@ -110,17 +111,24 @@ class CarShare: NSObject {
             }
         }
         
-        if self.carSharingType == .Communauto {
+        switch self.carSharingType {
+        case .Zipcar:
+            return String(format: "up_to_x_cars_available".localizedString, self.quantity)
+        case .Communauto:
             //format something like "name - Until (available Until date pretty printed)
             return self.name + " - " + "until".localizedString + " " + WeekDayAndTimeDateFormatter.sharedInstance.dateFormatter.stringFromDate(self.availableUntil ?? NSDate()) + " " + WeekDayAndTimeDateFormatter.sharedInstance.timeFormatter.stringFromDate(self.availableUntil ?? NSDate())
-        } else {
+        case .Car2Go, .CommunautoAutomobile, .Generic:
             return self.name
         }
     }
     
     func mapPinImageAndReuseIdentifier(selected: Bool) -> (UIImage, String) {
+        return CarShare.mapPinImageAndReuseIdentifier(selected, carSharingType: self.carSharingType, electric: self.electric, identifier: self.identifier)
+    }
+    
+    static func mapPinImageAndReuseIdentifier(selected: Bool, carSharingType: CarSharingType, electric: Bool, identifier: String) -> (UIImage, String) {
         var reuseIdentifier = "carsharing_pin"
-        switch self.carSharingType {
+        switch carSharingType {
         case .Car2Go:
             reuseIdentifier += "_car2go"
         case .Communauto:
@@ -142,7 +150,7 @@ class CarShare: NSObject {
         var image = UIImage(named: reuseIdentifier)!
         
         if let reservedCarShare = Settings.getReservedCarShare() {
-            if reservedCarShare.identifier == self.identifier {
+            if reservedCarShare.identifier == identifier {
                 let imageToAdd = UIImage(named: "carsharing_pin_reserved_badge")!
                 image = image.addImageToTopRight(imageToAdd, valueToMoveIntoImage: 0.25)
                 reuseIdentifier += "_reserved"
@@ -162,6 +170,7 @@ class CarShare: NSObject {
         self.vin = json["properties"]["vin"].string
         self.fuelPercentage = json["properties"]["fuel"].int
         self.electric = json["properties"]["electric"].boolValue
+        self.quantity = json["properties"]["quantity"].intValue
         self.availableUntil = ISO8610DateFormatter.sharedInstance.dateFormatter.dateFromString(json["properties"]["until"].stringValue)
     }
      

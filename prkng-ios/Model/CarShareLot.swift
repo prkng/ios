@@ -30,6 +30,11 @@ class CarShareLot: NSObject {
     
     func mapPinImageAndReuseIdentifier(selected: Bool) -> (UIImage, String) {
         
+        //return the CarShare pin if it's a zipcar
+        if self.carSharingType == .Zipcar {
+            return CarShare.mapPinImageAndReuseIdentifier(selected, carSharingType: self.carSharingType, electric: false, identifier: self.identifier)
+        }
+        
         let roundPImage = UIImage(named: "carsharing_lot_pin_P")! //14pts by 14pts
         
         var pinColor = Styles.Colors.turtleGreen
