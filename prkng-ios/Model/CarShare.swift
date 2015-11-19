@@ -12,7 +12,7 @@ enum CarSharingType: String {
     case CommunautoAutomobile = "auto-mobile"
     case Car2Go = "car2go"
     case Communauto = "communauto"
-    case ZipCar = "zipcar"
+    case Zipcar = "zipcar"
     case Generic = "generic"
     
     var name: String {
@@ -23,8 +23,8 @@ enum CarSharingType: String {
             return "Communauto"
         case .CommunautoAutomobile:
             return "Auto-mobile"
-        case .ZipCar:
-            return "ZipCar"
+        case .Zipcar:
+            return "Zipcar"
         case .Generic:
             return "CarSharing"
         }
@@ -127,7 +127,7 @@ class CarShare: NSObject {
             reuseIdentifier += "_communauto"
         case .CommunautoAutomobile:
             reuseIdentifier += "_automobile"
-        case .ZipCar:
+        case .Zipcar:
             reuseIdentifier += "_zipcar"
         case .Generic:
         reuseIdentifier += "_automobile"

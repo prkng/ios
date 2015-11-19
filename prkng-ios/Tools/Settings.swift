@@ -573,12 +573,12 @@ struct Settings {
         NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_COMMUNAUTO_KEY)
     }
 
-    static func hideZipCar() -> Bool {
+    static func hideZipcar() -> Bool {
         return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_ZIPCAR_KEY)
     }
     
-    static func setHideZipCar(hide : Bool)  {
-        DDLoggerWrapper.logInfo("ZipCar is now " + (hide ? "hidden" : "shown"))
+    static func setHideZipcar(hide : Bool)  {
+        DDLoggerWrapper.logInfo("Zipcar is now " + (hide ? "hidden" : "shown"))
         NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_ZIPCAR_KEY)
     }
 

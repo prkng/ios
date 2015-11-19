@@ -20,7 +20,7 @@ class CarSharingOperations {
             !Settings.hideCar2Go() ? "car2go" : nil,
             !Settings.hideCommunauto() ? "communauto" : nil,
             !Settings.hideAutomobile() ? "auto-mobile" : nil,
-            !Settings.hideZipCar() ? "zipcar" : nil,
+            !Settings.hideZipcar() ? "zipcar" : nil,
         ]
         let companiesString = Array.filterNils(companies).joinWithSeparator(",")
         
@@ -72,7 +72,7 @@ class CarSharingOperations {
             !Settings.hideCar2Go() ? "car2go" : nil,
             !Settings.hideCommunauto() ? "communauto" : nil,
             !Settings.hideAutomobile() ? "auto-mobile" : nil,
-            !Settings.hideZipCar() ? "zipcar" : nil,
+            !Settings.hideZipcar() ? "zipcar" : nil,
         ]
         let companiesString = Array.filterNils(companies).joinWithSeparator(",")
 
@@ -147,9 +147,9 @@ class CarSharingOperations {
             //open the web view
             let vc = PRKWebViewController(englishUrl: CommunautoAutomobile.loginWebUrlEnglish, frenchUrl: CommunautoAutomobile.loginWebUrlFrench)
             fromVC.presentViewController(vc, animated: true, completion: nil)
-        case .ZipCar:
+        case .Zipcar:
             //open the zip car app if applicable
-            ZipCar.goToAppOrAppStore()
+            Zipcar.goToAppOrAppStore()
             break
         case .Car2Go:
             //open the zip car app if applicable
@@ -189,7 +189,7 @@ class CarSharingOperations {
                 fromVC.presentViewController(vc, animated: true, completion: nil)
             }
             
-        case .Communauto, .ZipCar, .Car2Go, .Generic:
+        case .Communauto, .Zipcar, .Car2Go, .Generic:
             print("This car share type cannot be cancelled.")
         }
         
@@ -208,7 +208,7 @@ class CarSharingOperations {
         }
     }
 
-    struct ZipCar {
+    struct Zipcar {
         
         static func goToAppOrAppStore() {
             let url = NSURL(string: "zipcar://")!
