@@ -116,7 +116,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             if #available(iOS 8.0, *) {
                 logoView.alpha = 0
                 containerView.alpha = 0
-                bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
+//                bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
             }
         }
         
@@ -219,8 +219,8 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         view.addSubview(bigButtonContainer)
         
-        bottomButtonContainer.backgroundColor = Styles.Colors.dark30
-        bigButtonContainer.addSubview(bottomButtonContainer)
+        bottomButtonContainer.backgroundColor = Styles.Colors.dark15
+        self.view.addSubview(bottomButtonContainer)
         
         bottomButtonLabel.font = Styles.FontFaces.light(12)
         bottomButtonLabel.textColor = Styles.Colors.stone
@@ -333,7 +333,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         bottomButtonContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.availableTimeLabel.snp_bottom).offset(14)
+            make.bottom.equalTo(self.reportButton.snp_top).offset(-14)
             make.left.equalTo(self.bigButtonContainer)
             make.right.equalTo(self.bigButtonContainer)
             make.height.equalTo(50)
@@ -685,12 +685,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         containerFadeInAnimation.duration = 0.6
         containerFadeInAnimation.beginTime = CACurrentMediaTime() + 0.15
         containerFadeInAnimation.completionBlock = {(anim, finished) in
-            // Slide in buttons once container fully visible
-            let buttonSlideAnimation = POPBasicAnimation(propertyNamed: kPOPLayerTranslationY)
-            buttonSlideAnimation.fromValue = NSNumber(float: Float(self.BUTTONS_TRANSLATION_X))
-            buttonSlideAnimation.toValue = NSNumber(int: 0)
-            buttonSlideAnimation.duration = 0.2
-            self.bigButtonContainer.layer.pop_addAnimation(buttonSlideAnimation, forKey: "buttonSlideAnimation")
+//            // Slide in buttons once container fully visible
+//            let buttonSlideAnimation = POPBasicAnimation(propertyNamed: kPOPLayerTranslationY)
+//            buttonSlideAnimation.fromValue = NSNumber(float: Float(self.BUTTONS_TRANSLATION_X))
+//            buttonSlideAnimation.toValue = NSNumber(int: 0)
+//            buttonSlideAnimation.duration = 0.2
+//            self.bigButtonContainer.layer.pop_addAnimation(buttonSlideAnimation, forKey: "buttonSlideAnimation")
         }
         self.containerView.layer.pop_addAnimation(containerFadeInAnimation, forKey: "containerFadeInAnimation")
 

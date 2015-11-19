@@ -103,7 +103,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
             if #available(iOS 8.0, *) {
                 logoView.alpha = 0
                 containerView.alpha = 0
-                bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
+//                bigButtonContainer.layer.transform = CATransform3DMakeTranslation(CGFloat(0), BUTTONS_TRANSLATION_X, CGFloat(0))
             }
         }
         
@@ -374,12 +374,12 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         containerFadeInAnimation.duration = 0.6
         containerFadeInAnimation.beginTime = CACurrentMediaTime() + 0.15
         containerFadeInAnimation.completionBlock = {(anim, finished) in
-            // Slide in buttons once container fully visible
-            let buttonSlideAnimation = POPBasicAnimation(propertyNamed: kPOPLayerTranslationY)
-            buttonSlideAnimation.fromValue = NSNumber(float: Float(self.BUTTONS_TRANSLATION_X))
-            buttonSlideAnimation.toValue = NSNumber(int: 0)
-            buttonSlideAnimation.duration = 0.2
-            self.bigButtonContainer.layer.pop_addAnimation(buttonSlideAnimation, forKey: "buttonSlideAnimation")
+//            // Slide in buttons once container fully visible
+//            let buttonSlideAnimation = POPBasicAnimation(propertyNamed: kPOPLayerTranslationY)
+//            buttonSlideAnimation.fromValue = NSNumber(float: Float(self.BUTTONS_TRANSLATION_X))
+//            buttonSlideAnimation.toValue = NSNumber(int: 0)
+//            buttonSlideAnimation.duration = 0.2
+//            self.bigButtonContainer.layer.pop_addAnimation(buttonSlideAnimation, forKey: "buttonSlideAnimation")
         }
         self.containerView.layer.pop_addAnimation(containerFadeInAnimation, forKey: "containerFadeInAnimation")
 
