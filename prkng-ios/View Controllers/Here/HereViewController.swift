@@ -116,6 +116,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         self.view.addSubview(self.filterVC.view)
         self.filterVC.willMoveToParentViewController(self)
 
+        let mapMessageTapRec = UITapGestureRecognizer(target: self, action: "didTapMapMessage")
+        mapMessageView.addGestureRecognizer(mapMessageTapRec)
         view.addSubview(mapMessageView)
         
         modeSelection.addTarget(self, action: "modeSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
@@ -650,8 +652,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         self.delegate?.didTapTrackUserButton()
     }
     
+    func didTapMapMessage() {
+        if (mapMessageView.mapMessageLabel.text ?? "") == "map_message_too_zoomed_out".localizedString {
+            self.delegate?.setDefaultMapZoom()
+        }
+    }
+
     func didChangeCarSharingMode(mode: CarSharingMode) {
-        self.delegate?.updateMapAnnotations()
+        self.delegate?.setDefaultMapZoom()
+        //zooming should automatically generate an update, so we don't have to do it manually
+        //self.delegate?.updateMapAnnotations()
     }
     
     // MARK: Car sharing popup
@@ -707,5 +717,6 @@ protocol HereViewControllerDelegate {
     func updateMapAnnotations()
     func cityDidChange(fromCity fromCity: City, toCity: City)
     func didSelectMapMode(mapMode: MapMode)
+    func setDefaultMapZoom()
     func didTapTrackUserButton()
 }

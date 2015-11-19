@@ -97,7 +97,7 @@ class MapViewController: AbstractViewController {
     }
     
     func didSetMapMode() { }
-    
+    func setDefaultMapZoom() { }
     func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) { }
     func clearSearchResults() { }
     func showUserLocation(shouldShow: Bool) { }

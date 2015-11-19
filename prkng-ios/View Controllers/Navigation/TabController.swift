@@ -273,6 +273,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         mapViewController.updateAnnotations()
     }
     
+    func setDefaultMapZoom() {
+        mapViewController.setDefaultMapZoom()
+    }
+    
     func didSelectMapMode(mapMode: MapMode) {
         if mapMode != mapViewController.mapMode {
             mapViewController.mapMode = mapMode
