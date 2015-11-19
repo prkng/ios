@@ -792,8 +792,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     if let tabController = self.parentViewController as? TabController {
                         if tabController.activeTab() == PrkTab.Here {
                             SVProgressHUD.setBackgroundColor(UIColor.clearColor())
-                            SVProgressHUD.show()
-//                            GiFHUD.show()
+                            //if after 100 msec we haven't already finished the operation, show the loader
+                            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(100 * Double(NSEC_PER_MSEC)))
+                            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                                if self.updateInProgress {
+                                    SVProgressHUD.show()
+//                                    GiFHUD.show()
+                                }
+                            })
                             
                             if self.canShowMapMessage {
                                 if underMaintenance {
