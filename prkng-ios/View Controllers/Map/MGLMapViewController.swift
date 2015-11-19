@@ -353,6 +353,14 @@ class MGLMapViewController: MapViewController {
 //                self.mapView.selectAnnotation(newAnnotation, animated: false)
 //                self.annotations.remove(annotation as! GenericMGLAnnotation)
 //                self.mapView.removeAnnotation(annotation)
+//            } else if type == "carsharinglot" {
+//                let newAnnotation = GenericMGLAnnotation(coordinate: annotation.coordinate, title: "", subtitle: nil)
+//                newAnnotation.userInfo = ["type": "carsharinglot", "selected": true, "carsharelot": (userInfo["carsharelot"] as! CarShareLot)]
+//                annotations.append(newAnnotation)
+//                self.mapView.addAnnotation(newAnnotation)
+//                self.mapView.selectAnnotation(newAnnotation, animated: false)
+//                self.annotations.remove(annotation as! GenericMGLAnnotation)
+//                self.mapView.removeAnnotation(annotation)
 //            }
 //            
 //        }
@@ -379,6 +387,13 @@ class MGLMapViewController: MapViewController {
 //            } else if type == "carsharing" {
 //                let newAnnotation = GenericMGLAnnotation(coordinate: annotation.coordinate, title: "", subtitle: nil)
 //                newAnnotation.userInfo = ["type": "carsharing", "selected": false, "carshare": (userInfo["carshare"] as! CarShare)]
+//                annotations.append(newAnnotation)
+//                self.mapView.addAnnotation(newAnnotation)
+//                self.annotations.remove(annotation as! GenericMGLAnnotation)
+//                self.mapView.removeAnnotation(annotation)
+//            } else if type == "carsharinglot" {
+//                let newAnnotation = GenericMGLAnnotation(coordinate: annotation.coordinate, title: "", subtitle: nil)
+//                newAnnotation.userInfo = ["type": "carsharinglot", "selected": false, "carsharelot": (userInfo["carsharelot"] as! CarShareLot)]
 //                annotations.append(newAnnotation)
 //                self.mapView.addAnnotation(newAnnotation)
 //                self.annotations.remove(annotation as! GenericMGLAnnotation)
@@ -849,7 +864,7 @@ class MGLMapViewController: MapViewController {
 //        for carShareLot in carShareLots {
 //            let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShareLot.identifier)
 //            let annotation = GenericMGLAnnotation(coordinate: carShareLot.coordinate, title: "", subtitle: nil)
-//            annotation.userInfo = ["type": "carsharinglot", "carsharelot": carShareLot, "shouldAddAnimation" : shouldAddAnimation]
+//            annotation.userInfo = ["type": "carsharinglot", "selected": false, "carsharelot": carShareLot, "shouldAddAnimation" : shouldAddAnimation]
 //            tempAnnotations.append(annotation)
 //        }
 //

@@ -723,13 +723,14 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
 
             let selected = userInfo["selected"] as! Bool
             let carShare = userInfo["carshare"] as! CarShare
-            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+//            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
 //            let marker = RMMarker(UIImage: UIImage(named: carShare.mapPinName(selected)), anchorPoint: CGPoint(x: 0.5, y: 1))
             let calloutView = carShare.calloutView()
             leftCalloutAccessoryView = calloutView.0
             rightCalloutAccessoryView = calloutView.1
-            reuseIdentifier = carShare.mapPinImageAndReuseIdentifier(selected).1
-            annotationImage = carShare.mapPinImageAndReuseIdentifier(selected).0
+            let mapPinImageAndReuseIdentifier = carShare.mapPinImageAndReuseIdentifier(selected)
+            reuseIdentifier = mapPinImageAndReuseIdentifier.1
+            annotationImage = mapPinImageAndReuseIdentifier.0
 //            if shouldAddAnimation {
 //                marker.addScaleAnimation()
 //                spotIDsDrawnOnMap.append(carShare.identifier)
@@ -739,14 +740,16 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
 
         case "carsharinglot":
             
+            let selected = userInfo["selected"] as! Bool
             let carShareLot = userInfo["carsharelot"] as! CarShareLot
-            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
+//            let shouldAddAnimation = userInfo["shouldAddAnimation"] as! Bool
 //            let marker = RMMarker(UIImage: carShareLot.mapPinImage, anchorPoint: CGPoint(x: 0.5, y: 1))
             let calloutView = carShareLot.calloutView()
             leftCalloutAccessoryView = calloutView.0
             rightCalloutAccessoryView = calloutView.1
-            reuseIdentifier = carShareLot.reuseIdentifier
-            annotationImage = carShareLot.mapPinImage
+            let mapPinImageAndReuseIdentifier = carShareLot.mapPinImageAndReuseIdentifier(selected)
+            reuseIdentifier = mapPinImageAndReuseIdentifier.1
+            annotationImage = mapPinImageAndReuseIdentifier.0
 //            if shouldAddAnimation {
 //                marker.addScaleAnimation()
 //                spotIDsDrawnOnMap.append(carShareLot.identifier)

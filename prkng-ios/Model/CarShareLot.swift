@@ -28,24 +28,7 @@ class CarShareLot: NSObject {
         self.carsCapacity = json["properties"]["capacity"].intValue
     }
     
-    var reuseIdentifier: String {
-        
-        var anchorImageName = "carsharing_lot_pin_anchor"
-        
-        if self.carsAvailable == 0 {
-            anchorImageName += "_grey"
-        } else {
-            switch self.carSharingType {
-            case .Car2Go:
-                anchorImageName += "_blue"
-            default:
-                anchorImageName += "_green"
-            }
-        }
-        return anchorImageName + String(self.carsAvailable)
-    }
-    
-    var mapPinImage: UIImage {
+    func mapPinImageAndReuseIdentifier(selected: Bool) -> (UIImage, String) {
         
         let roundPImage = UIImage(named: "carsharing_lot_pin_P")! //14pts by 14pts
         
@@ -53,7 +36,10 @@ class CarShareLot: NSObject {
         
         var anchorImageName = "carsharing_lot_pin_anchor"
         
-        if self.carsAvailable == 0 {
+        if selected {
+            anchorImageName += "_red"
+            pinColor = Styles.Colors.red2
+        } else if self.carsAvailable == 0 {
             anchorImageName += "_grey"
             pinColor = Styles.Colors.pinGrey
         } else {
@@ -110,7 +96,7 @@ class CarShareLot: NSObject {
         let finalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return finalImage
+        return (finalImage, anchorImageName + String(self.carsAvailable))
 
     }
     
