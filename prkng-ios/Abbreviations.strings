@@ -8,20 +8,34 @@
  NOTE = THIS IS CURRENTLY (AS OF 2015-06-26) IMPLEMENTED AS A CASE-INSENSITIVE SEARCH BUT AN EXACT REPLACEMENT
 */
 
-//"Street " = "St ";
-//"Avenue " = "Ave ";
-//"Boulevard " = "Boul ";
+
 "Saint-"  = "St-";
 "Saint "  = "St ";
 "Sainte-"  = "Ste-";
 "Sainte "  = "Ste ";
+"Boulevard " = "Boul ";
 
-" Ouest"  = " O";
-" Est"  = " E";
-" West"  = " W";
-" East"  = " E";
-" Nord"  = " N";
-" North"  = " N";
-" Sud"  = " S";
-" South"  = " S";
+" Ouest" = " O";
+" Est" = " E";
+" Sud" = " S";
+" Nord" = " N";
 "Canadiens-de-Montreal" = "Habs";
+
+
+/* 
+Added for NewYork, Seattle and upcoming US Cities
+*/
+
+" Street" = " St";
+" Avenue" = " Ave";
+" Avenue " = " Ave ";
+" Road" = " Rd";
+" Place" = " Pl";
+" Boulevard" = " Blvd";
+"Mount " = "Mt ";
+
+
+"West "  = "W ";
+"East "  = "E ";
+"North "  = "N ";
+"South "  = "S ";
