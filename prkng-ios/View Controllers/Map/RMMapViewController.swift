@@ -815,7 +815,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                                 } else if outsideServiceArea {
                                     self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
                                 } else if objects.count == 0 {
-                                    self.delegate?.showMapMessage("map_message_no_spots".localizedString)
+                                    if self.mapMode == .CarSharing && self.delegate?.carSharingMode() == .FindCar {
+                                        self.delegate?.showMapMessage("map_message_no_cars".localizedString)
+                                    } else {
+                                        self.delegate?.showMapMessage("map_message_no_spots".localizedString)
+                                    }
                                 } else {
                                     self.delegate?.showMapMessage(nil)
                                 }
