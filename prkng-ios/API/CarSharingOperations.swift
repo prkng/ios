@@ -130,6 +130,7 @@ class CarSharingOperations {
                     SpotOperations.checkout({ (completed) -> Void in
                         Settings.checkOut()
                     })
+                    AnalyticsOperations.reservedCarShareEvent(carShare, completion: { (completed) -> Void in })
                     completion(true)
                 case .FailedError:
                     let alert = UIAlertView()
@@ -287,6 +288,9 @@ class CarSharingOperations {
                         }
                         if let customerID = json["data"][0]["CustomerID"].string {
                             if customerID != "" {
+                                if (Settings.communautoCustomerID() ?? "") != customerID {
+                                    AnalyticsOperations.carShareLoginEvent("communauto-auto-mobile", completion: { (completed) -> Void in })
+                                }
                                 print("Communauto/Auto-mobile Customer ID is ", customerID)
                                 Settings.setCommunautoCustomerID(customerID)
                                 saveCommunautoCookies()

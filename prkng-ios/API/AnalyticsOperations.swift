@@ -57,6 +57,43 @@ class AnalyticsOperations {
         
     }
     
+    static func carShareLoginEvent(type: String, completion : (completed : Bool) -> Void) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let params = ["event" : ("login_" + type)]
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            if (response?.statusCode != 201) {
+                completion(completed: false)
+            } else {
+                completion(completed: true)
+            }
+            
+        }
+        
+    }
+
+    static func reservedCarShareEvent(carShare: CarShare, completion : (completed : Bool) -> Void) {
+                
+        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let params = ["event" : ("reserved_" + carShare.carSharingType.name),
+            "longitude" : String(stringInterpolationSegment: carShare.coordinate.longitude),
+            "latitude" : String(stringInterpolationSegment: carShare.coordinate.latitude)]
+        
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            if (response?.statusCode != 201) {
+                completion(completed: false)
+            } else {
+                completion(completed: true)
+            }
+            
+        }
+        
+    }
+    
     func geofencingEvent(coordinate: CLLocationCoordinate2D, entering: Bool, completion : (completed : Bool) -> Void) {
         
         lastUsedCoordinate = coordinate

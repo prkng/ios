@@ -259,8 +259,11 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     }
     
     func showSupport() {
-        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/support/", frenchUrl: "https://prk.ng/fr/support/")
-        self.navigationController?.pushViewController(webViewController, animated: true)
+        let mailVC = MFMailComposeViewController()
+        mailVC.mailComposeDelegate = self
+        mailVC.setSubject("Support")
+        mailVC.setToRecipients(["support@prk.ng"])
+        self.presentViewController(mailVC, animated: true, completion: nil)
     }
     
     func showAbout() {
