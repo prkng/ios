@@ -13,6 +13,7 @@ class LoginPermissionsViewController: AbstractViewController {
     private var backgroundImageView = UIImageView()
     private var centerImageView = UIImageView()
     private var bottomLabel = UILabel()
+    private var bottomLabelBackgroundView = UIView()
     private var arrow = UIImageView(image: UIImage(named: "icon_arrow_up")!)
     private var notificationFrame = UIView()
     
@@ -88,6 +89,11 @@ class LoginPermissionsViewController: AbstractViewController {
         centerImageView.image = UIImage(named: "img_permissions_notifications")
         view.addSubview(centerImageView)
         
+        if UIScreen.mainScreen().bounds.width == 320 {
+            bottomLabelBackgroundView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+        }
+        view.addSubview(bottomLabelBackgroundView)
+        
         bottomLabel.numberOfLines = 0
         bottomLabel.shadowColor = Styles.Colors.transparentBlack
         bottomLabel.shadowOffset = CGSize(width: 1, height: 1)
@@ -127,6 +133,13 @@ class LoginPermissionsViewController: AbstractViewController {
             make.left.equalTo(self.view).offset(40)
             make.right.equalTo(self.view).offset(-40)
             make.centerY.equalTo(self.view.snp_centerY).multipliedBy(1.6)
+        }
+        
+        bottomLabelBackgroundView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.top.equalTo(self.bottomLabel).offset(-6)
+            make.bottom.equalTo(self.view)
         }
         
     }
