@@ -215,7 +215,7 @@
 "car_sharing_enabled_text" = "Car sharing is enabled";
 "car_sharing_info_title" = "Carsharing made easy";
 "car_sharing_info_subtitle" = "From point A to point B.";
-"car_sharing_info_message" = "Reserve a vehicle and we let you know where you can park without worries.";
+"car_sharing_info_message" = "Reserve a vehicle and we'll let you know where you can park without worries.";
 
 "settings_alert" = "Alert";
 "settings_alert_text" = "Get notified 30min before";
