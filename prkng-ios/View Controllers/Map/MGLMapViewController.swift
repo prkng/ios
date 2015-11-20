@@ -200,15 +200,21 @@ class MGLMapViewController: MapViewController {
 //                    if let carShare = genericAnnotation.userInfo["carshare"] as? CarShare {
 //                        if control.tag == 100 {
 //                            //reserve!
-//                            let didReserve = CarSharingOperations.reserveCarShare(carShare, fromVC: self)
-//                            if didReserve {
-//                                self.delegate?.loadMyCarTab()
-//                            }
+//                            CarSharingOperations.reserveCarShare(carShare, fromVC: self, completion: { (didReserve) -> Void in
+//                                if didReserve {
+//                                    self.delegate?.loadMyCarTab()
+//                                }
+//                                SVProgressHUD.dismiss()
+//                                self.updateAnnotations()
+//                            })
 //                        } else if control.tag == 200 {
 //                            //cancel!
-//                            CarSharingOperations.cancelCarShare(carShare, fromVC: self)
+//                            CarSharingOperations.cancelCarShare(carShare, fromVC: self, completion: { (completed) -> Void in
+//                                if completed {
+//                                    self.updateAnnotations()
+//                                }
+//                            })
 //                        }
-//                        self.updateAnnotations()
 //                    }
 //                }
 //            }
