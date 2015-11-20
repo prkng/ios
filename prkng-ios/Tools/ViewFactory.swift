@@ -189,13 +189,13 @@ struct ViewFactory {
     static func nowOrHistorySwitch() -> DVSwitch {
         let segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString])
         segmentedControl.backgroundView.layer.borderWidth = 1
-        segmentedControl.backgroundView.layer.borderColor = Styles.Colors.stone.CGColor
+        segmentedControl.backgroundView.layer.borderColor = Styles.Colors.stone.colorWithAlphaComponent(0.5).CGColor
         segmentedControl.sliderColor = Styles.Colors.red2
         segmentedControl.backgroundColor = UIColor.clearColor()
         segmentedControl.labelTextColorInsideSlider = Styles.Colors.white
         segmentedControl.labelTextColorOutsideSlider = Styles.Colors.stone
         segmentedControl.font = Styles.FontFaces.regular(9)
-        segmentedControl.cornerRadius = 10
+        segmentedControl.cornerRadius = 12
         return segmentedControl
     }
     

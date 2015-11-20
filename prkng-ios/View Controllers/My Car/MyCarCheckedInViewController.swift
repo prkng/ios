@@ -262,7 +262,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         segmentedControl.snp_makeConstraints { (make) -> Void in
-            make.size.equalTo(CGSize(width: 120, height: 20))
+            make.size.equalTo(CGSize(width: 140, height: 24))
             make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
             make.centerX.equalTo(self.view)
         }
@@ -391,16 +391,18 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 bottomButtonContainer.hidden = false
                 bottomSelectionControl.hidden = true
                 
-                switch Settings.selectedCity().name {
-                case "montreal":
-                    bottomButtonLabel.text = "p_service_mobile_user".localizedString.uppercaseString
-                    break
-                case "quebec":
-                    bottomButtonLabel.text = "copilote_mobile_user".localizedString.uppercaseString
-                    break
-                default:
-                    bottomButtonLabel.text = ""
-                    break
+                let coordinate = spot!.selectedButtonLocation ?? spot!.buttonLocations.first!
+                if let closestCity = CityOperations.sharedInstance.closestCityToCoordinate(coordinate) {
+                    switch closestCity.name {
+                    case "montreal":
+                        bottomButtonLabel.text = "p_service_mobile_user".localizedString.uppercaseString
+                    case "quebec":
+                        bottomButtonLabel.text = "copilote_mobile_user".localizedString.uppercaseString
+                    default:
+                        bottomButtonContainer.hidden = true
+                    }
+                } else {
+                    bottomButtonContainer.hidden = true
                 }
 
                 
@@ -546,18 +548,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
 
         var url = NSURL(string: "")
 
-        switch Settings.selectedCity().displayName {
-        case "montreal":
-            url = NSURL(string: "https://itunes.apple.com/ca/app/p-service-mobile/id535957293")
-            break
-        case "quebec":
-            url = NSURL(string: "copilote://")
-            if !UIApplication.sharedApplication().canOpenURL(url!) {
-                url = NSURL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
+        let coordinate = spot!.selectedButtonLocation ?? spot!.buttonLocations.first!
+        if let closestCity = CityOperations.sharedInstance.closestCityToCoordinate(coordinate) {
+            switch closestCity.name {
+            case "montreal":
+                url = NSURL(string: "https://itunes.apple.com/ca/app/p-service-mobile/id535957293")
+            case "quebec":
+                url = NSURL(string: "copilote://")
+                if !UIApplication.sharedApplication().canOpenURL(url!) {
+                    url = NSURL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
+                }
+            default:
+                break
             }
-            break
-        default:
-            break
         }
 
         UIApplication.sharedApplication().openURL(url!)

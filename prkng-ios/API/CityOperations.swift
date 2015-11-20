@@ -83,10 +83,18 @@ class CityOperations {
         
     }
     
-    func setClosestSelectedCity(point: CLLocationCoordinate2D) {
+    func setClosestSelectedCity(coordinate: CLLocationCoordinate2D) {
+        if let closestCity = closestCityToCoordinate(coordinate) {
+            Settings.setSelectedCity(closestCity)
+        } else {
+            Settings.setSelectedCity(self.montreal!)
+        }
+    }
+    
+    func closestCityToCoordinate(coordinate: CLLocationCoordinate2D) -> City? {
         var shortestDistance = Double.infinity
         var closestCity: City?
-        let location = CLLocation(latitude: point.latitude, longitude: point.longitude)
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         for city in availableCities {
             let cityPoint = city.coordinate
             let cityLocation = CLLocation(latitude: cityPoint.latitude, longitude: cityPoint.longitude)
@@ -96,8 +104,7 @@ class CityOperations {
                 closestCity = city
             }
         }
-        
-        Settings.setSelectedCity(closestCity!)
+        return closestCity
     }
     
     func availableCityLocations() -> [CLLocation] {

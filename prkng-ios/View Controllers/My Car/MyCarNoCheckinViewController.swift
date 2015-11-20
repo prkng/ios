@@ -79,7 +79,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         }
         
         segmentedControl.snp_makeConstraints { (make) -> Void in
-            make.size.equalTo(CGSize(width: 120, height: 20))
+            make.size.equalTo(CGSize(width: 140, height: 24))
             make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
             make.centerX.equalTo(self.view)
         }
