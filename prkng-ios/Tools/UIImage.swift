@@ -184,6 +184,14 @@ extension UIImage {
         return newImage
     }
 
+    func extendHeight(heightExtension: CGFloat, andWidth widthExtension: CGFloat) -> UIImage {
+        let extendedSize = CGSize(width: self.size.width + widthExtension, height: self.size.height + heightExtension)
+        UIGraphicsBeginImageContextWithOptions(extendedSize, false, Settings.screenScale)
+        self.drawInRect(CGRect(x: 0, y: heightExtension, width: self.size.width, height: self.size.height))
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
     
 }
 

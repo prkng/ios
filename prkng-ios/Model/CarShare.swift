@@ -156,6 +156,9 @@ class CarShare: NSObject {
                 reuseIdentifier += "_reserved"
             }
         }
+        
+        //we do this next line because w want the callout to appear a bit higher that the default
+        image = image.extendHeight(1, andWidth: 0)
 
         return (image, reuseIdentifier)
     }

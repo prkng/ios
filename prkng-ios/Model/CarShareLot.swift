@@ -98,8 +98,11 @@ class CarShareLot: NSObject {
         //draw the bottom bit
         //anchor "middle" is actually 6pts in, 12pts total, plus shadow further to the right, so we draw it shifted by 3 points and not half its width
         anchorImage.drawInRect(CGRect(x: bubbleWidth/2 - 3, y: bubbleHeight, width: anchorImage.size.width, height: anchorImage.size.height))
-        let finalImage = UIGraphicsGetImageFromCurrentImageContext()
+        var finalImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+
+        //we do this next line because w want the callout to appear a bit higher that the default
+        finalImage = finalImage.extendHeight(1, andWidth: 0)
 
         return (finalImage, anchorImageName + String(self.carsAvailable))
 
