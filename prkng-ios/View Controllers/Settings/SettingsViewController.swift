@@ -649,6 +649,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 }
 
 protocol SettingsViewControllerDelegate {
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String)
+    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, showing: Bool)
     func cityDidChange(fromCity fromCity: City, toCity: City)
 }

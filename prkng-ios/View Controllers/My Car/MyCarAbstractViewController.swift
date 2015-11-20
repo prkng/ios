@@ -116,5 +116,5 @@ protocol MyCarAbstractViewControllerDelegate {
     func loadHereTab()
     func loadSearchInHereTab()
     func reloadMyCarTab()
-    func showSpotOnMap(spot: ParkingSpot)
+    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, showing: Bool)
 }

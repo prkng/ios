@@ -550,13 +550,6 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
     }
     
-    func showSpotOnMap(spot: ParkingSpot) {
-        let coordinate = spot.selectedButtonLocation ?? spot.buttonLocations.first!
-        let name = spot.name
-        goToCoordinate(coordinate, named: name)
-    }
-
-    
     func goToCoordinateNotificationPosted(notification: NSNotification) {
         if let userInfo = notification.userInfo as? [String: AnyObject] {
             if let location = userInfo["location"] as? CLLocation, let name = userInfo["name"] as? String {
@@ -567,11 +560,12 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
     // MARK: SettingsViewControllerDelegate
     
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String) {
+    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, showing: Bool = true) {
         loadHereTab()
         self.mapViewController.setMapUserMode(MapUserMode.None)
-        self.mapViewController.goToCoordinate(coordinate, named:name)
+        self.mapViewController.goToCoordinate(coordinate, named: name, withZoom: nil, showing: showing)
     }
+    
     
     func cityDidChange(fromCity fromCity: City, toCity: City) {
         Settings.setSelectedCity(toCity)

@@ -644,7 +644,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func showSpotOnMap() {
         
         if let parkingSpot = self.spot {
-            self.delegate?.showSpotOnMap(parkingSpot)
+            let coordinate = parkingSpot.selectedButtonLocation ?? parkingSpot.buttonLocations.first!
+            let name = parkingSpot.name
+            self.delegate?.goToCoordinate(coordinate, named: name, showing: false)
         }
     }
     

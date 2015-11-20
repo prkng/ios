@@ -77,9 +77,9 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         setupConstraints()
         
         //add a tap gesture recognizer
-        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
-        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
-        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("showSpotOnMap"))
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
+        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
         tapRecognizer1.delegate = self
         tapRecognizer2.delegate = self
         tapRecognizer3.delegate = self
@@ -288,7 +288,9 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
     }
     
     func mapButtonTapped() {
-        self.delegate?.loadHereTab()
+        if let reservedCarShare = carShare {
+            self.delegate?.goToCoordinate(reservedCarShare.coordinate, named: reservedCarShare.name, showing: false)
+        }
     }
 
     func leaveButtonTapped() {
@@ -306,7 +308,6 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
     func reportButtonTapped(sender: UIButton) {
         
     }
-
     
     func setDefaultTimeDisplay() {
         
@@ -330,31 +331,10 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         
     }
     
-    func showSpotOnMap() {
-        
-//        if let parkingSpot = self.spot {
-//            self.delegate?.showSpotOnMap(parkingSpot)
-//        }
-    }
-    
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
-        
-//        let tap = recognizer.locationInView(self.view)
-//        let point = availableTitleLabel.convertPoint(availableTitleLabel.bounds.origin, toView: self.view)
-//        let pointY = point.y - CGFloat(largerVerticalMargin)/2
-//        
-//        if tap.y > pointY {
-//            toggleTimeDisplay()
-//        } else {
-//            showSpotOnMap()
-//        }
-    }
-    
     //MARK- gesture recognizer delegate
     func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
     
     func animateAndShow() {
         

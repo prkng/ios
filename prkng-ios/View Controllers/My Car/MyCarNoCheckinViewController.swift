@@ -41,8 +41,8 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         setupConstraints()
         
         //add a tap gesture recognizer
-        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
-        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
         tapRecognizer1.delegate = self
         tapRecognizer2.delegate = self
         backgroundImageView.addGestureRecognizer(tapRecognizer1)
@@ -121,10 +121,6 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
             make.right.equalTo(self.view).offset(-50)
         }
         
-    }
-    
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
-        mapButtonTapped()
     }
 
     func mapButtonTapped() {
