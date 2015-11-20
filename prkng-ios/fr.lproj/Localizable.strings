@@ -9,8 +9,8 @@
 "park_now" = "SE STATIONNER";
 "take_the_tour" = "débuter";
 
-"sign_in" = "***Sign In";
-"sign_out" = "***Sign Out";
+"sign_in" = "Connexion";
+"sign_out" = "Déconnexion";
 "sign_up" = "S'INSCRIRE";
 "login_with" = "CONNEXION AVEC";
 "login_with_facebook" = "FACEBOOK";
@@ -55,8 +55,8 @@
 "login_error_title_facebook" = "Connexion Facebook échouée";
 "login_error_title_google" = "Connexion Google échouée";
 "login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
-"login_permissions_bottom_text" = "***Because there is nothing nicer than a ticket-free windshield!";
-"location_permissions_bottom_text" = "***We need this permission to help you find the best parking spots around you.";
+"login_permissions_bottom_text" = "Car on veut tous un rappel pour éviter une contravention!";
+"location_permissions_bottom_text" = "Afin de vous suggérer les meilleures places de stationnement autour de vous.";
 "register_error_title" = "Erreur d'inscription";
 "register_error_message_generic" = "Inscription impossible. merci de réessayer.";
 "register_error_message_user_exists" = "Ce nom d'utilisateur est déjà pris. Essayez avec un autre nom.";
@@ -78,7 +78,7 @@
 
 "tabbar_search" = "RECHERCHE";
 "tabbar_here" = "CARTE";
-"tabbar_mycar" = "RAPPEL";
+"tabbar_mycar" = "ACTIVITÉ";
 "tabbar_settings" = "RÉGLAGES";
 
 // Search
@@ -95,17 +95,17 @@
 "first_checkin_subtitle" = "Votre premier check-in";
 "first_checkin_text" = "Prenez note que la règlementation sur rue prévaut toujours, et peut différer de notre donnée.\nGardez donc un oeil ouvert!";
 
-"no_checkin_message" = "***You haven't checked-in yet.\nPlease select a spot first.";
-"now" = "***now";
+"no_checkin_message" = "Envie d’un rappel?\nAllez sur la carte et sélectionner un lot!";
+"now" = "Go";
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
-"reserved_car_share_message" = "***You have reserved a";
+"reserved_car_share_message" = "Vous avez réservé une";
 "available_for" = "disponible pour";
 "for" = "pour";
 "available_until" = "disponible jusqu'à";
 "until" = "Jusqu'à";
 "share_car_location" = "partager"; 
-"leave_spot" = "check out";
+"leave_spot" = "Annuler";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
 "notified_night_before" = "notification la veille";
@@ -181,15 +181,15 @@
 "faq" = "FAQ";
 "privacy_policy" = "Politique de confidentialité";
 "share" = "Partager";
-"support" = "***Support";
-"getting_started_tour" = "***Getting Started Tour";
-"rate_us_message" = "***Like prkng? Rate us in the App Store";
+"support" = "Support";
+"getting_started_tour" = "Introduction";
+"rate_us_message" = "Allez noter l'app!";
 "the_project_part_one" = "prkng is a service to find easily a legal parking spot. we try our best to solve traffic issue and incomprehension in north american metropole. our service is powered by Yellow Pages Group Canada. more cities are coming soon.";
 "the_project_part_two" = "Information that we collect from you, when you use the service including your name, contact details (such as telephone and mobile numbers and e-mail address), and/or other personally identifiable information (the \"personal information\") are only use for internal diagnostics and our main partners.";
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec! https://prk.ng";
 
-"show_the_map" = "***show the map";
-"show_on_map" = "***show on map";
+"show_the_map" = "Voir la carte";
+"show_on_map" = "Voir le véhicule";
 "all" = "tous";
 "24 hour" = "24 heures";
 "hour" = "heure";
@@ -210,8 +210,8 @@
 "handicap" = "Handicapé";
 "card" = "Carte";
 "operated_by" = "Par";
-"find_a_car" = "***Car";
-"find_a_spot" = "***Spot";
+"find_a_car" = "Véhicules";
+"find_a_spot" = "Stationner";
 "car_sharing" = "Autopartage";
 "car_sharing_filter" = "Autopartage";
 "car_sharing_enabled_text" = "Autopartage est sélectionné";
@@ -219,16 +219,16 @@
 "car_sharing_info_subtitle" = "Les places de 24hrs+ autour de vous";
 "car_sharing_info_message" = "Activez cette fonction lorsque vous utilisez un service d'autopartage et devez trouver un stationnement sur rue autorisé pour les 24 prochaines heures. Pas mal non?";
 
-"settings_alert" = "***Alert";
-"settings_alert_text" = "***Get notified 30 minutes before to avoid a ticket.";
-"settings_commercial_permit" = "***Commercial Permit";
-"settings_commercial_permit_text" = "***See spots reserved for commercial permits.";
+"settings_alert" = "Rappel";
+"settings_alert_text" = "Recevez une alerte 30min avant.";
+"settings_commercial_permit" = "Vignette commerciale";
+"settings_commercial_permit_text" = "Pour véhicules autorisés.";
 
 "loading" = "Chargement...";
 "map_message_loading" = "Chargement...";
 "map_message_too_zoomed_out" = "Zoomez au niveau de la rue.";
 "map_message_no_spots" = "Uh oh! Vous ne pouvez vous stationner ici présentement.";
-"map_message_no_cars" = "***Uh oh! No cars available here at this time.";
+"map_message_no_cars" = "Uh oh! Il n'y a pas de véhicules disponible ici présentement.";
 "map_message_outside_service_area" = "Désolé, aucune information n'est disponible pour cette région.";
 "map_message_under_maintenance" = "On effectue présentement des travaux de maintenance, réessayez un peu plus tard!";
 "map_message_error" = "Oops, assurez-vous d'avoir une connexion réseau et réessayez!";
@@ -242,23 +242,23 @@
 
 "provided_by_foursquare" = "résultats par foursquare";
 
-"return_to_app" = "***Arrive at your destination? Return to prkng to find a spot or parking lot.";
+"return_to_app" = "Retourner sur prkng pour trouver un stationnement!";
 
 "on-street" = "Sur-rue";
 "garages" = "Hors-rue";
-"general" = "***Généralités";
+"general" = "Général";
 
-"city_picker_title" = "***Available Cities";
-"city_picker_subtitle" = "***We are currently available in:";
+"city_picker_title" = "Villes disponibles";
+"city_picker_subtitle" = "Trouvez un stationnement à:";
 
 //car sharing reservations
-"reserved" = "***Reserved";
-"cancelled_reservation" = "***Your reservation was successfully cancelled.";
-"could_not_cancel_reservation" = "***Your reservation could not be cancelled.";
-"could_not_cancel_not_logged_in" = "***Your cancellation could not be completed because you aren't logged in. Log in, then try again.";
-"reserved_car_share" = "***Your reservation was completed.";
-"could_not_reserve" = "***Could not complete the reservation";
-"could_not_reserve_not_logged_in" = "***Your reservation could not be completed because you aren't logged in. Log in, then try again.";
+"reserved" = "Réservé";
+"cancelled_reservation" = "Votre réservation a été annulée.";
+"could_not_cancel_reservation" = "Impossible d'annuler votre réservation.";
+"could_not_cancel_not_logged_in" = "Votre réservation ne peut être annulée. Connectez-vous et réessayez.";
+"reserved_car_share" = "Votre réservation a été effectuée.";
+"could_not_reserve" = "Impossible d'effectuer votre réservation.";
+"could_not_reserve_not_logged_in" = "Impossible d'effectuer votre réservation. Connectez-vous et réessayez.";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
@@ -267,5 +267,5 @@
 
 //this section is for format strings
 "capacity_x_places" = "Capacité: %d places";
-"availability_x_places" = "***Disponibilité: %d places";
-"up_to_x_cars_available" = "***Up to %d cars available";
+"availability_x_places" = "Disponibles maintenant: %d places";
+"up_to_x_cars_available" = "Jusqu'à %d véhicules disponibles";
