@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MyCarNoCheckinViewController: MyCarAbstractViewController {
+class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate {
     
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
 
@@ -39,6 +39,16 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         self.view = UIView()
         setupViews()
         setupConstraints()
+        
+        //add a tap gesture recognizer
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
+        tapRecognizer1.delegate = self
+        tapRecognizer2.delegate = self
+        backgroundImageView.addGestureRecognizer(tapRecognizer1)
+        backgroundImageView.userInteractionEnabled = true
+        logoView.addGestureRecognizer(tapRecognizer2)
+        logoView.userInteractionEnabled = true
     }
     
     
@@ -113,6 +123,10 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController {
         
     }
     
+    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+        mapButtonTapped()
+    }
+
     func mapButtonTapped() {
         self.delegate?.loadHereTab()
     }
