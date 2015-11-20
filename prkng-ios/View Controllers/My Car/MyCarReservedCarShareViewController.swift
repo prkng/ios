@@ -296,8 +296,11 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Reserved Car Share", action: "Cancel Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
 
-        CarSharingOperations.cancelCarShare(self.carShare!, fromVC: self)
-        self.delegate?.reloadMyCarTab()
+        CarSharingOperations.cancelCarShare(self.carShare!, fromVC: self, completion: { (completed) -> Void in
+            if completed {
+                self.delegate?.reloadMyCarTab()
+            }
+        })
     }
     
     func reportButtonTapped(sender: UIButton) {

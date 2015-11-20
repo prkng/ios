@@ -410,17 +410,20 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func handleCommunautoSignInButtonTap() {
         
-        if CarSharingOperations.CommunautoAutomobile.getAndSaveCommunautoCustomerID() == nil {
-            //we need to ask the user to log in
-            let vc = CarSharingOperations.CommunautoAutomobile.loginVC
-            self.navigationController?.pushViewController(vc, animated: true)
-        } else {
-            //we have a value, so perform a log out
-            //calling getAndSaveCommunautoCustomerID already logged us out, so just update the cell
-            CarSharingOperations.CommunautoAutomobile.deleteCommunautoCustomerID()
-            self.tableView.reloadData()
+        CarSharingOperations.CommunautoAutomobile.getAndSaveCommunautoCustomerID { (id) -> Void in
+            if id == nil {
+                //we need to ask the user to log in
+                let vc = CarSharingOperations.CommunautoAutomobile.loginVC
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                //we have a value, so perform a log out
+                //calling getAndSaveCommunautoCustomerID already logged us out, so just update the cell
+                CarSharingOperations.CommunautoAutomobile.deleteCommunautoCustomerID()
+                self.tableView.reloadData()
+            }
+            
         }
-
+        
     }
 
     func loginWithCar2Go() {
