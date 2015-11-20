@@ -323,7 +323,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
         Settings.setFirstUsePassed(true)
         
-        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+        self.dismissViewControllerWithFade { () -> Void in
             
             let window: UIWindow = (UIApplication.sharedApplication().delegate as! AppDelegate).window!
             let tabController = TabController()
@@ -331,7 +331,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             window.rootViewController = tabController
             window.makeKeyWindow()
             
-        })
+        }
     }
     
     func deselectMethod() {

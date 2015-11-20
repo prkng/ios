@@ -102,7 +102,7 @@ class FirstUseViewController: AbstractViewController, TutorialViewControllerDele
     
     
     func didFinishAndDismissTutorial() {
-        self.presentViewController(LoginViewController(), animated: true) { () -> Void in
+        self.presentViewControllerWithFade(LoginViewController()) { () -> Void in
             Settings.setTutorialPassed(true)
         }
     }
@@ -118,7 +118,6 @@ class FirstUseViewController: AbstractViewController, TutorialViewControllerDele
             tutorial.delegate = self
             
             self.presentViewController(tutorial, animated: true) { () -> Void in
-                
             }
         }
         
