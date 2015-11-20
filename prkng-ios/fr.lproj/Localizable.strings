@@ -56,6 +56,7 @@
 "login_error_title_google" = "Connexion Google échouée";
 "login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
 "login_permissions_bottom_text" = "***Because there is nothing nicer than a ticket-free windshield!";
+"location_permissions_bottom_text" = "***We need this permission to help you find the best parking spots around you.";
 "register_error_title" = "Erreur d'inscription";
 "register_error_message_generic" = "Inscription impossible. merci de réessayer.";
 "register_error_message_user_exists" = "Ce nom d'utilisateur est déjà pris. Essayez avec un autre nom.";
@@ -188,6 +189,7 @@
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec! https://prk.ng";
 
 "show_the_map" = "***show the map";
+"show_on_map" = "***show on map";
 "all" = "tous";
 "24 hour" = "24 heures";
 "hour" = "heure";
@@ -226,6 +228,7 @@
 "map_message_loading" = "Chargement...";
 "map_message_too_zoomed_out" = "Zoomez au niveau de la rue.";
 "map_message_no_spots" = "Uh oh! Vous ne pouvez vous stationner ici présentement.";
+"map_message_no_cars" = "***Uh oh! No cars available here at this time.";
 "map_message_outside_service_area" = "Désolé, aucune information n'est disponible pour cette région.";
 "map_message_under_maintenance" = "On effectue présentement des travaux de maintenance, réessayez un peu plus tard!";
 "map_message_error" = "Oops, assurez-vous d'avoir une connexion réseau et réessayez!";
