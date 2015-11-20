@@ -92,10 +92,10 @@
 "schedule_forbidden" = "INTERDIT";
 
 "first_checkin_title" = "Nous y voilà!";
-"first_checkin_subtitle" = "Votre premier check-in";
+"first_checkin_subtitle" = "Votre premier rappel";
 "first_checkin_text" = "Prenez note que la règlementation sur rue prévaut toujours, et peut différer de notre donnée.\nGardez donc un oeil ouvert!";
 
-"no_checkin_message" = "Envie d’un rappel?\nAllez sur la carte et sélectionner un lot!";
+"no_checkin_message" = "Envie d’un rappel?\nAllez sur la carte et sélectionnez "parqué!"";
 "now" = "Go";
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
@@ -143,7 +143,7 @@
 "time_up" = "Temps écoulé!";
 
 "tutorial_step_1" = "Sarah va bruncher avec sa mère et devra se stationner près du restaurant. Voyez comment elle utilise prkng!";
-"tutorial_step_2" = "Arrivée à destination, elle utilise le mode \"ici\" afin de vérifier les rues autorisées.";
+"tutorial_step_2" = "Arrivée à destination, elle utilise le mode \"Carte\" afin de vérifier les rues autorisées.";
 "tutorial_step_3" = "Sarah est une femme brillante: elle enregistre sa localisation afin d'être avertie 30 minutes avant l'heure limite, question d’éviter les ennuis.";
 "tutorial_step_4" = "Fini les maux de tête et les contraventions: faites comme Sarah et utilisez prkng pour trouver votre prochain stationnement gratuit!";
 "tutorial_confirm" = "COMMENCER";
@@ -152,7 +152,7 @@
 "here_firstuse_title" = "Hé, salut!";
 "here_firstuse_subtitle" = "C'est votre première fois?";
 "here_firstuse_1" = "Sélectionnez un tronçon et voyez sa durée autorisée.";
-"here_firstuse_2" = "Une fois trouvée, enregistez votre place afin d'être informé quand déplacer votre véhicule.";
+"here_firstuse_2" = "Une fois trouvée, enregistrez votre place afin d'être informé quand déplacer votre véhicule.";
 "free_spots" = "segments gratuits";
 "metered_spots" = "segments payants";
 
@@ -189,15 +189,15 @@
 "prkng_share_copy" = "Avec l'application prkng, je me stationne les doigts dans le nez à Montréal et Québec! https://prk.ng";
 
 "show_the_map" = "Voir la carte";
-"show_on_map" = "Voir le véhicule";
+"show_on_map" = "Voir mon véhicule";
 "all" = "tous";
 "24 hour" = "24 heures";
 "hour" = "heure";
 "hourly" = "heure";
 "daily" = "jour";
 "metered" = "Tarifé";
-"check-in" = "Check-in";
-"check-in-pay" = "Check-in + Payer";
+"check-in" = "Parqué!";
+"check-in-pay" = "Parqué!";
 "authorized_for" = "Autorisé pour";
 "search" = "Rechercher";
 "search_bar_text" = "Rechercher ou filter";
@@ -228,7 +228,7 @@
 "map_message_loading" = "Chargement...";
 "map_message_too_zoomed_out" = "Zoomez au niveau de la rue.";
 "map_message_no_spots" = "Uh oh! Vous ne pouvez vous stationner ici présentement.";
-"map_message_no_cars" = "Uh oh! Il n'y a pas de véhicules disponible ici présentement.";
+"map_message_no_cars" = "Uh oh! Il n'y a pas de véhicules disponibles ici présentement.";
 "map_message_outside_service_area" = "Désolé, aucune information n'est disponible pour cette région.";
 "map_message_under_maintenance" = "On effectue présentement des travaux de maintenance, réessayez un peu plus tard!";
 "map_message_error" = "Oops, assurez-vous d'avoir une connexion réseau et réessayez!";
@@ -242,7 +242,7 @@
 
 "provided_by_foursquare" = "résultats par foursquare";
 
-"return_to_app" = "Retourner sur prkng pour trouver un stationnement!";
+"return_to_app" = "Retournez sur prkng pour trouver un stationnement!";
 
 "on-street" = "Sur-rue";
 "garages" = "Hors-rue";
