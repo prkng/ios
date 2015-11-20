@@ -131,7 +131,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     func webViewDidFinishLoad(webView: UIWebView) {
         SVProgressHUD.dismiss()
 //        let response = NSURLCache.sharedURLCache().cachedResponseForRequest(webView.request!)?.response
-        didFinishLoadingCallback!{ (id: String?) -> Void in
+        didFinishLoadingCallback?{ (id: String?) -> Void in
             if id != nil {
                 self.backButtonTapped()
             }
