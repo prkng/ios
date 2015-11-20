@@ -56,6 +56,8 @@
 "login_error_title_google" = "Google Login Failure";
 "login_error_message" = "Please try again with one of the services below.";
 "login_permissions_bottom_text" = "Because there is nothing nicer than a ticket-free windshield!";
+"location_permissions_bottom_text" = "We need this permission to help you find the best parking spots around you.";
+
 "register_error_title" = "Registration Error";
 "register_error_message_generic" = "Could not register at this time. Please try again later.";
 "register_error_message_user_exists" = "This user already exists. Please try again with different credentials.";
@@ -91,9 +93,9 @@
 "schedule_forbidden" = "FORBIDDEN";
 
 "first_checkin_title" = "Here we are!";
-"first_checkin_subtitle" = "Your first check-in";
+"first_checkin_subtitle" = "Your first reminder";
 "first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation. Please keep an eye open.";
-"no_checkin_message" = "You haven't checked-in yet.\nPlease select a spot first.";
+"no_checkin_message" = "Want a reminder?\nSelect a spot on the map and tap “parked".";
 "now" = "now";
 "park_now" = "park now";
 "checked_in_message" = "you're parked on";
@@ -103,7 +105,7 @@
 "available_until" = "available until";
 "until" = "Until";
 "share_car_location" = "share my location";
-"leave_spot" = "Adios!";
+"leave_spot" = "Cancel";
 "notifications_off" = "notifications off";
 "notifications_on" = "notifications on";
 "notified_night_before" = "Get notified the night before";
@@ -180,12 +182,13 @@
 "share" = "Share";
 "support" = "Support";
 "getting_started_tour" = "Getting Started Tour";
-"rate_us_message" = "Like prkng? Rate us in the App Store";
+"rate_us_message" = "Show us your love";
 "the_project_part_one" = "prkng is a service that helps you easily find an authorized parking spot. We're trying our best to solve traffic issue and parking misunderstandings in North American cities. Our service is powered by Yellow Pages Group Canada. More cities coming soon!";
 "the_project_part_two" = "Information that we collect from you while you use prkng include your name, contact details (such as phone number and e-mail address), and/or other personally identifiable information (the \"personal information\") is only used for internal diagnostics and shared with our primary partners.";
 "prkng_share_copy" = "With prkng app, parking has never been so easy. Available in Montreal & Quebec!";
 
 "show_the_map" = "show the map";
+"show_on_map" = "show on map";
 "all" = "all";
 "24 hour" = "24 hour";
 "hour" = "hour";
@@ -207,7 +210,7 @@
 "card" = "Card";
 "operated_by" = "By";
 "find_a_car" = "Cars";
-"find_a_spot" = "Spots";
+"find_a_spot" = "Park now";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";
 "car_sharing_enabled_text" = "Car sharing is enabled";
@@ -216,14 +219,15 @@
 "car_sharing_info_message" = "This option is for when you're using a carsharing service and need to find a spot available for the next 24 hours.";
 
 "settings_alert" = "Alert";
-"settings_alert_text" = "Get notified 30 minutes before to avoid a ticket.";
+"settings_alert_text" = "Get notified 30min before";
 "settings_commercial_permit" = "Commercial Permit";
-"settings_commercial_permit_text" = "See spots reserved for commercial permits.";
+"settings_commercial_permit_text" = "For authorized vehicles only.";
 
 "loading" = "Loading...";
 "map_message_loading" = "Loading...";
 "map_message_too_zoomed_out" = "Zoom in to street level";
 "map_message_no_spots" = "Uh oh! You can't park here at this time.";
+"map_message_no_cars" = "Uh oh! No cars available here at this time.";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here.";
 "map_message_under_maintenance" = "We're currently performing maintenance on our service. Please try again soon!";
 "map_message_error" = "Oops, make sure your internet connection is active and try again.";
@@ -237,14 +241,14 @@
 
 "provided_by_foursquare" = "provided by foursquare";
 
-"return_to_app" = "Arrive at your destination? Return to prkng to find a spot or parking lot.";
+"return_to_app" = "Approaching your destination? Return to prkng to find a spot.";
 
 "on-street" = "On-Street";
 "garages" = "Parking lots";
 "general" = "General";
 
 "city_picker_title" = "Available Cities";
-"city_picker_subtitle" = "We are currently available in:";
+"city_picker_subtitle" = "You can find parking in:";
 
 //car sharing reservations
 "reserved" = "Reserved";
@@ -262,5 +266,5 @@
 
 //this section is for format strings
 "capacity_x_places" = "Capacity: %d spaces";
-"availability_x_places" = "Availability: %d spaces";
+"availability_x_places" = "Available now: %d spaces";
 "up_to_x_cars_available" = "Up to %d cars available";
