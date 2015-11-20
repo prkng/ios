@@ -56,7 +56,7 @@
 "login_error_title_google" = "Connexion Google échouée";
 "login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
 "login_permissions_bottom_text" = "Car on veut tous un rappel pour éviter une contravention!";
-"location_permissions_bottom_text" = "Afin de vous suggérer les meilleures places de stationnement autour de vous.";
+"location_permissions_bottom_text" = "Afin d’éviter de tourner en rond pour trouver les places au alentour";
 "register_error_title" = "Erreur d'inscription";
 "register_error_message_generic" = "Inscription impossible. merci de réessayer.";
 "register_error_message_user_exists" = "Ce nom d'utilisateur est déjà pris. Essayez avec un autre nom.";
@@ -216,8 +216,8 @@
 "car_sharing_filter" = "Autopartage";
 "car_sharing_enabled_text" = "Autopartage est sélectionné";
 "car_sharing_info_title" = "L'autopartage sans tracas";
-"car_sharing_info_subtitle" = "Les places de 24hrs+ autour de vous";
-"car_sharing_info_message" = "Activez cette fonction lorsque vous utilisez un service d'autopartage et devez trouver un stationnement sur rue autorisé pour les 24 prochaines heures. Pas mal non?";
+"car_sharing_info_subtitle" = "L’expérience du départ à l’arrivée.";
+"car_sharing_info_message" = "Ce mode vous permet de réserver votre véhicule ainsi que trouver le stationnement qui conviendra à toutes ses exigences!";
 
 "settings_alert" = "Rappel";
 "settings_alert_text" = "Recevez une alerte 30min avant.";
