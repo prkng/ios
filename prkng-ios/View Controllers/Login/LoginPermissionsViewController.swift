@@ -39,6 +39,7 @@ class LoginPermissionsViewController: AbstractViewController {
             transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             transition.type = kCATransitionFade
             centerImageView.layer.addAnimation(transition, forKey: nil)
+            bottomLabel.text = "location_permissions_bottom_text".localizedString
         }
         
         if passedPermissions.count >= 2 {

@@ -61,7 +61,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         availableTimeLabel = UILabel()
         
         bigButtonContainer = UIView()
-        mapButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "show_the_map".localizedString.uppercaseString, textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
+        mapButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "show_on_map".localizedString.uppercaseString, textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
         leaveButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "cancel".localizedString.uppercaseString)
         
         super.init(nibName: nil, bundle: nil)
