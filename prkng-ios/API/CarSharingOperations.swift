@@ -151,7 +151,8 @@ class CarSharingOperations {
             })
         case .Communauto:
             //open the web view
-            let vc = PRKWebViewController(englishUrl: CommunautoAutomobile.loginWebUrlEnglish, frenchUrl: CommunautoAutomobile.loginWebUrlFrench)
+            let carID = carShare.partnerId ?? ""
+            let vc = PRKWebViewController(englishUrl: CommunautoAutomobile.communautoReserveUrlEnglish + carID, frenchUrl: CommunautoAutomobile.communautoReserveUrlFrench + carID)
             fromVC.presentViewController(vc, animated: true, completion: nil)
             completion(false)
         case .Zipcar:
@@ -244,6 +245,9 @@ class CarSharingOperations {
         static let communautoReserveUrlEnglish = "https://www.reservauto.net/Scripts/Client/Mobile/ReservationAdd.asp?BranchID=1&CurrentLanguageID=2"
         static let communautoReserveUrlFrench =  "https://www.reservauto.net/Scripts/Client/Mobile/ReservationAdd.asp?BranchID=1&CurrentLanguageID=1"
 
+        //these next 2 require CarID to be appended
+        let communautoReserveUrlEnglish = "https://www.reservauto.net/Scripts/Client/ReservationAdd.asp?Step=2&CurrentLanguageID=2&IgnoreError=False&NbrStation=0&CarID="
+        let communautoReserveUrlFrench = "https://www.reservauto.net/Scripts/Client/ReservationAdd.asp?Step=2&CurrentLanguageID=1&IgnoreError=False&NbrStation=0&CarID="
 //        static let communautoReserveUrl = "https://www.reservauto.net/Scripts/Client/ReservationAdd.asp?Step=2&CurrentLanguageID="+ lang +"&IgnoreError=False&NbrStation=0&ReservationCityID="+ iRes[0] +"&CarID="+ lngCarID +"&StartYear="+ sD[2] +"&StartMonth="+ sD[1] +"&StartDay="+ sD[0] +"&StartHour="+ iRes[2] +"&StartMinute="+ iRes[3] +"&EndYear="+ eD[2] +"&EndMonth="+ eD[1] +"&EndDay="+ eD[0] +"&EndHour="+ iRes[5] +"&EndMinute="+ iRes[6] +"&StationID="+ StationID +"&OrderBy=2&Accessories="+ iRes[7] +"&Brand="+ iRes[8] +"&ShowGrid=False&ShowMap=True&FeeType="+ iRes[9] +"&DestinationID="+ iRes[10] +"&CustomerLocalizationID="
         
         //note: customerID is actually providerNo
@@ -253,7 +257,14 @@ class CarSharingOperations {
 
         static var loginVC: PRKWebViewController {
             let vc = PRKWebViewController(englishUrl: loginWebUrlEnglish, frenchUrl: loginWebUrlFrench)
-            vc.didFinishLoadingCallback = self.getAndSaveCommunautoCustomerID
+            vc.didFinishLoadingCallback = { (vc, webView) -> () in
+                webView.stringByEvaluatingJavaScriptFromString("document.getElementById(\"RememberMe\").checked = true; document.getElementById(\"RememberMe\").parentElement.hidden = true;")
+                self.getAndSaveCommunautoCustomerID({ (id) -> Void in
+                    if id != nil {
+                        vc.backButtonTapped()
+                    }
+                })
+            }
             return vc
         }
         

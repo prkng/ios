@@ -17,7 +17,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     private var englishUrl: String
     private var frenchUrl: String
     
-    var didFinishLoadingCallback: (((String?) -> Void) -> ())?
+    var didFinishLoadingCallback: ((PRKWebViewController, UIWebView) -> ())?
     
     private let backButton = ViewFactory.hugeButton()
     
@@ -130,12 +130,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     
     func webViewDidFinishLoad(webView: UIWebView) {
         SVProgressHUD.dismiss()
-//        let response = NSURLCache.sharedURLCache().cachedResponseForRequest(webView.request!)?.response
-        didFinishLoadingCallback?{ (id: String?) -> Void in
-            if id != nil {
-                self.backButtonTapped()
-            }
-        }
+        didFinishLoadingCallback?(self, webView)
     }
     
     
