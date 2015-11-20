@@ -144,14 +144,14 @@
 
 "tutorial_step_1" = "Sarah is having lunch with her mom. She’ll need to park when she gets there. See how she uses prkng!";
 "tutorial_step_2" = "Once arrived at her destination, the \"map\" feature shows her the spots where she’s allowed to park.";
-"tutorial_step_3" = "Sarah’s a bright woman: She “checks-in” so she’ll be notified to move her car before the cops do.";
+"tutorial_step_3" = "Sarah’s a bright woman: She tap “parked” so she’ll be notified to move her car before the cops do.";
 "tutorial_step_4" = "No more headaches, no more surprise tickets: join Sarah in using prkng to find your next free spot!";
 "tutorial_confirm" = "GOT IT";
 
 "here_firstuse_title" = "How it works.";
 "here_firstuse_subtitle" = "We know it’s your first time!";
 "here_firstuse_1" = "Tap on any of the spots to see their authorized periods.";
-"here_firstuse_2" = "Once you have found your spot, hit \“Reminder\” to be reminded when to move your car.";
+"here_firstuse_2" = "Once you have found your spot, hit \“Parked\” to be reminded when to move your car.";
 "free_spots" = "FREE SPOTS";
 "metered_spots" = "METERED SPOTS";
 
