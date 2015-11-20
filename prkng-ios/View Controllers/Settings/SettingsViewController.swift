@@ -106,13 +106,13 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func setupViews () {
         
-//        backgroundImageView.contentMode = .ScaleAspectFill
-//        view.addSubview(backgroundImageView)
-        view.backgroundColor = Styles.Colors.midnight1
+        backgroundImageView.contentMode = .ScaleAspectFill
+        view.addSubview(backgroundImageView)
+//        view.backgroundColor = Styles.Colors.midnight1
         
         view.addSubview(tableView)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + 120)))
-        tableView.backgroundColor = Styles.Colors.stone
+        tableView.backgroundColor = UIColor.clearColor()
         tableView.separatorStyle = .None
         tableView.dataSource = self
         tableView.delegate = self
@@ -162,9 +162,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func setupConstraints () {
         
-//        backgroundImageView.snp_makeConstraints { (make) -> () in
-//            make.edges.equalTo(self.view)
-//        }
+        backgroundImageView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
         
         cityContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.CITY_CONTAINER_HEIGHT)

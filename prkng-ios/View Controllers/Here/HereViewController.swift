@@ -531,6 +531,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         if animated {
             UIView.animateWithDuration(0.2,
                 animations: { () -> Void in
+                    self.showModeSelection(false)
                     changeView()
                 },
                 completion: { (completed: Bool) -> Void in
