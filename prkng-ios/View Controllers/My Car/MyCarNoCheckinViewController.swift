@@ -103,7 +103,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         messageLabel.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).offset(30)
             make.right.equalTo(self.view).offset(-30)
-            make.centerY.equalTo(self.view).multipliedBy(0.8)
+            make.top.equalTo(self.logoView.snp_bottom).offset(30)
         }
         
         reportButton.snp_makeConstraints { (make) -> () in

@@ -51,6 +51,7 @@ class PRKTopTabBar: UIControl {
         
         value = floor(maximumValue/2)
 
+        backgroundView.backgroundColor = Styles.Colors.cream1.colorWithAlphaComponent(0.5)
         backgroundView.userInteractionEnabled = false
         self.addSubview(backgroundView)
 

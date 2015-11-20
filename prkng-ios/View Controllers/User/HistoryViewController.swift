@@ -118,7 +118,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         }
         
         iconView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.headerView).offset(20+40+30+20)
+            make.top.equalTo(self.headerView).offset(20+40+30+24)
             make.centerX.equalTo(self.view)
             make.size.equalTo(CGSizeMake(68, 68))
         }

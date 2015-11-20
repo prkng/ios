@@ -395,9 +395,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
         loadHereTab()
         if detailsObject.compact && detailsObject is ParkingSpot {
-            //if after 100 msec we haven't already set a new object (or the object is still nil) then show "loading..."
+            //if after 150 msec we haven't already set a new object (or the object is still nil) then show "loading..."
             let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-                Int64(100 * Double(NSEC_PER_MSEC)))
+                Int64(150 * Double(NSEC_PER_MSEC)))
             dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
                 if self.hereViewController.activeDetailObject?.identifier != detailsObject.identifier {
                     self.hereViewController.updateDetails(DetailObjectLoading(parent: detailsObject))

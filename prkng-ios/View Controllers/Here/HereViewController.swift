@@ -109,19 +109,19 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         detailView.delegate = self
         view.addSubview(detailView)
         
-        statusBar.backgroundColor = Styles.Colors.statusBar
-        view.addSubview(statusBar)
-        
         self.filterVC.delegate = self
         self.view.addSubview(self.filterVC.view)
         self.filterVC.willMoveToParentViewController(self)
-
-        let mapMessageTapRec = UITapGestureRecognizer(target: self, action: "didTapMapMessage")
-        mapMessageView.addGestureRecognizer(mapMessageTapRec)
-        view.addSubview(mapMessageView)
         
         modeSelection.addTarget(self, action: "modeSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
         view.addSubview(modeSelection)
+        
+        statusBar.backgroundColor = Styles.Colors.statusBar
+        view.addSubview(statusBar)
+        
+        let mapMessageTapRec = UITapGestureRecognizer(target: self, action: "didTapMapMessage")
+        mapMessageView.addGestureRecognizer(mapMessageTapRec)
+        view.addSubview(mapMessageView)
     
     }
     
