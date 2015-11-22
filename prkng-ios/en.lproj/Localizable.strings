@@ -228,7 +228,7 @@
 "map_message_no_spots" = "Uh oh! You can't park here at this time.";
 "map_message_no_cars" = "Uh oh! No cars available here at this time.";
 "map_message_no_parking" = "Uh oh! No parking lots available here.";
-"map_message_no_carsharing" = "Uh oh! Activate carsharing service on settings first!";
+"map_message_no_carsharing" = "Please enable a carsharing service in your settings!";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here.";
 "map_message_under_maintenance" = "We're currently performing maintenance on our service. Please try again soon!";
 "map_message_error" = "Oops, make sure your internet connection is active and try again.";
