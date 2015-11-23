@@ -259,11 +259,19 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     }
     
     func showSupport() {
-        let mailVC = MFMailComposeViewController()
-        mailVC.mailComposeDelegate = self
-        mailVC.setSubject("Support")
-        mailVC.setToRecipients(["support@prk.ng"])
-        self.presentViewController(mailVC, animated: true, completion: nil)
+        if MFMailComposeViewController.canSendMail() {
+            let mailVC = MFMailComposeViewController()
+            mailVC.mailComposeDelegate = self
+            mailVC.setSubject("Support")
+            mailVC.setToRecipients(["support@prk.ng"])
+            self.presentViewController(mailVC, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertView()
+            alert.title = "no_mail_accounts_title".localizedString
+            alert.message = "no_mail_accounts_body".localizedString
+            alert.addButtonWithTitle("OK")
+            alert.show()
+        }
     }
     
     func showAbout() {

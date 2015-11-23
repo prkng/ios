@@ -223,6 +223,8 @@
 "settings_alert_text" = "Recevez une alerte 30min avant.";
 "settings_commercial_permit" = "Vignette commerciale";
 "settings_commercial_permit_text" = "Pour véhicules autorisés.";
+"no_mail_accounts_title" = "***No Mail Accounts";
+"no_mail_accounts_body" = "***Mail doesn't seem to have any accounts configured. Contact us at support@prk.ng.";
 
 "loading" = "Chargement...";
 "map_message_loading" = "Chargement...";
