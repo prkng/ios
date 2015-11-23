@@ -29,7 +29,7 @@ struct SpotOperations {
     }
     
     
-    static func findSpots(compact compact: Bool, location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, carsharing: Bool = false, completion: ((spots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+    static func findSpots(compact compact: Bool, location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, carsharing: Bool = false, completion: ((spots: [NSObject], mapMessage: String?) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "slots"
         
@@ -82,12 +82,11 @@ struct SpotOperations {
                 ParkingSpot(json: spotJson)
             })
             
-            let underMaintenance = response != nil && response!.statusCode == 503
-            let outsideServiceArea = response != nil && response!.statusCode == 404
+            let mapMessage = MapMessageView.createMessage(count: spots.count, response: response, error: error, origin: .Spots)
             
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
-                completion(spots: spots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
+                completion(spots: spots, mapMessage: mapMessage)
 
                 if response != nil && response?.statusCode == 401 {
                     DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))

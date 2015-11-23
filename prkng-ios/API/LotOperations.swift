@@ -17,7 +17,7 @@ import UIKit
     private var inProgress = false
     private var lots = [Lot]()
     
-    func findLots(coordinate: CLLocationCoordinate2D, radius : Float, completion: ((lots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+    func findLots(coordinate: CLLocationCoordinate2D, radius : Float, completion: ((lots: [NSObject], mapMessage: String?) -> Void)) {
         
         if inProgress {
             dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
@@ -59,8 +59,7 @@ import UIKit
             tempLots = LotOperations.processCheapestLots(tempLots)
             self.lots = tempLots
             
-            let underMaintenance = response != nil && response!.statusCode == 503
-            let outsideServiceArea = response != nil && response!.statusCode == 404
+            let mapMessage = MapMessageView.createMessage(count: tempLots.count, response: response, error: error, origin: .Lots)
 
 //            if error == nil && self.lots.count > 0 {
 //                Settings.cacheLotsJson(json)
@@ -72,7 +71,7 @@ import UIKit
 
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
-                completion(lots: self.lots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
+                completion(lots: self.lots, mapMessage: mapMessage)
 
                 if response != nil && response?.statusCode == 401 {
                     DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))

@@ -792,7 +792,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             let carsharing = self.delegate?.activeCarsharingPermit() ?? false
             
-            let operationCompletion = { (objects: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void in
+            let operationCompletion = { (objects: [NSObject], mapMessage: String?) -> Void in
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     //only show the spinner if this map is active
@@ -809,18 +809,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                             })
                             
                             if self.canShowMapMessage {
-                                if underMaintenance {
-                                    self.delegate?.showMapMessage("map_message_under_maintenance".localizedString)
-                                } else if error {
-                                    self.delegate?.showMapMessage("map_message_error".localizedString)
-                                } else if outsideServiceArea {
-                                    self.delegate?.showMapMessage("map_message_outside_service_area".localizedString)
-                                } else if objects.count == 0 {
-                                    if self.mapMode == .CarSharing && self.delegate?.carSharingMode() == .FindCar {
-                                        self.delegate?.showMapMessage("map_message_no_cars".localizedString)
-                                    } else {
-                                        self.delegate?.showMapMessage("map_message_no_spots".localizedString)
-                                    }
+                                if mapMessage != nil {
+                                    self.delegate?.showMapMessage(mapMessage)
                                 } else {
                                     self.delegate?.showMapMessage(nil)
                                 }
@@ -869,11 +859,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             switch(self.mapMode) {
             case MapMode.CarSharing:
                 if self.delegate?.carSharingMode() == .FindSpot {
-                    CarSharingOperations.getCarShareLots(location: self.mapView.centerCoordinate, radius: self.radius, completion: { (carShareLots, underMaintenance1, outsideServiceArea1, error1) -> Void in
+                    CarSharingOperations.getCarShareLots(location: self.mapView.centerCoordinate, radius: self.radius, completion: { (carShareLots, mapMessage) -> Void in
 
-                        SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: { (spots, underMaintenance2, outsideServiceArea2, error2) -> Void in
+                        SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: { (spots, mapMessage2) -> Void in
                             
-                            operationCompletion([carShareLots, spots], underMaintenance1 || underMaintenance2, outsideServiceArea1 || outsideServiceArea2, error2)
+                            operationCompletion([carShareLots, spots], mapMessage2)
                         })
 
                     })

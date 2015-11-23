@@ -10,7 +10,7 @@ import Foundation
 
 class CarSharingOperations {
     
-    static func getCarShares(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShares: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+    static func getCarShares(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShares: [NSObject], mapMessage: String?) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "carshares"
         
@@ -23,6 +23,12 @@ class CarSharingOperations {
             !Settings.hideZipcar() ? "zipcar" : nil,
         ]
         let companiesString = Array.filterNils(companies).joinWithSeparator(",")
+        
+        if companiesString == "" {
+            let mapMessage = MapMessageView.createMessage(count: 0, response: nil, error: nil, origin: .Cars)
+            completion(carShares: [], mapMessage: mapMessage)
+            return
+        }
         
         let params = [
             "latitude": location.latitude,
@@ -45,12 +51,11 @@ class CarSharingOperations {
                 CarShare(json: carShareJson)
             })
             
-            let underMaintenance = response != nil && response!.statusCode == 503
-            let outsideServiceArea = response != nil && response!.statusCode == 404
+            let mapMessage = MapMessageView.createMessage(count: carShares.count, response: response, error: error, origin: .Cars)
             
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
-                completion(carShares: carShares, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
+                completion(carShares: carShares, mapMessage: mapMessage)
                 
                 if response != nil && response?.statusCode == 401 {
                     DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))
@@ -62,7 +67,7 @@ class CarSharingOperations {
         }
     }
 
-    static func getCarShareLots(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShareLots: [NSObject], underMaintenance: Bool, outsideServiceArea: Bool, error: Bool) -> Void)) {
+    static func getCarShareLots(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShareLots: [NSObject], mapMessage: String?) -> Void)) {
         
         let url = APIUtility.APIConstants.rootURLString + "carshare_lots"
         
@@ -97,12 +102,11 @@ class CarSharingOperations {
                 CarShareLot(json: carShareLotJson)
             })
             
-            let underMaintenance = response != nil && response!.statusCode == 503
-            let outsideServiceArea = response != nil && response!.statusCode == 404
+            let mapMessage = MapMessageView.createMessage(count: carShareLots.count, response: response, error: error, origin: .Spots)
             
             dispatch_async(dispatch_get_main_queue(), {
                 () -> Void in
-                completion(carShareLots: carShareLots, underMaintenance: underMaintenance, outsideServiceArea: outsideServiceArea, error: error != nil)
+                completion(carShareLots: carShareLots, mapMessage: mapMessage)
                 
                 if response != nil && response?.statusCode == 401 {
                     DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))

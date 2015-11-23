@@ -8,7 +8,46 @@
 
 import UIKit
 
+enum MapMessageOrigin {
+    case Lots
+    case Spots
+    case Cars
+}
+
 class MapMessageView: UIView {
+    
+    static func createMessage(count count: Int, response: NSHTTPURLResponse?, error: NSError?, origin: MapMessageOrigin) -> String? {
+        
+        let underMaintenance = response != nil && response!.statusCode == 503
+        let outsideServiceArea = response != nil && response!.statusCode == 404
+        let hasError = error != nil
+        let noCarsharingServicesEnabled = Settings.hideCar2Go()
+            && Settings.hideCommunauto()
+            && Settings.hideAutomobile()
+            && Settings.hideZipcar()
+        
+        var message: String? = nil
+        
+        if origin == .Cars && noCarsharingServicesEnabled {
+            message = "map_message_no_carsharing".localizedString
+        } else if underMaintenance {
+            message = "map_message_under_maintenance".localizedString
+        } else if hasError {
+            message = "map_message_error".localizedString
+        } else if outsideServiceArea {
+            message = "map_message_outside_service_area".localizedString
+        } else if count == 0 {
+            if origin == .Spots {
+                message = "map_message_no_spots".localizedString
+            } else if origin == .Lots {
+                message = "map_message_no_parking".localizedString
+            } else if origin == .Cars {
+                message = "map_message_no_cars".localizedString
+            }
+        }
+
+        return message
+    }
     
     var messageContainer: UIView
     private var mapMessageViewImage: UIImageView

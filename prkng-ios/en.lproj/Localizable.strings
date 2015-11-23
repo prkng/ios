@@ -212,7 +212,7 @@
 "find_a_spot" = "Park now";
 "car_sharing" = "Carsharing";
 "car_sharing_filter" = "Carsharing";
-"car_sharing_enabled_text" = "Car sharing is enabled";
+"car_sharing_enabled_text" = "Carsharing is enabled";
 "car_sharing_info_title" = "Carsharing made easy";
 "car_sharing_info_subtitle" = "From point A to point B.";
 "car_sharing_info_message" = "Reserve a vehicle and we'll let you know where you can park without worries.";
@@ -230,7 +230,7 @@
 "map_message_no_spots" = "Uh oh! You can't park here at this time.";
 "map_message_no_cars" = "Uh oh! No cars available here at this time.";
 "map_message_no_parking" = "Uh oh! No parking lots available here.";
-"map_message_no_carsharing" = "Please enable a carsharing service in your settings!";
+"map_message_no_carsharing" = "Please enable a carsharing service in settings!";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here.";
 "map_message_under_maintenance" = "We're currently performing maintenance on our service. Please try again soon!";
 "map_message_error" = "Oops, make sure your internet connection is active and try again.";
@@ -253,7 +253,7 @@
 "city_picker_title" = "Available Cities";
 "city_picker_subtitle" = "You can find parking in:";
 
-//car sharing reservations
+//carsharing reservations
 "reserved" = "Reserved";
 "cancelled_reservation" = "Your reservation was successfully cancelled.";
 "could_not_cancel_reservation" = "Your reservation could not be cancelled.";
