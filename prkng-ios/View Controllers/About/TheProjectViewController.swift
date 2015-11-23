@@ -16,7 +16,7 @@ class TheProjectViewController: AbstractViewController {
     let titleLabel = UILabel()
     let textLabel1 = UILabel()
     let textLabel2 = UILabel()
-    let backButton = ViewFactory.redBackButton()
+    let backButton = ViewFactory.roundedRedBackButton()
     
     
     override func loadView() {

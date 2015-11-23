@@ -174,7 +174,7 @@ struct ViewFactory {
         return button
     }
     
-    static func redBackButton() -> UIButton {
+    static func roundedRedBackButton() -> UIButton {
         let button = UIButton()
         button.backgroundColor = Styles.Colors.red2
         button.layer.cornerRadius = 13
@@ -184,6 +184,27 @@ struct ViewFactory {
         button.setTitleColor(Styles.Colors.anthracite1, forState: .Highlighted)
         button.setTitle("<  " + "back".localizedString.uppercaseString, forState: .Normal)
         return button
+    }
+    
+    static func rectangularBackButton() -> UIButton {
+        
+        let hugeButton = MKButton()
+        hugeButton.titleLabel?.font = Styles.Fonts.h1
+        hugeButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
+        hugeButton.backgroundColor = Styles.Colors.red2
+        hugeButton.backgroundLayerColor = Styles.Colors.red2
+        hugeButton.rippleLayerColor = Styles.Colors.red1
+        hugeButton.rippleAniDuration = 0.35
+        hugeButton.cornerRadius = 0
+        hugeButton.shadowAniEnabled = false
+        
+        hugeButton.layer.shadowColor = UIColor.blackColor().CGColor
+        hugeButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+        hugeButton.layer.shadowOpacity = 0.1
+        hugeButton.layer.shadowRadius = 0.5
+        
+        return hugeButton
+        
     }
     
     // MARK: Segmented Controls

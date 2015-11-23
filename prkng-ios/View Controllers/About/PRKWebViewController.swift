@@ -19,8 +19,10 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     
     var didFinishLoadingCallback: ((PRKWebViewController, UIWebView) -> ())?
     
-    private let backButton = ViewFactory.hugeButton()
-    
+    private let backButton = ViewFactory.rectangularBackButton()
+    private let backLabel = UILabel()
+    private let backArrow = UIImageView()
+
     init(url: String) {
         self.englishUrl = url
         self.frenchUrl = url
@@ -73,15 +75,21 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
         webView.backgroundColor = UIColor.clearColor()
         view.addSubview(webView)
         
-        backButton.setTitle("back".localizedString, forState: .Normal)
         backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside)
-        
         backButton.layer.masksToBounds = false
         backButton.layer.shadowOffset = CGSizeMake(0, -1.0)
         backButton.layer.shadowRadius = 5
         backButton.layer.shadowColor = UIColor.blackColor().CGColor
         backButton.layer.shadowOpacity = 0.1
         view.addSubview(backButton)
+        
+        backLabel.textColor = Styles.Colors.cream1
+        backLabel.font = Styles.FontFaces.regular(14)
+        backLabel.text = "back".localizedString
+        backButton.addSubview(backLabel)
+        
+        backArrow.image = UIImage(named: "btn_back_outline")
+        backButton.addSubview(backArrow)
     }
     
     
@@ -109,9 +117,20 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(Styles.Sizes.hugeButtonHeight)
+            make.height.equalTo(48)
         }
         
+        backArrow.snp_makeConstraints { (make) -> Void in
+            make.size.equalTo(CGSize(width: 8, height: 8))
+            make.left.equalTo(self.backButton).offset(40)
+            make.centerY.equalTo(self.backButton)
+        }
+
+        backLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(self.backArrow).offset(12)
+            make.centerY.equalTo(self.backButton)
+        }
+
     }
     
     // MARK: Button Handlers

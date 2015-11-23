@@ -259,6 +259,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             tableView.delegate = nil
             tableView.contentInset = UIEdgeInsetsMake(CGFloat(height - HEADER_MIN_HEIGHT), 0, 0, 0)
             tableView.delegate = self
+            tableView.backgroundColor = Styles.Colors.stone
             
             currentHeaderHeight = height
             var alpha = CGFloat((height / HEADER_MAX_HEIGHT))

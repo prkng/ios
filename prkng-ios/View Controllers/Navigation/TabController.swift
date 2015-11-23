@@ -568,6 +568,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     
     func cityDidChange(fromCity fromCity: City, toCity: City) {
+        hereViewController.showModeSelection(true)
         Settings.setSelectedCity(toCity)
         let coordinate = Settings.selectedCity().coordinate
         self.mapViewController.goToCoordinate(coordinate, named:toCity.displayName, withZoom:13, showing: false)

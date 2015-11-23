@@ -17,7 +17,7 @@ class AboutViewController: AbstractViewController {
     let faqButton = ViewFactory.bigTransparentButton()
     let termsButton = ViewFactory.bigTransparentButton()
     let shareButton = ViewFactory.bigTransparentButton()
-    let backButton = ViewFactory.redBackButton()
+    let backButton = ViewFactory.roundedRedBackButton()
     
     var groupedCheckins : Dictionary<String, Array<Checkin>>?
     
