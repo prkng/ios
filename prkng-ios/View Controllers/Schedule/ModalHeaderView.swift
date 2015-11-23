@@ -166,13 +166,13 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
             make.left.equalTo(self.leftImageView.snp_right).offset(4)
             make.right.lessThanOrEqualTo(self.rightImageView.snp_left).offset(-10)
             make.right.lessThanOrEqualTo(self.rightView.snp_left).offset(-10)
-            make.centerY.equalTo(self.topContainer).offset(Styles.Sizes.statusBarHeight/2)
+            make.centerY.equalTo(self.topContainer)
         }
 
         leftImageView.snp_makeConstraints { (make) -> () in
             make.size.equalTo(CGSizeMake(20, 20)) //real size is CGSizeMake(11, 9)
             make.left.equalTo(self.topContainer).offset(10)
-            make.bottom.equalTo(self.topContainer).offset(-22)
+            make.centerY.equalTo(self.topContainer)
         }
 
         rightImageView.snp_makeConstraints { (make) -> () in
