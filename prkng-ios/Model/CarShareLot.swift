@@ -19,6 +19,16 @@ class CarShareLot: NSObject {
     var identifier: String {
         return name + carSharingType.name + coordinate.latitude.description + coordinate.longitude.description
     }
+    
+    var subtitle: String {
+        
+        switch self.carSharingType {
+        case .Zipcar:
+            return String(format: "up_to_x_spaces_available".localizedString, self.carsAvailable)
+        case .Car2Go, .Communauto, .CommunautoAutomobile, .Generic:
+            return self.name
+        }
+    }
 
     init(json: JSON) {
         self.coordinate = CLLocationCoordinate2D(latitude: json["geometry"]["coordinates"][1].doubleValue, longitude: json["geometry"]["coordinates"][0].doubleValue)
@@ -133,7 +143,7 @@ class CarShareLot: NSObject {
         subtitleLabel.textAlignment = .Left
         subtitleLabel.font = Styles.FontFaces.light(12)
         subtitleLabel.textColor = Styles.Colors.red2
-        subtitleLabel.text = self.name
+        subtitleLabel.text = self.subtitle
         leftView.addSubview(subtitleLabel)
         
         let minLabelWidth = max(titleLabel.intrinsicContentSize().width, subtitleLabel.intrinsicContentSize().width, CGFloat(minTitleWidth))

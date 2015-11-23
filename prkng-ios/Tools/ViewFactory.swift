@@ -15,7 +15,9 @@ struct ViewFactory {
 
     static func shareButton() -> UIButton {
         let button = UIButton()
-        button.setImage(UIImage(named: "btn_share"), forState: .Normal)
+        let buttonImage = UIImage(named: "btn_share")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        button.setImage(buttonImage, forState: .Normal)
+        button.tintColor = Styles.Colors.stone.colorWithAlphaComponent(0.5)
         return button
     }
     

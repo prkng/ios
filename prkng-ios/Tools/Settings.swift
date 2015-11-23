@@ -332,8 +332,12 @@ struct Settings {
     }
     
     static func shouldNotifyTheNightBefore() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(NOTIFICATION_NIGHT_BEFORE_KEY)
-        
+        if let value = NSUserDefaults.standardUserDefaults().objectForKey(NOTIFICATION_NIGHT_BEFORE_KEY) as? Bool {
+            return value
+        } else {
+            setShouldNotifyTheNightBefore(true)
+            return true
+        }
     }
 
     static func setShouldNotifyTheNightBefore(value: Bool) {

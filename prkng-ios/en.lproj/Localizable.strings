@@ -269,3 +269,4 @@
 "capacity_x_places" = "Capacity: %d spaces";
 "availability_x_places" = "Available now: %d spaces";
 "up_to_x_cars_available" = "Up to %d cars available";
+"up_to_x_spaces_available" = "Up to %d spaces available";

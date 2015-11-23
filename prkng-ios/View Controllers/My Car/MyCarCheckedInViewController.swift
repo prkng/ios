@@ -269,7 +269,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         shareButton.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
-            make.centerY.equalTo(self.segmentedControl)
+            make.centerY.equalTo(self.segmentedControl).offset(-2)
             make.right.equalTo(self.view).offset(-50)
         }
         

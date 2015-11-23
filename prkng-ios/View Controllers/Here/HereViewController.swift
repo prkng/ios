@@ -662,7 +662,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func didChangeCarSharingMode(mode: CarSharingMode) {
         self.delegate?.setDefaultMapZoom()
         //zooming should automatically generate an update, so we don't have to do it manually
-        //self.delegate?.updateMapAnnotations()
+        self.delegate?.updateMapAnnotations()
     }
     
     // MARK: Car sharing popup

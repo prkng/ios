@@ -32,7 +32,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     private(set) var MOVE_DELTA_PERCENTAGE : Double
     
-    let ZOOM_DEFAULT: Float = 17.0
+    let ZOOM_DEFAULT_APP_LAUNCH: Float = 17.0
+    let ZOOM_DEFAULT: Float = 16.0
     let ZOOM_GENERAL_THRESHOLD: Float = 15.0
     let ZOOM_BUTTON_THRESHOLD: Float = 17.0
     let ZOOM_BIG_BUTTON_THRESHOLD: Float = 18.0
@@ -65,7 +66,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.showLogoBug = false
         mapView.hideAttribution = true
         mapView.zoomingInPivotsAroundCenter = true
-        mapView.zoom = ZOOM_DEFAULT
+        mapView.zoom = ZOOM_DEFAULT_APP_LAUNCH
         mapView.maxZoom = 19
         mapView.minZoom = 9
         mapView.setCenterCoordinate(Settings.selectedCity().coordinate, animated: false)
@@ -704,7 +705,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func trackUser() {
         if self.mapView.userTrackingMode.rawValue != RMUserTrackingModeFollow.rawValue {
             self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
-            self.mapView.setZoom(ZOOM_DEFAULT, animated: false)
+            self.mapView.setZoom(ZOOM_DEFAULT_APP_LAUNCH, animated: false)
             self.mapView.userTrackingMode = RMUserTrackingModeFollow
         }
     }
@@ -1334,7 +1335,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) {
         
-        mapView.zoom = ZOOM_DEFAULT
+        mapView.zoom = ZOOM_DEFAULT_APP_LAUNCH
         
         if (results.count == 0) {
             let alert = UIAlertView()
@@ -1400,7 +1401,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
         let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
         annotation.userInfo = ["type": "previousCheckin"]
-        mapView.zoom = zoom ?? ZOOM_DEFAULT
+        mapView.zoom = zoom ?? ZOOM_DEFAULT_APP_LAUNCH
         mapView.centerCoordinate = coordinate
         removeAllAnnotations()
         if showing {
@@ -1433,13 +1434,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         case .Garage:
             self.mapView.setZoom(self.ZOOM_GARAGE_THRESHOLD, animated: true)
         case .StreetParking:
-            self.mapView.setZoom(self.ZOOM_GENERAL_THRESHOLD, animated: true)
+            self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
         case .CarSharing:
             switch self.delegate!.carSharingMode() {
             case .FindCar:
-                self.mapView.setZoom(self.ZOOM_FIND_CAR_THRESHOLD, animated: true)
+                self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
             case .FindSpot:
-                self.mapView.setZoom(self.ZOOM_GENERAL_THRESHOLD, animated: true)
+                self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
             case .None:
                 break
             }

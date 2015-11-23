@@ -41,7 +41,8 @@ class MGLMapViewController: MapViewController {
 //    
 //    let MOVE_DELTA_PERCENTAGE : Double = 0.2
 //
-//    let ZOOM_DEFAULT: Float = 17.0
+//    let ZOOM_DEFAULT_APP_LAUNCH: Float = 17.0
+//    let ZOOM_DEFAULT: Float = 16.0
 //    let ZOOM_GENERAL_THRESHOLD: Float = 15.0
 //    let ZOOM_BUTTON_THRESHOLD: Float = 17.0
 //    let ZOOM_BIG_BUTTON_THRESHOLD: Float = 18.0
@@ -65,7 +66,7 @@ class MGLMapViewController: MapViewController {
 //        mapView = MGLMapView(frame: CGRectMake(0, 0, 100, 100), styleURL: NSURL(string: "mapbox://styles/arnaudspuhler/cigfc11g0000dcnm73r4o3pi1"))
 //        mapView.userTrackingMode = MGLUserTrackingMode.Follow
 //        mapView.tintColor = Styles.Colors.red2
-//        mapView.setCenterCoordinate(Settings.selectedCity().coordinate, zoomLevel: ZOOM_DEFAULT, animated: false)
+//        mapView.setCenterCoordinate(Settings.selectedCity().coordinate, zoomLevel: ZOOM_DEFAULT_APP_LAUNCH, animated: false)
 //        
 //        super.init(nibName: nil, bundle: nil)
 //    }
@@ -537,7 +538,7 @@ class MGLMapViewController: MapViewController {
 //    override func trackUser() {
 //        if self.mapView.userTrackingMode != MGLUserTrackingMode.Follow {
 //            self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
-//            self.mapView.setZoomLevel(ZOOM_DEFAULT, animated: false)
+//            self.mapView.setZoomLevel(ZOOM_DEFAULT_APP_LAUNCH, animated: false)
 //            self.mapView.userTrackingMode = MGLUserTrackingMode.Follow
 //        }
 //    }
@@ -1020,7 +1021,7 @@ class MGLMapViewController: MapViewController {
 //    
 //    override func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) {
 //        
-//        mapView.zoomLevel = ZOOM_DEFAULT
+//        mapView.zoomLevel = ZOOM_DEFAULT_APP_LAUNCH
 //        
 //        if (results.count == 0) {
 //            let alert = UIAlertView()
@@ -1086,7 +1087,7 @@ class MGLMapViewController: MapViewController {
 //    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
 //        let annotation = GenericMGLAnnotation(coordinate: coordinate, title: name, subtitle: nil)
 //        annotation.userInfo = ["type": "previousCheckin"]
-//        mapView.zoomLevel = Double(zoom ?? ZOOM_DEFAULT)
+//        mapView.zoomLevel = Double(zoom ?? ZOOM_DEFAULT_APP_LAUNCH)
 //        mapView.centerCoordinate = coordinate
 //        removeAllAnnotations()
 //        if showing {
@@ -1188,13 +1189,13 @@ class MGLMapViewController: MapViewController {
 //        case .Garage:
 //            self.mapView.setZoom(self.ZOOM_GARAGE_THRESHOLD, animated: true)
 //        case .StreetParking:
-//            self.mapView.setZoom(self.ZOOM_GENERAL_THRESHOLD, animated: true)
+//            self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
 //        case .CarSharing:
 //            switch self.delegate!.carSharingMode() {
 //            case .FindCar:
-//                self.mapView.setZoom(self.ZOOM_FIND_CAR_THRESHOLD, animated: true)
+//                self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
 //            case .FindSpot:
-//                self.mapView.setZoom(self.ZOOM_GENERAL_THRESHOLD, animated: true)
+//                self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
 //            case .None:
 //                break
 //            }

@@ -29,6 +29,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     private var pageViewController : UIPageViewController
     private var viewControllers: [PRKModalViewControllerChild]
     private var verticalRec: PRKVerticalGestureRecognizer
+    private var topView : UIView
     private var headerView : ModalHeaderView
     
     private var currentViewController: PRKModalViewControllerChild? {
@@ -36,12 +37,13 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
             return self.pageViewController.viewControllers?.first as? PRKModalViewControllerChild
         }
     }
-    private(set) var HEADER_HEIGHT : CGFloat = Styles.Sizes.modalViewHeaderHeight
+    private(set) var HEADER_HEIGHT = Int(Styles.Sizes.modalViewHeaderHeight)
 
     
     init(spot: ParkingSpot, view: UIView) {
         self.spot = spot
         self.parentView = view
+        topView = UIView()
         headerView = ModalHeaderView()
         pageViewController = UIPageViewController()
         viewControllers = []
@@ -86,6 +88,9 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     func setupViews() {
         
+        topView.backgroundColor = Styles.Colors.red2
+        view.addSubview(topView)
+        
         view.addSubview(headerView)
         headerView.delegate = self
         headerView.layer.shadowColor = UIColor.blackColor().CGColor
@@ -108,6 +113,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         verticalRec.delegate = self
         
         view.bringSubviewToFront(headerView)
+        view.bringSubviewToFront(topView)
         
         if shouldShowSchedule() {
             headerView.makeRightButtonList(false)
@@ -125,11 +131,18 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
             make.edges.equalTo(self.view)
         }
         
-        headerView.snp_makeConstraints { (make) -> () in
+        topView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.view)
+            make.height.equalTo(Styles.Sizes.statusBarHeight)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(self.HEADER_HEIGHT)
+        }
+        
+        headerView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.topView.snp_bottom)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(self.HEADER_HEIGHT-Styles.Sizes.statusBarHeight)
         }
 
     }
