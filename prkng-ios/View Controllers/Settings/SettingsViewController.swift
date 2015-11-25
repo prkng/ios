@@ -438,38 +438,17 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     }
 
     func loginWithCar2Go() {
-        //        NXOAuth2AccountStore.sharedStore().requestAccessToAccountWithType("car2go", username: "peakwinter", password: "AnthonyHello")
-        
-        //        let callbackURL = NSURL(string:"ng.prk.prkng-ios://oauth-car2go-success")
-        
-        //        var params = [NSObject : AnyObject]()
-        //        let dict = ["oauth_callback": "oob"] //type is [NSObject : AnyObject]()
-        //        let tokenRequest = TDOAuth.URLRequestForPath("/reqtoken", POSTParameters: dict, host: "www.car2go.com/api", consumerKey: "TemirlanTentimishov", consumerSecret: "QPCvPebF5P11mWX9", accessToken: nil, tokenSecret: nil)
-        //        var response: NSURLResponse?
-        //        do {
-        ////            let connection = NSURLConnection(request: tokenRequest, delegate: self)
-        //            let data = try NSURLConnection.sendSynchronousRequest(tokenRequest, returningResponse: &response)
-        //            let stringData = String(data: data, encoding: NSUTF8StringEncoding)
-        //            let stringArray = stringData?.componentsSeparatedByString("&") ?? []
-        //            for substring in stringArray {
-        //                let secondArray = substring.componentsSeparatedByString("=")
-        //                params[secondArray[0]] = secondArray[1]
-        //            }
-        //            let token = params["oauth_token"]
-        //            let tokenSecret = params["oauth_token_secret"]
-        //        } catch (let e) {
-        //            print(e)
-        //        }
-        
-        //        let car2goOauth1 = AFOAuth1Client(baseURL: NSURL(string: "https://www.car2go.com/api"), key: "TemirlanTentimishov", secret: "QPCvPebF5P11mWX9")
-        //        NSLog(String(car2goOauth1.signatureMethod.rawValue))
-        //        car2goOauth1.authorizeUsingOAuthWithRequestTokenPath("reqtoken", userAuthorizationPath: "authorize", callbackURL: NSURL(string: "oob"), accessTokenPath: "accesstoken", accessMethod: "POST", scope: nil, success: { (token, responseObject) -> Void in
-        //            NSLog(token.description)
-        //            }) { (error) -> Void in
-        //                NSLog(error.description)
-        //        }
-        
-        //        let car2goOauth1 = OAuth1Swift(consumerKey: "prkng", consumerSecret: "crUKsH0t4RQeyKYOy>]6", requestTokenUrl: "https://www.car2go.com/api/reqtoken", authorizeUrl: "https://www.car2go.com/api/authorize", accessTokenUrl: "https://www.car2go.com/api/accesstoken")
+        CarSharingOperations.Car2Go.getAndSaveCar2GoThing { (thing) -> Void in
+            if thing == nil {
+                let alert = UIAlertView()
+                alert.title = "OMG"
+                alert.message = "Could not sign you in :("
+                alert.addButtonWithTitle("OK")
+                alert.show()
+            } else {
+                //logout
+            }
+        }
     }
 
     //MARK: UITableViewDataSource
@@ -486,7 +465,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 //        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
 
-        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: nil, switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "loginWithCar2Go")
+        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: CarSharingOperations.Car2Go.isLoggedIn(), switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "loginWithCar2Go")
         let automobileCell = SettingsCell(titleText: "Automobile", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideAutomobile(), parentVC: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
         let communautoCell = SettingsCell(titleText: "Communauto", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideCommunauto(), parentVC: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
         let zipcarCell = SettingsCell(titleText: "Zipcar", signedIn: nil, switchValue: !Settings.hideZipcar(), parentVC: self, switchSelector: "hideZipcarValueChanged")

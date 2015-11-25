@@ -224,6 +224,55 @@ class CarSharingOperations {
                 UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id514921710")!)
             }
         }
+        
+        static func isLoggedIn() -> Bool {
+            return false
+        }
+        
+        static func getAndSaveCar2GoThing(completion: (String?) -> Void) {
+            
+//            let callbackURL = NSURL(string:"ng.prk.prkng-ios://oauth-car2go-success")
+            
+            //this is how to do it manually:
+//            let dict = ["oauth_callback": "oob"] //type is [NSObject : AnyObject]()
+//            var params = [NSObject : AnyObject]()
+////            let tokenRequest = TDOAuth.URLRequestForPath("/reqtoken", POSTParameters: dict, host: "www.car2go.com/api", consumerKey: "TemirlanTentimishov", consumerSecret: "QPCvPebF5P11mWX9", accessToken: nil, tokenSecret: nil)
+//            let tokenRequest = TDOAuth.URLRequestForPath("/reqtoken", POSTParameters: dict, host: "www.car2go.com/api", consumerKey: "prkng", consumerSecret: "crUKsH0t4RQeyKYOy>]6", accessToken: nil, tokenSecret: nil)
+//            NSURLConnection.sendAsynchronousRequest(tokenRequest, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+//                if data != nil {
+//                    let stringData = String(data: data!, encoding: NSUTF8StringEncoding)
+//                    print(stringData)
+//                    let stringArray = stringData?.componentsSeparatedByString("&") ?? []
+//                    for substring in stringArray {
+//                        let secondArray = substring.componentsSeparatedByString("=")
+//                        params[secondArray[0]] = secondArray[1]
+//                    }
+//                    let token = params["oauth_token"]
+//                    let tokenSecret = params["oauth_token_secret"]
+//                }
+//                if error != nil {
+//                    print(error!)
+//                }
+//            }
+//            
+            //a semi-automatic way of doing it:
+//            let car2goOauth1 = AFOAuth1Client(baseURL: NSURL(string: "https://www.car2go.com/api"), key: "TemirlanTentimishov", secret: "QPCvPebF5P11mWX9")
+//            NSLog(String(car2goOauth1.signatureMethod.rawValue))
+//            car2goOauth1.authorizeUsingOAuthWithRequestTokenPath("reqtoken", userAuthorizationPath: "authorize", callbackURL: NSURL(string: "oob"), accessTokenPath: "accesstoken", accessMethod: "POST", scope: nil, success: { (token, responseObject) -> Void in
+//                NSLog(token.description)
+//                }) { (error) -> Void in
+//                    NSLog(error.description)
+//            }
+            
+            //a more automatic way of doing it (ios 8+ only)
+            let car2goOauth1Swift = OAuth1Swift(consumerKey: "prkng", consumerSecret: "crUKsH0t4RQeyKYOy>]6", requestTokenUrl: "https://www.car2go.com/api/reqtoken", authorizeUrl: "https://www.car2go.com/api/authorize", accessTokenUrl: "https://www.car2go.com/api/accesstoken")
+//            car2goOauth1Swift.authorize_url_handler = PRKWebViewController()
+            car2goOauth1Swift.authorizeWithCallbackURL(NSURL(string: "oob")!, success: { (credential, response) -> Void in
+                print("something happened")
+                }) { (error) -> Void in
+                    completion(nil)
+            }
+        }
     }
 
     struct Zipcar {
