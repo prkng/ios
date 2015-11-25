@@ -97,7 +97,7 @@
 "first_checkin_text" = "Prenez note que la règlementation sur rue prévaut toujours, et peut différer de notre donnée.\nGardez donc un oeil ouvert!";
 
 "no_checkin_message" = "Envie d’un rappel?\nAllez sur la carte et sélectionnez \"parqué!\"";
-"now" = "Go";
+"now" = "Rappel";
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
 "reserved_car_share_message" = "Vous avez réservé une";
@@ -201,7 +201,7 @@
 "check-in-pay" = "Parqué!";
 "authorized_for" = "Autorisé pour";
 "search" = "Rechercher";
-"search_bar_text" = "Rechercher ou filter";
+"search_bar_text" = "Rechercher ou filtrer";
 "open" = "Ouvert";
 "closed" = "Fermé";
 "clerk" = "Vigile";
