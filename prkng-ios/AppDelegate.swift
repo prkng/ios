@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
     }
     
     func initiateLocationManagerAndPermissions() {
-//        //register for background location usage for updates
+        //register for background location usage for updates
         locationManager.delegate = self
         if #available(iOS 8.0, *) {
             locationManager.requestAlwaysAuthorization()
@@ -79,13 +79,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         }
         
     }
+    
+    @available(iOS 9.1, *)
+    func initiateDynamicShortcutItems() {
+        let application = UIApplication.sharedApplication()
 
+        // Install initial versions of our two extra dynamic shortcuts.
+        if let shortcutItems = application.shortcutItems where shortcutItems.isEmpty {
+            // Construct the items.
+            let shortcut1 = UIMutableApplicationShortcutItem(type: "ng.prk.prkng-ios.on-street", localizedTitle: "Park On-Street", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: UIApplicationShortcutIconType.MarkLocation), userInfo: nil)
+
+            let shortcut2 = UIMutableApplicationShortcutItem(type: "ng.prk.prkng-ios.lots", localizedTitle: "Find a Parking Lot", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: UIApplicationShortcutIconType.MarkLocation), userInfo: nil)
+
+            let shortcut3 = UIMutableApplicationShortcutItem(type: "ng.prk.prkng-ios.carshares", localizedTitle: "Find a Car", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: UIApplicationShortcutIconType.MarkLocation), userInfo: nil)
+            
+            let shortcut4 = UIMutableApplicationShortcutItem(type: "ng.prk.prkng-ios.search", localizedTitle: "Search", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: UIApplicationShortcutIconType.Search), userInfo: nil)
+            
+            // Update the application providing the initial 'dynamic' shortcut items.
+            application.shortcutItems = [shortcut1, shortcut2, shortcut3, shortcut4]
+        }
+    }
+    
+    @available(iOS 9.0, *)
+    func application(application: UIApplication, performActionForShortcutItem shortcutItem: UIApplicationShortcutItem, completionHandler: (Bool) -> Void) {
+        if let tabController = window?.rootViewController as? TabController {
+            if shortcutItem.type == "ng.prk.prkng-ios.on-street" {
+                tabController.loadHereTabWithSliderValue(1)
+            } else if shortcutItem.type == "ng.prk.prkng-ios.lots" {
+                tabController.loadHereTabWithSliderValue(0)
+            } else if shortcutItem.type == "ng.prk.prkng-ios.carshares" {
+                tabController.loadHereTabWithSliderValue(2)
+            } else if shortcutItem.type == "ng.prk.prkng-ios.search" {
+                tabController.loadSearchInHereTab()
+            }
+        }
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject:AnyObject]?) -> Bool {
         
         //used to debug app transport security
 //        setenv("CFNETWORK_DIAGNOSTICS", "3", 1)
         
         loggedInOperations()
+        
+        if #available(iOS 9.1, *) {
+            initiateDynamicShortcutItems()
+        }
         
         NSHTTPCookieStorage.sharedHTTPCookieStorage().cookieAcceptPolicy = .Always
                 

@@ -210,7 +210,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         hereViewController.showFiltersOnAppear = true
     }
     
-    
+    func loadHereTabWithSliderValue(sliderValue: Int) {
+        loadHereTab()
+        hereViewController.modeSelection.setValue(Double(sliderValue), animated: true)
+    }
     
     func loadMyCarTab() {
         if (selectedTab == PrkTab.MyCar || switchingMainView) {
