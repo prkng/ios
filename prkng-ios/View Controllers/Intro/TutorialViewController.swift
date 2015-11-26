@@ -8,15 +8,22 @@
 
 import UIKit
 
-class TutorialViewController: GAITrackedViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class TutorialViewController: GAITrackedViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate {
     
     var delegate: TutorialViewControllerDelegate?
+    var backgroundImageFromView : UIImageView
+    var backgroundImageToView : UIImageView
+    var imageFromView : UIImageView
+    var imageToView : UIImageView
     var pageViewController : UIPageViewController
     var pageControl : UIPageControl
     var nextButton : UIButton
     var getStartedButton : UIButton
-    var contentViewControllers : Array<UIViewController>
+    var contentViewControllers : [TutorialContentViewController]
+    var transitioningToVC: TutorialContentViewController?
     
+    private var SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE = UIScreen.mainScreen().bounds.height == 480 ? 30 : 0
+
     static let PAGE_CONTROL_BOTTOM_OFFSET = 90
     
     let pageCount = 4
@@ -32,7 +39,12 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         "tutorial_step_4".localizedString]
     
     init() {
+        backgroundImageFromView = UIImageView()
+        backgroundImageToView = UIImageView()
+        imageFromView = UIImageView()
+        imageToView = UIImageView()
         pageViewController = UIPageViewController(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: nil)
+        pageViewController.gestureRecognizers
         pageControl = UIPageControl()
         nextButton = UIButton()
         getStartedButton = ViewFactory.redRoundedButton()
@@ -64,6 +76,20 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     
     func setupViews() {
         
+        backgroundImageFromView.contentMode = .ScaleAspectFill
+        view.addSubview(backgroundImageFromView)
+
+        backgroundImageToView.contentMode = .ScaleAspectFill
+        view.addSubview(backgroundImageToView)
+
+        imageFromView.clipsToBounds = true
+        imageFromView.contentMode = UIViewContentMode.ScaleAspectFit
+        view.addSubview(imageFromView)
+
+        imageToView.clipsToBounds = true
+        imageToView.contentMode = UIViewContentMode.ScaleAspectFit
+        view.addSubview(imageToView)
+
         for i in 0...(pageCount - 1) {
             let backgroundImageName = ((i % 2) == 0) ? "bg_red_gradient" : "bg_blue_gradient"
             let backgroundImage = UIImage(named: backgroundImageName)
@@ -75,6 +101,8 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         addChildViewController(pageViewController)
         pageViewController.dataSource = self
         pageViewController.delegate = self
+        self.imageFromView.image = contentViewControllers[0].imageView.image
+        self.backgroundImageFromView.image = contentViewControllers[0].backgroundImageView.image
         pageViewController.setViewControllers([contentViewControllers[0]], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
         view.addSubview(pageViewController.view)
         
@@ -89,11 +117,40 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         getStartedButton.hidden = true
         getStartedButton.addTarget(self, action: "getStartedButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
         view.addSubview(getStartedButton)
+        
+        //now setup the scroll view delegate so that we can track swipes and content changes to the pageviewcontroller
+        for subview in self.pageViewController.view.subviews {
+            if let scrollView = subview as? UIScrollView {
+                scrollView.delegate = self
+            }
+        }
     }
     
     
     func setupConstraints () {
         
+        backgroundImageFromView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
+
+        backgroundImageToView.snp_makeConstraints { (make) -> () in
+            make.edges.equalTo(self.view)
+        }
+
+        imageFromView.snp_makeConstraints { (make) -> () in
+            make.top.lessThanOrEqualTo(self.view).offset(60)
+            make.left.equalTo(self.view).offset(35)
+            make.right.equalTo(self.view).offset(-35)
+            make.height.lessThanOrEqualTo(self.imageFromView.snp_width).offset(0 - self.SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE)
+        }
+
+        imageToView.snp_makeConstraints { (make) -> () in
+            make.top.lessThanOrEqualTo(self.view).offset(60)
+            make.left.equalTo(self.view).offset(35)
+            make.right.equalTo(self.view).offset(-35)
+            make.height.lessThanOrEqualTo(self.imageToView.snp_width).offset(0 - self.SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE)
+        }
+
         pageViewController.view.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.view)
         }
@@ -168,16 +225,51 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     }
     
     func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
-        
+        transitioningToVC = pendingViewControllers[0] as? TutorialContentViewController
     }
     
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         updateViews()
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        
+        var percentage = scrollView.contentOffset.x / UIScreen.mainScreen().bounds.width
+        var fromPercentage = percentage
+        var toPercentage = percentage
+        if percentage > 1 {
+            percentage = percentage - 1
+            fromPercentage = 1 - percentage
+            toPercentage = percentage
+        } else {
+            fromPercentage = percentage
+            toPercentage = 1 - percentage
+        }
+
+        if transitioningToVC != nil
+            && percentage != 1
+            && transitioningToVC?.imageView.image != self.imageFromView.image {
+                self.imageToView.image = transitioningToVC!.imageView.image
+                self.backgroundImageToView.image = transitioningToVC!.backgroundImageView.image
+                self.imageFromView.alpha = fromPercentage
+                self.backgroundImageFromView.alpha = fromPercentage
+                self.imageToView.alpha = toPercentage
+                self.backgroundImageToView.alpha = toPercentage
+        }
+    }
     
     func updateViews() {
-        pageControl.currentPage = (pageViewController.viewControllers?.first as! TutorialContentViewController).pageIndex
+        
+        let activeContentVC = (pageViewController.viewControllers?.first as! TutorialContentViewController)
+        
+        self.imageFromView.image = activeContentVC.imageView.image
+        self.backgroundImageFromView.image = activeContentVC.backgroundImageView.image
+        self.imageFromView.alpha = 1
+        self.backgroundImageFromView.alpha = 1
+        self.imageToView.alpha = 0
+        self.backgroundImageToView.alpha = 0
+
+        pageControl.currentPage = activeContentVC.pageIndex
         
         if (pageControl.currentPage == pageCount - 1 && self.getStartedButton.hidden) {
             

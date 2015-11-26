@@ -10,8 +10,8 @@ import UIKit
 
 class TutorialContentViewController: GAITrackedViewController {
     
-    var backgroundImageView : UIImageView
-    var imageView : UIImageView
+    var backgroundImageView : UIImageView //used in TutorialViewController
+    var imageView : UIImageView //used in TutorialViewController
     var textLabel : UILabel
     var pageIndex : Int
     
@@ -58,10 +58,11 @@ class TutorialContentViewController: GAITrackedViewController {
     
     func setupViews() {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
-        view.addSubview(backgroundImageView)
+//        backgroundImageView.contentMode = .ScaleAspectFill
+//        view.addSubview(backgroundImageView)
         
         imageView.clipsToBounds = true
+        imageView.alpha = 0
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         view.addSubview(imageView)
         
@@ -75,9 +76,9 @@ class TutorialContentViewController: GAITrackedViewController {
     
     func setupConstraints () {
         
-        backgroundImageView.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.view)
-        }
+//        backgroundImageView.snp_makeConstraints { (make) -> () in
+//            make.edges.equalTo(self.view)
+//        }
         
         imageView.snp_makeConstraints { (make) -> () in
             make.top.lessThanOrEqualTo(self.view).offset(60)
