@@ -31,6 +31,9 @@ struct Settings {
     static let APP_LAUNCH_COUNT_KEY = "prkng_app_launch_count"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
     static let COMMERCIAL_PERMIT_FILTER_KEY = "prkng_commercial_permit_filter"
+    static let SNOW_REMOVAL_FILTER_KEY = "prkng_snow_removal_filter"
+    static let RESIDENTIAL_PERMIT_FILTER_KEY = "prkng_residential_permit_filter"
+    static let RESIDENTIAL_PERMITS_KEY = "prkng_commercial_permits"
     static let GEOFENCE_LAST_SET_DATE_KEY = "prkng_geofence_last_set_date"
     static let NOTIFICATION_NIGHT_BEFORE_KEY = "prkng_notification_night_before"
     static let NOTIFICATION_TIME_KEY = "prkng_notification_time"
@@ -338,6 +341,48 @@ struct Settings {
             setShouldNotifyTheNightBefore(true)
             return true
         }
+    }
+    
+    static func setShouldFilterForSnowRemoval(value: Bool) {
+        DDLoggerWrapper.logInfo("Setting snow removal value " + (value ? "ON" : "OFF"))
+        NSUserDefaults.standardUserDefaults().setBool(value, forKey: SNOW_REMOVAL_FILTER_KEY)
+    }
+
+    static func shouldFilterForSnowRemoval() -> Bool {
+        if let value = NSUserDefaults.standardUserDefaults().objectForKey(SNOW_REMOVAL_FILTER_KEY) as? Bool {
+            return value
+        } else {
+            setShouldFilterForSnowRemoval(true)
+            return true
+        }
+    }
+
+    static func setShouldFilterForResidentialPermit(value: Bool) {
+        DDLoggerWrapper.logInfo("Setting residential permit " + (value ? "ON" : "OFF"))
+        NSUserDefaults.standardUserDefaults().setBool(value, forKey: RESIDENTIAL_PERMIT_FILTER_KEY)
+    }
+    
+    static func shouldFilterForResidentialPermit() -> Bool {
+        if let value = NSUserDefaults.standardUserDefaults().objectForKey(RESIDENTIAL_PERMIT_FILTER_KEY) as? Bool {
+            return value
+        } else {
+            setShouldFilterForResidentialPermit(true)
+            return true
+        }
+    }
+    
+    static func setCommercialPermits(value: [String]) {
+        let listString = value.joinWithSeparator(",")
+        DDLoggerWrapper.logInfo("Setting commercial permits: " + listString)
+        NSUserDefaults.standardUserDefaults().setObject(listString, forKey: RESIDENTIAL_PERMITS_KEY)
+    }
+    
+    static func commercialPermits() -> [String] {
+        if let value = NSUserDefaults.standardUserDefaults().objectForKey(RESIDENTIAL_PERMITS_KEY) as? String {
+            let list = value.split(",")
+            return list
+        }
+        return []
     }
 
     static func setShouldNotifyTheNightBefore(value: Bool) {

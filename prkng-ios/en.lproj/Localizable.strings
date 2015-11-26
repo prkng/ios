@@ -222,6 +222,10 @@
 "settings_alert_text" = "Get notified 30min before";
 "settings_commercial_permit" = "Commercial Permit";
 "settings_commercial_permit_text" = "For authorized vehicles only";
+"settings_snow_removal" = "Snow Removal";
+"settings_snow_removal_text" = "Information about snow and street availability";
+"settings_residential_permit" = "Residential Permit";
+"settings_residential_permit_text" = "Show your authorized permit";
 "no_mail_accounts_title" = "No Mail Accounts";
 "no_mail_accounts_body" = "Mail doesn't seem to have any accounts configured. Contact us at support@prk.ng.";
 

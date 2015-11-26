@@ -224,6 +224,10 @@
 "settings_alert_text" = "Recevez une alerte 30min avant.";
 "settings_commercial_permit" = "Vignette commerciale";
 "settings_commercial_permit_text" = "Pour véhicules autorisés.";
+"settings_snow_removal" = "***Snow Removal";
+"settings_snow_removal_text" = "***Information about snow and street availability.";
+"settings_residential_permit" = "***Residential Permit";
+"settings_residential_permit_text" = "***Show your authorized permit";
 "no_mail_accounts_title" = "Aucun compte courriel";
 "no_mail_accounts_body" = "Vous n’avez aucun compte courriel configuré. Contactez nous à support@prk.ng.";
 

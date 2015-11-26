@@ -388,6 +388,16 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         Settings.setShouldFilterForCommercialPermit(!currentValue)
     }
 
+    func residentialPermitFilterValueChanged() {
+        let currentValue = Settings.shouldFilterForResidentialPermit()
+        Settings.setShouldFilterForResidentialPermit(!currentValue)
+    }
+
+    func snowRemovalFilterValueChanged() {
+        let currentValue = Settings.shouldFilterForSnowRemoval()
+        Settings.setShouldFilterForSnowRemoval(!currentValue)
+    }
+
     func hideCar2GoValueChanged() {
         let currentValue = Settings.hideCar2Go()
         Settings.setHideCar2Go(!currentValue)
@@ -460,7 +470,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         let alertCell = SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "settings_alert".localizedString, subtitleText: "settings_alert_text".localizedString, parentVC: self, switchSelector: "notificationSelectionValueChanged")
         let commercialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForCommercialPermit(), titleText: "settings_commercial_permit".localizedString, subtitleText: "settings_commercial_permit_text".localizedString, parentVC: self, switchSelector: "commercialPermitFilterValueChanged")
-//        let snowRemovalCell = SettingsCell(switchValue: Settings.notificationTime() == 0, titleText: "Snow Removal", subtitleText: "Information about snow and street availability.")
+        let snowRemovalCell = SettingsCell(switchValue: Settings.shouldFilterForSnowRemoval(), titleText: "settings_snow_removal".localizedString, subtitleText: "settings_snow_removal_text".localizedString, parentVC: self, switchSelector: "snowRemovalFilterValueChanged")
+        let residentialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForResidentialPermit(), titleText: "settings_residential_permit".localizedString, subtitleText: "settings_residential_permit_text".localizedString, parentVC: self, switchSelector: "residentialPermitFilterValueChanged")
         
 //        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
@@ -473,6 +484,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         firstSection = [alertCell]
         
         if Settings.selectedCity().name == "montreal" {
+            firstSection = [alertCell, snowRemovalCell, residentialPermitCell]
             carSharingSection = [car2goCell, automobileCell, communautoCell]
         } else if Settings.selectedCity().name == "quebec" {
             carSharingSection = [automobileCell, communautoCell]
