@@ -371,13 +371,25 @@ struct Settings {
         }
     }
     
-    static func setCommercialPermits(value: [String]) {
+    static func setResidentialPermit(value: String?) {
+        DDLoggerWrapper.logInfo("Setting residential permit: " + (value ?? ""))
+        NSUserDefaults.standardUserDefaults().setObject(value, forKey: RESIDENTIAL_PERMITS_KEY)
+    }
+    
+    static func residentialPermit() -> String? {
+        if let value = NSUserDefaults.standardUserDefaults().objectForKey(RESIDENTIAL_PERMITS_KEY) as? String {
+            return value
+        }
+        return nil
+    }
+
+    static func setResidentialPermits(value: [String]) {
         let listString = value.joinWithSeparator(",")
-        DDLoggerWrapper.logInfo("Setting commercial permits: " + listString)
+        DDLoggerWrapper.logInfo("Setting residential permits: " + listString)
         NSUserDefaults.standardUserDefaults().setObject(listString, forKey: RESIDENTIAL_PERMITS_KEY)
     }
     
-    static func commercialPermits() -> [String] {
+    static func residentialPermits() -> [String] {
         if let value = NSUserDefaults.standardUserDefaults().objectForKey(RESIDENTIAL_PERMITS_KEY) as? String {
             let list = value.split(",")
             return list

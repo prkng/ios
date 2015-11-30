@@ -115,6 +115,29 @@ class CityOperations {
             return location
         })
     }
+    
+    static func getSupportedResidentialPermits(city: City, completion : (completed : Bool, permits: [String]) -> Void) {
+
+        let url = APIUtility.APIConstants.rootURLString + "permits"
+        
+        let params: [String : AnyObject] = [
+            "city" : city.name,
+            "residential" : true
+        ]
+        
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            let permitsJson: [JSON] = json.arrayValue
+            var permits = permitsJson.map({ (permitJson) -> String in
+                return permitJson["permit"].stringValue
+            })
+            permits.sort()
+            
+            completion(completed: response != nil && response!.statusCode < 400, permits: permits)
+        }
+
+    }
 
     private var citiesString: String { return "[    {        \"display_name\": \"Québec\",         \"id\": \"1\",         \"lat\": 46.82053904,         \"long\": -71.22943997,         \"name\": \"quebec\",         \"urban_area_radius\": 20    },     {        \"display_name\": \"Montréal\",         \"id\": \"2\",         \"lat\": 45.5016889,         \"long\": -73.567256,         \"name\": \"montreal\",         \"urban_area_radius\": 30    },     {        \"display_name\": \"Seattle\",         \"id\": \"3\",         \"lat\": 47.615025,         \"long\": -122.335956,         \"name\": \"seattle\",         \"urban_area_radius\": 30    },     {        \"display_name\": \"New York\",         \"id\": \"4\",         \"lat\": 40.712784,         \"long\": -74.005941,         \"name\": \"newyork\",         \"urban_area_radius\": 30    }]" }
     private var citiesData: NSData { return citiesString.dataUsingEncoding(NSUTF8StringEncoding)! }

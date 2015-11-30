@@ -13,6 +13,7 @@ enum SettingsTableViewCellType {
     case Segmented //title followed by segmented switch
     case Service //title followed by rounded button
     case ServiceSwitch //switch followed by Service ^
+    case PermitSwitch //switch with permit acessory view
     case Basic //title, possibly red.
 }
 
@@ -26,16 +27,19 @@ class SettingsCell {
     var parentVC: UIViewController?
     var switchSelector: String?
     var buttonSelector: String?
+    var rightSideText: String?
     var cellType: SettingsTableViewCellType = .Basic
     
-    init(switchValue: Bool, titleText: String, subtitleText: String, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil) {
-        self.cellType = .Switch
+    //this init infers a Switch or PermitSwitch type
+    init(switchValue: Bool, titleText: String, subtitleText: String, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil, rightSideText: String? = nil) {
+        self.cellType = buttonSelector == nil ? .Switch : .PermitSwitch
         self.switchValue = switchValue
         self.titleText = titleText
         self.subtitleText = subtitleText
         self.parentVC = parentVC
         self.switchSelector = switchSelector
         self.buttonSelector = buttonSelector
+        self.rightSideText = rightSideText
     }
 
     init(cellType: SettingsTableViewCellType, titleText: String, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil) {
@@ -141,6 +145,54 @@ class SettingsSwitchCell: UITableViewCell {
         }
     }
     
+    private var indicatorButton: UIButton?
+    var rightSideText: String? {
+        didSet {
+            
+            if rightSideText != nil {
+                
+                //first of all, make the add button into an x instead of a +
+                addButton = ViewFactory.smallAccessoryCloseButton()
+                
+                //create the indicator button
+                indicatorButton = ViewFactory.redRoundedButtonWithHeight(20, font: Styles.FontFaces.regular(12), text: "")
+                let attrs = [NSFontAttributeName: indicatorButton!.titleLabel!.font]
+                let maximumLabelSize = CGSize(width: 200, height: 20)
+                let labelRect = (rightSideText! as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
+                
+                //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
+                //        let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
+                //        closeImageView.contentMode = .ScaleAspectFit
+                //        closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 5, width: 10, height: 10)
+                //        indicatorButton.addSubview(closeImageView)
+                
+                //add the label
+                let label = UILabel(frame: CGRect(x: 10, y: 2.5, width: labelRect.width, height: labelRect.height))
+                label.text = rightSideText!
+                label.font = Styles.FontFaces.regular(12)
+                label.textColor = Styles.Colors.beige1
+                indicatorButton!.addSubview(label)
+                
+                indicatorButton!.frame = rightSideText! == "" ? CGRectZero : CGRect(x: 0, y: 0, width: 10+labelRect.width+10, height: 20)
+                indicatorButton!.addTarget(self, action: "indicatorButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+        }
+    }
+    
+    func indicatorButtonTapped() {
+        print("Indicator button tapped")
+    }
+
+    var buttonSelector: String? {
+        didSet {
+            if buttonSelector != nil {
+                addButton = ViewFactory.smallAccessoryPlusButton()
+                resetSelector()
+            }
+        }
+    }
+    
+    private var addButton: UIButton?
     var parentVC: UIViewController?
     var selector: String?
     
@@ -164,6 +216,9 @@ class SettingsSwitchCell: UITableViewCell {
             enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
             enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
         }
+        if (parentVC != nil && buttonSelector != nil) {
+            addButton?.addTarget(parentVC!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
+        }
     }
 
     override func layoutSubviews() {
@@ -186,6 +241,14 @@ class SettingsSwitchCell: UITableViewCell {
             subtitle.textColor = Styles.Colors.anthracite1
             subtitle.textAlignment = .Left
             contentView.addSubview(subtitle)
+            
+            if buttonSelector != nil {
+                contentView.addSubview(addButton!)
+            }
+            
+            if indicatorButton != nil {
+                contentView.addSubview(indicatorButton!)
+            }
 
             didLayoutSubviews = true
             setNeedsUpdateConstraints()
@@ -203,15 +266,29 @@ class SettingsSwitchCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 50, height: 30))
         }
 
+        let rightSideWidth = (indicatorButton != nil ? 10 + indicatorButton!.frame.width : 0) + 10 + (addButton != nil ? 22 + 20 : 0)
+        
+        addButton?.snp_remakeConstraints(closure: { (make) -> Void in
+            make.size.equalTo(CGSize(width: 22, height: 22))
+            make.right.equalTo(self.contentView).offset(-20)
+            make.centerY.equalTo(self.contentView)
+        })
+        
+        indicatorButton?.snp_makeConstraints(closure: { (make) -> Void in
+            make.size.equalTo(self.indicatorButton!.frame.size)
+            make.right.equalTo(self.contentView).offset(-52)
+            make.centerY.equalTo(self.contentView)
+        })
+
         title.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.enabledSwitch.snp_right).offset(16)
-            make.right.equalTo(self.contentView)
+            make.right.equalTo(self.contentView).offset(-rightSideWidth)
             make.top.equalTo(self.enabledSwitch)
         }
 
         subtitle.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.enabledSwitch.snp_right).offset(16)
-            make.right.equalTo(self.contentView)
+            make.right.equalTo(self.contentView).offset(-rightSideWidth)
             make.bottom.equalTo(self.enabledSwitch)
         }
 
@@ -453,5 +530,159 @@ class SettingsServiceSwitchCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 74, height: 20))
         }
 
+    }
+}
+
+class SettingsPermitSwitchCell: UITableViewCell {
+    
+    private let enabledSwitch = SevenSwitch()
+    private let title = UILabel()
+    private let button = ViewFactory.transparentRoundedButton()
+    private var didLayoutSubviews: Bool = false
+    
+    var parentVC: UIViewController? {
+        didSet {
+            resetSelector()
+        }
+    }
+    var switchSelector: String? {
+        didSet {
+            resetSelector()
+        }
+    }
+    
+    var buttonSelector: String? {
+        didSet {
+            resetSelector()
+        }
+    }
+    
+    var shouldShowSwitch: Bool = false {
+        didSet {
+            enabledSwitch.hidden = !shouldShowSwitch
+        }
+    }
+    
+    var titleText: String {
+        get { return self.title.text ?? "" }
+        set(value) { self.title.text = value }
+    }
+    
+    var signedIn: Bool? {
+        didSet {
+            if signedIn == nil {
+                button.hidden = true
+            } else {
+                button.hidden = false
+                if signedIn! {
+                    button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Normal)
+                    button.layer.borderColor = Styles.Colors.anthracite1.CGColor
+                    button.setTitle("sign_out".localizedString.uppercaseString, forState: .Normal)
+                } else {
+                    button.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
+                    button.layer.borderColor = Styles.Colors.red2.CGColor
+                    button.setTitle("sign_in".localizedString.uppercaseString, forState: .Normal)
+                }
+            }
+        }
+    }
+    
+    var switchValue: Bool = false {
+        didSet {
+            enabledSwitch.on = switchValue
+            enabledSwitchValueChanged(animated: false)
+        }
+    }
+    
+    private var titleTextColor: UIColor {
+        return enabledSwitch.isOn() ? Styles.Colors.red2 : Styles.Colors.midnight2
+    }
+    
+    private var cellBackgroundColor: UIColor {
+        return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
+    }
+    
+    func enabledSwitchValueChanged() {
+        enabledSwitchValueChanged(animated: true)
+    }
+    
+    func enabledSwitchValueChanged(animated animated: Bool) {
+        UIView.animateWithDuration(animated ? 0.2 : 0) { () -> Void in
+            self.backgroundColor = self.cellBackgroundColor
+        }
+        UIView.transitionWithView(self.title, duration: (animated ? 0.2 : 0), options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+            self.title.textColor = self.titleTextColor
+            }, completion: nil)
+    }
+    
+    func resetSelector() {
+        enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+        if (parentVC != nil && switchSelector != nil) {
+            enabledSwitch.addTarget(parentVC!, action: Selector(switchSelector!), forControlEvents: .ValueChanged)
+            enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
+        }
+        if (parentVC != nil && buttonSelector != nil) {
+            button.addTarget(parentVC!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
+        }
+        
+    }
+    
+    override func layoutSubviews() {
+        
+        if !didLayoutSubviews {
+            self.backgroundColor = cellBackgroundColor
+            
+            enabledSwitch.tintColor = Styles.Colors.stone
+            enabledSwitch.onTintColor = Styles.Colors.cream1
+            enabledSwitch.onTintColor = Styles.Colors.red2
+            contentView.addSubview(enabledSwitch)
+            
+            resetSelector()
+            
+            button.layer.cornerRadius = 10
+            button.titleLabel?.font = Styles.FontFaces.regular(10)
+            contentView.addSubview(button)
+            
+            title.font = Styles.FontFaces.regular(14)
+            title.textColor = titleTextColor
+            title.textAlignment = .Left
+            contentView.addSubview(title)
+            
+            didLayoutSubviews = true
+            setNeedsUpdateConstraints()
+        }
+        super.layoutSubviews()
+    }
+    
+    override func updateConstraints() {
+        
+        super.updateConstraints()
+        
+        if shouldShowSwitch {
+            enabledSwitch.snp_remakeConstraints { (make) -> () in
+                make.left.equalTo(self.contentView).offset(20)
+                make.centerY.equalTo(self.contentView)
+                make.size.equalTo(CGSize(width: 50, height: 30))
+            }
+            
+            title.snp_remakeConstraints { (make) -> () in
+                make.left.equalTo(self.enabledSwitch.snp_right).offset(16)
+                make.right.equalTo(self.button.snp_left)
+                make.centerY.equalTo(self.contentView)
+            }
+        } else {
+            title.snp_remakeConstraints { (make) -> () in
+                make.left.equalTo(self.contentView).offset(44)
+                make.right.equalTo(self.button.snp_left)
+                make.centerY.equalTo(self.contentView)
+            }
+        }
+        
+        button.snp_remakeConstraints { (make) -> () in
+            make.right.equalTo(self.contentView).offset(-20)
+            make.centerY.equalTo(self.contentView)
+            make.size.equalTo(CGSize(width: 74, height: 20))
+        }
+        
     }
 }

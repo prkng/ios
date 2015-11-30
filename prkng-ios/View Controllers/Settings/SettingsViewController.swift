@@ -392,6 +392,16 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         let currentValue = Settings.shouldFilterForResidentialPermit()
         Settings.setShouldFilterForResidentialPermit(!currentValue)
     }
+    
+    func residentialPermitFilterValueNeedsAddition() {
+        //bring up the rolly thingy
+        if let thing = Settings.residentialPermit() {
+            Settings.setResidentialPermit(nil)
+        } else {
+            Settings.setResidentialPermit("hahahaha")
+        }
+        self.tableView.reloadData()
+    }
 
     func snowRemovalFilterValueChanged() {
         let currentValue = Settings.shouldFilterForSnowRemoval()
@@ -471,7 +481,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         let alertCell = SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "settings_alert".localizedString, subtitleText: "settings_alert_text".localizedString, parentVC: self, switchSelector: "notificationSelectionValueChanged")
         let commercialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForCommercialPermit(), titleText: "settings_commercial_permit".localizedString, subtitleText: "settings_commercial_permit_text".localizedString, parentVC: self, switchSelector: "commercialPermitFilterValueChanged")
         let snowRemovalCell = SettingsCell(switchValue: Settings.shouldFilterForSnowRemoval(), titleText: "settings_snow_removal".localizedString, subtitleText: "settings_snow_removal_text".localizedString, parentVC: self, switchSelector: "snowRemovalFilterValueChanged")
-        let residentialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForResidentialPermit(), titleText: "settings_residential_permit".localizedString, subtitleText: "settings_residential_permit_text".localizedString, parentVC: self, switchSelector: "residentialPermitFilterValueChanged")
+        let residentialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForResidentialPermit(), titleText: "settings_residential_permit".localizedString, subtitleText: "settings_residential_permit_text".localizedString, parentVC: self, switchSelector: "residentialPermitFilterValueChanged", buttonSelector: "residentialPermitFilterValueNeedsAddition", rightSideText: Settings.residentialPermit())
         
 //        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
@@ -521,16 +531,18 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         switch settingsCell.cellType {
             
-        case .Switch:
-            var cell = tableView.dequeueReusableCellWithIdentifier("switch" + settingsCell.titleText) as? SettingsSwitchCell
+        case .Switch, .PermitSwitch:
+            var cell = tableView.dequeueReusableCellWithIdentifier("switch" + settingsCell.titleText + (settingsCell.rightSideText ?? "")) as? SettingsSwitchCell
             if cell == nil {
-                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: "switch" + settingsCell.titleText)
+                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: "switch" + settingsCell.titleText + (settingsCell.rightSideText ?? ""))
             }
             cell!.titleText = settingsCell.titleText
             cell!.subtitleText = settingsCell.subtitleText
             cell!.switchOn = settingsCell.switchValue ?? false
             cell!.parentVC = settingsCell.parentVC
             cell!.selector = settingsCell.switchSelector
+            cell!.buttonSelector = settingsCell.buttonSelector
+            cell!.rightSideText = settingsCell.rightSideText
             return cell!
             
         case .Segmented:

@@ -128,6 +128,18 @@ struct ViewFactory {
         return hugeButton
     }
     
+    static func smallAccessoryPlusButton() -> UIButton {
+        let button = UIButton()
+        button.setImage(UIImage(named: "btn_accessory_plus"), forState: UIControlState.Normal)
+        return button
+    }
+
+    static func smallAccessoryCloseButton() -> UIButton {
+        let button = UIButton()
+        button.setImage(UIImage(named: "btn_accessory_close"), forState: UIControlState.Normal)
+        return button
+    }
+
     static func transparentRoundedButton() -> UIButton {
         let button = UIButton()
         button.titleLabel?.font = Styles.FontFaces.light(12)
