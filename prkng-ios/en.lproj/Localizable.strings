@@ -135,6 +135,8 @@
 "departure" = "DEPARTURE";
 
 "max" = "max";
+"done" = "Done";
+"clear" = "Clear";
 
 "on_the_go" = "On the go?";
 "left_this_spot_question" = "Did you leave your spot on";

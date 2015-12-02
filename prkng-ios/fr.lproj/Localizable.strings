@@ -136,6 +136,8 @@
 "departure" = "DEPART";
 
 "max" = "max";
+"done" = "***Done";
+"clear" = "***Clear";
 
 "on_the_go" = "Déjà parti?";
 "left_this_spot_question" = "Avez-vous quitté votre place sur";

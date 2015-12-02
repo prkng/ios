@@ -132,7 +132,7 @@ class CityOperations {
             var permits = permitsJson.map({ (permitJson) -> String in
                 return permitJson["permit"].stringValue
             })
-            permits.sort()
+            permits.sortInPlace()
             
             completion(completed: response != nil && response!.statusCode < 400, permits: permits)
         }

@@ -19,9 +19,7 @@ extension UIViewController {
         transition.subtype = kCATransitionFromRight
         self.view.window?.layer.addAnimation(transition, forKey: nil)
         self.presentViewController(viewController, animated: false) { () -> Void in
-            if completion != nil {
-                completion!()
-            }
+            completion?()
         }
 
     }
@@ -46,9 +44,7 @@ extension UIViewController {
         transition.type = kCATransitionFade
         self.view.window?.layer.addAnimation(transition, forKey: nil)
         self.presentViewController(viewController, animated: false) { () -> Void in
-            if completion != nil {
-                completion!()
-            }
+            completion?()
         }
         
     }
@@ -63,5 +59,47 @@ extension UIViewController {
         self.dismissViewControllerAnimated(false, completion: completion)
         
     }
+    
+    func presentAsModalWithTransparency(viewController: UIViewController, completion: (() -> Void)?) {
+        viewController.willMoveToParentViewController(self)
+        self.addChildViewController(viewController)
+        self.view.addSubview(viewController.view)
+        viewController.view.snp_remakeConstraints(closure: { (make) -> () in
+            make.edges.equalTo(self.view)
+        })
+        
+        let transition = CATransition()
+        transition.duration = 0.4
+        transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        transition.type = kCATransitionPush
+        transition.subtype = kCATransitionFromTop
+        transition.removedOnCompletion = true
+        viewController.view.layer.addAnimation(transition, forKey: nil)
+
+        completion?()
+    }
+    
+    func dismissAsModalWithTransparency(completion: (() -> Void)?) {
+        
+        self.view.layer.removeAllAnimations()
+        let height = UIScreen.mainScreen().bounds.height
+        UIView.animateWithDuration(0.4, animations: { () -> Void in
+            self.view.snp_remakeConstraints(closure: { (make) -> () in
+                make.top.equalTo(self.parentViewController!.view.snp_bottom)
+                make.height.equalTo(height)
+                make.left.equalTo(self.parentViewController!.view)
+                make.right.equalTo(self.parentViewController!.view)
+            })
+            self.view.layoutIfNeeded()
+            }) { (completed) -> Void in
+                self.removeFromParentViewController()
+                self.view.removeFromSuperview()
+                self.willMoveToParentViewController(nil)
+                completion?()
+
+        }
+        
+    }
+
 
 }

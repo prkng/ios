@@ -395,12 +395,15 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func residentialPermitFilterValueNeedsAddition() {
         //bring up the rolly thingy
-        if let thing = Settings.residentialPermit() {
-            Settings.setResidentialPermit(nil)
-        } else {
-            Settings.setResidentialPermit("hahahaha")
+        CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
+            if completed {
+                let pickerVC = UIPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
+                    Settings.setResidentialPermit(selectedValue)
+                    self.tableView.reloadData()
+                })
+                self.presentAsModalWithTransparency(pickerVC, completion: nil)
+            }
         }
-        self.tableView.reloadData()
     }
 
     func snowRemovalFilterValueChanged() {
