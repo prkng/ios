@@ -46,9 +46,16 @@ struct SpotOperations {
             "carsharing" : carsharingString
         ]
         
+        //commercial and residential permits!
+        var permits = [String]()
         if Settings.shouldFilterForCommercialPermit() {
-            params["permit"] = "commercial"
+            permits.append("commercial")
         }
+        if Settings.shouldFilterForResidentialPermit() {
+            let residentialPermits = Settings.residentialPermits()
+            permits.appendContentsOf(residentialPermits)
+        }
+        params["permit"] = permits.joinWithSeparator(",")
         
         if(duration != nil) {
             let durationStr = NSString(format: "%.1f", duration!)
