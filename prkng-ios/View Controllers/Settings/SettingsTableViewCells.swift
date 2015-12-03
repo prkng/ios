@@ -152,35 +152,37 @@ class SettingsSwitchCell: UITableViewCell {
             if rightSideText != nil {
                 
                 //first of all, make the add button into an x instead of a +
-                addButton = ViewFactory.smallAccessoryCloseButton()
+                addButton = nil//ViewFactory.smallAccessoryCloseButton()
                 
                 //create the indicator button
-                indicatorButton = ViewFactory.redRoundedButtonWithHeight(20, font: Styles.FontFaces.regular(12), text: "")
+                indicatorButton = ViewFactory.redRoundedButtonWithHeight(22, font: Styles.FontFaces.regular(14), text: "")
                 let attrs = [NSFontAttributeName: indicatorButton!.titleLabel!.font]
-                let maximumLabelSize = CGSize(width: 200, height: 20)
+                let maximumLabelSize = CGSize(width: 200, height: 22)
                 let labelRect = (rightSideText! as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
                 
                 //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
-                //        let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
-                //        closeImageView.contentMode = .ScaleAspectFit
-                //        closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 5, width: 10, height: 10)
-                //        indicatorButton.addSubview(closeImageView)
+                let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
+                closeImageView.contentMode = .ScaleAspectFit
+                closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 6, width: 11, height: 11)
+                indicatorButton!.addSubview(closeImageView)
                 
                 //add the label
                 let label = UILabel(frame: CGRect(x: 10, y: 2.5, width: labelRect.width, height: labelRect.height))
                 label.text = rightSideText!
-                label.font = Styles.FontFaces.regular(12)
+                label.font = indicatorButton!.titleLabel!.font
                 label.textColor = Styles.Colors.beige1
                 indicatorButton!.addSubview(label)
                 
-                indicatorButton!.frame = rightSideText! == "" ? CGRectZero : CGRect(x: 0, y: 0, width: 10+labelRect.width+10, height: 20)
+                indicatorButton!.frame = rightSideText! == "" ? CGRectZero : CGRect(x: 0, y: 0, width: 10+labelRect.width+10 + 5+closeImageView.frame.width, height: 22)
                 indicatorButton!.addTarget(self, action: "indicatorButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
             }
         }
     }
     
     func indicatorButtonTapped() {
-        print("Indicator button tapped")
+        if (parentVC != nil && buttonSelector != nil) {
+            parentVC!.performSelector(Selector(buttonSelector!))
+        }
     }
 
     var buttonSelector: String? {
@@ -242,7 +244,7 @@ class SettingsSwitchCell: UITableViewCell {
             subtitle.textAlignment = .Left
             contentView.addSubview(subtitle)
             
-            if buttonSelector != nil {
+            if addButton != nil {
                 contentView.addSubview(addButton!)
             }
             
@@ -267,6 +269,7 @@ class SettingsSwitchCell: UITableViewCell {
         }
 
         let rightSideWidth = (indicatorButton != nil ? 10 + indicatorButton!.frame.width : 0) + 10 + (addButton != nil ? 22 + 20 : 0)
+        let indicatorButtonRightOffset = 10 + (self.addButton != nil ? (22 + 20) : 10)
         
         addButton?.snp_remakeConstraints(closure: { (make) -> Void in
             make.size.equalTo(CGSize(width: 22, height: 22))
@@ -276,7 +279,7 @@ class SettingsSwitchCell: UITableViewCell {
         
         indicatorButton?.snp_makeConstraints(closure: { (make) -> Void in
             make.size.equalTo(self.indicatorButton!.frame.size)
-            make.right.equalTo(self.contentView).offset(-52)
+            make.right.equalTo(self.contentView).offset(-indicatorButtonRightOffset)
             make.centerY.equalTo(self.contentView)
         })
 
@@ -530,159 +533,5 @@ class SettingsServiceSwitchCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 74, height: 20))
         }
 
-    }
-}
-
-class SettingsPermitSwitchCell: UITableViewCell {
-    
-    private let enabledSwitch = SevenSwitch()
-    private let title = UILabel()
-    private let button = ViewFactory.transparentRoundedButton()
-    private var didLayoutSubviews: Bool = false
-    
-    var parentVC: UIViewController? {
-        didSet {
-            resetSelector()
-        }
-    }
-    var switchSelector: String? {
-        didSet {
-            resetSelector()
-        }
-    }
-    
-    var buttonSelector: String? {
-        didSet {
-            resetSelector()
-        }
-    }
-    
-    var shouldShowSwitch: Bool = false {
-        didSet {
-            enabledSwitch.hidden = !shouldShowSwitch
-        }
-    }
-    
-    var titleText: String {
-        get { return self.title.text ?? "" }
-        set(value) { self.title.text = value }
-    }
-    
-    var signedIn: Bool? {
-        didSet {
-            if signedIn == nil {
-                button.hidden = true
-            } else {
-                button.hidden = false
-                if signedIn! {
-                    button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Normal)
-                    button.layer.borderColor = Styles.Colors.anthracite1.CGColor
-                    button.setTitle("sign_out".localizedString.uppercaseString, forState: .Normal)
-                } else {
-                    button.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
-                    button.layer.borderColor = Styles.Colors.red2.CGColor
-                    button.setTitle("sign_in".localizedString.uppercaseString, forState: .Normal)
-                }
-            }
-        }
-    }
-    
-    var switchValue: Bool = false {
-        didSet {
-            enabledSwitch.on = switchValue
-            enabledSwitchValueChanged(animated: false)
-        }
-    }
-    
-    private var titleTextColor: UIColor {
-        return enabledSwitch.isOn() ? Styles.Colors.red2 : Styles.Colors.midnight2
-    }
-    
-    private var cellBackgroundColor: UIColor {
-        return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
-    }
-    
-    func enabledSwitchValueChanged() {
-        enabledSwitchValueChanged(animated: true)
-    }
-    
-    func enabledSwitchValueChanged(animated animated: Bool) {
-        UIView.animateWithDuration(animated ? 0.2 : 0) { () -> Void in
-            self.backgroundColor = self.cellBackgroundColor
-        }
-        UIView.transitionWithView(self.title, duration: (animated ? 0.2 : 0), options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
-            self.title.textColor = self.titleTextColor
-            }, completion: nil)
-    }
-    
-    func resetSelector() {
-        enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-        if (parentVC != nil && switchSelector != nil) {
-            enabledSwitch.addTarget(parentVC!, action: Selector(switchSelector!), forControlEvents: .ValueChanged)
-            enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
-        }
-        if (parentVC != nil && buttonSelector != nil) {
-            button.addTarget(parentVC!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
-        }
-        
-    }
-    
-    override func layoutSubviews() {
-        
-        if !didLayoutSubviews {
-            self.backgroundColor = cellBackgroundColor
-            
-            enabledSwitch.tintColor = Styles.Colors.stone
-            enabledSwitch.onTintColor = Styles.Colors.cream1
-            enabledSwitch.onTintColor = Styles.Colors.red2
-            contentView.addSubview(enabledSwitch)
-            
-            resetSelector()
-            
-            button.layer.cornerRadius = 10
-            button.titleLabel?.font = Styles.FontFaces.regular(10)
-            contentView.addSubview(button)
-            
-            title.font = Styles.FontFaces.regular(14)
-            title.textColor = titleTextColor
-            title.textAlignment = .Left
-            contentView.addSubview(title)
-            
-            didLayoutSubviews = true
-            setNeedsUpdateConstraints()
-        }
-        super.layoutSubviews()
-    }
-    
-    override func updateConstraints() {
-        
-        super.updateConstraints()
-        
-        if shouldShowSwitch {
-            enabledSwitch.snp_remakeConstraints { (make) -> () in
-                make.left.equalTo(self.contentView).offset(20)
-                make.centerY.equalTo(self.contentView)
-                make.size.equalTo(CGSize(width: 50, height: 30))
-            }
-            
-            title.snp_remakeConstraints { (make) -> () in
-                make.left.equalTo(self.enabledSwitch.snp_right).offset(16)
-                make.right.equalTo(self.button.snp_left)
-                make.centerY.equalTo(self.contentView)
-            }
-        } else {
-            title.snp_remakeConstraints { (make) -> () in
-                make.left.equalTo(self.contentView).offset(44)
-                make.right.equalTo(self.button.snp_left)
-                make.centerY.equalTo(self.contentView)
-            }
-        }
-        
-        button.snp_remakeConstraints { (make) -> () in
-            make.right.equalTo(self.contentView).offset(-20)
-            make.centerY.equalTo(self.contentView)
-            make.size.equalTo(CGSize(width: 74, height: 20))
-        }
-        
     }
 }

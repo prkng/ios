@@ -132,7 +132,21 @@ class CityOperations {
             var permits = permitsJson.map({ (permitJson) -> String in
                 return permitJson["permit"].stringValue
             })
-            permits.sortInPlace()
+            var stringPermits = permits.filter({ (permitString) -> Bool in
+                Int(permitString) == nil
+            })
+            stringPermits.sortInPlace()
+            
+            var intPermits = permits.filter({ (permitString) -> Bool in
+                Int(permitString) != nil
+            }).map({ (permitString) -> Int in
+                return Int(permitString)!
+            })
+            intPermits.sortInPlace()
+            
+            permits = intPermits.map({ (intPermit) -> String in
+                String(intPermit)
+            }) + stringPermits
             
             completion(completed: response != nil && response!.statusCode < 400, permits: permits)
         }

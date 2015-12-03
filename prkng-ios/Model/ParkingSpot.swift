@@ -165,7 +165,7 @@ class ParkingSpot: NSObject, DetailObject {
         
         let ruleJsons = json["properties"]["rules"]
         
-        // TODO : Fix this when the data is fixed
+        // TODO: Fix this when the data is fixed
         for ruleJson in ruleJsons  {
             let rule1 = ParkingRule(json: ruleJson.1, bsIndex: 0)
             
