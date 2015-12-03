@@ -163,7 +163,7 @@ struct Settings {
         Settings.setCheckInId(0)
         Settings.saveCheckInData(nil, time: nil)
         Settings.cancelScheduledNotifications()
-        
+        Settings.clearRegionsMonitored()
     }
     
     static func setCheckInId(checkinId: Int) {
