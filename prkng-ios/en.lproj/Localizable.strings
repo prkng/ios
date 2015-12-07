@@ -208,7 +208,7 @@
 "indoor" = "Indoor";
 "outdoor" = "Outdoor";
 "valet" = "Valet";
-"handicap" = "Handicap";
+"handicap" = "Accessible";
 "card" = "Card";
 "operated_by" = "By";
 "find_a_car" = "Cars";
