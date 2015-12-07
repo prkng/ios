@@ -767,6 +767,7 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
             return
             
         case "previousCheckin":
+//            let marker = RMMarker(UIImage: UIImage(named: "pin_round_p")!, anchorPoint: CGPoint(x: 0.5, y: 1))
             reuseIdentifier = "pin_round_p"
             annotationImage = UIImage(named: reuseIdentifier)!
             return

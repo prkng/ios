@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: AbstractViewController, LoginMethodSelectionViewDelegate, LoginEmailViewControllerDelegate, LoginExternalViewControllerDelegate, RegisterEmailViewControllerDelegate, GPPSignInDelegate {
+class LoginViewController: AbstractViewController, LoginMethodSelectionViewDelegate, LoginEmailViewControllerDelegate, LoginExternalViewControllerDelegate, RegisterEmailViewControllerDelegate, GIDSignInDelegate, GIDSignInUIDelegate {
     
     var backgroundImageView : UIImageView
     var logoView : UIImageView
@@ -19,8 +19,6 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
 //    var loginExternalViewController : LoginExternalViewController?
     
     var selectedMethod : LoginMethod?
-    
-    var googleSignIn : GPPSignIn?
     
     init() {
         backgroundImageView = UIImageView()
@@ -134,12 +132,13 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             return
         }
         
-        googleSignIn = GPPSignIn.sharedInstance()
-        googleSignIn?.shouldFetchGooglePlusUser = true
-        googleSignIn?.clientID = "632562278503-4c9tkt6hsk8qm2c70b3cjom7vjq7158k.apps.googleusercontent.com"
-        googleSignIn?.scopes = [kGTLAuthScopePlusLogin, kGTLAuthScopePlusMe, kGTLAuthScopePlusUserinfoEmail, kGTLAuthScopePlusUserinfoProfile]
-        googleSignIn?.delegate = self
-        googleSignIn?.authenticate()
+        var configureError: NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        GIDSignIn.sharedInstance().delegate = self
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().signIn()
+        
         
         selectedMethod = LoginMethod.Google
         
@@ -190,9 +189,8 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
 //        
 //    }
     
-    // MARK: GPPSignInDelegate
-    func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
-        print(auth)
+    // MARK: GIDSignInDelegate
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
         
         if error != nil {
             //error!
@@ -204,23 +202,28 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             
         } else {
             //success!
+            // Perform any operations on signed in user here.
+//            let userId = user.userID                  // For client-side use only!
+            let idToken = user.authentication.idToken // Safe to send to the server
+            let name = user.profile.name
+            let email = user.profile.email
+            let profileImageUrl = user.profile.imageURLWithDimension(600).absoluteString
+
             self.methodSelectionView.userInteractionEnabled = false
             
-            UserOperations.loginWithGoogle(auth.accessToken, completion: { (user, apiKey) -> Void in
+            UserOperations.loginWithGoogle(idToken, name: name, email: email, profileImageUrl: profileImageUrl, completion: { (user, apiKey) -> Void in
                 AuthUtility.saveUser(user)
                 AuthUtility.saveAuthToken(apiKey)
 //                self.displayExternalInfo(user, loginType : .Google)
                 self.didLoginExternal(.Google)
             })
-
-            
         }
-        
     }
     
-    func didDisconnectWithError(error: NSError!) {
-        
+    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user: GIDGoogleUser!, withError error: NSError!) {
     }
+    
+    // MARK: GIDSignInUIDelegate
     
     
     

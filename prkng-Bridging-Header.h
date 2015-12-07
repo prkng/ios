@@ -16,8 +16,6 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
-#import <GooglePlus/GooglePlus.h>
-#import <GoogleOpenSource/GoogleOpenSource.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/UIButton+WebCache.h>
@@ -27,6 +25,7 @@
 #import "DDLoggerWrapper.h"
 #import "GoogleAnalytics/GAI.h"
 #import "GoogleAnalytics/GAIDictionaryBuilder.h"
+#import "Google/SignIn.h"
 #import "SevenSwitch/SevenSwitch.h"
 #import "DVSwitch.h"
 #import "KMLParser.h"

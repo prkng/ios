@@ -189,9 +189,10 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
             }
             
             let nextVC = contentViewControllers[index]
-            
+            transitioningToVC = nextVC
+
             self.pageViewController.setViewControllers([nextVC], direction: UIPageViewControllerNavigationDirection.Forward, animated: true) { (completed) -> Void in
-                self.updateViews()
+                self.updateViewsWithAnimation(true)
             }
         }
     }
@@ -229,7 +230,7 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
     }
     
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        updateViews()
+        self.updateViewsWithAnimation(false)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -258,7 +259,7 @@ class TutorialViewController: GAITrackedViewController, UIPageViewControllerData
         }
     }
     
-    func updateViews() {
+    func updateViewsWithAnimation(animate: Bool) {
         
         let activeContentVC = (pageViewController.viewControllers?.first as! TutorialContentViewController)
         

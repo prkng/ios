@@ -24,12 +24,25 @@ PODS:
     - GoogleNetworkingUtilities (~> 1.0)
     - GoogleSymbolUtilities (~> 1.0)
     - GoogleUtilities (~> 1.1)
+  - Google/SignIn (1.2.1):
+    - Google/Core
+    - GoogleSignIn (~> 2.0)
   - GoogleAnalytics (3.14.0)
+  - GoogleAppUtilities (1.0.0):
+    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleAuthUtilities (1.0.1):
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleSymbolUtilities (~> 1.0)
   - GoogleInterchangeUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0)
-  - GoogleMaps (1.10.5)
+  - GoogleMaps (1.11.0)
   - GoogleNetworkingUtilities (1.0.0):
     - GoogleSymbolUtilities (~> 1.0)
+  - GoogleSignIn (2.4.0):
+    - GoogleAppUtilities (~> 1.0)
+    - GoogleAuthUtilities (~> 1.0)
+    - GoogleNetworkingUtilities (~> 1.0)
+    - GoogleUtilities (~> 1.0)
   - GoogleSymbolUtilities (1.0.3)
   - GoogleUtilities (1.1.0):
     - GoogleSymbolUtilities (~> 1.0.0)
@@ -42,7 +55,7 @@ PODS:
     - FMDB (= 2.3)
     - GRMustache (= 7.3.0)
     - SMCalloutView (= 2.0)
-  - MarqueeLabel (2.3.5)
+  - MarqueeLabel (2.4.0)
   - OMGHTTPURLRQ/UserAgent (3.0.2)
   - pop (1.0.8)
   - SDWebImage (3.7.2):
@@ -59,6 +72,7 @@ DEPENDENCIES:
   - CocoaLumberjack
   - GeoJSONSerialization
   - Google/Analytics
+  - Google/SignIn
   - GoogleMaps
   - GZIP
   - IQKeyboardManager (= 3.2.4)
@@ -78,9 +92,12 @@ SPEC CHECKSUMS:
   GeoJSONSerialization: 55a3d24fe9af26508e3af76873114b39b13ba479
   Google: fd33b5fa40fa3aaee5176de49c873a74e3d11dce
   GoogleAnalytics: 9be1afdb8deeac4bb5f13ca7f7d3b9db2a1f43dc
+  GoogleAppUtilities: c01c6a5671e9da8b9d690fdaec5959d6c2aac699
+  GoogleAuthUtilities: 049ffd3a297cdffd271451b82fd4e75304f15ef3
   GoogleInterchangeUtilities: d7f7174176fbcf9710f696f1acebad4dbd98ac03
-  GoogleMaps: da51c62c338c2d9c47cdad470a0d1e0e4b8544e4
+  GoogleMaps: 272cf7e7b8aacf4319eac47d57f3b7d142c0826a
   GoogleNetworkingUtilities: 292992ab31b7b4ba32809a0e8b40e324cdfb2c0c
+  GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
   GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   GRMustache: 6baee020c5644416c034f5afb1607f6219e7f753
@@ -88,7 +105,7 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 555b1231fefafb21b19278d7cca72986a27b748b
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   Mapbox-iOS-SDK: ee136ca5b7f853456b50dfd7a7f0e243288cf86f
-  MarqueeLabel: fd29be3b4cf5f37b01676749409679aac23eb6fa
+  MarqueeLabel: d6bddc297b922784f9d1e7d92cffbf99bad413d2
   OMGHTTPURLRQ: 8376dc887d76a5a7e2a67881dc788f917a2f437c
   pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29

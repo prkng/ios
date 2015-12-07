@@ -71,15 +71,13 @@
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
 		3E6EB6051B83BE370081E30A /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6EB6041B83BE370081E30A /* FilterViewController.swift */; };
-		3E7499D31BB9AA26007C78AC /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */; };
-		3E7499D41BB9AA26007C78AC /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */; };
-		3E7499D51BB9AA26007C78AC /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E7499D21BB9AA26007C78AC /* GooglePlus.framework */; };
 		3E7523071B693DF70096755F /* MapMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7523061B693DF70096755F /* MapMessageView.swift */; };
 		3E76EC8A1BD7FF4700FFEBE4 /* SettingsTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E76EC891BD7FF4700FFEBE4 /* SettingsTableViewCells.swift */; };
 		3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */; };
 		3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */; };
 		3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */; };
 		3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */; };
+		3E88CB481C1612FD0066A323 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E88CB471C1612FD0066A323 /* GoogleService-Info.plist */; };
 		3E8F31F71B26238900760E05 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F61B26238900760E05 /* CoreData.framework */; };
 		3E8F31F91B26239A00760E05 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */; };
 		3E90A92E1BA9C8FF00CCEB41 /* loader.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3E90A92D1BA9C8FF00CCEB41 /* loader.gif */; };
@@ -290,15 +288,13 @@
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
 		3E6DCC831B28E0D500DF62E0 /* Array.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		3E6EB6041B83BE370081E30A /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
-		3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
-		3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
-		3E7499D21BB9AA26007C78AC /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		3E7523061B693DF70096755F /* MapMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapMessageView.swift; sourceTree = "<group>"; };
 		3E76EC891BD7FF4700FFEBE4 /* SettingsTableViewCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCells.swift; sourceTree = "<group>"; };
 		3E78ECFE1B8F9BD800F1B9EE /* DetailObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailObject.swift; sourceTree = "<group>"; };
 		3E79D01D1B7BB0CF009CF8A5 /* PRKModeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModeSlider.swift; sourceTree = "<group>"; };
 		3E7D8ECC1B73CEFB006B9440 /* MGLMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MGLMapViewController.swift; sourceTree = "<group>"; };
 		3E8035E41B714EAB0053E98A /* PRK_GMSPolyline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRK_GMSPolyline.swift; sourceTree = "<group>"; };
+		3E88CB471C1612FD0066A323 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3E8F31F61B26238900760E05 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3E8F31F81B26239A00760E05 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3E90A92D1BA9C8FF00CCEB41 /* loader.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loader.gif; sourceTree = "<group>"; };
@@ -444,12 +440,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFA8D1731A83D36F005F4054 /* libz.dylib in Frameworks */,
-				3E7499D51BB9AA26007C78AC /* GooglePlus.framework in Frameworks */,
 				BFA8D1711A83D364005F4054 /* libsqlite3.dylib in Frameworks */,
 				3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */,
 				3E0FDAC81B276A0700872667 /* ImageIO.framework in Frameworks */,
 				3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */,
-				3E7499D31BB9AA26007C78AC /* GoogleOpenSource.framework in Frameworks */,
 				3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */,
 				3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */,
 				3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */,
@@ -515,9 +509,6 @@
 				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
 				BF2891E71AFF9ED60041B04C /* FBSDKLoginKit.framework */,
 				BF2891E51AFF9DFD0041B04C /* FBSDKCoreKit.framework */,
-				3E7499D01BB9AA26007C78AC /* GoogleOpenSource.framework */,
-				3E7499D11BB9AA26007C78AC /* GooglePlus.bundle */,
-				3E7499D21BB9AA26007C78AC /* GooglePlus.framework */,
 				A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */,
 			);
 			name = Frameworks;
@@ -859,6 +850,7 @@
 		BFC7648A1A7644AC008F2B26 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3E88CB471C1612FD0066A323 /* GoogleService-Info.plist */,
 				3E90A92D1BA9C8FF00CCEB41 /* loader.gif */,
 				BFCD562F1AB99A3A008406E8 /* Fonts */,
 				BFC7648B1A7644AC008F2B26 /* Info.plist */,
@@ -1133,7 +1125,6 @@
 			files = (
 				3E6A678F1BF9083A00312BA5 /* Info.plist in Resources */,
 				3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */,
-				3E7499D41BB9AA26007C78AC /* GooglePlus.bundle in Resources */,
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */,
 				3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */,
@@ -1141,6 +1132,7 @@
 				3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 				3E20B39E1BB63A450067DA8C /* Info.plist in Resources */,
+				3E88CB481C1612FD0066A323 /* GoogleService-Info.plist in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
 				3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */,
 				3E954A5E1B6AA82E00B81738 /* Intro-Light.otf in Resources */,
@@ -1522,7 +1514,7 @@
 					"$(inherited)",
 				);
 				OTHER_SWIFT_FLAGS = "-DSNAPKIT_DEPLOYMENT_LEGACY";
-				PRODUCT_BUNDLE_IDENTIFIER = "ng.prk.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "ng.prk.prkng-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
@@ -1558,7 +1550,7 @@
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				OTHER_SWIFT_FLAGS = "-DSNAPKIT_DEPLOYMENT_LEGACY";
-				PRODUCT_BUNDLE_IDENTIFIER = "ng.prk.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "ng.prk.prkng-ios";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;

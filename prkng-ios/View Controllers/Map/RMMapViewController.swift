@@ -350,7 +350,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             return marker
             
         case "previousCheckin":
-            let marker = RMMarker(UIImage: UIImage(named: "pin_round_p")) //"Button_line_active"
+            let marker = RMMarker(UIImage: UIImage(named: "pin_round_p")!, anchorPoint: CGPoint(x: 0.5, y: 1))
             marker.canShowCallout = true
             return marker
 

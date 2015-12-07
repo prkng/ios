@@ -46,6 +46,14 @@
 				<string>oauth-car2go-success</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.632562278503-4c9tkt6hsk8qm2c70b3cjom7vjq7158k</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>72</string>
@@ -96,6 +104,9 @@
 		<string>fbauth</string>
 		<string>fbauth2</string>
 		<string>fb-messenger-api20140430</string>
+		<string>fb-messenger-platform-20150128</string>
+		<string>fb-messenger-platform-20150218</string>
+		<string>fb-messenger-platform-20150305</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
