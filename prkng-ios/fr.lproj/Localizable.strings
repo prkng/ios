@@ -210,7 +210,7 @@
 "indoor" = "Intérieur";
 "outdoor" = "Extérieur";
 "valet" = "Valet";
-"handicap" = "Handicapé";
+"handicap" = "Accessible";
 "card" = "Carte";
 "operated_by" = "Par";
 "find_a_car" = "Véhicules";
