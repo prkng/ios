@@ -230,9 +230,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
             return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
         } else if url.relativeString ?? "" == "ng.prk.prkng-ios://oauth-car2go-success" {
             return true
-        } else  {
-            return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
-        }        
+        } else {
+            return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
+        }
     }
     
     @available(iOS 8.0, *)

@@ -80,11 +80,15 @@ struct UserOperations {
     }
     
     
-    static func loginWithGoogle(accessToken: String, completion : (user : User, apiKey : String) -> Void) {
+    static func loginWithGoogle(accessToken: String, name: String, email: String, profileImageUrl: String, completion : (user : User, apiKey : String) -> Void) {
         
         let url = APIUtility.APIConstants.rootURLString + "login"
         
-        let params = ["type" : "google", "access_token" : accessToken]
+        let params = ["type" : "google",
+            "access_token" : accessToken,
+            "name" : name,
+            "email": email,
+            "picture": profileImageUrl]
         
         request(.POST, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
