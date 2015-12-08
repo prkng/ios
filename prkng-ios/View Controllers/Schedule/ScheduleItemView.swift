@@ -27,6 +27,9 @@ class ScheduleItemView : UIView {
         case .Free:
             //.free not supported in schedule items at the moment!
             break
+        case .SnowRestriction:
+            imageView = ViewFactory.snowflakeIcon(Styles.Colors.white)
+            break
         case .Restriction:
             imageView = ViewFactory.forbiddenIcon(Styles.Colors.berry2)
             break
@@ -104,10 +107,10 @@ class ScheduleItemView : UIView {
             break
         case .Restriction:
             self.backgroundColor = Styles.Colors.red2
-            break
+        case .SnowRestriction:
+            self.backgroundColor = Styles.Colors.snowBlue
         case .TimeMax, .Paid, .PaidTimeMax:
             self.backgroundColor = Styles.Colors.midnight1
-            break
         }
         
         didSetupSubviews = true

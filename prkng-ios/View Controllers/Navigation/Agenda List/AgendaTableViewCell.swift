@@ -62,6 +62,11 @@ class AgendaTableViewCell: UITableViewCell {
             colorView.backgroundColor = Styles.Colors.cream1
             imageView = ViewFactory.authorizedIcon(Styles.Colors.petrol2)
             break
+        case .SnowRestriction:
+            hoursTextColor = Styles.Colors.snowBlue
+            colorView.backgroundColor = Styles.Colors.snowBlue
+            imageView = ViewFactory.snowflakeIcon()
+            break
         case .Restriction:
             hoursTextColor = Styles.Colors.red2
             colorView.backgroundColor = Styles.Colors.red2

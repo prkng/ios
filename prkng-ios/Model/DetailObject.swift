@@ -18,6 +18,7 @@ protocol DetailObject {
     var doesHeaderIconWiggle: Bool { get }
     var headerIconSubtitle: String { get }
     
+    var bottomLeftIconName: String? { get }
     var bottomLeftTitleText: String? { get }
     var bottomLeftPrimaryText: NSAttributedString? { get }
     var bottomLeftWidth: Int { get }
@@ -47,6 +48,7 @@ class DetailObjectLoading: DetailObject {
     var doesHeaderIconWiggle: Bool { get { return parent.doesHeaderIconWiggle } }
     var headerIconSubtitle: String { get { return parent.headerIconSubtitle } }
     
+    var bottomLeftIconName: String? { get { return nil } }
     var bottomLeftTitleText: String? { get { return nil } }
     var bottomLeftPrimaryText: NSAttributedString? { get { return nil } }
     var bottomLeftWidth: Int { get { return parent.bottomLeftWidth } }

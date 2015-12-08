@@ -20,7 +20,7 @@ extension NSTimeInterval {
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
-                return String(format: "%ldh%ld", hours, minutes)
+                return String(format: "%ldh%02ld", hours, minutes)
             } else {
                 return String(format: "%ldh", hours)
             }
@@ -44,7 +44,7 @@ extension NSTimeInterval {
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
-                return String(format: "%ld:%ld%@", hours, minutes, amPm)
+                return String(format: "%ld:%02ld%@", hours, minutes, amPm)
             } else {
                 return String(format: "%ld%@", hours, amPm)
             }
@@ -65,7 +65,7 @@ extension NSTimeInterval {
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
-                text = String(format: "%ldh%ld", hours, minutes)
+                text = String(format: "%ldh%02ld", hours, minutes)
             } else {
                 text =  String(format: "%ldh", hours)
             }
@@ -96,7 +96,7 @@ extension NSTimeInterval {
             let minutes  = Int((self / 60) % 60)
             
             if (minutes != 0) {
-                text = String(format: "%ld:%ld", hours, minutes)
+                text = String(format: "%ld:%02ld", hours, minutes)
             } else {
                 text = String(format: "%ld", hours)
             }

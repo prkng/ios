@@ -214,6 +214,7 @@ class Lot: NSObject, DetailObject {
                 
                 if nextGroupOpenPeriods.count > 0
                     && nextGroupOpenPeriods.first!.startHour == 0
+                    && nextGroupOpenPeriods.first!.endHour != 24*3600
                     && groupOpenPeriods.last!.hourlyRate == nextGroupOpenPeriods.first!.hourlyRate
                     && groupOpenPeriods.last!.dailyRate == nextGroupOpenPeriods.first!.dailyRate
                     && groupOpenPeriods.last!.maxRate == nextGroupOpenPeriods.first!.maxRate {
@@ -262,6 +263,7 @@ class Lot: NSObject, DetailObject {
     var doesHeaderIconWiggle: Bool { get { return false } }
     var headerIconSubtitle: String { get { return "info" } }
     
+    var bottomLeftIconName: String? { get { return nil } }
     var bottomLeftTitleText: String? { get { return "daily".localizedString.uppercaseString } }
     var bottomLeftPrimaryText: NSAttributedString? { get {
         let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
@@ -289,7 +291,10 @@ class Lot: NSObject, DetailObject {
             return NSAttributedString(string: "24 hour".localizedString.lowercaseString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         }
 
-        let interval = self.openTimes(true).first!.1
+        var interval = self.openTimes(true).first!.1
+        if !self.isCurrentlyOpen {
+            interval = self.currentPeriod!.endHour
+        }
         return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
         }
     }

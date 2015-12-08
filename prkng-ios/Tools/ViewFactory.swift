@@ -282,7 +282,17 @@ struct ViewFactory {
         imageView.tintColor = color
         return imageView
     }
-    
+
+    static func snowflakeIcon(color: UIColor? = nil) -> UIImageView {
+        let image = UIImage(named: "icon_snowflake")
+        let imageView = UIImageView(image: image)
+        if color != nil {
+            imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            imageView.tintColor = color
+        }
+        return imageView
+    }
+
     static func timeMaxIcon(minutes: Int, addMaxLabel: Bool, color: UIColor, secondLineString: String? = nil) -> UIImageView {
         
         let imageView = UIImageView()

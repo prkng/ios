@@ -27,6 +27,7 @@ class SpotDetailView: UIView {
     var rightTopLabel: UILabel
     var rightBottomLabel: UILabel
     var scheduleImageView: UIImageView
+    var bottomLeftImageView: UIImageView
 
     var topText: String {
         didSet {
@@ -86,6 +87,7 @@ class SpotDetailView: UIView {
         rightTopLabel = UILabel()
         rightBottomLabel = UILabel()
         scheduleImageView = UIImageView()
+        bottomLeftImageView = UIImageView()
 
         topText = ""
         
@@ -181,6 +183,9 @@ class SpotDetailView: UIView {
         
         scheduleImageView.contentMode = UIViewContentMode.Center
         bottomRightContainer.addSubview(scheduleImageView)
+
+        bottomLeftImageView.contentMode = UIViewContentMode.Center
+        bottomLeftContainer.addSubview(bottomLeftImageView)
 
         self.sendSubviewToBack(topContainerButton)
         self.sendSubviewToBack(bottomContainerButton)
@@ -281,6 +286,10 @@ class SpotDetailView: UIView {
             make.size.equalTo(CGSize(width: 22, height: Styles.Sizes.spotDetailViewBottomPortionHeight))// + 22))
             make.centerY.equalTo(self.bottomContainer)
             make.right.equalTo(self.bottomContainer.snp_centerX).multipliedBy(1.66).offset(11)
+        }
+        
+        bottomLeftImageView.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(self.bottomLeftContainer)
         }
 
         didSetupConstraints = true

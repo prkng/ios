@@ -86,6 +86,8 @@
 "search_step1_copy" = "move the map or\ntype your destination";
 
 // Spot details
+"spot_available" = "Available";
+"spot_available_always" = "At all times";
 "spot_available_for" = "AVAILABLE FOR";
 "spot_available_until" = "AVAILABLE UNTIL";
 "schedule_authorized" = "AUTHORIZED";
@@ -230,6 +232,8 @@
 "settings_residential_permit_text" = "Show your authorized permit";
 "no_mail_accounts_title" = "No Mail Accounts";
 "no_mail_accounts_body" = "Mail doesn't seem to have any accounts configured. Contact us at support@prk.ng.";
+
+"snow_removal_planned" = "Snow removal planned for";
 
 "loading" = "Loading...";
 "map_message_loading" = "Loading...";

@@ -10,10 +10,42 @@ import UIKit
 
 enum ParkingRuleType: String {
     case TimeMax = "TimeMax"
+    case SnowRestriction = "SnowRestriction"
     case Restriction = "Restriction"
     case Paid = "Paid"
     case PaidTimeMax = "PaidTimeMax"
     case Free = "Free"
+}
+
+
+func ==(lhs: ParkingRule, rhs: ParkingRule) -> Bool {
+    var agendaMatches = true
+    if lhs.agenda.count == rhs.agenda.count {
+        for i in 0..<lhs.agenda.count {
+            if lhs.agenda[i] != rhs.agenda[i] {
+                agendaMatches = false
+            }
+        }
+    }
+
+    var restrictionTypesMatch = true
+    if lhs.restrictionTypes.count == rhs.restrictionTypes.count {
+        let leftRestrictionTypes = lhs.restrictionTypes.sort()
+        let rightRestrictionTypes = rhs.restrictionTypes.sort()
+        for i in 0..<leftRestrictionTypes.count {
+            if leftRestrictionTypes[i] != rightRestrictionTypes[i] {
+                restrictionTypesMatch = false
+            }
+        }
+    }
+
+    return lhs.paidHourlyRate == rhs.paidHourlyRate
+        && lhs.code == rhs.code
+        && lhs.maxParkingTime == rhs.maxParkingTime
+        && lhs.seasonEnd == rhs.seasonEnd
+        && lhs.desc == rhs.desc
+        && restrictionTypesMatch
+        && agendaMatches
 }
 
 
@@ -44,7 +76,10 @@ class ParkingRule: NSObject {
         if bullshitRule {
             return .Free
         }
-        if restrictionTypes.contains("paid") {
+        
+        if restrictionTypes.contains("snow") {
+            return .SnowRestriction
+        } else if restrictionTypes.contains("paid") {
             if self.maxParkingTime > 0 {
                 return .PaidTimeMax
             }

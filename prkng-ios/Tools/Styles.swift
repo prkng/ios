@@ -20,6 +20,7 @@ struct Styles {
         
         static let stone = UIColor(rgba: "#EAE9E5")
         
+        static let snowBlue = UIColor(rgba: "#56A3BF")
         static let facebookBlue = UIColor(red: 69/255, green: 99/255, blue: 151/255, alpha: 1)
         
         static let turtleGreen = UIColor(rgba: "#81b347")
