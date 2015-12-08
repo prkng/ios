@@ -504,9 +504,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         firstSection = [alertCell]
         
         if Settings.selectedCity().name == "montreal" {
-            firstSection = [alertCell]
+            firstSection = [alertCell, residentialPermitCell]
             carSharingSection = [car2goCell, automobileCell, communautoCell]
         } else if Settings.selectedCity().name == "quebec" {
+            firstSection = [alertCell, residentialPermitCell]
             carSharingSection = [automobileCell, communautoCell]
         } else if Settings.selectedCity().name == "seattle" {
             carSharingSection = [car2goCell, zipcarCell]
