@@ -447,6 +447,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             } else {
                 detailView.scheduleImageView.image = UIImage()
             }
+            if let iconName = detailObject!.bottomLeftIconName {
+                detailView.bottomLeftImageView.image = UIImage(named:iconName)
+            } else {
+                detailView.bottomLeftImageView.image = UIImage()
+            }
             detailView.leftTopLabel.text = detailObject!.bottomLeftTitleText
                 
 

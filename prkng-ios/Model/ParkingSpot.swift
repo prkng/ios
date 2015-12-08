@@ -59,7 +59,24 @@ class ParkingSpot: NSObject, DetailObject {
         }
     }
     
-    var bottomLeftTitleText: String? { get { return "hourly".localizedString.uppercaseString } }
+    var bottomLeftIconName: String? { get {
+        if let next = self.nextRule {
+            if next.ruleType == .SnowRestriction {
+                return "icon_snowflake"
+            }
+        }
+        return nil
+        }
+    }
+    var bottomLeftTitleText: String? { get {
+        if let next = self.nextRule {
+            if next.ruleType == .SnowRestriction {
+                return nil
+            }
+        }
+        return "hourly".localizedString.uppercaseString
+        }
+    }
     var bottomLeftPrimaryText: NSAttributedString? { get {
         
         switch self.currentlyActiveRuleType {
@@ -75,13 +92,31 @@ class ParkingSpot: NSObject, DetailObject {
         
         }
     }
-    var bottomLeftWidth: Int { get { return UIScreen.mainScreen().bounds.width == 320 ? 100 : 110 } }
+    var bottomLeftWidth: Int { get {
+        if let next = self.nextRule {
+            if next.ruleType == .SnowRestriction {
+                return 95
+            }
+        }
+        return UIScreen.mainScreen().bounds.width == 320 ? 100 : 110
+        }
+    }
     
     var bottomRightTitleText: String { get {
+        if let next = self.nextRule {
+            if next.ruleType == .SnowRestriction {
+                return "snow_removal_planned".localizedString.uppercaseString
+            }
+        }
         switch self.currentlyActiveRuleType {
         case .Paid:
             return "metered".localizedString.uppercaseString
         default:
+            
+            if self.isAlwaysAuthorized() {
+                return "spot_available".localizedString.uppercaseString
+            }
+
             let interval = self.availableTimeInterval()
             
             if (interval > 2*3600) { // greater than 2 hours = show available until... by default
@@ -100,6 +135,13 @@ class ParkingSpot: NSObject, DetailObject {
             let interval = self.currentlyActiveRuleEndTime
             return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
         default:
+            
+            if self.isAlwaysAuthorized() {
+                let attrs = [NSFontAttributeName: Styles.Fonts.h2rVariable]
+                let attributedString = NSMutableAttributedString(string: "spot_available_always".localizedString, attributes: attrs)
+                return attributedString
+            }
+            
             let interval = self.availableTimeInterval()
             
             if (interval > 2*3600) { // greater than 2 hours = show available until... by default
@@ -111,9 +153,23 @@ class ParkingSpot: NSObject, DetailObject {
         }
         }
     }
-    var bottomRightIconName: String? { get { return "btn_schedule" } }
+    var bottomRightIconName: String? { get {
+        if let next = self.nextRule {
+            if next.ruleType == .SnowRestriction {
+                return nil
+            }
+        }
+        return "btn_schedule"
+        }
+    }
     
-    var showsBottomLeftContainer: Bool { get { return self.currentlyActiveRuleType == .Paid  || self.currentlyActiveRuleType == .PaidTimeMax} }
+    var showsBottomLeftContainer: Bool { get {
+        if let next = self.nextRule {
+            if next.ruleType == .SnowRestriction {
+                return true
+            }
+        }
+        return self.currentlyActiveRuleType == .Paid  || self.currentlyActiveRuleType == .PaidTimeMax} }
 
     //MARK- Hashable
     override var hashValue: Int { get { return Int(identifier)! } }
@@ -313,6 +369,8 @@ class ParkingSpot: NSObject, DetailObject {
         return availableTimeInterval(currentSecondsSinceDayStart)
     }
 
+    private static let alwaysAuthorizedInterval = 3600*24*7
+
     //returns the closest future time that this parking spot is available until
     //returns -1 if we are in a restriction
     //returns 1 week from now if there are no restrictions whatsoever
@@ -380,9 +438,13 @@ class ParkingSpot: NSObject, DetailObject {
             }
         }
         
-        smallestTime = smallestTime == Int.max ? 3600*24*7 : smallestTime
+        smallestTime = smallestTime == Int.max ? ParkingSpot.alwaysAuthorizedInterval : smallestTime
         
         return NSTimeInterval(smallestTime)   
+    }
+    
+    func isAlwaysAuthorized() -> Bool {
+        return availableTimeInterval() == NSTimeInterval(ParkingSpot.alwaysAuthorizedInterval)
     }
     
     // returns an structure that looks like...
@@ -438,35 +500,47 @@ class ParkingSpot: NSObject, DetailObject {
         activeRules.sortInPlace({ (first: ParkingRule, second: ParkingRule) -> Bool in
             switch (first.ruleType, second.ruleType) {
                 
-            case (.Restriction, .Free):         return true
-            case (.Restriction, .Restriction):  return true
-            case (.Restriction, .Paid):         return true
-            case (.Restriction, .TimeMax):      return true
-            case (.Restriction, .PaidTimeMax):  return true
-                
-            case (.PaidTimeMax, .Free):         return true
-            case (.PaidTimeMax, .Restriction):  return false
-            case (.PaidTimeMax, .Paid):         return true
-            case (.PaidTimeMax, .TimeMax):      return true
-            case (.PaidTimeMax, .PaidTimeMax):  return true
+            case (.SnowRestriction, .Free):             return true
+            case (.SnowRestriction, .SnowRestriction):  return true
+            case (.SnowRestriction, .Restriction):      return true
+            case (.SnowRestriction, .Paid):             return true
+            case (.SnowRestriction, .TimeMax):          return true
+            case (.SnowRestriction, .PaidTimeMax):      return true
 
-            case (.Paid, .Free):                return true
-            case (.Paid, .Restriction):         return false
-            case (.Paid, .Paid):                return true
-            case (.Paid, .TimeMax):             return true
-            case (.Paid, .PaidTimeMax):         return false
+            case (.Restriction, .Free):                 return true
+            case (.Restriction, .SnowRestriction):      return false
+            case (.Restriction, .Restriction):          return true
+            case (.Restriction, .Paid):                 return true
+            case (.Restriction, .TimeMax):              return true
+            case (.Restriction, .PaidTimeMax):          return true
                 
-            case (.TimeMax, .Free):             return true
-            case (.TimeMax, .Restriction):      return false
-            case (.TimeMax, .Paid):             return false
-            case (.TimeMax, .TimeMax):          return true
-            case (.TimeMax, .PaidTimeMax):      return false
+            case (.PaidTimeMax, .Free):                 return true
+            case (.PaidTimeMax, .SnowRestriction):      return false
+            case (.PaidTimeMax, .Restriction):          return false
+            case (.PaidTimeMax, .Paid):                 return true
+            case (.PaidTimeMax, .TimeMax):              return true
+            case (.PaidTimeMax, .PaidTimeMax):          return true
+
+            case (.Paid, .Free):                        return true
+            case (.Paid, .SnowRestriction):             return false
+            case (.Paid, .Restriction):                 return false
+            case (.Paid, .Paid):                        return true
+            case (.Paid, .TimeMax):                     return true
+            case (.Paid, .PaidTimeMax):                 return false
                 
-            case (.Free, .Free):                return true
-            case (.Free, .Restriction):         return false
-            case (.Free, .Paid):                return false
-            case (.Free, .TimeMax):             return false
-            case (.Free, .PaidTimeMax):         return false
+            case (.TimeMax, .Free):                     return true
+            case (.TimeMax, .SnowRestriction):          return false
+            case (.TimeMax, .Restriction):              return false
+            case (.TimeMax, .Paid):                     return false
+            case (.TimeMax, .TimeMax):                  return true
+            case (.TimeMax, .PaidTimeMax):              return false
+                
+            case (.Free, .Free):                        return true
+            case (.Free, .SnowRestriction):             return false
+            case (.Free, .Restriction):                 return false
+            case (.Free, .Paid):                        return false
+            case (.Free, .TimeMax):                     return false
+            case (.Free, .PaidTimeMax):                 return false
                 
             }
         })
@@ -493,6 +567,21 @@ class ParkingSpot: NSObject, DetailObject {
         }
 
         return endTime
+    }
+    
+    var nextRule: ParkingRule? {
+        let scheduleItems = ScheduleHelper.getScheduleItems(self)
+        let currentRule = self.currentlyActiveRule
+        for i in 0..<scheduleItems.count {
+            let item = scheduleItems[i]
+            //...the first matching rule...
+            if item.rule == currentRule {
+                //take the next rule, or if we're at the end then wrap it
+                let nextItem = scheduleItems[(i+1)%scheduleItems.count]
+                return nextItem.rule
+            }
+        }
+        return scheduleItems.first?.rule ?? nil
     }
 }
 

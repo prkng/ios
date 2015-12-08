@@ -496,7 +496,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 //        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
 
-        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: CarSharingOperations.Car2Go.isLoggedIn(), switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "loginWithCar2Go")
+        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: nil, switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "loginWithCar2Go")
         let automobileCell = SettingsCell(titleText: "Automobile", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideAutomobile(), parentVC: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
         let communautoCell = SettingsCell(titleText: "Communauto", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideCommunauto(), parentVC: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
         let zipcarCell = SettingsCell(titleText: "Zipcar", signedIn: nil, switchValue: !Settings.hideZipcar(), parentVC: self, switchSelector: "hideZipcarValueChanged")
