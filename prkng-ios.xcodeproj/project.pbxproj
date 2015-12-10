@@ -51,22 +51,6 @@
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
-		3E6A678D1BF9083A00312BA5 /* Dictionary+OAuthSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A677C1BF9083A00312BA5 /* Dictionary+OAuthSwift.swift */; };
-		3E6A678E1BF9083A00312BA5 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A677D1BF9083A00312BA5 /* HMAC.swift */; };
-		3E6A678F1BF9083A00312BA5 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3E6A677E1BF9083A00312BA5 /* Info.plist */; };
-		3E6A67901BF9083A00312BA5 /* Int+OAuthSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A677F1BF9083A00312BA5 /* Int+OAuthSwift.swift */; };
-		3E6A67911BF9083A00312BA5 /* NSData+OAuthSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67801BF9083A00312BA5 /* NSData+OAuthSwift.swift */; };
-		3E6A67921BF9083A00312BA5 /* NSURL+OAuthSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67811BF9083A00312BA5 /* NSURL+OAuthSwift.swift */; };
-		3E6A67931BF9083A00312BA5 /* OAuth1Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67821BF9083A00312BA5 /* OAuth1Swift.swift */; };
-		3E6A67941BF9083A00312BA5 /* OAuth2Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67831BF9083A00312BA5 /* OAuth2Swift.swift */; };
-		3E6A67951BF9083A00312BA5 /* OAuthSwiftClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67851BF9083A00312BA5 /* OAuthSwiftClient.swift */; };
-		3E6A67961BF9083A00312BA5 /* OAuthSwiftCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67861BF9083A00312BA5 /* OAuthSwiftCredential.swift */; };
-		3E6A67971BF9083A00312BA5 /* OAuthSwiftHTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67871BF9083A00312BA5 /* OAuthSwiftHTTPRequest.swift */; };
-		3E6A67981BF9083A00312BA5 /* OAuthSwiftURLHandlerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67881BF9083A00312BA5 /* OAuthSwiftURLHandlerType.swift */; };
-		3E6A67991BF9083A00312BA5 /* OAuthWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A67891BF9083A00312BA5 /* OAuthWebViewController.swift */; };
-		3E6A679A1BF9083A00312BA5 /* SHA1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A678A1BF9083A00312BA5 /* SHA1.swift */; };
-		3E6A679B1BF9083A00312BA5 /* String+OAuthSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A678B1BF9083A00312BA5 /* String+OAuthSwift.swift */; };
-		3E6A679C1BF9083A00312BA5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A678C1BF9083A00312BA5 /* Utils.swift */; };
 		3E6B91491BA896C4006FB4B3 /* PRKDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6B91481BA896C4006FB4B3 /* PRKDialogViewController.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
@@ -266,23 +250,6 @@
 		3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
 		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModalViewController.swift; sourceTree = "<group>"; };
-		3E6A677C1BF9083A00312BA5 /* Dictionary+OAuthSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+OAuthSwift.swift"; sourceTree = "<group>"; };
-		3E6A677D1BF9083A00312BA5 /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
-		3E6A677E1BF9083A00312BA5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3E6A677F1BF9083A00312BA5 /* Int+OAuthSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Int+OAuthSwift.swift"; sourceTree = "<group>"; };
-		3E6A67801BF9083A00312BA5 /* NSData+OAuthSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSData+OAuthSwift.swift"; sourceTree = "<group>"; };
-		3E6A67811BF9083A00312BA5 /* NSURL+OAuthSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSURL+OAuthSwift.swift"; sourceTree = "<group>"; };
-		3E6A67821BF9083A00312BA5 /* OAuth1Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth1Swift.swift; sourceTree = "<group>"; };
-		3E6A67831BF9083A00312BA5 /* OAuth2Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuth2Swift.swift; sourceTree = "<group>"; };
-		3E6A67841BF9083A00312BA5 /* OAuthSwift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OAuthSwift.h; sourceTree = "<group>"; };
-		3E6A67851BF9083A00312BA5 /* OAuthSwiftClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthSwiftClient.swift; sourceTree = "<group>"; };
-		3E6A67861BF9083A00312BA5 /* OAuthSwiftCredential.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthSwiftCredential.swift; sourceTree = "<group>"; };
-		3E6A67871BF9083A00312BA5 /* OAuthSwiftHTTPRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthSwiftHTTPRequest.swift; sourceTree = "<group>"; };
-		3E6A67881BF9083A00312BA5 /* OAuthSwiftURLHandlerType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthSwiftURLHandlerType.swift; sourceTree = "<group>"; };
-		3E6A67891BF9083A00312BA5 /* OAuthWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthWebViewController.swift; sourceTree = "<group>"; };
-		3E6A678A1BF9083A00312BA5 /* SHA1.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SHA1.swift; sourceTree = "<group>"; };
-		3E6A678B1BF9083A00312BA5 /* String+OAuthSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+OAuthSwift.swift"; sourceTree = "<group>"; };
-		3E6A678C1BF9083A00312BA5 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		3E6B91481BA896C4006FB4B3 /* PRKDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKDialogViewController.swift; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
@@ -558,30 +525,6 @@
 				3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */,
 			);
 			path = Modal;
-			sourceTree = "<group>";
-		};
-		3E6A677B1BF9083A00312BA5 /* OAuthSwift */ = {
-			isa = PBXGroup;
-			children = (
-				3E6A677C1BF9083A00312BA5 /* Dictionary+OAuthSwift.swift */,
-				3E6A677D1BF9083A00312BA5 /* HMAC.swift */,
-				3E6A677E1BF9083A00312BA5 /* Info.plist */,
-				3E6A677F1BF9083A00312BA5 /* Int+OAuthSwift.swift */,
-				3E6A67801BF9083A00312BA5 /* NSData+OAuthSwift.swift */,
-				3E6A67811BF9083A00312BA5 /* NSURL+OAuthSwift.swift */,
-				3E6A67821BF9083A00312BA5 /* OAuth1Swift.swift */,
-				3E6A67831BF9083A00312BA5 /* OAuth2Swift.swift */,
-				3E6A67841BF9083A00312BA5 /* OAuthSwift.h */,
-				3E6A67851BF9083A00312BA5 /* OAuthSwiftClient.swift */,
-				3E6A67861BF9083A00312BA5 /* OAuthSwiftCredential.swift */,
-				3E6A67871BF9083A00312BA5 /* OAuthSwiftHTTPRequest.swift */,
-				3E6A67881BF9083A00312BA5 /* OAuthSwiftURLHandlerType.swift */,
-				3E6A67891BF9083A00312BA5 /* OAuthWebViewController.swift */,
-				3E6A678A1BF9083A00312BA5 /* SHA1.swift */,
-				3E6A678B1BF9083A00312BA5 /* String+OAuthSwift.swift */,
-				3E6A678C1BF9083A00312BA5 /* Utils.swift */,
-			);
-			path = OAuthSwift;
 			sourceTree = "<group>";
 		};
 		3E6CC96C1B309A64009EA460 /* KMLParser */ = {
@@ -959,7 +902,6 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				3E6A677B1BF9083A00312BA5 /* OAuthSwift */,
 				3E90A92F1BA9C9B200CCEB41 /* GiFHUD */,
 				BF3282641B384732002ED8DF /* MaterialKit */,
 				BF5E84F81B07B3A000EC6AD2 /* AFDateHelper */,
@@ -1123,7 +1065,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E6A678F1BF9083A00312BA5 /* Info.plist in Resources */,
 				3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */,
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */,
@@ -1220,7 +1161,6 @@
 				3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */,
 				3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
-				3E6A67981BF9083A00312BA5 /* OAuthSwiftURLHandlerType.swift in Sources */,
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
 				BF1C2B591AFCBBA00070085A /* AuthUtility.swift in Sources */,
 				BF2A40A71AC468450055D785 /* SpotDetailView.swift in Sources */,
@@ -1237,7 +1177,6 @@
 				3E9362801BD57F9E001A8EF8 /* CarShareLot.swift in Sources */,
 				3E568EA21B6C159100E744FA /* PRKPopupViewController.swift in Sources */,
 				3E7523071B693DF70096755F /* MapMessageView.swift in Sources */,
-				3E6A67931BF9083A00312BA5 /* OAuth1Swift.swift in Sources */,
 				BF5E84EB1B06053B00EC6AD2 /* MyCarNoCheckinViewController.swift in Sources */,
 				3E5FB36B1BD94E260002D705 /* DVSwitch.m in Sources */,
 				BF32826C1B3847AE002ED8DF /* MKButton.swift in Sources */,
@@ -1246,7 +1185,6 @@
 				3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */,
 				3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
-				3E6A67991BF9083A00312BA5 /* OAuthWebViewController.swift in Sources */,
 				BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */,
 				3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */,
 				BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */,
@@ -1264,7 +1202,6 @@
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
 				BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */,
 				3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */,
-				3E6A679B1BF9083A00312BA5 /* String+OAuthSwift.swift in Sources */,
 				BF6981B21B30701600E0EF62 /* Checkin.swift in Sources */,
 				BF5E84FA1B07B3D900EC6AD2 /* AF+Date+Extension.swift in Sources */,
 				3E54B3B31BCF050F00879528 /* City.swift in Sources */,
@@ -1283,11 +1220,8 @@
 				BF982C971B149BB100A635A1 /* TutorialViewController.swift in Sources */,
 				BF899B031AF1566900E42DE8 /* DateSelectionView.swift in Sources */,
 				3E78ECFF1B8F9BD800F1B9EE /* DetailObject.swift in Sources */,
-				3E6A67911BF9083A00312BA5 /* NSData+OAuthSwift.swift in Sources */,
 				3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
-				3E6A678D1BF9083A00312BA5 /* Dictionary+OAuthSwift.swift in Sources */,
-				3E6A679C1BF9083A00312BA5 /* Utils.swift in Sources */,
 				3E20B39C1BB63A450067DA8C /* Debugging.swift in Sources */,
 				3E41F0511BBEFA43004A4A60 /* DirectionsAction.swift in Sources */,
 				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,
@@ -1297,7 +1231,6 @@
 				3EBCF0591B67FA8E00E925A0 /* CarSharingInfoViewController.swift in Sources */,
 				3EAF217C1BF2534000C137DA /* LoginPermissionsViewController.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
-				3E6A67951BF9083A00312BA5 /* OAuthSwiftClient.swift in Sources */,
 				3E20B39D1BB63A450067DA8C /* EdgeInsets.swift in Sources */,
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
 				BF4568001AD85722006D7C23 /* SearchOperations.swift in Sources */,
@@ -1308,9 +1241,7 @@
 				BF2891EA1AFFC0590041B04C /* User.swift in Sources */,
 				3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */,
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,
-				3E6A678E1BF9083A00312BA5 /* HMAC.swift in Sources */,
 				3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */,
-				3E6A67901BF9083A00312BA5 /* Int+OAuthSwift.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
 				3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */,
@@ -1329,22 +1260,18 @@
 				3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */,
 				BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */,
 				BF899B0C1AF223C500E42DE8 /* SelectionControl.swift in Sources */,
-				3E6A67941BF9083A00312BA5 /* OAuth2Swift.swift in Sources */,
 				3EA8126D1B977E58002987EC /* LotViewController.swift in Sources */,
 				3E8035E51B714EAB0053E98A /* PRK_GMSPolyline.swift in Sources */,
 				BFD0101C1AC1C73600C59B28 /* TabController.swift in Sources */,
 				BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */,
 				3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */,
 				BF9C46F51B32E30600DCF858 /* TheProjectViewController.swift in Sources */,
-				3E6A679A1BF9083A00312BA5 /* SHA1.swift in Sources */,
 				3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */,
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */,
 				3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */,
 				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
-				3E6A67921BF9083A00312BA5 /* NSURL+OAuthSwift.swift in Sources */,
 				BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */,
-				3E6A67971BF9083A00312BA5 /* OAuthSwiftHTTPRequest.swift in Sources */,
 				3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
@@ -1358,7 +1285,6 @@
 				3EBDC5EF1B2945E400CB4A68 /* MapViewController.swift in Sources */,
 				3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */,
 				3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */,
-				3E6A67961BF9083A00312BA5 /* OAuthSwiftCredential.swift in Sources */,
 				3E20B3991BB63A450067DA8C /* ConstraintItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -467,18 +467,16 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
     }
 
-    func loginWithCar2Go() {
-        CarSharingOperations.Car2Go.getAndSaveCar2GoThing { (thing) -> Void in
-            if thing == nil {
-                let alert = UIAlertView()
-                alert.title = "OMG"
-                alert.message = "Could not sign you in :("
-                alert.addButtonWithTitle("OK")
-                alert.show()
+    func handleCar2GoSignInButtonTap() {
+        CarSharingOperations.Car2Go.isLoggedInAsynchronous(shouldValidateToken: true, completion: { (loggedIn) -> Void in
+            if loggedIn {
+                CarSharingOperations.Car2Go.logout()
+                self.tableView.reloadData()
             } else {
-                //logout
+                CarSharingOperations.Car2Go.getAndSaveCar2GoToken({ (token, tokenSecret) -> Void in
+                })
             }
-        }
+        })
     }
 
     //MARK: UITableViewDataSource
@@ -496,7 +494,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 //        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
 
-        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: nil, switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "loginWithCar2Go")
+        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: CarSharingOperations.Car2Go.isLoggedInSynchronous(shouldValidateToken: false), switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "handleCar2GoSignInButtonTap")
         let automobileCell = SettingsCell(titleText: "Automobile", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideAutomobile(), parentVC: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
         let communautoCell = SettingsCell(titleText: "Communauto", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideCommunauto(), parentVC: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
         let zipcarCell = SettingsCell(titleText: "Zipcar", signedIn: nil, switchValue: !Settings.hideZipcar(), parentVC: self, switchSelector: "hideZipcarValueChanged")

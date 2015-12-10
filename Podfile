@@ -17,7 +17,6 @@ pod 'GoogleMaps'
 pod 'Google/Analytics'
 pod 'Google/SignIn'
 pod 'SevenSwitch', '~>1.4'
-pod 'AFOAuth1Client'
 pod 'TDOAuth'
 #pod 'SZTextView' #no longer used, gives a uitextview with placeholder text
 

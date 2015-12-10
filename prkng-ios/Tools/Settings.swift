@@ -23,6 +23,9 @@ struct Settings {
     static let RESERVED_CARSHARE_SAVED_TIME_KEY = "prkng_reserved_carshare_saved_time"
     static let AUTOMOBILE_PROVIDER_NO_KEY = "prkng_automobile_provider_no"
     static let COMMUNAUTO_CUSTOMER_ID_KEY = "prkng_communauto_customer_id"
+    static let CAR2GO_BOOKING_ID_KEY = "prkng_car2go_booking_id"
+    static let CAR2GO_ACCESS_TOKEN_KEY = "prkng_car2go_access_token"
+    static let CAR2GO_ACCESS_TOKEN_SECRET_KEY = "prkng_car2go_access_token_secret"
     static let HIDE_CAR2GO_KEY = "prkng_hide_car2go"
     static let HIDE_COMMUNAUTO_KEY = "prkng_hide_communauto"
     static let HIDE_AUTOMOBILE_KEY = "prkng_hide_automobile"
@@ -605,6 +608,30 @@ struct Settings {
 
     static func setAutomobileProviderNo(providerNo: String?) {
         NSUserDefaults.standardUserDefaults().setObject(providerNo, forKey: AUTOMOBILE_PROVIDER_NO_KEY)
+    }
+
+    static func car2GoBookingID() -> String? {
+        return NSUserDefaults.standardUserDefaults().stringForKey(CAR2GO_BOOKING_ID_KEY)
+    }
+
+    static func car2GoAccessToken() -> String? {
+        return NSUserDefaults.standardUserDefaults().stringForKey(CAR2GO_ACCESS_TOKEN_KEY)
+    }
+    
+    static func car2GoAccessTokenSecret() -> String? {
+        return NSUserDefaults.standardUserDefaults().stringForKey(CAR2GO_ACCESS_TOKEN_SECRET_KEY)
+    }
+    
+    static func setCar2GoBookingID(bookingID: String?) {
+        NSUserDefaults.standardUserDefaults().setObject(bookingID, forKey: CAR2GO_BOOKING_ID_KEY)
+    }
+
+    static func setCar2GoAccessToken(token: String?) {
+        NSUserDefaults.standardUserDefaults().setObject(token, forKey: CAR2GO_ACCESS_TOKEN_KEY)
+    }
+
+    static func setCar2GoAccessTokenSecret(tokenSecret: String?) {
+        NSUserDefaults.standardUserDefaults().setObject(tokenSecret, forKey: CAR2GO_ACCESS_TOKEN_SECRET_KEY)
     }
 
     static func hideCar2Go() -> Bool {

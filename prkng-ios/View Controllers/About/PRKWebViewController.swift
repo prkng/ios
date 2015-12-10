@@ -18,6 +18,7 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     private var frenchUrl: String
     
     var didFinishLoadingCallback: ((PRKWebViewController, UIWebView) -> ())?
+    var willLoadRequestCallback: ((PRKWebViewController, NSURLRequest) -> ())?
     
     private let backButton = ViewFactory.rectangularBackButton()
     private let backLabel = UILabel()
@@ -150,6 +151,11 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     func webViewDidFinishLoad(webView: UIWebView) {
         SVProgressHUD.dismiss()
         didFinishLoadingCallback?(self, webView)
+    }
+    
+    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        willLoadRequestCallback?(self, request)
+        return true
     }
     
     

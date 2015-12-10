@@ -228,7 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         if (url.scheme.lowercaseString == "fb1043720578978201") {
             return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-        } else if url.relativeString ?? "" == "ng.prk.prkng-ios://oauth-car2go-success" {
+        } else if (url.relativeString ?? "").containsString(CarSharingOperations.Car2Go.callbackURLString) {
             return true
         } else {
             return GIDSignIn.sharedInstance().handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
