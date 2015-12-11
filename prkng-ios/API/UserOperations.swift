@@ -223,7 +223,8 @@ struct UserOperations {
         let params: [String : AnyObject] = [
             "device_type" : deviceType,
             "device_id" : (deviceTokenString ?? ""),
-            "lang" : locale
+            "lang" : locale,
+            "city" : Settings.selectedCity().name
         ]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
