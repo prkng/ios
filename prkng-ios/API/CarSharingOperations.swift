@@ -504,37 +504,40 @@ class CarSharingOperations {
                 }
                 
                 if data != nil {
-                    var stringData = String(data: data!, encoding: NSUTF8StringEncoding) ?? "  "
-                    stringData = stringData[1..<stringData.length()-1]
-                    if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
-                        let json = JSON(data: properData)
-                        //if the id string is present, then return true, else return false
-                        var returnString: String?
-                        if let providerNo = json["data"][0]["ProviderNo"].string {
-                            if providerNo != "" {
-                                print("Auto-mobile ProviderNo is ", providerNo)
-                                Settings.setAutomobileProviderNo(providerNo)
-                                saveCommunautoCookies()
-                                returnString = providerNo
+                    var json = JSON(data: data!)
+                    if json == JSON.null {
+                        var stringData = String(data: data!, encoding: NSUTF8StringEncoding) ?? "  "
+                        stringData = stringData[1..<stringData.length()-1]
+                        if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
+                            json = JSON(data: properData)
+                        }
+                    }
+                    //if the id string is present, then return true, else return false
+                    var returnString: String?
+                    if let providerNo = json["data"][0]["ProviderNo"].string {
+                        if providerNo != "" {
+                            print("Auto-mobile ProviderNo is ", providerNo)
+                            Settings.setAutomobileProviderNo(providerNo)
+                            saveCommunautoCookies()
+                            returnString = providerNo
+                        }
+                    }
+                    if let customerID = json["data"][0]["CustomerID"].string {
+                        if customerID != "" {
+                            if (Settings.communautoCustomerID() ?? "") != customerID {
+                                AnalyticsOperations.carShareLoginEvent("communauto-auto-mobile", completion: { (completed) -> Void in })
+                            }
+                            print("Communauto/Auto-mobile Customer ID is ", customerID)
+                            Settings.setCommunautoCustomerID(customerID)
+                            saveCommunautoCookies()
+                            if returnString == nil {
+                                returnString = customerID
                             }
                         }
-                        if let customerID = json["data"][0]["CustomerID"].string {
-                            if customerID != "" {
-                                if (Settings.communautoCustomerID() ?? "") != customerID {
-                                    AnalyticsOperations.carShareLoginEvent("communauto-auto-mobile", completion: { (completed) -> Void in })
-                                }
-                                print("Communauto/Auto-mobile Customer ID is ", customerID)
-                                Settings.setCommunautoCustomerID(customerID)
-                                saveCommunautoCookies()
-                                if returnString == nil {
-                                    returnString = customerID
-                                }
-                            }
-                        }
-                        if returnString != nil {
-                            completion(returnString)
-                            return
-                        }
+                    }
+                    if returnString != nil {
+                        completion(returnString)
+                        return
                     }
                 }
                 
