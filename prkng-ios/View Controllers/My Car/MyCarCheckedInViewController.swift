@@ -436,6 +436,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 }
                 break
             }
+            if spot!.nextRule?.ruleType == .SnowRestriction {
+                logoView.image = UIImage(named: "icon_checkin_snowflake")
+                availableTitleLabel.text = spot!.bottomRightTitleText
+                availableTimeLabel.attributedText = spot!.bottomRightPrimaryText
+            }
+            
         }
         
         //update the values every 2 seconds
