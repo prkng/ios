@@ -39,6 +39,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     var delegate: MyCarAbstractViewControllerDelegate?
     
     private var timer: NSTimer?
+    private var didAnimate = false
     
     private let SMALL_VERTICAL_MARGIN = 5
     private let MEDIUM_VERTICAL_MARGIN = 10
@@ -156,12 +157,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             
             if let savedSpot = Settings.checkedInSpot() {
                 setSpot(savedSpot)
-            } else {
-                if let spotId = Settings.checkedInSpotId() {
-                    SpotOperations.getSpotDetails(spotId, completion: { (spot) -> Void in
-                        setSpot(spot)
-                    })
-                }
+            }
+            if let spotId = Settings.checkedInSpotId() {
+                SpotOperations.getSpotDetails(spotId, completion: { (spot) -> Void in
+                    setSpot(spot)
+                })
             }
             
         } else {
@@ -677,12 +677,15 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func animateAndShow() {
         
+        if didAnimate {
+            return
+        }
+        
         let logoFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
         logoFadeInAnimation.fromValue = NSNumber(int: 0)
         logoFadeInAnimation.toValue = NSNumber(int: 1)
         logoFadeInAnimation.duration = 0.3
         logoView.layer.pop_addAnimation(logoFadeInAnimation, forKey: "logoFadeInAnimation")
-
         
         let logoSpringAnimation = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY)
         logoSpringAnimation.fromValue = NSValue(CGPoint: CGPoint(x: 0.5, y: 0.5))
@@ -705,6 +708,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         self.containerView.layer.pop_addAnimation(containerFadeInAnimation, forKey: "containerFadeInAnimation")
 
+        self.didAnimate = true
     }
     
 }
