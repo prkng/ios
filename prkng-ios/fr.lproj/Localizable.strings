@@ -86,8 +86,9 @@
 "search_step1_copy" = "naviguez la carte ou\nentrez votre destination";
 
 // Spot details
-"spot_available" = "Autorisé";
-"spot_available_always" = "En tout temps";
+"spot_allowed" = "Autorisé";
+"spot_available" = "Disponible";
+"spot_at_all_times" = "En tout temps";
 "spot_available_for" = "DISPONIBLE POUR";
 "spot_available_until" = "DISPONIBLE JUSQU'À";
 "schedule_authorized" = "AUTORISÉ";

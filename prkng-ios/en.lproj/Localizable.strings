@@ -86,8 +86,9 @@
 "search_step1_copy" = "move the map or\ntype your destination";
 
 // Spot details
+"spot_allowed" = "Allowed";
 "spot_available" = "Available";
-"spot_available_always" = "At all times";
+"spot_at_all_times" = "At all times";
 "spot_available_for" = "AVAILABLE FOR";
 "spot_available_until" = "AVAILABLE UNTIL";
 "schedule_authorized" = "AUTHORIZED";

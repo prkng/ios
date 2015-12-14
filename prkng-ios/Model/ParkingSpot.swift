@@ -114,7 +114,7 @@ class ParkingSpot: NSObject, DetailObject {
         default:
             
             if self.isAlwaysAuthorized() {
-                return "spot_available".localizedString.uppercaseString
+                return "spot_allowed".localizedString.uppercaseString
             }
 
             let interval = self.availableTimeInterval()
@@ -138,7 +138,7 @@ class ParkingSpot: NSObject, DetailObject {
             
             if self.isAlwaysAuthorized() {
                 let attrs = [NSFontAttributeName: Styles.Fonts.h2rVariable]
-                let attributedString = NSMutableAttributedString(string: "spot_available_always".localizedString, attributes: attrs)
+                let attributedString = NSMutableAttributedString(string: "spot_at_all_times".localizedString, attributes: attrs)
                 return attributedString
             }
             

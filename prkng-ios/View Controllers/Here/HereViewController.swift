@@ -390,7 +390,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 
                 if (Settings.notificationTime() > 0) {
                     Settings.cancelScheduledNotifications()
-                    if activeSpot.currentlyActiveRuleType != .Paid && activeSpot.currentlyActiveRuleType != .PaidTimeMax {
+                    if activeSpot.currentlyActiveRuleType != .Paid && activeSpot.currentlyActiveRuleType != .PaidTimeMax && !activeSpot.isAlwaysAuthorized() {
                         Settings.scheduleNotification(NSDate(timeIntervalSinceNow: activeSpot.availableTimeInterval() - NSTimeInterval(Settings.notificationTime() * 60)))
                     }
                 }
@@ -661,6 +661,8 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     func didTapMapMessage() {
         if (mapMessageView.mapMessageLabel.text ?? "") == "map_message_too_zoomed_out".localizedString {
             self.delegate?.setDefaultMapZoom()
+        } else if (mapMessageView.mapMessageLabel.text ?? "") == "map_message_no_carsharing".localizedString {
+            self.delegate?.loadSettingsTab()
         }
     }
 
