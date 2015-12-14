@@ -10,6 +10,8 @@ import UIKit
 
 struct UserOperations {
     
+    static var sharedInstance = UserOperations()
+    var deviceTokenString: String?
     
     static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User?, apiKey : String?, error: NSError?) -> Void) {
         
@@ -215,6 +217,8 @@ struct UserOperations {
     
     static func helloItsMe(deviceTokenString: String?, completion : ((completed : Bool) -> Void)) {
         
+        UserOperations.sharedInstance.deviceTokenString = deviceTokenString
+        
         let url = APIUtility.APIConstants.rootURLString + "hello"
         
         let locale = NSLocale.currentLocale().objectForKey(NSLocaleLanguageCode) as? String ?? ""
@@ -224,7 +228,8 @@ struct UserOperations {
             "device_type" : deviceType,
             "device_id" : (deviceTokenString ?? ""),
             "lang" : locale,
-            "city" : Settings.selectedCity().name
+            "city" : Settings.selectedCity().name,
+            "push_on_temp_restriction" : Settings.shouldFilterForSnowRemoval() ? "true" : "false"
         ]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
@@ -234,5 +239,8 @@ struct UserOperations {
         }
 
     }
-    
+    func helloItsMe(completion : ((completed : Bool) -> Void)) {
+        UserOperations.helloItsMe(deviceTokenString, completion: completion)
+    }
+
 }

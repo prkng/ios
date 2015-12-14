@@ -349,6 +349,8 @@ struct Settings {
     static func setShouldFilterForSnowRemoval(value: Bool) {
         DDLoggerWrapper.logInfo("Setting snow removal value " + (value ? "ON" : "OFF"))
         NSUserDefaults.standardUserDefaults().setBool(value, forKey: SNOW_REMOVAL_FILTER_KEY)
+        UserOperations.sharedInstance.helloItsMe { (completed) -> Void in
+        }
     }
 
     static func shouldFilterForSnowRemoval() -> Bool {
