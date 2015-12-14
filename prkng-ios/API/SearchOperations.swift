@@ -120,7 +120,7 @@ class SearchOperations {
         let lat = String(stringInterpolationSegment: Settings.selectedCity().coordinate.latitude)
         let lon = String(stringInterpolationSegment: Settings.selectedCity().coordinate.longitude)
 
-        let url = String(format: "https://api.mapbox.com/v4/geocode/mapbox.places/%@.json?proximity=%@,%@&access_token=pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA", escapedInput ?? "", lon, lat)
+        let url = String(format: "https://api.mapbox.com/geocoding/v5/mapbox.places/%@.json?proximity=%@,%@&access_token=pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA", escapedInput ?? "", lon, lat)
         
         let numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
