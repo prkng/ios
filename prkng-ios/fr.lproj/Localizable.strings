@@ -139,8 +139,8 @@
 "departure" = "DEPART";
 
 "max" = "max";
-"done" = "***Done";
-"clear" = "***Clear";
+"done" = "Valider";
+"clear" = "Aucun";
 
 "on_the_go" = "Déjà parti?";
 "left_this_spot_question" = "Avez-vous quitté votre place sur";
@@ -229,10 +229,10 @@
 "settings_alert_text" = "Recevez une alerte 30min avant.";
 "settings_commercial_permit" = "Vignette commerciale";
 "settings_commercial_permit_text" = "Pour véhicules autorisés.";
-"settings_snow_removal" = "***Snow Removal";
-"settings_snow_removal_text" = "***Information about snow and street availability.";
-"settings_residential_permit" = "***Residential Permit";
-"settings_residential_permit_text" = "***Show your authorized permit";
+"settings_snow_removal" = "Déneigement";
+"settings_snow_removal_text" = "Soyez informé de l'état des opérations.";
+"settings_residential_permit" = "Vignette de stationnement";
+"settings_residential_permit_text" = "Affichez les emplacements réservés.";
 "no_mail_accounts_title" = "Aucun compte courriel";
 "no_mail_accounts_body" = "Vous n’avez aucun compte courriel configuré. Contactez nous à support@prk.ng.";
 
