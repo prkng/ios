@@ -228,9 +228,9 @@
 "settings_commercial_permit" = "Commercial Permit";
 "settings_commercial_permit_text" = "For authorized vehicles only";
 "settings_snow_removal" = "Snow Removal";
-"settings_snow_removal_text" = "Information about snow and street availability";
+"settings_snow_removal_text" = "Information about upcoming operations";
 "settings_residential_permit" = "Residential Permit";
-"settings_residential_permit_text" = "Show your authorized permit";
+"settings_residential_permit_text" = "Show your authorized spots";
 "no_mail_accounts_title" = "No Mail Accounts";
 "no_mail_accounts_body" = "Mail doesn't seem to have any accounts configured. Contact us at support@prk.ng.";
 
