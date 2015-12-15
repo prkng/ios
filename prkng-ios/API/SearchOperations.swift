@@ -74,7 +74,15 @@ class SearchOperations {
         
         let url = "https://nominatim.openstreetmap.org/search"
         
-        let params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity().displayName, "country" : "Canada", "q" : input]
+        var params  = ["format" : "json", "state" : "Quebec", "city" : Settings.selectedCity().displayName, "country" : "Canada", "q" : input]
+        switch Settings.selectedCity().name {
+        case "newyork":
+            params  = ["format" : "json", "state" : "New York", "city" : Settings.selectedCity().displayName, "country" : "USA", "q" : input]
+        case "seattle":
+            params  = ["format" : "json", "state" : "Washington", "city" : Settings.selectedCity().displayName, "country" : "USA", "q" : input]
+        default:
+            break
+        }
         
         let numberFormatter = NSNumberFormatter()
         numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
@@ -161,10 +169,16 @@ class SearchOperations {
                 } else if Settings.selectedCity().name == "quebec" {
                     matchesCity = city.lowercaseString.rangeOfString("quebec") != nil
                         || city.lowercaseString.rangeOfString("québec") != nil
+                } else if Settings.selectedCity().name.containsString("newyork") {
+                    matchesCity = city.lowercaseString.containsString("newyork")
+                } else if Settings.selectedCity().name == "seattle" {
+                    matchesCity = city.lowercaseString == "seattle"
                 }
                 
                 let matchesProvince = state.lowercaseString.rangeOfString("quebec") != nil
                     || state.lowercaseString.rangeOfString("québec") != nil
+                    || state.lowercaseString.containsString("new york")
+                    || state.lowercaseString == "washington"
                 
                 let isPoint = subJson["geometry"]["type"].stringValue == "Point"
                 
