@@ -80,7 +80,11 @@ struct Settings {
         AuthUtility.saveAuthToken(nil)
         AuthUtility.saveUser(nil)
         
-        UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+        if UIApplication.sharedApplication().keyWindow!.rootViewController is FirstUseViewController {
+            return
+        } else {
+            UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+        }
     }
     
     static func tutorialPassed() -> Bool {

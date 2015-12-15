@@ -68,11 +68,21 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
     
     override func viewWillLayoutSubviews() {
         
-        // forbidden views should be on top
+        //forbidden views should be on top
         for column in columnViews {
             for view in column.subviews {
                 if let subview =  view as? ScheduleItemView {
                     if(subview.rule.ruleType == ParkingRuleType.TimeMax) {
+                        column.bringSubviewToFront(subview)
+                    }
+                }
+            }
+        }
+        //...but snow removals should be on top of them!
+        for column in columnViews {
+            for view in column.subviews {
+                if let subview =  view as? ScheduleItemView {
+                    if(subview.rule.ruleType == ParkingRuleType.SnowRestriction) {
                         column.bringSubviewToFront(subview)
                     }
                 }
