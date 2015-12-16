@@ -288,17 +288,17 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     }
     
     func showFaq() {
-        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/faq/", frenchUrl: "https://prk.ng/fr/faq/")
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/faq", frenchUrl: "https://prk.ng/fr/faq")
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
     func showTerms() {
-        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/terms/", frenchUrl: "https://prk.ng/fr/conditions/")
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/terms", frenchUrl: "https://prk.ng/fr/conditions")
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
     func showPrivacy() {
-        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/privacy", frenchUrl: "https://prk.ng/fr/privacy")
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/privacypolicy", frenchUrl: "https://prk.ng/fr/politique")
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
@@ -520,6 +520,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, switchSelector: "sendToAppStore"),
             SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, switchSelector: "showFaq"),
             SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, switchSelector: "showTerms"),
+            SettingsCell(cellType: .Basic, titleText: "privacy_policy".localizedString, parentVC: self, switchSelector: "showPrivacy"),
             SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, parentVC: self, switchSelector: "signOut")]
         
         return [("", firstSection),

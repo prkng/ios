@@ -122,7 +122,7 @@ class AboutViewController: AbstractViewController {
     }
     
     func privacyButtonTapped(sender: UIButton) {
-        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/privacy", frenchUrl: "https://prk.ng/fr/privacy")
+        let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/privacypolicy", frenchUrl: "https://prk.ng/fr/politique")
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
