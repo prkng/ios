@@ -163,6 +163,7 @@ class CityPickerViewController: AbstractViewController {
     }
 
     func didTapCityButton(sender: UIButton) {
+        parent.mapViewController.dontTrackUser()
         let cities = CityOperations.sharedInstance.availableCities
         let city = cities.filter { (city) -> Bool in
             city.displayName == sender.titleLabel?.text
