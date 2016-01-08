@@ -79,6 +79,7 @@ struct Settings {
     static func logout() {
         AuthUtility.saveAuthToken(nil)
         AuthUtility.saveUser(nil)
+        checkOut()
         
         if UIApplication.sharedApplication().keyWindow!.rootViewController is FirstUseViewController {
             return
