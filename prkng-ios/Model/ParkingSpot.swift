@@ -60,18 +60,22 @@ class ParkingSpot: NSObject, DetailObject {
     }
     
     var bottomLeftIconName: String? { get {
-        if let next = self.nextRule {
-            if next.ruleType == .SnowRestriction {
-                return "icon_snowflake"
+        if self.currentlyActiveRule.ruleType == .Free {
+            if let next = self.nextRule {
+                if next.ruleType == .SnowRestriction {
+                    return "icon_snowflake"
+                }
             }
         }
         return nil
         }
     }
     var bottomLeftTitleText: String? { get {
-        if let next = self.nextRule {
-            if next.ruleType == .SnowRestriction {
-                return nil
+        if self.currentlyActiveRule.ruleType == .Free {
+            if let next = self.nextRule {
+                if next.ruleType == .SnowRestriction {
+                    return nil
+                }
             }
         }
         return "hourly".localizedString.uppercaseString
@@ -93,9 +97,11 @@ class ParkingSpot: NSObject, DetailObject {
         }
     }
     var bottomLeftWidth: Int { get {
-        if let next = self.nextRule {
-            if next.ruleType == .SnowRestriction {
-                return 95
+        if self.currentlyActiveRule.ruleType == .Free {
+            if let next = self.nextRule {
+                if next.ruleType == .SnowRestriction {
+                    return 95
+                }
             }
         }
         return UIScreen.mainScreen().bounds.width == 320 ? 100 : 110
@@ -103,9 +109,11 @@ class ParkingSpot: NSObject, DetailObject {
     }
     
     var bottomRightTitleText: String { get {
-        if let next = self.nextRule {
-            if next.ruleType == .SnowRestriction {
-                return "snow_removal_planned".localizedString.uppercaseString
+        if self.currentlyActiveRule.ruleType == .Free {
+            if let next = self.nextRule {
+                if next.ruleType == .SnowRestriction {
+                    return "snow_removal_planned".localizedString.uppercaseString
+                }
             }
         }
         switch self.currentlyActiveRuleType {
@@ -154,9 +162,11 @@ class ParkingSpot: NSObject, DetailObject {
         }
     }
     var bottomRightIconName: String? { get {
-        if let next = self.nextRule {
-            if next.ruleType == .SnowRestriction {
-                return nil
+        if self.currentlyActiveRule.ruleType == .Free {
+            if let next = self.nextRule {
+                if next.ruleType == .SnowRestriction {
+                    return nil
+                }
             }
         }
         return "btn_schedule"
@@ -164,9 +174,11 @@ class ParkingSpot: NSObject, DetailObject {
     }
     
     var showsBottomLeftContainer: Bool { get {
-        if let next = self.nextRule {
-            if next.ruleType == .SnowRestriction {
-                return true
+        if self.currentlyActiveRule.ruleType == .Free {
+            if let next = self.nextRule {
+                if next.ruleType == .SnowRestriction {
+                    return true
+                }
             }
         }
         return self.currentlyActiveRuleType == .Paid  || self.currentlyActiveRuleType == .PaidTimeMax} }
@@ -451,7 +463,7 @@ class ParkingSpot: NSObject, DetailObject {
     // [ RULE1, RULE2, ETC]
     // where RULE1 is... [nil  , TIMEPERIOD, TIMEPERIOD, nil, nil, nil, nil]
     // ...which means... [today, tomorrow  , after-tom., etc, etc, etc, yesterday]
-    func sortedTimePeriods() -> Array<DayArray>{
+    func sortedTimePeriods() -> Array<DayArray> {
         var array : Array<DayArray> = []
         
         let today = DateUtil.dayIndexOfTheWeek()
@@ -497,53 +509,7 @@ class ParkingSpot: NSObject, DetailObject {
             }
         }
         
-        activeRules.sortInPlace({ (first: ParkingRule, second: ParkingRule) -> Bool in
-            switch (first.ruleType, second.ruleType) {
-                
-            case (.SnowRestriction, .Free):             return true
-            case (.SnowRestriction, .SnowRestriction):  return true
-            case (.SnowRestriction, .Restriction):      return true
-            case (.SnowRestriction, .Paid):             return true
-            case (.SnowRestriction, .TimeMax):          return true
-            case (.SnowRestriction, .PaidTimeMax):      return true
-
-            case (.Restriction, .Free):                 return true
-            case (.Restriction, .SnowRestriction):      return false
-            case (.Restriction, .Restriction):          return true
-            case (.Restriction, .Paid):                 return true
-            case (.Restriction, .TimeMax):              return true
-            case (.Restriction, .PaidTimeMax):          return true
-                
-            case (.PaidTimeMax, .Free):                 return true
-            case (.PaidTimeMax, .SnowRestriction):      return false
-            case (.PaidTimeMax, .Restriction):          return false
-            case (.PaidTimeMax, .Paid):                 return true
-            case (.PaidTimeMax, .TimeMax):              return true
-            case (.PaidTimeMax, .PaidTimeMax):          return true
-
-            case (.Paid, .Free):                        return true
-            case (.Paid, .SnowRestriction):             return false
-            case (.Paid, .Restriction):                 return false
-            case (.Paid, .Paid):                        return true
-            case (.Paid, .TimeMax):                     return true
-            case (.Paid, .PaidTimeMax):                 return false
-                
-            case (.TimeMax, .Free):                     return true
-            case (.TimeMax, .SnowRestriction):          return false
-            case (.TimeMax, .Restriction):              return false
-            case (.TimeMax, .Paid):                     return false
-            case (.TimeMax, .TimeMax):                  return true
-            case (.TimeMax, .PaidTimeMax):              return false
-                
-            case (.Free, .Free):                        return true
-            case (.Free, .SnowRestriction):             return false
-            case (.Free, .Restriction):                 return false
-            case (.Free, .Paid):                        return false
-            case (.Free, .TimeMax):                     return false
-            case (.Free, .PaidTimeMax):                 return false
-                
-            }
-        })
+        activeRules.sortInPlace(ParkingSpot.parkingRulesSorter)
         
         return activeRules.first ?? ParkingRule(ruleType: ParkingRuleType.Free)
     }
@@ -582,6 +548,54 @@ class ParkingSpot: NSObject, DetailObject {
             }
         }
         return scheduleItems.first?.rule ?? nil
+    }
+    
+    static let parkingRulesSorter = { (first: ParkingRule, second: ParkingRule) -> Bool in
+        switch (first.ruleType, second.ruleType) {
+            
+        case (.SnowRestriction, .Free):             return true
+        case (.SnowRestriction, .SnowRestriction):  return true
+        case (.SnowRestriction, .Restriction):      return true
+        case (.SnowRestriction, .Paid):             return true
+        case (.SnowRestriction, .TimeMax):          return true
+        case (.SnowRestriction, .PaidTimeMax):      return true
+            
+        case (.Restriction, .Free):                 return true
+        case (.Restriction, .SnowRestriction):      return false
+        case (.Restriction, .Restriction):          return true
+        case (.Restriction, .Paid):                 return true
+        case (.Restriction, .TimeMax):              return true
+        case (.Restriction, .PaidTimeMax):          return true
+            
+        case (.PaidTimeMax, .Free):                 return true
+        case (.PaidTimeMax, .SnowRestriction):      return false
+        case (.PaidTimeMax, .Restriction):          return false
+        case (.PaidTimeMax, .Paid):                 return true
+        case (.PaidTimeMax, .TimeMax):              return true
+        case (.PaidTimeMax, .PaidTimeMax):          return true
+            
+        case (.Paid, .Free):                        return true
+        case (.Paid, .SnowRestriction):             return false
+        case (.Paid, .Restriction):                 return false
+        case (.Paid, .Paid):                        return true
+        case (.Paid, .TimeMax):                     return true
+        case (.Paid, .PaidTimeMax):                 return false
+            
+        case (.TimeMax, .Free):                     return true
+        case (.TimeMax, .SnowRestriction):          return false
+        case (.TimeMax, .Restriction):              return false
+        case (.TimeMax, .Paid):                     return false
+        case (.TimeMax, .TimeMax):                  return true
+        case (.TimeMax, .PaidTimeMax):              return false
+            
+        case (.Free, .Free):                        return true
+        case (.Free, .SnowRestriction):             return false
+        case (.Free, .Restriction):                 return false
+        case (.Free, .Paid):                        return false
+        case (.Free, .TimeMax):                     return false
+        case (.Free, .PaidTimeMax):                 return false
+            
+        }
     }
 }
 
