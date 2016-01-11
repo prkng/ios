@@ -107,7 +107,7 @@ import UIKit
     
     //if these rmannotations do not contain lots, you're in for a bad time.
     //this only returns annotations whose values have changed
-    static func processCheapestLots(givenLotAnnotations: [RMAnnotation]) -> [RMAnnotation] {
+    static func processCheapestLots(givenLotAnnotations: [GenericMGLAnnotation]) -> [GenericMGLAnnotation] {
         
         let totalCount = givenLotAnnotations.count
         let threshholdLotCount = Int(LotOperations.threshholdCheaperLotPercentage * Double(totalCount))
@@ -115,7 +115,7 @@ import UIKit
             return []
         }
         
-        var changedLots = [RMAnnotation]()
+        var changedLots = [GenericMGLAnnotation]()
 
         var sortedLots = givenLotAnnotations.sort { (left, right) -> Bool in
             let leftLot = left.userInfo["lot"] as! Lot
@@ -123,7 +123,7 @@ import UIKit
             return leftLot.mainRate(preferreCached: true) < rightLot.mainRate(preferreCached: true)
         }
         for i in 0..<threshholdLotCount {
-            var userInfo = sortedLots[i].userInfo as! [String:AnyObject]
+            var userInfo = sortedLots[i].userInfo as [String:AnyObject]
             if (userInfo["cheaper"] as! Bool) == false {
                 userInfo["cheaper"] = true
                 userInfo["fadeAnimation"] = true
@@ -135,7 +135,7 @@ import UIKit
             }
         }
         for i in threshholdLotCount..<totalCount {
-            var userInfo = sortedLots[i].userInfo  as! [String:AnyObject]
+            var userInfo = sortedLots[i].userInfo  as [String:AnyObject]
             if (userInfo["cheaper"] as! Bool) == true {
                 userInfo["cheaper"] = false
                 userInfo["fadeAnimation"] = true
