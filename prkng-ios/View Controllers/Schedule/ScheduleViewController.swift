@@ -300,6 +300,18 @@ class ScheduleHelper {
             }
         }
         
+        //the sorted time periods above are not enough to created a sorted schedule items list
+        scheduleItems.sortInPlace { (left, right) -> Bool in
+            if left.columnIndex == right.columnIndex {
+                if left.startInterval == right.startInterval {
+                    return ParkingSpot.parkingRulesSorter(left.rule, right.rule)
+                } else {
+                    return left.startInterval < right.startInterval
+                }
+            }
+            return left.columnIndex < right.columnIndex
+        }
+        
         return scheduleItems
     }
     
@@ -308,7 +320,7 @@ class ScheduleHelper {
         
         for i in 0...6 {
             let tempScheduleItems = scheduleItems.filter({ (scheduleItem: ScheduleItemModel) -> Bool in
-                return scheduleItem.columnIndex! == i
+                return scheduleItem.columnIndex! == i && !scheduleItem.shouldNotProcess
             }).sort({ (left: ScheduleItemModel, right: ScheduleItemModel) -> Bool in
                 left.columnIndex! <= right.columnIndex!
                     && left.startInterval <= right.startInterval
@@ -395,6 +407,11 @@ class ScheduleHelper {
             }
         }
         
+        //in the first steps we removed the snow restrictions, now let's add them back, un-processed!
+        newScheduleItems += scheduleItems.filter({ (scheduleItem: ScheduleItemModel) -> Bool in
+            return scheduleItem.shouldNotProcess
+        })
+        
         return newScheduleItems
     }
     
@@ -406,14 +423,18 @@ class ScheduleItemModel {
     var endInterval: CGFloat
     var limit: NSTimeInterval
     
-    var heightMultiplier : CGFloat?
-    var yIndexMultiplier : CGFloat?
+    var heightMultiplier: CGFloat?
+    var yIndexMultiplier: CGFloat?
     
-    var columnIndex : Int?
+    var columnIndex: Int?
     
-    var timeLimitText : String?
+    var timeLimitText: String?
     
     var rule: ParkingRule
+    
+    var shouldNotProcess: Bool {
+        return self.rule.ruleType == ParkingRuleType.SnowRestriction
+    }
     
     init () {
         startInterval = 0

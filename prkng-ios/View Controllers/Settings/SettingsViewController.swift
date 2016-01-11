@@ -11,8 +11,6 @@ import MessageUI
 
 class SettingsViewController: AbstractViewController, MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     
-    let backgroundImageView = UIImageView(image: UIImage(named:"bg_settings"))
-    
     var topContainer : UIView
     
     var profileButton : UIButton
@@ -32,6 +30,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     var delegate: SettingsViewControllerDelegate?
     
+    private(set) var PROFILE_CONTAINER_HEIGHT = 120
     private(set) var CITY_CONTAINER_HEIGHT = 48
     private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
     private(set) var BIG_CELL_HEIGHT: CGFloat = 61
@@ -106,12 +105,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func setupViews () {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
-        view.addSubview(backgroundImageView)
-//        view.backgroundColor = Styles.Colors.midnight1
+        view.backgroundColor = Styles.Colors.stone
         
         view.addSubview(tableView)
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + 120)))
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + self.PROFILE_CONTAINER_HEIGHT + 20)))
         tableView.backgroundColor = UIColor.clearColor()
         tableView.separatorStyle = .None
         tableView.dataSource = self
@@ -162,10 +159,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func setupConstraints () {
         
-        backgroundImageView.snp_makeConstraints { (make) -> () in
-            make.edges.equalTo(self.view)
-        }
-        
         cityContainer.snp_makeConstraints { (make) -> () in
             make.height.equalTo(self.CITY_CONTAINER_HEIGHT)
             make.left.equalTo(self.topContainer)
@@ -174,15 +167,15 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         topContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.snp_topLayoutGuideBottom)
+            make.top.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(120+self.CITY_CONTAINER_HEIGHT)
+            make.height.equalTo(self.PROFILE_CONTAINER_HEIGHT+self.CITY_CONTAINER_HEIGHT+20)
         }
         
         profileContainer.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.topContainer)
-            make.height.equalTo(120)
+            make.top.equalTo(self.topContainer).offset(20)
+            make.height.equalTo(self.PROFILE_CONTAINER_HEIGHT)
             make.left.equalTo(self.topContainer)
             make.right.equalTo(self.topContainer)
         }
@@ -226,7 +219,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         tableView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(self.snp_topLayoutGuideBottom)
+            make.top.equalTo(self.view)
             make.bottom.equalTo(self.view)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
@@ -662,10 +655,19 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 //        NSLog("scroll view content offset is (%f,%f)", scrollView.contentOffset.x, scrollView.contentOffset.y)
         let yOffset = scrollView.contentOffset.y
         topContainer.snp_remakeConstraints { (make) -> () in
-            make.top.equalTo(self.snp_topLayoutGuideBottom).offset(-yOffset)
+            make.top.equalTo(self.view).offset(-yOffset)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-            make.height.equalTo(120+self.CITY_CONTAINER_HEIGHT)
+            make.height.equalTo(self.PROFILE_CONTAINER_HEIGHT+self.CITY_CONTAINER_HEIGHT+20)
+        }
+        if yOffset >= 0 {
+            if view.backgroundColor != Styles.Colors.stone {
+                view.backgroundColor = Styles.Colors.stone
+            }
+        } else {
+            if view.backgroundColor != Styles.Colors.midnight1 {
+                view.backgroundColor = Styles.Colors.midnight1
+            }
         }
 
     }

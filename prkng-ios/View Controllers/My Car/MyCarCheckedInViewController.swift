@@ -441,10 +441,11 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 }
                 break
             }
-            if spot!.nextRule?.ruleType == .SnowRestriction {
-                logoView.image = UIImage(named: "icon_checkin_snowflake")
-                availableTitleLabel.text = spot!.bottomRightTitleText
-                availableTimeLabel.attributedText = spot!.bottomRightPrimaryText
+            if spot!.currentlyActiveRule.ruleType == .Free
+                && spot!.nextRule?.ruleType == .SnowRestriction {
+                    logoView.image = UIImage(named: "icon_checkin_snowflake")
+                    availableTitleLabel.text = spot!.bottomRightTitleText
+                    availableTimeLabel.attributedText = spot!.bottomRightPrimaryText
             }
             
         }
@@ -460,27 +461,29 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     func showFirstCheckinMessage() {
         
-        checkinMessageVC = CheckinMessageViewController()
-        
-        self.addChildViewController(checkinMessageVC!)
-        self.view.addSubview(checkinMessageVC!.view)
-        checkinMessageVC!.didMoveToParentViewController(self)
-        
-        checkinMessageVC!.view.snp_makeConstraints(closure: { (make) -> () in
-            make.edges.equalTo(self.view)
-        })
-        
-        let tap = UITapGestureRecognizer(target: self, action: "hideFirstCheckinMessage")
-        checkinMessageVC!.view.addGestureRecognizer(tap)
-        
-        checkinMessageVC!.view.alpha = 0.0
-        
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.checkinMessageVC!.view.alpha = 1.0
-        })
-        
-        
-        Settings.setFirstCheckinPassed(true)
+        if checkinMessageVC == nil {
+            checkinMessageVC = CheckinMessageViewController()
+            
+            self.addChildViewController(checkinMessageVC!)
+            self.view.addSubview(checkinMessageVC!.view)
+            checkinMessageVC!.didMoveToParentViewController(self)
+            
+            checkinMessageVC!.view.snp_makeConstraints(closure: { (make) -> () in
+                make.edges.equalTo(self.view)
+            })
+            
+            let tap = UITapGestureRecognizer(target: self, action: "hideFirstCheckinMessage")
+            checkinMessageVC!.view.addGestureRecognizer(tap)
+            
+            checkinMessageVC!.view.alpha = 0.0
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                self.checkinMessageVC!.view.alpha = 1.0
+            })
+            
+            
+            Settings.setFirstCheckinPassed(true)
+        }
     }
     
     func hideFirstCheckinMessage () {
