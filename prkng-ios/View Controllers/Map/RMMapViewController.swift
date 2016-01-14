@@ -1013,6 +1013,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
+            if !self.hasAnnotationsOnScreen() {
+                self.moveToClosestPin()
+            }
+
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
@@ -1046,6 +1050,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
+            if !self.hasAnnotationsOnScreen() {
+                self.moveToClosestPin()
+            }
+
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
@@ -1076,6 +1084,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
+            if !self.hasAnnotationsOnScreen() {
+                self.moveToClosestPin()
+            }
+            
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
@@ -1085,6 +1097,20 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
 
+    func moveToClosestPin() {
+        //order annotations by distance from map center
+        let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+        let orderedAnnotations = self.annotations.sort { (first, second) -> Bool in
+            let firstLocation = CLLocation(latitude: first.coordinate.latitude, longitude: first.coordinate.longitude)
+            let secondLocation = CLLocation(latitude: second.coordinate.latitude, longitude: second.coordinate.longitude)
+            return mapCenter.distanceFromLocation(firstLocation) < mapCenter.distanceFromLocation(secondLocation)
+        }
+        
+        if let first = orderedAnnotations.first {
+            self.mapView.setCenterCoordinate(first.coordinate, animated: true)
+        }
+    }
+    
     func zoomIntoClosestPins(numberOfPins: Int) {
         //order annotations by distance from map center
         let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
@@ -1298,6 +1324,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             recoloringLotPins = false
         }
         
+    }
+    
+    func hasAnnotationsOnScreen() -> Bool {
+        
+        let projectedRect = self.mapView.projectedBounds
+        for annotation in self.mapView.visibleAnnotations as? [RMAnnotation] ?? [] {
+            if RMProjectedRectContainsProjectedPoint(projectedRect, annotation.projectedLocation) {
+                return true
+            }
+        }
+        return false
     }
     
     override func addCityOverlaysCallback(polygons: [MKPolygon]) {
