@@ -73,7 +73,7 @@ struct Styles {
         
         static let regular = "IntroRegular"
         static let light = "IntroLight"
-        static let bold = "IntroSemiBold" //the actual font file name is IntroSemiBold.otf, but the name of the font for whatever reason is Intro-Regular
+        static let bold = "IntroSemiBold"
         
         static func regular (size : CGFloat) -> UIFont {
             return UIFont(name: regular, size: size)!
