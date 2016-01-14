@@ -286,3 +286,4 @@
 "availability_x_places" = "Disponibles maintenant: %d places";
 "up_to_x_cars_available" = "Jusqu'à %d véhicules disponibles";
 "up_to_x_spaces_available" = "Jusqu'à %d places disponibles";
+"pay_with_x" = "***Pay with %d";

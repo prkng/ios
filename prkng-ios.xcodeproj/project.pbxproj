@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		10CD02B82A2693CE54C5BFA9 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */; };
+		3E08E2D41C4453A300135DD7 /* ParkingPandaOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E08E2D31C4453A300135DD7 /* ParkingPandaOperations.swift */; };
 		3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */; };
 		3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */; };
 		3E0FDAC61B2769FF00872667 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC51B2769FF00872667 /* GLKit.framework */; };
@@ -31,6 +32,7 @@
 		3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */; };
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
 		3E3C92281BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3C92271BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift */; };
+		3E3EAA3E1C2366910013CDA3 /* LotBookingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3EAA3D1C2366910013CDA3 /* LotBookingViewController.swift */; };
 		3E3F146A1B3B2D9F00ECB8C9 /* SearchFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */; };
 		3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */; };
 		3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */; };
@@ -202,6 +204,7 @@
 
 /* Begin PBXFileReference section */
 		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
+		3E08E2D31C4453A300135DD7 /* ParkingPandaOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingPandaOperations.swift; sourceTree = "<group>"; };
 		3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesModalViewController.swift; sourceTree = "<group>"; };
 		3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		3E0FDAC51B2769FF00872667 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -226,6 +229,7 @@
 		3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+SnapKit.swift"; sourceTree = "<group>"; };
 		3E3199581B31D4F600CB118D /* TimeFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFilterView.swift; sourceTree = "<group>"; };
 		3E3C92271BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarReservedCarShareViewController.swift; sourceTree = "<group>"; };
+		3E3EAA3D1C2366910013CDA3 /* LotBookingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotBookingViewController.swift; sourceTree = "<group>"; };
 		3E3F14691B3B2D9F00ECB8C9 /* SearchFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchFilterView.swift; sourceTree = "<group>"; };
 		3E3F146B1B3B4AD200ECB8C9 /* PRKTextButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextButton.swift; sourceTree = "<group>"; };
 		3E411C4E1B55B5510000BB18 /* DDLoggerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLoggerWrapper.h; sourceTree = "<group>"; };
@@ -558,6 +562,7 @@
 			isa = PBXGroup;
 			children = (
 				3EA8126C1B977E58002987EC /* LotViewController.swift */,
+				3E3EAA3D1C2366910013CDA3 /* LotBookingViewController.swift */,
 				3EA8126E1B978490002987EC /* LotHeaderView.swift */,
 			);
 			path = Lot;
@@ -895,6 +900,7 @@
 				BF4567FF1AD85722006D7C23 /* SearchOperations.swift */,
 				BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */,
 				BF1C2B5A1AFCBBBC0070085A /* UserOperations.swift */,
+				3E08E2D31C4453A300135DD7 /* ParkingPandaOperations.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1223,6 +1229,7 @@
 				3EE3038A1B8283890079EA9A /* UIImage+ImageEffects.m in Sources */,
 				BF1C2B5E1AFCDA180070085A /* String.swift in Sources */,
 				3E20B39C1BB63A450067DA8C /* Debugging.swift in Sources */,
+				3E3EAA3E1C2366910013CDA3 /* LotBookingViewController.swift in Sources */,
 				3E41F0511BBEFA43004A4A60 /* DirectionsAction.swift in Sources */,
 				BF3282701B3847AE002ED8DF /* MKLayer.swift in Sources */,
 				BF73AE551B289D0E00F4CD79 /* HistoryViewController.swift in Sources */,
@@ -1241,6 +1248,7 @@
 				BF2891EA1AFFC0590041B04C /* User.swift in Sources */,
 				3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */,
 				BF5E84ED1B061EBA00EC6AD2 /* MyCarCheckedInViewController.swift in Sources */,
+				3E08E2D41C4453A300135DD7 /* ParkingPandaOperations.swift in Sources */,
 				3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */,
 				BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */,
 				BF4568021AD85761006D7C23 /* SearchResult.swift in Sources */,
