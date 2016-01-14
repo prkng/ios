@@ -161,9 +161,9 @@
 	<string>Localized in InfoPlist.strings</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Intro-Light.otf</string>
-		<string>Intro-Book.otf</string>
-		<string>Intro-Regular.otf</string>
+		<string>IntroLight.otf</string>
+		<string>IntroRegular.otf</string>
+		<string>IntroSemiBold.otf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

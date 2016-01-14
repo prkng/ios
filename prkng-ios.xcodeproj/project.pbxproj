@@ -70,9 +70,6 @@
 		3E9509C41B56B5DD0088E336 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E9509C31B56B5DC0088E336 /* MessageUI.framework */; };
 		3E9509C61B56EE940088E336 /* PRKTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C51B56EE940088E336 /* PRKTextField.swift */; };
 		3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E9509C91B570A6A0088E336 /* PRKInputForm.swift */; };
-		3E954A5E1B6AA82E00B81738 /* Intro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C531B25C8D600DAB393 /* Intro-Light.otf */; };
-		3E954A5F1B6AA82E00B81738 /* Intro-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = BFA69C541B25C8D600DAB393 /* Intro-Book.otf */; };
-		3E954A601B6AA82E00B81738 /* Intro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3E954A5C1B6AA60F00B81738 /* Intro-Regular.otf */; };
 		3E98D6BB1B346053009032AF /* CALayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E98D6BA1B346053009032AF /* CALayer.swift */; };
 		3EA3E7E51B4C6BEF000EDEF8 /* AgendaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */; };
 		3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */; };
@@ -97,6 +94,9 @@
 		3EF4A7D11B97AD2700CE4870 /* PRKTimeSpanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
+		3EFBB7261C4717F3002D61F8 /* IntroLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBB7231C4717F3002D61F8 /* IntroLight.otf */; };
+		3EFBB7271C4717F3002D61F8 /* IntroRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBB7241C4717F3002D61F8 /* IntroRegular.otf */; };
+		3EFBB7281C4717F3002D61F8 /* IntroSemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBB7251C4717F3002D61F8 /* IntroSemiBold.otf */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
 		3EFF0A601BD16BFF00D6DBB8 /* CarSharingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */; };
 		BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */; };
@@ -270,7 +270,6 @@
 		3E9509C31B56B5DC0088E336 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		3E9509C51B56EE940088E336 /* PRKTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTextField.swift; sourceTree = "<group>"; };
 		3E9509C91B570A6A0088E336 /* PRKInputForm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKInputForm.swift; sourceTree = "<group>"; };
-		3E954A5C1B6AA60F00B81738 /* Intro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Regular.otf"; sourceTree = "<group>"; };
 		3E98D6BA1B346053009032AF /* CALayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CALayer.swift; sourceTree = "<group>"; };
 		3EA3E7E41B4C6BEF000EDEF8 /* AgendaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaListViewController.swift; sourceTree = "<group>"; };
 		3EA5908C1B46261F0052A0C2 /* MKPolygon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MKPolygon.swift; sourceTree = "<group>"; };
@@ -297,6 +296,9 @@
 		3EF64E7A1B6A88FD002B010B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		3EFBB7231C4717F3002D61F8 /* IntroLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroLight.otf; sourceTree = "<group>"; };
+		3EFBB7241C4717F3002D61F8 /* IntroRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroRegular.otf; sourceTree = "<group>"; };
+		3EFBB7251C4717F3002D61F8 /* IntroSemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroSemiBold.otf; sourceTree = "<group>"; };
 		3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKVerticalGestureRecognizer.swift; sourceTree = "<group>"; };
 		3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarSharingOperations.swift; sourceTree = "<group>"; };
 		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
@@ -355,8 +357,6 @@
 		BF982C981B149BD100A635A1 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
 		BF9C46F41B32E30600DCF858 /* TheProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TheProjectViewController.swift; sourceTree = "<group>"; };
 		BF9C46F61B32F72200DCF858 /* PRKWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKWebViewController.swift; sourceTree = "<group>"; };
-		BFA69C531B25C8D600DAB393 /* Intro-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Light.otf"; sourceTree = "<group>"; };
-		BFA69C541B25C8D600DAB393 /* Intro-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Intro-Book.otf"; sourceTree = "<group>"; };
 		BFA7FB2C1B233228003CB30C /* MyCarAbstractViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarAbstractViewController.swift; sourceTree = "<group>"; };
 		BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		BFA8D16E1A83D356005F4054 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -828,9 +828,9 @@
 		BFCD562F1AB99A3A008406E8 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				BFA69C531B25C8D600DAB393 /* Intro-Light.otf */,
-				BFA69C541B25C8D600DAB393 /* Intro-Book.otf */,
-				3E954A5C1B6AA60F00B81738 /* Intro-Regular.otf */,
+				3EFBB7231C4717F3002D61F8 /* IntroLight.otf */,
+				3EFBB7241C4717F3002D61F8 /* IntroRegular.otf */,
+				3EFBB7251C4717F3002D61F8 /* IntroSemiBold.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -1069,17 +1069,17 @@
 				BF3069341B03B09200FB3388 /* OfflineMap.json in Resources */,
 				3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */,
 				3E5B2EFD1BA359B500658A9A /* InfoPlist.strings in Resources */,
+				3EFBB7271C4717F3002D61F8 /* IntroRegular.otf in Resources */,
 				BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */,
 				3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */,
+				3EFBB7281C4717F3002D61F8 /* IntroSemiBold.otf in Resources */,
 				BFC764941A7644AC008F2B26 /* Images.xcassets in Resources */,
 				3E20B39E1BB63A450067DA8C /* Info.plist in Resources */,
 				3E88CB481C1612FD0066A323 /* GoogleService-Info.plist in Resources */,
+				3EFBB7261C4717F3002D61F8 /* IntroLight.otf in Resources */,
 				BF2A40A51AC465770055D785 /* default.gpx in Resources */,
 				3EBB61D51B3DAFB200A8984A /* Abbreviations.strings in Resources */,
-				3E954A5E1B6AA82E00B81738 /* Intro-Light.otf in Resources */,
 				3E90A92E1BA9C8FF00CCEB41 /* loader.gif in Resources */,
-				3E954A5F1B6AA82E00B81738 /* Intro-Book.otf in Resources */,
-				3E954A601B6AA82E00B81738 /* Intro-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
