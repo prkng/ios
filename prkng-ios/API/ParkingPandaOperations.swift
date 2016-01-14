@@ -8,18 +8,17 @@
 
 import UIKit
 
- class ParkingPandaOperations {
+class ParkingPandaOperations {
     
-    
-    //Development (Sandbox) API (Reservations aren’t real, use Braintree sample card numbers to test)
-    let publicKey = "39b5854211924468af84ad0e1d2edf56"
-    let privateKey = "8bcdcdfb71dd4c87b9dff6d4b75809b7"
+    //Development (Sandbox) API (Reservations aren’t real, use Braintree sample card numbers to test https://developers.braintreepayments.com/reference/general/testing/node#credit-card-numbers)
+    static let baseUrlString = "http://dev.parkingpanda.com/api/v2/"
+    static let publicKey = "39b5854211924468af84ad0e1d2edf56"
+    static let privateKey = "8bcdcdfb71dd4c87b9dff6d4b75809b7"
     
 //    //Real API
-//    let publicKey = "908eb2a1edd3491791da7f8b8e5716ee"
-//    let privateKey = "f6a1fb203f334dfe9f75a5b58663a209"
-
-    let baseUrlString = "https://www.parkingpanda.com/api/v2/"
+//    static let baseUrlString = "https://www.parkingpanda.com/api/v2/"
+//    static let publicKey = "908eb2a1edd3491791da7f8b8e5716ee"
+//    static let privateKey = "f6a1fb203f334dfe9f75a5b58663a209"
     
     enum ParkingPandaTransactionTime {
         case All
@@ -27,8 +26,26 @@ import UIKit
         case Upcoming
     }
     
+    private class ParkingPandaHelper {
+        
+        class func authenticatedManager(username username: String, password: String) -> Manager {
+            
+            let plainString = (username + ":" + password) as NSString//"username:password" as NSString
+            let plainData = plainString.dataUsingEncoding(NSUTF8StringEncoding)
+            let base64String = plainData?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+
+            var headers = Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+            headers["Authorization"] = "Basic " + base64String!
+            
+            let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
+            configuration.HTTPAdditionalHeaders = headers
+            
+            return Manager(configuration: configuration)
+        }
+    }
+
     //parses the API response for all Parking Panda requests.
-    func didRequestSucceed(response: NSHTTPURLResponse?, json: JSON, error: NSError?) -> Bool {
+    static func didRequestSucceed(response: NSHTTPURLResponse?, json: JSON, error: NSError?) -> Bool {
         
         let parkingPandaErrorCode = json["error"].int
         let parkingPandaErrorMessage = json["message"].string
@@ -45,19 +62,18 @@ import UIKit
         return true
     }
     
-    func login(username: String, password: String, completion: ((user: ParkingPandaUser?) -> Void)) {
+    static func login(username: String, password: String, completion: ((user: ParkingPandaUser?) -> Void)) {
         
         let url = baseUrlString + "users"
         let params: [String: AnyObject] = ["apikey": publicKey]
-        //basic auth with user_id and api_password
-        
-        request(.GET, URLString: url, parameters: params)
-            .authenticate(user: username, password: password)
+
+        ParkingPandaHelper.authenticatedManager(username: username, password: password)
+            .request(.GET, url, parameters: params)
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 
-                let failure = self.didRequestSucceed(response, json: json, error: error)
-                if failure {
+                let success = self.didRequestSucceed(response, json: json, error: error)
+                if !success {
                     completion(user: nil)
                     return
                 }
@@ -67,19 +83,18 @@ import UIKit
         }
     }
 
-    func getTransaction(user: ParkingPandaUser, confirmation: String, completion: ((transaction: ParkingPandaTransaction?) -> Void)) {
+    static func getTransaction(user: ParkingPandaUser, confirmation: String, completion: ((transaction: ParkingPandaTransaction?) -> Void)) {
         
         let url = baseUrlString + "users/" + String(user.id) + "/transactions/" + confirmation
         let params: [String: AnyObject] = ["apikey": publicKey]
-        //basic auth with user_id and api_password
         
-        request(.GET, URLString: url, parameters: params)
-            .authenticate(user: String(user.id), password: user.apiPassword)
+        ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
+            .request(.GET, url, parameters: params)
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 
-                let failure = self.didRequestSucceed(response, json: json, error: error)
-                if failure {
+                let success = self.didRequestSucceed(response, json: json, error: error)
+                if !success {
                     completion(transaction: nil)
                     return
                 }
@@ -89,7 +104,7 @@ import UIKit
         }
     }
     
-    func getTransactions(user: ParkingPandaUser, forTime: ParkingPandaTransactionTime, completion: ((transactions: [ParkingPandaTransaction], completed: Bool) -> Void)) {
+    static func getTransactions(user: ParkingPandaUser, forTime: ParkingPandaTransactionTime, completion: ((transactions: [ParkingPandaTransaction], completed: Bool) -> Void)) {
         
         var url = baseUrlString + "users/" + String(user.id) + "/transactions"
         
@@ -103,15 +118,14 @@ import UIKit
         }
         
         let params: [String: AnyObject] = ["apikey": publicKey]
-        //basic auth with user_id and api_password
         
-        request(.GET, URLString: url, parameters: params)
-            .authenticate(user: String(user.id), password: user.apiPassword)
+        ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
+            .request(.GET, url, parameters: params)
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 
-                let failure = self.didRequestSucceed(response, json: json, error: error)
-                if failure {
+                let success = self.didRequestSucceed(response, json: json, error: error)
+                if !success {
                     completion(transactions: [], completed: false)
                     return
                 }
