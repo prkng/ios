@@ -48,6 +48,7 @@
 "reset_email_copy" = "Please enter your email address";
 "reset_password" = "Reset Password";
 "cancel" = "Cancel";
+"delete" = "Delete";
 "allow" = "Allow";
 "check_email_copy" = "Please check your email for instructions.";
 "pasword_reset_error" = "Something went wrong, please try again.";

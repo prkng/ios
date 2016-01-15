@@ -48,6 +48,7 @@
 "reset_email_copy" = "Merci d’entrer votre adresse e-mail";
 "reset_password" = "Mot de passe oublié?";
 "cancel" = "Annuler";
+"delete" = "Supprimer";
 "allow" = "Autoriser";
 "check_email_copy" = "Merci d’entrer votre adresse e-mail.";
 "pasword_reset_error" = "Quelque chose a mal tourné, merci de réessayer.";

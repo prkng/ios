@@ -38,12 +38,19 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
+        self.loadCheckinHistory()
+    }
+    
+    func loadCheckinHistory() {
+
         SpotOperations.getCheckins { (checkins) -> Void in
             
+            let shownCheckins = checkins?.filter({ (checkin) -> Bool in
+                return checkin.hidden == false
+            })
+            
             self.groupedCheckins = Dictionary()
-            if let ungroupedCheckins = checkins {
+            if let ungroupedCheckins = shownCheckins {
                 
                 let formatter = NSDateFormatter()
                 formatter.dateFormat = "MMM yyyy"
@@ -67,9 +74,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             
             self.tableView.reloadData()
         }
-        
     }
-    
     
     func setupViews() {
         
@@ -196,6 +201,27 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     //MARK: UITableViewDelegate
     
+    @available(iOS 8.0, *)
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Destructive, title: "delete".localizedString, handler: { (action: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+            if let _ = self.tableView.cellForRowAtIndexPath(indexPath) as? HistoryTableViewCell {
+                let key = Array(self.groupedCheckins!.keys)[indexPath.section]
+                let checkin = self.groupedCheckins![key]![indexPath.row]
+                SpotOperations.hideCheckin(checkin.checkinId, completion: { (success) -> Void in
+                    self.tableView.setEditing(false, animated: true)
+                    self.loadCheckinHistory()
+                })
+            } else {
+                self.tableView.setEditing(false, animated: true)
+            }
+        })
+        return [deleteAction]
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let key = Array(groupedCheckins!.keys)[indexPath.section]
@@ -225,9 +251,9 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         var height:Float = currentHeaderHeight
         let dy = previousYPosition - yPos
         
-        print("dy : \(dy)")
-        print("previousYPosition : \(previousYPosition)")
-        print("yPos : \(yPos)")
+//        print("dy : \(dy)")
+//        print("previousYPosition : \(previousYPosition)")
+//        print("yPos : \(yPos)")
         
         height += dy
         
@@ -242,9 +268,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             height = HEADER_MIN_HEIGHT
         }
         
-        print("header height : \(height)")
-        print("contentInset top : \(scrollView.contentInset.top)")
-
+//        print("header height : \(height)")
+//        print("contentInset top : \(scrollView.contentInset.top)")
         
         if (height == HEADER_MAX_HEIGHT) && (Float(scrollView.contentInset.top) + yPos <= 0.0) {
             return

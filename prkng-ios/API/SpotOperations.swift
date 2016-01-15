@@ -111,8 +111,8 @@ struct SpotOperations {
         let params = ["slot_id" : spotId]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
-            let checkinId = json != nil ? json["id"].intValue : 0
-            Settings.setCheckInId(checkinId)
+            let checkin = Checkin(json: json)
+            Settings.setCheckInId(checkin.checkinId)
             Settings.saveReservedCarShare(nil)
             completion(completed: error == nil)
         }
@@ -149,6 +149,19 @@ struct SpotOperations {
             
         }
         
+    }
+    
+    static func hideCheckin(checkinID: Int, completion: ((success: Bool) -> Void)) {
+        
+        let url = APIUtility.APIConstants.rootURLString + "checkins/" + String(checkinID)
+        
+        let params = ["is_hidden": true]
+        
+        APIUtility.authenticatedManager().request(.PUT, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
+            let success = error == nil && response?.statusCode == 200
+            completion(success: success)
+        }
+
     }
     
     static func reportParkingRule (image : UIImage, location : CLLocationCoordinate2D, notes: String, spotId: String?, completion: ((completed : Bool) -> Void)) {
