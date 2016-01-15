@@ -453,8 +453,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         CarSharingOperations.CommunautoAutomobile.getAndSaveCommunautoCustomerID { (id) -> Void in
             if id == nil {
                 //we need to ask the user to log in
-                let vc = CarSharingOperations.CommunautoAutomobile.loginVC
-                self.navigationController?.pushViewController(vc, animated: true)
+                CarSharingOperations.login(.Communauto)
             } else {
                 //we have a value, so perform a log out
                 //calling getAndSaveCommunautoCustomerID already logged us out, so just update the cell
@@ -472,8 +471,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
                 CarSharingOperations.Car2Go.logout()
                 self.tableView.reloadData()
             } else {
-                CarSharingOperations.Car2Go.getAndSaveCar2GoToken({ (token, tokenSecret) -> Void in
-                })
+                CarSharingOperations.login(.Car2Go)
             }
         })
     }
