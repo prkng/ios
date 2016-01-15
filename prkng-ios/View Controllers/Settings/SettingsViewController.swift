@@ -511,10 +511,11 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             carSharingSection = [car2goCell, zipcarCell]
         }
         
-        let generalSection = [SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, switchSelector: "showSupport"),
-            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, switchSelector: "showGettingStarted"),
-            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, switchSelector: "showShareSheet"),
+        let generalSection = [
             SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, switchSelector: "sendToAppStore"),
+            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, switchSelector: "showShareSheet"),
+            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, switchSelector: "showGettingStarted"),
+            SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, switchSelector: "showSupport"),
             SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, switchSelector: "showFaq"),
             SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, switchSelector: "showTerms"),
             SettingsCell(cellType: .Basic, titleText: "privacy_policy".localizedString, parentVC: self, switchSelector: "showPrivacy"),
@@ -587,7 +588,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
                 cell = SettingsBasicCell(style: .Default, reuseIdentifier: "basic" + settingsCell.titleText)
             }
             cell!.titleText = settingsCell.titleText
-            cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 3
+            cell!.bold = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row < 4
+            cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 0
             return cell!
         }
     }
