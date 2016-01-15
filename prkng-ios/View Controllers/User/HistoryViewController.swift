@@ -25,6 +25,8 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     var groupedCheckins : Dictionary<String, Array<Checkin>>?
     
+    let SECTION_HEADER_HEIGHT: CGFloat = 30
+    
     override func loadView() {
         view = UIView()
         setupViews()
@@ -235,12 +237,13 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 30
+        return SECTION_HEADER_HEIGHT
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let sectionHeader = HistorySectionTitleView()
-        sectionHeader.label.text = Array(groupedCheckins!.keys)[section].uppercaseString
+        let sectionHeader = HistorySectionTitleView(
+            frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: SECTION_HEADER_HEIGHT),
+            labelText: Array(groupedCheckins!.keys)[section].uppercaseString)
         return sectionHeader
     }
     
