@@ -86,7 +86,9 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
                         self.historyVC = nil
                 })
                 
-                
+                let tracker = GAI.sharedInstance().defaultTracker
+                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "History Slider Value Changed", label: "Now", value: nil).build() as [NSObject: AnyObject])
+
             }
         } else if index == 1 {
             //transition to HISTORY
@@ -106,6 +108,10 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.historyVC!.view.alpha = 1.0
                 })
+                
+                let tracker = GAI.sharedInstance().defaultTracker
+                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "History Slider Value Changed", label: "History", value: nil).build() as [NSObject: AnyObject])
+
             }
         }
     }

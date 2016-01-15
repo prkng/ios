@@ -181,9 +181,13 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     func showViewController(viewController: PRKModalViewControllerChild) {
         
+        let tracker = GAI.sharedInstance().defaultTracker
+        
         if viewController is ScheduleViewController {
+            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Schedule/Agenda View", action: "Column/List Mode Changed", label: "Columns", value: nil).build() as [NSObject: AnyObject])
             self.pageViewController.setViewControllers([viewController], direction: UIPageViewControllerNavigationDirection.Reverse, animated: true, completion: nil)
         } else {
+            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Schedule/Agenda View", action: "Column/List Mode Changed", label: "List", value: nil).build() as [NSObject: AnyObject])
             self.pageViewController.setViewControllers([viewController], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
         }
         updateHeader(viewController)

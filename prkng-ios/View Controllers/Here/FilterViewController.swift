@@ -256,12 +256,17 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     }
     
     func didChangeCarSharingMode() {
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+
         switch(self.carSharingFilterView.selectedIndex) {
         case 0:
             lastCarSharingMode = .FindCar
+            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Filter View", action: "Car Sharing Mode Switched", label: "Find Car", value: nil).build() as [NSObject: AnyObject])
             break
         default:
             lastCarSharingMode = .FindSpot
+            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Filter View", action: "Car Sharing Mode Switched", label: "Find Spot", value: nil).build() as [NSObject: AnyObject])
             break
         }
         self.delegate?.didChangeCarSharingMode(lastCarSharingMode)

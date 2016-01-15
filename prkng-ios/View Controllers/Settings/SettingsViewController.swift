@@ -384,6 +384,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     func residentialPermitFilterValueChanged() {
         let currentValue = Settings.shouldFilterForResidentialPermit()
         Settings.setShouldFilterForResidentialPermit(!currentValue)
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings View", action: "Residential Permit Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as [NSObject: AnyObject])
     }
     
     func residentialPermitFilterValueNeedsAddition() {
@@ -409,6 +412,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     func snowRemovalFilterValueChanged() {
         let currentValue = Settings.shouldFilterForSnowRemoval()
         Settings.setShouldFilterForSnowRemoval(!currentValue)
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings View", action: "Snow Removal Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as [NSObject: AnyObject])
     }
 
     func hideCar2GoValueChanged() {
