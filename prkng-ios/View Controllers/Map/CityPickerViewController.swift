@@ -136,6 +136,14 @@ class CityPickerViewController: AbstractViewController {
     
     func showOnViewController(viewController: UIViewController) {
         
+        let existingCityPickerVCs = viewController.childViewControllers.filter { (vc) -> Bool in
+            return vc is CityPickerViewController
+        }
+        
+        if existingCityPickerVCs.count > 0 {
+            return
+        }
+        
         viewController.addChildViewController(self)
         viewController.view.addSubview(self.view)
         self.didMoveToParentViewController(viewController)
