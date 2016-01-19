@@ -385,27 +385,35 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         let currentValue = Settings.shouldFilterForResidentialPermit()
         Settings.setShouldFilterForResidentialPermit(!currentValue)
         
+        if Settings.residentialPermits().isEmpty {
+            showResidentialPermitPicker()
+        }
+        
         let tracker = GAI.sharedInstance().defaultTracker
         tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings View", action: "Residential Permit Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as [NSObject: AnyObject])
     }
     
     func residentialPermitFilterValueNeedsAddition() {
         if Settings.residentialPermits().isEmpty {
-            //bring up the rolly thingy
-            CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
-                if completed {
-                    let pickerVC = UIPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
-                        Settings.setResidentialPermit(selectedValue)
-                        Settings.setShouldFilterForResidentialPermit(selectedValue != nil)
-                        self.tableView.reloadData()
-                    })
-                    self.presentAsModalWithTransparency(pickerVC, completion: nil)
-                }
-            }
+            showResidentialPermitPicker()
         } else {
             Settings.setResidentialPermit(nil)
             Settings.setShouldFilterForResidentialPermit(false)
             self.tableView.reloadData()
+        }
+    }
+    
+    private func showResidentialPermitPicker() {
+        //bring up the rolly thingy
+        CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
+            if completed {
+                let pickerVC = UIPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
+                    Settings.setResidentialPermit(selectedValue)
+                    Settings.setShouldFilterForResidentialPermit(selectedValue != nil)
+                    self.tableView.reloadData()
+                })
+                self.presentAsModalWithTransparency(pickerVC, completion: nil)
+            }
         }
     }
 
