@@ -500,11 +500,12 @@ class ParkingSpot: NSObject, DetailObject {
         
         for rule in rules {
             for i in 0...(rule.agenda.count - 1) {
-                let timePeriod = rule.agenda[i]
-                if today == i
-                    && timePeriod?.start <= now
-                    && timePeriod?.end >= now {
-                        activeRules.append(rule)
+                if let timePeriod = rule.agenda[i] {
+                    if today == i
+                        && timePeriod.start <= now
+                        && timePeriod.end >= now {
+                            activeRules.append(rule)
+                    }
                 }
             }
         }
@@ -525,13 +526,19 @@ class ParkingSpot: NSObject, DetailObject {
     
     var currentlyActiveRuleEndTime: NSTimeInterval {
         var endTime: NSTimeInterval = 0
-        let today = DateUtil.dayIndexOfTheWeek()
-        let rule = self.currentlyActiveRule
-        //validate... just in case!
-        if rule.agenda.count >= today - 1 {
-            endTime = rule.agenda[today]?.end ?? 0
-        }
+        let now = CGFloat(DateUtil.timeIntervalSinceDayStart())
 
+        var scheduleItems = ScheduleHelper.getScheduleItems(self)
+        scheduleItems = ScheduleHelper.processScheduleItems(scheduleItems, respectDoNotProcess: false)
+        
+        for scheduleItem in scheduleItems {
+            if scheduleItem.columnIndex == 0 //since these are sorted, 0 means today!
+                && scheduleItem.startInterval <= now
+                && scheduleItem.endInterval >= now {
+                    endTime = NSTimeInterval(scheduleItem.endInterval)
+            }
+        }
+        
         return endTime
     }
     
