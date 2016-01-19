@@ -39,10 +39,10 @@ class MapViewController: AbstractViewController {
                     //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
                     self.removeSnapshot()
                     
-                    let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
-                    self.mapModeImageView = snapshotView
-                    self.mapModeImageView?.userInteractionEnabled = false
-                    self.view.addSubview(self.mapModeImageView!)
+//                    let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
+//                    self.mapModeImageView = snapshotView
+//                    self.mapModeImageView?.userInteractionEnabled = false
+//                    self.view.addSubview(self.mapModeImageView!)
                     
                     SVProgressHUD.setBackgroundColor(UIColor.clearColor())
                     SVProgressHUD.show()
