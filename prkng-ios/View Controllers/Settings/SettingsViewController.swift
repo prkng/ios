@@ -109,6 +109,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         view.addSubview(tableView)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + self.PROFILE_CONTAINER_HEIGHT + 20)))
+        tableView.tableFooterView = self.tableFooterView()
         tableView.backgroundColor = UIColor.clearColor()
         tableView.separatorStyle = .None
         tableView.dataSource = self
@@ -483,6 +484,40 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             }
         })
     }
+
+    func tableFooterView() -> UIView {
+        
+        let versionString = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(BIG_CELL_HEIGHT))
+        let tableFooterView = UIView(frame: frame)
+        tableFooterView.backgroundColor = Styles.Colors.stone
+
+        let tableFooterViewLabel = UILabel()
+        
+        let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
+        let textLine1 = NSMutableAttributedString(string: "Version " + versionString, attributes: line1Attributes)
+        
+        let line2Attributes = [NSFontAttributeName: Styles.FontFaces.bold(12), NSForegroundColorAttributeName: Styles.Colors.red2]
+        let textLine2 = NSAttributedString(string: "Using test server", attributes: line2Attributes)
+        
+        if APIUtility.isUsingTestServer {
+            textLine1.appendAttributedString(NSAttributedString(string: "\n"))
+            textLine1.appendAttributedString(textLine2)
+        }
+        
+        tableFooterViewLabel.numberOfLines = 0
+        tableFooterViewLabel.attributedText = textLine1
+        tableFooterView.addSubview(tableFooterViewLabel)
+
+        tableFooterViewLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(tableFooterView).offset(20)
+            make.right.equalTo(tableFooterView).offset(-20)
+            make.bottom.equalTo(tableFooterView).offset(-10)
+        }
+
+        return tableFooterView
+    }
+    
 
     //MARK: UITableViewDataSource
         
