@@ -10,7 +10,7 @@ import Foundation
 
 class CarSharingOperations {
     
-    static func getCarShares(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShares: [NSObject], mapMessage: String?) -> Void)) {
+    static func getCarShares(location location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: ((carShares: [NSObject], mapMessage: String?) -> Void)) {
         
         let url = APIUtility.rootURL() + "carshares"
         
@@ -36,6 +36,7 @@ class CarSharingOperations {
             "radius" : radiusStr,
             "company" : companiesString,
             "permit" : "all",
+            "nearest": nearest
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
@@ -67,7 +68,7 @@ class CarSharingOperations {
         }
     }
 
-    static func getCarShareLots(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShareLots: [NSObject], mapMessage: String?) -> Void)) {
+    static func getCarShareLots(location location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: ((carShareLots: [NSObject], mapMessage: String?) -> Void)) {
         
         let url = APIUtility.rootURL() + "carshare_lots"
         
@@ -87,6 +88,7 @@ class CarSharingOperations {
             "radius" : radiusStr,
             "company" : companiesString,
             "permit" : "all",
+            "nearest": nearest
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {

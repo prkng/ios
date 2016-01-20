@@ -272,7 +272,10 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     }
     
     
-    func updateMapAnnotations() {
+    func updateMapAnnotations(returnNearestAnnotations: Int? = nil) {
+        if returnNearestAnnotations != nil {
+            mapViewController.returnNearestAnnotations = returnNearestAnnotations!
+        }
         mapViewController.updateAnnotations()
     }
     
@@ -283,6 +286,12 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     func didSelectMapMode(mapMode: MapMode) {
         if mapMode != mapViewController.mapMode {
             mapViewController.mapMode = mapMode
+            switch (mapMode) {
+            case .Garage, .CarSharing:
+                self.mapViewController.returnNearestAnnotations = 3
+            case .StreetParking:
+                break
+            }
         }
     }
 

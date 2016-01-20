@@ -241,8 +241,8 @@
 "map_message_loading" = "Loading...";
 "map_message_too_zoomed_out" = "Zoom in to street level";
 "map_message_no_spots" = "Uh oh! You can't park here at this time.";
-"map_message_no_cars" = "Uh oh! No cars available here at this time.";
-"map_message_no_parking" = "Uh oh! No parking lots available here.";
+"map_message_no_cars" = "Uh oh! No cars available here at this time. Tap here to go to the nearest one.";
+"map_message_no_parking" = "Uh oh! No parking lots available here. Tap here to go to the nearest one.";
 "map_message_no_carsharing" = "Please enable a carsharing service in settings!";
 "map_message_outside_service_area" = "Sorry, we don't currently know about parking regulations here.";
 "map_message_under_maintenance" = "We're currently performing maintenance on our service. Please try again soon!";

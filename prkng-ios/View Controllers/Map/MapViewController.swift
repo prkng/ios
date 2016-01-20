@@ -84,6 +84,7 @@ class MapViewController: AbstractViewController {
     var searchDuration : Float?
     var wasShown : Bool = false
     var shouldCancelTap = false
+    var returnNearestAnnotations: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
