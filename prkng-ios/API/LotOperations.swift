@@ -35,13 +35,13 @@ import UIKit
 //            return
 //        }
         
-        let url = APIUtility.APIConstants.rootURLString + "lots"
+        let url = APIUtility.rootURL() + "lots"
         
         let radiusStr = NSString(format: "%.0f", radius)
         
         let params = ["latitude": coordinate.latitude,
             "longitude": coordinate.longitude,
-            "radius" : radiusStr,
+            "radius": radiusStr,
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {

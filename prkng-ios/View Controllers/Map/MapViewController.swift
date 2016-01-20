@@ -131,7 +131,7 @@ class MapViewController: AbstractViewController {
 
     private func getCityOverlays() {
         
-        let url = APIUtility.APIConstants.rootURLString + "areas"
+        let url = APIUtility.rootURL() + "areas"
         
         let currentVersion = NSUserDefaults.standardUserDefaults().integerForKey("city_overlays_version")
         

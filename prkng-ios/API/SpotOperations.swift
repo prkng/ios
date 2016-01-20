@@ -12,7 +12,7 @@ struct SpotOperations {
     
     static func getSpotDetails(spotId: String, completion: ((spot:ParkingSpot?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "slots/" + spotId
+        let url = APIUtility.rootURL() + "slots/" + spotId
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: nil).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -31,7 +31,7 @@ struct SpotOperations {
     
     static func findSpots(compact compact: Bool, location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, carsharing: Bool = false, completion: ((spots: [NSObject], mapMessage: String?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "slots"
+        let url = APIUtility.rootURL() + "slots"
         
         let radiusStr = NSString(format: "%.0f", radius)
         
@@ -107,7 +107,7 @@ struct SpotOperations {
     
     static func checkin (spotId : String, completion: ((completed : Bool) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "checkins"
+        let url = APIUtility.rootURL() + "checkins"
         let params = ["slot_id" : spotId]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
@@ -123,7 +123,7 @@ struct SpotOperations {
         let checkinId = Settings.getCheckInId()
         if checkinId != 0 {
            
-            let url = APIUtility.APIConstants.rootURLString + "checkins/" + String(stringInterpolationSegment: checkinId)
+            let url = APIUtility.rootURL() + "checkins/" + String(stringInterpolationSegment: checkinId)
             
             APIUtility.authenticatedManager().request(.DELETE, url).responseSwiftyJSON { (request, response, json, error) -> Void in
                 completion(completed: error == nil)
@@ -136,7 +136,7 @@ struct SpotOperations {
 
     static func getCheckins(completion : ((checkins : Array<Checkin>?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "checkins"
+        let url = APIUtility.rootURL() + "checkins"
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: nil).responseSwiftyJSON { (request, response, json, error) -> Void in
             
@@ -153,7 +153,7 @@ struct SpotOperations {
     
     static func hideCheckin(checkinID: Int, completion: ((success: Bool) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "checkins/" + String(checkinID)
+        let url = APIUtility.rootURL() + "checkins/" + String(checkinID)
         
         let params = ["is_hidden": true]
         
@@ -166,7 +166,7 @@ struct SpotOperations {
     
     static func reportParkingRule (image : UIImage, location : CLLocationCoordinate2D, notes: String, spotId: String?, completion: ((completed : Bool) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "images"
+        let url = APIUtility.rootURL() + "images"
         let params = ["image_type" : "report",
             "file_name" : "report.jpg"]
         
@@ -195,7 +195,7 @@ struct SpotOperations {
                     }
                     
                     
-                    let reportUrl = APIUtility.APIConstants.rootURLString + "reports"
+                    let reportUrl = APIUtility.rootURL() + "reports"
                     
                     var reportParams : [String: AnyObject] = ["latitude" : "\(location.latitude)",
                         "longitude" : "\(location.longitude)",

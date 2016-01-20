@@ -68,7 +68,7 @@ class CityOperations {
     
     func getCities(completion : (completed : Bool, cities: [City]) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "cities"
+        let url = APIUtility.rootURL() + "cities"
         
         request(.GET, URLString: url).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -118,7 +118,7 @@ class CityOperations {
     
     static func getSupportedResidentialPermits(city: City, completion : (completed : Bool, permits: [String]) -> Void) {
 
-        let url = APIUtility.APIConstants.rootURLString + "permits"
+        let url = APIUtility.rootURL() + "permits"
         
         let params: [String : AnyObject] = [
             "city" : city.name,
