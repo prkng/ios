@@ -1448,6 +1448,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     override func mapModeDidChange(completion: (() -> Void)) {
+        spotIDsDrawnOnMap = []
+        lineSpotIDsDrawnOnMap = []
         self.setDefaultMapZoom()
         self.returnNearestAnnotations = 3
         updateAnnotations({ (operationCompleted: Bool) -> Void in
