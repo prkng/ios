@@ -96,6 +96,8 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         self.methodSelectionView.userInteractionEnabled = false
         
         let login = FBSDKLoginManager()
+        login.logOut()
+        
         let permissions = ["email", "public_profile"]
         login.logInWithReadPermissions(permissions) { (result, error) -> Void in
             
@@ -131,6 +133,8 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         if (selectedMethod == LoginMethod.Google) {
             return
         }
+        
+        GIDSignIn.sharedInstance().signOut()
         
         var configureError: NSError?
         GGLContext.sharedInstance().configureWithError(&configureError)

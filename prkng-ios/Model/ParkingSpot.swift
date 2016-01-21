@@ -554,7 +554,23 @@ class ParkingSpot: NSObject, DetailObject {
                 return nextItem.rule
             }
         }
-        return scheduleItems.first?.rule ?? nil
+        
+        let now = CGFloat(DateUtil.timeIntervalSinceDayStart())
+        var beforeRule = scheduleItems.first?.rule ?? nil
+        for scheduleItem in scheduleItems {
+            //the current rule was not found, so save the one before...
+            if scheduleItem.startInterval <= now
+                && scheduleItem.endInterval <= now {
+                    //this is before the current rule
+                    beforeRule = scheduleItem.rule
+            } else if scheduleItem.startInterval >= now
+                && scheduleItem.endInterval >= now {
+                    //...this is after, and since scheduleItems is already sorted, we can just return this
+                    return scheduleItem.rule
+            }
+        }
+        
+        return beforeRule
     }
     
     static let parkingRulesSorter = { (first: ParkingRule, second: ParkingRule) -> Bool in
