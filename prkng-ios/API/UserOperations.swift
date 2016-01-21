@@ -15,7 +15,7 @@ struct UserOperations {
     
     static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User?, apiKey : String?, error: NSError?) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login/register"
+        let url = APIUtility.rootURL() + "login/register"
         
         let params = ["email" : email, "name" : name, "password" : password, "gender" : gender, "birthYear" : birthYear]
         
@@ -41,7 +41,7 @@ struct UserOperations {
     
     static func login (email : String, password: String, completion : (user : User?, apiKey : String?) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login"
+        let url = APIUtility.rootURL() + "login"
         
         let params = ["email" : email,  "password" : password]
         
@@ -64,7 +64,7 @@ struct UserOperations {
     
     static func loginWithFacebook (accessToken: String, completion : (user : User, apiKey : String) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login"
+        let url = APIUtility.rootURL() + "login"
         
         let params = ["type" : "facebook", "access_token" : accessToken]
         
@@ -84,7 +84,7 @@ struct UserOperations {
     
     static func loginWithGoogle(accessToken: String, name: String, email: String, profileImageUrl: String, completion : (user : User, apiKey : String) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login"
+        let url = APIUtility.rootURL() + "login"
         
         let params = ["type" : "google",
             "access_token" : accessToken,
@@ -108,7 +108,7 @@ struct UserOperations {
     
     static func updateUser(user : User, newPassword : String?, imageUrl : String?, completion : (completed : Bool, user : User?, message : String?) -> Void)  {
         
-        let url = APIUtility.APIConstants.rootURLString + "user/profile"
+        let url = APIUtility.rootURL() + "user/profile"
         var params : [String : AnyObject] = ["name" : user.name,
             "email" : user.email,
             "gender" : user.gender
@@ -140,7 +140,7 @@ struct UserOperations {
     
     static func getUserDetails(completion : ((user : User?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "user/profile"
+        let url = APIUtility.rootURL() + "user/profile"
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: nil).responseSwiftyJSON { (request, response, json, error) -> Void in
             
@@ -160,7 +160,7 @@ struct UserOperations {
     
     static func uploadAvatar (image : UIImage, completion: ((completed : Bool, imageUrl : String?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "images"
+        let url = APIUtility.rootURL() + "images"
         let params = ["image_type" : "avatar",
             "file_name" : "avatar.jpg"]
         
@@ -205,7 +205,7 @@ struct UserOperations {
     
     static func resetPassword (email : String, completion : ((completed : Bool) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "login/resetpass"
+        let url = APIUtility.rootURL() + "login/resetpass"
         let params = ["email" : email]
         
         request(.POST, URLString: url, parameters: params).responseSwiftyJSON { (request, response, json, error) -> Void in
@@ -219,7 +219,7 @@ struct UserOperations {
         
         UserOperations.sharedInstance.deviceTokenString = deviceTokenString
         
-        let url = APIUtility.APIConstants.rootURLString + "hello"
+        let url = APIUtility.rootURL() + "hello"
         
         let locale = NSLocale.currentLocale().objectForKey(NSLocaleLanguageCode) as? String ?? ""
         let deviceType = "ios"

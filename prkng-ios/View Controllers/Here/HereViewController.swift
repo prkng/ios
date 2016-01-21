@@ -83,7 +83,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 showFiltersOnAppear = false
             } else {
                 self.filterVC.hideFilters(completely: false)
-                self.delegate?.updateMapAnnotations()
+                self.delegate?.updateMapAnnotations(nil)
             }
         }
         
@@ -643,7 +643,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     // MARK: TimeFilterViewDelegate
     
     func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
-        self.delegate?.updateMapAnnotations()
+        self.delegate?.updateMapAnnotations(nil)
 //        filterButtonText = selectedLabelText
 //        filterButton.setLabelText(selectedLabelText)
 //        hideFilters(alsoHideFilterButton: false)
@@ -667,13 +667,17 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.delegate?.setDefaultMapZoom()
         } else if (mapMessageView.mapMessageLabel.text ?? "") == "map_message_no_carsharing".localizedString {
             self.delegate?.loadSettingsTab()
+        } else if (mapMessageView.mapMessageLabel.text ?? "") == "map_message_no_parking".localizedString {
+            self.delegate?.updateMapAnnotations(1)
+        } else if (mapMessageView.mapMessageLabel.text ?? "") == "map_message_no_cars".localizedString {
+            self.delegate?.updateMapAnnotations(1)
         }
     }
 
     func didChangeCarSharingMode(mode: CarSharingMode) {
         self.delegate?.setDefaultMapZoom()
         //zooming should automatically generate an update, so we don't have to do it manually
-        self.delegate?.updateMapAnnotations()
+        self.delegate?.updateMapAnnotations(1)
     }
     
     // MARK: Car sharing popup
@@ -726,7 +730,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 protocol HereViewControllerDelegate {
     func loadMyCarTab()
     func loadSettingsTab()
-    func updateMapAnnotations()
+    func updateMapAnnotations(returnNearestAnnotations: Int?)
     func cityDidChange(fromCity fromCity: City, toCity: City)
     func didSelectMapMode(mapMode: MapMode)
     func setDefaultMapZoom()

@@ -794,6 +794,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             let operationCompletion = { (objects: [NSObject], mapMessage: String?) -> Void in
                 
+                self.returnNearestAnnotations = 0
+                
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     //only show the spinner if this map is active
                     if let tabController = self.parentViewController as? TabController {
@@ -859,7 +861,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             switch(self.mapMode) {
             case MapMode.CarSharing:
                 if self.delegate?.carSharingMode() == .FindSpot {
-                    CarSharingOperations.getCarShareLots(location: self.mapView.centerCoordinate, radius: self.radius, completion: { (carShareLots, mapMessage) -> Void in
+                    CarSharingOperations.getCarShareLots(location: self.mapView.centerCoordinate, radius: self.radius, nearest: returnNearestAnnotations, completion: { (carShareLots, mapMessage) -> Void in
 
                         SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: { (spots, mapMessage2) -> Void in
                             
@@ -868,7 +870,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
                     })
                 } else {
-                    CarSharingOperations.getCarShares(location: self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
+                    CarSharingOperations.getCarShares(location: self.mapView.centerCoordinate, radius: self.radius, nearest: returnNearestAnnotations, completion: operationCompletion)
                 }
                 break
             case MapMode.StreetParking:
@@ -880,7 +882,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 //                    self.updateInProgress = false
 //                    completion(operationCompleted: true)
 //                } else {
-                    LotOperations.sharedInstance.findLots(self.mapView.centerCoordinate, radius: self.radius, completion: operationCompletion)
+                LotOperations.sharedInstance.findLots(self.mapView.centerCoordinate, radius: self.radius, nearest: returnNearestAnnotations, completion: operationCompletion)
 //                }
                 break
 //            default:
@@ -1013,6 +1015,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
+            if !self.hasAnnotationsOnScreen() {
+                self.moveToClosestPin()
+            }
+
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
@@ -1046,6 +1052,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
+            if !self.hasAnnotationsOnScreen() {
+                self.moveToClosestPin()
+            }
+
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
@@ -1076,6 +1086,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.mapView.addAnnotations(self.annotations)
             
+            if !self.hasAnnotationsOnScreen() {
+                self.moveToClosestPin()
+            }
+            
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
@@ -1085,6 +1099,20 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
 
+    func moveToClosestPin() {
+        //order annotations by distance from map center
+        let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+        let orderedAnnotations = self.annotations.sort { (first, second) -> Bool in
+            let firstLocation = CLLocation(latitude: first.coordinate.latitude, longitude: first.coordinate.longitude)
+            let secondLocation = CLLocation(latitude: second.coordinate.latitude, longitude: second.coordinate.longitude)
+            return mapCenter.distanceFromLocation(firstLocation) < mapCenter.distanceFromLocation(secondLocation)
+        }
+        
+        if let first = orderedAnnotations.first {
+            self.mapView.setCenterCoordinate(first.coordinate, animated: true)
+        }
+    }
+    
     func zoomIntoClosestPins(numberOfPins: Int) {
         //order annotations by distance from map center
         let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
@@ -1300,6 +1328,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
+    func hasAnnotationsOnScreen() -> Bool {
+        
+        let projectedRect = self.mapView.projectedBounds
+        for annotation in self.mapView.visibleAnnotations as? [RMAnnotation] ?? [] {
+            if RMProjectedRectContainsProjectedPoint(projectedRect, annotation.projectedLocation) && !annotation.isUserLocationAnnotation {
+                return true
+            }
+        }
+        return false
+    }
+    
     override func addCityOverlaysCallback(polygons: [MKPolygon]) {
         
         let polygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(polygons, mapView: mapView)
@@ -1409,7 +1448,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     override func mapModeDidChange(completion: (() -> Void)) {
+        spotIDsDrawnOnMap = []
+        lineSpotIDsDrawnOnMap = []
         self.setDefaultMapZoom()
+        self.returnNearestAnnotations = 3
         updateAnnotations({ (operationCompleted: Bool) -> Void in
             completion()
         })

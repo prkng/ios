@@ -39,10 +39,10 @@ class MapViewController: AbstractViewController {
                     //take a screenshot of the current view, do whatever needs to be done, and when a callback returns fade into the "new" view
                     self.removeSnapshot()
                     
-                    let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
-                    self.mapModeImageView = snapshotView
-                    self.mapModeImageView?.userInteractionEnabled = false
-                    self.view.addSubview(self.mapModeImageView!)
+//                    let snapshotView = self.view.snapshotViewAfterScreenUpdates(false)
+//                    self.mapModeImageView = snapshotView
+//                    self.mapModeImageView?.userInteractionEnabled = false
+//                    self.view.addSubview(self.mapModeImageView!)
                     
                     SVProgressHUD.setBackgroundColor(UIColor.clearColor())
                     SVProgressHUD.show()
@@ -84,6 +84,7 @@ class MapViewController: AbstractViewController {
     var searchDuration : Float?
     var wasShown : Bool = false
     var shouldCancelTap = false
+    var returnNearestAnnotations: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -131,7 +132,7 @@ class MapViewController: AbstractViewController {
 
     private func getCityOverlays() {
         
-        let url = APIUtility.APIConstants.rootURLString + "areas"
+        let url = APIUtility.rootURL() + "areas"
         
         let currentVersion = NSUserDefaults.standardUserDefaults().integerForKey("city_overlays_version")
         

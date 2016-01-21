@@ -48,6 +48,7 @@
 "reset_email_copy" = "Merci d’entrer votre adresse e-mail";
 "reset_password" = "Mot de passe oublié?";
 "cancel" = "Annuler";
+"delete" = "Supprimer";
 "allow" = "Autoriser";
 "check_email_copy" = "Merci d’entrer votre adresse e-mail.";
 "pasword_reset_error" = "Quelque chose a mal tourné, merci de réessayer.";
@@ -242,8 +243,8 @@
 "map_message_loading" = "Chargement...";
 "map_message_too_zoomed_out" = "Zoomez au niveau de la rue.";
 "map_message_no_spots" = "Uh oh! Vous ne pouvez vous stationner ici présentement.";
-"map_message_no_cars" = "Uh oh! Il n'y a pas de véhicules disponibles ici présentement.";
-"map_message_no_parking" = "Uh oh! Il n'y a pas de lots hors-rue ici.";
+"map_message_no_cars" = "Uh oh! Il n'y a pas de véhicules disponibles ici présentement. Tapez pour afficher ceux à proximité.";
+"map_message_no_parking" = "Uh oh! Il n'y a pas de lots disponibles ici. Tapez pour afficher ceux à proximité.";
 "map_message_no_carsharing" = "Uh oh! Merci d'activer votre autopartage dans les réglages!";
 "map_message_outside_service_area" = "Désolé, aucune information n'est disponible pour cette région.";
 "map_message_under_maintenance" = "On effectue présentement des travaux de maintenance, réessayez un peu plus tard!";

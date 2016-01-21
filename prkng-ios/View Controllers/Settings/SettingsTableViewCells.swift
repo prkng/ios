@@ -89,10 +89,23 @@ class SettingsBasicCell: UITableViewCell {
         get { return title.textColor == Styles.Colors.red2 }
         set(value) { title.textColor = value ? Styles.Colors.red2 : Styles.Colors.midnight2 }
     }
-    
+
+    var bold: Bool {
+        get { return title.font == Styles.FontFaces.bold(14) }
+        set(value) { self.setFont(bold: value) }
+    }
+
     var titleText: String {
         get { return self.title.text ?? "" }
         set(value) { self.title.text = value }
+    }
+    
+    private func setFont(bold bold: Bool) {
+        if bold {
+            title.font = Styles.FontFaces.bold(14)
+        } else {
+            title.font = Styles.FontFaces.regular(14)
+        }
     }
     
     override func layoutSubviews() {
@@ -100,7 +113,7 @@ class SettingsBasicCell: UITableViewCell {
         if !didLayoutSubviews {
             self.backgroundColor = Styles.Colors.cream1
             
-            title.font = Styles.FontFaces.regular(14)
+            self.setFont(bold: bold)
             title.textAlignment = .Left
             contentView.addSubview(title)
             

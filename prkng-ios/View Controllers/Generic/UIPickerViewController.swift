@@ -20,7 +20,7 @@ class UIPickerViewController: AbstractViewController, UIPickerViewDataSource, UI
     
     //note: this must be added as a subview, otherwise it will crash on dismiss
     init(pickerValues: [String], completion: (selectedValue: String?) -> Void) {
-        self.pickerValues = ["clear".localizedString] + pickerValues
+        self.pickerValues = pickerValues
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
     }
@@ -61,9 +61,9 @@ class UIPickerViewController: AbstractViewController, UIPickerViewDataSource, UI
         
         let doneButton = UIBarButtonItem(title: "Done".localizedString, style: UIBarButtonItemStyle.Bordered, target: self, action: "donePicker")
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-//        let cancelButton = UIBarButtonItem(title: "Clear".localizedString, style: UIBarButtonItemStyle.Bordered, target: self, action: "cancelPicker")
+        let cancelButton = UIBarButtonItem(title: "Clear".localizedString, style: UIBarButtonItemStyle.Bordered, target: self, action: "cancelPicker")
 
-        toolBar.setItems([spaceButton, doneButton], animated: false)
+        toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         toolBar.userInteractionEnabled = true
         
         self.view.addSubview(picker)
@@ -107,7 +107,10 @@ class UIPickerViewController: AbstractViewController, UIPickerViewDataSource, UI
     func donePicker() {
         if self.lastSelectedOption == "clear".localizedString {
             self.lastSelectedOption = nil
+        } else if self.lastSelectedOption == nil {
+            self.lastSelectedOption = pickerValues.first
         }
+
         self.completion(selectedValue: self.lastSelectedOption)
         self.dismissAsModalWithTransparency(nil)
     }

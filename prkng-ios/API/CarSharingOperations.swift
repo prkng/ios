@@ -10,9 +10,9 @@ import Foundation
 
 class CarSharingOperations {
     
-    static func getCarShares(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShares: [NSObject], mapMessage: String?) -> Void)) {
+    static func getCarShares(location location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: ((carShares: [NSObject], mapMessage: String?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "carshares"
+        let url = APIUtility.rootURL() + "carshares"
         
         let radiusStr = NSString(format: "%.0f", radius)
         
@@ -34,8 +34,9 @@ class CarSharingOperations {
             "latitude": location.latitude,
             "longitude": location.longitude,
             "radius" : radiusStr,
+            "company" : companiesString,
             "permit" : "all",
-            "company" : companiesString
+            "nearest": nearest
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
@@ -67,9 +68,9 @@ class CarSharingOperations {
         }
     }
 
-    static func getCarShareLots(location location: CLLocationCoordinate2D, radius : Float, completion: ((carShareLots: [NSObject], mapMessage: String?) -> Void)) {
+    static func getCarShareLots(location location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: ((carShareLots: [NSObject], mapMessage: String?) -> Void)) {
         
-        let url = APIUtility.APIConstants.rootURLString + "carshare_lots"
+        let url = APIUtility.rootURL() + "carshare_lots"
         
         let radiusStr = NSString(format: "%.0f", radius)
         
@@ -85,8 +86,9 @@ class CarSharingOperations {
             "latitude": location.latitude,
             "longitude": location.longitude,
             "radius" : radiusStr,
+            "company" : companiesString,
             "permit" : "all",
-            "company" : companiesString
+            "nearest": nearest
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
@@ -118,6 +120,23 @@ class CarSharingOperations {
         }
     }
     
+    static func login(carSharingType: CarSharingType) {
+        
+        switch carSharingType {
+        case .CommunautoAutomobile, .Communauto:
+            //open the web view
+            let vc = CarSharingOperations.CommunautoAutomobile.loginVC
+            (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController?.presentViewController(vc, animated: true, completion: { () -> Void in
+            })
+        case .Car2Go:
+            CarSharingOperations.Car2Go.getAndSaveCar2GoToken({ (token, tokenSecret) -> Void in
+            })
+        case .Zipcar, .Generic:
+            break
+        }
+
+    }
+    
     static func reserveCarShare(carShare: CarShare, fromVC: UIViewController, completion: (Bool) -> Void) {
         
         let reservationCompletion = { (reserveResult: ReturnStatus) -> Void in
@@ -140,8 +159,7 @@ class CarSharingOperations {
                 alert.message = "could_not_reserve_not_logged_in".localizedString
                 alert.addButtonWithTitle("OK")
                 alert.show()
-                let vc = CarSharingOperations.CommunautoAutomobile.loginVC
-                fromVC.presentViewController(vc, animated: true, completion: nil)
+                CarSharingOperations.login(carShare.carSharingType)
                 completion(false)
             }
             SVProgressHUD.dismiss()
@@ -301,7 +319,7 @@ class CarSharingOperations {
                 if success && data != nil {
                     let json = JSON(data: data!)
                     let accountID = json["account"][0]["accountId"].rawString()
-                    completion(accountID: accountID)
+                    completion(accountID: accountID == "null" ? nil : accountID)
                     return
                 }
                 completion(accountID: nil)

@@ -10,10 +10,22 @@ import UIKit
 
 class HistorySectionTitleView: UIView {
     
-    let label = UILabel()    
+    var label: UILabel
     
     var didSetupSubviews : Bool = false
     var didSetupConstraints : Bool = true
+    
+    init(frame: CGRect, labelText: String) {
+        //we need to do this because in the UITableView, sometimes constraints seem to magically disappear.
+        let labelFrame = CGRect(x: 27, y: 0, width: frame.width - 27 - 25, height: frame.height)
+        label = UILabel(frame: labelFrame)
+        label.text = labelText
+        super.init(frame: frame)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func layoutSubviews() {
         if (!didSetupSubviews) {
@@ -38,7 +50,6 @@ class HistorySectionTitleView: UIView {
         label.font = Styles.FontFaces.light(12)
         label.textColor = Styles.Colors.cream1
         addSubview(label)
-        
         
         didSetupSubviews = true
         didSetupConstraints = false

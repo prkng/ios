@@ -500,11 +500,12 @@ class ParkingSpot: NSObject, DetailObject {
         
         for rule in rules {
             for i in 0...(rule.agenda.count - 1) {
-                let timePeriod = rule.agenda[i]
-                if today == i
-                    && timePeriod?.start <= now
-                    && timePeriod?.end >= now {
-                        activeRules.append(rule)
+                if let timePeriod = rule.agenda[i] {
+                    if today == i
+                        && timePeriod.start <= now
+                        && timePeriod.end >= now {
+                            activeRules.append(rule)
+                    }
                 }
             }
         }
@@ -525,13 +526,19 @@ class ParkingSpot: NSObject, DetailObject {
     
     var currentlyActiveRuleEndTime: NSTimeInterval {
         var endTime: NSTimeInterval = 0
-        let today = DateUtil.dayIndexOfTheWeek()
-        let rule = self.currentlyActiveRule
-        //validate... just in case!
-        if rule.agenda.count >= today - 1 {
-            endTime = rule.agenda[today]?.end ?? 0
-        }
+        let now = CGFloat(DateUtil.timeIntervalSinceDayStart())
 
+        var scheduleItems = ScheduleHelper.getScheduleItems(self)
+        scheduleItems = ScheduleHelper.processScheduleItems(scheduleItems, respectDoNotProcess: false)
+        
+        for scheduleItem in scheduleItems {
+            if scheduleItem.columnIndex == 0 //since these are sorted, 0 means today!
+                && scheduleItem.startInterval <= now
+                && scheduleItem.endInterval >= now {
+                    endTime = NSTimeInterval(scheduleItem.endInterval)
+            }
+        }
+        
         return endTime
     }
     
@@ -547,7 +554,23 @@ class ParkingSpot: NSObject, DetailObject {
                 return nextItem.rule
             }
         }
-        return scheduleItems.first?.rule ?? nil
+        
+        let now = CGFloat(DateUtil.timeIntervalSinceDayStart())
+        var beforeRule = scheduleItems.first?.rule ?? nil
+        for scheduleItem in scheduleItems {
+            //the current rule was not found, so save the one before...
+            if scheduleItem.startInterval <= now
+                && scheduleItem.endInterval <= now {
+                    //this is before the current rule
+                    beforeRule = scheduleItem.rule
+            } else if scheduleItem.startInterval >= now
+                && scheduleItem.endInterval >= now {
+                    //...this is after, and since scheduleItems is already sorted, we can just return this
+                    return scheduleItem.rule
+            }
+        }
+        
+        return beforeRule
     }
     
     static let parkingRulesSorter = { (first: ParkingRule, second: ParkingRule) -> Bool in

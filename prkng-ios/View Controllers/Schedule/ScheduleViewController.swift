@@ -41,7 +41,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         super.init(spot: spot, view: view)
         
         scheduleItems = ScheduleHelper.getScheduleItems(spot)
-        scheduleItems = ScheduleHelper.processScheduleItems(scheduleItems)
+        scheduleItems = ScheduleHelper.processScheduleItems(scheduleItems, respectDoNotProcess: true)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -248,13 +248,13 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
 
 class ScheduleHelper {
         
-    static func getAgendaItems(spot: ParkingSpot) -> [AgendaItem] {
+    static func getAgendaItems(spot: ParkingSpot, respectDoNotProcess: Bool) -> [AgendaItem] {
         
         var agendaItems = [AgendaItem]()
         var dayIndexes = Set<Int>()
 
         var scheduleItems = getScheduleItems(spot)
-        scheduleItems = processScheduleItems(scheduleItems)
+        scheduleItems = processScheduleItems(scheduleItems, respectDoNotProcess: respectDoNotProcess)
         
         //convert schedule items into agenda items
         for scheduleItem in scheduleItems {
@@ -315,12 +315,12 @@ class ScheduleHelper {
         return scheduleItems
     }
     
-    static func processScheduleItems(scheduleItems: [ScheduleItemModel]) -> [ScheduleItemModel] {
+    static func processScheduleItems(scheduleItems: [ScheduleItemModel], respectDoNotProcess: Bool) -> [ScheduleItemModel] {
         var newScheduleItems = [ScheduleItemModel]()
         
         for i in 0...6 {
             let tempScheduleItems = scheduleItems.filter({ (scheduleItem: ScheduleItemModel) -> Bool in
-                return scheduleItem.columnIndex! == i && !scheduleItem.shouldNotProcess
+                return scheduleItem.columnIndex! == i && (!respectDoNotProcess || !scheduleItem.shouldNotProcess)
             }).sort({ (left: ScheduleItemModel, right: ScheduleItemModel) -> Bool in
                 left.columnIndex! <= right.columnIndex!
                     && left.startInterval <= right.startInterval
@@ -408,9 +408,11 @@ class ScheduleHelper {
         }
         
         //in the first steps we removed the snow restrictions, now let's add them back, un-processed!
-        newScheduleItems += scheduleItems.filter({ (scheduleItem: ScheduleItemModel) -> Bool in
-            return scheduleItem.shouldNotProcess
-        })
+        if respectDoNotProcess {
+            newScheduleItems += scheduleItems.filter({ (scheduleItem: ScheduleItemModel) -> Bool in
+                return scheduleItem.shouldNotProcess
+            })
+        }
         
         return newScheduleItems
     }

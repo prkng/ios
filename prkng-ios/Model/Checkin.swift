@@ -19,13 +19,17 @@ class Checkin: NSObject {
 //    "lat": 45.4794994741824,
 //    "id": 104
     
-    var date : NSDate
-    var name : String
-    var location : CLLocation
-    var spotId : String
-    var active : Bool
+    var checkinId: Int
+    var date: NSDate
+    var name: String
+    var location: CLLocation
+    var spotId: String
+    var active: Bool
+    var hidden: Bool
     
     init(json : JSON) {
+
+        checkinId = json["id"].intValue
         name = json["way_name"].stringValue
         let lat = json["lat"].doubleValue
         let lon = json["long"].doubleValue
@@ -33,7 +37,8 @@ class Checkin: NSObject {
         date = NSDate()
         spotId = json["slot_id"].stringValue
         active = json["active"].boolValue
-
+        hidden = json["is_hidden"].boolValue
+        
         let checkinTime = json["checkin_time"].stringValue
         
         let formatter = NSDateFormatter()

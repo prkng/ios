@@ -18,7 +18,7 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
         agendaItems = []
         tableView = UITableView()
         super.init(spot: spot, view: view)
-        agendaItems = ScheduleHelper.getAgendaItems(spot)
+        agendaItems = ScheduleHelper.getAgendaItems(spot, respectDoNotProcess: true)
     }
     
     required init?(coder aDecoder: NSCoder) {

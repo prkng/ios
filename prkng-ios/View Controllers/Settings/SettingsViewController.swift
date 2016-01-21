@@ -109,6 +109,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         view.addSubview(tableView)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + self.PROFILE_CONTAINER_HEIGHT + 20)))
+        tableView.tableFooterView = self.tableFooterView()
         tableView.backgroundColor = UIColor.clearColor()
         tableView.separatorStyle = .None
         tableView.dataSource = self
@@ -384,31 +385,45 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     func residentialPermitFilterValueChanged() {
         let currentValue = Settings.shouldFilterForResidentialPermit()
         Settings.setShouldFilterForResidentialPermit(!currentValue)
+        
+        if Settings.residentialPermits().isEmpty {
+            showResidentialPermitPicker()
+        }
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings View", action: "Residential Permit Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as [NSObject: AnyObject])
     }
     
     func residentialPermitFilterValueNeedsAddition() {
         if Settings.residentialPermits().isEmpty {
-            //bring up the rolly thingy
-            CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
-                if completed {
-                    let pickerVC = UIPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
-                        Settings.setResidentialPermit(selectedValue)
-                        Settings.setShouldFilterForResidentialPermit(selectedValue != nil)
-                        self.tableView.reloadData()
-                    })
-                    self.presentAsModalWithTransparency(pickerVC, completion: nil)
-                }
-            }
+            showResidentialPermitPicker()
         } else {
             Settings.setResidentialPermit(nil)
             Settings.setShouldFilterForResidentialPermit(false)
             self.tableView.reloadData()
         }
     }
+    
+    private func showResidentialPermitPicker() {
+        //bring up the rolly thingy
+        CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
+            if completed {
+                let pickerVC = UIPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
+                    Settings.setResidentialPermit(selectedValue)
+                    Settings.setShouldFilterForResidentialPermit(selectedValue != nil)
+                    self.tableView.reloadData()
+                })
+                self.presentAsModalWithTransparency(pickerVC, completion: nil)
+            }
+        }
+    }
 
     func snowRemovalFilterValueChanged() {
         let currentValue = Settings.shouldFilterForSnowRemoval()
         Settings.setShouldFilterForSnowRemoval(!currentValue)
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings View", action: "Snow Removal Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as [NSObject: AnyObject])
     }
 
     func hideCar2GoValueChanged() {
@@ -447,8 +462,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         CarSharingOperations.CommunautoAutomobile.getAndSaveCommunautoCustomerID { (id) -> Void in
             if id == nil {
                 //we need to ask the user to log in
-                let vc = CarSharingOperations.CommunautoAutomobile.loginVC
-                self.navigationController?.pushViewController(vc, animated: true)
+                CarSharingOperations.login(.Communauto)
             } else {
                 //we have a value, so perform a log out
                 //calling getAndSaveCommunautoCustomerID already logged us out, so just update the cell
@@ -466,11 +480,44 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
                 CarSharingOperations.Car2Go.logout()
                 self.tableView.reloadData()
             } else {
-                CarSharingOperations.Car2Go.getAndSaveCar2GoToken({ (token, tokenSecret) -> Void in
-                })
+                CarSharingOperations.login(.Car2Go)
             }
         })
     }
+
+    func tableFooterView() -> UIView {
+        
+        let versionString = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(BIG_CELL_HEIGHT))
+        let tableFooterView = UIView(frame: frame)
+        tableFooterView.backgroundColor = Styles.Colors.stone
+
+        let tableFooterViewLabel = UILabel()
+        
+        let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
+        let textLine1 = NSMutableAttributedString(string: "Version " + versionString, attributes: line1Attributes)
+        
+        let line2Attributes = [NSFontAttributeName: Styles.FontFaces.bold(12), NSForegroundColorAttributeName: Styles.Colors.red2]
+        let textLine2 = NSAttributedString(string: "Using test server", attributes: line2Attributes)
+        
+        if APIUtility.isUsingTestServer {
+            textLine1.appendAttributedString(NSAttributedString(string: "\n"))
+            textLine1.appendAttributedString(textLine2)
+        }
+        
+        tableFooterViewLabel.numberOfLines = 0
+        tableFooterViewLabel.attributedText = textLine1
+        tableFooterView.addSubview(tableFooterViewLabel)
+
+        tableFooterViewLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(tableFooterView).offset(20)
+            make.right.equalTo(tableFooterView).offset(-20)
+            make.bottom.equalTo(tableFooterView).offset(-10)
+        }
+
+        return tableFooterView
+    }
+    
 
     //MARK: UITableViewDataSource
         
@@ -507,10 +554,11 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             carSharingSection = [car2goCell, zipcarCell]
         }
         
-        let generalSection = [SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, switchSelector: "showSupport"),
-            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, switchSelector: "showGettingStarted"),
-            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, switchSelector: "showShareSheet"),
+        let generalSection = [
             SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, switchSelector: "sendToAppStore"),
+            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, switchSelector: "showShareSheet"),
+            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, switchSelector: "showGettingStarted"),
+            SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, switchSelector: "showSupport"),
             SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, switchSelector: "showFaq"),
             SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, switchSelector: "showTerms"),
             SettingsCell(cellType: .Basic, titleText: "privacy_policy".localizedString, parentVC: self, switchSelector: "showPrivacy"),
@@ -583,7 +631,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
                 cell = SettingsBasicCell(style: .Default, reuseIdentifier: "basic" + settingsCell.titleText)
             }
             cell!.titleText = settingsCell.titleText
-            cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 3
+            cell!.bold = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row < 4
+            cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 0
             return cell!
         }
     }

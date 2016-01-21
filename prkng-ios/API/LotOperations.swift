@@ -17,7 +17,7 @@ import UIKit
     private var inProgress = false
     private var lots = [Lot]()
     
-    func findLots(coordinate: CLLocationCoordinate2D, radius : Float, completion: ((lots: [NSObject], mapMessage: String?) -> Void)) {
+    func findLots(coordinate: CLLocationCoordinate2D, radius : Float, nearest: Int, completion: ((lots: [NSObject], mapMessage: String?) -> Void)) {
         
         if inProgress {
             dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
@@ -35,13 +35,14 @@ import UIKit
 //            return
 //        }
         
-        let url = APIUtility.APIConstants.rootURLString + "lots"
+        let url = APIUtility.rootURL() + "lots"
         
         let radiusStr = NSString(format: "%.0f", radius)
         
         let params = ["latitude": coordinate.latitude,
             "longitude": coordinate.longitude,
-            "radius" : radiusStr,
+            "radius": radiusStr,
+            "nearest": nearest
         ]
         
         APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {

@@ -20,7 +20,7 @@ class AnalyticsOperations {
             return
         }
         
-        let url = APIUtility.APIConstants.rootURLString + "analytics/search"
+        let url = APIUtility.rootURL() + "analytics/search"
         let params = ["query": query, "navigate": (navigate ? "true" : "false") ]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
@@ -47,7 +47,7 @@ class AnalyticsOperations {
             mapModeString = ""
             break
         }
-        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let url = APIUtility.rootURL() + "analytics/event"
         let params = ["event" : "map_mode_" + mapModeString]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
@@ -59,7 +59,7 @@ class AnalyticsOperations {
     
     static func carShareLoginEvent(type: String, completion : (completed : Bool) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let url = APIUtility.rootURL() + "analytics/event"
         let params = ["event" : ("login_" + type)]
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -76,7 +76,7 @@ class AnalyticsOperations {
 
     static func reservedCarShareEvent(carShare: CarShare, completion : (completed : Bool) -> Void) {
                 
-        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let url = APIUtility.rootURL() + "analytics/event"
         let params = ["event" : ("reserved_" + carShare.carSharingType.name),
             "longitude" : String(stringInterpolationSegment: carShare.coordinate.longitude),
             "latitude" : String(stringInterpolationSegment: carShare.coordinate.latitude)]
@@ -98,7 +98,7 @@ class AnalyticsOperations {
         
         lastUsedCoordinate = coordinate
         
-        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let url = APIUtility.rootURL() + "analytics/event"
         let params = ["event" : (entering ? "entered_fence" : "left_fence"),
             "longitude" : String(stringInterpolationSegment: coordinate.longitude),
             "latitude" : String(stringInterpolationSegment: coordinate.latitude)]
@@ -118,7 +118,7 @@ class AnalyticsOperations {
 
     func geofencingEventUserResponse(response: Bool, completion : (completed : Bool) -> Void) {
         
-        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let url = APIUtility.rootURL() + "analytics/event"
         var params = ["event" : (response ? "fence_response_yes" : "fence_response_no")]
         
         if let coordinate = self.lastUsedCoordinate {
@@ -161,7 +161,7 @@ class AnalyticsOperations {
             break
         }
         
-        let url = APIUtility.APIConstants.rootURLString + "analytics/event"
+        let url = APIUtility.rootURL() + "analytics/event"
         let params = ["event" : "perm_" + statusString]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
