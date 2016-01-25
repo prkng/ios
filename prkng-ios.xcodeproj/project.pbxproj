@@ -902,12 +902,12 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
+				BF5E84F81B07B3A000EC6AD2 /* AFDateHelper */,
+				BFEA6A561A9E2E76001F063E /* Alamofire */,
 				3E90A92F1BA9C9B200CCEB41 /* GiFHUD */,
 				BF3282641B384732002ED8DF /* MaterialKit */,
-				BF5E84F81B07B3A000EC6AD2 /* AFDateHelper */,
-				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
 				BFEA6A991A9E2E81001F063E /* Snap */,
-				BFEA6A561A9E2E76001F063E /* Alamofire */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";

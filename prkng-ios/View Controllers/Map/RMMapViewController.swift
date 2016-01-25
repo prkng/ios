@@ -1355,9 +1355,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         annotation.lineColor = Styles.Colors.red1
         annotation.lineWidth = 4.0
         
-        let allAnnotationsToAdd = [annotation]
-        mapView.addAnnotations(allAnnotationsToAdd)
+        let interiorPolygons = MKPolygon.interiorPolygons(polygons)
+        let interiorPolygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(interiorPolygons, mapView: mapView)
         
+        let allAnnotationsToAdd = [annotation] + interiorPolygonAnnotations
+        mapView.addAnnotations(allAnnotationsToAdd)
     }
     
     // MARK: SpotDetailViewDelegate
