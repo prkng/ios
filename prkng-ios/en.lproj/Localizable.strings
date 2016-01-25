@@ -99,7 +99,7 @@
 "first_checkin_title" = "Here we are!";
 "first_checkin_subtitle" = "Your first reminder";
 "first_checkin_text" = "Keep in mind that the data may differ from the on-street regulation. Please keep an eye open.";
-"no_checkin_message" = "Want a reminder?\nSelect a spot on the map and tap \"park here\".";
+"no_checkin_message" = "Want a reminder?\nSelect a spot on the map and tap \"Park here!\".";
 "now" = "now";
 "park_now" = "park now";
 "checked_in_message" = "you're parked on";
@@ -150,14 +150,14 @@
 
 "tutorial_step_1" = "Sarah is having lunch with her mom. She’ll need to park when she gets there. See how she uses prkng!";
 "tutorial_step_2" = "Once arrived at her destination, the \"map\" feature shows her the spots where she’s allowed to park.";
-"tutorial_step_3" = "Sarah’s a bright woman: She taps \"park here\" so she’ll be notified to move her car before the cops do.";
+"tutorial_step_3" = "Sarah’s a bright woman: She taps \"Park here!\" so she’ll be notified to move her car before the cops do.";
 "tutorial_step_4" = "No more headaches, no more surprise tickets: join Sarah in using prkng to find your next free spot!";
 "tutorial_confirm" = "GOT IT";
 
 "here_firstuse_title" = "How it works.";
 "here_firstuse_subtitle" = "We know it’s your first time!";
 "here_firstuse_1" = "Tap on any of the spots to see their authorized periods.";
-"here_firstuse_2" = "Once you have found your spot, hit \"Park here\" to be reminded when to move your car.";
+"here_firstuse_2" = "Once you have found your spot, hit \"Park here!\" to be reminded when to move your car.";
 "free_spots" = "FREE SPOTS";
 "metered_spots" = "METERED SPOTS";
 
