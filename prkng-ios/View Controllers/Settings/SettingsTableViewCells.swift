@@ -17,64 +17,81 @@ enum SettingsTableViewCellType {
     case Basic //title, possibly red.
 }
 
-class SettingsCell {
+class SettingsCell: NSObject {
     var titleText: String = ""
     var subtitleText: String = ""
     var segments: [String] = []
     var defaultSegment: Int = 0
-    var signedIn: Bool?
-    var switchValue: Bool?
-    var parentVC: UIViewController?
-    var switchSelector: String?
-    var buttonSelector: String?
-    var rightSideText: String?
+    var signedIn: Bool? = nil
+    var switchValue: Bool? = nil
+    var selectorsTarget: AnyObject? = nil
+    var cellSelector: String? = nil
+    var switchSelector: String? = nil
+    var buttonSelector: String? = nil
+    var rightSideText: String? = nil
     var cellType: SettingsTableViewCellType = .Basic
+    var canSelect: Bool = false
+    
+    //memberwise initializer (it's just easier to have ONE like this, and a few convenience inits)
+    init(
+        titleText: String = "",
+        subtitleText: String = "",
+        segments: [String] = [],
+        defaultSegment: Int = 0,
+        signedIn: Bool? = nil,
+        switchValue: Bool? = nil,
+        selectorsTarget: AnyObject? = nil,
+        cellSelector: String? = nil,
+        switchSelector: String? = nil,
+        buttonSelector: String? = nil,
+        rightSideText: String? = nil,
+        cellType: SettingsTableViewCellType = .Basic,
+        canSelect: Bool = false
+        ) {
+            self.titleText = titleText
+            self.subtitleText = subtitleText
+            self.segments = segments
+            self.defaultSegment = defaultSegment
+            self.signedIn = signedIn
+            self.switchValue = switchValue
+            self.selectorsTarget = selectorsTarget
+            self.cellSelector = cellSelector
+            self.switchSelector = switchSelector
+            self.buttonSelector = buttonSelector
+            self.rightSideText = rightSideText
+            self.cellType = cellType
+            self.canSelect = canSelect
+    }
     
     //this init infers a Switch or PermitSwitch type
-    init(switchValue: Bool, titleText: String, subtitleText: String, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil, rightSideText: String? = nil) {
+    convenience init(switchValue: Bool, titleText: String, subtitleText: String, selectorsTarget: AnyObject? = nil, switchSelector: String? = nil, buttonSelector: String? = nil, rightSideText: String? = nil) {
+        self.init()
         self.cellType = buttonSelector == nil ? .Switch : .PermitSwitch
         self.switchValue = switchValue
         self.titleText = titleText
         self.subtitleText = subtitleText
-        self.parentVC = parentVC
+        self.selectorsTarget = selectorsTarget
         self.switchSelector = switchSelector
         self.buttonSelector = buttonSelector
         self.rightSideText = rightSideText
     }
 
-    init(cellType: SettingsTableViewCellType, titleText: String, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil) {
-        self.cellType = cellType
-        self.titleText = titleText
-        self.parentVC = parentVC
-        self.switchSelector = switchSelector
-        self.buttonSelector = buttonSelector
-    }
-
-    //this init infers Service/ServiceSwitch types
-    init(titleText: String, signedIn: Bool?, switchValue: Bool?, parentVC: UIViewController? = nil, switchSelector: String? = nil, buttonSelector: String? = nil) {
-        self.cellType = switchValue != nil ? .ServiceSwitch : .Service
-        self.titleText = titleText
-        self.signedIn = signedIn
-        self.switchValue = switchValue
-        self.parentVC = parentVC
-        self.switchSelector = switchSelector
-        self.buttonSelector = buttonSelector
-    }
-
     //this init infers Switch type
-    init(titleText: String, switchValue: Bool) {
+    convenience init(titleText: String, switchValue: Bool) {
+        self.init()
         self.cellType = .Switch
         self.titleText = titleText
         self.switchValue = switchValue
     }
 
     //this init infers Segmented type
-    init(titleText: String, segments: [String], defaultSegment: Int, parentVC: UIViewController? = nil, switchSelector: String? = nil) {
+    convenience init(titleText: String, segments: [String], defaultSegment: Int, selectorsTarget: AnyObject? = nil, switchSelector: String? = nil) {
+        self.init()
         self.cellType = .Segmented
         self.titleText = titleText
         self.segments = segments
         self.defaultSegment = defaultSegment
-        self.parentVC = parentVC
+        self.selectorsTarget = selectorsTarget
         self.switchSelector = switchSelector
     }
 
@@ -193,8 +210,8 @@ class SettingsSwitchCell: UITableViewCell {
     }
     
     func indicatorButtonTapped() {
-        if (parentVC != nil && buttonSelector != nil) {
-            parentVC!.performSelector(Selector(buttonSelector!))
+        if (selectorsTarget != nil && buttonSelector != nil) {
+            selectorsTarget!.performSelector(Selector(buttonSelector!))
         }
     }
 
@@ -208,7 +225,7 @@ class SettingsSwitchCell: UITableViewCell {
     }
     
     private var addButton: UIButton?
-    var parentVC: UIViewController?
+    var selectorsTarget: AnyObject?
     var selector: String?
     
     private var cellBackgroundColor: UIColor {
@@ -227,12 +244,12 @@ class SettingsSwitchCell: UITableViewCell {
     
     func resetSelector() {
         enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-        if (parentVC != nil && selector != nil) {
-            enabledSwitch.addTarget(parentVC!, action: Selector(selector!), forControlEvents: .ValueChanged)
+        if (selectorsTarget != nil && selector != nil) {
+            enabledSwitch.addTarget(selectorsTarget!, action: Selector(selector!), forControlEvents: .ValueChanged)
             enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
         }
-        if (parentVC != nil && buttonSelector != nil) {
-            addButton?.addTarget(parentVC!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
+        if (selectorsTarget != nil && buttonSelector != nil) {
+            addButton?.addTarget(selectorsTarget!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
         }
     }
 
@@ -314,13 +331,13 @@ class SettingsSwitchCell: UITableViewCell {
 
 class SettingsSegmentedCell: UITableViewCell {
     
-    init(segments: [String], reuseIdentifier: String?, parentVC: UIViewController?, selector: String?) {
+    init(segments: [String], reuseIdentifier: String?, selectorsTarget: AnyObject?, selector: String?) {
         segmentedControl = DVSwitch(stringsArray: segments)
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
-        if (parentVC != nil && selector != nil) {
+        if (selectorsTarget != nil && selector != nil) {
             self.segmentedControl.setPressedHandler { (index) -> Void in
                 if Int(index) != self.lastIndex {
-                    parentVC!.performSelector(Selector(selector!))
+                    selectorsTarget!.performSelector(Selector(selector!))
                     self.lastIndex =  Int(index)
                 }
             }
@@ -402,7 +419,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
     private let button = ViewFactory.transparentRoundedButton()
     private var didLayoutSubviews: Bool = false
     
-    var parentVC: UIViewController? {
+    var selectorsTarget: AnyObject? {
         didSet {
             resetSelector()
         }
@@ -479,12 +496,12 @@ class SettingsServiceSwitchCell: UITableViewCell {
     
     func resetSelector() {
         enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
-        if (parentVC != nil && switchSelector != nil) {
-            enabledSwitch.addTarget(parentVC!, action: Selector(switchSelector!), forControlEvents: .ValueChanged)
+        if (selectorsTarget != nil && switchSelector != nil) {
+            enabledSwitch.addTarget(selectorsTarget!, action: Selector(switchSelector!), forControlEvents: .ValueChanged)
             enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
         }
-        if (parentVC != nil && buttonSelector != nil) {
-            button.addTarget(parentVC!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
+        if (selectorsTarget != nil && buttonSelector != nil) {
+            button.addTarget(selectorsTarget!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
         }
 
     }

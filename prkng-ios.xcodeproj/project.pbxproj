@@ -94,6 +94,7 @@
 		3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EEF9F4E1BB45F550036BDBC /* UIViewController.swift */; };
 		3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF469B11B33753300BC87A9 /* PRKLabel.swift */; };
 		3EF4A7D11B97AD2700CE4870 /* PRKTimeSpanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */; };
+		3EF5CC6E1C515A4000F61B77 /* PPSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF5CC6D1C515A4000F61B77 /* PPSettingsCell.swift */; };
 		3EF969BD1B3B13B7007641AE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF969BC1B3B13B7007641AE /* Crashlytics.framework */; };
 		3EFAEDC01B29D5FF00AB2A74 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */; };
 		3EFBB7261C4717F3002D61F8 /* IntroLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBB7231C4717F3002D61F8 /* IntroLight.otf */; };
@@ -297,6 +298,7 @@
 		3EEF9F4E1BB45F550036BDBC /* UIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		3EF469B11B33753300BC87A9 /* PRKLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKLabel.swift; sourceTree = "<group>"; };
 		3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTimeSpanView.swift; sourceTree = "<group>"; };
+		3EF5CC6D1C515A4000F61B77 /* PPSettingsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPSettingsCell.swift; path = ParkingPanda/PPSettingsCell.swift; sourceTree = "<group>"; };
 		3EF64E7A1B6A88FD002B010B /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		3EF969BC1B3B13B7007641AE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		3EFAEDBF1B29D5FF00AB2A74 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -568,6 +570,14 @@
 			path = Lot;
 			sourceTree = "<group>";
 		};
+		3EF5CC6C1C5159D500F61B77 /* ParkingPanda */ = {
+			isa = PBXGroup;
+			children = (
+				3EF5CC6D1C515A4000F61B77 /* PPSettingsCell.swift */,
+			);
+			name = ParkingPanda;
+			sourceTree = "<group>";
+		};
 		BF0B47221A7E903900E94B3C /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,8 +615,9 @@
 				BF779A361AD40FD100F76E0A /* Search */,
 				BFF568EB1ACDCBF50018F62F /* Schedule */,
 				BFE1AB761A839F0100B77F2E /* Map */,
-				BFD0101A1AC1C5A100C59B28 /* Navigation */,
 				3E6799061B4F2C8E003913CF /* Modal */,
+				BFD0101A1AC1C5A100C59B28 /* Navigation */,
+				3EF5CC6C1C5159D500F61B77 /* ParkingPanda */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -1159,6 +1170,7 @@
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				3E54B3B11BCF034900879528 /* CityOperations.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
+				3EF5CC6E1C515A4000F61B77 /* PPSettingsCell.swift in Sources */,
 				3EF469B21B33753300BC87A9 /* PRKLabel.swift in Sources */,
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
 				3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */,
