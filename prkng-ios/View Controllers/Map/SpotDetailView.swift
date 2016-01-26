@@ -139,7 +139,7 @@ class SpotDetailView: UIView {
         checkinImageView.layer.anchorPoint = CGPointMake(0.5,1.0);
         checkinImageView.layer.wigglewigglewiggle()
         
-        checkinImageLabel.font = Styles.FontFaces.regular(10)
+        checkinImageLabel.font = Styles.FontFaces.bold(10)
         checkinImageLabel.textColor = Styles.Colors.cream1
         checkinImageLabel.textAlignment = NSTextAlignment.Center
         topContainerRightView.addSubview(checkinImageLabel)

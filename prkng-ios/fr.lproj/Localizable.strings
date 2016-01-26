@@ -100,7 +100,7 @@
 "first_checkin_subtitle" = "Votre premier rappel";
 "first_checkin_text" = "Prenez note que la règlementation sur rue prévaut toujours, et peut différer de notre donnée.\nGardez donc un oeil ouvert!";
 
-"no_checkin_message" = "Envie d’un rappel?\nAllez sur la carte et sélectionnez \"parqué!\"";
+"no_checkin_message" = "Envie d’un rappel?\nAllez sur la carte et sélectionnez \"Parqué!\"";
 "now" = "Rappel";
 "park_now" = "se stationner";
 "checked_in_message" = "vous êtes stationné sur";
@@ -110,7 +110,7 @@
 "available_until" = "disponible jusqu'à";
 "until" = "Jusqu'à";
 "share_car_location" = "partager"; 
-"leave_spot" = "Annuler";
+"leave_spot" = "quitter ma place";
 "notifications_off" = "notifications : non";
 "notifications_on" = "notifications : oui";
 "notified_night_before" = "notification la veille";
@@ -226,8 +226,8 @@
 "car_sharing_info_subtitle" = "L’expérience du départ à l’arrivée.";
 "car_sharing_info_message" = "Ce mode vous permet de réserver votre véhicule ainsi que trouver le stationnement qui conviendra à toutes ses exigences!";
 
-"settings_alert" = "Rappel";
-"settings_alert_text" = "Recevez une alerte 30min avant.";
+"settings_alert" = "Alerte-ticket";
+"settings_alert_text" = "Soyez alerté avant le temps écoulé.";
 "settings_commercial_permit" = "Vignette commerciale";
 "settings_commercial_permit_text" = "Pour véhicules autorisés.";
 "settings_snow_removal" = "Déneigement";

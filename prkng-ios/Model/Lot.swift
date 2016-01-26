@@ -16,7 +16,6 @@ struct LotAttribute {
         case Card
         case Handicap
         case Valet
-        case Clerk
     }
     
     var type: LotAttributeType
@@ -33,7 +32,6 @@ struct LotAttribute {
         switch (type) {
         case .Indoor    : return enabled || forIcon ? "indoor" : "outdoor"//.localizedString
         case .Handicap  : return "handicap"//.localizedString
-        case .Clerk     : return "clerk"//.localizedString
         case .Valet     : return "valet"//.localizedString
         case .Card      : return "card"//.localizedString
         }
@@ -41,7 +39,6 @@ struct LotAttribute {
     
     static func typeFromName(name: String) -> LotAttributeType? {
         switch (name.lowercaseString) {
-        case "clerk"    : return .Clerk
         case "indoor"   : return .Indoor
         case "valet"    : return .Valet
         case "handicap" : return .Handicap

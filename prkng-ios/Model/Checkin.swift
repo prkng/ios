@@ -45,7 +45,17 @@ class Checkin: NSObject {
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         formatter.timeZone = NSTimeZone(abbreviation: "UTC")
         let dateStr = checkinTime.substringToIndex(checkinTime.startIndex.advancedBy(19))
-        date = formatter.dateFromString(dateStr)!
+        if let omgDate = formatter.dateFromString(dateStr) {
+            date = omgDate
+        } else {
+            formatter.locale = NSLocale(localeIdentifier: "en_US")
+            if let omgDate2 = formatter.dateFromString(dateStr) {
+                date = omgDate2
+            } else {
+                DDLoggerWrapper.logError("Could not parse a date... needs attention!")
+                date = NSDate()
+            }
+        }
         
         print(date)
     }

@@ -198,7 +198,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             attributesViewContainers.append(attributesViewContainer)
             
             let caption = attribute.name(false).localizedString.uppercaseString
-            let imageName = "icon_" + attribute.name(true) + (attribute.enabled ? "_on" : "_off" )
+            let imageName = "icon_attribute_" + attribute.name(true) + (attribute.enabled ? "_on" : "_off" )
             
             let attributeLabel = UILabel()
             attributeLabel.text = caption
@@ -318,15 +318,11 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             make.height.equalTo(52)
         }
 
-        //the below is a little overly complicated, to make it much simpler just debug the view hierarchy and you will easily see how/where things are aligned.
         var leftConstraint = self.attributesView.snp_left
         
         for i in 0..<attributesViewContainers.count {
             
-            var width = Int(self.FULL_WIDTH)/3
-            if i == 1 || i == 2 {
-                width = Int(self.FULL_WIDTH)/6
-            }
+            let width = Int(self.FULL_WIDTH)/attributesViewContainers.count
             
             let attributesViewContainer = attributesViewContainers[i]
             attributesViewContainer.snp_makeConstraints(closure: { (make) -> () in
@@ -337,34 +333,20 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             })
             
             let label = attributesViewLabels[i]
-
-            if i == 1 {
-                label.snp_makeConstraints(closure: { (make) -> () in
-                    make.left.equalTo(attributesViewContainer.snp_left)
-                    make.bottom.equalTo(self.attributesView).offset(-4.5)
-                })
-            } else if i == 2 {
-                label.snp_makeConstraints(closure: { (make) -> () in
-                    make.right.equalTo(attributesViewContainer.snp_right)
-                    make.bottom.equalTo(self.attributesView).offset(-4.5)
-                })
-            } else {
-                label.snp_makeConstraints(closure: { (make) -> () in
-                    make.centerX.equalTo(attributesViewContainer.snp_centerX)
-                    make.bottom.equalTo(self.attributesView).offset(-4.5)
-                })
-            }
+            label.snp_makeConstraints(closure: { (make) -> () in
+                make.centerX.equalTo(attributesViewContainer.snp_centerX)
+                make.bottom.equalTo(self.attributesView).offset(-4.5)
+            })
             
             let imageView = attributesViewImages[i]
             imageView.snp_makeConstraints(closure: { (make) -> () in
-                make.size.equalTo(CGSize(width: 21, height: 25))
+                //make.size.equalTo(CGSize(width: 32, height: 32))
                 make.centerX.equalTo(label.snp_centerX)
                 make.bottom.equalTo(label.snp_top).offset(-3.5)
             })
             
             leftConstraint = attributesViewContainer.snp_right
         }
-
         
     }
     
