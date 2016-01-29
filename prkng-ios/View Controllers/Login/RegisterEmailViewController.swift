@@ -12,7 +12,7 @@ class RegisterEmailViewController: AbstractViewController {
     
     var scrollView : UIScrollView
     var scrollContentView : UIView
-    var backButton = ViewFactory.outlineBackButton()
+    var backButton = ViewFactory.outlineBackButton(Styles.Colors.cream2)
     var topLabel : UILabel
     var inputForm : PRKInputForm
     var registerButton = ViewFactory.bigRedRoundedButton()

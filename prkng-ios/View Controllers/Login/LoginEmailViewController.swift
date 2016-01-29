@@ -12,7 +12,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
 
     private var scrollView : UIScrollView
     private var scrollContentView : UIView
-    private var backButton = ViewFactory.outlineBackButton()
+    private var backButton = ViewFactory.outlineBackButton(Styles.Colors.cream2)
     private var topLabel : UILabel
     private var inputForm : PRKInputForm
     private var forgotPasswordButton: UIButton

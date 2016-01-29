@@ -41,8 +41,15 @@ class PPSettingsCell: SettingsCell {
     }
     
     func wasSelected() {
-        //TODO: selecting this cell should push (or present, if no nav controller is present) the PPSettingsViewController
-        print("SELECTEDDDD")
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if let rootVC = appDelegate.window?.rootViewController {
+            let ppSettingsVC = PPSettingsViewController()
+            if let navVC = rootVC.navigationController {
+                navVC.pushViewController(ppSettingsVC, animated: true)
+            } else {
+                rootVC.presentViewController(ppSettingsVC, animated: true, completion: nil)
+            }
+        }
     }
     
 }

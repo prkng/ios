@@ -448,11 +448,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         Settings.setHideZipcar(!currentValue)
     }
     
-    func lotRateDisplayValueChanged() {
-        let currentValue = Settings.lotMainRateIsHourly()
-        Settings.setLotMainRateIsHourly(!currentValue)
-    }
-    
     func profileButtonTapped(sender: UIButton) {
         if AuthUtility.loginType()! == LoginType.Email {
             self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
@@ -561,14 +556,14 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         let generalSection = [
-            SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, selectorsTarget: self, cellSelector: "sendToAppStore", canSelect: true),
-            SettingsCell(cellType: .Basic, titleText: "share".localizedString, selectorsTarget: self, cellSelector: "showShareSheet", canSelect: true),
-            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, selectorsTarget: self, cellSelector: "showGettingStarted", canSelect: true),
-            SettingsCell(cellType: .Basic, titleText: "support".localizedString, selectorsTarget: self, cellSelector: "showSupport", canSelect: true),
-            SettingsCell(cellType: .Basic, titleText: "faq".localizedString, selectorsTarget: self, cellSelector: "showFaq", canSelect: true),
-            SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, selectorsTarget: self, cellSelector: "showTerms", canSelect: true),
-            SettingsCell(cellType: .Basic, titleText: "privacy_policy".localizedString, selectorsTarget: self, cellSelector: "showPrivacy", canSelect: true),
-            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, selectorsTarget: self, cellSelector: "signOut", canSelect: true)]
+            SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, selectorsTarget: self, cellSelector: "sendToAppStore", canSelect: true, redText: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "share".localizedString, selectorsTarget: self, cellSelector: "showShareSheet", canSelect: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, selectorsTarget: self, cellSelector: "showGettingStarted", canSelect: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "support".localizedString, selectorsTarget: self, cellSelector: "showSupport", canSelect: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "faq".localizedString, selectorsTarget: self, cellSelector: "showFaq", canSelect: true, bold: false),
+            SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, selectorsTarget: self, cellSelector: "showTerms", canSelect: true, bold: false),
+            SettingsCell(cellType: .Basic, titleText: "privacy_policy".localizedString, selectorsTarget: self, cellSelector: "showPrivacy", canSelect: true, bold: false),
+            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, selectorsTarget: self, cellSelector: "signOut", canSelect: true, bold: false)]
         
         return [("", firstSection),
             ("car_sharing".localizedString, carSharingSection),
@@ -586,66 +581,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
-        
-        if let ppSettingsCell = settingsCell as? PPSettingsCell {
-            return ppSettingsCell.tableViewCell
-        }
-        
-        switch settingsCell.cellType {
-            
-        case .Switch, .PermitSwitch:
-            var cell = tableView.dequeueReusableCellWithIdentifier("switch" + settingsCell.titleText + (settingsCell.rightSideText ?? "")) as? SettingsSwitchCell
-            if cell == nil {
-                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: "switch" + settingsCell.titleText + (settingsCell.rightSideText ?? ""))
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.subtitleText = settingsCell.subtitleText
-            cell!.switchOn = settingsCell.switchValue ?? false
-            cell!.selectorsTarget = settingsCell.selectorsTarget
-            cell!.selector = settingsCell.switchSelector
-            cell!.buttonSelector = settingsCell.buttonSelector
-            cell!.rightSideText = settingsCell.rightSideText
-            return cell!
-            
-        case .Segmented:
-            var cell = tableView.dequeueReusableCellWithIdentifier("segmented" + settingsCell.titleText) as? SettingsSegmentedCell
-            if cell == nil {
-                cell = SettingsSegmentedCell(segments: settingsCell.segments, reuseIdentifier: "segmented" + settingsCell.titleText, selectorsTarget: settingsCell.selectorsTarget, selector: settingsCell.switchSelector)
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.selectedSegment = settingsCell.defaultSegment
-            return cell!
-            
-        case .Service, .ServiceSwitch:
-            var cell = tableView.dequeueReusableCellWithIdentifier("service" + settingsCell.titleText) as? SettingsServiceSwitchCell
-            if cell == nil {
-                cell = SettingsServiceSwitchCell(style: .Default, reuseIdentifier: "service" + settingsCell.titleText)
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.signedIn = settingsCell.signedIn
-            if let switchValue = settingsCell.switchValue {
-                cell!.shouldShowSwitch = true
-                cell!.switchValue = switchValue
-                cell!.selectorsTarget = settingsCell.selectorsTarget
-                cell!.switchSelector = settingsCell.switchSelector
-                cell!.buttonSelector = settingsCell.buttonSelector
-            } else {
-                cell!.shouldShowSwitch = false
-            }
-            cell!.shouldShowSwitch = settingsCell.cellType == SettingsTableViewCellType.ServiceSwitch
-
-            return cell!
-            
-        case .Basic:
-            var cell = tableView.dequeueReusableCellWithIdentifier("basic" + settingsCell.titleText) as? SettingsBasicCell
-            if cell == nil {
-                cell = SettingsBasicCell(style: .Default, reuseIdentifier: "basic" + settingsCell.titleText)
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.bold = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row < 4
-            cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 0
-            return cell!
-        }
+        return settingsCell.tableViewCell(tableView)
     }
     
     
@@ -667,15 +603,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.section {
         case 0: return BIG_CELL_HEIGHT
-//        case 1:
-//            switch indexPath.row {
-//            case 0: return BIG_CELL_HEIGHT
-//            case 1: return SMALL_CELL_HEIGHT
-//            default: return 0
-//            }
-        case 1: return SMALL_CELL_HEIGHT
-        case 2: return SMALL_CELL_HEIGHT
-        default: return 0
+        default: return SMALL_CELL_HEIGHT
         }
     }
     
