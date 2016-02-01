@@ -39,8 +39,9 @@ class PPSettingsCell: SettingsCell {
         //TODO: switching this should probably toggle something in actualy device Settings
         print("SWITCHEDDDD")
     }
-    
+        
     func wasSelected() {
+        
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if let rootVC = appDelegate.window?.rootViewController {
             let ppSettingsVC = PPSettingsViewController()

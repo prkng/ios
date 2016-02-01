@@ -9,7 +9,7 @@
 import UIKit
 import MessageUI
 
-class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate {
+class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, CardIOPaymentViewControllerDelegate {
     
     var statusView = UIView()
     var headerView = UIView()
@@ -197,7 +197,8 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let firstSection = ("", [SettingsCell(cellType: .Segmented, titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), selectorsTarget: self, switchSelector: "lotRateDisplayValueChanged")
             ])
         
-        let paymentMethodSection = [SettingsCell]()
+        let paymentMethodSection = [SettingsCell(userInfo: CardIOCreditCardType.Mastercard.rawValue, titleText: "4520 7890 1111 1331", canSelect: true),
+            SettingsCell(titleText: "add_payment_method".localizedString, selectorsTarget: self, cellSelector: "addPaymentMethod", canSelect: true)]
         
         let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
         let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
@@ -212,8 +213,8 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             ])
 
         return [firstSection,
-            ("Payment method", paymentMethodSection),
-            ("Vehicle description", vehicleDescriptionSection),
+            ("payment_method", paymentMethodSection),
+            ("vehicle_description", vehicleDescriptionSection),
             vehicleDescriptionSection2,
             signOutSection
         ]
@@ -228,7 +229,36 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+
+        let section = self.tableSource[indexPath.section]
+        if section.0 == "payment_method" {
+            
+            //the last row in this section should be to add a credit card
+            if indexPath.row == section.1.count - 1 {
+                
+                var addCreditCardCell = tableView.dequeueReusableCellWithIdentifier("add_credit_card") as? PPAddCreditCardCell
+                if addCreditCardCell == nil {
+                    addCreditCardCell = PPAddCreditCardCell(reuseIdentifier: "add_credit_card")
+                }
+                return addCreditCardCell!
+
+            } else {
+                
+                //for now just return a test visa cell
+                let creditCardType = CardIOCreditCardType(rawValue: (settingsCell.userInfo as? Int) ?? 0) ?? .Unrecognized
+                var visaCell = tableView.dequeueReusableCellWithIdentifier("visa") as? PPCreditCardCell
+                if visaCell == nil {
+                    visaCell = PPCreditCardCell(creditCardType: creditCardType, reuseIdentifier: "visa")
+                }
+                visaCell?.creditCardNumber = settingsCell.titleText
+                return visaCell!
+
+            }
+            
+        }
+        
         return settingsCell.tableViewCell(tableView)
     }
     
@@ -315,5 +345,34 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         print("SIGN OUTTTTT")
     }
     
+    func addPaymentMethod() {
+        let paymentVC = CardIOPaymentViewController(paymentDelegate: self)
+        paymentVC.hideCardIOLogo = true
+        paymentVC.keepStatusBarStyle = true
+        paymentVC.guideColor = Styles.Colors.red2
+        paymentVC.navigationBarStyle = .Black
+        paymentVC.navigationBar.translucent = false
+        //dark style:
+        paymentVC.navigationBarTintColor = Styles.Colors.midnight1
+        paymentVC.navigationBar.tintColor = Styles.Colors.stone
+        
+        if let navVC = self.navigationController {
+            navVC.pushViewController(paymentVC, animated: true)
+        } else {
+            self.presentViewController(paymentVC, animated: true, completion: nil)
+        }
+
+    }
+    
+    //MARK: CardIOPaymentViewControllerDelegate functions
+    func userDidCancelPaymentViewController(paymentViewController: CardIOPaymentViewController!) {
+        paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    //TODO: this should send the credit card info to the parking panda backend
+    func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
+        paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+    }
+
 }
 

@@ -18,6 +18,7 @@ pod 'Google/Analytics'
 pod 'Google/SignIn'
 pod 'SevenSwitch', '~>1.4'
 pod 'TDOAuth'
+pod 'CardIO'
 #pod 'SZTextView' #no longer used, gives a uitextview with placeholder text
 
 #the pods below should only be enabled if we move to ios 8

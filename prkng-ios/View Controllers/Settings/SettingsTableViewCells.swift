@@ -49,6 +49,7 @@ class SettingsCell: NSObject {
     var canSelect: Bool = false
     var bold: Bool = false
     var redText: Bool = false
+    var userInfo: AnyObject? = nil //for custom cells not included in this file!
     
     //memberwise initializer (it's just easier to have ONE like this, and a few convenience inits)
     init(
@@ -70,7 +71,8 @@ class SettingsCell: NSObject {
         cellType: SettingsTableViewCellType = .Basic,
         canSelect: Bool = false,
         bold: Bool = false,
-        redText: Bool = false
+        redText: Bool = false,
+        userInfo: AnyObject? = nil
         ) {
             self.placeholderTexts = placeholderTexts
             if let text = placeholderText { self.placeholderTexts.append(text) }
@@ -91,7 +93,7 @@ class SettingsCell: NSObject {
             self.canSelect = canSelect
             self.bold = bold
             self.redText = redText
-
+            self.userInfo = userInfo
     }
     
     //this init infers a Switch or PermitSwitch type
