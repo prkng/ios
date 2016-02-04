@@ -18,6 +18,8 @@ class PPSettingsCell: SettingsCell {
         self.selectorsTarget = self
         self.canSelect = true
         self.cellSelector = "wasSelected"
+        let ppCreds = Settings.getParkingPandaCredentials()
+        self.switchValue = ppCreds.0 != nil && ppCreds.1 != nil
     }
     
     var tableViewCell: UITableViewCell {
@@ -42,15 +44,55 @@ class PPSettingsCell: SettingsCell {
         
     func wasSelected() {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if let rootVC = appDelegate.window?.rootViewController {
-            let ppSettingsVC = PPSettingsViewController()
-            if let navVC = rootVC.navigationController {
-                navVC.pushViewController(ppSettingsVC, animated: true)
+        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+        SVProgressHUD.show()
+        
+        ParkingPandaOperations.login(username: nil, password: nil) { (user, error) -> Void in
+            
+            if user != nil {
+              
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                if let rootVC = appDelegate.window?.rootViewController {
+                    let ppSettingsVC = PPSettingsViewController()
+                    if let navVC = rootVC.navigationController {
+                        navVC.pushViewController(ppSettingsVC, animated: true)
+                    } else {
+                        rootVC.presentViewController(ppSettingsVC, animated: true, completion: nil)
+                    }
+                }
             } else {
-                rootVC.presentViewController(ppSettingsVC, animated: true, completion: nil)
+                
+                if let ppError = error {
+                    switch (ppError.errorType) {
+                    case .API:
+                        Settings.logout()
+                        //TODO: show a login/create account screen
+                    case .Internal, .None, .Network:
+                        //TODO: show an error popup
+                        break
+                    }
+                }
+//                //let's just do a login for now, and a create user if that doesn't work
+//                ParkingPandaOperations.login("pp@urbano.me", password: "bla") { (user) -> Void in
+//                    if user != nil {
+//                        print(user)
+//                    } else {
+//                        ParkingPandaOperations.createUser("pp@urbano.me", password: "bla", firstName: "bla", lastName: "bla", phone: "bla", completion: { (user) -> Void in
+//                            print(user)
+//                        })
+//                    }
+//                }
+
+                
+                
             }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                SVProgressHUD.dismiss()
+            })
+
         }
+        
     }
     
 }

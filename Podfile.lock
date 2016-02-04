@@ -1,4 +1,5 @@
 PODS:
+  - CardIO (5.3.1)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
     - CocoaLumberjack/Extensions (= 2.2.0)
@@ -53,18 +54,19 @@ PODS:
     - GRMustache (= 7.3.0)
     - SMCalloutView (= 2.0)
   - MarqueeLabel (2.5.0)
-  - OMGHTTPURLRQ/UserAgent (3.0.2)
+  - OMGHTTPURLRQ/UserAgent (3.1.1)
   - pop (1.0.8)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
   - SDWebImage/Core (3.7.2)
   - SevenSwitch (1.4.0)
   - SMCalloutView (2.0)
-  - SVProgressHUD (HEAD based on 2.0-beta6)
+  - SVProgressHUD (HEAD based on 2.0-beta8)
   - TDOAuth (1.1.2):
     - OMGHTTPURLRQ/UserAgent
 
 DEPENDENCIES:
+  - CardIO
   - CocoaLumberjack
   - GeoJSONSerialization
   - Google/Analytics
@@ -81,6 +83,7 @@ DEPENDENCIES:
   - TDOAuth
 
 SPEC CHECKSUMS:
+  CardIO: a299efcd0348c3b256a1da53f22951319c3855a2
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   FMDB: e78c5941bb10563f2b707255119e3655e790c29e
   GeoJSONSerialization: 55a3d24fe9af26508e3af76873114b39b13ba479
@@ -100,12 +103,12 @@ SPEC CHECKSUMS:
   JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
   Mapbox-iOS-SDK: ee136ca5b7f853456b50dfd7a7f0e243288cf86f
   MarqueeLabel: 6b8ff6915c0536c5099ac30992b7d72f9807df20
-  OMGHTTPURLRQ: 8376dc887d76a5a7e2a67881dc788f917a2f437c
+  OMGHTTPURLRQ: 633f98ee745aeda02345935a52eec1784cddb589
   pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SevenSwitch: e992e56e2e7f401eb00538b9fa92bf848bacbe27
   SMCalloutView: f758edd824b18bf4f42de00df1e299861a2d1950
-  SVProgressHUD: d259ee0b07e9a3f19724c25e4a3625d69e4bc38e
+  SVProgressHUD: 6e48a1dda09ce3b58adc41d013baed3a8e8980ff
   TDOAuth: f7e356e834295b83c7b5066ee72a30f128c5f722
 
 COCOAPODS: 0.38.2

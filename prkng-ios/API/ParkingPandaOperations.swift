@@ -25,7 +25,21 @@ class ParkingPandaOperations {
         case Past
         case Upcoming
     }
-    
+
+    struct ParkingPandaError {
+
+        enum ParkingPandaErrorType {
+            case API
+            case Internal
+            case Network
+            case None
+        }
+
+        var errorType: ParkingPandaErrorType
+        var errorDescription: String?
+    }
+
+
     private class ParkingPandaHelper {
         
         class func authenticatedManager(username username: String, password: String) -> Manager {
@@ -45,45 +59,91 @@ class ParkingPandaOperations {
     }
 
     //parses the API response for all Parking Panda requests.
-    static func didRequestSucceed(response: NSHTTPURLResponse?, json: JSON, error: NSError?) -> Bool {
+    static func didRequestSucceed(response: NSHTTPURLResponse?, json: JSON, error: NSError?) -> ParkingPandaError {
         
         let parkingPandaErrorCode = json["error"].int
         let parkingPandaErrorMessage = json["message"].string
         let parkingPandaSuccess = json["success"].boolValue
         
-        if (response != nil && response?.statusCode == 401)
-            || !parkingPandaSuccess
+        if (response != nil && response?.statusCode == 401) {
+                DDLoggerWrapper.logError(String(format: "ParkingPanda Error: Bad network connection"))
+                return ParkingPandaError(errorType: .Network, errorDescription: "Bad network connection")
+        } else if !parkingPandaSuccess
             || parkingPandaErrorCode != nil
             || parkingPandaErrorMessage != nil {
                 DDLoggerWrapper.logError(String(format: "Error: No workie. Reason: %@", parkingPandaErrorMessage ?? json.description))
-                return false
+                return ParkingPandaError(errorType: .API, errorDescription: parkingPandaErrorMessage ?? json.description)
         }
 
-        return true
+        return ParkingPandaError(errorType: .None, errorDescription: nil)
     }
     
-    static func login(username: String, password: String, completion: ((user: ParkingPandaUser?) -> Void)) {
+    static func createUser(email: String, password: String, firstName: String, lastName: String, phone: String, completion: ((user: ParkingPandaUser?, error: ParkingPandaError?) -> Void)) {
         
         let url = baseUrlString + "users"
-        let params: [String: AnyObject] = ["apikey": publicKey]
-
-        ParkingPandaHelper.authenticatedManager(username: username, password: password)
-            .request(.GET, url, parameters: params)
+        let params: [String: AnyObject] = ["apikey": publicKey,
+            "email": email,
+            "password": password,
+            "firstName": firstName,
+            "lastName": lastName,
+            "phone": phone,
+            "dontReceiveEmail": true,
+//            "invitationCodeForSignup": "some_code",
+            "receiveSMSNotifications": false,
+            "dontSendWelcomeEmail": false
+        ]
+        
+        ParkingPandaHelper.authenticatedManager(username: "admin", password: "admin")
+            .request(.POST, url, parameters: params, encoding: .JSON)
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 
-                let success = self.didRequestSucceed(response, json: json, error: error)
-                if !success {
-                    completion(user: nil)
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(user: nil, error: ppError)
                     return
                 }
                 
                 let user = ParkingPandaUser(json: json["data"])
-                completion(user: user)
+                Settings.setParkingPandaCredentials(username: user.email, password: user.apiPassword)
+                completion(user: user, error: ppError)
+        }
+
+    }
+    
+    //used to do a login, or to get the user (ie if you're already athenticated, it will use your stored credentials)
+    static func login(username username: String?, password: String?, completion: ((user: ParkingPandaUser?, error: ParkingPandaError?) -> Void)) {
+        
+        let url = baseUrlString + "users"
+        let params: [String: AnyObject] = ["apikey": publicKey]
+
+        let creds = Settings.getParkingPandaCredentials()
+        let loginUsername = username ?? creds.0
+        let loginPassword = password ?? creds.1
+        
+        if loginUsername == nil || loginPassword == nil {
+            completion(user: nil, error: ParkingPandaError(errorType: .Internal, errorDescription: "No credentials given."))
+            return
+        }
+        
+        ParkingPandaHelper.authenticatedManager(username: loginUsername!, password: loginPassword!)
+            .request(.GET, url, parameters: params)
+            .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+                (request, response, json, error) in
+                
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(user: nil, error: ppError)
+                    return
+                }
+                
+                let user = ParkingPandaUser(json: json["data"])
+                Settings.setParkingPandaCredentials(username: user.email, password: user.apiPassword)
+                completion(user: user, error: ppError)
         }
     }
 
-    static func getTransaction(user: ParkingPandaUser, confirmation: String, completion: ((transaction: ParkingPandaTransaction?) -> Void)) {
+    static func getTransaction(user: ParkingPandaUser, confirmation: String, completion: ((transaction: ParkingPandaTransaction?, error: ParkingPandaError?) -> Void)) {
         
         let url = baseUrlString + "users/" + String(user.id) + "/transactions/" + confirmation
         let params: [String: AnyObject] = ["apikey": publicKey]
@@ -93,18 +153,18 @@ class ParkingPandaOperations {
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 
-                let success = self.didRequestSucceed(response, json: json, error: error)
-                if !success {
-                    completion(transaction: nil)
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(transaction: nil, error: ppError)
                     return
                 }
                 
                 let transaction = ParkingPandaTransaction(json: json["data"])
-                completion(transaction: transaction)
+                completion(transaction: transaction, error: ppError)
         }
     }
     
-    static func getTransactions(user: ParkingPandaUser, forTime: ParkingPandaTransactionTime, completion: ((transactions: [ParkingPandaTransaction], completed: Bool) -> Void)) {
+    static func getTransactions(user: ParkingPandaUser, forTime: ParkingPandaTransactionTime, completion: ((transactions: [ParkingPandaTransaction], error: ParkingPandaError?) -> Void)) {
         
         var url = baseUrlString + "users/" + String(user.id) + "/transactions"
         
@@ -124,9 +184,9 @@ class ParkingPandaOperations {
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 
-                let success = self.didRequestSucceed(response, json: json, error: error)
-                if !success {
-                    completion(transactions: [], completed: false)
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(transactions: [], error: ppError)
                     return
                 }
                 
@@ -134,7 +194,7 @@ class ParkingPandaOperations {
                 let transactions = transactionsJson.map({ (transactionJson) -> ParkingPandaTransaction in
                     ParkingPandaTransaction(json: transactionJson)
                 })
-                completion(transactions: transactions, completed: true)
+                completion(transactions: transactions, error: ppError)
         }
     }
     

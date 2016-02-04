@@ -77,13 +77,6 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ParkingPandaOperations.login("urby@me.com", password: "parkinganta") { (user) -> Void in
-            if user != nil {
-                ParkingPandaOperations.getTransactions(user!, forTime: ParkingPandaOperations.ParkingPandaTransactionTime.All, completion: { (transactions, completed) -> Void in
-                    print(completed)
-                })
-            }
-        }
     }
     
     override func didReceiveMemoryWarning() {

@@ -65,11 +65,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     }
     
     func handleHeaderTap(tapRec: UITapGestureRecognizer) {
-        if let navVC = self.navigationController {
-            navVC.popViewControllerAnimated(true)
-        } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
-        }
+        dismiss()
     }
     
     func setupViews () {
@@ -340,9 +336,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         }
     }
 
-    //TODO: proper sign out once sign in is complete!
     func signOut() {
-        print("SIGN OUTTTTT")
+        Settings.setParkingPandaCredentials(username: nil, password: nil)
+        dismiss()
     }
     
     func addPaymentMethod() {
@@ -360,6 +356,16 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             navVC.pushViewController(paymentVC, animated: true)
         } else {
             self.presentViewController(paymentVC, animated: true, completion: nil)
+        }
+
+    }
+    
+    func dismiss() {
+        
+        if let navVC = self.navigationController {
+            navVC.popViewControllerAnimated(true)
+        } else {
+            self.dismissViewControllerAnimated(true, completion: nil)
         }
 
     }

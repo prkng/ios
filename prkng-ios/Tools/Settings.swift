@@ -30,6 +30,8 @@ struct Settings {
     static let HIDE_COMMUNAUTO_KEY = "prkng_hide_communauto"
     static let HIDE_AUTOMOBILE_KEY = "prkng_hide_automobile"
     static let HIDE_ZIPCAR_KEY = "prkng_hide_zipcar"
+    static let PARKING_PANDA_USERNAME_KEY = "prkng_parking_panda_username"
+    static let PARKING_PANDA_PASSWORD_KEY = "prkng_parking_panda_password"
     static let CHECKIN_COUNT_KEY = "prkng_checkin_count"
     static let APP_LAUNCH_COUNT_KEY = "prkng_app_launch_count"
     static let CAR_SHARING_FILTER_KEY = "prkng_car_sharing_filter"
@@ -675,6 +677,17 @@ struct Settings {
     static func setHideZipcar(hide : Bool)  {
         DDLoggerWrapper.logInfo("Zipcar is now " + (hide ? "hidden" : "shown"))
         NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_ZIPCAR_KEY)
+    }
+    
+    static func setParkingPandaCredentials(username username: String?, password: String?) {
+        NSUserDefaults.standardUserDefaults().setObject(username, forKey: PARKING_PANDA_USERNAME_KEY)
+        NSUserDefaults.standardUserDefaults().setObject(password, forKey: PARKING_PANDA_PASSWORD_KEY)
+    }
+    
+    static func getParkingPandaCredentials() -> (String?, String?) {
+        let username = NSUserDefaults.standardUserDefaults().objectForKey(PARKING_PANDA_USERNAME_KEY) as? String
+        let password = NSUserDefaults.standardUserDefaults().objectForKey(PARKING_PANDA_PASSWORD_KEY) as? String
+        return (username, password)
     }
 
 }
