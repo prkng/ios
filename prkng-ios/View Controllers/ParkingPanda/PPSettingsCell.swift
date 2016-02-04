@@ -51,23 +51,20 @@ class PPSettingsCell: SettingsCell {
             
             if user != nil {
               
-                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                if let rootVC = appDelegate.window?.rootViewController {
-                    let ppSettingsVC = PPSettingsViewController()
-                    if let navVC = rootVC.navigationController {
-                        navVC.pushViewController(ppSettingsVC, animated: true)
-                    } else {
-                        rootVC.presentViewController(ppSettingsVC, animated: true, completion: nil)
-                    }
-                }
+                let ppSettingsVC = PPSettingsViewController()
+                ppSettingsVC.present()
+                
             } else {
                 
                 if let ppError = error {
                     switch (ppError.errorType) {
-                    case .API:
-                        Settings.logout()
+                    case .API, .Internal:
+                        Settings.setParkingPandaCredentials(username: nil, password: nil)
                         //TODO: show a login/create account screen
-                    case .Internal, .None, .Network:
+                        let ppSignInVC = PPSignInViewController()
+                        ppSignInVC.present()
+
+                    case .None, .Network:
                         //TODO: show an error popup
                         break
                     }

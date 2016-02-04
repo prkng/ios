@@ -45,13 +45,15 @@ class PPCreditCardCell: UITableViewCell {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
         self.accessoryType = .DisclosureIndicator
+        
+        setupViews()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    func setupViews() {
         
         self.contentView.addSubview(creditCardTypeImageView)
         
@@ -59,7 +61,6 @@ class PPCreditCardCell: UITableViewCell {
         creditCardLabel.font = Styles.FontFaces.regular(14)
         self.contentView.addSubview(creditCardLabel)
         
-        super.layoutSubviews()
     }
     
     override func updateConstraints() {

@@ -88,6 +88,9 @@
 		3EBEE33C1B31EE2C00C7F2DE /* CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */; };
 		3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC55E671B472195001A1B2B /* SupportedArea.swift */; };
 		3EC9265C1B72B16900F04994 /* SearchResultsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */; };
+		3EC96E0B1C63DDDF002D7D86 /* PPCreateUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */; };
+		3EC96E0D1C63DDFB002D7D86 /* PPSignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC96E0C1C63DDFB002D7D86 /* PPSignInViewController.swift */; };
+		3EC96E0F1C64018D002D7D86 /* PPHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EC96E0E1C64018D002D7D86 /* PPHeaderView.swift */; };
 		3ED440901BC6C83A008FE5B4 /* PRKTopTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */; };
 		3ED501C41BCEB9B400A5AA45 /* CarShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED501C31BCEB9B400A5AA45 /* CarShare.swift */; };
 		3EE04FC81B385FCC00BDD399 /* ScheduleLeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */; };
@@ -294,6 +297,9 @@
 		3EBEE33B1B31EE2C00C7F2DE /* CGPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGPoint.swift; sourceTree = "<group>"; };
 		3EC55E671B472195001A1B2B /* SupportedArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportedArea.swift; sourceTree = "<group>"; };
 		3EC9265B1B72B16900F04994 /* SearchResultsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultsTableViewController.swift; sourceTree = "<group>"; };
+		3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPCreateUserViewController.swift; path = ParkingPanda/PPCreateUserViewController.swift; sourceTree = "<group>"; };
+		3EC96E0C1C63DDFB002D7D86 /* PPSignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPSignInViewController.swift; path = ParkingPanda/PPSignInViewController.swift; sourceTree = "<group>"; };
+		3EC96E0E1C64018D002D7D86 /* PPHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPHeaderView.swift; path = ParkingPanda/PPHeaderView.swift; sourceTree = "<group>"; };
 		3ED4408F1BC6C83A008FE5B4 /* PRKTopTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKTopTabBar.swift; sourceTree = "<group>"; };
 		3ED501C31BCEB9B400A5AA45 /* CarShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarShare.swift; sourceTree = "<group>"; };
 		3EE04FC71B385FCC00BDD399 /* ScheduleLeftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleLeftView.swift; sourceTree = "<group>"; };
@@ -580,7 +586,10 @@
 			isa = PBXGroup;
 			children = (
 				3EF5CC6D1C515A4000F61B77 /* PPSettingsCell.swift */,
+				3EC96E0E1C64018D002D7D86 /* PPHeaderView.swift */,
 				3E322C2A1C582A6100C9DDBB /* PPSettingsViewController.swift */,
+				3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */,
+				3EC96E0C1C63DDFB002D7D86 /* PPSignInViewController.swift */,
 				3EEC5B0A1C5A93D200D37C29 /* PPCreditCardCell.swift */,
 				3EEC5B0C1C5A93EF00D37C29 /* PPAddCreditCardCell.swift */,
 			);
@@ -1187,6 +1196,7 @@
 				3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */,
 				3E76EC8A1BD7FF4700FFEBE4 /* SettingsTableViewCells.swift in Sources */,
 				3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */,
+				3EC96E0B1C63DDDF002D7D86 /* PPCreateUserViewController.swift in Sources */,
 				3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */,
 				BF72984B1A9C8C5D00B8F4AE /* ParkingRule.swift in Sources */,
 				BFD6B6C31AF2E83700789022 /* Settings.swift in Sources */,
@@ -1241,6 +1251,7 @@
 				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,
 				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,
+				3EC96E0D1C63DDFB002D7D86 /* PPSignInViewController.swift in Sources */,
 				BF6981B81B30800E00E0EF62 /* HistorySectionTitleView.swift in Sources */,
 				BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */,
 				BF899B071AF15DAF00E42DE8 /* DayButton.swift in Sources */,
@@ -1288,6 +1299,7 @@
 				3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */,
 				3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */,
 				BF3282711B3847AE002ED8DF /* MKTableViewCell.swift in Sources */,
+				3EC96E0F1C64018D002D7D86 /* PPHeaderView.swift in Sources */,
 				BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */,
 				3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */,
 				BF899B091AF214D800E42DE8 /* DurationSelectionView.swift in Sources */,

@@ -1,18 +1,18 @@
 //
-//  PPSettingsCell.swift
+//  PPCreateUserViewController.swift
 //  prkng-ios
 //
-//  Created by Antonino Urbano on 2016-01-26.
+//  Created by Antonino Urbano on 2016-02-04.
 //  Copyright © 2016 PRKNG. All rights reserved.
 //
 
 import UIKit
 import MessageUI
 
-class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, CardIOPaymentViewControllerDelegate {
+class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, CardIOPaymentViewControllerDelegate {
     
     var statusView = UIView()
-    var headerView = UIView() //TODO: Use the regular PPHeaderView
+    var headerView = UIView()
     var backButtonImageView: UIButton
     var backButton = MKButton()
     var headerLabel = UILabel()
@@ -71,7 +71,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     func setupViews () {
         
         view.backgroundColor = BACKGROUND_COLOR
-
+        
         statusView.backgroundColor = Styles.Colors.transparentBlack
         self.view.addSubview(statusView)
         
@@ -106,7 +106,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let tapRec = UITapGestureRecognizer(target: self, action: "handleHeaderTap:")
         tapRec.delegate = self
         backButton.addGestureRecognizer(tapRec)
-
+        
     }
     
     func setupConstraints () {
@@ -128,7 +128,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         headerLabel.snp_makeConstraints { (make) -> Void in
             make.edges.equalTo(headerView)
         }
-                
+        
         backButtonImageView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(self.headerView).offset(25)
             make.centerY.equalTo(self.headerView)
@@ -146,15 +146,15 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         }
         
     }
-
+    
     //MARK: Table Footer View
-
+    
     func tableFooterView() -> UIView {
         
         let frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.MIN_FOOTER_HEIGHT))
         let tableFooterView = UIView(frame: frame)
         tableFooterView.backgroundColor = Styles.Colors.stone
-
+        
         let tableFooterViewLabel = UILabel(frame: frame)
         
         //TODO: TEXT NEEDS TO BE LOCALIZED
@@ -180,11 +180,11 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         
         tableFooterView.frame.size = CGSize(width: UIScreen.mainScreen().bounds.width, height: newHeight)
         tableFooterViewLabel.frame.size = CGSize(width: UIScreen.mainScreen().bounds.width, height: newHeight)
-
+        
         return tableFooterView
     }
     
-
+    
     //MARK: UITableViewDataSource
     
     //TODO: All these strings need to be localized
@@ -199,15 +199,15 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
         let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
         let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, cellType: .TextEntry, cellSelector: "phoneUpdated", selectorsTarget: self, callback: "vehicleDescriptionCallback:")
-
+        
         let vehicleDescriptionSection = [vehicleDescBrandAndPlate, vehicleDescModelAndColor]
-
+        
         let vehicleDescriptionSection2 = ("", [vehicleDescPhone])
-
+        
         let signOutSection = ("", [
             SettingsCell(cellType: .Basic, titleText: "Sign Out of Parking Panda", selectorsTarget: self, cellSelector: "signOut", canSelect: true, redText: true)
             ])
-
+        
         return [firstSection,
             ("payment_method", paymentMethodSection),
             ("vehicle_description", vehicleDescriptionSection),
@@ -225,9 +225,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
+        
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
-
+        
         let section = self.tableSource[indexPath.section]
         if section.0 == "payment_method" {
             
@@ -239,7 +239,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                     addCreditCardCell = PPAddCreditCardCell(reuseIdentifier: "add_credit_card")
                 }
                 return addCreditCardCell!
-
+                
             } else {
                 
                 //for now just return a test visa cell
@@ -250,7 +250,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 }
                 visaCell?.creditCardNumber = settingsCell.titleText
                 return visaCell!
-
+                
             }
             
         }
@@ -288,13 +288,13 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         case 4: return 30
         default: return BIG_CELL_HEIGHT
         }
-
+        
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerText = tableSource[section].0
-
+        
         if headerText == "" {
             return nil
         }
@@ -312,7 +312,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             make.bottom.equalTo(sectionHeader).offset(-10)
         }
         return sectionHeader
-
+        
     }
     
     //MARK: selector functions
@@ -335,7 +335,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             timer.invalidate()
         }
     }
-
+    
     func signOut() {
         Settings.setParkingPandaCredentials(username: nil, password: nil)
         dismiss()
@@ -357,7 +357,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         } else {
             self.presentViewController(paymentVC, animated: true, completion: nil)
         }
-
+        
     }
     
     func present() {
@@ -370,7 +370,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 rootVC.presentViewController(self, animated: true, completion: nil)
             }
         }
-
+        
     }
     
     func dismiss() {
@@ -380,7 +380,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         } else {
             self.dismissViewControllerAnimated(true, completion: nil)
         }
-
+        
     }
     
     //MARK: CardIOPaymentViewControllerDelegate functions
@@ -392,6 +392,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
         paymentViewController.dismissViewControllerAnimated(true, completion: nil)
     }
-
+    
 }
 
