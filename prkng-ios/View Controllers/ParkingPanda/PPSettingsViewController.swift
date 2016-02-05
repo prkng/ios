@@ -9,13 +9,10 @@
 import UIKit
 import MessageUI
 
-class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, CardIOPaymentViewControllerDelegate {
+class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, CardIOPaymentViewControllerDelegate, PPHeaderViewDelegate {
     
     var statusView = UIView()
-    var headerView = UIView() //TODO: Use the regular PPHeaderView
-    var backButtonImageView: UIButton
-    var backButton = MKButton()
-    var headerLabel = UILabel()
+    var headerView = PPHeaderView()
     
     let tableView = UITableView()
     
@@ -33,15 +30,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     
     private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
     private(set) var BIG_CELL_HEIGHT: CGFloat = 61
-    
-    init() {
-        backButtonImageView = ViewFactory.outlineBackButton(BACKGROUND_TEXT_COLOR_EMPHASIZED)
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("NSCoding not supported")
-    }
     
     override func loadView() {
         self.view = UIView()
@@ -75,24 +63,8 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         statusView.backgroundColor = Styles.Colors.transparentBlack
         self.view.addSubview(statusView)
         
-        backButton.rippleLayerColor = FOREGROUND_COLOR
-        backButton.rippleAniDuration = 0.35
-        backButton.cornerRadius = 0
-        backButton.shadowAniEnabled = false
-        
-        backButton.layer.shadowColor = UIColor.blackColor().CGColor
-        backButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        backButton.layer.shadowOpacity = 0.1
-        backButton.layer.shadowRadius = 0.5
-        
-        headerLabel.text = "PARKING PANDA"
-        headerLabel.font = HEADER_FONT
-        headerLabel.textColor = BACKGROUND_TEXT_COLOR_EMPHASIZED
-        headerLabel.textAlignment = .Center
-        
-        headerView.addSubview(headerLabel)
-        headerView.addSubview(backButtonImageView)
-        headerView.addSubview(backButton)
+        headerView.delegate = self
+        headerView.showsRightButton = false
         view.addSubview(headerView)
         
         view.addSubview(tableView)
@@ -103,10 +75,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         tableView.delegate = self
         tableView.clipsToBounds = true
         
-        let tapRec = UITapGestureRecognizer(target: self, action: "handleHeaderTap:")
-        tapRec.delegate = self
-        backButton.addGestureRecognizer(tapRec)
-
     }
     
     func setupConstraints () {
@@ -123,19 +91,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             make.height.equalTo(HEADER_HEIGHT)
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
-        }
-        
-        headerLabel.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(headerView)
-        }
-                
-        backButtonImageView.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(self.headerView).offset(25)
-            make.centerY.equalTo(self.headerView)
-        }
-        
-        backButton.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(self.headerView)
         }
         
         tableView.snp_makeConstraints { (make) -> Void in
@@ -381,6 +336,15 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             self.dismissViewControllerAnimated(true, completion: nil)
         }
 
+    }
+    
+    //MARK: PPHeaderViewDelegate
+    func tappedBackButton() {
+        dismiss()
+    }
+    
+    func tappedNextButton() {
+        tappedBackButton()
     }
     
     //MARK: CardIOPaymentViewControllerDelegate functions
