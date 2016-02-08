@@ -491,7 +491,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         let tableFooterView = UIView(frame: frame)
         tableFooterView.backgroundColor = Styles.Colors.stone
 
-        let tableFooterViewLabel = UILabel()
+        let labelFrame = CGRect(x: 20, y: 0, width: UIScreen.mainScreen().bounds.width-40, height: CGFloat(BIG_CELL_HEIGHT)-10)
+        let tableFooterViewLabel = UILabel(frame: labelFrame)
         
         let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
         let textLine1 = NSMutableAttributedString(string: "Version " + versionString, attributes: line1Attributes)
@@ -513,7 +514,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.right.equalTo(tableFooterView).offset(-20)
             make.bottom.equalTo(tableFooterView).offset(-10)
         }
-
+        
         return tableFooterView
     }
     

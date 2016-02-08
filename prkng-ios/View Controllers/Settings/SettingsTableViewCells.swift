@@ -47,9 +47,10 @@ class SettingsCell: NSObject {
     var rightSideText: String? = nil
     var cellType: SettingsTableViewCellType = .Basic
     var canSelect: Bool = false
+    var canDelete: Bool = false
     var bold: Bool = false
     var redText: Bool = false
-    var userInfo: AnyObject? = nil //for custom cells not included in this file!
+    var userInfo: [String: AnyObject] = [String: AnyObject]() //for custom cells not included in this file!
     
     //memberwise initializer (it's just easier to have ONE like this, and a few convenience inits)
     init(
@@ -70,9 +71,10 @@ class SettingsCell: NSObject {
         rightSideText: String? = nil,
         cellType: SettingsTableViewCellType = .Basic,
         canSelect: Bool = false,
+        canDelete: Bool = false,
         bold: Bool = false,
         redText: Bool = false,
-        userInfo: AnyObject? = nil
+        userInfo: [String: AnyObject] = [String: AnyObject]()
         ) {
             self.placeholderTexts = placeholderTexts
             if let text = placeholderText { self.placeholderTexts.append(text) }
@@ -91,6 +93,7 @@ class SettingsCell: NSObject {
             self.rightSideText = rightSideText
             self.cellType = cellType
             self.canSelect = canSelect
+            self.canDelete = canDelete
             self.bold = bold
             self.redText = redText
             self.userInfo = userInfo

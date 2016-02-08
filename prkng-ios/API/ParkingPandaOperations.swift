@@ -112,10 +112,13 @@ class ParkingPandaOperations {
     }
     
     //used to do a login, or to get the user (ie if you're already athenticated, it will use your stored credentials)
-    static func login(username username: String?, password: String?, completion: ((user: ParkingPandaUser?, error: ParkingPandaError?) -> Void)) {
+    static func login(username username: String?, password: String?, includeCreditCards: Bool = false, completion: ((user: ParkingPandaUser?, error: ParkingPandaError?) -> Void)) {
         
         let url = baseUrlString + "users"
-        let params: [String: AnyObject] = ["apikey": publicKey]
+        let params: [String: AnyObject] = [
+            "apikey": publicKey,
+            "includeCreditCards": includeCreditCards //the api does not do anything with this, sadly
+        ]
 
         let creds = Settings.getParkingPandaCredentials()
         let loginUsername = username ?? creds.0
@@ -198,6 +201,101 @@ class ParkingPandaOperations {
         }
     }
     
+    static func getCreditCards(user: ParkingPandaUser, completion: ((creditCards: [ParkingPandaCreditCard], error: ParkingPandaError?) -> Void)) {
+        
+        let url = baseUrlString + "users/" + String(user.id) + "/credit-cards"
+        let params: [String: AnyObject] = ["apikey": publicKey]
+        
+        ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
+            .request(.GET, url, parameters: params)
+            .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+                (request, response, json, error) in
+                
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(creditCards: [], error: ppError)
+                    return
+                }
+                
+                let creditCardsJson: [JSON] = json["data"].arrayValue
+                let creditCards = creditCardsJson.map({ (creditCardJson) -> ParkingPandaCreditCard in
+                    ParkingPandaCreditCard(json: creditCardJson)
+                })
+                completion(creditCards: creditCards, error: ppError)
+        }
+    }
+    
+    static func addCreditCard(user: ParkingPandaUser, creditCardNumber: String, cvv: String, billingPostalCode: String, cardholderName: String, expiryDate: String, completion: ((creditCard: ParkingPandaCreditCard?, error: ParkingPandaError?) -> Void)) {
+        
+        let url = baseUrlString + "users/" + String(user.id) + "/credit-cards"
+        let params: [String: AnyObject] = [
+            "apikey": publicKey,
+            "CreditCardNumber": creditCardNumber,
+            "CVV": cvv,
+            "BillingPostal": billingPostalCode,
+            "CardholderName": cardholderName,
+            "ExpirationDate": expiryDate,
+        ]
+        
+        ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
+            .request(.POST, url, parameters: params, encoding: .JSON)
+            .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+                (request, response, json, error) in
+                
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(creditCard: nil, error: ppError)
+                    return
+                }
+                
+                let creditCard = ParkingPandaCreditCard(json: json["data"])
+                completion(creditCard: creditCard, error: ppError)
+        }
+    }
+    
+    static func updateCreditCard(user: ParkingPandaUser, token: String, creditCardNumber: String, cvv: String, billingPostalCode: String, cardholderName: String, expiryDate: String, completion: ((creditCard: ParkingPandaCreditCard?, error: ParkingPandaError?) -> Void)) {
+        
+        let url = baseUrlString + "users/" + String(user.id) + "/credit-cards/" + token
+        let params: [String: AnyObject] = [
+            "apikey": publicKey,
+            "CreditCardNumber": creditCardNumber,
+            "CVV": cvv,
+            "BillingPostal": billingPostalCode,
+            "CardholderName": cardholderName,
+            "ExpirationDate": expiryDate,
+        ]
+        
+        ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
+            .request(.PUT, url, parameters: params)
+            .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+                (request, response, json, error) in
+                
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(creditCard: nil, error: ppError)
+                    return
+                }
+                
+                let creditCard = ParkingPandaCreditCard(json: json["data"])
+                completion(creditCard: creditCard, error: ppError)
+        }
+    }
+
+    static func deleteCreditCard(user: ParkingPandaUser, token: String, completion: ((error: ParkingPandaError?) -> Void)) {
+        
+        let url = baseUrlString + "users/" + String(user.id) + "/credit-cards/" + token
+        let params: [String: AnyObject] = ["apikey": publicKey]
+        
+        ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
+            .request(.DELETE, url, parameters: params)
+            .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+                (request, response, json, error) in
+                
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                completion(error: ppError)
+        }
+    }
+    
 }
 
 //all the properties of a transaction object are available here: https://www.parkingpanda.com/api/v2/Help/ResourceModel?modelName=Transaction
@@ -222,6 +320,7 @@ class ParkingPandaUser {
     var apiPassword: String
     var firstName: String
     var lastName: String
+    var creditCards: [ParkingPandaCreditCard]
     
     init(json: JSON) {
         self.json = json
@@ -230,6 +329,54 @@ class ParkingPandaUser {
         self.apiPassword = json["apiPassword"].stringValue
         self.firstName = json["firstname"].stringValue
         self.lastName = json["lastname"].stringValue
+        self.creditCards = json["creditCards"].arrayValue.map({ (creditCardJson) -> ParkingPandaCreditCard in
+            ParkingPandaCreditCard(json: creditCardJson)
+        })
+    }
+    
+}
+
+//all the properties of a user object are available here: https://www.parkingpanda.com/api/v2/Help/ResourceModel?modelName=CreditCard
+//properties should be parsed as we need them in the UI or for any other reason (in this case, credit cards)
+class ParkingPandaCreditCard {
+    
+    var json: JSON
+    var token: String
+    var maskedNumber: String
+    var lastFour: String
+    var billingPostal: String
+    var isDefault: Bool
+    var isExpired: Bool
+    var expirationDate: String
+    var cardType: String
+    var paymentType: CardIOCreditCardType
+    
+    init(json: JSON) {
+        self.json = json
+        self.token = json["token"].stringValue
+        self.billingPostal = json["billingPostal"].stringValue
+        self.isDefault = json["isDefault"].boolValue
+        self.isExpired = json["isExpired"].boolValue
+        self.expirationDate = json["expirationDate"].stringValue
+        self.maskedNumber = json["maskedNumber"].stringValue
+        self.lastFour = json["lastFour"].stringValue
+        self.cardType = json["cardType"].stringValue
+        
+        let paymentTypeEnum = json["paymentType"].intValue
+        switch(paymentTypeEnum){
+        case 0:
+            self.paymentType = .Amex
+        case 1:
+            self.paymentType = .Discover
+        case 3:
+            self.paymentType = .JCB
+        case 5:
+            self.paymentType = .Mastercard
+        case 6:
+            self.paymentType = .Visa
+        default:
+            self.paymentType = .Unrecognized
+        }
     }
     
 }

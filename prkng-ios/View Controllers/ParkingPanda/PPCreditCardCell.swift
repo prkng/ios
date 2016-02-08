@@ -36,7 +36,7 @@ class PPCreditCardCell: UITableViewCell {
     
     init(creditCardType: CardIOCreditCardType, reuseIdentifier: String?) {
         self.creditCardType = creditCardType
-        self.creditCardNumber = "Test"
+        self.creditCardNumber = ""
         
         if let creditCardTypeImage = CardIOCreditCardInfo.logoForCardType(creditCardType) {
             creditCardTypeImageView.image = creditCardTypeImage
@@ -44,7 +44,8 @@ class PPCreditCardCell: UITableViewCell {
         
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
-        self.accessoryType = .DisclosureIndicator
+        //enable this once we have an appropriate edit card screen
+//        self.accessoryType = .DisclosureIndicator
         
         setupViews()
     }

@@ -11,10 +11,13 @@ import MessageUI
 
 class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, CardIOPaymentViewControllerDelegate, PPHeaderViewDelegate {
     
-    var statusView = UIView()
-    var headerView = PPHeaderView()
+    //user must have credit cards populated
+    private var ppUser: ParkingPandaUser
+    private var creditCards: [ParkingPandaCreditCard]
     
-    let tableView = UITableView()
+    private let statusView = UIView()
+    private let headerView = PPHeaderView()
+    private let tableView = UITableView()
     
     private(set) var BACKGROUND_COLOR = Styles.Colors.stone
     private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
@@ -31,12 +34,21 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
     private(set) var BIG_CELL_HEIGHT: CGFloat = 61
     
+    init(user: ParkingPandaUser, creditCards: [ParkingPandaCreditCard]) {
+        self.ppUser = user
+        self.creditCards = creditCards
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         self.view = UIView()
         setupViews()
         setupConstraints()
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +86,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         tableView.dataSource = self
         tableView.delegate = self
         tableView.clipsToBounds = true
-        
     }
     
     func setupConstraints () {
@@ -102,6 +113,40 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         
     }
 
+    //MARK: Refresh this view with an API call and a table refresh
+    func refresh() {
+        
+        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+        SVProgressHUD.show()
+        
+        ParkingPandaOperations.login(username: nil, password: nil, includeCreditCards: true) { (user, error) -> Void in
+            
+            if user != nil {
+                
+                self.ppUser = user!
+                
+                ParkingPandaOperations.getCreditCards(self.ppUser) { (creditCards, error) -> Void in
+                    
+                    self.creditCards = creditCards
+
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
+                        SVProgressHUD.dismiss()
+                    })
+                }
+
+            } else {
+                self.dismiss()
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                SVProgressHUD.dismiss()
+            })
+            
+        }
+
+    }
+    
     //MARK: Table Footer View
 
     func tableFooterView() -> UIView {
@@ -109,7 +154,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.MIN_FOOTER_HEIGHT))
         let tableFooterView = UIView(frame: frame)
         tableFooterView.backgroundColor = Styles.Colors.stone
-
+        
         let tableFooterViewLabel = UILabel(frame: frame)
         
         //TODO: TEXT NEEDS TO BE LOCALIZED
@@ -125,17 +170,13 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         tableFooterViewLabel.numberOfLines = 0
         tableFooterViewLabel.textAlignment = .Center
         tableFooterViewLabel.attributedText = textLine1
-        tableFooterView.addSubview(tableFooterViewLabel)
-        
-        tableFooterViewLabel.snp_makeConstraints { (make) -> Void in
-            make.edges.equalTo(tableFooterView)
-        }
+        tableFooterViewLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let newHeight = tableFooterViewLabel.intrinsicContentSize().height > CGFloat(self.MIN_FOOTER_HEIGHT) ? tableFooterViewLabel.intrinsicContentSize().height + 40 : CGFloat(self.MIN_FOOTER_HEIGHT)
         
         tableFooterView.frame.size = CGSize(width: UIScreen.mainScreen().bounds.width, height: newHeight)
         tableFooterViewLabel.frame.size = CGSize(width: UIScreen.mainScreen().bounds.width, height: newHeight)
-
+        
         return tableFooterView
     }
     
@@ -148,8 +189,14 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let firstSection = ("", [SettingsCell(cellType: .Segmented, titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), selectorsTarget: self, switchSelector: "lotRateDisplayValueChanged")
             ])
         
-        let paymentMethodSection = [SettingsCell(userInfo: CardIOCreditCardType.Mastercard.rawValue, titleText: "4520 7890 1111 1331", canSelect: true),
-            SettingsCell(titleText: "add_payment_method".localizedString, selectorsTarget: self, cellSelector: "addPaymentMethod", canSelect: true)]
+        var paymentMethodSection = [SettingsCell]()
+        let addPaymentMethodCell = SettingsCell(titleText: "add_payment_method".localizedString, selectorsTarget: self, cellSelector: "addPaymentMethod", canSelect: true)
+        for creditCard in creditCards {
+            let card = SettingsCell(userInfo: ["card_io_payment_type": creditCard.paymentType.rawValue, "token": creditCard.token], titleText: creditCard.lastFour, canSelect: false, canDelete: true)
+            
+            paymentMethodSection.append(card)
+        }
+        paymentMethodSection.append(addPaymentMethodCell)
         
         let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
         let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
@@ -197,11 +244,15 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
 
             } else {
                 
-                //for now just return a test visa cell
-                let creditCardType = CardIOCreditCardType(rawValue: (settingsCell.userInfo as? Int) ?? 0) ?? .Unrecognized
-                var visaCell = tableView.dequeueReusableCellWithIdentifier("visa") as? PPCreditCardCell
+                let rawCardIOCardType = settingsCell.userInfo["card_io_payment_type"] as? Int ?? 0
+                let cardIOCardType = CardIOCreditCardType(rawValue: rawCardIOCardType) ?? .Unrecognized
+                let cardToken = settingsCell.userInfo["token"] as? String ?? ""
+                
+                let reuse = "cc_" + String(rawCardIOCardType) + "_" + cardToken
+                
+                var visaCell = tableView.dequeueReusableCellWithIdentifier(reuse) as? PPCreditCardCell
                 if visaCell == nil {
-                    visaCell = PPCreditCardCell(creditCardType: creditCardType, reuseIdentifier: "visa")
+                    visaCell = PPCreditCardCell(creditCardType: cardIOCardType, reuseIdentifier: reuse)
                 }
                 visaCell?.creditCardNumber = settingsCell.titleText
                 return visaCell!
@@ -215,6 +266,53 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     
     
     //MARK: UITableViewDelegate
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        switch(editingStyle) {
+        case .Delete:
+            let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+            SVProgressHUD.show()
+            let cardToken = settingsCell.userInfo["token"] as? String ?? ""
+            ParkingPandaOperations.deleteCreditCard(self.ppUser, token: cardToken, completion: { (error) -> Void in
+                //TODO: Show an error message here
+                self.refresh()
+            })
+        case .Insert, .None:
+            break
+        }
+    }
+    
+    @available(iOS 8.0, *)
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+        if settingsCell.canDelete {
+            let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Destructive, title: "delete".localizedString, handler: { (action: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                SVProgressHUD.show()
+                let cardToken = settingsCell.userInfo["token"] as? String ?? ""
+                ParkingPandaOperations.deleteCreditCard(self.ppUser, token: cardToken, completion: { (error) -> Void in
+                    //TODO: Show an error message here
+                    self.refresh()
+                })
+            })
+            return [deleteAction]
+        }
+        return []
+    }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+        if settingsCell.canDelete {
+            return UITableViewCellEditingStyle.Delete
+        }
+        return UITableViewCellEditingStyle.None
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+        return settingsCell.canDelete
+    }
     
     func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
@@ -307,6 +405,8 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         paymentVC.navigationBarTintColor = Styles.Colors.midnight1
         paymentVC.navigationBar.tintColor = Styles.Colors.stone
         
+        paymentVC.collectPostalCode = true
+        
         if let navVC = self.navigationController {
             navVC.pushViewController(paymentVC, animated: true)
         } else {
@@ -354,7 +454,20 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     
     //TODO: this should send the credit card info to the parking panda backend
     func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
-        paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+        let expiryDate = String(format: "%.2d", cardInfo.expiryMonth) + "/" + String(format: "%.4d", cardInfo.expiryYear)
+        let name = ppUser.firstName + " " + ppUser.lastName
+        ParkingPandaOperations.addCreditCard(ppUser, creditCardNumber: cardInfo.cardNumber, cvv: cardInfo.cvv, billingPostalCode: cardInfo.postalCode, cardholderName: name, expiryDate: expiryDate) { (creditCard, error) -> Void in
+            
+            switch (error!.errorType) {
+            case .None:
+                paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+                self.refresh()
+            case .API, .Internal, .Network:
+                //TODO: Show an eror message here
+                break
+            }
+            
+        }
     }
 
 }
