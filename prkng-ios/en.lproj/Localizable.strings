@@ -9,7 +9,7 @@
 "park_now" = "PARK NOW";
 "take_the_tour" = "start";
 
-"back" = "Back";
+"back" = "Back";r
 "sign_in" = "Sign In";
 "sign_out" = "Sign Out";
 "sign_up" = "SIGN UP";
@@ -173,7 +173,7 @@
 "report_sent_thanks_message" = "We'll improve our service with your help!";
 
 "review_title_text" = "Happy user?";
-"review_message_text" = "Recommend prkng by leaving a review on the App Store!";
+"review_message_text" = "Rate prkng! An app review helps grow our community and adds insight on regulations in your city. Thanks for your support!";
 "review_rate_us" = "Rate it now!";
 "review_feedback" = "Send feedback";
 "dismiss" = "Maybe later";
