@@ -30,6 +30,7 @@
 		3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3931BB63A450067DA8C /* SnapKit.swift */; };
 		3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3941BB63A450067DA8C /* View+SnapKit.swift */; };
 		3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */; };
+		3E29EDE21C6A60810050F2C3 /* PPIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E29EDE11C6A60810050F2C3 /* PPIntroViewController.swift */; };
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
 		3E322C2B1C582A6100C9DDBB /* PPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E322C2A1C582A6100C9DDBB /* PPSettingsViewController.swift */; };
 		3E3C92281BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3C92271BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift */; };
@@ -40,6 +41,7 @@
 		3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4123E41B8B67DB002553D7 /* Lot.swift */; };
 		3E41F0511BBEFA43004A4A60 /* DirectionsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */; };
 		3E4AB12D1C0E8272009392AA /* UIPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4AB12C1C0E8272009392AA /* UIPickerViewController.swift */; };
+		3E4BC2C51C6D38040000593E /* PRKCachedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4BC2C41C6D38040000593E /* PRKCachedTableView.swift */; };
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
 		3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E52EB721B9F45E6004183FD /* AddressSplitting.strings */; };
 		3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */; };
@@ -234,6 +236,7 @@
 		3E20B3931BB63A450067DA8C /* SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapKit.swift; sourceTree = "<group>"; };
 		3E20B3941BB63A450067DA8C /* View+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+SnapKit.swift"; sourceTree = "<group>"; };
 		3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+SnapKit.swift"; sourceTree = "<group>"; };
+		3E29EDE11C6A60810050F2C3 /* PPIntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPIntroViewController.swift; path = ParkingPanda/PPIntroViewController.swift; sourceTree = "<group>"; };
 		3E3199581B31D4F600CB118D /* TimeFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFilterView.swift; sourceTree = "<group>"; };
 		3E322C2A1C582A6100C9DDBB /* PPSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPSettingsViewController.swift; path = ParkingPanda/PPSettingsViewController.swift; sourceTree = "<group>"; };
 		3E3C92271BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarReservedCarShareViewController.swift; sourceTree = "<group>"; };
@@ -245,6 +248,7 @@
 		3E4123E41B8B67DB002553D7 /* Lot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lot.swift; sourceTree = "<group>"; };
 		3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsAction.swift; sourceTree = "<group>"; };
 		3E4AB12C1C0E8272009392AA /* UIPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPickerViewController.swift; sourceTree = "<group>"; };
+		3E4BC2C41C6D38040000593E /* PRKCachedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKCachedTableView.swift; sourceTree = "<group>"; };
 		3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
 		3E52EB721B9F45E6004183FD /* AddressSplitting.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = AddressSplitting.strings; sourceTree = "<group>"; };
 		3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
@@ -586,12 +590,13 @@
 			isa = PBXGroup;
 			children = (
 				3EF5CC6D1C515A4000F61B77 /* PPSettingsCell.swift */,
-				3EC96E0E1C64018D002D7D86 /* PPHeaderView.swift */,
-				3E322C2A1C582A6100C9DDBB /* PPSettingsViewController.swift */,
-				3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */,
-				3EC96E0C1C63DDFB002D7D86 /* PPSignInViewController.swift */,
 				3EEC5B0A1C5A93D200D37C29 /* PPCreditCardCell.swift */,
 				3EEC5B0C1C5A93EF00D37C29 /* PPAddCreditCardCell.swift */,
+				3E322C2A1C582A6100C9DDBB /* PPSettingsViewController.swift */,
+				3EC96E0E1C64018D002D7D86 /* PPHeaderView.swift */,
+				3E29EDE11C6A60810050F2C3 /* PPIntroViewController.swift */,
+				3EC96E0C1C63DDFB002D7D86 /* PPSignInViewController.swift */,
+				3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */,
 			);
 			name = ParkingPanda;
 			sourceTree = "<group>";
@@ -748,6 +753,7 @@
 				3E9509C91B570A6A0088E336 /* PRKInputForm.swift */,
 				3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */,
 				3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */,
+				3E4BC2C41C6D38040000593E /* PRKCachedTableView.swift */,
 			);
 			path = "Common Views";
 			sourceTree = "<group>";
@@ -1187,6 +1193,7 @@
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				3EEC5B0D1C5A93EF00D37C29 /* PPAddCreditCardCell.swift in Sources */,
+				3E4BC2C51C6D38040000593E /* PRKCachedTableView.swift in Sources */,
 				3E54B3B11BCF034900879528 /* CityOperations.swift in Sources */,
 				BF779A381AD4100E00F76E0A /* SearchViewController.swift in Sources */,
 				3EF5CC6E1C515A4000F61B77 /* PPSettingsCell.swift in Sources */,
@@ -1225,6 +1232,7 @@
 				3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */,
 				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
 				BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */,
+				3E29EDE21C6A60810050F2C3 /* PPIntroViewController.swift in Sources */,
 				3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */,
 				BFA7FB2D1B233228003CB30C /* MyCarAbstractViewController.swift in Sources */,
 				BF32826E1B3847AE002ED8DF /* MKImageView.swift in Sources */,

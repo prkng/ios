@@ -17,7 +17,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     
     private let statusView = UIView()
     private let headerView = PPHeaderView()
-    private let tableView = UITableView()
+    private let tableView = PRKCachedTableView()
     
     private(set) var BACKGROUND_COLOR = Styles.Colors.stone
     private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
@@ -156,6 +156,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         tableFooterView.backgroundColor = Styles.Colors.stone
         
         let tableFooterViewLabel = UILabel(frame: frame)
+        tableFooterView.addSubview(tableFooterViewLabel)
         
         //TODO: TEXT NEEDS TO BE LOCALIZED
         let line1Attributes = [NSFontAttributeName: self.FOOTER_FONT, NSForegroundColorAttributeName: self.BACKGROUND_TEXT_COLOR]
@@ -170,13 +171,15 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         tableFooterViewLabel.numberOfLines = 0
         tableFooterViewLabel.textAlignment = .Center
         tableFooterViewLabel.attributedText = textLine1
-        tableFooterViewLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let newHeight = tableFooterViewLabel.intrinsicContentSize().height > CGFloat(self.MIN_FOOTER_HEIGHT) ? tableFooterViewLabel.intrinsicContentSize().height + 40 : CGFloat(self.MIN_FOOTER_HEIGHT)
         
         tableFooterView.frame.size = CGSize(width: UIScreen.mainScreen().bounds.width, height: newHeight)
-        tableFooterViewLabel.frame.size = CGSize(width: UIScreen.mainScreen().bounds.width, height: newHeight)
         
+        tableFooterViewLabel.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(tableFooterView)
+        }
+
         return tableFooterView
     }
     
@@ -240,6 +243,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 if addCreditCardCell == nil {
                     addCreditCardCell = PPAddCreditCardCell(reuseIdentifier: "add_credit_card")
                 }
+                self.tableView.cachedCells.append(addCreditCardCell!)
                 return addCreditCardCell!
 
             } else {
@@ -250,18 +254,21 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 
                 let reuse = "cc_" + String(rawCardIOCardType) + "_" + cardToken
                 
-                var visaCell = tableView.dequeueReusableCellWithIdentifier(reuse) as? PPCreditCardCell
-                if visaCell == nil {
-                    visaCell = PPCreditCardCell(creditCardType: cardIOCardType, reuseIdentifier: reuse)
+                var cell = tableView.dequeueReusableCellWithIdentifier(reuse) as? PPCreditCardCell
+                if cell == nil {
+                    cell = PPCreditCardCell(creditCardType: cardIOCardType, reuseIdentifier: reuse)
                 }
-                visaCell?.creditCardNumber = settingsCell.titleText
-                return visaCell!
+                cell?.creditCardNumber = settingsCell.titleText
+                self.tableView.cachedCells.append(cell!)
+                return cell!
 
             }
             
         }
         
-        return settingsCell.tableViewCell(tableView)
+        let cell = settingsCell.tableViewCell(tableView)
+        self.tableView.cachedCells.append(cell)
+        return cell
     }
     
     
@@ -347,7 +354,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerText = tableSource[section].0
-
+        
         if headerText == "" {
             return nil
         }

@@ -66,9 +66,8 @@ class PPSettingsCell: SettingsCell {
                     case .API, .Internal:
                         Settings.setParkingPandaCredentials(username: nil, password: nil)
                         //TODO: show a login/create account screen
-                        let ppSignInVC = PPSignInViewController()
-                        ppSignInVC.present()
-
+                        let ppIntroVC = PPIntroViewController()
+                        ppIntroVC.present()
                     case .None, .Network:
                         //TODO: show an error popup
                         break

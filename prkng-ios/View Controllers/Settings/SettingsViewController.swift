@@ -24,7 +24,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     var nextCityButton : UIButton
     var cityLabel : UILabel
     
-    let tableView = UITableView()
+    let tableView = PRKCachedTableView()
 
     var sendLogButton : UIButton
     
@@ -582,7 +582,9 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
-        return settingsCell.tableViewCell(tableView)
+        let cell = settingsCell.tableViewCell(tableView)
+        self.tableView.cachedCells.append(cell)
+        return cell
     }
     
     

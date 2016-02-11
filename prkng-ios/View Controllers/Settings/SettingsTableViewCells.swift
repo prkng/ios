@@ -188,7 +188,13 @@ class SettingsCell: NSObject {
             cell!.placeholderText = self.placeholderText
             cell!.mainText = self.titleText
             cell!.selectorsTarget = self.selectorsTarget
-            cell!.callback = self.callback
+            cell!.editCallback = self.callback
+            cell!.returnCallback = self.userInfo["returnCallback"] as? String
+            cell!.keyboardType = UIKeyboardType(rawValue: self.userInfo["keyboardType"] as? Int ?? 0) ?? .Default
+            cell!.returnKeyType = UIReturnKeyType(rawValue: self.userInfo["returnKeyType"] as? Int ?? 0) ?? .Default
+            cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .Default
+            cell!.secureTextEntry = self.userInfo["secureTextEntry"] as? Bool ?? false
+            cell!.textFieldTag = self.userInfo["textFieldTag"] as? Int
             return cell!
             
         case .DoubleTextEntry:
@@ -201,7 +207,13 @@ class SettingsCell: NSObject {
             cell!.placeholderTextRight = self.placeholderTexts.last ?? ""
             cell!.mainTextRight = self.titleTexts.last ?? ""
             cell!.selectorsTarget = self.selectorsTarget
-            cell!.callback = self.callback
+            cell!.editCallback = self.callback
+            cell!.returnCallback = self.userInfo["returnCallback"] as? String
+            cell!.keyboardType = UIKeyboardType(rawValue: self.userInfo["keyboardType"] as? Int ?? 0) ?? .Default
+            cell!.returnKeyType = UIReturnKeyType(rawValue: self.userInfo["returnKeyType"] as? Int ?? 0) ?? .Default
+            cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .Default
+            cell!.secureTextEntry = self.userInfo["secureTextEntry"] as? Bool ?? false
+            cell!.textFieldTag = self.userInfo["textFieldTag"] as? Int
             return cell!
             
         }
@@ -678,7 +690,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
     }
 }
 
-class SettingsTextEntryCell: UITableViewCell {
+class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
     
     private let textField = UITextField()
     private var didLayoutSubviews: Bool = false
@@ -688,7 +700,38 @@ class SettingsTextEntryCell: UITableViewCell {
     var TEXT_COLOR = Styles.Colors.anthracite1
     
     var selectorsTarget: AnyObject?
-    var callback: String?
+    var editCallback: String?
+    var returnCallback: String?
+
+    var textFieldTag: Int? {
+        didSet {
+            textField.tag = textFieldTag ?? 0
+        }
+    }
+
+    var keyboardType: UIKeyboardType = .Default {
+        didSet {
+            textField.keyboardType = keyboardType
+        }
+    }
+    
+    var returnKeyType: UIReturnKeyType = .Default {
+        didSet {
+            textField.returnKeyType = returnKeyType
+        }
+    }
+    
+    var autocorrectionType: UITextAutocorrectionType = .Default {
+        didSet {
+            textField.autocorrectionType = autocorrectionType
+        }
+    }
+
+    var secureTextEntry: Bool = false {
+        didSet {
+            textField.secureTextEntry = secureTextEntry
+        }
+    }
 
     var placeholderText: String {
         get { return self.textField.placeholder ?? "" }
@@ -709,6 +752,7 @@ class SettingsTextEntryCell: UITableViewCell {
             self.backgroundColor = BACKGROUND_COLOR
             
             textField.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+            textField.delegate = self
             textField.clearButtonMode = UITextFieldViewMode.WhileEditing
             textField.font = Styles.FontFaces.light(12)
             textField.textColor = TEXT_COLOR
@@ -732,15 +776,24 @@ class SettingsTextEntryCell: UITableViewCell {
     }
 
     func textFieldUpdated() {
-        if selectorsTarget != nil && callback != nil {
+        if selectorsTarget != nil && editCallback != nil {
             let userInfo = [self.placeholderText : self.mainText]
-            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(callback!), userInfo: userInfo, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(editCallback!), userInfo: userInfo, repeats: false)
         }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if selectorsTarget != nil && returnCallback != nil {
+            let userInfo = ["textFieldTag" : textField.tag]
+            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(returnCallback!), userInfo: userInfo, repeats: false)
+        }
+        textField.resignFirstResponder()
+        return true
     }
 
 }
 
-class SettingsDoubleTextEntryCell: UITableViewCell {
+class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
     
     private let separator = UIView()
     private let textFieldLeft = UITextField()
@@ -753,8 +806,44 @@ class SettingsDoubleTextEntryCell: UITableViewCell {
     var TEXT_COLOR = Styles.Colors.anthracite1
     
     var selectorsTarget: AnyObject?
-    var callback: String?
+    var editCallback: String?
+    var returnCallback: String?
     
+    var textFieldTag: Int? {
+        didSet {
+            textFieldLeft.tag = textFieldTag ?? 0
+            textFieldRight.tag = (textFieldTag ?? 0) + 1
+        }
+    }
+    
+    var keyboardType: UIKeyboardType = .Default {
+        didSet {
+            textFieldLeft.keyboardType = keyboardType
+            textFieldRight.keyboardType = keyboardType
+        }
+    }
+    
+    var returnKeyType: UIReturnKeyType = .Default {
+        didSet {
+            textFieldLeft.returnKeyType = returnKeyType
+            textFieldRight.returnKeyType = returnKeyType
+        }
+    }
+    
+    var autocorrectionType: UITextAutocorrectionType = .Default {
+        didSet {
+            textFieldLeft.autocorrectionType = autocorrectionType
+            textFieldRight.autocorrectionType = autocorrectionType
+        }
+    }
+    
+    var secureTextEntry: Bool = false {
+        didSet {
+            textFieldLeft.secureTextEntry = secureTextEntry
+            textFieldRight.secureTextEntry = secureTextEntry
+        }
+    }
+
     var placeholderTextLeft: String {
         get { return self.textFieldLeft.placeholder ?? "" }
         set(value) {
@@ -787,6 +876,7 @@ class SettingsDoubleTextEntryCell: UITableViewCell {
             self.backgroundColor = BACKGROUND_COLOR
             
             textFieldLeft.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+            textFieldLeft.delegate = self
             textFieldLeft.clearButtonMode = UITextFieldViewMode.WhileEditing
             textFieldLeft.font = Styles.FontFaces.light(12)
             textFieldLeft.textColor = TEXT_COLOR
@@ -794,6 +884,7 @@ class SettingsDoubleTextEntryCell: UITableViewCell {
             contentView.addSubview(textFieldLeft)
 
             textFieldRight.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+            textFieldRight.delegate = self
             textFieldRight.clearButtonMode = textFieldLeft.clearButtonMode
             textFieldRight.font = textFieldLeft.font
             textFieldRight.textColor = textFieldLeft.textColor
@@ -835,11 +926,24 @@ class SettingsDoubleTextEntryCell: UITableViewCell {
     }
     
     func textFieldUpdated() {
-        if selectorsTarget != nil && callback != nil {
+        if selectorsTarget != nil && editCallback != nil {
             let userInfo = [self.placeholderTextLeft : self.mainTextLeft,
                 self.placeholderTextRight : self.mainTextRight]
-            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(callback!), userInfo: userInfo, repeats: false)
+            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(editCallback!), userInfo: userInfo, repeats: false)
         }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == textFieldLeft {
+            textFieldRight.becomeFirstResponder()
+        } else {
+            if selectorsTarget != nil && returnCallback != nil {
+                let userInfo = ["textFieldTag" : textField.tag]
+                NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(returnCallback!), userInfo: userInfo, repeats: false)
+            }
+        }
+        textField.resignFirstResponder()
+        return true
     }
 
 }

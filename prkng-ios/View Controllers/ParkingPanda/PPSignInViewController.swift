@@ -13,7 +13,7 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
     private var statusView = UIView()
     private var headerView = PPHeaderView()
-    private let tableView = UITableView()
+    private let tableView = PRKCachedTableView()
     
     private var username: String?
     private var password: String?
@@ -60,6 +60,9 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .None)
+        if let nextTextField = tableView.viewWithTag(1) as? UITextField {
+            nextTextField.becomeFirstResponder()
+        }
     }
     
     func setupViews () {
@@ -110,9 +113,21 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
     //TODO: All these strings need to be localized
     var tableSource: [(String, [SettingsCell])] {
-        
-        let emailCell = SettingsCell(placeholderText: "email".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:")
-        let passwordCell = SettingsCell(placeholderText: "password".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:")
+        let emailCell = SettingsCell(placeholderText: "email".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+            userInfo: [
+                "textFieldTag": 1,
+                "keyboardType": UIKeyboardType.EmailAddress.rawValue,
+                "returnKeyType": UIReturnKeyType.Next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "returnCallback": "cellReturnCallback:"])
+        let passwordCell = SettingsCell(placeholderText: "password".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+            userInfo: [
+                "textFieldTag": 2,
+                "keyboardType": UIKeyboardType.Default.rawValue,
+                "returnKeyType": UIReturnKeyType.Done.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "secureTextEntry": true,
+                "returnCallback": "cellReturnCallback:"])
         let formSection = [emailCell, passwordCell]
         
         return [("enter_your_credentials", formSection)]
@@ -128,7 +143,9 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
-        return settingsCell.tableViewCell(tableView)
+        let cell = settingsCell.tableViewCell(tableView)
+        self.tableView.cachedCells.append(cell)
+        return cell
     }
     
     
@@ -164,6 +181,20 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         }
     }
     
+    func cellReturnCallback(sender: AnyObject?) {
+        if let timer = sender as? NSTimer {
+            if let dict = timer.userInfo as? [String: Int] {
+                let nextTag = (dict["textFieldTag"] ?? 0) + 1
+                if let nextTextField = tableView.viewWithTag(nextTag) as? UITextField {
+                    nextTextField.becomeFirstResponder()
+                } else {
+                    tappedNextButton()
+                }
+            }
+            timer.invalidate()
+        }
+    }
+
     func present() {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
