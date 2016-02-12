@@ -397,7 +397,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     }
 
     func signOut() {
-        Settings.setParkingPandaCredentials(username: nil, password: nil)
+        ParkingPandaOperations.logout()
         dismiss()
     }
     

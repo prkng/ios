@@ -146,6 +146,10 @@ class ParkingPandaOperations {
         }
     }
 
+    static func logout() {
+        Settings.setParkingPandaCredentials(username: nil, password: nil)
+    }
+    
     static func getTransaction(user: ParkingPandaUser, confirmation: String, completion: ((transaction: ParkingPandaTransaction?, error: ParkingPandaError?) -> Void)) {
         
         let url = baseUrlString + "users/" + String(user.id) + "/transactions/" + confirmation

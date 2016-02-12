@@ -12,6 +12,16 @@ import Foundation
 
 class PPSettingsCell: SettingsCell {
     
+    override var switchValue: Bool? {
+        get {
+            let ppCreds = Settings.getParkingPandaCredentials()
+            return ppCreds.0 != nil && ppCreds.1 != nil
+        }
+        set(value) {
+            //do nothing! Muahaha! Converting a get/set property to a get-only property!
+        }
+    }
+    
     init() {
         //TODO: the text below should be localized
         super.init(cellType: .Switch, switchValue: false, titleText: "Parking Panda", subtitleText: "Use ParkingPanda to reserve and pay for a parking spot in a garage or lot.")
@@ -38,8 +48,13 @@ class PPSettingsCell: SettingsCell {
     }
     
     func ppSwitched() {
-        //TODO: switching this should probably toggle something in actualy device Settings
-        print("SWITCHEDDDD")
+        if switchValue == true {
+            //if we're switching OFF then log out
+            ParkingPandaOperations.logout()
+        } else {
+            //if we're switching ON then do the same thing as a selection
+            wasSelected()
+        }
     }
         
     func wasSelected() {
@@ -64,7 +79,7 @@ class PPSettingsCell: SettingsCell {
                 if let ppError = error {
                     switch (ppError.errorType) {
                     case .API, .Internal:
-                        Settings.setParkingPandaCredentials(username: nil, password: nil)
+                        ParkingPandaOperations.logout()
                         //TODO: show a login/create account screen
                         let ppIntroVC = PPIntroViewController()
                         ppIntroVC.present()
