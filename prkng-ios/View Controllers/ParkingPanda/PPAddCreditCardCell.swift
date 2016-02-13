@@ -13,16 +13,28 @@ class PPAddCreditCardCell: UITableViewCell {
     private var addCreditCardImageView = UIImageView()
     private var centeredLabel = UILabel()
     
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
+    
     init(reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         self.accessoryType = .DisclosureIndicator
+        self.setupSubviews()
+        self.setNeedsUpdateConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    override func updateConstraints() {
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        super.updateConstraints()
+    }
+    
+    func setupSubviews() {
         
         //this image should be 36x25 to match CardIO's CardIOCreditCardInfo.logoForCardType(cardType: CardIOCreditCardType) method
         addCreditCardImageView.contentMode = .Center
@@ -34,10 +46,10 @@ class PPAddCreditCardCell: UITableViewCell {
         centeredLabel.text = "add_payment_method".localizedString
         self.contentView.addSubview(centeredLabel)
         
-        super.layoutSubviews()
+        didSetupSubviews = true
     }
     
-    override func updateConstraints() {
+    func setupConstraints() {
         
         addCreditCardImageView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(self.contentView).offset(PPCreditCardCell.LEFT_IMAGE_OFFSET)
@@ -50,7 +62,7 @@ class PPAddCreditCardCell: UITableViewCell {
             make.centerY.equalTo(self.contentView)
         }
         
-        super.updateConstraints()
+        didSetupConstraints = true
     }
     
 }

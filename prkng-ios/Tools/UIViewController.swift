@@ -10,10 +10,10 @@ import UIKit
 
 extension UIViewController {
     
-    func presentViewControllerFromRight(viewController: UIViewController, completion: (() -> Void)?) {
+    func presentViewControllerFromRight(duration: CFTimeInterval = 0.2, viewController: UIViewController, completion: (() -> Void)?) {
         
         let transition = CATransition()
-        transition.duration = 0.2
+        transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromRight
@@ -24,10 +24,10 @@ extension UIViewController {
 
     }
 
-    func dismissViewControllerFromLeft(completion: (() -> Void)?) {
+    func dismissViewControllerFromLeft(duration: CFTimeInterval = 0.2, completion: (() -> Void)?) {
         
         let transition = CATransition()
-        transition.duration = 0.2
+        transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromLeft
@@ -36,10 +36,10 @@ extension UIViewController {
         
     }
 
-    func presentViewControllerWithFade(viewController: UIViewController, completion: (() -> Void)?) {
+    func presentViewControllerWithFade(duration: CFTimeInterval = 0.4, viewController: UIViewController, completion: (() -> Void)?) {
         
         let transition = CATransition()
-        transition.duration = 0.4
+        transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionFade
         self.view.window?.layer.addAnimation(transition, forKey: nil)
@@ -49,10 +49,10 @@ extension UIViewController {
         
     }
     
-    func dismissViewControllerWithFade(completion: (() -> Void)?) {
+    func dismissViewControllerWithFade(duration: CFTimeInterval = 0.4, completion: (() -> Void)?) {
         
         let transition = CATransition()
-        transition.duration = 0.4
+        transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionFade
         self.view.window?.layer.addAnimation(transition, forKey: nil)

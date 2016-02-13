@@ -100,7 +100,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             
         }
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .None)
+        self.tableView.reloadData()
     }
     
     func setupViews () {
@@ -338,7 +338,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
+        self.tableView.layer.addFadeAnimation()
+        self.tableView.reloadData()
 
     }
     
@@ -367,7 +368,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
+        self.tableView.layer.addFadeAnimation()
+        self.tableView.reloadData()
 
     }
     

@@ -33,13 +33,11 @@ class PPSettingsCell: SettingsCell {
     }
     
     var tableViewCell: UITableViewCell {
-        let cell = SettingsSwitchCell()
+        let cell = SettingsSwitchCell(rightSideText: nil, selectorsTarget: self, selector: "ppSwitched", buttonSelector: nil, reuseIdentifier: "parking_panda_cell")
 
         cell.titleText = self.titleText
         cell.subtitleText = self.subtitleText
         cell.switchOn = self.switchValue ?? false
-        cell.selector = "ppSwitched"
-        cell.selectorsTarget = self
         
         //add a right accessory
         cell.accessoryType = .DisclosureIndicator
@@ -70,7 +68,7 @@ class PPSettingsCell: SettingsCell {
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         let ppSettingsVC = PPSettingsViewController(user: user!, creditCards: creditCards)
-                        ppSettingsVC.present()
+                        ppSettingsVC.presentWithVC(nil)
                     })
                 }
                 
@@ -80,9 +78,8 @@ class PPSettingsCell: SettingsCell {
                     switch (ppError.errorType) {
                     case .API, .Internal:
                         ParkingPandaOperations.logout()
-                        //TODO: show a login/create account screen
                         let ppIntroVC = PPIntroViewController()
-                        ppIntroVC.present()
+                        ppIntroVC.presentWithVC(nil)
                     case .None, .Network:
                         //TODO: show an error popup
                         break

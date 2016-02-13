@@ -11,6 +11,8 @@ import MessageUI
 
 class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, PPHeaderViewDelegate {
     
+    var delegate: PPSignInViewControllerDelegate?
+    
     private var statusView = UIView()
     private var headerView = PPHeaderView()
     private let tableView = PRKCachedTableView()
@@ -47,7 +49,6 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         setupConstraints()
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.screenName = "Parking Panda Sign In View"
@@ -59,7 +60,6 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .None)
         if let nextTextField = tableView.viewWithTag(1) as? UITextField {
             nextTextField.becomeFirstResponder()
         }
@@ -72,7 +72,9 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         statusView.backgroundColor = Styles.Colors.transparentBlack
         self.view.addSubview(statusView)
         
+        //TODO: Localize me
         headerView.delegate = self
+        headerView.headerText = "SIGN IN TO PARKING PANDA"
         view.addSubview(headerView)
         
         view.addSubview(tableView)
@@ -195,14 +197,14 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         }
     }
 
-    func present() {
+    func presentWithVC(vc: UIViewController?) {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if let rootVC = appDelegate.window?.rootViewController {
+        if let rootVC = vc ?? appDelegate.window?.rootViewController {
             if let navVC = rootVC.navigationController {
                 navVC.pushViewController(self, animated: true)
             } else {
-                rootVC.presentViewController(self, animated: true, completion: nil)
+                rootVC.presentViewControllerFromRight(0.3, viewController: self, completion: nil)
             }
         }
         
@@ -213,7 +215,7 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         if let navVC = self.navigationController {
             navVC.popViewControllerAnimated(true)
         } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismissViewControllerFromLeft(0.3, completion: nil)
         }
         
     }
@@ -227,7 +229,11 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         ParkingPandaOperations.login(username: username, password: password, completion: { (user, error) -> Void in
             if user != nil {
                 //we have logged in!
-                self.dismiss()
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    //these two actions will basically happen at the same time, which, really, is what we want!
+                    self.dismiss()
+                    self.delegate?.didSignIn()
+                })
             } else {
                 //TODO: show error message
             }
@@ -237,3 +243,7 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
 }
 
+
+protocol PPSignInViewControllerDelegate {
+    func didSignIn()
+}

@@ -38,6 +38,20 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
+    var headerText: String? {
+        didSet {
+            headerLabel.text = headerText
+        }
+    }
+    
+    var enableRipple: Bool = true {
+        didSet {
+            configureRipple()
+        }
+    }
+    
+    var backButtonTapRadius: CGFloat?
+    
     init() {
         showsRightButton = true
         backButtonImageView = ViewFactory.outlineBackButton(BACKGROUND_TEXT_COLOR_EMPHASIZED)
@@ -55,17 +69,8 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         self.backgroundColor = BACKGROUND_COLOR
         self.addSubview(container)
         
-        headerButton.rippleLayerColor = FOREGROUND_COLOR
-        headerButton.rippleAniDuration = 0.35
-        headerButton.cornerRadius = 0
-        headerButton.shadowAniEnabled = false
+        configureRipple()
         
-        headerButton.layer.shadowColor = UIColor.blackColor().CGColor
-        headerButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
-        headerButton.layer.shadowOpacity = 0.1
-        headerButton.layer.shadowRadius = 0.5
-        
-        headerLabel.text = "SIGN IN TO PARKING PANDA"
         headerLabel.numberOfLines = 0
         headerLabel.font = HEADER_FONT
         headerLabel.textColor = BACKGROUND_TEXT_COLOR_EMPHASIZED
@@ -117,6 +122,31 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         super.updateConstraints()
     }
     
+    private func configureRipple() {
+        if enableRipple {
+            headerButton.rippleLayerColor = FOREGROUND_COLOR
+            headerButton.rippleAniDuration = 0.35
+            headerButton.ripplePercent = 0.9
+            headerButton.cornerRadius = 0
+            
+            headerButton.shadowAniEnabled = false
+            headerButton.backgroundAniEnabled = true
+            headerButton.shadowAniEnabled = true
+
+            headerButton.layer.shadowColor = UIColor.blackColor().CGColor
+            headerButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
+            headerButton.layer.shadowOpacity = 0.1
+            headerButton.layer.shadowRadius = 0.5
+        } else {
+            headerButton.rippleAniDuration = 0
+            headerButton.ripplePercent = 0
+            
+            headerButton.shadowAniEnabled = false
+            headerButton.backgroundAniEnabled = false
+            headerButton.shadowAniEnabled = false
+        }
+    }
+    
     func handleTap(tapRec: UITapGestureRecognizer) {
         let tap = tapRec.locationInView(self)
         let backCenterPoint = backButtonImageView.convertPoint(backButtonImageView.bounds.origin, toView: self)
@@ -125,10 +155,13 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         let backDistance = tap.distanceToPoint(backCenterPoint)
         let nextDistance = tap.distanceToPoint(nextCenterPoint)
         
-        if backDistance > nextDistance {
+        if backDistance > nextDistance && showsRightButton {
             self.delegate?.tappedNextButton()
         } else {
-            self.delegate?.tappedBackButton()
+            let radius = backButtonTapRadius
+            if radius == nil || radius >= CGFloat(backDistance) {
+                self.delegate?.tappedBackButton()
+            }
         }
     }
     

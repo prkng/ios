@@ -131,15 +131,11 @@ class SettingsCell: NSObject {
         case .Switch, .PermitSwitch:
             var cell = tableView.dequeueReusableCellWithIdentifier(self.id) as? SettingsSwitchCell
             if cell == nil {
-                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: self.id)
+                cell = SettingsSwitchCell(rightSideText: self.rightSideText, selectorsTarget: self.selectorsTarget, selector: self.switchSelector, buttonSelector: self.buttonSelector, reuseIdentifier: self.id)
             }
             cell!.titleText = self.titleText
             cell!.subtitleText = self.subtitleText
             cell!.switchOn = self.switchValue ?? false
-            cell!.selectorsTarget = self.selectorsTarget
-            cell!.selector = self.switchSelector
-            cell!.buttonSelector = self.buttonSelector
-            cell!.rightSideText = self.rightSideText
             return cell!
             
         case .Segmented:
@@ -224,7 +220,8 @@ class SettingsCell: NSObject {
 class SettingsBasicCell: UITableViewCell {
 
     private let title = UILabel()
-    private var didLayoutSubviews: Bool = false
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
     
     var redText: Bool {
         get { return title.textColor == Styles.Colors.red2 }
@@ -249,29 +246,43 @@ class SettingsBasicCell: UITableViewCell {
         }
     }
     
-    override func layoutSubviews() {
-
-        if !didLayoutSubviews {
-            self.backgroundColor = Styles.Colors.cream1
-            
-            self.setFont(bold: bold)
-            title.textAlignment = .Left
-            contentView.addSubview(title)
-            
-            didLayoutSubviews = true
-            setNeedsUpdateConstraints()
-        }
-        super.layoutSubviews()
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
     }
     
-    override func updateConstraints() {
-        super.updateConstraints()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupSubviews() {
+        
+        self.backgroundColor = Styles.Colors.cream1
+        
+        self.setFont(bold: bold)
+        title.textAlignment = .Left
+        contentView.addSubview(title)
+        
+        didSetupSubviews = true
+    }
+    
+    func setupConstraints() {
+
         title.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.contentView).offset(40)
             make.right.equalTo(self.contentView)
             make.centerY.equalTo(self.contentView)
         }
-
+        
+        didSetupConstraints = true
+    }
+    
+    override func updateConstraints() {
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        super.updateConstraints()
     }
 }
 
@@ -280,7 +291,8 @@ class SettingsSwitchCell: UITableViewCell {
     private let enabledSwitch = SevenSwitch()
     private let title = UILabel()
     private let subtitle = UILabel()
-    private var didLayoutSubviews: Bool = false
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
     
     var titleText: String {
         get { return self.title.text ?? "" }
@@ -300,38 +312,7 @@ class SettingsSwitchCell: UITableViewCell {
     }
     
     private var indicatorButton: UIButton?
-    var rightSideText: String? {
-        didSet {
-            
-            if rightSideText != nil {
-                
-                //first of all, make the add button into an x instead of a +
-                addButton = nil//ViewFactory.smallAccessoryCloseButton()
-                
-                //create the indicator button
-                indicatorButton = ViewFactory.redRoundedButtonWithHeight(22, font: Styles.FontFaces.regular(14), text: "")
-                let attrs = [NSFontAttributeName: indicatorButton!.titleLabel!.font]
-                let maximumLabelSize = CGSize(width: 200, height: 22)
-                let labelRect = (rightSideText! as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
-                
-                //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
-                let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
-                closeImageView.contentMode = .ScaleAspectFit
-                closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 6, width: 11, height: 11)
-                indicatorButton!.addSubview(closeImageView)
-                
-                //add the label
-                let label = UILabel(frame: CGRect(x: 10, y: 2.5, width: labelRect.width, height: labelRect.height))
-                label.text = rightSideText!
-                label.font = indicatorButton!.titleLabel!.font
-                label.textColor = Styles.Colors.beige1
-                indicatorButton!.addSubview(label)
-                
-                indicatorButton!.frame = rightSideText! == "" ? CGRectZero : CGRect(x: 0, y: 0, width: 10+labelRect.width+10 + 5+closeImageView.frame.width, height: 22)
-                indicatorButton!.addTarget(self, action: "indicatorButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-            }
-        }
-    }
+    private var rightSideText: String?
     
     func indicatorButtonTapped() {
         if (selectorsTarget != nil && buttonSelector != nil) {
@@ -339,18 +320,11 @@ class SettingsSwitchCell: UITableViewCell {
         }
     }
 
-    var buttonSelector: String? {
-        didSet {
-            if buttonSelector != nil {
-                addButton = ViewFactory.smallAccessoryPlusButton()
-                resetSelector()
-            }
-        }
-    }
+    private var buttonSelector: String?
     
     private var addButton: UIButton?
-    var selectorsTarget: AnyObject?
-    var selector: String?
+    private var selectorsTarget: AnyObject?
+    private var selector: String?
     
     private var cellBackgroundColor: UIColor {
         return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
@@ -377,44 +351,91 @@ class SettingsSwitchCell: UITableViewCell {
         }
     }
 
-    override func layoutSubviews() {
-        
-        if !didLayoutSubviews {
-            self.backgroundColor = cellBackgroundColor
-            
-            enabledSwitch.tintColor = Styles.Colors.stone
-            enabledSwitch.onTintColor = Styles.Colors.cream1
-            enabledSwitch.onTintColor = Styles.Colors.red2
-            resetSelector()
-            contentView.addSubview(enabledSwitch)
-            
-            title.font = Styles.FontFaces.regular(14)
-            title.textColor = Styles.Colors.red2
-            title.textAlignment = .Left
-            contentView.addSubview(title)
+    init(rightSideText: String?, selectorsTarget: AnyObject?, selector: String?, buttonSelector: String?, reuseIdentifier: String?) {
+        self.rightSideText = rightSideText
+        self.selectorsTarget = selectorsTarget
+        self.selector = selector
+        self.buttonSelector = buttonSelector
+        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
+    }
 
-            subtitle.font = Styles.FontFaces.light(12)
-            subtitle.textColor = Styles.Colors.anthracite1
-            subtitle.textAlignment = .Left
-            contentView.addSubview(subtitle)
-            
-            if addButton != nil {
-                contentView.addSubview(addButton!)
-            }
-            
-            if indicatorButton != nil {
-                contentView.addSubview(indicatorButton!)
-            }
-
-            didLayoutSubviews = true
-            setNeedsUpdateConstraints()
-        }
-        super.layoutSubviews()
+//    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        setupSubviews()
+//        self.setNeedsUpdateConstraints()
+//    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    override func updateConstraints() {
+    func setupSubviews() {
         
-        super.updateConstraints()
+        self.backgroundColor = cellBackgroundColor
+        
+        enabledSwitch.tintColor = Styles.Colors.stone
+        enabledSwitch.onTintColor = Styles.Colors.cream1
+        enabledSwitch.onTintColor = Styles.Colors.red2
+        resetSelector()
+        contentView.addSubview(enabledSwitch)
+        
+        title.font = Styles.FontFaces.regular(14)
+        title.textColor = Styles.Colors.red2
+        title.textAlignment = .Left
+        contentView.addSubview(title)
+        
+        subtitle.font = Styles.FontFaces.light(12)
+        subtitle.textColor = Styles.Colors.anthracite1
+        subtitle.textAlignment = .Left
+        contentView.addSubview(subtitle)
+        
+        if buttonSelector != nil {
+            addButton = ViewFactory.smallAccessoryPlusButton()
+            resetSelector()
+        }
+        
+        if rightSideText != nil {
+            
+            //first of all, make the add button into an x instead of a +
+            addButton = nil//ViewFactory.smallAccessoryCloseButton()
+            
+            //create the indicator button
+            indicatorButton = ViewFactory.redRoundedButtonWithHeight(22, font: Styles.FontFaces.regular(14), text: "")
+            let attrs = [NSFontAttributeName: indicatorButton!.titleLabel!.font]
+            let maximumLabelSize = CGSize(width: 200, height: 22)
+            let labelRect = (rightSideText! as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
+            
+            //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
+            let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
+            closeImageView.contentMode = .ScaleAspectFit
+            closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 6, width: 11, height: 11)
+            indicatorButton!.addSubview(closeImageView)
+            
+            //add the label
+            let label = UILabel(frame: CGRect(x: 10, y: 2.5, width: labelRect.width, height: labelRect.height))
+            label.text = rightSideText!
+            label.font = indicatorButton!.titleLabel!.font
+            label.textColor = Styles.Colors.beige1
+            indicatorButton!.addSubview(label)
+            
+            indicatorButton!.frame = rightSideText! == "" ? CGRectZero : CGRect(x: 0, y: 0, width: 10+labelRect.width+10 + 5+closeImageView.frame.width, height: 22)
+            indicatorButton!.addTarget(self, action: "indicatorButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        }
+        
+        if addButton != nil {
+            contentView.addSubview(addButton!)
+        }
+        
+        if indicatorButton != nil {
+            contentView.addSubview(indicatorButton!)
+        }
+        
+        didSetupSubviews = true
+    }
+    
+    func setupConstraints() {
         
         enabledSwitch.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.contentView).offset(20)
@@ -449,6 +470,14 @@ class SettingsSwitchCell: UITableViewCell {
             make.bottom.equalTo(self.enabledSwitch)
         }
 
+        didSetupConstraints = true
+    }
+    
+    override func updateConstraints() {
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        super.updateConstraints()
     }
     
 }
@@ -466,16 +495,15 @@ class SettingsSegmentedCell: UITableViewCell {
                 }
             }
         }
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
     }
     
     private let title = UILabel()
     private var segmentedControl: DVSwitch
     private var lastIndex: Int = 0
-    private var didLayoutSubviews: Bool = false
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
     
     var titleText: String {
         get { return self.title.text ?? "" }
@@ -489,35 +517,39 @@ class SettingsSegmentedCell: UITableViewCell {
         }
     }
     
-    override func layoutSubviews() {
-        
-        if !didLayoutSubviews {
-            self.backgroundColor = Styles.Colors.cream1
-            
-            segmentedControl.backgroundView.layer.borderWidth = 0.8
-            segmentedControl.backgroundView.layer.borderColor = Styles.Colors.anthracite1.CGColor
-            segmentedControl.sliderColor = Styles.Colors.red2
-            segmentedControl.backgroundColor = Styles.Colors.cream1
-            segmentedControl.labelTextColorInsideSlider = Styles.Colors.cream1
-            segmentedControl.labelTextColorOutsideSlider = Styles.Colors.anthracite1
-            segmentedControl.font = Styles.FontFaces.regular(12)
-            segmentedControl.cornerRadius = 15
-            contentView.addSubview(segmentedControl)
-            
-            title.font = Styles.FontFaces.regular(14)
-            title.textColor = Styles.Colors.midnight2
-            title.textAlignment = .Left
-            contentView.addSubview(title)
-
-            didLayoutSubviews = true
-            setNeedsUpdateConstraints()
-        }
-        super.layoutSubviews()
+//    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+//        super.init(style: style, reuseIdentifier: reuseIdentifier)
+//        setupSubviews()
+//        self.setNeedsUpdateConstraints()
+//    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    override func updateConstraints() {
+    func setupSubviews() {
         
-        super.updateConstraints()
+        self.backgroundColor = Styles.Colors.cream1
+        
+        segmentedControl.backgroundView.layer.borderWidth = 0.8
+        segmentedControl.backgroundView.layer.borderColor = Styles.Colors.anthracite1.CGColor
+        segmentedControl.sliderColor = Styles.Colors.red2
+        segmentedControl.backgroundColor = Styles.Colors.cream1
+        segmentedControl.labelTextColorInsideSlider = Styles.Colors.cream1
+        segmentedControl.labelTextColorOutsideSlider = Styles.Colors.anthracite1
+        segmentedControl.font = Styles.FontFaces.regular(12)
+        segmentedControl.cornerRadius = 15
+        contentView.addSubview(segmentedControl)
+        
+        title.font = Styles.FontFaces.regular(14)
+        title.textColor = Styles.Colors.midnight2
+        title.textAlignment = .Left
+        contentView.addSubview(title)
+        
+        didSetupSubviews = true
+    }
+    
+    func setupConstraints() {
 
         title.snp_remakeConstraints { (make) -> () in
             make.left.equalTo(self.contentView).offset(44)
@@ -532,6 +564,14 @@ class SettingsSegmentedCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 144, height: 30))
         }
 
+        didSetupConstraints = true
+    }
+    
+    override func updateConstraints() {
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        super.updateConstraints()
     }
     
 }
@@ -541,7 +581,8 @@ class SettingsServiceSwitchCell: UITableViewCell {
     private let enabledSwitch = SevenSwitch()
     private let title = UILabel()
     private let button = ViewFactory.transparentRoundedButton()
-    private var didLayoutSubviews: Bool = false
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
     
     var selectorsTarget: AnyObject? {
         didSet {
@@ -630,36 +671,40 @@ class SettingsServiceSwitchCell: UITableViewCell {
 
     }
 
-    override func layoutSubviews() {
-        
-        if !didLayoutSubviews {
-            self.backgroundColor = cellBackgroundColor
-            
-            enabledSwitch.tintColor = Styles.Colors.stone
-            enabledSwitch.onTintColor = Styles.Colors.cream1
-            enabledSwitch.onTintColor = Styles.Colors.red2
-            contentView.addSubview(enabledSwitch)
-
-            resetSelector()
-            
-            button.layer.cornerRadius = 10
-            button.titleLabel?.font = Styles.FontFaces.regular(10)
-            contentView.addSubview(button)
-            
-            title.font = Styles.FontFaces.regular(14)
-            title.textColor = titleTextColor
-            title.textAlignment = .Left
-            contentView.addSubview(title)
-
-            didLayoutSubviews = true
-            setNeedsUpdateConstraints()
-        }
-        super.layoutSubviews()
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
     }
     
-    override func updateConstraints() {
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupSubviews() {
         
-        super.updateConstraints()
+        self.backgroundColor = cellBackgroundColor
+        
+        enabledSwitch.tintColor = Styles.Colors.stone
+        enabledSwitch.onTintColor = Styles.Colors.cream1
+        enabledSwitch.onTintColor = Styles.Colors.red2
+        contentView.addSubview(enabledSwitch)
+        
+        resetSelector()
+        
+        button.layer.cornerRadius = 10
+        button.titleLabel?.font = Styles.FontFaces.regular(10)
+        contentView.addSubview(button)
+        
+        title.font = Styles.FontFaces.regular(14)
+        title.textColor = titleTextColor
+        title.textAlignment = .Left
+        contentView.addSubview(title)
+        
+        didSetupSubviews = true
+    }
+    
+    func setupConstraints() {
         
         if shouldShowSwitch {
             enabledSwitch.snp_remakeConstraints { (make) -> () in
@@ -687,15 +732,24 @@ class SettingsServiceSwitchCell: UITableViewCell {
             make.size.equalTo(CGSize(width: 74, height: 20))
         }
 
+        didSetupConstraints = true
+    }
+    
+    override func updateConstraints() {
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        super.updateConstraints()
     }
 }
 
 class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
     
     private let textField = UITextField()
-    private var didLayoutSubviews: Bool = false
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
     
-    var LEFT_INDENT = 25
+    var INDENT = 25
     var BACKGROUND_COLOR = Styles.Colors.cream1
     var TEXT_COLOR = Styles.Colors.anthracite1
     
@@ -746,33 +800,47 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
         set(value) { self.textField.text = value }
     }
     
-    override func layoutSubviews() {
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupSubviews() {
         
-        if !didLayoutSubviews {
-            self.backgroundColor = BACKGROUND_COLOR
-            
-            textField.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
-            textField.delegate = self
-            textField.clearButtonMode = UITextFieldViewMode.WhileEditing
-            textField.font = Styles.FontFaces.light(12)
-            textField.textColor = TEXT_COLOR
-            textField.textAlignment = NSTextAlignment.Natural
-            contentView.addSubview(textField)
-            
-            didLayoutSubviews = true
-            setNeedsUpdateConstraints()
+        self.backgroundColor = BACKGROUND_COLOR
+        
+        textField.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+        textField.delegate = self
+        textField.clearButtonMode = UITextFieldViewMode.WhileEditing
+        textField.font = Styles.FontFaces.light(12)
+        textField.textColor = TEXT_COLOR
+        textField.textAlignment = NSTextAlignment.Natural
+        contentView.addSubview(textField)
+        
+        didSetupSubviews = true
+    }
+    
+    func setupConstraints() {
+        
+        textField.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.contentView).offset(INDENT)
+            make.right.equalTo(self.contentView).offset(-INDENT)
+            make.centerY.equalTo(self.contentView)
         }
-        super.layoutSubviews()
+        
+        didSetupConstraints = true
     }
     
     override func updateConstraints() {
-        super.updateConstraints()
-        
-        textField.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self.contentView).offset(LEFT_INDENT)
-            make.right.equalTo(self.contentView)
-            make.centerY.equalTo(self.contentView)
+        if !didSetupConstraints {
+            setupConstraints()
         }
+        super.updateConstraints()
     }
 
     func textFieldUpdated() {
@@ -798,9 +866,10 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
     private let separator = UIView()
     private let textFieldLeft = UITextField()
     private let textFieldRight = UITextField()
-    private var didLayoutSubviews: Bool = false
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
     
-    var LEFT_INDENT = 25
+    var INDENT = 25
     var BACKGROUND_COLOR = Styles.Colors.cream1
     var SEPARATOR_COLOR = Styles.Colors.stone
     var TEXT_COLOR = Styles.Colors.anthracite1
@@ -870,49 +939,54 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         set(value) { self.textFieldRight.text = value }
     }
     
-    override func layoutSubviews() {
-        
-        if !didLayoutSubviews {
-            self.backgroundColor = BACKGROUND_COLOR
-            
-            textFieldLeft.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
-            textFieldLeft.delegate = self
-            textFieldLeft.clearButtonMode = UITextFieldViewMode.WhileEditing
-            textFieldLeft.font = Styles.FontFaces.light(12)
-            textFieldLeft.textColor = TEXT_COLOR
-            textFieldLeft.textAlignment = NSTextAlignment.Natural
-            contentView.addSubview(textFieldLeft)
-
-            textFieldRight.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
-            textFieldRight.delegate = self
-            textFieldRight.clearButtonMode = textFieldLeft.clearButtonMode
-            textFieldRight.font = textFieldLeft.font
-            textFieldRight.textColor = textFieldLeft.textColor
-            textFieldRight.textAlignment = textFieldLeft.textAlignment
-            contentView.addSubview(textFieldRight)
-
-            separator.userInteractionEnabled = false
-            separator.backgroundColor = SEPARATOR_COLOR
-            contentView.addSubview(separator)
-            
-            didLayoutSubviews = true
-            setNeedsUpdateConstraints()
-        }
-        super.layoutSubviews()
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+        self.setNeedsUpdateConstraints()
     }
     
-    override func updateConstraints() {
-        super.updateConstraints()
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupSubviews() {
+        
+        self.backgroundColor = BACKGROUND_COLOR
+        
+        textFieldLeft.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+        textFieldLeft.delegate = self
+        textFieldLeft.clearButtonMode = UITextFieldViewMode.WhileEditing
+        textFieldLeft.font = Styles.FontFaces.light(12)
+        textFieldLeft.textColor = TEXT_COLOR
+        textFieldLeft.textAlignment = NSTextAlignment.Natural
+        contentView.addSubview(textFieldLeft)
+        
+        textFieldRight.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+        textFieldRight.delegate = self
+        textFieldRight.clearButtonMode = textFieldLeft.clearButtonMode
+        textFieldRight.font = textFieldLeft.font
+        textFieldRight.textColor = textFieldLeft.textColor
+        textFieldRight.textAlignment = textFieldLeft.textAlignment
+        contentView.addSubview(textFieldRight)
+        
+        separator.userInteractionEnabled = false
+        separator.backgroundColor = SEPARATOR_COLOR
+        contentView.addSubview(separator)
+        
+        didSetupSubviews = true
+    }
+    
+    func setupConstraints() {
         
         textFieldLeft.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self.contentView).offset(LEFT_INDENT)
+            make.left.equalTo(self.contentView).offset(INDENT)
             make.right.equalTo(self.contentView.snp_centerX)
             make.centerY.equalTo(self.contentView)
         }
 
         textFieldRight.snp_remakeConstraints { (make) -> () in
-            make.left.equalTo(self.contentView.snp_centerX).offset(LEFT_INDENT)
-            make.right.equalTo(self.contentView)
+            make.left.equalTo(self.contentView.snp_centerX).offset(INDENT)
+            make.right.equalTo(self.contentView).offset(-INDENT)
             make.centerY.equalTo(self.contentView)
         }
 
@@ -922,7 +996,14 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
             make.width.equalTo(2)
             make.centerX.equalTo(self.contentView)
         }
-        
+        didSetupConstraints = true
+    }
+    
+    override func updateConstraints() {
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        super.updateConstraints()
     }
     
     func textFieldUpdated() {

@@ -61,7 +61,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .None)
+        self.tableView.reloadData()
     }
     
     func handleHeaderTap(tapRec: UITapGestureRecognizer) {
@@ -75,7 +75,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         statusView.backgroundColor = Styles.Colors.transparentBlack
         self.view.addSubview(statusView)
         
+        //TODO: Localize me
         headerView.delegate = self
+        headerView.headerText = "PARKING PANDA SETTINGS"
         headerView.showsRightButton = false
         view.addSubview(headerView)
         
@@ -130,7 +132,8 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                     self.creditCards = creditCards
 
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
+                        self.tableView.layer.addFadeAnimation()
+                        self.tableView.reloadData()
                         SVProgressHUD.dismiss()
                     })
                 }
@@ -422,14 +425,14 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
 
     }
     
-    func present() {
+    func presentWithVC(vc: UIViewController?) {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if let rootVC = appDelegate.window?.rootViewController {
+        if let rootVC = vc ?? appDelegate.window?.rootViewController {
             if let navVC = rootVC.navigationController {
                 navVC.pushViewController(self, animated: true)
             } else {
-                rootVC.presentViewController(self, animated: true, completion: nil)
+                rootVC.presentViewControllerFromRight(0.3, viewController: self, completion: nil)
             }
         }
 
@@ -440,7 +443,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         if let navVC = self.navigationController {
             navVC.popViewControllerAnimated(true)
         } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismissViewControllerFromLeft(0.3, completion: nil)
         }
 
     }

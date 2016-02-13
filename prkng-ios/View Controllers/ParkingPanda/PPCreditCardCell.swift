@@ -17,6 +17,9 @@ class PPCreditCardCell: UITableViewCell {
     private var creditCardTypeImageView = UIImageView()
     private var creditCardLabel = UILabel()
     
+    private var didSetupSubviews: Bool = false
+    private var didSetupConstraints: Bool = false
+    
     var creditCardNumber: String {
         didSet {
             let locale = NSLocale.currentLocale().localeIdentifier
@@ -48,12 +51,20 @@ class PPCreditCardCell: UITableViewCell {
 //        self.accessoryType = .DisclosureIndicator
         
         setupViews()
+        self.setNeedsUpdateConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func updateConstraints() {
+        if !didSetupConstraints {
+            setupConstraints()
+        }
+        super.updateConstraints()
+    }
+
     func setupViews() {
         
         self.contentView.addSubview(creditCardTypeImageView)
@@ -62,9 +73,10 @@ class PPCreditCardCell: UITableViewCell {
         creditCardLabel.font = Styles.FontFaces.regular(14)
         self.contentView.addSubview(creditCardLabel)
         
+        didSetupSubviews = true
     }
     
-    override func updateConstraints() {
+    func setupConstraints() {
         
         creditCardTypeImageView.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(self.contentView).offset(PPCreditCardCell.LEFT_IMAGE_OFFSET)
@@ -77,7 +89,8 @@ class PPCreditCardCell: UITableViewCell {
             make.centerY.equalTo(self.contentView)
         }
         
-        super.updateConstraints()
+        didSetupConstraints = true
     }
+    
     
 }

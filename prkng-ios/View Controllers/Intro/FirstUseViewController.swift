@@ -102,7 +102,7 @@ class FirstUseViewController: AbstractViewController, TutorialViewControllerDele
     
     
     func didFinishAndDismissTutorial() {
-        self.presentViewControllerWithFade(LoginViewController()) { () -> Void in
+        self.presentViewControllerWithFade(viewController: LoginViewController()) { () -> Void in
             Settings.setTutorialPassed(true)
         }
     }
