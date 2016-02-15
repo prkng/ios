@@ -19,6 +19,12 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     private let headerView = PPHeaderView()
     private let tableView = PRKCachedTableView()
     
+    private var brand: String?
+    private var plate: String?
+    private var model: String?
+    private var color: String?
+    private var phone: String?
+
     private(set) var BACKGROUND_COLOR = Styles.Colors.stone
     private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
     private(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.petrol2
@@ -204,9 +210,29 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         }
         paymentMethodSection.append(addPaymentMethodCell)
         
-        let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
-        let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:")
-        let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, cellType: .TextEntry, cellSelector: "phoneUpdated", selectorsTarget: self, callback: "vehicleDescriptionCallback:")
+        let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+            userInfo: [
+                "textFieldTag": 5,
+                "keyboardType": UIKeyboardType.Default.rawValue,
+                "returnKeyType": UIReturnKeyType.Next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "returnCallback": "cellReturnCallback:"])
+        
+        let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+            userInfo: [
+                "textFieldTag": 7,
+                "keyboardType": UIKeyboardType.Default.rawValue,
+                "returnKeyType": UIReturnKeyType.Next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "returnCallback": "cellReturnCallback:"])
+        
+        let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+            userInfo: [
+                "textFieldTag": 9,
+                "keyboardType": UIKeyboardType.NumberPad.rawValue,
+                "returnKeyType": UIReturnKeyType.Done.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "returnCallback": "cellReturnCallback:"])
 
         let vehicleDescriptionSection = [vehicleDescBrandAndPlate, vehicleDescModelAndColor]
 
@@ -266,7 +292,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 return cell!
 
             }
-            
         }
         
         let cell = settingsCell.tableViewCell(tableView)
@@ -346,9 +371,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
-        case 0: return 0
-        case 3: return 4
-        case 4: return 30
+        case 0: return 0 //the slider cell
+        case 3: return 4 //second vehicle description cell
+        case 4: return 30 //sign out cell
         default: return BIG_CELL_HEIGHT
         }
 
@@ -389,11 +414,11 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     func vehicleDescriptionCallback(sender: AnyObject?) {
         if let timer = sender as? NSTimer {
             if let dict = timer.userInfo as? [String: String] {
-                let brand = dict["brand".localizedString]
-                let plate = dict["license_plate".localizedString]
-                let model = dict["model".localizedString]
-                let color = dict["color".localizedString]
-                let phone = dict["phone_number".localizedString]
+                brand = dict["brand".localizedString] ?? brand
+                plate = dict["license_plate".localizedString] ?? plate
+                model = dict["model".localizedString] ?? model
+                color = dict["color".localizedString] ?? color
+                phone = dict["phone_number".localizedString] ?? phone
             }
             timer.invalidate()
         }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSignInViewControllerDelegate {
+class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSignInViewControllerDelegate, PPCreateUserViewControllerDelegate {
     
     private var statusView = UIView()
     private var headerView = PPHeaderView()
@@ -171,9 +171,9 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
     }
     
     func createAccountButtonTapped() {
-//        let createUserVC = PPCreateUserViewController()
-//        createUserVC.delegate = self
-//        createUserVC.presentWithVC(self)
+        let createUserVC = PPCreateUserViewController()
+        createUserVC.delegate = self
+        createUserVC.presentWithVC(self)
     }
     
     func signInButtonTapped() {
@@ -215,6 +215,11 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
     
     //MARK: PPSignInViewControllerDelegate functions
     func didSignIn() {
+        self.dismiss()
+    }
+    
+    //MARK: PPCreateUserViewControllerDelegate functions
+    func didCreateAccount() {
         self.dismiss()
     }
 }

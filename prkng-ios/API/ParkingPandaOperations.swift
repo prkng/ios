@@ -15,6 +15,7 @@ class ParkingPandaOperations {
     static let publicKey = "39b5854211924468af84ad0e1d2edf56"
     static let privateKey = "8bcdcdfb71dd4c87b9dff6d4b75809b7"
     
+    //TODO: switch to production
 //    //Real API
 //    static let baseUrlString = "https://www.parkingpanda.com/api/v2/"
 //    static let publicKey = "908eb2a1edd3491791da7f8b8e5716ee"
