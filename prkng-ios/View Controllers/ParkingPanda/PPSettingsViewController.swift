@@ -19,11 +19,11 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     private let headerView = PPHeaderView()
     private let tableView = PRKCachedTableView()
     
-    private var brand: String?
-    private var plate: String?
-    private var model: String?
-    private var color: String?
-    private var phone: String?
+    private var brand: String = Settings.getCarDescription()["brand"] ?? ""
+    private var plate: String = Settings.getCarDescription()["plate"] ?? ""
+    private var model: String = Settings.getCarDescription()["model"] ?? ""
+    private var color: String = Settings.getCarDescription()["color"] ?? ""
+    private var phone: String = Settings.getCarDescription()["phone"] ?? ""
 
     private(set) var BACKGROUND_COLOR = Styles.Colors.stone
     private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
@@ -210,7 +210,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         }
         paymentMethodSection.append(addPaymentMethodCell)
         
-        let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+        let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], titleTexts: [brand, plate], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 5,
                 "keyboardType": UIKeyboardType.Default.rawValue,
@@ -218,7 +218,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
                 "returnCallback": "cellReturnCallback:"])
         
-        let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+        let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], titleTexts: [model, color], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 7,
                 "keyboardType": UIKeyboardType.Default.rawValue,
@@ -226,7 +226,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
                 "returnCallback": "cellReturnCallback:"])
         
-        let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+        let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, titleText: phone, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 9,
                 "keyboardType": UIKeyboardType.NumberPad.rawValue,
@@ -423,6 +423,20 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             timer.invalidate()
         }
     }
+    
+    func cellReturnCallback(sender: AnyObject?) {
+        if let timer = sender as? NSTimer {
+            if let dict = timer.userInfo as? [String: Int] {
+                let nextTag = (dict["textFieldTag"] ?? 0) + 1
+                if let nextTextField = tableView.viewWithTag(nextTag) as? UITextField {
+                    nextTextField.becomeFirstResponder()
+                } else {
+                    tappedNextButton()
+                }
+            }
+            timer.invalidate()
+        }
+    }
 
     func signOut() {
         ParkingPandaOperations.logout()
@@ -464,6 +478,16 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     }
     
     func dismiss() {
+        
+        //TODO: Add validation
+        let description = [
+            "brand" : brand ?? "",
+            "plate" : plate ?? "",
+            "model" : model ?? "",
+            "color" : color ?? "",
+            "phone" : phone ?? "",
+            ]
+        Settings.setCarDescription(description)
         
         if let navVC = self.navigationController {
             navVC.popViewControllerAnimated(true)

@@ -26,11 +26,11 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     private var creditCards = [CardIOCreditCardInfo]()
 
-    private var brand: String?
-    private var plate: String?
-    private var model: String?
-    private var color: String?
-    private var phone: String?
+    private var brand: String = Settings.getCarDescription()["brand"] ?? ""
+    private var plate: String = Settings.getCarDescription()["plate"] ?? ""
+    private var model: String = Settings.getCarDescription()["model"] ?? ""
+    private var color: String = Settings.getCarDescription()["color"] ?? ""
+    private var phone: String = Settings.getCarDescription()["phone"] ?? ""
     
     private(set) var BACKGROUND_COLOR = Styles.Colors.stone
     private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
@@ -172,23 +172,23 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         paymentMethodSection.append(addPaymentMethodCell)
 
         //finally, vehicle information:
-        let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+        let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], titleTexts: [brand, plate], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 5,
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
                 "returnCallback": "cellReturnCallback:"])
-
-        let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+        
+        let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], titleTexts: [model, color], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 7,
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
                 "returnCallback": "cellReturnCallback:"])
-
-        let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
+        
+        let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, titleText: phone, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 9,
                 "keyboardType": UIKeyboardType.NumberPad.rawValue,
@@ -476,7 +476,16 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     func tappedNextButton() {
         
         //TODO: validate the input
+        let description = [
+            "brand" : brand ?? "",
+            "plate" : plate ?? "",
+            "model" : model ?? "",
+            "color" : color ?? "",
+            "phone" : phone ?? "",
+        ]
+        Settings.setCarDescription(description)
         
+
         switch step {
         case 0:
             step++

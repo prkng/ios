@@ -17,6 +17,7 @@ struct Settings {
     static let FIRST_CHECKIN_PASSED_KEY = "prkng_first_checkin_passed"
     static let FIRST_MAP_USE_PASSED_KEY = "prkng_first_map_use_passed"
     static let FIRST_CAR_SHARING_USE_PASSED_KEY = "prkng_first_car_sharing_use_passed"
+    static let CAR_DESCRIPTION_KEY = "prkng_car_description"
     static let DID_PROMPT_USER_TO_RATE_APP_KEY = "prkng_did_prompt_user_to_rate_app"
     static let PARKING_LOTS_PRICE_DAILY_KEY = "prkng_parking_lots_price_daily"
     static let RESERVED_CARSHARE_KEY = "prkng_reserved_carshare"
@@ -688,6 +689,17 @@ struct Settings {
         let username = NSUserDefaults.standardUserDefaults().objectForKey(PARKING_PANDA_USERNAME_KEY) as? String
         let password = NSUserDefaults.standardUserDefaults().objectForKey(PARKING_PANDA_PASSWORD_KEY) as? String
         return (username, password)
+    }
+
+    static func setCarDescription(description: [String: String]) {
+        NSUserDefaults.standardUserDefaults().setObject(description, forKey: CAR_DESCRIPTION_KEY)
+    }
+
+    static func getCarDescription() -> [String: String] {
+        if let description = NSUserDefaults.standardUserDefaults().objectForKey(CAR_DESCRIPTION_KEY) as? [String: String] {
+            return description
+        }
+        return [String: String]()
     }
 
 }
