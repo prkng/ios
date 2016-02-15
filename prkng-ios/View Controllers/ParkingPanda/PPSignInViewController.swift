@@ -75,6 +75,7 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         //TODO: Localize me
         headerView.delegate = self
         headerView.headerText = "SIGN IN TO PARKING PANDA"
+        headerView.rightButtonText = "sign_in".localizedString.uppercaseString
         view.addSubview(headerView)
         
         view.addSubview(tableView)

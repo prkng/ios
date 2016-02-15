@@ -38,6 +38,12 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
+    var rightButtonText: String = "next".localizedString.uppercaseString {
+        didSet {
+            nextButtonLabel.text = rightButtonText
+        }
+    }
+    
     var headerText: String? {
         didSet {
             headerLabel.text = headerText
@@ -76,7 +82,7 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         headerLabel.textColor = BACKGROUND_TEXT_COLOR_EMPHASIZED
         headerLabel.textAlignment = .Center
         
-        nextButtonLabel.text = "next".localizedString.uppercaseString
+        nextButtonLabel.text = rightButtonText
         nextButtonLabel.font = HEADER_FONT
         nextButtonLabel.textColor = FOREGROUND_TEXT_COLOR_EMPHASIZED //red2
         nextButtonLabel.textAlignment = .Right

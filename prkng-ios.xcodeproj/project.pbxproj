@@ -16,6 +16,7 @@
 		3E0FDACA1B276A1000872667 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */; };
 		3E0FDACC1B276A2B00872667 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDACB1B276A2B00872667 /* libc++.dylib */; };
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
+		3E1BCD0B1C725FE3005F0037 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1BCD0A1C725FE3005F0037 /* UITableView.swift */; };
 		3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */; };
 		3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3881BB63A450067DA8C /* Constraint.swift */; };
 		3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */; };
@@ -221,6 +222,7 @@
 		3E0FDAC91B276A1000872667 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		3E0FDACB1B276A2B00872667 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		3E0FDAD31B27921400872667 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		3E1BCD0A1C725FE3005F0037 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotOperations.swift; sourceTree = "<group>"; };
 		3E20B3881BB63A450067DA8C /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
@@ -658,6 +660,7 @@
 				3E530B6D1B7A5BDC00EF3838 /* UITextField.swift */,
 				3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */,
 				3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */,
+				3E1BCD0A1C725FE3005F0037 /* UITableView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1191,6 +1194,7 @@
 				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
 				3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
+				3E1BCD0B1C725FE3005F0037 /* UITableView.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
 				3EEC5B0D1C5A93EF00D37C29 /* PPAddCreditCardCell.swift in Sources */,
 				3E4BC2C51C6D38040000593E /* PRKCachedTableView.swift in Sources */,

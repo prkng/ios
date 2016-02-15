@@ -13,6 +13,8 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     var delegate: PPCreateUserViewControllerDelegate?
     
+    private var step: Int = 0
+    
     private var statusView = UIView()
     private var headerView = PPHeaderView()
     private let tableView = PRKCachedTableView()
@@ -199,13 +201,18 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         
         let vehicleDescriptionSection2 = ("", [vehicleDescPhone])
 
-        
-        return [
-            ("enter_your_information".localizedString, formSection),
-            ("payment_method", paymentMethodSection),
-            ("vehicle_description", vehicleDescriptionSection),
-            vehicleDescriptionSection2,
-        ]
+        switch(step) {
+        case 0: return [("enter_your_information".localizedString, formSection)]
+        case 1: return [("payment_method", paymentMethodSection)]
+        case 2: return [("vehicle_description", vehicleDescriptionSection),vehicleDescriptionSection2]
+        default:
+            return [
+                ("enter_your_information".localizedString, formSection),
+                ("payment_method", paymentMethodSection),
+                ("vehicle_description", vehicleDescriptionSection),
+                vehicleDescriptionSection2,
+            ]
+        }
         
     }
     
@@ -320,10 +327,10 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch section {
-        case 3: return 4 //second vehicle description cell
-        default: return BIG_CELL_HEIGHT
+        if step == 2 && section == 1 {
+            return 4 //second vehicle description cell
         }
+        return BIG_CELL_HEIGHT
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -452,25 +459,48 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
 
     //MARK: PPHeaderViewDelegate
     func tappedBackButton() {
-        dismiss()
+
+        headerView.rightButtonText = "next".localizedString.uppercaseString
+
+        switch step {
+        case 0:
+            dismiss()
+        case 1, 2:
+            step--
+            self.tableView.reloadDataAnimated()
+        default: break
+        }
+
     }
     
     func tappedNextButton() {
         
         //TODO: validate the input
         
-        ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
-            if user != nil {
-                //we have created a user and are logged in!
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    //these two actions will basically happen at the same time, which, really, is what we want!
-                    self.dismiss()
-                    self.delegate?.didCreateAccount()
-                })
-            } else {
-                //TODO: show error message
-            }
-        })
+        switch step {
+        case 0:
+            step++
+            self.tableView.reloadDataAnimated()
+            headerView.rightButtonText = "next".localizedString.uppercaseString
+        case 1:
+            step++
+            self.tableView.reloadDataAnimated()
+            headerView.rightButtonText = "done".localizedString.uppercaseString
+        case 2:
+            ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
+                if user != nil {
+                    //we have created a user and are logged in!
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        //these two actions will basically happen at the same time, which, really, is what we want!
+                        self.dismiss()
+                        self.delegate?.didCreateAccount()
+                    })
+                } else {
+                    //TODO: show error message
+                }
+            })
+        default: break
+        }
         
     }
     
