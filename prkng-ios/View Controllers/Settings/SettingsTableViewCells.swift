@@ -191,6 +191,7 @@ class SettingsCell: NSObject {
             cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .Default
             cell!.secureTextEntry = self.userInfo["secureTextEntry"] as? Bool ?? false
             cell!.textFieldTag = self.userInfo["textFieldTag"] as? Int
+            cell!.hasRedTint = (self.userInfo["redTintOnOrderedCells"] as? [Bool])?.first ?? false
             return cell!
             
         case .DoubleTextEntry:
@@ -210,6 +211,8 @@ class SettingsCell: NSObject {
             cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .Default
             cell!.secureTextEntry = self.userInfo["secureTextEntry"] as? Bool ?? false
             cell!.textFieldTag = self.userInfo["textFieldTag"] as? Int
+            cell!.leftHasRedTint = (self.userInfo["redTintOnOrderedCells"] as? [Bool])?.first ?? false
+            cell!.rightHasRedTint = (self.userInfo["redTintOnOrderedCells"] as? [Bool])?.last ?? false
             return cell!
             
         }
@@ -751,7 +754,9 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
     
     var INDENT = 25
     var BACKGROUND_COLOR = Styles.Colors.cream1
+    var PLACEHOLDER_TEXT_COLOR = Styles.Colors.petrol2
     var TEXT_COLOR = Styles.Colors.anthracite1
+    var TEXT_COLOR_RED = Styles.Colors.red2
     
     var selectorsTarget: AnyObject?
     var editCallback: String?
@@ -787,17 +792,21 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
         }
     }
 
-    var placeholderText: String {
-        get { return self.textField.placeholder ?? "" }
-        set(value) {
-            let attributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
-            self.textField.attributedPlaceholder = NSAttributedString(string: value, attributes: attributes)
+    var placeholderText: String = "" {
+        didSet {
+            setPlaceholderText()
         }
     }
     
     var mainText: String {
         get { return self.textField.text ?? "" }
         set(value) { self.textField.text = value }
+    }
+    
+    var hasRedTint: Bool = false {
+        didSet {
+            setPlaceholderText()
+        }
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -818,7 +827,7 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
         textField.delegate = self
         textField.clearButtonMode = UITextFieldViewMode.WhileEditing
         textField.font = Styles.FontFaces.light(12)
-        textField.textColor = TEXT_COLOR
+        setPlaceholderText()
         textField.textAlignment = NSTextAlignment.Natural
         contentView.addSubview(textField)
         
@@ -841,6 +850,11 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
             setupConstraints()
         }
         super.updateConstraints()
+    }
+    
+    private func setPlaceholderText() {
+        let attributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: hasRedTint ? TEXT_COLOR_RED : PLACEHOLDER_TEXT_COLOR]
+        self.textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
     }
 
     func textFieldUpdated() {
@@ -872,7 +886,9 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
     var INDENT = 25
     var BACKGROUND_COLOR = Styles.Colors.cream1
     var SEPARATOR_COLOR = Styles.Colors.stone
+    var PLACEHOLDER_TEXT_COLOR = Styles.Colors.petrol2
     var TEXT_COLOR = Styles.Colors.anthracite1
+    var TEXT_COLOR_RED = Styles.Colors.red2
     
     var selectorsTarget: AnyObject?
     var editCallback: String?
@@ -913,19 +929,15 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         }
     }
 
-    var placeholderTextLeft: String {
-        get { return self.textFieldLeft.placeholder ?? "" }
-        set(value) {
-            let attributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
-            self.textFieldLeft.attributedPlaceholder = NSAttributedString(string: value, attributes: attributes)
+    var placeholderTextLeft: String = "" {
+        didSet {
+            setPlaceholderText()
         }
     }
     
-    var placeholderTextRight: String {
-        get { return self.textFieldRight.placeholder ?? "" }
-        set(value) {
-            let attributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
-            self.textFieldRight.attributedPlaceholder = NSAttributedString(string: value, attributes: attributes)
+    var placeholderTextRight: String = "" {
+        didSet {
+            setPlaceholderText()
         }
     }
     
@@ -939,6 +951,18 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         set(value) { self.textFieldRight.text = value }
     }
     
+    var leftHasRedTint: Bool = false {
+        didSet {
+            setPlaceholderText()
+        }
+    }
+    
+    var rightHasRedTint: Bool = false {
+        didSet {
+            setPlaceholderText()
+        }
+    }
+
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
@@ -957,7 +981,6 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         textFieldLeft.delegate = self
         textFieldLeft.clearButtonMode = UITextFieldViewMode.WhileEditing
         textFieldLeft.font = Styles.FontFaces.light(12)
-        textFieldLeft.textColor = TEXT_COLOR
         textFieldLeft.textAlignment = NSTextAlignment.Natural
         contentView.addSubview(textFieldLeft)
         
@@ -965,9 +988,10 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         textFieldRight.delegate = self
         textFieldRight.clearButtonMode = textFieldLeft.clearButtonMode
         textFieldRight.font = textFieldLeft.font
-        textFieldRight.textColor = textFieldLeft.textColor
         textFieldRight.textAlignment = textFieldLeft.textAlignment
         contentView.addSubview(textFieldRight)
+        
+        setPlaceholderText()
         
         separator.userInteractionEnabled = false
         separator.backgroundColor = SEPARATOR_COLOR
@@ -1006,6 +1030,15 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         super.updateConstraints()
     }
     
+    private func setPlaceholderText() {
+        
+        let leftAttributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: leftHasRedTint ? TEXT_COLOR_RED : PLACEHOLDER_TEXT_COLOR]
+        self.textFieldLeft.attributedPlaceholder = NSAttributedString(string: placeholderTextLeft, attributes: leftAttributes)
+        
+        let rightAttributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: rightHasRedTint ? TEXT_COLOR_RED : PLACEHOLDER_TEXT_COLOR]
+        self.textFieldRight.attributedPlaceholder = NSAttributedString(string: placeholderTextRight, attributes: rightAttributes)
+    }
+
     func textFieldUpdated() {
         if selectorsTarget != nil && editCallback != nil {
             let userInfo = [self.placeholderTextLeft : self.mainTextLeft,

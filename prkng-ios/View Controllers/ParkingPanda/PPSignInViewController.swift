@@ -11,14 +11,16 @@ import MessageUI
 
 class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, PPHeaderViewDelegate {
     
+    private var redCells = [String]()
+
     var delegate: PPSignInViewControllerDelegate?
     
     private var statusView = UIView()
     private var headerView = PPHeaderView()
     private let tableView = PRKCachedTableView()
     
-    private var username: String?
-    private var password: String?
+    private var username: String = ""
+    private var password: String = ""
     
     private(set) var BACKGROUND_COLOR = Styles.Colors.stone
     private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
@@ -116,19 +118,21 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
     //TODO: All these strings need to be localized
     var tableSource: [(String, [SettingsCell])] {
-        let emailCell = SettingsCell(placeholderText: "email".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+        let emailCell = SettingsCell(placeholderText: "email".localizedString, titleText: username, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 1,
                 "keyboardType": UIKeyboardType.EmailAddress.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("username")],
                 "returnCallback": "cellReturnCallback:"])
-        let passwordCell = SettingsCell(placeholderText: "password".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+        let passwordCell = SettingsCell(placeholderText: "password".localizedString, titleText: password, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 2,
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Done.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("password")],
                 "secureTextEntry": true,
                 "returnCallback": "cellReturnCallback:"])
         let formSection = [emailCell, passwordCell]
@@ -221,24 +225,48 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         
     }
     
+    func passesValidation(shouldColorCells shouldColorCells: Bool = true) -> Bool {
+        let failedValidation = username.isEmpty || password.isEmpty
+        
+        if failedValidation {
+            //Rules: You must leave this View Controller with all the vehicle description fields set properly
+            //TODO: Localize these strings
+            GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out your email and password.")
+            
+            if shouldColorCells {
+                redCells = []
+                if username.isEmpty { redCells.append("username") }
+                if password.isEmpty { redCells.append("password") }
+                tableView.reloadDataAnimated()
+            }
+            
+            return false
+        }
+        
+        return true
+    }
+    
     //MARK: PPHeaderViewDelegate
     func tappedBackButton() {
         dismiss()
     }
     
     func tappedNextButton() {
-        ParkingPandaOperations.login(username: username, password: password, completion: { (user, error) -> Void in
-            if user != nil {
-                //we have logged in!
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    //these two actions will basically happen at the same time, which, really, is what we want!
-                    self.dismiss()
-                    self.delegate?.didSignIn()
-                })
-            } else {
-                //TODO: show error message
-            }
-        })
+        
+        if passesValidation() {
+            ParkingPandaOperations.login(username: username, password: password, completion: { (user, error) -> Void in
+                if user != nil {
+                    //we have logged in!
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        //these two actions will basically happen at the same time, which, really, is what we want!
+                        self.dismiss()
+                        self.delegate?.didSignIn()
+                    })
+                } else {
+                    //TODO: show error message
+                }
+            })
+        }
 
     }
     

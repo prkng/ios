@@ -19,12 +19,13 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     private var headerView = PPHeaderView()
     private let tableView = PRKCachedTableView()
     
-    private var firstName: String?
-    private var lastName: String?
-    private var email: String?
-    private var password: String?
+    private var firstName: String = ""
+    private var lastName: String = ""
+    private var email: String = ""
+    private var password: String = ""
     
     private var creditCards = [CardIOCreditCardInfo]()
+    private var redCells = [String]()
 
     private var brand: String = Settings.getCarDescription()["brand"] ?? ""
     private var plate: String = Settings.getCarDescription()["plate"] ?? ""
@@ -129,33 +130,37 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     var tableSource: [(String, [SettingsCell])] {
         
         //first up: information section
-        let firstNameCell = SettingsCell(placeholderText: "first_name".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+        let firstNameCell = SettingsCell(placeholderText: "first_name".localizedString, titleText: firstName, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 1,
                 "keyboardType": UIKeyboardType.NamePhonePad.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("firstName")],
                 "returnCallback": "cellReturnCallback:"])
-        let lastNameCell = SettingsCell(placeholderText: "last_name".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+        let lastNameCell = SettingsCell(placeholderText: "last_name".localizedString, titleText: lastName, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 2,
                 "keyboardType": UIKeyboardType.NamePhonePad.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("lastName")],
                 "returnCallback": "cellReturnCallback:"])
-        let emailCell = SettingsCell(placeholderText: "email".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+        let emailCell = SettingsCell(placeholderText: "email".localizedString, titleText: email, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 3,
                 "keyboardType": UIKeyboardType.EmailAddress.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("email")],
                 "returnCallback": "cellReturnCallback:"])
-        let passwordCell = SettingsCell(placeholderText: "password".localizedString, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
+        let passwordCell = SettingsCell(placeholderText: "password".localizedString, titleText: password, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 4,
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Done.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("password")],
                 "secureTextEntry": true,
                 "returnCallback": "cellReturnCallback:"])
         let formSection = [firstNameCell, lastNameCell, emailCell, passwordCell]
@@ -178,6 +183,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("brand"), redCells.contains("plate")],
                 "returnCallback": "cellReturnCallback:"])
         
         let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], titleTexts: [model, color], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
@@ -186,6 +192,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("model"), redCells.contains("color")],
                 "returnCallback": "cellReturnCallback:"])
         
         let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, titleText: phone, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
@@ -194,6 +201,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 "keyboardType": UIKeyboardType.NumberPad.rawValue,
                 "returnKeyType": UIReturnKeyType.Done.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("phone")],
                 "returnCallback": "cellReturnCallback:"])
 
         
@@ -445,6 +453,60 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         
     }
     
+    func passesValidation(shouldColorCells shouldColorCells: Bool = true) -> Bool {
+        
+        switch step {
+        case 0:
+            let failedValidation = firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty
+            
+            if failedValidation {
+                //TODO: Localize these strings
+                GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out your information.")
+                
+                if shouldColorCells {
+                    redCells = []
+                    if firstName.isEmpty { redCells.append("firstName") }
+                    if lastName.isEmpty { redCells.append("lastName") }
+                    if email.isEmpty { redCells.append("email") }
+                    if password.isEmpty { redCells.append("password") }
+                    tableView.reloadDataAnimated()
+                }
+                
+                return false
+            }
+        case 1:
+            let failedValidation = creditCards.count < 1
+            
+            if failedValidation {
+                //TODO: Localize these strings
+                GeneralHelper.warnUserWithErrorMessage("Please add at least one credit card to continue.")
+                return false
+            }
+        case 2:
+            let failedValidation = brand.isEmpty || plate.isEmpty || model.isEmpty || color.isEmpty || phone.isEmpty
+            
+            if failedValidation {
+                //TODO: Localize these strings
+                GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out the vehicle description.")
+                
+                if shouldColorCells {
+                    redCells = []
+                    if brand.isEmpty { redCells.append("brand") }
+                    if plate.isEmpty { redCells.append("plate") }
+                    if model.isEmpty { redCells.append("model") }
+                    if color.isEmpty { redCells.append("color") }
+                    if phone.isEmpty { redCells.append("phone") }
+                    tableView.reloadDataAnimated()
+                }
+                
+                return false
+            }
+        default: break
+        }
+
+        return true
+    }
+    
     //MARK: CardIOPaymentViewControllerDelegate functions
     func userDidCancelPaymentViewController(paymentViewController: CardIOPaymentViewController!) {
         paymentViewController.dismissViewControllerAnimated(true, completion: nil)
@@ -475,39 +537,42 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     func tappedNextButton() {
         
-        //TODO: validate the input
-        let description = [
-            "brand" : brand ?? "",
-            "plate" : plate ?? "",
-            "model" : model ?? "",
-            "color" : color ?? "",
-            "phone" : phone ?? "",
-        ]
-        Settings.setCarDescription(description)
-        
-
         switch step {
         case 0:
-            step++
+            if passesValidation() {
+                step++
+                headerView.rightButtonText = "next".localizedString.uppercaseString
+            }
             self.tableView.reloadDataAnimated()
-            headerView.rightButtonText = "next".localizedString.uppercaseString
         case 1:
-            step++
+            if passesValidation() {
+                let description = [
+                    "brand" : brand ?? "",
+                    "plate" : plate ?? "",
+                    "model" : model ?? "",
+                    "color" : color ?? "",
+                    "phone" : phone ?? "",
+                ]
+                Settings.setCarDescription(description)
+                step++
+                headerView.rightButtonText = "done".localizedString.uppercaseString
+            }
             self.tableView.reloadDataAnimated()
-            headerView.rightButtonText = "done".localizedString.uppercaseString
         case 2:
-            ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
-                if user != nil {
-                    //we have created a user and are logged in!
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        //these two actions will basically happen at the same time, which, really, is what we want!
-                        self.dismiss()
-                        self.delegate?.didCreateAccount()
-                    })
-                } else {
-                    //TODO: show error message
-                }
-            })
+            if passesValidation() {
+                ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
+                    if user != nil {
+                        //we have created a user and are logged in!
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            //these two actions will basically happen at the same time, which, really, is what we want!
+                            self.dismiss()
+                            self.delegate?.didCreateAccount()
+                        })
+                    } else {
+                        //TODO: show error message
+                    }
+                })
+            }
         default: break
         }
         

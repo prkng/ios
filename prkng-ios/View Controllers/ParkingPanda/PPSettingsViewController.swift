@@ -14,6 +14,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     //user must have credit cards populated
     private var ppUser: ParkingPandaUser
     private var creditCards: [ParkingPandaCreditCard]
+    private var redCells = [String]()
     
     private let statusView = UIView()
     private let headerView = PPHeaderView()
@@ -216,6 +217,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("brand"), redCells.contains("plate")],
                 "returnCallback": "cellReturnCallback:"])
         
         let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], titleTexts: [model, color], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
@@ -224,6 +226,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 "keyboardType": UIKeyboardType.Default.rawValue,
                 "returnKeyType": UIReturnKeyType.Next.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("model"), redCells.contains("color")],
                 "returnCallback": "cellReturnCallback:"])
         
         let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, titleText: phone, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
@@ -232,6 +235,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 "keyboardType": UIKeyboardType.NumberPad.rawValue,
                 "returnKeyType": UIReturnKeyType.Done.rawValue,
                 "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "redTintOnOrderedCells": [redCells.contains("phone")],
                 "returnCallback": "cellReturnCallback:"])
 
         let vehicleDescriptionSection = [vehicleDescBrandAndPlate, vehicleDescModelAndColor]
@@ -479,22 +483,46 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     
     func dismiss() {
         
-        //TODO: Add validation
-        let description = [
-            "brand" : brand ?? "",
-            "plate" : plate ?? "",
-            "model" : model ?? "",
-            "color" : color ?? "",
-            "phone" : phone ?? "",
+        if passesValidation() {
+            //save the description and dismiss
+            let description = [
+                "brand" : brand ?? "",
+                "plate" : plate ?? "",
+                "model" : model ?? "",
+                "color" : color ?? "",
+                "phone" : phone ?? "",
             ]
-        Settings.setCarDescription(description)
-        
-        if let navVC = self.navigationController {
-            navVC.popViewControllerAnimated(true)
-        } else {
-            self.dismissViewControllerFromLeft(0.3, completion: nil)
+            Settings.setCarDescription(description)
+            
+            if let navVC = self.navigationController {
+                navVC.popViewControllerAnimated(true)
+            } else {
+                self.dismissViewControllerFromLeft(0.3, completion: nil)
+            }
         }
-
+    }
+    
+    func passesValidation(shouldColorCells shouldColorCells: Bool = true) -> Bool {
+        let failedValidation = brand.isEmpty || plate.isEmpty || model.isEmpty || color.isEmpty || phone.isEmpty
+        
+        if failedValidation {
+            //TODO: Localize these strings
+            GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out the vehicle description.")
+            
+            if shouldColorCells {
+                redCells = []
+                if brand.isEmpty { redCells.append("brand") }
+                if plate.isEmpty { redCells.append("plate") }
+                if model.isEmpty { redCells.append("model") }
+                if color.isEmpty { redCells.append("color") }
+                if phone.isEmpty { redCells.append("phone") }
+                tableView.reloadDataAnimated()
+            }
+            
+            return false
+        }
+        
+        return true
     }
     
     //MARK: PPHeaderViewDelegate
