@@ -244,8 +244,16 @@ class ParkingPandaOperations {
         }
     }
     
-    static func addCreditCard(user: ParkingPandaUser, creditCardNumber: String, cvv: String, billingPostalCode: String, cardholderName: String, expiryDate: String, completion: ((creditCard: ParkingPandaCreditCard?, error: ParkingPandaError?) -> Void)) {
+    static func addCreditCard(user: ParkingPandaUser, cardInfo: CardIOCreditCardInfo, completion: ((creditCard: ParkingPandaCreditCard?, error: ParkingPandaError?) -> Void)) {
         
+        let expiryDate = String(format: "%.2d", cardInfo.expiryMonth) + "/" + String(format: "%.4d", cardInfo.expiryYear)
+        let name = user.firstName + " " + user.lastName
+
+        ParkingPandaOperations.addCreditCard(user, creditCardNumber: cardInfo.cardNumber, cvv: cardInfo.cvv, billingPostalCode: cardInfo.postalCode, cardholderName: name, expiryDate: expiryDate, completion: completion)
+    }
+    
+    static func addCreditCard(user: ParkingPandaUser, creditCardNumber: String, cvv: String, billingPostalCode: String, cardholderName: String, expiryDate: String, completion: ((creditCard: ParkingPandaCreditCard?, error: ParkingPandaError?) -> Void)) {
+
         let url = baseUrlString + "users/" + String(user.id) + "/credit-cards"
         let params: [String: AnyObject] = [
             "apikey": publicKey,

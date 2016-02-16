@@ -229,7 +229,6 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         let failedValidation = username.isEmpty || password.isEmpty
         
         if failedValidation {
-            //Rules: You must leave this View Controller with all the vehicle description fields set properly
             //TODO: Localize these strings
             GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out your email and password.")
             
@@ -254,6 +253,8 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     func tappedNextButton() {
         
         if passesValidation() {
+            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+            SVProgressHUD.show()
             ParkingPandaOperations.login(username: username, password: password, completion: { (user, error) -> Void in
                 if user != nil {
                     //we have logged in!
@@ -261,6 +262,11 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
                         //these two actions will basically happen at the same time, which, really, is what we want!
                         self.dismiss()
                         self.delegate?.didSignIn()
+                        SVProgressHUD.dismiss()
+                    })
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        SVProgressHUD.dismiss()
                     })
                 }
             })

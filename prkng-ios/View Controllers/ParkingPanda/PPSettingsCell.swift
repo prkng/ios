@@ -67,6 +67,7 @@ class PPSettingsCell: SettingsCell {
                 ParkingPandaOperations.getCreditCards(user!) { (creditCards, error) -> Void in
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        SVProgressHUD.dismiss()
                         let ppSettingsVC = PPSettingsViewController(user: user!, creditCards: creditCards)
                         ppSettingsVC.presentWithVC(nil)
                     })
@@ -74,6 +75,10 @@ class PPSettingsCell: SettingsCell {
                 
             } else {
                 
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SVProgressHUD.dismiss()
+                })
+
                 if let ppError = error {
                     switch (ppError.errorType) {
                     case .API, .Internal:
@@ -86,10 +91,6 @@ class PPSettingsCell: SettingsCell {
                 }
             }
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                SVProgressHUD.dismiss()
-            })
-
         }
         
     }

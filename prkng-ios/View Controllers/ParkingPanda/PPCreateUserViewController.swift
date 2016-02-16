@@ -558,14 +558,26 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
             self.tableView.reloadDataAnimated()
         case 2:
             if passesValidation() {
+                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                SVProgressHUD.show()
                 ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
                     if user != nil {
                         //we have created a user and are logged in!
-                        //TODO: Try saving the credit cards now that we are logged in!
+                        for cardInfo in self.creditCards {
+                            ParkingPandaOperations.addCreditCard(user!, cardInfo: cardInfo) { (creditCard, error) -> Void in
+                                if cardInfo == self.creditCards.last {
+                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                        //these two actions will basically happen at the same time, which, really, is what we want!
+                                        self.dismiss()
+                                        self.delegate?.didCreateAccount()
+                                        SVProgressHUD.dismiss()
+                                    })
+                                }
+                            }
+                        }
+                    } else {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            //these two actions will basically happen at the same time, which, really, is what we want!
-                            self.dismiss()
-                            self.delegate?.didCreateAccount()
+                            SVProgressHUD.dismiss()
                         })
                     }
                 })

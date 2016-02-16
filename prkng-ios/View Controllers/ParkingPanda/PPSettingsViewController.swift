@@ -315,6 +315,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             let cardToken = settingsCell.userInfo["token"] as? String ?? ""
             ParkingPandaOperations.deleteCreditCard(self.ppUser, token: cardToken, completion: { (error) -> Void in
                 self.refresh()
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SVProgressHUD.dismiss()
+                })
             })
         case .Insert, .None:
             break
@@ -331,6 +334,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 let cardToken = settingsCell.userInfo["token"] as? String ?? ""
                 ParkingPandaOperations.deleteCreditCard(self.ppUser, token: cardToken, completion: { (error) -> Void in
                     self.refresh()
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        SVProgressHUD.dismiss()
+                    })
                 })
             })
             return [deleteAction]
@@ -537,10 +543,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
     }
     
     func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
-        let expiryDate = String(format: "%.2d", cardInfo.expiryMonth) + "/" + String(format: "%.4d", cardInfo.expiryYear)
-        let name = ppUser.firstName + " " + ppUser.lastName
-        ParkingPandaOperations.addCreditCard(ppUser, creditCardNumber: cardInfo.cardNumber, cvv: cardInfo.cvv, billingPostalCode: cardInfo.postalCode, cardholderName: name, expiryDate: expiryDate) { (creditCard, error) -> Void in
-            
+        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+        SVProgressHUD.show()
+        ParkingPandaOperations.addCreditCard(ppUser, cardInfo: cardInfo) { (creditCard, error) -> Void in
             switch (error!.errorType) {
             case .None:
                 paymentViewController.dismissViewControllerAnimated(true, completion: nil)
@@ -548,7 +553,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             case .API, .Internal, .Network:
                 break
             }
-            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                SVProgressHUD.dismiss()
+            })
         }
     }
 
