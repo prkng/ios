@@ -208,12 +208,16 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func topContainerTapped() {
 
-        if shouldIgnoreSwipe(CGPointZero) {
+        if activeDetailObject?.compact == true {
             return
         }
 
-        if activeDetailObject != nil &&  activeDetailObject is Lot {
-            showModalView(activeDetailObject)
+        if let lot = activeDetailObject as? Lot {
+            if lot.isParkingPanda {
+                showModalView(activeDetailObject, modalVC: LotBookingViewController(lot: lot, view: self.view))
+            } else {
+                showModalView(activeDetailObject, modalVC: LotViewController(lot: lot, view: self.view))
+            }
         } else {
             checkin()
         }
@@ -221,12 +225,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func bottomContainerTapped() {
         
-        if shouldIgnoreSwipe(CGPointZero) {
+        if activeDetailObject?.compact == true {
             return
         }
 
         if activeDetailObject != nil {
-            showModalView(activeDetailObject)
+            showModalView(activeDetailObject, modalVC: nil)
         }
     }
     
@@ -234,12 +238,18 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
     func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
-        return activeDetailObject?.compact == true
+        if activeDetailObject?.compact == true {
+            return true
+        }
+        if let lot = activeDetailObject as? Lot where lot.isParkingPanda {
+            return true
+        }
+        return false
     }
     
     func swipeDidBegin() {
         if activeDetailObject != nil {
-            setupModalView(activeDetailObject)
+            setupModalView(activeDetailObject, modalVC: nil)
         }
 
     }
@@ -265,12 +275,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     // MARK: Schedule/Agenda/Modal methods
-    func showModalView(detailObject : DetailObject?) {
-        setupModalView(detailObject)
+    func showModalView(detailObject : DetailObject?, modalVC: PRKModalDelegatedViewController?) {
+        setupModalView(detailObject, modalVC: modalVC)
         animateModalView()
     }
     
-    func setupModalView(detailObject : DetailObject?) {
+    func setupModalView(detailObject : DetailObject?, modalVC: PRKModalDelegatedViewController?) {
         
         //this prevents the "double modal view" bug that we sometimes see
         self.prkModalViewController?.view.removeFromSuperview()
@@ -279,7 +289,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         self.prkModalViewController = nil
         
         if let spot = detailObject as? ParkingSpot {
-            self.prkModalViewController = PRKModalViewController(spot: spot, view: self.view)
+            self.prkModalViewController = modalVC ?? PRKModalViewController(spot: spot, view: self.view)
             self.view.addSubview(self.prkModalViewController!.view)
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
@@ -294,11 +304,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.prkModalViewController!.view.layoutIfNeeded()
             
         } else if let lot = detailObject as? Lot {
-            if lot.isParkingPanda {
-                self.prkModalViewController = LotBookingViewController(lot: lot, view: self.view)
-            } else {
-                self.prkModalViewController = LotViewController(lot: lot, view: self.view)
-            }
+            self.prkModalViewController = modalVC ?? LotViewController(lot: lot, view: self.view)
             self.view.addSubview(self.prkModalViewController!.view)
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
