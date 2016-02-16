@@ -62,21 +62,35 @@ class ParkingPandaOperations {
     //parses the API response for all Parking Panda requests.
     static func didRequestSucceed(response: NSHTTPURLResponse?, json: JSON, error: NSError?) -> ParkingPandaError {
         
+        var returnedError = ParkingPandaError(errorType: .None, errorDescription: nil)
+        
         let parkingPandaErrorCode = json["error"].int
         let parkingPandaErrorMessage = json["message"].string
         let parkingPandaSuccess = json["success"].boolValue
         
         if (response != nil && response?.statusCode == 401) {
                 DDLoggerWrapper.logError(String(format: "ParkingPanda Error: Bad network connection"))
-                return ParkingPandaError(errorType: .Network, errorDescription: "Bad network connection")
+                returnedError = ParkingPandaError(errorType: .Network, errorDescription: "Bad network connection")
         } else if !parkingPandaSuccess
             || parkingPandaErrorCode != nil
             || parkingPandaErrorMessage != nil {
                 DDLoggerWrapper.logError(String(format: "Error: No workie. Reason: %@", parkingPandaErrorMessage ?? json.description))
-                return ParkingPandaError(errorType: .API, errorDescription: parkingPandaErrorMessage ?? json.description)
+                returnedError = ParkingPandaError(errorType: .API, errorDescription: parkingPandaErrorMessage ?? json.description)
         }
 
-        return ParkingPandaError(errorType: .None, errorDescription: nil)
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            //TODO: Localize these strings
+            switch (returnedError.errorType) {
+            case .API, .Internal:
+                GeneralHelper.warnUserWithErrorMessage(returnedError.errorDescription ?? "")
+            case .Network:
+                GeneralHelper.warnUserWithErrorMessage("Bad network connection, please try again later.")
+            case .None:
+                break
+            }
+        })
+        
+        return returnedError
     }
     
     static func createUser(email: String, password: String, firstName: String, lastName: String, phone: String, completion: ((user: ParkingPandaUser?, error: ParkingPandaError?) -> Void)) {

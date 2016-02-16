@@ -81,7 +81,6 @@ class PPSettingsCell: SettingsCell {
                         let ppIntroVC = PPIntroViewController()
                         ppIntroVC.presentWithVC(nil)
                     case .None, .Network:
-                        //TODO: show an error popup
                         break
                     }
                 }

@@ -394,7 +394,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         }
     }
     
-    //TODO: save the bottom values to somewhere in settings
     func vehicleDescriptionCallback(sender: AnyObject?) {
         if let timer = sender as? NSTimer {
             if let dict = timer.userInfo as? [String: String] {
@@ -512,7 +511,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         paymentViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    //TODO: this should send the credit card info to the parking panda backend
     func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
         creditCards.append(cardInfo)
         self.tableView.reloadData()
@@ -563,13 +561,12 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
                     if user != nil {
                         //we have created a user and are logged in!
+                        //TODO: Try saving the credit cards now that we are logged in!
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
                             //these two actions will basically happen at the same time, which, really, is what we want!
                             self.dismiss()
                             self.delegate?.didCreateAccount()
                         })
-                    } else {
-                        //TODO: show error message
                     }
                 })
             }

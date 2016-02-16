@@ -314,7 +314,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
             SVProgressHUD.show()
             let cardToken = settingsCell.userInfo["token"] as? String ?? ""
             ParkingPandaOperations.deleteCreditCard(self.ppUser, token: cardToken, completion: { (error) -> Void in
-                //TODO: Show an error message here
                 self.refresh()
             })
         case .Insert, .None:
@@ -331,7 +330,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 SVProgressHUD.show()
                 let cardToken = settingsCell.userInfo["token"] as? String ?? ""
                 ParkingPandaOperations.deleteCreditCard(self.ppUser, token: cardToken, completion: { (error) -> Void in
-                    //TODO: Show an error message here
                     self.refresh()
                 })
             })
@@ -414,7 +412,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         Settings.setLotMainRateIsHourly(!currentValue)
     }
     
-    //TODO: save the bottom values to somewhere in settings
     func vehicleDescriptionCallback(sender: AnyObject?) {
         if let timer = sender as? NSTimer {
             if let dict = timer.userInfo as? [String: String] {
@@ -539,7 +536,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         paymentViewController.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    //TODO: this should send the credit card info to the parking panda backend
     func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
         let expiryDate = String(format: "%.2d", cardInfo.expiryMonth) + "/" + String(format: "%.4d", cardInfo.expiryYear)
         let name = ppUser.firstName + " " + ppUser.lastName
@@ -550,7 +546,6 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 paymentViewController.dismissViewControllerAnimated(true, completion: nil)
                 self.refresh()
             case .API, .Internal, .Network:
-                //TODO: Show an eror message here
                 break
             }
             

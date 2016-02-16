@@ -262,8 +262,6 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
                         self.dismiss()
                         self.delegate?.didSignIn()
                     })
-                } else {
-                    //TODO: show error message
                 }
             })
         }
