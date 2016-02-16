@@ -55,7 +55,7 @@ PODS:
     - SMCalloutView (= 2.0)
   - MarqueeLabel (2.5.0)
   - OMGHTTPURLRQ/UserAgent (3.1.1)
-  - pop (1.0.8)
+  - pop (1.0.9)
   - SDWebImage (3.7.2):
     - SDWebImage/Core (= 3.7.2)
   - SDWebImage/Core (3.7.2)
@@ -104,7 +104,7 @@ SPEC CHECKSUMS:
   Mapbox-iOS-SDK: ee136ca5b7f853456b50dfd7a7f0e243288cf86f
   MarqueeLabel: 6b8ff6915c0536c5099ac30992b7d72f9807df20
   OMGHTTPURLRQ: 633f98ee745aeda02345935a52eec1784cddb589
-  pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
+  pop: f667631a5108a2e60d9e8797c9b32ddaf2080bce
   SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SevenSwitch: e992e56e2e7f401eb00538b9fa92bf848bacbe27
   SMCalloutView: f758edd824b18bf4f42de00df1e299861a2d1950
