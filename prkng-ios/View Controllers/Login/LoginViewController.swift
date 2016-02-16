@@ -235,7 +235,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     
     func signUp() {
         
-        loginEmailViewController?.dismissViewControllerFromLeft({ () -> Void in
+        loginEmailViewController?.dismissViewControllerFromLeft(completion: { () -> Void in
             self.loginEmailViewController = nil
         })
 
@@ -243,7 +243,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         if registerEmailViewController == nil {
             registerEmailViewController = RegisterEmailViewController()
             registerEmailViewController!.delegate = self
-            self.presentViewControllerFromRight(registerEmailViewController!, completion: nil)
+            self.presentViewControllerFromRight(viewController: registerEmailViewController!, completion: nil)
         }
         
     }
@@ -288,7 +288,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         //do not dismiss register, show email on top of it instead
         loginEmailViewController = LoginEmailViewController()
         loginEmailViewController!.delegate = self
-        (registerEmailViewController ?? self).presentViewControllerFromRight(loginEmailViewController!, completion: nil)
+        (registerEmailViewController ?? self).presentViewControllerFromRight(viewController: loginEmailViewController!, completion: nil)
     }
 
     
@@ -302,7 +302,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             make.height.equalTo(LoginMethodSelectionView.HEIGHT)
         }
         
-        registerEmailViewController?.dismissViewControllerFromLeft({ () -> Void in
+        registerEmailViewController?.dismissViewControllerFromLeft(completion: { () -> Void in
             self.registerEmailViewController = nil
         })
         
@@ -320,7 +320,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         }
         
 
-        loginEmailViewController?.dismissViewControllerFromLeft({ () -> Void in
+        loginEmailViewController?.dismissViewControllerFromLeft(completion: { () -> Void in
             self.loginEmailViewController = nil
         })
 

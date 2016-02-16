@@ -285,3 +285,4 @@
 "availability_x_places" = "Available now: %d spaces";
 "up_to_x_cars_available" = "Up to %d cars available";
 "up_to_x_spaces_available" = "Up to %d spaces available";
+"pay_with_x" = "Pay with %d";

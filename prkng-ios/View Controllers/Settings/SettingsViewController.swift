@@ -24,7 +24,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     var nextCityButton : UIButton
     var cityLabel : UILabel
     
-    let tableView = UITableView()
+    let tableView = PRKCachedTableView()
 
     var sendLogButton : UIButton
     
@@ -100,7 +100,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             
         }
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .None)
+        self.tableView.reloadData()
     }
     
     func setupViews () {
@@ -252,6 +252,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         controller.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    //MARK: UITableView cells and button selectors
+    
     func showSupport() {
         if MFMailComposeViewController.canSendMail() {
             let mailVC = MFMailComposeViewController()
@@ -336,7 +338,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
+        self.tableView.layer.addFadeAnimation()
+        self.tableView.reloadData()
 
     }
     
@@ -365,7 +368,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         delegate!.cityDidChange(fromCity: previousCity, toCity: CityOperations.sharedInstance.availableCities[index])
         
-        self.tableView.reloadSections(NSIndexSet(indexesInRange: NSMakeRange(0, self.tableView.numberOfSections)), withRowAnimation: .Fade)
+        self.tableView.layer.addFadeAnimation()
+        self.tableView.reloadData()
 
     }
     
@@ -446,11 +450,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         Settings.setHideZipcar(!currentValue)
     }
     
-    func lotRateDisplayValueChanged() {
-        let currentValue = Settings.lotMainRateIsHourly()
-        Settings.setLotMainRateIsHourly(!currentValue)
-    }
-    
     func profileButtonTapped(sender: UIButton) {
         if AuthUtility.loginType()! == LoginType.Email {
             self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
@@ -485,6 +484,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         })
     }
 
+    //MARK: Table Footer View
+
     func tableFooterView() -> UIView {
         
         let versionString = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
@@ -492,7 +493,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         let tableFooterView = UIView(frame: frame)
         tableFooterView.backgroundColor = Styles.Colors.stone
 
-        let tableFooterViewLabel = UILabel()
+        let labelFrame = CGRect(x: 20, y: 0, width: UIScreen.mainScreen().bounds.width-40, height: CGFloat(BIG_CELL_HEIGHT)-10)
+        let tableFooterViewLabel = UILabel(frame: labelFrame)
         
         let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
         let textLine1 = NSMutableAttributedString(string: "Version " + versionString, attributes: line1Attributes)
@@ -514,7 +516,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             make.right.equalTo(tableFooterView).offset(-20)
             make.bottom.equalTo(tableFooterView).offset(-10)
         }
-
+        
         return tableFooterView
     }
     
@@ -526,18 +528,20 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         var firstSection = [SettingsCell]()
         var carSharingSection = [SettingsCell]()
         
-        let alertCell = SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "settings_alert".localizedString, subtitleText: "settings_alert_text".localizedString, parentVC: self, switchSelector: "notificationSelectionValueChanged")
-        let commercialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForCommercialPermit(), titleText: "settings_commercial_permit".localizedString, subtitleText: "settings_commercial_permit_text".localizedString, parentVC: self, switchSelector: "commercialPermitFilterValueChanged")
-        let snowRemovalCell = SettingsCell(switchValue: Settings.shouldFilterForSnowRemoval(), titleText: "settings_snow_removal".localizedString, subtitleText: "settings_snow_removal_text".localizedString, parentVC: self, switchSelector: "snowRemovalFilterValueChanged")
-        let residentialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForResidentialPermit(), titleText: "settings_residential_permit".localizedString, subtitleText: "settings_residential_permit_text".localizedString, parentVC: self, switchSelector: "residentialPermitFilterValueChanged", buttonSelector: "residentialPermitFilterValueNeedsAddition", rightSideText: Settings.residentialPermit())
+        let alertCell = SettingsCell(switchValue: Settings.notificationTime() != 0, titleText: "settings_alert".localizedString, subtitleText: "settings_alert_text".localizedString, selectorsTarget: self, switchSelector: "notificationSelectionValueChanged")
+        let commercialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForCommercialPermit(), titleText: "settings_commercial_permit".localizedString, subtitleText: "settings_commercial_permit_text".localizedString, selectorsTarget: self, switchSelector: "commercialPermitFilterValueChanged")
+        let snowRemovalCell = SettingsCell(switchValue: Settings.shouldFilterForSnowRemoval(), titleText: "settings_snow_removal".localizedString, subtitleText: "settings_snow_removal_text".localizedString, selectorsTarget: self, switchSelector: "snowRemovalFilterValueChanged")
+        let residentialPermitCell = SettingsCell(switchValue: Settings.shouldFilterForResidentialPermit(), titleText: "settings_residential_permit".localizedString, subtitleText: "settings_residential_permit_text".localizedString, selectorsTarget: self, switchSelector: "residentialPermitFilterValueChanged", buttonSelector: "residentialPermitFilterValueNeedsAddition", rightSideText: Settings.residentialPermit())
         
-//        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), parentVC: self, selector: "lotRateDisplayValueChanged"),
+        let parkingPandaCell = PPSettingsCell()
+        
+//        let secondRow = ("garages".localizedString, [SettingsCell(titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), selectorsTarget: self, selector: "lotRateDisplayValueChanged"),
 //            SettingsCell(cellType: .Service, titleText: "ParkingPanda")])
 
-        let car2goCell = SettingsCell(titleText: "Car2Go", signedIn: CarSharingOperations.Car2Go.isLoggedInSynchronous(shouldValidateToken: false), switchValue: !Settings.hideCar2Go(), parentVC: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "handleCar2GoSignInButtonTap")
-        let automobileCell = SettingsCell(titleText: "Automobile", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideAutomobile(), parentVC: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
-        let communautoCell = SettingsCell(titleText: "Communauto", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideCommunauto(), parentVC: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
-        let zipcarCell = SettingsCell(titleText: "Zipcar", signedIn: nil, switchValue: !Settings.hideZipcar(), parentVC: self, switchSelector: "hideZipcarValueChanged")
+        let car2goCell = SettingsCell(cellType: .ServiceSwitch, titleText: "Car2Go", signedIn: CarSharingOperations.Car2Go.isLoggedInSynchronous(shouldValidateToken: false), switchValue: !Settings.hideCar2Go(), selectorsTarget: self, switchSelector: "hideCar2GoValueChanged", buttonSelector: "handleCar2GoSignInButtonTap")
+        let automobileCell = SettingsCell(cellType: .ServiceSwitch, titleText: "Automobile", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideAutomobile(), selectorsTarget: self, switchSelector: "hideAutomobileValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
+        let communautoCell = SettingsCell(cellType: .ServiceSwitch, titleText: "Communauto", signedIn: Settings.communautoCustomerID() != nil, switchValue: !Settings.hideCommunauto(), selectorsTarget: self, switchSelector: "hideCommunautoValueChanged", buttonSelector: "handleCommunautoSignInButtonTap")
+        let zipcarCell = SettingsCell(cellType: .ServiceSwitch, titleText: "Zipcar", signedIn: nil, switchValue: !Settings.hideZipcar(), selectorsTarget: self, switchSelector: "hideZipcarValueChanged")
         
         firstSection = [alertCell]
         
@@ -550,19 +554,19 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         } else if Settings.selectedCity().name == "seattle" {
             carSharingSection = [car2goCell, zipcarCell]
         } else if Settings.selectedCity().name == "newyork" {
-            firstSection.append(commercialPermitCell)
+            firstSection += [commercialPermitCell, parkingPandaCell]
             carSharingSection = [car2goCell, zipcarCell]
         }
         
         let generalSection = [
-            SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, parentVC: self, switchSelector: "sendToAppStore"),
-            SettingsCell(cellType: .Basic, titleText: "share".localizedString, parentVC: self, switchSelector: "showShareSheet"),
-            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, parentVC: self, switchSelector: "showGettingStarted"),
-            SettingsCell(cellType: .Basic, titleText: "support".localizedString, parentVC: self, switchSelector: "showSupport"),
-            SettingsCell(cellType: .Basic, titleText: "faq".localizedString, parentVC: self, switchSelector: "showFaq"),
-            SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, parentVC: self, switchSelector: "showTerms"),
-            SettingsCell(cellType: .Basic, titleText: "privacy_policy".localizedString, parentVC: self, switchSelector: "showPrivacy"),
-            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, parentVC: self, switchSelector: "signOut")]
+            SettingsCell(cellType: .Basic, titleText: "rate_us_message".localizedString, selectorsTarget: self, cellSelector: "sendToAppStore", canSelect: true, redText: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "share".localizedString, selectorsTarget: self, cellSelector: "showShareSheet", canSelect: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "getting_started_tour".localizedString, selectorsTarget: self, cellSelector: "showGettingStarted", canSelect: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "support".localizedString, selectorsTarget: self, cellSelector: "showSupport", canSelect: true, bold: true),
+            SettingsCell(cellType: .Basic, titleText: "faq".localizedString, selectorsTarget: self, cellSelector: "showFaq", canSelect: true, bold: false),
+            SettingsCell(cellType: .Basic, titleText: "terms_conditions".localizedString, selectorsTarget: self, cellSelector: "showTerms", canSelect: true, bold: false),
+            SettingsCell(cellType: .Basic, titleText: "privacy_policy".localizedString, selectorsTarget: self, cellSelector: "showPrivacy", canSelect: true, bold: false),
+            SettingsCell(cellType: .Basic, titleText: "sign_out".localizedString, selectorsTarget: self, cellSelector: "signOut", canSelect: true, bold: false)]
         
         return [("", firstSection),
             ("car_sharing".localizedString, carSharingSection),
@@ -580,74 +584,23 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
-        switch settingsCell.cellType {
-            
-        case .Switch, .PermitSwitch:
-            var cell = tableView.dequeueReusableCellWithIdentifier("switch" + settingsCell.titleText + (settingsCell.rightSideText ?? "")) as? SettingsSwitchCell
-            if cell == nil {
-                cell = SettingsSwitchCell(style: .Default, reuseIdentifier: "switch" + settingsCell.titleText + (settingsCell.rightSideText ?? ""))
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.subtitleText = settingsCell.subtitleText
-            cell!.switchOn = settingsCell.switchValue ?? false
-            cell!.parentVC = settingsCell.parentVC
-            cell!.selector = settingsCell.switchSelector
-            cell!.buttonSelector = settingsCell.buttonSelector
-            cell!.rightSideText = settingsCell.rightSideText
-            return cell!
-            
-        case .Segmented:
-            var cell = tableView.dequeueReusableCellWithIdentifier("segmented" + settingsCell.titleText) as? SettingsSegmentedCell
-            if cell == nil {
-                cell = SettingsSegmentedCell(segments: settingsCell.segments, reuseIdentifier: "segmented" + settingsCell.titleText, parentVC: settingsCell.parentVC, selector: settingsCell.switchSelector)
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.selectedSegment = settingsCell.defaultSegment
-            return cell!
-            
-        case .Service, .ServiceSwitch:
-            var cell = tableView.dequeueReusableCellWithIdentifier("service" + settingsCell.titleText) as? SettingsServiceSwitchCell
-            if cell == nil {
-                cell = SettingsServiceSwitchCell(style: .Default, reuseIdentifier: "service" + settingsCell.titleText)
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.signedIn = settingsCell.signedIn
-            if let switchValue = settingsCell.switchValue {
-                cell!.shouldShowSwitch = true
-                cell!.switchValue = switchValue
-                cell!.parentVC = settingsCell.parentVC
-                cell!.switchSelector = settingsCell.switchSelector
-                cell!.buttonSelector = settingsCell.buttonSelector
-            } else {
-                cell!.shouldShowSwitch = false
-            }
-            cell!.shouldShowSwitch = settingsCell.cellType == SettingsTableViewCellType.ServiceSwitch
-
-            return cell!
-            
-        case .Basic:
-            var cell = tableView.dequeueReusableCellWithIdentifier("basic" + settingsCell.titleText) as? SettingsBasicCell
-            if cell == nil {
-                cell = SettingsBasicCell(style: .Default, reuseIdentifier: "basic" + settingsCell.titleText)
-            }
-            cell!.titleText = settingsCell.titleText
-            cell!.bold = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row < 4
-            cell!.redText = (tableSource[indexPath.section].0 == "general".localizedString) && indexPath.row == 0
-            return cell!
-        }
+        let cell = settingsCell.tableViewCell(tableView)
+        self.tableView.cachedCells.append(cell)
+        return cell
     }
     
     
     //MARK: UITableViewDelegate
     
     func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return tableSource[indexPath.section].0 == "general".localizedString
+        let settingsCell = tableSource[indexPath.section].1[indexPath.row]
+        return settingsCell.canSelect
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
-        if settingsCell.parentVC != nil && settingsCell.switchSelector != nil {
-            settingsCell.parentVC!.performSelector(Selector(settingsCell.switchSelector!))
+        if settingsCell.selectorsTarget != nil && settingsCell.cellSelector != nil {
+            settingsCell.selectorsTarget!.performSelector(Selector(settingsCell.cellSelector!))
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
@@ -655,15 +608,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch indexPath.section {
         case 0: return BIG_CELL_HEIGHT
-//        case 1:
-//            switch indexPath.row {
-//            case 0: return BIG_CELL_HEIGHT
-//            case 1: return SMALL_CELL_HEIGHT
-//            default: return 0
-//            }
-        case 1: return SMALL_CELL_HEIGHT
-        case 2: return SMALL_CELL_HEIGHT
-        default: return 0
+        default: return SMALL_CELL_HEIGHT
         }
     }
     

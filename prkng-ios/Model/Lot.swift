@@ -72,6 +72,10 @@ class Lot: NSObject, DetailObject {
     
     var isCheaper: Bool
     
+    var isParkingPanda: Bool {
+        return lotPartner?.lowercaseString == "parking panda"
+    }
+    
     var isCurrentlyOpen: Bool {
         
         if self.availability != nil && self.availability! == 0 {

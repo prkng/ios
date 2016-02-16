@@ -54,10 +54,44 @@ extension CALayer {
         animation.removedOnCompletion = true
         
         self.addAnimation(animation, forKey: "opacity")
-        
-        //        NSLog("Added a scale animation")
     }
 
+    func addRightSlideAnimation() {
+        let animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        
+        animation.values = [self.frame.width, 0]
+        
+        animation.duration = 0.3
+        var timingFunctions: Array<CAMediaTimingFunction> = []
+        
+        for _ in 0...animation.values!.count {
+            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        }
+        
+        animation.timingFunctions = timingFunctions
+        animation.removedOnCompletion = true
+        
+        self.addAnimation(animation, forKey: "slidein")
+    }
+    
+    func addLeftSlideAnimation() {
+        let animation: CAKeyframeAnimation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        
+        animation.values = [0, self.frame.width]
+        
+        animation.duration = 0.3
+        var timingFunctions: Array<CAMediaTimingFunction> = []
+        
+        for _ in 0...animation.values!.count {
+            timingFunctions.append(CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut))
+        }
+        
+        animation.timingFunctions = timingFunctions
+        animation.removedOnCompletion = true
+        
+        self.addAnimation(animation, forKey: "slidein")
+    }
+    
     func wigglewigglewiggle() {
         
         if let _ = self.animationForKey("wigglewigglewiggle") {

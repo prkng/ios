@@ -34,5 +34,6 @@
 #import "MarqueeLabel/MarqueeLabel.h"
 #import "UIImage+ImageEffects.h"
 #import "TDOAuth.h"
+#import "CardIO.h"
 
 #endif

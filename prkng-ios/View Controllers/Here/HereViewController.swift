@@ -294,7 +294,11 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.prkModalViewController!.view.layoutIfNeeded()
             
         } else if let lot = detailObject as? Lot {
-            self.prkModalViewController = LotViewController(lot: lot, view: self.view)
+            if lot.isParkingPanda {
+                self.prkModalViewController = LotBookingViewController(lot: lot, view: self.view)
+            } else {
+                self.prkModalViewController = LotViewController(lot: lot, view: self.view)
+            }
             self.view.addSubview(self.prkModalViewController!.view)
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self

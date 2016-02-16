@@ -34,6 +34,11 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     private var attributesViewContainers = [UIView]()
     private var attributesViewLabels = [UILabel]()
     private var attributesViewImages = [UIImageView]()
+    private var inBookingMode = false {
+        didSet {
+            didChangeBookingMode()
+        }
+    }
 
     private var verticalRec: PRKVerticalGestureRecognizer
     private static let HEADER_HEIGHT: CGFloat = 70
@@ -468,6 +473,13 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             self.view.layoutIfNeeded()
         }
 
+    }
+    
+    //MARK: Booking mode related functions
+    func didChangeBookingMode() {
+        if inBookingMode {
+            //transform the view into the booking screen
+        }
     }
     
     

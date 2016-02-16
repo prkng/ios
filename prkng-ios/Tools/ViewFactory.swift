@@ -179,10 +179,14 @@ struct ViewFactory {
         return button
     }
     
-    static func outlineBackButton() -> UIButton {
+    static func outlineBackButton(color: UIColor) -> UIButton {
+        var image = UIImage(named: "btn_back_outline")
+        image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+
         let button = UIButton()
         button.clipsToBounds = true
-        button.setImage(UIImage(named: "btn_back_outline"), forState: .Normal)
+        button.setImage(image, forState: .Normal)
+        button.tintColor = color
         return button
     }
     
