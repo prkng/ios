@@ -10,16 +10,19 @@ import UIKit
 
 class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     
-    private var topContainer: UIView
-    private var headerTitleLabel: MarqueeLabel
-    private var titleLabel: MarqueeLabel
-    private var titleLabelCentered: MarqueeLabel
-    private var leftImageView: UIImageView
-    private var rightImageView: UIImageView
-    private var rightView: UIView
-    var rightViewTitleLabel: UILabel
-    var rightViewPrimaryLabel: UILabel
-    private var materialDesignButton: UIButton
+    private var topContainer = UIView()
+    private var headerTitleLabel = MarqueeLabel()
+    private var titleLabel = MarqueeLabel()
+    private var titleLabelCentered = MarqueeLabel()
+    private var leftImageView = UIImageView()
+    private var rightImageView = UIImageView()
+    private var rightView = UIView()
+    var rightViewTitleLabel = UILabel()
+    var rightViewPrimaryLabel = UILabel()
+    private var rightViewContainer = UIView()
+    var rightImageViewWithLabel = UIImageView()
+    var rightImageViewLabel = UILabel()
+    private var materialDesignButton = ViewFactory.checkInButton()
     private var isRightImageViewRotated: Bool = false
     
     var delegate: ModalHeaderViewDelegate?
@@ -56,18 +59,6 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         
         didSetupSubviews = false
         didSetupConstraints = false
-        
-        topContainer = UIView ()
-        headerTitleLabel = MarqueeLabel()
-        titleLabel = MarqueeLabel()
-        titleLabelCentered = MarqueeLabel()
-        leftImageView = UIImageView()
-        rightImageView = UIImageView()
-        rightView = UIView()
-        rightViewTitleLabel = UILabel()
-        rightViewPrimaryLabel = UILabel()
-        
-        materialDesignButton = ViewFactory.checkInButton()
         
         topText = ""
         showsRightButton = true
@@ -129,6 +120,18 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         rightViewPrimaryLabel.textAlignment = NSTextAlignment.Center
         rightView.addSubview(rightViewPrimaryLabel)
         
+        topContainer.addSubview(rightViewContainer)
+
+        rightImageViewWithLabel.contentMode = UIViewContentMode.ScaleAspectFit
+        rightViewContainer.addSubview(rightImageViewWithLabel)
+//        rightImageViewWithLabel.layer.anchorPoint = CGPointMake(0.5,1.0);
+//        rightImageViewWithLabel.layer.wigglewigglewiggle()
+        
+        rightImageViewLabel.font = Styles.FontFaces.bold(10)
+        rightImageViewLabel.textColor = Styles.Colors.cream1
+        rightImageViewLabel.textAlignment = NSTextAlignment.Center
+        rightViewContainer.addSubview(rightImageViewLabel)
+
         topContainer.addSubview(materialDesignButton)
         topContainer.sendSubviewToBack(materialDesignButton)
 
@@ -195,6 +198,24 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         rightViewPrimaryLabel.snp_makeConstraints { (make) -> () in
             make.bottom.equalTo(self.rightView)
             make.centerX.equalTo(self.rightView)
+        }
+        
+        rightViewContainer.snp_makeConstraints { (make) -> () in
+            make.centerY.equalTo(self.topContainer)
+            make.right.equalTo(self.topContainer.snp_centerX).multipliedBy(1.66).offset(28)
+            make.height.equalTo(Styles.Sizes.spotDetailViewTopPortionHeight)
+            make.width.equalTo(56)
+        }
+
+        rightImageViewWithLabel.snp_makeConstraints { (make) -> () in
+            make.height.equalTo(24)
+            make.centerX.equalTo(self.rightViewContainer)
+            make.bottom.equalTo(rightImageViewLabel.snp_top).offset(-5)
+        }
+        
+        rightImageViewLabel.snp_makeConstraints { (make) -> () in
+            make.centerX.equalTo(self.rightViewContainer)
+            make.bottom.equalTo(self.rightViewContainer).offset(-14)
         }
 
         materialDesignButton.snp_makeConstraints { (make) -> () in
