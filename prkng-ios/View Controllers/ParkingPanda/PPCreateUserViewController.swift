@@ -571,6 +571,12 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                                         self.dismiss()
                                         self.delegate?.didCreateAccount()
                                         SVProgressHUD.dismiss()
+                                        //TODO: Localize
+                                        if creditCard != nil {
+                                            GeneralHelper.warnUserWithSucceedMessage("Registration complete, you can now reserve a parking lot or garage in-app thanks to our partner, Parking Panda.")
+                                        } else {
+                                            GeneralHelper.warnUserWithSucceedMessage("Registration complete, but please try adding a credit card through Parking Panda Settings.")
+                                        }
                                     })
                                 }
                             }
