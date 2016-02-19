@@ -8,10 +8,8 @@
 
 import UIKit
 
-//TODO: This is a complete mess. It makes no sense. But it can be the basis of the booking controller.
 class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegate {
     
-//    var delegate : PRKModalViewControllerDelegate?
     var lot : Lot
     var parentView: UIView
     
@@ -23,17 +21,28 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     private var topImageView = GMSPanoramaView(frame: CGRectZero)
     private var topGradient = UIImageView()
     private var topLabel = UILabel()
+    
     private var headerView: ModalHeaderView
-    private var dateContainer = UIView()
-    private var timeContainer = UIView()
+    
+    private var timeViewButton = ViewFactory.openScheduleButton()
+    private var timeView = UIView()
     private var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
-    private var timeContentView = UIView()
-    private var payButton = UIButton()
+    private var timeViewLabel = UILabel()
+    private var timeViewRightArrow = UIImageView(image: UIImage(named: "btn_arrow_departure_1"))
+    
+    private var sliderContainerView = UIView()
+    private var sliderLabel = UILabel()
+    private var slider = UISlider()
+    
+    private var payContainerView = UIView()
+    private var payLabel = UILabel()
+    //TODO: Localize
+    private var payButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: String(format: "pay_with_x".localizedString.uppercaseString, "parking_panda".localizedString.uppercaseString))
 
     private static let HEADER_HEIGHT: CGFloat = 70
-    private static let DATE_VIEW_HEIGHT = 60
-    private static let SLIDER_VIEW_HEIGHT = 120
-    private static let BOTTOM_VIEW_HEIGHT = 140
+    private static let TIME_VIEW_HEIGHT: CGFloat = 60
+    private static let SLIDER_VIEW_HEIGHT: CGFloat = 120
+    private static let BOTTOM_VIEW_HEIGHT: CGFloat = 140
     
     var topOffset: Int = 0 {
         didSet {
@@ -54,7 +63,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         headerView = ModalHeaderView()
         super.init(nibName: nil, bundle: nil)
 
-        self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotBookingViewController.HEADER_HEIGHT + 30 + 50 + 52) - CGFloat(Styles.Sizes.tabbarHeight)
+        self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotBookingViewController.HEADER_HEIGHT + LotBookingViewController.TIME_VIEW_HEIGHT + LotBookingViewController.SLIDER_VIEW_HEIGHT + LotBookingViewController.BOTTOM_VIEW_HEIGHT) - CGFloat(Styles.Sizes.tabbarHeight)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -125,9 +134,49 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         headerView.delegate = self
         headerView.clipsToBounds = true
         
+        timeView.backgroundColor = Styles.Colors.cream1
+        view.addSubview(timeView)
+
         timeIconView.image = timeIconView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         timeIconView.tintColor = Styles.Colors.midnight1
+        timeView.addSubview(timeIconView)
+
+        //TODO: Format the date and find a default (an hour from now?)
+        timeViewLabel.text = "test text bla bla"
+        timeViewLabel.textColor = Styles.Colors.midnight1
+        timeViewLabel.font = Styles.FontFaces.regular(16)
+        timeView.addSubview(timeViewLabel)
         
+        timeView.addSubview(timeViewRightArrow)
+        
+        timeViewButton.addTarget(self, action: "timeViewTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        timeView.addSubview(timeViewButton)
+        timeView.sendSubviewToBack(timeViewButton)
+        
+        sliderContainerView.backgroundColor = Styles.Colors.cream1
+        view.addSubview(sliderContainerView)
+        
+        sliderLabel.text = "test"
+        sliderLabel.textColor = Styles.Colors.midnight1
+        sliderContainerView.addSubview(sliderLabel)
+        
+        slider.maximumTrackTintColor = Styles.Colors.red2
+        slider.minimumTrackTintColor = Styles.Colors.red2
+        slider.thumbTintColor = Styles.Colors.white
+        slider.continuous = false
+        slider.addTarget(self, action: "sliderValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        sliderContainerView.addSubview(slider)
+        
+        payContainerView.backgroundColor = Styles.Colors.stone
+        view.addSubview(payContainerView)
+        
+        payLabel.text = "test"
+        payLabel.textColor = Styles.Colors.midnight1
+        payContainerView.addSubview(payLabel)
+        
+        payButton.addTarget(self, action: "payButtonTapped", forControlEvents: .TouchUpInside)
+        payContainerView.addSubview(payButton)
+
         view.bringSubviewToFront(headerView)
         
     }
@@ -159,16 +208,93 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
             make.right.equalTo(self.view)
             make.height.equalTo(LotBookingViewController.HEADER_HEIGHT)
         }
-//
-//        timeIconView.snp_makeConstraints { (make) -> () in
-//            make.left.equalTo(self.headerView).offset(34)
-//            make.centerY.equalTo(self.headerView)
-//        }
+
+        timeView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(self.headerView.snp_bottom)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(LotBookingViewController.TIME_VIEW_HEIGHT)
+        }
         
+        timeIconView.snp_makeConstraints { (make) -> () in
+            make.left.equalTo(self.timeView).offset(24)
+            make.centerY.equalTo(self.timeView)
+            make.size.equalTo(CGSize(width: 20, height: 20))
+        }
+        
+        timeViewLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(timeIconView.snp_right).offset(14)
+            make.right.equalTo(timeViewRightArrow.snp_left).offset(-14)
+            make.centerY.equalTo(timeView)
+        }
+        
+        timeViewRightArrow.snp_makeConstraints { (make) -> Void in
+            make.right.equalTo(timeView).offset(-25)
+            make.centerY.equalTo(timeView)
+            make.size.equalTo(CGSize(width: 5, height: 11))
+        }
+        
+        timeViewButton.snp_makeConstraints { (make) -> Void in
+            make.edges.equalTo(timeView)
+        }
+        
+        sliderContainerView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self.timeView.snp_bottom)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(LotBookingViewController.SLIDER_VIEW_HEIGHT)
+        }
+        
+        sliderLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(sliderContainerView).offset(25)
+            make.right.equalTo(sliderContainerView).offset(-25)
+            make.centerY.equalTo(sliderContainerView).multipliedBy(0.66)
+        }
+        
+        slider.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(sliderContainerView).offset(43)
+            make.right.equalTo(sliderContainerView).offset(-43)
+            make.centerY.equalTo(sliderContainerView).multipliedBy(1.33)
+        }
+        
+        payContainerView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self.sliderContainerView.snp_bottom)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.height.equalTo(LotBookingViewController.BOTTOM_VIEW_HEIGHT)
+        }
+        
+        payLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView).offset(25)
+            make.right.equalTo(payContainerView).offset(-25)
+            make.centerY.equalTo(payContainerView).multipliedBy(0.66)
+        }
+        
+        payButton.snp_makeConstraints { (make) -> Void in
+            make.height.equalTo(36)
+            make.left.equalTo(payContainerView).offset(50)
+            make.right.equalTo(payContainerView).offset(-50)
+            make.centerY.equalTo(payContainerView).multipliedBy(1.33)
+        }
+
     }
     
-    //MARK: Helper methods
+    //MARK: Helper and selector functions
     
+    func timeViewTapped() {
+        //TODO: OPEN A SELECTOR THINGY
+        print("timeView tapped")
+    }
+    
+    func sliderValueChanged() {
+        //TODO: API call that changes the label
+        print("slider value changed")
+    }
+    
+    func payButtonTapped() {
+        //TODO: do somethinh
+        print("pay button tapped")
+    }
     
     //MARK: ModalHeaderViewDelegate
     
