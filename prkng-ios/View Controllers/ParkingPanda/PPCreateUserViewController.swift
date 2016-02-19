@@ -226,13 +226,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         case .PersonalInformation: return [("enter_your_information".localizedString, formSection)]
         case .CreditCard: return [("payment_method", paymentMethodSection)]
         case .VehicleDescription: return [("vehicle_description", vehicleDescriptionSection),vehicleDescriptionSection2]
-        default:
-            return [
-                ("enter_your_information".localizedString, formSection),
-                ("payment_method", paymentMethodSection),
-                ("vehicle_description", vehicleDescriptionSection),
-                vehicleDescriptionSection2,
-            ]
         }
         
     }
@@ -513,7 +506,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 
                 return false
             }
-        default: break
         }
 
         return true
@@ -545,7 +537,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
             }
             step = PPCreateUserStep(rawValue: step.rawValue - 1) ?? .PersonalInformation
             self.tableView.reloadDataAnimated()
-        default: break
         }
 
     }
@@ -611,7 +602,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                     }
                 })
             }
-        default: break
         }
         
     }
