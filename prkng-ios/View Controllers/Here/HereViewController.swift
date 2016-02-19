@@ -214,7 +214,19 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
 
         if let lot = activeDetailObject as? Lot {
             if lot.isParkingPanda {
-                showModalView(activeDetailObject, modalVC: LotBookingViewController(lot: lot, view: self.view))
+                ParkingPandaOperations.login(username: nil, password: nil, completion: {(user, error) -> Void in
+                    if user != nil {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            let lotBookingVC = LotBookingViewController(lot: lot, view: self.view)
+                            self.showModalView(self.activeDetailObject, modalVC: lotBookingVC)
+                        })
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            let ppIntroVC = PPIntroViewController()
+                            ppIntroVC.presentWithVC(self)
+                        })
+                    }
+                })
             } else {
                 showModalView(activeDetailObject, modalVC: LotViewController(lot: lot, view: self.view))
             }
