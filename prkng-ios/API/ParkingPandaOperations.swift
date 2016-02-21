@@ -165,6 +165,49 @@ class ParkingPandaOperations {
         Settings.setParkingPandaCredentials(username: nil, password: nil)
     }
     
+    static func getLocation(user: ParkingPandaUser, locationId: String, startDate: NSDate, endDate: NSDate, completion: ((transactions: [ParkingPandaTransaction], error: ParkingPandaError?) -> Void)) {
+
+        //https://www.parkingpanda.com/api/v2/locations?startdate=02-19-2016&enddate=02-19-2016&startTime=1600&endTime=1900&idLocation=4893
+        //That will return a JSON object; the price is at obj[“data”][“locations”][0][“price”]
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM-dd-yyyy"
+        dateFormatter.timeZone = NSTimeZone.localTimeZone()
+        
+        let startTime = NSTimeInterval(60*startDate.hour() + startDate.minute()) //minutes?
+        let endTime = NSTimeInterval(60*endDate.hour() + endDate.minute()) //minutes?
+
+        let url = baseUrlString + "/locations"
+        let params: [String: AnyObject] = [
+            "apikey": publicKey,
+            "startdate": dateFormatter.stringFromDate(startDate), //MM-dd-yyyy
+            "enddate": dateFormatter.stringFromDate(endDate), //MM-dd-yyyy
+            "startTime": startTime,
+            "endTime": endTime,
+            "idLocation": locationId
+        ]
+        
+        //TODO: figure out what time zone should be used: local or UTC?
+        //TODO: Should the times be in minutes, as they currently are?
+        ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
+            .request(.GET, url, parameters: params)
+            .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+                (request, response, json, error) in
+                
+                let ppError = self.didRequestSucceed(response, json: json, error: error)
+                if ppError.errorType != .None {
+                    completion(transactions: [], error: ppError)
+                    return
+                }
+                
+                let transactionsJson: [JSON] = json["data"].arrayValue
+                let transactions = transactionsJson.map({ (transactionJson) -> ParkingPandaTransaction in
+                    ParkingPandaTransaction(json: transactionJson)
+                })
+                completion(transactions: transactions, error: ppError)
+        }
+    }
+    
     static func getTransaction(user: ParkingPandaUser, confirmation: String, completion: ((transaction: ParkingPandaTransaction?, error: ParkingPandaError?) -> Void)) {
         
         let url = baseUrlString + "users/" + String(user.id) + "/transactions/" + confirmation

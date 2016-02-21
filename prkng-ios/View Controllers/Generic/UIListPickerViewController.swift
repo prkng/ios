@@ -1,5 +1,5 @@
 //
-//  UIPickerViewController.swift
+//  UIListPickerViewController.swift
 //  prkng-ios
 //
 //  Created by Antonino Urbano on 2015-12-01.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UIPickerViewController: AbstractViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class UIListPickerViewController: AbstractViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     private let toolBar = UIToolbar()
     private let picker = UIPickerView()
@@ -37,7 +37,7 @@ class UIPickerViewController: AbstractViewController, UIPickerViewDataSource, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.screenName = "Other - UI Picker View Controller"
+        self.screenName = "Other - UI List Picker View Controller"
     }
     
     override func viewWillAppear(animated: Bool) {

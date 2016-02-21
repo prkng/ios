@@ -41,7 +41,9 @@
 		3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */; };
 		3E4123E51B8B67DB002553D7 /* Lot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4123E41B8B67DB002553D7 /* Lot.swift */; };
 		3E41F0511BBEFA43004A4A60 /* DirectionsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */; };
-		3E4AB12D1C0E8272009392AA /* UIPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4AB12C1C0E8272009392AA /* UIPickerViewController.swift */; };
+		3E47B1F41C78ECAA0092CD6A /* UIDatePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E47B1F31C78ECAA0092CD6A /* UIDatePickerViewController.swift */; };
+		3E47B1F61C7936B10092CD6A /* NSDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E47B1F51C7936B10092CD6A /* NSDate.swift */; };
+		3E4AB12D1C0E8272009392AA /* UIListPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4AB12C1C0E8272009392AA /* UIListPickerViewController.swift */; };
 		3E4BC2C51C6D38040000593E /* PRKCachedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4BC2C41C6D38040000593E /* PRKCachedTableView.swift */; };
 		3E4E0C4E1B45AD05004AA573 /* AvailabilityMap.json in Resources */ = {isa = PBXBuildFile; fileRef = 3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */; };
 		3E52EB731B9F45E6004183FD /* AddressSplitting.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3E52EB721B9F45E6004183FD /* AddressSplitting.strings */; };
@@ -249,7 +251,9 @@
 		3E411C4F1B55B5510000BB18 /* DDLoggerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLoggerWrapper.m; sourceTree = "<group>"; };
 		3E4123E41B8B67DB002553D7 /* Lot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lot.swift; sourceTree = "<group>"; };
 		3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsAction.swift; sourceTree = "<group>"; };
-		3E4AB12C1C0E8272009392AA /* UIPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIPickerViewController.swift; sourceTree = "<group>"; };
+		3E47B1F31C78ECAA0092CD6A /* UIDatePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIDatePickerViewController.swift; sourceTree = "<group>"; };
+		3E47B1F51C7936B10092CD6A /* NSDate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDate.swift; sourceTree = "<group>"; };
+		3E4AB12C1C0E8272009392AA /* UIListPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIListPickerViewController.swift; sourceTree = "<group>"; };
 		3E4BC2C41C6D38040000593E /* PRKCachedTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKCachedTableView.swift; sourceTree = "<group>"; };
 		3E4E0C4D1B45AD05004AA573 /* AvailabilityMap.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AvailabilityMap.json; sourceTree = "<group>"; };
 		3E52EB721B9F45E6004183FD /* AddressSplitting.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = AddressSplitting.strings; sourceTree = "<group>"; };
@@ -517,7 +521,8 @@
 		3E4AB12B1C0E8259009392AA /* Generic */ = {
 			isa = PBXGroup;
 			children = (
-				3E4AB12C1C0E8272009392AA /* UIPickerViewController.swift */,
+				3E4AB12C1C0E8272009392AA /* UIListPickerViewController.swift */,
+				3E47B1F31C78ECAA0092CD6A /* UIDatePickerViewController.swift */,
 			);
 			path = Generic;
 			sourceTree = "<group>";
@@ -661,6 +666,7 @@
 				3EE303881B8283890079EA9A /* UIImage+ImageEffects.h */,
 				3EE303891B8283890079EA9A /* UIImage+ImageEffects.m */,
 				3E1BCD0A1C725FE3005F0037 /* UITableView.swift */,
+				3E47B1F51C7936B10092CD6A /* NSDate.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1193,6 +1199,7 @@
 				3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */,
 				BF6E1D461B2083290038E358 /* ReportOverlayView.swift in Sources */,
 				3E411C501B55B5510000BB18 /* DDLoggerWrapper.m in Sources */,
+				3E47B1F61C7936B10092CD6A /* NSDate.swift in Sources */,
 				BF899B051AF15D9000E42DE8 /* DayOfWeekButton.swift in Sources */,
 				3E1BCD0B1C725FE3005F0037 /* UITableView.swift in Sources */,
 				BFD6B6C51AF2F09E00789022 /* DateUtil.swift in Sources */,
@@ -1247,10 +1254,11 @@
 				3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */,
 				3EF4A7D11B97AD2700CE4870 /* PRKTimeSpanView.swift in Sources */,
 				3E6B91491BA896C4006FB4B3 /* PRKDialogViewController.swift in Sources */,
-				3E4AB12D1C0E8272009392AA /* UIPickerViewController.swift in Sources */,
+				3E4AB12D1C0E8272009392AA /* UIListPickerViewController.swift in Sources */,
 				3EAF451A1B59388D003010D6 /* GeneralHelper.swift in Sources */,
 				BF7170AA1AE3B59300B922CA /* PrkTabBar.swift in Sources */,
 				BFE3ABB91A9F5BED00734BBE /* UIColor-Hex.swift in Sources */,
+				3E47B1F41C78ECAA0092CD6A /* UIDatePickerViewController.swift in Sources */,
 				BFB0958F1AFA498A007F1D16 /* LoginViewController.swift in Sources */,
 				3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */,
 				BF6981B21B30701600E0EF62 /* Checkin.swift in Sources */,

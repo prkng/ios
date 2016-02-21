@@ -412,7 +412,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         //bring up the rolly thingy
         CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
             if completed {
-                let pickerVC = UIPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
+                let pickerVC = UIListPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
                     Settings.setResidentialPermit(selectedValue)
                     Settings.setShouldFilterForResidentialPermit(selectedValue != nil)
                     self.tableView.reloadData()

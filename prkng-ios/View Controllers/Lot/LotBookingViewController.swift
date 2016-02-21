@@ -8,10 +8,15 @@
 
 import UIKit
 
-class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegate {
+class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegate, UIDatePickerViewControllerDelegate {
     
-    var lot : Lot
+    var lot: Lot
+    var user: ParkingPandaUser
     var parentView: UIView
+    
+    //TODO: OPEN A SELECTOR THINGY
+    private var dateFormatter: NSDateFormatter
+    private var pickerVC: UIDatePickerViewController
     
     override var topParallaxView: UIView? { get {
         return topImageView
@@ -32,6 +37,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     private var sliderContainerView = UIView()
     private var sliderLabel = UILabel()
+    private var sliderForLabel = UILabel()
     private var slider = UISlider()
     
     private var payContainerView = UIView()
@@ -57,13 +63,26 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     private(set) var TOP_OFFSET_MAX: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 0
     private var swipeBeganWithListAt: Int = 0
     
-    init(lot: Lot, view: UIView) {
+    init(lot: Lot, user: ParkingPandaUser, view: UIView) {
         self.lot = lot
+        self.user = user
         self.parentView = view
         headerView = ModalHeaderView()
+        
+        self.dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = .LongStyle
+        dateFormatter.timeStyle = .ShortStyle
+        
+        //the minimum date is the nearest 30 minute
+        let minimumDate = NSDate().skipToNextEvenMinuteInterval(30)
+        self.pickerVC = UIDatePickerViewController(datePickerMode: .DateAndTime, minuteInterval: 30, minimumDate: minimumDate, maximumDate: minimumDate.dateByAddingDays(30), dateFormatter: dateFormatter, completion: nil)
+
         super.init(nibName: nil, bundle: nil)
 
+        self.pickerVC.delegate = self
+
         self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotBookingViewController.HEADER_HEIGHT + LotBookingViewController.TIME_VIEW_HEIGHT + LotBookingViewController.SLIDER_VIEW_HEIGHT + LotBookingViewController.BOTTOM_VIEW_HEIGHT) - CGFloat(Styles.Sizes.tabbarHeight)
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -73,6 +92,8 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         headerView.topText = lot.headerText
+        payButton.backgroundColor = Styles.Colors.pinGrey
+        setSliderLabelText(1, priceGoodForHours: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -141,8 +162,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         timeIconView.tintColor = Styles.Colors.midnight1
         timeView.addSubview(timeIconView)
 
-        //TODO: Format the date and find a default (an hour from now?)
-        timeViewLabel.text = "test text bla bla"
+        timeViewLabel.text = pickerVC.dateString
         timeViewLabel.textColor = Styles.Colors.midnight1
         timeViewLabel.font = Styles.FontFaces.regular(16)
         timeView.addSubview(timeViewLabel)
@@ -156,25 +176,35 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         sliderContainerView.backgroundColor = Styles.Colors.cream1
         view.addSubview(sliderContainerView)
         
-        sliderLabel.text = "test"
+        sliderLabel.text = ""
+        sliderLabel.textAlignment = .Center
         sliderLabel.textColor = Styles.Colors.midnight1
         sliderContainerView.addSubview(sliderLabel)
+
+        sliderForLabel.text = "for".localizedString.uppercaseString
+        sliderForLabel.textColor = Styles.Colors.midnight1
+        sliderForLabel.font = Styles.FontFaces.regular(12)
+        sliderContainerView.addSubview(sliderForLabel)
         
         slider.maximumTrackTintColor = Styles.Colors.red2
         slider.minimumTrackTintColor = Styles.Colors.red2
         slider.thumbTintColor = Styles.Colors.white
         slider.continuous = false
+        slider.minimumValue = 1
+        slider.maximumValue = 24
         slider.addTarget(self, action: "sliderValueChanged", forControlEvents: UIControlEvents.ValueChanged)
         sliderContainerView.addSubview(slider)
         
         payContainerView.backgroundColor = Styles.Colors.stone
         view.addSubview(payContainerView)
         
-        payLabel.text = "test"
+        payLabel.text = ""
+        payLabel.textAlignment = .Center
         payLabel.textColor = Styles.Colors.midnight1
         payContainerView.addSubview(payLabel)
         
         payButton.addTarget(self, action: "payButtonTapped", forControlEvents: .TouchUpInside)
+        payButton.enabled = false
         payContainerView.addSubview(payButton)
 
         view.bringSubviewToFront(headerView)
@@ -245,6 +275,11 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
             make.height.equalTo(LotBookingViewController.SLIDER_VIEW_HEIGHT)
         }
         
+        sliderForLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(self.sliderContainerView).offset(24)
+            make.top.equalTo(self.sliderContainerView).offset(24)
+        }
+        
         sliderLabel.snp_makeConstraints { (make) -> Void in
             make.left.equalTo(sliderContainerView).offset(25)
             make.right.equalTo(sliderContainerView).offset(-25)
@@ -281,19 +316,69 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     //MARK: Helper and selector functions
     
+    func setSliderLabelText(sliderHours: Int, priceGoodForHours: Int?) {
+        
+        //TODO: Localize
+        let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(25), NSForegroundColorAttributeName: Styles.Colors.midnight1]
+        let hourString = sliderHours == 0 ? "hour".localizedString : "hours".localizedString
+        let textLine1 = NSMutableAttributedString(string: String(format: "%d %@\n", sliderHours, hourString), attributes: line1Attributes)
+        
+        if priceGoodForHours != nil {
+            let line2Attributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.red2]
+            let textLine2 = NSAttributedString(string: String(format: "Price for %d ", priceGoodForHours!) + hourString, attributes: line2Attributes)
+            textLine1.appendAttributedString(textLine2)
+        }
+        
+        sliderLabel.attributedText = textLine1
+    }
+    
     func timeViewTapped() {
-        //TODO: OPEN A SELECTOR THINGY
-        print("timeView tapped")
+        self.presentAsModalWithTransparency(pickerVC, completion: nil)
     }
     
     func sliderValueChanged() {
-        //TODO: API call that changes the label
-        print("slider value changed")
+        //first, round the value
+        slider.setValue(round(slider.value), animated: true)
+        setSliderLabelText(Int(slider.value), priceGoodForHours: nil)
+        
+        //next get the start
+        let startDate = self.pickerVC.date
+        let endDate = startDate.dateByAddingHours(Int(slider.value))
+        
+        ParkingPandaOperations.getLocation(self.user,
+            locationId: self.lot.identifier,
+            startDate: startDate,
+            endDate: endDate) { (transactions, error) -> Void in
+
+                if error?.errorType == .None {
+                    //plus update the label
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.payButton.enabled = true
+                        self.payButton.backgroundColor = Styles.Colors.red2
+                        self.setSliderLabelText(Int(self.slider.value), priceGoodForHours: Int(self.slider.value))
+                    })
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.payButton.enabled = false
+                        self.payButton.backgroundColor = Styles.Colors.pinGrey
+                        self.setSliderLabelText(0, priceGoodForHours: nil)
+                    })
+                }
+
+        }
+        
     }
     
     func payButtonTapped() {
-        //TODO: do somethinh
-        print("pay button tapped")
+        //TODO: do something
+        GeneralHelper.warnUser("No pay for you!")
+    }
+    
+    //MARK: UIDatePickerViewControllerDelegate
+    
+    func didSelectDate(date: NSDate, dateString: String) {
+        print("selected the formatted date: " + dateString)
+        timeViewLabel.text = pickerVC.dateString
     }
     
     //MARK: ModalHeaderViewDelegate

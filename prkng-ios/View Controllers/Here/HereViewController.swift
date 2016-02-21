@@ -217,7 +217,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 ParkingPandaOperations.login(username: nil, password: nil, completion: {(user, error) -> Void in
                     if user != nil {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            let lotBookingVC = LotBookingViewController(lot: lot, view: self.view)
+                            let lotBookingVC = LotBookingViewController(lot: lot, user: user!, view: self.view)
                             self.showModalView(self.activeDetailObject, modalVC: lotBookingVC)
                         })
                     } else {
