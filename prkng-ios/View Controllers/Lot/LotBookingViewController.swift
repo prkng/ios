@@ -14,6 +14,8 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     var user: ParkingPandaUser
     var parentView: UIView
     
+    private var location: ParkingPandaLocation?
+    
     private var dateFormatter: NSDateFormatter
     private var pickerVC: UIDatePickerViewController
     
@@ -391,6 +393,8 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
 
                 let success = (location?.isAvailable ?? false) && error?.errorType == .NoError
                 
+                self.location = location
+                
                 if success {
                     //plus update the label
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -413,8 +417,19 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     }
     
     func payButtonTapped() {
-        //TODO: do something
-        GeneralHelper.warnUser("No pay for you!")
+        if self.location != nil {
+            ParkingPandaOperations.createTransaction(self.user, location: self.location!, completion: { (error) -> Void in
+                if error?.errorType == .NoError {
+                    //TODO: Localize
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        GeneralHelper.warnUserWithSucceedMessage("Successfully paid with Parking Panda!")
+                    })
+                }
+            })
+        } else {
+            //TODO: Localize
+            GeneralHelper.warnUserWithErrorMessage("Check availability first using the slider before trying to pay!")
+        }
     }
     
     //MARK: UIDatePickerViewControllerDelegate
