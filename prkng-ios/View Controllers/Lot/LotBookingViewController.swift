@@ -14,7 +14,6 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     var user: ParkingPandaUser
     var parentView: UIView
     
-    //TODO: OPEN A SELECTOR THINGY
     private var dateFormatter: NSDateFormatter
     private var pickerVC: UIDatePickerViewController
     
@@ -189,7 +188,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         
         slider.maximumTrackTintColor = Styles.Colors.red2
         slider.minimumTrackTintColor = Styles.Colors.red2
-        slider.thumbTintColor = Styles.Colors.white
+        slider.thumbTintColor = Styles.Colors.stone
         slider.continuous = true
         slider.minimumValue = 1
         slider.maximumValue = 24
@@ -344,7 +343,30 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         
         sliderLabel.attributedText = textLine1
     }
-    
+
+    func setPayLabelText(price: Float?) {
+        
+        if price == nil {
+            payLabel.attributedText = nil
+        }
+        
+        let remainder = price! - Float(Int(price!))
+        var priceString = String(format: " $%.02f", price!) //this auto rounds to the 2nd decimal place
+        if remainder == 0 {
+            priceString = String(format: " $%.0f", price!)
+        }
+        
+        let totalTextAttributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.midnight1, NSBaselineOffsetAttributeName: 7]
+        //TODO: Localize
+        let attributedText = NSMutableAttributedString(string: "total".localizedString.uppercaseString, attributes: totalTextAttributes)
+        
+        let priceAttributes = [NSFontAttributeName: Styles.FontFaces.bold(25), NSForegroundColorAttributeName: Styles.Colors.midnight1]
+        let priceText = NSAttributedString(string: priceString, attributes: priceAttributes)
+        attributedText.appendAttributedString(priceText)
+        
+        payLabel.attributedText = attributedText
+    }
+
     func timeViewTapped() {
         self.presentAsModalWithTransparency(pickerVC, completion: nil)
     }
@@ -375,12 +397,14 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
                         self.payButton.enabled = true
                         self.payButton.backgroundColor = Styles.Colors.red2
                         self.setSliderLabelText(Int(self.slider.value), parkUntil: location!.endDateAndTime)
+                        self.setPayLabelText(location!.price)
                     })
                 } else {
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.payButton.enabled = false
                         self.payButton.backgroundColor = Styles.Colors.pinGrey
                         self.setSliderLabelText(0, parkUntil: nil)
+                        self.setPayLabelText(nil)
                     })
                 }
 
