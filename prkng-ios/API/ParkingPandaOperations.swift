@@ -33,7 +33,7 @@ class ParkingPandaOperations {
             case API
             case Internal
             case Network
-            case None
+            case NoError
         }
 
         var errorType: ParkingPandaErrorType
@@ -62,7 +62,7 @@ class ParkingPandaOperations {
     //parses the API response for all Parking Panda requests.
     static func didRequestSucceed(response: NSHTTPURLResponse?, json: JSON, error: NSError?) -> ParkingPandaError {
         
-        var returnedError = ParkingPandaError(errorType: .None, errorDescription: nil)
+        var returnedError = ParkingPandaError(errorType: .NoError, errorDescription: nil)
         
         let parkingPandaErrorCode = json["error"].int
         let parkingPandaErrorMessage = json["message"].string
@@ -85,7 +85,7 @@ class ParkingPandaOperations {
                 GeneralHelper.warnUserWithErrorMessage(returnedError.errorDescription ?? "")
             case .Network:
                 GeneralHelper.warnUserWithErrorMessage("Bad network connection, please try again later.")
-            case .None:
+            case .NoError:
                 break
             }
         })
@@ -114,7 +114,7 @@ class ParkingPandaOperations {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
+                if ppError.errorType != .NoError {
                     completion(user: nil, error: ppError)
                     return
                 }
@@ -150,7 +150,7 @@ class ParkingPandaOperations {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
+                if ppError.errorType != .NoError {
                     completion(user: nil, error: ppError)
                     return
                 }
@@ -165,7 +165,7 @@ class ParkingPandaOperations {
         Settings.setParkingPandaCredentials(username: nil, password: nil)
     }
     
-    static func getLocation(user: ParkingPandaUser, locationId: String, startDate: NSDate, endDate: NSDate, completion: ((transactions: [ParkingPandaTransaction], error: ParkingPandaError?) -> Void)) {
+    static func getLocation(user: ParkingPandaUser, locationId: String, startDate: NSDate, endDate: NSDate, completion: ((location: ParkingPandaLocation?, error: ParkingPandaError?) -> Void)) {
 
         //https://www.parkingpanda.com/api/v2/locations?startdate=02-19-2016&enddate=02-19-2016&startTime=1600&endTime=1900&idLocation=4893
         //That will return a JSON object; the price is at obj[“data”][“locations”][0][“price”]
@@ -173,38 +173,36 @@ class ParkingPandaOperations {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         dateFormatter.timeZone = NSTimeZone.localTimeZone()
-        
-        let startTime = NSTimeInterval(60*startDate.hour() + startDate.minute()) //minutes?
-        let endTime = NSTimeInterval(60*endDate.hour() + endDate.minute()) //minutes?
 
-        let url = baseUrlString + "/locations"
+        let startTime = String(format: "%02d:%02d", startDate.hour24Format(), startDate.minute())
+        let endTime = String(format: "%02d:%02d", endDate.hour24Format(), endDate.minute())
+
+        let url = baseUrlString + "locations"
         let params: [String: AnyObject] = [
             "apikey": publicKey,
             "startdate": dateFormatter.stringFromDate(startDate), //MM-dd-yyyy
             "enddate": dateFormatter.stringFromDate(endDate), //MM-dd-yyyy
-            "startTime": startTime,
-            "endTime": endTime,
+            "startTime": startTime, //HH:mm
+            "endTime": endTime, //HH:mm
             "idLocation": locationId
         ]
         
-        //TODO: figure out what time zone should be used: local or UTC?
-        //TODO: Should the times be in minutes, as they currently are?
         ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
             .request(.GET, url, parameters: params)
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
-                    completion(transactions: [], error: ppError)
+                if ppError.errorType != .NoError {
+                    completion(location: nil, error: ppError)
                     return
                 }
                 
-                let transactionsJson: [JSON] = json["data"].arrayValue
-                let transactions = transactionsJson.map({ (transactionJson) -> ParkingPandaTransaction in
-                    ParkingPandaTransaction(json: transactionJson)
+                let locationsJson: [JSON] = json["data"]["locations"].arrayValue
+                let locations = locationsJson.map({ (locationJson) -> ParkingPandaLocation in
+                    ParkingPandaLocation(json: locationJson)
                 })
-                completion(transactions: transactions, error: ppError)
+                completion(location: locations.first, error: ppError)
         }
     }
     
@@ -219,7 +217,7 @@ class ParkingPandaOperations {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
+                if ppError.errorType != .NoError {
                     completion(transaction: nil, error: ppError)
                     return
                 }
@@ -250,7 +248,7 @@ class ParkingPandaOperations {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
+                if ppError.errorType != .NoError {
                     completion(transactions: [], error: ppError)
                     return
                 }
@@ -274,7 +272,7 @@ class ParkingPandaOperations {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
+                if ppError.errorType != .NoError {
                     completion(creditCards: [], error: ppError)
                     return
                 }
@@ -313,7 +311,7 @@ class ParkingPandaOperations {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
+                if ppError.errorType != .NoError {
                     completion(creditCard: nil, error: ppError)
                     return
                 }
@@ -341,7 +339,7 @@ class ParkingPandaOperations {
                 (request, response, json, error) in
                 
                 let ppError = self.didRequestSucceed(response, json: json, error: error)
-                if ppError.errorType != .None {
+                if ppError.errorType != .NoError {
                     completion(creditCard: nil, error: ppError)
                     return
                 }
@@ -447,6 +445,35 @@ class ParkingPandaCreditCard {
         default:
             self.paymentType = .Unrecognized
         }
+    }
+    
+}
+
+//all the properties of a user object are available here: http://dev.parkingpanda.com/api/v2/Help/ResourceModel?modelName=Location
+//properties should be parsed as we need them in the UI or for any other reason
+class ParkingPandaLocation {
+    
+    var json: JSON
+    var price: Float
+    var isAvailable: Bool
+    var endDateAndTime: NSDate?
+    
+    init(json: JSON) {
+        self.json = json
+        self.price = json["price"].floatValue
+        self.isAvailable = json["isAvailable"].boolValue
+        
+        let timeZoneOffsetFromUTCInSeconds = Int(json["timeZoneOffsetFromUtc"].floatValue * 3600)
+        let offsetTimeZone = NSTimeZone(forSecondsFromGMT: timeZoneOffsetFromUTCInSeconds)
+        
+        let endDateAndTimeString = json["endDateAndTime"].stringValue
+
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeZone = offsetTimeZone
+        dateFormatter.dateFormat = "MM/dd/yyyy hh:mm:ss a"
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        self.endDateAndTime = dateFormatter.dateFromString(endDateAndTimeString)
+        
     }
     
 }

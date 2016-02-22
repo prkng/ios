@@ -547,7 +547,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         SVProgressHUD.show()
         ParkingPandaOperations.addCreditCard(ppUser, cardInfo: cardInfo) { (creditCard, error) -> Void in
             switch (error!.errorType) {
-            case .None:
+            case .NoError:
                 paymentViewController.dismissViewControllerAnimated(true, completion: nil)
                 self.refresh()
             case .API, .Internal, .Network:

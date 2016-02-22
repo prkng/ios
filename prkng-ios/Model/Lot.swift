@@ -69,6 +69,7 @@ class Lot: NSObject, DetailObject {
     var coordinate: CLLocationCoordinate2D
     var streetViewPanoramaId: String?
     var streetViewHeading: Double?
+    var partnerId: String
     
     var isCheaper: Bool
     
@@ -344,6 +345,7 @@ class Lot: NSObject, DetailObject {
         self.lotOperator = lot.lotOperator
         self.isCheaper = lot.isCheaper
         self.lotPartner = lot.lotPartner
+        self.partnerId = lot.partnerId
         self.availability = lot.availability
         
     }
@@ -400,6 +402,7 @@ class Lot: NSObject, DetailObject {
         self.streetViewHeading = json["properties"]["street_view"]["head"].double
         self.lotPartner = json["properties"]["partner_name"].string
         self.availability = json["properties"]["available"].int
+        self.partnerId = json["properties"]["partner_id"].stringValue
 
         self.isCheaper = false
     }

@@ -85,7 +85,7 @@ class PPSettingsCell: SettingsCell {
                         ParkingPandaOperations.logout()
                         let ppIntroVC = PPIntroViewController()
                         ppIntroVC.presentWithVC(nil)
-                    case .None, .Network:
+                    case .NoError, .Network:
                         break
                     }
                 }
