@@ -18,6 +18,7 @@
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
 		3E1BCD0B1C725FE3005F0037 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1BCD0A1C725FE3005F0037 /* UITableView.swift */; };
 		3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */; };
+		3E1F210E1C7E5AAE00892C66 /* PPTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1F210D1C7E5AAE00892C66 /* PPTransactionView.swift */; };
 		3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3881BB63A450067DA8C /* Constraint.swift */; };
 		3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */; };
 		3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */; };
@@ -59,6 +60,7 @@
 		3E6581801B6FF0B30055EFB2 /* GoogleMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */; };
 		3E6799051B4EF927003913CF /* AgendaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */; };
 		3E6799081B4F2CA2003913CF /* PRKModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */; };
+		3E67E9CC1C7F9AEE0071D7BC /* PPTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E67E9CB1C7F9AEE0071D7BC /* PPTransactionViewController.swift */; };
 		3E6B91491BA896C4006FB4B3 /* PRKDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6B91481BA896C4006FB4B3 /* PRKDialogViewController.swift */; };
 		3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E6CC96E1B309A64009EA460 /* KMLParser.m */; };
 		3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E6DCC831B28E0D500DF62E0 /* Array.swift */; };
@@ -226,6 +228,7 @@
 		3E0FDAD31B27921400872667 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3E1BCD0A1C725FE3005F0037 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotOperations.swift; sourceTree = "<group>"; };
+		3E1F210D1C7E5AAE00892C66 /* PPTransactionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPTransactionView.swift; path = ParkingPanda/PPTransactionView.swift; sourceTree = "<group>"; };
 		3E20B3881BB63A450067DA8C /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
 		3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintDescription.swift; sourceTree = "<group>"; };
@@ -272,6 +275,7 @@
 		3E65817F1B6FF0B30055EFB2 /* GoogleMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleMapViewController.swift; sourceTree = "<group>"; };
 		3E6799041B4EF927003913CF /* AgendaTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgendaTableViewCell.swift; sourceTree = "<group>"; };
 		3E6799071B4F2CA2003913CF /* PRKModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKModalViewController.swift; sourceTree = "<group>"; };
+		3E67E9CB1C7F9AEE0071D7BC /* PPTransactionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPTransactionViewController.swift; path = ParkingPanda/PPTransactionViewController.swift; sourceTree = "<group>"; };
 		3E6B91481BA896C4006FB4B3 /* PRKDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKDialogViewController.swift; sourceTree = "<group>"; };
 		3E6CC96D1B309A64009EA460 /* KMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KMLParser.h; sourceTree = "<group>"; };
 		3E6CC96E1B309A64009EA460 /* KMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KMLParser.m; sourceTree = "<group>"; };
@@ -604,6 +608,8 @@
 				3E29EDE11C6A60810050F2C3 /* PPIntroViewController.swift */,
 				3EC96E0C1C63DDFB002D7D86 /* PPSignInViewController.swift */,
 				3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */,
+				3E1F210D1C7E5AAE00892C66 /* PPTransactionView.swift */,
+				3E67E9CB1C7F9AEE0071D7BC /* PPTransactionViewController.swift */,
 			);
 			name = ParkingPanda;
 			sourceTree = "<group>";
@@ -1333,9 +1339,11 @@
 				3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */,
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */,
+				3E67E9CC1C7F9AEE0071D7BC /* PPTransactionViewController.swift in Sources */,
 				3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */,
 				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
 				BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */,
+				3E1F210E1C7E5AAE00892C66 /* PPTransactionView.swift in Sources */,
 				3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
@@ -1509,6 +1517,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -1545,6 +1554,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;

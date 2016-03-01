@@ -68,7 +68,7 @@ class RegisterEmailViewController: AbstractViewController {
         inputForm.makeActive()
     }
     
-    func setupViews () {
+    func setupViews() {
         
         view.backgroundColor = Styles.Colors.midnight1
         
@@ -97,7 +97,7 @@ class RegisterEmailViewController: AbstractViewController {
 
     }
     
-    func setupConstraints () {
+    func setupConstraints() {
         
         scrollView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.view)
@@ -146,16 +146,20 @@ class RegisterEmailViewController: AbstractViewController {
         
     }
 
-    func registerButtonTapped () {
+    func registerButtonTapped() {
         
         if !User.validateInput(nameText, emailText: emailText, passwordText: passwordText, passwordConfirmText: passwordText) {
             return
         }
         
+        registerButton.enabled = false
+        
         UserOperations.register(emailText, name: nameText, password: passwordText, gender: "", birthYear: "") { (user, apiKey, error) -> Void in
             
             if user == nil || apiKey == nil {
                 
+                self.registerButton.enabled = true
+
                 var alertView: UIAlertView
                 if error == nil {
                     alertView = UIAlertView(title: "register_error_title".localizedString , message: "register_error_message_user_exists".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")

@@ -261,7 +261,7 @@ class ParkingPandaOperations {
         }
     }
     
-    static func createTransaction(user: ParkingPandaUser, location: ParkingPandaLocation, completion: ((error: ParkingPandaError?) -> Void)) {
+    static func createTransaction(user: ParkingPandaUser, location: ParkingPandaLocation, completion: ((transaction: ParkingPandaTransaction?, error: ParkingPandaError?) -> Void)) {
         
         getCreditCards(user) { (creditCards, error) -> Void in
             var billingCreditCard: ParkingPandaCreditCard? = creditCards.first
@@ -270,11 +270,6 @@ class ParkingPandaOperations {
                     billingCreditCard = creditCard
                 }
             }
-            
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                //TODO: Localize
-                GeneralHelper.warnUserWithErrorMessage("Please add a credit card in Parking Panda Settings before paying.")
-            })
             
             if billingCreditCard != nil {
                 
@@ -305,24 +300,25 @@ class ParkingPandaOperations {
                         
                         let ppError = self.didRequestSucceed(response, json: json, error: error)
                         if ppError.errorType != .NoError {
-                            completion(error: ppError)
+                            completion(transaction: nil, error: ppError)
                             return
                         }
                         
-                        /*
-                        RETURNED: Array in "data" with the following...
-                        Amount: decimal, this is the amount paid.
-                        FormattedStartDateAndTime: string, this is the start date and time the reservation begins. 
-                        FormattedEndDateAndTime: string, this is the end date and time the reservation ends.
-                        IsRefunded: bool, flag that shows if this transaction has been refunded and voided, if set to true this reservation is no longer valid.
-                        PdfUrl: string, this is the url for the PDF confirmation, this is also emailed to the customer. 
-                        Confirmation: string, this is the unique identifier for the reservation.
-                        Location: object, location object representing the location where the transaction was booked. Includes redemption instructions, etc.
-                        */
-                        completion(error: ppError)
+                        let transactionsJson: [JSON] = json["data"].arrayValue
+                        let transactions = transactionsJson.map({ (transactionJson) -> ParkingPandaTransaction in
+                            ParkingPandaTransaction(json: transactionJson)
+                        })
+
+                        completion(transaction: transactions.first, error: ppError)
                 }
 
                 
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    //TODO: Localize
+                    GeneralHelper.warnUserWithErrorMessage("Please add a credit card in Parking Panda Settings before paying.")
+                })
+                completion(transaction: nil, error: error)
             }
         }
     }
@@ -438,9 +434,51 @@ class ParkingPandaOperations {
 class ParkingPandaTransaction {
     
     var json: JSON
+    var amount: Float
+    var startDateAndTime: NSDate?
+    var endDateAndTime: NSDate?
+    var startDateAndTimeString: String
+    var endDateAndTimeString: String
+    var formattedStartDateAndTime: String
+    var formattedEndDateAndTime: String
+    var isRefunded: Bool
+    var pdfUrlString: String
+    var barcodeUrlString: String
+    var barcode: String
+    var confirmation: String
+    var location: ParkingPandaLocation
+    
+    /*
+    RETURNED: Array in "data" with the following...
+    Amount: decimal, this is the amount paid.
+    FormattedStartDateAndTime: string, this is the start date and time the reservation begins.
+    FormattedEndDateAndTime: string, this is the end date and time the reservation ends.
+    IsRefunded: bool, flag that shows if this transaction has been refunded and voided, if set to true this reservation is no longer valid.
+    PdfUrl: string, this is the url for the PDF confirmation, this is also emailed to the customer.
+    Confirmation: string, this is the unique identifier for the reservation.
+    Location: object, location object representing the location where the transaction was booked. Includes redemption instructions, etc.
+    */
     
     init(json: JSON) {
         self.json = json
+        self.amount = json["amount"].floatValue
+        self.formattedStartDateAndTime = json["formattedStartDateAndTime"].stringValue
+        self.formattedEndDateAndTime = json["formattedEndDateAndTime"].stringValue
+        self.startDateAndTimeString = json["startDateAndTime"].stringValue
+        self.endDateAndTimeString = json["endDateAndTime"].stringValue
+        self.isRefunded = json["isRefunded"].boolValue
+        self.pdfUrlString = json["pdfUrl"].stringValue
+        self.barcodeUrlString = json["qrCodeUrl"].stringValue
+        self.barcode = json["barcode"].string ?? json["barcodeLabel"].stringValue
+        self.confirmation = json["confirmation"].stringValue
+        self.location = ParkingPandaLocation(json: json["location"]) //hardly anything is served in this for some reason
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeZone = self.location.offsetTimeZone
+        dateFormatter.dateFormat = "MM/dd/yyyy hh:mm:ss a"
+        dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        self.endDateAndTime = dateFormatter.dateFromString(self.endDateAndTimeString)
+        self.startDateAndTime = dateFormatter.dateFromString(self.startDateAndTimeString)
     }
     
 }
@@ -527,15 +565,21 @@ class ParkingPandaLocation {
     var identifier: String
     var startDateAndTimeString: String
     var endDateAndTimeString: String
+    private var timeZoneOffsetFromUTCInSeconds: Int
+    var offsetTimeZone: NSTimeZone
+    var address: String
+    var cityStateAndPostal: String
     
+    var fullAddress: String { return self.address + ", " + self.cityStateAndPostal }
+
     init(json: JSON) {
         self.json = json
         self.identifier = json["id"].stringValue
         self.price = json["price"].floatValue
         self.isAvailable = json["isAvailable"].boolValue
         
-        let timeZoneOffsetFromUTCInSeconds = Int(json["timeZoneOffsetFromUtc"].floatValue * 3600)
-        let offsetTimeZone = NSTimeZone(forSecondsFromGMT: timeZoneOffsetFromUTCInSeconds)
+        timeZoneOffsetFromUTCInSeconds = Int(json["timeZoneOffsetFromUtc"].floatValue * 3600)
+        offsetTimeZone = NSTimeZone(forSecondsFromGMT: timeZoneOffsetFromUTCInSeconds)
         
         self.startDateAndTimeString = json["startDateAndTime"].stringValue
         self.endDateAndTimeString = json["endDateAndTime"].stringValue
@@ -546,6 +590,8 @@ class ParkingPandaLocation {
         dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         self.endDateAndTime = dateFormatter.dateFromString(self.endDateAndTimeString)
         
+        self.address = json["displayAddress"].string ?? json["address1"].stringValue
+        self.cityStateAndPostal = json["cityStateAndPostal"].stringValue
     }
     
 }

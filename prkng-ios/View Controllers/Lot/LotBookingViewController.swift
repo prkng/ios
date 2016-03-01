@@ -350,6 +350,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         
         if price == nil {
             payLabel.attributedText = nil
+            return
         }
         
         let remainder = price! - Float(Int(price!))
@@ -418,10 +419,17 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     func payButtonTapped() {
         if self.location != nil {
-            ParkingPandaOperations.createTransaction(self.user, location: self.location!, completion: { (error) -> Void in
-                if error?.errorType == .NoError {
+            SVProgressHUD.show()
+            ParkingPandaOperations.createTransaction(self.user, location: self.location!, completion: { (transaction, error) -> Void in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SVProgressHUD.dismiss()
+                })
+                if transaction != nil {
                     //TODO: Localize
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.delegate?.hideModalView()
+                        let transactionVC = PPTransactionViewController(transaction: transaction!, lot: self.lot)
+                        transactionVC.presentWithVC(nil)
                         GeneralHelper.warnUserWithSucceedMessage("Successfully paid with Parking Panda!")
                     })
                 }
