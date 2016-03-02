@@ -86,6 +86,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     func setupSubviews() {
         
         scrollView.delegate = self
+        scrollView.alwaysBounceVertical = true
         self.view.addSubview(scrollView)
         
         contentView.backgroundColor = Styles.Colors.cream1
