@@ -35,15 +35,29 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     private var separator2 = UIView()
     private var barcodeImageView = UIImageView()
     
+    private var payContainerView = UIView()
+    private var separator3 = UIView()
+
+    private var separator4 = UIView()
+    private var attributesView = UIView()
+    private var attributesViewContainers = [UIView]()
+    private var attributesViewLabels = [UILabel]()
+    private var attributesViewImages = [UIImageView]()
+    
+    private var paddingView = UIView()
+    
     //TODO: Localize
     private var addToWalletButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: "add_to_wallet".localizedString.uppercaseString)
     
-    private let streetViewHeight = 222
-    private let headerHeight = 70
-    private(set) var gradientHeight = 65
-    private let timeViewHeight = 60
-    private let barcodeViewHeight = 180
-
+    private let streetViewHeight: CGFloat = 222
+    private let headerHeight: CGFloat = 70
+    private(set) var gradientHeight: CGFloat = 65
+    private let timeViewHeight: CGFloat = 60
+    private let barcodeViewHeight: CGFloat = 180
+    private let attributesViewHeight: CGFloat = 52
+    private let payContainerViewHeight: CGFloat = 60
+    private let paddingViewHeight: CGFloat = 50
+    
     init(transaction: ParkingPandaTransaction, lot: Lot?) {
 
         self.transaction = transaction
@@ -79,7 +93,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let height = barcodeImageView.frame.size.height + CGFloat(headerHeight) + topImageView.frame.size.height + (2*CGFloat(timeViewHeight))
+        let height = topImageView.frame.size.height + headerHeight + (2*timeViewHeight) + barcodeImageView.frame.size.height + payContainerViewHeight + attributesViewHeight + paddingViewHeight
         scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: height)
     }
     
@@ -153,6 +167,21 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         scrollView.addSubview(barcodeImageView)
         
         contentView.bringSubviewToFront(directionsButton)
+        
+        separator3.backgroundColor = Styles.Colors.transparentBlack
+        scrollView.addSubview(separator3)
+
+        payContainerView.backgroundColor = Styles.Colors.cream1
+        scrollView.addSubview(payContainerView)
+        
+        separator4.backgroundColor = Styles.Colors.transparentBlack
+        scrollView.addSubview(separator4)
+
+        scrollView.addSubview(attributesView)
+        attributesView.backgroundColor = Styles.Colors.cream1
+        
+        scrollView.addSubview(paddingView)
+
     }
     
     func setupConstraints() {
@@ -258,7 +287,36 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             make.left.equalTo(contentView)
             make.right.equalTo(contentView)
             make.width.equalTo(self.view)
-//            make.height.equalTo(400)
+        }
+        
+        separator3.snp_makeConstraints { (make) -> Void in
+            make.bottom.equalTo(barcodeImageView)
+            make.left.equalTo(contentView)
+            make.right.equalTo(contentView)
+            make.height.equalTo(1)
+        }
+        
+        payContainerView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(barcodeImageView.snp_bottom)
+            make.left.equalTo(contentView)
+            make.right.equalTo(contentView)
+            make.width.equalTo(self.view)
+            make.height.equalTo(payContainerViewHeight)
+        }
+        
+        separator4.snp_makeConstraints { (make) -> Void in
+            make.bottom.equalTo(payContainerView)
+            make.left.equalTo(contentView)
+            make.right.equalTo(contentView)
+            make.height.equalTo(1)
+        }
+        
+        paddingView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(payContainerView.snp_bottom)
+            make.left.equalTo(contentView)
+            make.right.equalTo(contentView)
+            make.width.equalTo(self.view)
+            make.height.equalTo(paddingViewHeight)
         }
         
     }
@@ -298,6 +356,68 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
                 topLabel.attributedText = operatedByString
             }
             
+            //attributes!
+            
+            for attribute in lot!.attributes {
+                
+                let attributesViewContainer = UIView()
+                attributesViewContainers.append(attributesViewContainer)
+                
+                let caption = attribute.name(false).localizedString.uppercaseString
+                let imageName = "icon_attribute_" + attribute.name(true) + (attribute.enabled ? "_on" : "_off" )
+                
+                let attributeLabel = UILabel()
+                attributeLabel.text = caption
+                attributeLabel.textColor = attribute.showAsEnabled ? Styles.Colors.petrol2 : Styles.Colors.greyish
+                attributeLabel.font = Styles.FontFaces.regular(9)
+                attributesViewLabels.append(attributeLabel)
+                
+                let attributeImageView = UIImageView(image: UIImage(named: imageName)!)
+                attributeImageView.contentMode = .Center
+                attributesViewImages.append(attributeImageView)
+                
+                attributesViewContainer.addSubview(attributeLabel)
+                attributesViewContainer.addSubview(attributeImageView)
+                attributesView.addSubview(attributesViewContainer)
+            }
+            
+            attributesView.snp_makeConstraints { (make) -> () in
+                make.top.equalTo(self.payContainerView.snp_bottom)
+                make.left.equalTo(self.view)
+                make.right.equalTo(self.view)
+                make.height.equalTo(attributesViewHeight)
+            }
+            
+            var leftConstraint = self.attributesView.snp_left
+            
+            for i in 0..<attributesViewContainers.count {
+                
+                let width = Int(UIScreen.mainScreen().bounds.width)/attributesViewContainers.count
+                
+                let attributesViewContainer = attributesViewContainers[i]
+                attributesViewContainer.snp_makeConstraints(closure: { (make) -> () in
+                    make.left.equalTo(leftConstraint)
+                    make.top.equalTo(self.attributesView)
+                    make.bottom.equalTo(self.attributesView)
+                    make.width.equalTo(width)
+                })
+                
+                let label = attributesViewLabels[i]
+                label.snp_makeConstraints(closure: { (make) -> () in
+                    make.centerX.equalTo(attributesViewContainer.snp_centerX)
+                    make.bottom.equalTo(self.attributesView).offset(-4.5)
+                })
+                
+                let imageView = attributesViewImages[i]
+                imageView.snp_makeConstraints(closure: { (make) -> () in
+                    //make.size.equalTo(CGSize(width: 32, height: 32))
+                    make.centerX.equalTo(label.snp_centerX)
+                    make.bottom.equalTo(label.snp_top).offset(-3.5)
+                })
+                
+                leftConstraint = attributesViewContainer.snp_right
+            }
+
         }
     
     }
