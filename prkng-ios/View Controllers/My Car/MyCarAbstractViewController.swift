@@ -89,23 +89,33 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
             }
         }
         
-        let attachActiveVC = {
-            if self.activeVC != nil {
-                self.activeVC!.view.alpha = 0.0
-                self.activeVC!.willMoveToParentViewController(self)
-                self.addChildViewController(self.activeVC!)
-                self.view.addSubview(self.activeVC!.view)
+        let switchActiveVC = { (newViewController: UIViewController) -> Void in
+            
+            newViewController.view.alpha = 0.0;
+            newViewController.willMoveToParentViewController(self)
+            self.addChildViewController(newViewController)
+            self.view.addSubview(newViewController.view)
+            
+            newViewController.view.snp_remakeConstraints(closure: { (make) -> () in
+                make.edges.equalTo(self.view)
+            })
+            
+            self.view.bringSubviewToFront(self.segmentedControl)
+
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
                 
-                self.activeVC!.view.snp_remakeConstraints(closure: { (make) -> () in
-                    make.edges.equalTo(self.view)
-                })
-                
-                self.view.bringSubviewToFront(self.segmentedControl)
-                
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.activeVC!.view.alpha = 1.0
-                })
+                newViewController.view.alpha = 1.0
+
+                }) { (finished) -> Void in
+                    if self.activeVC != nil {
+                        self.activeVC?.view.alpha = 0.0
+                        self.activeVC!.removeFromParentViewController()
+                        self.activeVC!.view.removeFromSuperview()
+                        self.activeVC!.willMoveToParentViewController(nil)
+                    }
+                    self.activeVC = newViewController
             }
+
         }
         
         if index == 0 {
@@ -118,9 +128,7 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
         } else if index == 1 {
             //transition to HISTORY
             if activeVC != historyVC {
-                removeActiveVC()
-                activeVC = historyVC
-                attachActiveVC()
+                switchActiveVC(historyVC)
                 let tracker = GAI.sharedInstance().defaultTracker
                 tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "History", value: nil).build() as [NSObject: AnyObject])
 
@@ -129,9 +137,7 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
             //transition to TRANSACTIONS
             if activeVC != ppTransactionsVC {
                 ppTransactionsVC = PPTransactionsViewController()
-                removeActiveVC()
-                activeVC = ppTransactionsVC
-                attachActiveVC()
+                switchActiveVC(ppTransactionsVC)
                 let tracker = GAI.sharedInstance().defaultTracker
                 tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "Reservations", value: nil).build() as [NSObject: AnyObject])
                 
