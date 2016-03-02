@@ -269,6 +269,7 @@
 "city_picker_subtitle" = "Trouvez un stationnement à:";
 
 //car sharing reservations
+"rservation" = "Réservation";
 "reserved" = "Réservé";
 "cancelled_reservation" = "Votre réservation a été annulée.";
 "could_not_cancel_reservation" = "Impossible d'annuler votre réservation.";

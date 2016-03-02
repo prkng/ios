@@ -447,18 +447,7 @@ class ParkingPandaTransaction {
     var barcode: String
     var confirmation: String
     var location: ParkingPandaLocation
-    
-    /*
-    RETURNED: Array in "data" with the following...
-    Amount: decimal, this is the amount paid.
-    FormattedStartDateAndTime: string, this is the start date and time the reservation begins.
-    FormattedEndDateAndTime: string, this is the end date and time the reservation ends.
-    IsRefunded: bool, flag that shows if this transaction has been refunded and voided, if set to true this reservation is no longer valid.
-    PdfUrl: string, this is the url for the PDF confirmation, this is also emailed to the customer.
-    Confirmation: string, this is the unique identifier for the reservation.
-    Location: object, location object representing the location where the transaction was booked. Includes redemption instructions, etc.
-    */
-    
+        
     init(json: JSON) {
         self.json = json
         self.amount = json["amount"].floatValue

@@ -199,7 +199,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         }
         
         segmentedControl.snp_makeConstraints { (make) -> Void in
-            make.size.equalTo(CGSize(width: 140, height: 24))
+            make.size.equalTo(CGSize(width: 240, height: 24))
             make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
             make.centerX.equalTo(self.view)
         }

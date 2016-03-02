@@ -70,48 +70,71 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
 
     var segmentedControl = ViewFactory.nowOrHistorySwitch()
     
-    var historyVC: HistoryViewController?
+    var activeVC: UIViewController?
+    var historyVC = HistoryViewController()
+    var ppTransactionsVC = PPTransactionsViewController()
     
     func segmentedControlTapped(index: UInt) {
-        if index == 0 {
-            //transition to NOW
-            if historyVC != nil {
-                
+        
+        let removeActiveVC = {
+            if self.activeVC != nil {
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.historyVC!.view.alpha = 0.0
+                    self.activeVC!.view.alpha = 0.0
                     }, completion: { (completed) -> Void in
-                        self.historyVC!.removeFromParentViewController()
-                        self.historyVC!.view.removeFromSuperview()
-                        self.historyVC!.willMoveToParentViewController(nil)
-                        self.historyVC = nil
+                        self.activeVC!.removeFromParentViewController()
+                        self.activeVC!.view.removeFromSuperview()
+                        self.activeVC!.willMoveToParentViewController(nil)
+                        self.activeVC = nil
                 })
-                
-                let tracker = GAI.sharedInstance().defaultTracker
-                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "History Slider Value Changed", label: "Now", value: nil).build() as [NSObject: AnyObject])
-
             }
-        } else if index == 1 {
-            //transition to HISTORY
-            if historyVC == nil {
-                historyVC = HistoryViewController()
-                historyVC!.view.alpha = 0.0
-                historyVC!.willMoveToParentViewController(self)
-                self.addChildViewController(historyVC!)
-                self.view.addSubview(historyVC!.view)
+        }
+        
+        let attachActiveVC = {
+            if self.activeVC != nil {
+                self.activeVC!.view.alpha = 0.0
+                self.activeVC!.willMoveToParentViewController(self)
+                self.addChildViewController(self.activeVC!)
+                self.view.addSubview(self.activeVC!.view)
                 
-                historyVC!.view.snp_remakeConstraints(closure: { (make) -> () in
+                self.activeVC!.view.snp_remakeConstraints(closure: { (make) -> () in
                     make.edges.equalTo(self.view)
                 })
                 
                 self.view.bringSubviewToFront(self.segmentedControl)
                 
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.historyVC!.view.alpha = 1.0
+                    self.activeVC!.view.alpha = 1.0
                 })
-                
+            }
+        }
+        
+        if index == 0 {
+            //transition to NOW
+            if activeVC != nil {
+                removeActiveVC()
                 let tracker = GAI.sharedInstance().defaultTracker
-                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "History Slider Value Changed", label: "History", value: nil).build() as [NSObject: AnyObject])
+                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "Now", value: nil).build() as [NSObject: AnyObject])
+            }
+        } else if index == 1 {
+            //transition to HISTORY
+            if activeVC != historyVC {
+                removeActiveVC()
+                activeVC = historyVC
+                attachActiveVC()
+                let tracker = GAI.sharedInstance().defaultTracker
+                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "History", value: nil).build() as [NSObject: AnyObject])
 
+            }
+        } else if index == 2 {
+            //transition to TRANSACTIONS
+            if activeVC != ppTransactionsVC {
+                ppTransactionsVC = PPTransactionsViewController()
+                removeActiveVC()
+                activeVC = ppTransactionsVC
+                attachActiveVC()
+                let tracker = GAI.sharedInstance().defaultTracker
+                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "Reservations", value: nil).build() as [NSObject: AnyObject])
+                
             }
         }
     }

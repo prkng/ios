@@ -33,6 +33,9 @@
 		3E20B3A11BB63A450067DA8C /* View+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3941BB63A450067DA8C /* View+SnapKit.swift */; };
 		3E20B3A21BB63A450067DA8C /* ViewController+SnapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */; };
 		3E29EDE21C6A60810050F2C3 /* PPIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E29EDE11C6A60810050F2C3 /* PPIntroViewController.swift */; };
+		3E2EF21B1C863D6500E3DE78 /* PPTransactionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2EF2191C863D6500E3DE78 /* PPTransactionsViewController.swift */; };
+		3E2EF21C1C863D6500E3DE78 /* PPTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2EF21A1C863D6500E3DE78 /* PPTransactionTableViewCell.swift */; };
+		3E2EF21E1C8640BD00E3DE78 /* GeneralTableHelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2EF21D1C8640BD00E3DE78 /* GeneralTableHelperViews.swift */; };
 		3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3199581B31D4F600CB118D /* TimeFilterView.swift */; };
 		3E322C2B1C582A6100C9DDBB /* PPSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E322C2A1C582A6100C9DDBB /* PPSettingsViewController.swift */; };
 		3E3C92281BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E3C92271BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift */; };
@@ -244,6 +247,9 @@
 		3E20B3941BB63A450067DA8C /* View+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+SnapKit.swift"; sourceTree = "<group>"; };
 		3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewController+SnapKit.swift"; sourceTree = "<group>"; };
 		3E29EDE11C6A60810050F2C3 /* PPIntroViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPIntroViewController.swift; path = ParkingPanda/PPIntroViewController.swift; sourceTree = "<group>"; };
+		3E2EF2191C863D6500E3DE78 /* PPTransactionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPTransactionsViewController.swift; path = ParkingPanda/PPTransactionsViewController.swift; sourceTree = "<group>"; };
+		3E2EF21A1C863D6500E3DE78 /* PPTransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPTransactionTableViewCell.swift; path = ParkingPanda/PPTransactionTableViewCell.swift; sourceTree = "<group>"; };
+		3E2EF21D1C8640BD00E3DE78 /* GeneralTableHelperViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralTableHelperViews.swift; sourceTree = "<group>"; };
 		3E3199581B31D4F600CB118D /* TimeFilterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeFilterView.swift; sourceTree = "<group>"; };
 		3E322C2A1C582A6100C9DDBB /* PPSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPSettingsViewController.swift; path = ParkingPanda/PPSettingsViewController.swift; sourceTree = "<group>"; };
 		3E3C92271BFC1A0400F0D296 /* MyCarReservedCarShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCarReservedCarShareViewController.swift; sourceTree = "<group>"; };
@@ -610,6 +616,8 @@
 				3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */,
 				3E1F210D1C7E5AAE00892C66 /* PPTransactionView.swift */,
 				3E67E9CB1C7F9AEE0071D7BC /* PPTransactionViewController.swift */,
+				3E2EF2191C863D6500E3DE78 /* PPTransactionsViewController.swift */,
+				3E2EF21A1C863D6500E3DE78 /* PPTransactionTableViewCell.swift */,
 			);
 			name = ParkingPanda;
 			sourceTree = "<group>";
@@ -769,6 +777,7 @@
 				3EF4A7D01B97AD2700CE4870 /* PRKTimeSpanView.swift */,
 				3E41F0501BBEFA43004A4A60 /* DirectionsAction.swift */,
 				3E4BC2C41C6D38040000593E /* PRKCachedTableView.swift */,
+				3E2EF21D1C8640BD00E3DE78 /* GeneralTableHelperViews.swift */,
 			);
 			path = "Common Views";
 			sourceTree = "<group>";
@@ -1218,6 +1227,7 @@
 				BF3CFA2A1AFE98E2003D104D /* LoginExternalViewController.swift in Sources */,
 				3E6DCC841B28E0D500DF62E0 /* Array.swift in Sources */,
 				3E79D01E1B7BB0CF009CF8A5 /* PRKModeSlider.swift in Sources */,
+				3E2EF21B1C863D6500E3DE78 /* PPTransactionsViewController.swift in Sources */,
 				3E76EC8A1BD7FF4700FFEBE4 /* SettingsTableViewCells.swift in Sources */,
 				3EA5908D1B46261F0052A0C2 /* MKPolygon.swift in Sources */,
 				3EC96E0B1C63DDDF002D7D86 /* PPCreateUserViewController.swift in Sources */,
@@ -1298,6 +1308,7 @@
 				3EBCF0591B67FA8E00E925A0 /* CarSharingInfoViewController.swift in Sources */,
 				3EAF217C1BF2534000C137DA /* LoginPermissionsViewController.swift in Sources */,
 				BFD9CB691A9C942300BFA836 /* Shape.swift in Sources */,
+				3E2EF21C1C863D6500E3DE78 /* PPTransactionTableViewCell.swift in Sources */,
 				3E322C2B1C582A6100C9DDBB /* PPSettingsViewController.swift in Sources */,
 				3E20B39D1BB63A450067DA8C /* EdgeInsets.swift in Sources */,
 				BFFDE4631AFBA4380035DF54 /* LoginEmailViewController.swift in Sources */,
@@ -1339,6 +1350,7 @@
 				3EEF9F4F1BB45F550036BDBC /* UIViewController.swift in Sources */,
 				BFC490931B31D24C00C43562 /* AboutViewController.swift in Sources */,
 				3E3F146C1B3B4AD200ECB8C9 /* PRKTextButton.swift in Sources */,
+				3E2EF21E1C8640BD00E3DE78 /* GeneralTableHelperViews.swift in Sources */,
 				3E67E9CC1C7F9AEE0071D7BC /* PPTransactionViewController.swift in Sources */,
 				3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */,
 				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
@@ -1517,7 +1529,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Debug;
@@ -1554,7 +1566,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
 			name = Release;

@@ -267,6 +267,7 @@
 "city_picker_subtitle" = "You can find parking in:";
 
 //carsharing reservations
+"rservation" = "Reservation";
 "reserved" = "Reserved";
 "cancelled_reservation" = "Your reservation was successfully cancelled.";
 "could_not_cancel_reservation" = "Your reservation could not be cancelled.";
