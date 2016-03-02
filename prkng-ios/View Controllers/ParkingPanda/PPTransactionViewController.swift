@@ -93,53 +93,12 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         scrollView.addSubview(topImageView)
         topImageView.navigationLinksHidden = true
         
-        CLGeocoder().geocodeAddressString(transaction.location.fullAddress) { (placemarks, error) -> Void in
-            if error == nil && placemarks != nil {
-                if let placemark = placemarks?.first {
-                    if let coordinate = placemark.location?.coordinate {
-                        self.coordinate = coordinate
-                        self.topImageView.moveNearCoordinate(coordinate)
-                        self.topImageView.snp_updateConstraints(closure: { (make) -> Void in
-                            make.height.equalTo(self.streetViewHeight)
-                        })
-                    }
-                }
-            }
-        }
-        
-        if lot != nil {
-            if lot!.streetViewPanoramaId == nil {
-                topImageView.moveNearCoordinate(lot!.coordinate)
-            } else {
-                topImageView.moveToPanoramaID(lot!.streetViewPanoramaId!)
-            }
-            if let heading = lot!.streetViewHeading {
-                let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
-                topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
-            }
-            let cameraUpdate = GMSPanoramaCameraUpdate.setZoom(3)
-            topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
+        LotOperations.sharedInstance.findLot(transaction.location.identifier, partnerName: "Parking Panda") { (lot) -> Void in
+            self.lot = lot
+            self.lotSetup()
         }
         
         scrollView.addSubview(topGradient)
-        
-        if lot != nil {
-            
-            let screenWidth = UIScreen.mainScreen().bounds.width
-            topGradient.image = UIImage.imageFromGradient(CGSize(width: screenWidth, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
-            
-            if lot!.lotOperator != nil {
-                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-                let operatorString = NSMutableAttributedString(string: lot!.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-                operatedByString.appendAttributedString(operatorString)
-                topLabel.attributedText = operatedByString
-            } else if lot!.lotPartner != nil {
-                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-                let partnerString = NSMutableAttributedString(string: lot!.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-                operatedByString.appendAttributedString(partnerString)
-                topLabel.attributedText = operatedByString
-            }
-        }
         
         scrollView.addSubview(topLabel)
         topLabel.textColor = Styles.Colors.cream1
@@ -304,6 +263,45 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
     }
 
+    func lotSetup() {
+        
+        topImageView.snp_updateConstraints { (make) -> () in
+            make.height.equalTo(lot != nil ? streetViewHeight : 0)
+        }
+
+        if lot != nil {
+            
+            if lot!.streetViewPanoramaId == nil {
+                topImageView.moveNearCoordinate(lot!.coordinate)
+            } else {
+                topImageView.moveToPanoramaID(lot!.streetViewPanoramaId!)
+            }
+            if let heading = lot!.streetViewHeading {
+                let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
+                topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
+            }
+            let cameraUpdate = GMSPanoramaCameraUpdate.setZoom(3)
+            topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
+            
+            let screenWidth = UIScreen.mainScreen().bounds.width
+            topGradient.image = UIImage.imageFromGradient(CGSize(width: screenWidth, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
+            
+            if lot!.lotOperator != nil {
+                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+                let operatorString = NSMutableAttributedString(string: lot!.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+                operatedByString.appendAttributedString(operatorString)
+                topLabel.attributedText = operatedByString
+            } else if lot!.lotPartner != nil {
+                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+                let partnerString = NSMutableAttributedString(string: lot!.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+                operatedByString.appendAttributedString(partnerString)
+                topLabel.attributedText = operatedByString
+            }
+            
+        }
+    
+    }
+    
     //MARK: PPHeaderViewDelegate functions
     
     func tappedBackButton() {

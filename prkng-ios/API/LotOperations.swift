@@ -84,6 +84,37 @@ import UIKit
         }
     }
     
+    func findLot(partnerId: String, partnerName: String, completion: ((lot: Lot?) -> Void)) {
+        
+        let url = APIUtility.rootURL() + "lots"
+        
+        let params = [
+            "partner_name": partnerName,
+            "partner_id": partnerId
+        ]
+        
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+            (request, response, json, error) in
+            
+            let lotJsons: [JSON] = json["features"].arrayValue
+            let tempLots = lotJsons.map({ (lotJson) -> Lot in
+                Lot(json: lotJson)
+            })
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                () -> Void in
+                completion(lot: tempLots.first)
+                
+                if response != nil && response?.statusCode == 401 {
+                    DDLoggerWrapper.logError(String(format: "Error: Could not authenticate. Reason: %@", json.description))
+                    Settings.logout()
+                }
+                
+            })
+            
+        }
+    }
+    
     static func processCheapestLots(givenLots: [Lot]) -> [Lot] {
         
         let totalCount = givenLots.count
