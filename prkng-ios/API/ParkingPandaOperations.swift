@@ -445,6 +445,7 @@ class ParkingPandaTransaction {
     var pdfUrlString: String
     var barcodeUrlString: String
     var barcode: String
+    var paymentMaskedCardInfo: String
     var confirmation: String
     var location: ParkingPandaLocation
         
@@ -459,6 +460,7 @@ class ParkingPandaTransaction {
         self.pdfUrlString = json["pdfUrl"].stringValue
         self.barcodeUrlString = json["qrCodeUrl"].stringValue
         self.barcode = json["barcode"].string ?? json["barcodeLabel"].stringValue
+        self.paymentMaskedCardInfo = json["paymentMaskedCardInfo"].stringValue
         self.confirmation = json["confirmation"].stringValue
         self.location = ParkingPandaLocation(json: json["location"]) //hardly anything is served in this for some reason
         

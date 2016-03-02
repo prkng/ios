@@ -36,6 +36,10 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     private var barcodeImageView = UIImageView()
     
     private var payContainerView = UIView()
+//    private var creditCardImageView = UIImageView()
+    private var payTitleLabel = UILabel()
+    private var paySubtitleLabel = UILabel()
+    private var priceLabel = UILabel()
     private var separator3 = UIView()
 
     private var separator4 = UIView()
@@ -43,8 +47,6 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     private var attributesViewContainers = [UIView]()
     private var attributesViewLabels = [UILabel]()
     private var attributesViewImages = [UIImageView]()
-    
-    private var paddingView = UIView()
     
     //TODO: Localize
     private var addToWalletButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: "add_to_wallet".localizedString.uppercaseString)
@@ -56,7 +58,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     private let barcodeViewHeight: CGFloat = 180
     private let attributesViewHeight: CGFloat = 52
     private let payContainerViewHeight: CGFloat = 60
-    private let paddingViewHeight: CGFloat = 50
+    private let paddingHeight: CGFloat = 5
     
     init(transaction: ParkingPandaTransaction, lot: Lot?) {
 
@@ -93,7 +95,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let height = topImageView.frame.size.height + headerHeight + (2*timeViewHeight) + barcodeImageView.frame.size.height + payContainerViewHeight + attributesViewHeight + paddingViewHeight
+        let height = topImageView.frame.size.height + headerHeight + (2*timeViewHeight) + barcodeImageView.frame.size.height + payContainerViewHeight + attributesViewHeight + paddingHeight
         scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: height)
     }
     
@@ -174,14 +176,42 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         payContainerView.backgroundColor = Styles.Colors.cream1
         scrollView.addSubview(payContainerView)
         
+        //TODO: LOCALIZE
+        payTitleLabel.text = "paid_with_parking_panda".localizedString
+        payTitleLabel.textColor = Styles.Colors.red2
+        payTitleLabel.font = Styles.FontFaces.regular(14)
+        payTitleLabel.numberOfLines = 1
+        payContainerView.addSubview(payTitleLabel)
+        
+        paySubtitleLabel.text = transaction.paymentMaskedCardInfo
+        paySubtitleLabel.textColor = Styles.Colors.anthracite1
+        paySubtitleLabel.font = Styles.FontFaces.regular(12)
+        paySubtitleLabel.numberOfLines = 1
+        payContainerView.addSubview(paySubtitleLabel)
+
+        let remainder = transaction.amount - Float(Int(transaction.amount))
+        var priceString = String(format: " $%.02f", transaction.amount) //this auto rounds to the 2nd decimal place
+        if remainder == 0 {
+            priceString = String(format: " $%.0f", transaction.amount)
+        }
+        priceLabel.text = priceString
+        priceLabel.textColor = Styles.Colors.midnight1
+        priceLabel.font = Styles.FontFaces.bold(14)
+        priceLabel.numberOfLines = 1
+        priceLabel.textAlignment = .Right
+        payContainerView.addSubview(priceLabel)
+        
+//        if let creditCardTypeImage = transaction CardIOCreditCardInfo.logoForCardType(creditCardType) {
+//            creditCardImageView.image = creditCardTypeImage
+//        }
+
+
         separator4.backgroundColor = Styles.Colors.transparentBlack
         scrollView.addSubview(separator4)
 
         scrollView.addSubview(attributesView)
         attributesView.backgroundColor = Styles.Colors.cream1
         
-        scrollView.addSubview(paddingView)
-
     }
     
     func setupConstraints() {
@@ -304,19 +334,35 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             make.height.equalTo(payContainerViewHeight)
         }
         
+//        creditCardImageView.snp_makeConstraints { (make) -> Void in
+//            make.left.equalTo(payContainerView).offset(24)
+//            make.centerY.equalTo(self.contentView).multipliedBy(0.5)
+//            make.size.equalTo(CGSize(width: 36, height: 25)) //this is the default size of CardIO's CardIOCreditCardInfo.logoForCardType(cardType: CardIOCreditCardType) method
+//        }
+        
+        payTitleLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView).offset(24)
+            make.centerY.equalTo(payContainerView).multipliedBy(0.66)
+            make.right.equalTo(payContainerView).offset(-70)
+        }
+        
+        paySubtitleLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView).offset(24)
+            make.centerY.equalTo(payContainerView).multipliedBy(1.33)
+            make.right.equalTo(payContainerView).offset(-70)
+        }
+        
+        priceLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView.snp_right).offset(-70)
+            make.right.equalTo(payContainerView).offset(-14)
+            make.centerY.equalTo(payContainerView)
+        }
+        
         separator4.snp_makeConstraints { (make) -> Void in
             make.bottom.equalTo(payContainerView)
             make.left.equalTo(contentView)
             make.right.equalTo(contentView)
             make.height.equalTo(1)
-        }
-        
-        paddingView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(payContainerView.snp_bottom)
-            make.left.equalTo(contentView)
-            make.right.equalTo(contentView)
-            make.width.equalTo(self.view)
-            make.height.equalTo(paddingViewHeight)
         }
         
     }
