@@ -18,7 +18,6 @@
 		3E0FDAD41B27921400872667 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAD31B27921400872667 /* MapKit.framework */; };
 		3E1BCD0B1C725FE3005F0037 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1BCD0A1C725FE3005F0037 /* UITableView.swift */; };
 		3E1DFF931B8E544E00EE55C8 /* LotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */; };
-		3E1F210E1C7E5AAE00892C66 /* PPTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E1F210D1C7E5AAE00892C66 /* PPTransactionView.swift */; };
 		3E20B3961BB63A450067DA8C /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3881BB63A450067DA8C /* Constraint.swift */; };
 		3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */; };
 		3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */; };
@@ -231,7 +230,6 @@
 		3E0FDAD31B27921400872667 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3E1BCD0A1C725FE3005F0037 /* UITableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		3E1DFF921B8E544E00EE55C8 /* LotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LotOperations.swift; sourceTree = "<group>"; };
-		3E1F210D1C7E5AAE00892C66 /* PPTransactionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PPTransactionView.swift; path = ParkingPanda/PPTransactionView.swift; sourceTree = "<group>"; };
 		3E20B3881BB63A450067DA8C /* Constraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		3E20B3891BB63A450067DA8C /* ConstraintAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintAttributes.swift; sourceTree = "<group>"; };
 		3E20B38A1BB63A450067DA8C /* ConstraintDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintDescription.swift; sourceTree = "<group>"; };
@@ -614,7 +612,6 @@
 				3E29EDE11C6A60810050F2C3 /* PPIntroViewController.swift */,
 				3EC96E0C1C63DDFB002D7D86 /* PPSignInViewController.swift */,
 				3EC96E0A1C63DDDF002D7D86 /* PPCreateUserViewController.swift */,
-				3E1F210D1C7E5AAE00892C66 /* PPTransactionView.swift */,
 				3E67E9CB1C7F9AEE0071D7BC /* PPTransactionViewController.swift */,
 				3E2EF2191C863D6500E3DE78 /* PPTransactionsViewController.swift */,
 				3E2EF21A1C863D6500E3DE78 /* PPTransactionTableViewCell.swift */,
@@ -1355,7 +1352,6 @@
 				3E5B2EF31BA3482D00658A9A /* AnalyticsOperations.swift in Sources */,
 				BF32826D1B3847AE002ED8DF /* MKColor.swift in Sources */,
 				BF3282721B3847AE002ED8DF /* MKTextField.swift in Sources */,
-				3E1F210E1C7E5AAE00892C66 /* PPTransactionView.swift in Sources */,
 				3E20B3981BB63A450067DA8C /* ConstraintDescription.swift in Sources */,
 				BFFDE4691AFBA76E0035DF54 /* FirstUseViewController.swift in Sources */,
 				BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */,
