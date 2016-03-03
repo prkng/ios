@@ -80,6 +80,8 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
 
         super.init(nibName: nil, bundle: nil)
 
+        slider.minimumValue = 1
+        
         self.pickerVC.delegate = self
 
         self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotBookingViewController.HEADER_HEIGHT + LotBookingViewController.TIME_VIEW_HEIGHT + LotBookingViewController.SLIDER_VIEW_HEIGHT + LotBookingViewController.BOTTOM_VIEW_HEIGHT) - CGFloat(Styles.Sizes.tabbarHeight)
@@ -93,8 +95,6 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         headerView.topText = lot.headerText
-        payButton.backgroundColor = Styles.Colors.pinGrey
-        sliderValueChanged()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -378,6 +378,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         setSliderLabelText(Int(round(slider.value)), parkUntil: nil)
     }
     
+    //this also serves to update the UI for the price and dates on-screen
     func sliderValueChanged() {
         //first, round the value
         slider.setValue(round(slider.value), animated: true)
@@ -445,6 +446,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     func didSelectDate(date: NSDate, dateString: String) {
         print("selected the formatted date: " + dateString)
         timeViewLabel.text = pickerVC.dateString
+        sliderValueChanged()
     }
     
     //MARK: ModalHeaderViewDelegate
