@@ -10,7 +10,6 @@ import UIKit
 
 class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UIScrollViewDelegate {
     
-    private var coordinate: CLLocationCoordinate2D?
     private var transaction: ParkingPandaTransaction //customized based on the presence of the lot
     private var lot: Lot?
 
@@ -142,9 +141,10 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         dateFormatter.dateStyle = .LongStyle
         dateFormatter.timeStyle = .ShortStyle
         
-        fromTimeViewLabel.text = dateFormatter.stringFromDate(transaction.startDateAndTime ?? NSDate())
+        fromTimeViewLabel.text = "from".localizedString + "\n" + dateFormatter.stringFromDate(transaction.startDateAndTime ?? NSDate())
         fromTimeViewLabel.textColor = Styles.Colors.midnight1
         fromTimeViewLabel.font = Styles.FontFaces.regular(16)
+        fromTimeViewLabel.numberOfLines = 2
         fromTimeView.addSubview(fromTimeViewLabel)
         
         separator1.backgroundColor = Styles.Colors.transparentBlack
@@ -157,16 +157,22 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         toTimeIconView.tintColor = Styles.Colors.midnight1
         toTimeView.addSubview(toTimeIconView)
         
-        toTimeViewLabel.text = dateFormatter.stringFromDate(transaction.endDateAndTime ?? NSDate())
+        toTimeViewLabel.text = "to".localizedString + "\n" + dateFormatter.stringFromDate(transaction.endDateAndTime ?? NSDate())
         toTimeViewLabel.textColor = Styles.Colors.midnight1
         toTimeViewLabel.font = Styles.FontFaces.regular(16)
+        toTimeViewLabel.numberOfLines = 2
         toTimeView.addSubview(toTimeViewLabel)
         
         separator2.backgroundColor = Styles.Colors.transparentBlack
         scrollView.addSubview(separator2)
         
         if let barcodeUrl = NSURL(string: transaction.barcodeUrlString) {
-            barcodeImageView.sd_setImageWithURL(barcodeUrl)
+            barcodeImageView.sd_setImageWithURL(barcodeUrl, completed: { (image, error, cacheType, url) -> Void in
+                let currentDate = NSDate()
+                if self.transaction.endDateAndTime?.earlierDate(currentDate) == self.transaction.endDateAndTime {
+                    self.barcodeImageView.alpha = 0.2
+                }
+            })
         }
         barcodeImageView.contentMode = .ScaleAspectFit
         scrollView.addSubview(barcodeImageView)
@@ -370,8 +376,12 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
 
     func lotSetup() {
         
-        topImageView.snp_updateConstraints { (make) -> () in
+        topImageView.snp_remakeConstraints { (make) -> () in
+            make.top.equalTo(self.contentView)
+            make.left.equalTo(self.contentView)
+            make.right.equalTo(self.contentView)
             make.height.equalTo(lot != nil ? streetViewHeight : 0)
+            make.width.equalTo(self.view)
         }
 
         if lot != nil {
@@ -469,6 +479,29 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     }
     
+    //MARK: UIScrollViewDelegate
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let xOffset = 0 - scrollView.contentOffset.y
+        if xOffset < 0 {
+            topImageView.snp_remakeConstraints { (make) -> () in
+                make.top.equalTo(self.contentView)
+                make.left.equalTo(self.contentView)
+                make.right.equalTo(self.contentView)
+                make.height.equalTo(lot != nil ? streetViewHeight : 0)
+                make.width.equalTo(self.view)
+            }
+        } else {
+            topImageView.snp_remakeConstraints { (make) -> () in
+                make.top.equalTo(self.view)
+                make.left.equalTo(self.contentView)
+                make.right.equalTo(self.contentView)
+                make.height.equalTo(lot != nil ? streetViewHeight + xOffset : 0)
+                make.width.equalTo(self.view)
+            }
+        }
+    }
+    
     //MARK: PPHeaderViewDelegate functions
     
     func tappedBackButton() {
@@ -482,8 +515,8 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     //MARK: Helper methods
     
     func directionsButtonTapped(sender: UIButton) {
-        if coordinate != nil {
-            DirectionsAction.perform(onViewController: self, withCoordinate: coordinate!, shouldCallback: false)
+        if lot?.coordinate != nil {
+            DirectionsAction.perform(onViewController: self, withCoordinate: lot!.coordinate, shouldCallback: false)
         }
     }
 

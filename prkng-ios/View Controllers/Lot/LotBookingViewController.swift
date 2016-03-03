@@ -119,18 +119,20 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         
         view.addSubview(topImageView)
         topImageView.navigationLinksHidden = true
-        if lot.streetViewPanoramaId == nil {
-            topImageView.moveNearCoordinate(lot.coordinate)
-        } else {
-            topImageView.moveToPanoramaID(lot.streetViewPanoramaId!)
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) { () -> Void in
+            if self.lot.streetViewPanoramaId == nil {
+                self.topImageView.moveNearCoordinate(self.lot.coordinate)
+            } else {
+                self.topImageView.moveToPanoramaID(self.lot.streetViewPanoramaId!)
+            }
+            if let heading = self.lot.streetViewHeading {
+                let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
+                self.topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
+            }
+            let cameraUpdate = GMSPanoramaCameraUpdate.setZoom(3)
+            self.topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
         }
-        if let heading = lot.streetViewHeading {
-            let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
-            topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
-        }
-        let cameraUpdate = GMSPanoramaCameraUpdate.setZoom(3)
-        topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
-
         
         view.addSubview(topGradient)
         topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))

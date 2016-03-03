@@ -27,6 +27,7 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     private var pastTransactions = [ParkingPandaTransaction]()
     
     private var didGoToPPIntro = false
+    private var reloadOnNextAppear = true
     
     private let ROW_HEIGHT: CGFloat = 70
     private let SECTION_HEADER_HEIGHT: CGFloat = 61
@@ -44,7 +45,10 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.loadTransactions()
+        if reloadOnNextAppear {
+            self.loadTransactions()
+        }
+        reloadOnNextAppear = true
     }
     
     func loadTransactions() {
@@ -227,6 +231,7 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
         let transactionVC = PPTransactionViewController(transaction: transaction, lot: nil)
         self.presentViewController(transactionVC, animated: true) { () -> Void in
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            self.reloadOnNextAppear = false
         }
     }
     
