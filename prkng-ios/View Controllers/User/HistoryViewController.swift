@@ -12,21 +12,16 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     
     let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
     
-    let headerView = UIView()
-    let headerImageView = UIImageView()
-    let HEADER_MIN_HEIGHT : Float = 90
-    let HEADER_MAX_HEIGHT : Float = floor(Float(UIScreen.mainScreen().bounds.size.height) * 0.44)
-    var previousYPosition : Float = 90 - floor(Float(UIScreen.mainScreen().bounds.size.height) * 0.44)
-    var currentHeaderHeight : Float = floor(Float(UIScreen.mainScreen().bounds.size.height) * 0.44)  // default same as HEADER_MAX_HEIGHT
-    
-    let iconView = UIImageView(image: UIImage(named: "icon_history"))
-    let titleLabel = UILabel()
     let tableView = UITableView()
     
     var groupedCheckins : Dictionary<String, Array<Checkin>>?
     
     let SECTION_HEADER_HEIGHT: CGFloat = 30
     
+    private static let VERTICAL_PADDING = 15
+    private static let TOP_VIEW_PADDING = 30 + 24 + VERTICAL_PADDING //from top_layout_guide_bottom: 30 pts of space, 24 pts of segmented control, 15 pts padding
+    
+
     override func loadView() {
         view = UIView()
         setupViews()
@@ -84,9 +79,6 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         view.addSubview(backgroundImageView)
         
         tableView.backgroundColor = UIColor.clearColor()
-        tableView.contentInset = UIEdgeInsetsMake(CGFloat(HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT), 0, 0, 0);
-        tableView.setContentOffset(CGPointMake(0, -tableView.contentInset.top), animated: false)
-        
         
         tableView.separatorStyle = .None
         tableView.dataSource = self
@@ -94,19 +86,7 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
         tableView.clipsToBounds = true
         view.addSubview(tableView)
         
-        view.addSubview(headerView)
-        
-        headerImageView.image = UIImage(named:"bg_mycar")
-        headerImageView.contentMode = .ScaleAspectFill
-        headerView.addSubview(headerImageView)
-        headerView.clipsToBounds = true
-        headerView.addSubview(iconView)
-        
-        titleLabel.font = Styles.Fonts.h1
-        titleLabel.textColor = Styles.Colors.cream1
-        titleLabel.textAlignment = .Center
-        titleLabel.text = "history".localizedString
-        headerView.addSubview(titleLabel)
+        tableView.tableHeaderView = headerView()
         
     }
     
@@ -117,34 +97,12 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
             make.edges.equalTo(self.view)
         }
         
-        headerImageView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.headerView)
-            make.left.equalTo(self.headerView)
-            make.right.equalTo(self.headerView)
+        tableView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(self.snp_topLayoutGuideBottom).offset(HistoryViewController.TOP_VIEW_PADDING)
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
         }
-        
-        iconView.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.headerView).offset(20+40+30+24)
-            make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(68, 68))
-        }
-        
-        titleLabel.snp_makeConstraints { (make) -> () in
-            make.top.equalTo(self.iconView.snp_bottom).offset(12)
-            make.height.equalTo(34)
-            make.left.equalTo(self.headerView)
-            make.right.equalTo(self.headerView)
-        }
-        
-        
-        let screenWidth = UIScreen.mainScreen().bounds.size.width
-        let screenHeight = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.tabbarHeight)
-        
-        headerView.frame = CGRectMake(0, 0, screenWidth, CGFloat(HEADER_MAX_HEIGHT))
-        
-        let tableViewHeight = screenHeight - CGFloat(HEADER_MIN_HEIGHT)
-        tableView.frame = CGRectMake(0, CGFloat(HEADER_MIN_HEIGHT), screenWidth, tableViewHeight)
         
     }
     
@@ -248,73 +206,50 @@ class HistoryViewController: AbstractViewController, UITableViewDataSource, UITa
     }
     
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        
-        let yPos = Float(scrollView.contentOffset.y)
-        var height:Float = currentHeaderHeight
-        let dy = previousYPosition - yPos
-        
-//        print("dy : \(dy)")
-//        print("previousYPosition : \(previousYPosition)")
-//        print("yPos : \(yPos)")
-        
-        height += dy
-        
-        if (yPos > Float(scrollView.contentSize.height - scrollView.frame.size.height)){
-            return
-        }
-        
-        
-        if (height > HEADER_MAX_HEIGHT) {
-            height = HEADER_MAX_HEIGHT
-        } else if (height < HEADER_MIN_HEIGHT) {
-            height = HEADER_MIN_HEIGHT
-        }
-        
-//        print("header height : \(height)")
-//        print("contentInset top : \(scrollView.contentInset.top)")
-        
-        if (height == HEADER_MAX_HEIGHT) && (Float(scrollView.contentInset.top) + yPos <= 0.0) {
-            return
-        }
-
-        if (height != Float(headerView.frame.size.height)) {
-            
-            var headerViewFrame : CGRect = self.headerView.frame
-            headerViewFrame.size.height = CGFloat(height)
-            headerView.frame = headerViewFrame
-            
-            tableView.delegate = nil
-            tableView.contentInset = UIEdgeInsetsMake(CGFloat(height - HEADER_MIN_HEIGHT), 0, 0, 0)
-            tableView.delegate = self
-//            tableView.backgroundColor = Styles.Colors.stone
-            
-            currentHeaderHeight = height
-            var alpha = CGFloat((height / HEADER_MAX_HEIGHT))
-            
-            if(alpha > 0.9) {
-                alpha = 1
-            } else if(alpha < 0.5) {
-                alpha = alpha / 2
-            }
-            if(alpha < 0.2) {
-                alpha = 0
-            }
-            
-            iconView.alpha = alpha
-            titleLabel.alpha = alpha
-            
-            headerView.layoutIfNeeded()
-        }
-        
-        previousYPosition = yPos
-
-    }
-    
     //MARK: Button Handlers
     
     func backButtonTapped(sender: UIButton) {
         self.navigationController?.popViewControllerAnimated(true)
     }
+    
+    func headerView() -> UIView {
+        
+        let topPadding = 25
+        let iconViewHeight = 68
+        let titleLabelHeight = 34
+        let titleLabelTopPadding = 12
+        let totalHeight = topPadding+iconViewHeight+titleLabelTopPadding+titleLabelHeight+HistoryViewController.VERTICAL_PADDING
+        
+        let headerView = UIView()
+        let iconView = UIImageView(image: UIImage(named: "icon_history"))
+        let titleLabel = UILabel()
+        
+        headerView.frame = CGRect(x: 0, y: 0, width: Int(UIScreen.mainScreen().bounds.width), height: totalHeight)
+        
+        headerView.clipsToBounds = true
+        headerView.addSubview(iconView)
+        
+        titleLabel.font = Styles.Fonts.h1
+        titleLabel.textColor = Styles.Colors.cream1
+        titleLabel.textAlignment = .Center
+        titleLabel.text = "history".localizedString
+        headerView.addSubview(titleLabel)
+        
+        iconView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(headerView).offset(topPadding)
+            make.centerX.equalTo(headerView)
+            make.size.equalTo(CGSize(width: iconViewHeight, height: iconViewHeight))
+        }
+        
+        titleLabel.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(iconView.snp_bottom).offset(titleLabelTopPadding)
+            make.height.equalTo(titleLabelHeight)
+            make.left.equalTo(headerView)
+            make.right.equalTo(headerView)
+        }
+        
+        return headerView
+    }
+    
     
 }
