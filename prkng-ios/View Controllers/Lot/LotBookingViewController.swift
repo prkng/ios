@@ -71,7 +71,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         headerView = ModalHeaderView()
         
         self.dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .LongStyle
+        dateFormatter.dateStyle = .FullStyle
         dateFormatter.timeStyle = .ShortStyle
         
         //the minimum date is the nearest 30 minute
@@ -137,17 +137,17 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         view.addSubview(topGradient)
         topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
         
-        if lot.lotOperator != nil {
-            let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-            let operatorString = NSMutableAttributedString(string: lot.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-            operatedByString.appendAttributedString(operatorString)
-            topLabel.attributedText = operatedByString
-        } else if lot.lotPartner != nil {
-            let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-            let partnerString = NSMutableAttributedString(string: lot.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-            operatedByString.appendAttributedString(partnerString)
-            topLabel.attributedText = operatedByString
-        }
+//        if lot.lotOperator != nil {
+//            let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+//            let operatorString = NSMutableAttributedString(string: lot.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+//            operatedByString.appendAttributedString(operatorString)
+//            topLabel.attributedText = operatedByString
+//        } else if lot.lotPartner != nil {
+//            let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+//            let partnerString = NSMutableAttributedString(string: lot.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+//            operatedByString.appendAttributedString(partnerString)
+//            topLabel.attributedText = operatedByString
+//        }
         view.addSubview(topLabel)
         topLabel.textColor = Styles.Colors.cream1
         
@@ -165,9 +165,16 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         timeIconView.tintColor = Styles.Colors.midnight1
         timeView.addSubview(timeIconView)
 
-        timeViewLabel.text = pickerVC.dateString
+        let timeViewLabelTopAttrs = [NSFontAttributeName: Styles.FontFaces.bold(12)]
+        let timeViewLabelBottomAttrs = [NSFontAttributeName: Styles.FontFaces.regular(14)]
+        
+        let timeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
+        let timeViewLabelBottomText = NSAttributedString(string: pickerVC.dateString, attributes: timeViewLabelBottomAttrs)
+        timeViewLabelTopText.appendAttributedString(timeViewLabelBottomText)
+
+        timeViewLabel.attributedText = timeViewLabelTopText
         timeViewLabel.textColor = Styles.Colors.midnight1
-        timeViewLabel.font = Styles.FontFaces.regular(16)
+        timeViewLabel.numberOfLines = 2
         timeView.addSubview(timeViewLabel)
         
         timeView.addSubview(timeViewRightArrow)
@@ -187,7 +194,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
 
         sliderForLabel.text = "for".localizedString.uppercaseString
         sliderForLabel.textColor = Styles.Colors.midnight1
-        sliderForLabel.font = Styles.FontFaces.regular(12)
+        sliderForLabel.font = Styles.FontFaces.bold(12)
         sliderContainerView.addSubview(sliderForLabel)
         
         slider.maximumTrackTintColor = Styles.Colors.red2
@@ -432,8 +439,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.delegate?.hideModalView()
                         let transactionVC = PPTransactionViewController(transaction: transaction!, lot: self.lot)
-                        transactionVC.presentWithVC(nil)
-                        GeneralHelper.warnUserWithSucceedMessage("Successfully paid with Parking Panda!")
+                        transactionVC.presentWithVC(nil, showingSuccessPopup: true)
                     })
                 }
             })
@@ -447,7 +453,16 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     func didSelectDate(date: NSDate, dateString: String) {
         print("selected the formatted date: " + dateString)
-        timeViewLabel.text = pickerVC.dateString
+        
+        let timeViewLabelTopAttrs = [NSFontAttributeName: Styles.FontFaces.bold(12)]
+        let timeViewLabelBottomAttrs = [NSFontAttributeName: Styles.FontFaces.regular(14)]
+        
+        let timeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
+        let timeViewLabelBottomText = NSAttributedString(string: pickerVC.dateString, attributes: timeViewLabelBottomAttrs)
+        timeViewLabelTopText.appendAttributedString(timeViewLabelBottomText)
+        
+        timeViewLabel.attributedText = timeViewLabelTopText
+
         sliderValueChanged()
     }
     

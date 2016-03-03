@@ -12,6 +12,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     private var transaction: ParkingPandaTransaction //customized based on the presence of the lot
     private var lot: Lot?
+    private var popupVC: PRKPopupViewController?
 
     private var scrollView = UIScrollView()
     private var contentView = UIView()
@@ -76,14 +77,21 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         fatalError("init(coder:) has not been implemented")
     }
     
-    func presentWithVC(vc: UIViewController?) {
+    func presentWithVC(vc: UIViewController?, showingSuccessPopup: Bool) {
         
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if let rootVC = vc ?? appDelegate.window?.rootViewController {
             if let navVC = rootVC.navigationController {
                 navVC.pushViewController(self, animated: true)
+                if showingSuccessPopup {
+                    self.showPopupForReportSuccess()
+                }
             } else {
-                rootVC.presentViewController(self, animated: true, completion: nil)
+                rootVC.presentViewController(self, animated: true, completion: { () -> Void in
+                    if showingSuccessPopup {
+                        self.showPopupForReportSuccess()
+                    }
+                })
             }
         }
         
@@ -138,12 +146,18 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         fromTimeView.addSubview(fromTimeIconView)
         
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .LongStyle
+        dateFormatter.dateStyle = .FullStyle
         dateFormatter.timeStyle = .ShortStyle
         
-        fromTimeViewLabel.text = "from".localizedString + "\n" + dateFormatter.stringFromDate(transaction.startDateAndTime ?? NSDate())
+        let timeViewLabelTopAttrs = [NSFontAttributeName: Styles.FontFaces.bold(12)]
+        let timeViewLabelBottomAttrs = [NSFontAttributeName: Styles.FontFaces.regular(14)]
+
+        let fromTimeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
+        let fromTimeViewLabelBottomText = NSAttributedString(string: dateFormatter.stringFromDate(transaction.startDateAndTime ?? NSDate()), attributes: timeViewLabelBottomAttrs)
+        fromTimeViewLabelTopText.appendAttributedString(fromTimeViewLabelBottomText)
+        
+        fromTimeViewLabel.attributedText = fromTimeViewLabelTopText
         fromTimeViewLabel.textColor = Styles.Colors.midnight1
-        fromTimeViewLabel.font = Styles.FontFaces.regular(16)
         fromTimeViewLabel.numberOfLines = 2
         fromTimeView.addSubview(fromTimeViewLabel)
         
@@ -157,9 +171,12 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         toTimeIconView.tintColor = Styles.Colors.midnight1
         toTimeView.addSubview(toTimeIconView)
         
-        toTimeViewLabel.text = "to".localizedString + "\n" + dateFormatter.stringFromDate(transaction.endDateAndTime ?? NSDate())
+        let toTimeViewLabelTopText = NSMutableAttributedString(string: "to".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
+        let toTimeViewLabelBottomText = NSAttributedString(string: dateFormatter.stringFromDate(transaction.endDateAndTime ?? NSDate()), attributes: timeViewLabelBottomAttrs)
+        toTimeViewLabelTopText.appendAttributedString(toTimeViewLabelBottomText)
+        
+        toTimeViewLabel.attributedText = toTimeViewLabelTopText
         toTimeViewLabel.textColor = Styles.Colors.midnight1
-        toTimeViewLabel.font = Styles.FontFaces.regular(16)
         toTimeViewLabel.numberOfLines = 2
         toTimeView.addSubview(toTimeViewLabel)
         
@@ -401,17 +418,17 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             let screenWidth = UIScreen.mainScreen().bounds.width
             topGradient.image = UIImage.imageFromGradient(CGSize(width: screenWidth, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
             
-            if lot!.lotOperator != nil {
-                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-                let operatorString = NSMutableAttributedString(string: lot!.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-                operatedByString.appendAttributedString(operatorString)
-                topLabel.attributedText = operatedByString
-            } else if lot!.lotPartner != nil {
-                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
-                let partnerString = NSMutableAttributedString(string: lot!.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-                operatedByString.appendAttributedString(partnerString)
-                topLabel.attributedText = operatedByString
-            }
+//            if lot!.lotOperator != nil {
+//                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+//                let operatorString = NSMutableAttributedString(string: lot!.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+//                operatedByString.appendAttributedString(operatorString)
+//                topLabel.attributedText = operatedByString
+//            } else if lot!.lotPartner != nil {
+//                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
+//                let partnerString = NSMutableAttributedString(string: lot!.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
+//                operatedByString.appendAttributedString(partnerString)
+//                topLabel.attributedText = operatedByString
+//            }
             
             //attributes!
             
@@ -517,6 +534,46 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     func directionsButtonTapped(sender: UIButton) {
         if lot?.coordinate != nil {
             DirectionsAction.perform(onViewController: self, withCoordinate: lot!.coordinate, shouldCallback: false)
+        }
+    }
+    
+    func showPopupForReportSuccess() {
+        
+        //TODO: LOCALIZE
+        popupVC = PRKPopupViewController(titleIconName: "icon_checkmark", titleText: "", subTitleText: "success".localizedString, messageText: "Successfully paid with Parking Panda!")
+        
+        self.addChildViewController(popupVC!)
+        self.view.addSubview(popupVC!.view)
+        popupVC!.didMoveToParentViewController(self)
+        
+        popupVC!.view.snp_makeConstraints(closure: { (make) -> () in
+            make.edges.equalTo(self.view)
+        })
+        
+        let tap = UITapGestureRecognizer(target: self, action: "dismissPopup")
+        popupVC!.view.addGestureRecognizer(tap)
+        
+        popupVC!.view.alpha = 0.0
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.popupVC!.view.alpha = 1.0
+        })
+        
+    }
+    
+    func dismissPopup() {
+        
+        if let popup = self.popupVC {
+            
+            UIView.animateWithDuration(0.2, animations: { () -> Void in
+                popup.view.alpha = 0.0
+                }, completion: { (finished) -> Void in
+                    popup.removeFromParentViewController()
+                    popup.view.removeFromSuperview()
+                    popup.didMoveToParentViewController(nil)
+                    self.popupVC = nil
+            })
+            
         }
     }
 
