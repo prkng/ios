@@ -139,7 +139,64 @@ class AnalyticsOperations {
         
     }
     
+    class func ppUserDidLogin(completion : ((completed : Bool) -> Void)?) {
+        
+        
+        let url = APIUtility.rootURL() + "analytics/event"
+        let params = ["event" : ("parking_panda_login")]
+        
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            if (response?.statusCode != 201) {
+                completion?(completed: false)
+            } else {
+                completion?(completed: true)
+            }
+            
+        }
+        
+    }
+
+    class func ppUserDidSignUp(completion : ((completed : Bool) -> Void)?) {
+        
+        
+        let url = APIUtility.rootURL() + "analytics/event"
+        let params = ["event" : ("parking_panda_signup")]
+        
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            if (response?.statusCode != 201) {
+                completion?(completed: false)
+            } else {
+                completion?(completed: true)
+            }
+            
+        }
+        
+    }
     
+    class func ppUserDidCreateTransaction(completion : ((completed : Bool) -> Void)?) {
+        
+        
+        let url = APIUtility.rootURL() + "analytics/event"
+        let params = ["event" : ("parking_panda_transaction_created")]
+        
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
+            (request, response, json, error) in
+            
+            if (response?.statusCode != 201) {
+                completion?(completed: false)
+            } else {
+                completion?(completed: true)
+            }
+            
+        }
+        
+    }
+
+
     class func locationPermission(authorizationStatus: CLAuthorizationStatus, completion : (completed : Bool) -> Void) {
         
         var statusString = ""

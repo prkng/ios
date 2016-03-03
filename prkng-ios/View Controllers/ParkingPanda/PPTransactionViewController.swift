@@ -71,9 +71,6 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
         contentView = scrollView
         
-        setupSubviews()
-        setupConstraints()
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -91,6 +88,12 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             }
         }
         
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        setupSubviews()
+        setupConstraints()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -221,8 +224,6 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             make.left.equalTo(self.view)
             make.right.equalTo(self.view)
             make.bottom.equalTo(self.view)
-            make.height.equalTo(self.view)
-            make.width.equalTo(self.view)
         }
         
         topImageView.snp_makeConstraints { (make) -> () in

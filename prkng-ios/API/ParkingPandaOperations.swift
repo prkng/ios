@@ -119,6 +119,7 @@ class ParkingPandaOperations {
                     return
                 }
                 
+                AnalyticsOperations.ppUserDidSignUp(nil)
                 let user = ParkingPandaUser(json: json["data"])
                 Settings.setParkingPandaCredentials(username: user.email, password: user.apiPassword)
                 completion(user: user, error: ppError)
@@ -155,6 +156,7 @@ class ParkingPandaOperations {
                     return
                 }
                 
+                AnalyticsOperations.ppUserDidLogin(nil)
                 let user = ParkingPandaUser(json: json["data"])
                 Settings.setParkingPandaCredentials(username: user.email, password: user.apiPassword)
                 completion(user: user, error: ppError)
@@ -304,6 +306,7 @@ class ParkingPandaOperations {
                             return
                         }
                         
+                        AnalyticsOperations.ppUserDidCreateTransaction(nil)
                         let transactionsJson: [JSON] = json["data"].arrayValue
                         let transactions = transactionsJson.map({ (transactionJson) -> ParkingPandaTransaction in
                             ParkingPandaTransaction(json: transactionJson)
