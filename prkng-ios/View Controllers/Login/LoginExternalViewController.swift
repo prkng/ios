@@ -133,7 +133,7 @@ class LoginExternalViewController: AbstractViewController {
         nameLabel.font = Styles.Fonts.h1
         nameLabel.textColor = Styles.Colors.cream1
         nameLabel.textAlignment = NSTextAlignment.Center
-        nameLabel.text = user.name
+        nameLabel.text = user.fullName
         profileContainer.addSubview(nameLabel)
         
         emailLabel.font = Styles.FontFaces.light(17)

@@ -10,14 +10,18 @@ import UIKit
 
 class User : NSObject {
 
-    var name : String
-    var gender : String
-    var identifier : String
-    var email : String
-    var imageUrl : String?
+    var fullName: String
+    var firstName: String?
+    var lastName: String?
+    var gender: String
+    var identifier: String
+    var email: String
+    var imageUrl: String?
     
     init(json : JSON) {
-        name = json["name"].stringValue
+        fullName = json["name"].stringValue
+        firstName = json["first_name"].string
+        lastName = json["last_name"].string
         gender = json["gender"].stringValue
         identifier = json["id"].stringValue
         email = json["email"].stringValue
@@ -25,7 +29,9 @@ class User : NSObject {
     }
     
     init(coder : NSCoder ) {
-        name = coder.decodeObjectForKey("name") as! String
+        fullName = coder.decodeObjectForKey("name") as! String
+        firstName = coder.decodeObjectForKey("first_name") as? String
+        lastName = coder.decodeObjectForKey("last_name") as? String
         gender = coder.decodeObjectForKey("gender") as! String
         identifier = coder.decodeObjectForKey("identifier") as! String
         email = coder.decodeObjectForKey("email") as! String
@@ -33,7 +39,9 @@ class User : NSObject {
     }
     
     func encodeWithCoder (encoder : NSCoder) {
-        encoder.encodeObject(name, forKey: "name")
+        encoder.encodeObject(fullName, forKey: "name")
+        encoder.encodeObject(firstName, forKey: "first_name")
+        encoder.encodeObject(lastName, forKey: "last_name")
         encoder.encodeObject(gender, forKey: "gender")
         encoder.encodeObject(identifier, forKey: "identifier")
         encoder.encodeObject(email, forKey: "email")

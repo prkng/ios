@@ -93,7 +93,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         sendLogButton.hidden = !debugFeaturesOn
         
         if let user = AuthUtility.getUser() {
-            self.profileNameLabel.text = user.name
+            self.profileNameLabel.text = user.fullName
             if let imageUrl = user.imageUrl {
                 self.profileImageView.sd_setImageWithURL(NSURL(string: imageUrl))
             }
@@ -552,6 +552,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             firstSection = [alertCell, residentialPermitCell]
             carSharingSection = [automobileCell, communautoCell]
         } else if Settings.selectedCity().name == "seattle" {
+            firstSection += [parkingPandaCell]
             carSharingSection = [car2goCell, zipcarCell]
         } else if Settings.selectedCity().name == "newyork" {
             firstSection += [commercialPermitCell, parkingPandaCell]
