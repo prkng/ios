@@ -59,8 +59,6 @@ class UIDatePickerViewController: AbstractViewController {
     
     func setupViews() {
         
-        self.view.backgroundColor = Styles.Colors.transparentBlack
-
         datePicker.backgroundColor = UIColor.whiteColor()
         
         toolBar.barStyle = UIBarStyle.Default

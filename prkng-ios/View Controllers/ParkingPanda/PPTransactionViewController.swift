@@ -146,8 +146,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         fromTimeView.addSubview(fromTimeIconView)
         
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .FullStyle
-        dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.dateFormat = "EEEE, MMM d, yyyy 'at' HH:mm"
         
         let timeViewLabelTopAttrs = [NSFontAttributeName: Styles.FontFaces.bold(12)]
         let timeViewLabelBottomAttrs = [NSFontAttributeName: Styles.FontFaces.regular(14)]
@@ -280,8 +279,47 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             make.height.equalTo(headerHeight)
         }
         
-        fromTimeView.snp_makeConstraints { (make) -> () in
+        payContainerView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(headerView.snp_bottom)
+            make.left.equalTo(contentView)
+            make.right.equalTo(contentView)
+            make.width.equalTo(self.view)
+            make.height.equalTo(payContainerViewHeight)
+        }
+        
+        creditCardImageView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView).offset(24)
+            make.centerY.equalTo(payContainerView).multipliedBy(0.66)
+            make.size.equalTo(CGSize(width: 20, height: 14))
+        }
+        
+        payTitleLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(creditCardImageView.snp_right).offset(14)
+            make.centerY.equalTo(payContainerView).multipliedBy(0.66)
+            make.right.equalTo(payContainerView).offset(-70)
+        }
+        
+        paySubtitleLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView).offset(24)
+            make.centerY.equalTo(payContainerView).multipliedBy(1.33)
+            make.right.equalTo(payContainerView).offset(-70)
+        }
+        
+        priceLabel.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView.snp_right).offset(-70)
+            make.right.equalTo(payContainerView).offset(-14)
+            make.centerY.equalTo(payContainerView)
+        }
+        
+        separator4.snp_makeConstraints { (make) -> Void in
+            make.bottom.equalTo(payContainerView)
+            make.left.equalTo(contentView)
+            make.right.equalTo(contentView)
+            make.height.equalTo(1)
+        }
+        
+        fromTimeView.snp_makeConstraints { (make) -> () in
+            make.top.equalTo(payContainerView.snp_bottom)
             make.left.equalTo(contentView)
             make.right.equalTo(contentView)
             make.height.equalTo(timeViewHeight)
@@ -343,45 +381,6 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
         separator3.snp_makeConstraints { (make) -> Void in
             make.bottom.equalTo(barcodeImageView)
-            make.left.equalTo(contentView)
-            make.right.equalTo(contentView)
-            make.height.equalTo(1)
-        }
-        
-        payContainerView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(barcodeImageView.snp_bottom)
-            make.left.equalTo(contentView)
-            make.right.equalTo(contentView)
-            make.width.equalTo(self.view)
-            make.height.equalTo(payContainerViewHeight)
-        }
-        
-        creditCardImageView.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(payContainerView).offset(24)
-            make.centerY.equalTo(payContainerView).multipliedBy(0.66)
-            make.size.equalTo(CGSize(width: 20, height: 14))
-        }
-        
-        payTitleLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(creditCardImageView.snp_right).offset(14)
-            make.centerY.equalTo(payContainerView).multipliedBy(0.66)
-            make.right.equalTo(payContainerView).offset(-70)
-        }
-        
-        paySubtitleLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(payContainerView).offset(24)
-            make.centerY.equalTo(payContainerView).multipliedBy(1.33)
-            make.right.equalTo(payContainerView).offset(-70)
-        }
-        
-        priceLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(payContainerView.snp_right).offset(-70)
-            make.right.equalTo(payContainerView).offset(-14)
-            make.centerY.equalTo(payContainerView)
-        }
-        
-        separator4.snp_makeConstraints { (make) -> Void in
-            make.bottom.equalTo(payContainerView)
             make.left.equalTo(contentView)
             make.right.equalTo(contentView)
             make.height.equalTo(1)
@@ -454,7 +453,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             }
             
             attributesView.snp_makeConstraints { (make) -> () in
-                make.top.equalTo(self.payContainerView.snp_bottom)
+                make.top.equalTo(self.barcodeImageView.snp_bottom)
                 make.left.equalTo(self.view)
                 make.right.equalTo(self.view)
                 make.height.equalTo(attributesViewHeight)

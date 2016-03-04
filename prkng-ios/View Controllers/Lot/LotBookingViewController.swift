@@ -71,8 +71,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         headerView = ModalHeaderView()
         
         self.dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .FullStyle
-        dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.dateFormat = "EEEE, MMM d, yyyy 'at' HH:mm"
         
         //the minimum date is the nearest 30 minute
         let minimumDate = NSDate().skipToNextEvenMinuteInterval(30)
