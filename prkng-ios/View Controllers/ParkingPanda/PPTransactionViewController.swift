@@ -185,6 +185,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
         if let barcodeUrl = NSURL(string: transaction.barcodeUrlString) {
             barcodeImageView.sd_setImageWithURL(barcodeUrl, completed: { (image, error, cacheType, url) -> Void in
+                self.barcodeImageView.image = image.imageTintedWithColor(Styles.Colors.cream1, blendMode: CGBlendMode.Multiply)
                 let currentDate = NSDate()
                 if self.transaction.endDateAndTime?.earlierDate(currentDate) == self.transaction.endDateAndTime {
                     self.barcodeImageView.alpha = 0.2
