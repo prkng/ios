@@ -387,20 +387,29 @@ class ParkingPandaOperations {
         }
     }
     
-    static func updateCreditCard(user: ParkingPandaUser, token: String, creditCardNumber: String, cvv: String, billingPostalCode: String, cardholderName: String, expiryDate: String, completion: ((creditCard: ParkingPandaCreditCard?, error: ParkingPandaError?) -> Void)) {
+    static func updateCreditCard(user: ParkingPandaUser,
+        token: String,
+//        creditCardNumber: String,
+//        cvv: String,
+//        billingPostalCode: String,
+//        cardholderName: String,
+//        expiryDate: String,
+        isDefault: Bool,
+        completion: ((creditCard: ParkingPandaCreditCard?, error: ParkingPandaError?) -> Void)) {
         
         let url = baseUrlString + "users/" + String(user.id) + "/credit-cards/" + token
         let params: [String: AnyObject] = [
             "apikey": publicKey,
-            "CreditCardNumber": creditCardNumber,
-            "CVV": cvv,
-            "BillingPostal": billingPostalCode,
-            "CardholderName": cardholderName,
-            "ExpirationDate": expiryDate,
+//            "CreditCardNumber": creditCardNumber,
+//            "CVV": cvv,
+//            "BillingPostal": billingPostalCode,
+//            "CardholderName": cardholderName,
+//            "ExpirationDate": expiryDate,
+            "MakeDefault": isDefault
         ]
         
         ParkingPandaHelper.authenticatedManager(username: user.email, password: user.apiPassword)
-            .request(.PUT, url, parameters: params)
+            .request(.PUT, url, parameters: params, encoding: .JSON)
             .responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
                 (request, response, json, error) in
                 

@@ -205,7 +205,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         var paymentMethodSection = [SettingsCell]()
         let addPaymentMethodCell = SettingsCell(titleText: "add_payment_method".localizedString, selectorsTarget: self, cellSelector: "addPaymentMethod", canSelect: true)
         for creditCard in creditCards {
-            let card = SettingsCell(userInfo: ["card_io_payment_type": creditCard.paymentType.rawValue, "token": creditCard.token], titleText: creditCard.lastFour, canSelect: false, canDelete: true)
+            let card = SettingsCell(userInfo: ["card_io_payment_type": creditCard.paymentType.rawValue, "token": creditCard.token, "isDefault": creditCard.isDefault, "parking_panda_credit_card": creditCard], titleText: creditCard.lastFour, canSelect: !creditCard.isDefault, canDelete: true)
             
             paymentMethodSection.append(card)
         }
@@ -284,12 +284,13 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
                 let rawCardIOCardType = settingsCell.userInfo["card_io_payment_type"] as? Int ?? 0
                 let cardIOCardType = CardIOCreditCardType(rawValue: rawCardIOCardType) ?? .Unrecognized
                 let cardToken = settingsCell.userInfo["token"] as? String ?? ""
+                let isDefault = settingsCell.userInfo["isDefault"] as? Bool ?? false
                 
-                let reuse = "cc_" + String(rawCardIOCardType) + "_" + cardToken
+                let reuse = "cc_" + String(rawCardIOCardType) + "_" + cardToken + String(isDefault)
                 
                 var cell = tableView.dequeueReusableCellWithIdentifier(reuse) as? PPCreditCardCell
                 if cell == nil {
-                    cell = PPCreditCardCell(creditCardType: cardIOCardType, reuseIdentifier: reuse)
+                    cell = PPCreditCardCell(creditCardType: cardIOCardType, isDefault: isDefault, reuseIdentifier: reuse)
                 }
                 cell?.creditCardNumber = settingsCell.titleText
                 self.tableView.cachedCells.append(cell!)
@@ -366,6 +367,15 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         if settingsCell.selectorsTarget != nil && settingsCell.cellSelector != nil {
             settingsCell.selectorsTarget!.performSelector(Selector(settingsCell.cellSelector!))
+        }
+        if let creditCard = settingsCell.userInfo["parking_panda_credit_card"] as? ParkingPandaCreditCard {
+            //then mark it as default
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                SVProgressHUD.show()
+                ParkingPandaOperations.updateCreditCard(self.ppUser, token: creditCard.token, isDefault: true, completion: { (creditCard, error) -> Void in
+                    self.refresh()
+                })
+            })
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

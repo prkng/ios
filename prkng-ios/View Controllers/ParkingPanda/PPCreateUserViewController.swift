@@ -264,7 +264,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 
                 var cell = tableView.dequeueReusableCellWithIdentifier(reuse) as? PPCreditCardCell
                 if cell == nil {
-                    cell = PPCreditCardCell(creditCardType: cardIOCardType, reuseIdentifier: reuse)
+                    cell = PPCreditCardCell(creditCardType: cardIOCardType, isDefault: false, reuseIdentifier: reuse)
                 }
                 cell?.creditCardNumber = settingsCell.titleText
                 self.tableView.cachedCells.append(cell!)

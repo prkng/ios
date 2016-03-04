@@ -37,7 +37,7 @@ class PPCreditCardCell: UITableViewCell {
         }
     }
     
-    init(creditCardType: CardIOCreditCardType, reuseIdentifier: String?) {
+    init(creditCardType: CardIOCreditCardType, isDefault: Bool, reuseIdentifier: String?) {
         self.creditCardType = creditCardType
         self.creditCardNumber = ""
         
@@ -48,7 +48,10 @@ class PPCreditCardCell: UITableViewCell {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
         
         //enable this once we have an appropriate edit card screen
-//        self.accessoryType = .DisclosureIndicator
+        if isDefault {
+            let defaultCCImage = UIImage(named: "icon_checkmark_small_red")
+            self.accessoryView = UIImageView(image: defaultCCImage)
+        }
         
         setupViews()
         self.setNeedsUpdateConstraints()
