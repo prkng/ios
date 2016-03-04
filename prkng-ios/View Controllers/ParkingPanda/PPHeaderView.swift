@@ -32,6 +32,12 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
     private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
     private(set) var BIG_CELL_HEIGHT: CGFloat = 61
     
+    var showsLeftButton: Bool {
+        didSet {
+            backButtonImageView.hidden = !showsLeftButton
+        }
+    }
+
     var showsRightButton: Bool {
         didSet {
             nextButtonLabel.hidden = !showsRightButton
@@ -59,6 +65,7 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
     var backButtonTapRadius: CGFloat?
     
     init() {
+        showsLeftButton = true
         showsRightButton = true
         backButtonImageView = ViewFactory.outlineBackButton(BACKGROUND_TEXT_COLOR_EMPHASIZED)
         super.init(frame: CGRectZero)

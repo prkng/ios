@@ -69,6 +69,7 @@ class Lot: NSObject, DetailObject {
     var coordinate: CLLocationCoordinate2D
     var streetViewPanoramaId: String?
     var streetViewHeading: Double?
+    var partnerId: String
     
     var isCheaper: Bool
     
@@ -260,9 +261,22 @@ class Lot: NSObject, DetailObject {
 
     // MARK: DetailObject Protocol
     var headerText: String { get { return address } }
-    var headerIconName: String { get { return "btn_info_styled" } }
-    var doesHeaderIconWiggle: Bool { get { return false } }
-    var headerIconSubtitle: String { get { return "info" } }
+    var headerIconName: String { get {
+        if self.isParkingPanda {
+            return "icon_checkin_pin"
+        }
+        return "btn_info_styled"
+        }
+    }
+    var doesHeaderIconWiggle: Bool { get { return self.isParkingPanda } }
+    var headerIconSubtitle: String { get {
+        if self.isParkingPanda {
+            //TODO: LOCALIZE
+            return "reserve_now".localizedString
+        }
+        return "info"
+        }
+    }
     
     var bottomLeftIconName: String? { get { return nil } }
     var bottomLeftTitleText: String? { get { return "daily".localizedString.uppercaseString } }
@@ -299,7 +313,20 @@ class Lot: NSObject, DetailObject {
         return interval.untilAttributedString(Styles.Fonts.h2rVariable, secondPartFont: Styles.FontFaces.light(16))
         }
     }
-    var bottomRightIconName: String? { get { return nil } }
+    var bottomRightIconName: String? { get {
+        if self.isParkingPanda {
+            return "btn_info_outline"
+        }
+        return nil
+        }
+    }
+    var bottomRightIconColor: UIColor? { get {
+        if self.isParkingPanda {
+            return Styles.Colors.midnight1
+        }
+        return nil
+        }
+    }
     
     var showsBottomLeftContainer: Bool { get { return true } }
 
@@ -344,6 +371,7 @@ class Lot: NSObject, DetailObject {
         self.lotOperator = lot.lotOperator
         self.isCheaper = lot.isCheaper
         self.lotPartner = lot.lotPartner
+        self.partnerId = lot.partnerId
         self.availability = lot.availability
         
     }
@@ -400,6 +428,7 @@ class Lot: NSObject, DetailObject {
         self.streetViewHeading = json["properties"]["street_view"]["head"].double
         self.lotPartner = json["properties"]["partner_name"].string
         self.availability = json["properties"]["available"].int
+        self.partnerId = json["properties"]["partner_id"].stringValue
 
         self.isCheaper = false
     }

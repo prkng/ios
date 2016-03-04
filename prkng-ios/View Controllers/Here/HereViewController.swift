@@ -208,12 +208,28 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func topContainerTapped() {
 
-        if shouldIgnoreSwipe(CGPointZero) {
+        if activeDetailObject?.compact == true {
             return
         }
 
-        if activeDetailObject != nil &&  activeDetailObject is Lot {
-            showModalView(activeDetailObject)
+        if let lot = activeDetailObject as? Lot {
+            if lot.isParkingPanda {
+                ParkingPandaOperations.login(username: nil, password: nil, completion: {(user, error) -> Void in
+                    if user != nil {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            let lotBookingVC = LotBookingViewController(lot: lot, user: user!, view: self.view)
+                            self.showModalView(self.activeDetailObject, modalVC: lotBookingVC)
+                        })
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            let ppIntroVC = PPIntroViewController()
+                            ppIntroVC.presentWithVC(self)
+                        })
+                    }
+                })
+            } else {
+                showModalView(activeDetailObject, modalVC: LotViewController(lot: lot, view: self.view))
+            }
         } else {
             checkin()
         }
@@ -221,12 +237,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     
     func bottomContainerTapped() {
         
-        if shouldIgnoreSwipe(CGPointZero) {
+        if activeDetailObject?.compact == true {
             return
         }
 
         if activeDetailObject != nil {
-            showModalView(activeDetailObject)
+            showModalView(activeDetailObject, modalVC: nil)
         }
     }
     
@@ -234,12 +250,18 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
     func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
-        return activeDetailObject?.compact == true
+        if activeDetailObject?.compact == true {
+            return true
+        }
+        if let lot = activeDetailObject as? Lot where lot.isParkingPanda {
+            return true
+        }
+        return false
     }
     
     func swipeDidBegin() {
         if activeDetailObject != nil {
-            setupModalView(activeDetailObject)
+            setupModalView(activeDetailObject, modalVC: nil)
         }
 
     }
@@ -265,12 +287,12 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
     }
     
     // MARK: Schedule/Agenda/Modal methods
-    func showModalView(detailObject : DetailObject?) {
-        setupModalView(detailObject)
+    func showModalView(detailObject : DetailObject?, modalVC: PRKModalDelegatedViewController?) {
+        setupModalView(detailObject, modalVC: modalVC)
         animateModalView()
     }
     
-    func setupModalView(detailObject : DetailObject?) {
+    func setupModalView(detailObject : DetailObject?, modalVC: PRKModalDelegatedViewController?) {
         
         //this prevents the "double modal view" bug that we sometimes see
         self.prkModalViewController?.view.removeFromSuperview()
@@ -279,7 +301,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
         self.prkModalViewController = nil
         
         if let spot = detailObject as? ParkingSpot {
-            self.prkModalViewController = PRKModalViewController(spot: spot, view: self.view)
+            self.prkModalViewController = modalVC ?? PRKModalViewController(spot: spot, view: self.view)
             self.view.addSubview(self.prkModalViewController!.view)
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
@@ -294,11 +316,7 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
             self.prkModalViewController!.view.layoutIfNeeded()
             
         } else if let lot = detailObject as? Lot {
-            if lot.isParkingPanda {
-                self.prkModalViewController = LotBookingViewController(lot: lot, view: self.view)
-            } else {
-                self.prkModalViewController = LotViewController(lot: lot, view: self.view)
-            }
+            self.prkModalViewController = modalVC ?? LotViewController(lot: lot, view: self.view)
             self.view.addSubview(self.prkModalViewController!.view)
             self.prkModalViewController!.willMoveToParentViewController(self)
             self.prkModalViewController!.delegate = self
@@ -447,7 +465,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 make.width.equalTo(detailObject!.showsBottomLeftContainer ? detailObject!.bottomLeftWidth : 0)
             })
             if let iconName = detailObject!.bottomRightIconName {
-                detailView.scheduleImageView.image = UIImage(named:iconName)
+                if let colorForIcon = detailObject?.bottomRightIconColor {
+                    let image = UIImage(named: iconName)
+                    detailView.scheduleImageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                    detailView.scheduleImageView.tintColor = colorForIcon
+                } else {
+                    detailView.scheduleImageView.image = UIImage(named:iconName)
+                }
             } else {
                 detailView.scheduleImageView.image = UIImage()
             }

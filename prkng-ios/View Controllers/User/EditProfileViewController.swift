@@ -44,7 +44,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     init() {
 
         if let user = AuthUtility.getUser() {
-            inputForm = PRKInputForm.inputFormForEditProfile(user.name, emailText: user.email)
+            inputForm = PRKInputForm.inputFormForEditProfile(user.fullName, emailText: user.email)
         } else {
             inputForm = PRKInputForm()
         }
@@ -202,7 +202,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
                 self.avatarImageView.sd_setImageWithURL(NSURL(string: imageUrl))
             }
             
-            self.nameTextField.text = user.name
+            self.nameTextField.text = user.fullName
             
         }
         
@@ -238,7 +238,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         
         let user = AuthUtility.getUser()!
         
-        user.name = nameText
+        user.fullName = nameText
         user.email = emailText
         
         let newPassword : String = passwordText

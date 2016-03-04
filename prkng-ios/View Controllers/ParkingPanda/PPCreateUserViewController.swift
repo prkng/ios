@@ -13,7 +13,13 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     var delegate: PPCreateUserViewControllerDelegate?
     
-    private var step: Int = 0
+    private enum PPCreateUserStep: Int {
+        case PersonalInformation = 0
+        case CreditCard
+        case VehicleDescription
+    }
+    
+    private var step: PPCreateUserStep = .PersonalInformation
     
     private var statusView = UIView()
     private var headerView = PPHeaderView()
@@ -32,6 +38,13 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     private var model: String = Settings.getCarDescription()["model"] ?? ""
     private var color: String = Settings.getCarDescription()["color"] ?? ""
     private var phone: String = Settings.getCarDescription()["phone"] ?? ""
+    
+    var onlyShowVehicleDescription: Bool = false {
+        didSet {
+            step = .VehicleDescription
+            headerView.showsLeftButton = false
+        }
+    }
     
     private(set) var BACKGROUND_COLOR = Styles.Colors.stone
     private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
@@ -210,16 +223,9 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         let vehicleDescriptionSection2 = ("", [vehicleDescPhone])
 
         switch(step) {
-        case 0: return [("enter_your_information".localizedString, formSection)]
-        case 1: return [("payment_method", paymentMethodSection)]
-        case 2: return [("vehicle_description", vehicleDescriptionSection),vehicleDescriptionSection2]
-        default:
-            return [
-                ("enter_your_information".localizedString, formSection),
-                ("payment_method", paymentMethodSection),
-                ("vehicle_description", vehicleDescriptionSection),
-                vehicleDescriptionSection2,
-            ]
+        case .PersonalInformation: return [("enter_your_information".localizedString, formSection)]
+        case .CreditCard: return [("payment_method", paymentMethodSection)]
+        case .VehicleDescription: return [("vehicle_description", vehicleDescriptionSection),vehicleDescriptionSection2]
         }
         
     }
@@ -258,7 +264,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 
                 var cell = tableView.dequeueReusableCellWithIdentifier(reuse) as? PPCreditCardCell
                 if cell == nil {
-                    cell = PPCreditCardCell(creditCardType: cardIOCardType, reuseIdentifier: reuse)
+                    cell = PPCreditCardCell(creditCardType: cardIOCardType, isDefault: false, reuseIdentifier: reuse)
                 }
                 cell?.creditCardNumber = settingsCell.titleText
                 self.tableView.cachedCells.append(cell!)
@@ -335,7 +341,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if step == 2 && section == 1 {
+        if step == .VehicleDescription && section == 1 {
             return 4 //second vehicle description cell
         }
         return BIG_CELL_HEIGHT
@@ -455,7 +461,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     func passesValidation(shouldColorCells shouldColorCells: Bool = true) -> Bool {
         
         switch step {
-        case 0:
+        case .PersonalInformation:
             let failedValidation = firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty
             
             if failedValidation {
@@ -473,7 +479,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 
                 return false
             }
-        case 1:
+        case .CreditCard:
             let failedValidation = creditCards.count < 1
             
             if failedValidation {
@@ -481,7 +487,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 GeneralHelper.warnUserWithErrorMessage("Please add at least one credit card to continue.")
                 return false
             }
-        case 2:
+        case .VehicleDescription:
             let failedValidation = brand.isEmpty || plate.isEmpty || model.isEmpty || color.isEmpty || phone.isEmpty
             
             if failedValidation {
@@ -500,7 +506,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 
                 return false
             }
-        default: break
         }
 
         return true
@@ -523,12 +528,15 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         headerView.rightButtonText = "next".localizedString.uppercaseString
 
         switch step {
-        case 0:
+        case .PersonalInformation:
             dismiss()
-        case 1, 2:
-            step--
+        case .CreditCard, .VehicleDescription:
+            if onlyShowVehicleDescription {
+                //then the purpose of this was to just show the vehicle description, so just dismiss this (since we know we've passed validation)
+                return
+            }
+            step = PPCreateUserStep(rawValue: step.rawValue - 1) ?? .PersonalInformation
             self.tableView.reloadDataAnimated()
-        default: break
         }
 
     }
@@ -536,13 +544,19 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     func tappedNextButton() {
         
         switch step {
-        case 0:
+        case .PersonalInformation:
             if passesValidation() {
-                step++
+                step = PPCreateUserStep(rawValue: step.rawValue + 1) ?? .PersonalInformation
                 headerView.rightButtonText = "next".localizedString.uppercaseString
             }
             self.tableView.reloadDataAnimated()
-        case 1:
+        case .CreditCard:
+            if passesValidation() {
+                step = PPCreateUserStep(rawValue: step.rawValue + 1) ?? .PersonalInformation
+                headerView.rightButtonText = "done".localizedString.uppercaseString
+            }
+            self.tableView.reloadDataAnimated()
+        case .VehicleDescription:
             if passesValidation() {
                 let description = [
                     "brand" : brand ?? "",
@@ -552,12 +566,12 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                     "phone" : phone ?? "",
                 ]
                 Settings.setCarDescription(description)
-                step++
-                headerView.rightButtonText = "done".localizedString.uppercaseString
-            }
-            self.tableView.reloadDataAnimated()
-        case 2:
-            if passesValidation() {
+
+                if onlyShowVehicleDescription {
+                    //then the purpose of this was to just show the vehicle description, so just dismiss this (since we know we've passed validation)
+                    self.dismiss()
+                    return
+                }
                 SVProgressHUD.setBackgroundColor(UIColor.clearColor())
                 SVProgressHUD.show()
                 ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
@@ -571,6 +585,12 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                                         self.dismiss()
                                         self.delegate?.didCreateAccount()
                                         SVProgressHUD.dismiss()
+                                        //TODO: Localize
+                                        if creditCard != nil {
+                                            GeneralHelper.warnUserWithSucceedMessage("Registration complete, you can now reserve a parking lot or garage in-app thanks to our partner, Parking Panda.")
+                                        } else {
+                                            GeneralHelper.warnUserWithSucceedMessage("Registration complete, but please try adding a credit card through Parking Panda Settings.")
+                                        }
                                     })
                                 }
                             }
@@ -582,7 +602,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                     }
                 })
             }
-        default: break
         }
         
     }

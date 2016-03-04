@@ -262,7 +262,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         segmentedControl.snp_makeConstraints { (make) -> Void in
-            make.size.equalTo(CGSize(width: 140, height: 24))
+            make.size.equalTo(CGSize(width: 240, height: 24))
             make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
             make.centerX.equalTo(self.view)
         }
@@ -270,7 +270,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         shareButton.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(self.snp_topLayoutGuideBottom).offset(30)
             make.centerY.equalTo(self.segmentedControl).offset(-2)
-            make.right.equalTo(self.view).offset(-50)
+            make.right.equalTo(self.view).offset(-30)
         }
         
         logoView.snp_makeConstraints { (make) -> () in

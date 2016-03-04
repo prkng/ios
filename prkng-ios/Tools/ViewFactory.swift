@@ -226,7 +226,7 @@ struct ViewFactory {
     // MARK: Segmented Controls
     
     static func nowOrHistorySwitch() -> DVSwitch {
-        let segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString])
+        let segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString, "reservations".localizedString.uppercaseString])
         segmentedControl.backgroundView.layer.borderWidth = 1
         segmentedControl.backgroundView.layer.borderColor = Styles.Colors.stone.colorWithAlphaComponent(0.5).CGColor
         segmentedControl.sliderColor = Styles.Colors.red2
@@ -270,6 +270,16 @@ struct ViewFactory {
     }
     
     // MARK: Icons
+    
+    static func genericImageViewWithImageName(name:String, andColor color: UIColor?) -> UIImageView {
+        let image = UIImage(named: name)
+        let imageView = UIImageView(image: image)
+        if color != nil {
+            imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            imageView.tintColor = color!
+        }
+        return imageView
+    }
     
     static func authorizedIcon(color: UIColor) -> UIImageView {
         let image = UIImage(named: "icon_authorized")

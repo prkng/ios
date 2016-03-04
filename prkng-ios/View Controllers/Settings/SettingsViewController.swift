@@ -93,7 +93,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         sendLogButton.hidden = !debugFeaturesOn
         
         if let user = AuthUtility.getUser() {
-            self.profileNameLabel.text = user.name
+            self.profileNameLabel.text = user.fullName
             if let imageUrl = user.imageUrl {
                 self.profileImageView.sd_setImageWithURL(NSURL(string: imageUrl))
             }
@@ -412,7 +412,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         //bring up the rolly thingy
         CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
             if completed {
-                let pickerVC = UIPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
+                let pickerVC = UIListPickerViewController(pickerValues: permits, completion: { (selectedValue) -> Void in
                     Settings.setResidentialPermit(selectedValue)
                     Settings.setShouldFilterForResidentialPermit(selectedValue != nil)
                     self.tableView.reloadData()
@@ -552,6 +552,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             firstSection = [alertCell, residentialPermitCell]
             carSharingSection = [automobileCell, communautoCell]
         } else if Settings.selectedCity().name == "seattle" {
+            firstSection += [parkingPandaCell]
             carSharingSection = [car2goCell, zipcarCell]
         } else if Settings.selectedCity().name == "newyork" {
             firstSection += [commercialPermitCell, parkingPandaCell]
@@ -621,27 +622,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         let headerText = tableSource[section].0
-
-        if headerText == "" {
-            return nil
-        }
-        
-        let sectionHeader = UIView()
-        sectionHeader.backgroundColor = Styles.Colors.stone
-        let headerTitle = UILabel()
-        headerTitle.font = Styles.FontFaces.bold(12)
-        headerTitle.textColor = Styles.Colors.petrol2
-        headerTitle.text = headerText
-        sectionHeader.addSubview(headerTitle)
-        headerTitle.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(sectionHeader).offset(20)
-            make.right.equalTo(sectionHeader).offset(-20)
-            make.bottom.equalTo(sectionHeader).offset(-10)
-        }
-        return sectionHeader
-
+        return GeneralTableHelperViews.sectionHeaderView(headerText)
     }
     
     //MARK: scroll view delegate for the tableview

@@ -109,7 +109,7 @@ struct UserOperations {
     static func updateUser(user : User, newPassword : String?, imageUrl : String?, completion : (completed : Bool, user : User?, message : String?) -> Void)  {
         
         let url = APIUtility.rootURL() + "user/profile"
-        var params : [String : AnyObject] = ["name" : user.name,
+        var params : [String : AnyObject] = ["name" : user.fullName,
             "email" : user.email,
             "gender" : user.gender
         ]

@@ -172,6 +172,7 @@ class ParkingSpot: NSObject, DetailObject {
         return "btn_schedule"
         }
     }
+    var bottomRightIconColor: UIColor? { get { return nil } }
     
     var showsBottomLeftContainer: Bool { get {
         if self.currentlyActiveRule.ruleType == .Free {

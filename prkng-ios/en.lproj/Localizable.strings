@@ -117,6 +117,8 @@
 "off" = "Off";
 "yes" = "Yes";
 "no" = "No";
+"from" = "From";
+"to" = "To";
 "share_location_copy" = "I parked on: \"[street_name]\", with prkng app. https://prk.ng";
 "pay_reminder" = "Hey, don't forget to pay!";
 "pay" = "Pay";
@@ -267,6 +269,7 @@
 "city_picker_subtitle" = "You can find parking in:";
 
 //carsharing reservations
+"rservation" = "Reservation";
 "reserved" = "Reserved";
 "cancelled_reservation" = "Your reservation was successfully cancelled.";
 "could_not_cancel_reservation" = "Your reservation could not be cancelled.";
@@ -274,6 +277,8 @@
 "reserved_car_share" = "Your reservation was completed.";
 "could_not_reserve" = "Could not complete the reservation";
 "could_not_reserve_not_logged_in" = "Your reservation could not be completed because you aren't logged in. Log in, then try again.";
+
+//parking panda
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";

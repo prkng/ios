@@ -118,6 +118,8 @@
 "off" = "Non";
 "yes" = "Oui";
 "no" = "Non";
+"from" = "De";
+"to" = "À";
 "share_location_copy" = "Je suis parqué sur: \"[street_name]\", prkng app. https://prk.ng";
 "pay_reminder" = "Hey, n'oubliez pas de payer!";
 "pay" = "Payer";
@@ -269,6 +271,7 @@
 "city_picker_subtitle" = "Trouvez un stationnement à:";
 
 //car sharing reservations
+"rservation" = "Réservation";
 "reserved" = "Réservé";
 "cancelled_reservation" = "Votre réservation a été annulée.";
 "could_not_cancel_reservation" = "Impossible d'annuler votre réservation.";

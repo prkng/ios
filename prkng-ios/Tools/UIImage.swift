@@ -193,5 +193,26 @@ extension UIImage {
         return image
     }
     
+
+    //tints white to the given color (CGBlendMode.Multiply)
+    func imageTintedWithColor(color: UIColor, blendMode: CGBlendMode) -> UIImage {
+        
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        let rect = CGRect(origin: CGPointZero, size: self.size)
+        
+        //tint the image
+        self.drawInRect(rect)
+        color.set()
+        UIRectFillUsingBlendMode(rect, blendMode)
+        
+        //restore alpha channel
+        self.drawInRect(rect, blendMode: CGBlendMode.DestinationIn, alpha: 1)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
+    }
+
 }
 

@@ -165,8 +165,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, CLLocationManagerDelegate
         
         //configure IQKeyboardManager
         IQKeyboardManager.sharedManager().considerToolbarPreviousNextInViewClass(PRKInputForm)
-        IQKeyboardManager.sharedManager().enableAutoToolbar = false
-//        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(FilterViewController)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(NotesModalViewController)//reports
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(FilterViewController)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(LoginEmailViewController)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(RegisterEmailViewController)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(PPSignInViewController)
+        IQKeyboardManager.sharedManager().disableToolbarInViewControllerClass(PPCreateUserViewController)
         IQKeyboardManager.sharedManager().shouldShowTextFieldPlaceholder = false
 
         // Override point for customization after application launch.
