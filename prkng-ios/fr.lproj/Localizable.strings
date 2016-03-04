@@ -58,7 +58,7 @@
 "login_error_title_google" = "Connexion Google échouée";
 "login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
 "login_permissions_bottom_text" = "Car on veut tous un rappel pour éviter une contravention!";
-"location_permissions_bottom_text" = "Afin d’éviter de tourner en rond pour trouver les places au alentour";
+"location_permissions_bottom_text" = "Afin d’éviter de tourner en rond pour trouver les places aux alentours";
 "register_error_title" = "Erreur d'inscription";
 "register_error_message_generic" = "Inscription impossible. merci de réessayer.";
 "register_error_message_user_exists" = "Ce nom d'utilisateur est déjà pris. Essayez avec un autre nom.";
