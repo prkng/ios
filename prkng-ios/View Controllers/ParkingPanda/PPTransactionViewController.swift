@@ -36,7 +36,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     private var barcodeImageView = UIImageView()
     
     private var payContainerView = UIView()
-//    private var creditCardImageView = UIImageView()
+    private var creditCardImageView = ViewFactory.genericImageViewWithImageName("icon_credit_card", andColor: Styles.Colors.red2)
     private var payTitleLabel = UILabel()
     private var paySubtitleLabel = UILabel()
     private var priceLabel = UILabel()
@@ -203,6 +203,8 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         payContainerView.backgroundColor = Styles.Colors.cream1
         scrollView.addSubview(payContainerView)
         
+        payContainerView.addSubview(creditCardImageView)
+        
         //TODO: LOCALIZE
         payTitleLabel.text = "paid_with_parking_panda".localizedString
         payTitleLabel.textColor = Styles.Colors.red2
@@ -228,11 +230,6 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         priceLabel.textAlignment = .Right
         payContainerView.addSubview(priceLabel)
         
-//        if let creditCardTypeImage = transaction CardIOCreditCardInfo.logoForCardType(creditCardType) {
-//            creditCardImageView.image = creditCardTypeImage
-//        }
-
-
         separator4.backgroundColor = Styles.Colors.transparentBlack
         scrollView.addSubview(separator4)
 
@@ -359,14 +356,14 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             make.height.equalTo(payContainerViewHeight)
         }
         
-//        creditCardImageView.snp_makeConstraints { (make) -> Void in
-//            make.left.equalTo(payContainerView).offset(24)
-//            make.centerY.equalTo(self.contentView).multipliedBy(0.5)
-//            make.size.equalTo(CGSize(width: 36, height: 25)) //this is the default size of CardIO's CardIOCreditCardInfo.logoForCardType(cardType: CardIOCreditCardType) method
-//        }
+        creditCardImageView.snp_makeConstraints { (make) -> Void in
+            make.left.equalTo(payContainerView).offset(24)
+            make.centerY.equalTo(payContainerView).multipliedBy(0.66)
+            make.size.equalTo(CGSize(width: 20, height: 14))
+        }
         
         payTitleLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(payContainerView).offset(24)
+            make.left.equalTo(creditCardImageView.snp_right).offset(14)
             make.centerY.equalTo(payContainerView).multipliedBy(0.66)
             make.right.equalTo(payContainerView).offset(-70)
         }
