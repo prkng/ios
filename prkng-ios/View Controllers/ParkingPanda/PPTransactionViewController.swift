@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UIScrollViewDelegate {
+class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
     private var transaction: ParkingPandaTransaction //customized based on the presence of the lot
     private var lot: Lot?
@@ -55,7 +55,6 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     private let headerHeight: CGFloat = 70
     private(set) var gradientHeight: CGFloat = 65
     private let timeViewHeight: CGFloat = 60
-    private let barcodeViewHeight: CGFloat = 180
     private let attributesViewHeight: CGFloat = 52
     private let payContainerViewHeight: CGFloat = 60
     private let paddingHeight: CGFloat = 5
@@ -105,8 +104,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let height = topImageView.frame.size.height + headerHeight + (2*timeViewHeight) + barcodeImageView.frame.size.height + payContainerViewHeight + attributesViewHeight + paddingHeight
-        scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: height)
+        recalculateScrollView(centerBarcodeImageView: false)
     }
     
     func setupSubviews() {
@@ -192,6 +190,10 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             })
         }
         barcodeImageView.contentMode = .ScaleAspectFit
+        barcodeImageView.userInteractionEnabled = true
+        let tapRec = UITapGestureRecognizer(target: self, action: Selector("didTapBarcodeImage"))
+        tapRec.delegate = self
+        barcodeImageView.addGestureRecognizer(tapRec)
         scrollView.addSubview(barcodeImageView)
         
         contentView.bringSubviewToFront(directionsButton)
@@ -377,6 +379,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             make.left.equalTo(contentView)
             make.right.equalTo(contentView)
             make.width.equalTo(self.view)
+            make.height.equalTo(120)
         }
         
         separator3.snp_makeConstraints { (make) -> Void in
@@ -527,6 +530,39 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     }
     
     //MARK: Helper methods
+    
+    func recalculateScrollView(centerBarcodeImageView centerBarcodeImageView: Bool) {
+        let height = topImageView.frame.size.height + headerHeight + (2*timeViewHeight) + barcodeImageView.frame.size.height + payContainerViewHeight + attributesViewHeight + paddingHeight
+        scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: height)
+        if centerBarcodeImageView {
+            scrollView.scrollRectToVisible(barcodeImageView.frame, animated: true)
+        }
+    }
+    
+    func didTapBarcodeImage() {
+        
+        if self.barcodeImageView.frame.size.height == 120 {
+            self.barcodeImageView.snp_updateConstraints { (make) -> Void in
+                make.height.equalTo(self.barcodeImageView.image!.size.height)
+            }
+        } else {
+            self.barcodeImageView.snp_updateConstraints { (make) -> Void in
+                make.height.equalTo(120)
+            }
+        }
+        
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.view.layoutIfNeeded()
+            self.view.updateConstraints()
+            }) { (finished) -> Void in
+                self.recalculateScrollView(centerBarcodeImageView: true)
+        }
+
+    }
+    
+    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
     
     func directionsButtonTapped(sender: UIButton) {
         if lot?.coordinate != nil {
