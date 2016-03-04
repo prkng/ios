@@ -26,6 +26,7 @@ protocol DetailObject {
     var bottomRightTitleText: String { get }
     var bottomRightPrimaryText: NSAttributedString { get }
     var bottomRightIconName: String? { get }
+    var bottomRightIconColor: UIColor? { get }
     
     var showsBottomLeftContainer: Bool { get //{ return bottomLeftTitleText == nil && bottomLeftPrimaryText == nil } 
         }
@@ -56,7 +57,8 @@ class DetailObjectLoading: DetailObject {
     var bottomRightTitleText: String { get { return "" } }
     var bottomRightPrimaryText: NSAttributedString { get { return NSAttributedString(string: "loading".localizedString, attributes: [NSFontAttributeName: Styles.Fonts.h3, NSBaselineOffsetAttributeName: 5]) } }
     var bottomRightIconName: String? { get { return nil } }
-    
+    var bottomRightIconColor: UIColor? { get { return nil } }
+
     var showsBottomLeftContainer: Bool { get { return parent.showsBottomLeftContainer } }
 
 }

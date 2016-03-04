@@ -465,7 +465,13 @@ class HereViewController: AbstractViewController, SpotDetailViewDelegate, PRKMod
                 make.width.equalTo(detailObject!.showsBottomLeftContainer ? detailObject!.bottomLeftWidth : 0)
             })
             if let iconName = detailObject!.bottomRightIconName {
-                detailView.scheduleImageView.image = UIImage(named:iconName)
+                if let colorForIcon = detailObject?.bottomRightIconColor {
+                    let image = UIImage(named: iconName)
+                    detailView.scheduleImageView.image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+                    detailView.scheduleImageView.tintColor = colorForIcon
+                } else {
+                    detailView.scheduleImageView.image = UIImage(named:iconName)
+                }
             } else {
                 detailView.scheduleImageView.image = UIImage()
             }
