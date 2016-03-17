@@ -279,7 +279,13 @@ class Lot: NSObject, DetailObject {
     }
     
     var bottomLeftIconName: String? { get { return nil } }
-    var bottomLeftTitleText: String? { get { return "daily".localizedString.uppercaseString } }
+    var bottomLeftTitleText: String? { get {
+        if Settings.lotMainRateIsHourly() {
+            return "hourly".localizedString.uppercaseString
+        }
+        return "daily".localizedString.uppercaseString
+        }
+    }
     var bottomLeftPrimaryText: NSAttributedString? { get {
         let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
         let numberString = NSMutableAttributedString(string: String(Int(self.mainRate())), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
