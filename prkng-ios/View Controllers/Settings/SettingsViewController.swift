@@ -552,11 +552,14 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             firstSection = [alertCell, residentialPermitCell]
             carSharingSection = [automobileCell, communautoCell]
         } else if Settings.selectedCity().name == "seattle" {
-            firstSection += [parkingPandaCell]
             carSharingSection = [car2goCell, zipcarCell]
         } else if Settings.selectedCity().name == "newyork" {
-            firstSection += [commercialPermitCell, parkingPandaCell]
+            firstSection += [commercialPermitCell]
             carSharingSection = [car2goCell, zipcarCell]
+        }
+        
+        if (Settings.selectedCity().name != "montreal" && Settings.selectedCity().name != "quebec") || Settings.getParkingPandaCredentials().0 != nil {
+            firstSection += [parkingPandaCell]
         }
         
         let generalSection = [

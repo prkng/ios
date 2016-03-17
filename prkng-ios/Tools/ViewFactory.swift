@@ -226,7 +226,12 @@ struct ViewFactory {
     // MARK: Segmented Controls
     
     static func nowOrHistorySwitch() -> DVSwitch {
-        let segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString, "reservations".localizedString.uppercaseString])
+        var segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString, "reservations".localizedString.uppercaseString])
+        
+        if (Settings.selectedCity().name == "montreal" || Settings.selectedCity().name == "quebec") && Settings.getParkingPandaCredentials().0 == nil {
+            segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString])
+        }
+        
         segmentedControl.backgroundView.layer.borderWidth = 1
         segmentedControl.backgroundView.layer.borderColor = Styles.Colors.stone.colorWithAlphaComponent(0.5).CGColor
         segmentedControl.sliderColor = Styles.Colors.red2
