@@ -68,8 +68,12 @@ class PPTransactionTableViewCell: UITableViewCell {
     }
     
     private func setupTransaction() {
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMM d, yyyy 'at' HH:mm"
+
         let currentDate = NSDate()
-        let fromDateString = NSDateFormatter.localizedStringFromDate(transaction?.startDateAndTime ?? currentDate, dateStyle: .MediumStyle, timeStyle: .ShortStyle)
+        let fromDateString = dateFormatter.stringFromDate(transaction?.startDateAndTime ?? currentDate)
         let toDateString = NSDateFormatter.localizedStringFromDate(transaction?.endDateAndTime ?? currentDate, dateStyle: .NoStyle, timeStyle: .ShortStyle)
         topLabel.text = fromDateString + " - " + toDateString
         bottomLabel.text = transaction?.location.address
