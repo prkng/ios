@@ -201,13 +201,19 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var headerText = ""
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.width))
+        paddingView.backgroundColor = Styles.Colors.cream1
         //TODO: Localize
         if section == 0 {
             headerText = "upcoming_reservations".localizedString
         } else if section == 1 {
             headerText = "past_reservations".localizedString
         }
-        return GeneralTableHelperViews.sectionHeaderView(headerText)
+        let headerView = GeneralTableHelperViews.sectionHeaderView(headerText)
+        if pastTransactions.count == 0 && section == 1 {
+            headerView?.addSubview(paddingView)
+        }
+        return headerView
     }
     
     //MARK: Button Handlers
