@@ -109,6 +109,7 @@ class RegisterEmailViewController: AbstractViewController {
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
             make.size.greaterThanOrEqualTo(CGSizeMake(UIScreen.mainScreen().bounds.size.width, self.USABLE_VIEW_HEIGHT))
+            make.width.equalTo(self.view)
         }
         
         backButton.snp_makeConstraints { (make) -> () in

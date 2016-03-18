@@ -330,6 +330,8 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
             return
         }
         
+        sendButton.enabled = false
+        
         SVProgressHUD.setBackgroundColor(UIColor.clearColor())
         SVProgressHUD.show()
         
@@ -338,11 +340,13 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         SpotOperations.reportParkingRule(resized, location: location!.coordinate, notes: notesVC?.textField.text ?? "", spotId: spotId, completion: { (completed) -> Void in
             
             if (completed) {
+                self.sendButton.enabled = true
                 SVProgressHUD.dismiss()
 //                GiFHUD.dismiss()
                 self.delegate?.reportDidEnd(true)
                 self.navigationController?.popViewControllerAnimated(true)
             } else {
+                self.sendButton.enabled = true
                 SVProgressHUD.dismiss()
 //                GiFHUD.dismiss()
                 let alert = UIAlertView()
