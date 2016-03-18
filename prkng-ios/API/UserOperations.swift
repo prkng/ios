@@ -13,7 +13,7 @@ struct UserOperations {
     static var sharedInstance = UserOperations()
     var deviceTokenString: String?
     
-    static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User?, apiKey : String?, error: NSError?) -> Void) {
+    static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User?, apiKey : String?, error: NSError?, returnCode: Int) -> Void) {
         
         let url = APIUtility.rootURL() + "login/register"
         
@@ -26,13 +26,10 @@ struct UserOperations {
 
             if (apiKey != "") {
                 let user = User(json: json)
-                completion(user: user, apiKey: apiKey, error: nil)
-                
-            } else if (response?.statusCode == 404) {
-                completion(user: nil, apiKey: nil, error: nil)
+                completion(user: user, apiKey: apiKey, error: nil, returnCode: response?.statusCode ?? 200)
                 
             } else {
-                completion(user: nil, apiKey: nil, error: error)
+                completion(user: nil, apiKey: nil, error: error, returnCode: response?.statusCode ?? 404)
             }
         }
         

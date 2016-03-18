@@ -155,15 +155,20 @@ class RegisterEmailViewController: AbstractViewController {
         
         registerButton.enabled = false
         
-        UserOperations.register(emailText, name: nameText, password: passwordText, gender: "", birthYear: "") { (user, apiKey, error) -> Void in
+        UserOperations.register(emailText, name: nameText, password: passwordText, gender: "", birthYear: "") { (user, apiKey, error, errorCode) -> Void in
             
             if user == nil || apiKey == nil {
                 
                 self.registerButton.enabled = true
 
+                "account_already_exists"
+                "try_other_login_methods"
+
                 var alertView: UIAlertView
-                if error == nil {
+                if errorCode == 409 {
                     alertView = UIAlertView(title: "register_error_title".localizedString , message: "register_error_message_user_exists".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
+                } else if errorCode >= 500 {
+                    alertView = UIAlertView(title: "register_error_title".localizedString , message: "register_error_message_try_other_login_methods".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
                 } else {
                     alertView = UIAlertView(title: "register_error_title".localizedString , message: "register_error_message_generic".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
                 }

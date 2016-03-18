@@ -63,6 +63,7 @@
 "register_error_title" = "Registration Error";
 "register_error_message_generic" = "Could not register at this time. Please try again later.";
 "register_error_message_user_exists" = "This user already exists. Please try again with different credentials.";
+"register_error_message_try_other_login_methods" = "Try creating an account with your Facebook or Gmail account instead.";
 
 "name" = "Name";
 "your_name" = "your name";
