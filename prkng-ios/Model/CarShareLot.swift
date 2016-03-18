@@ -42,7 +42,7 @@ class CarShareLot: NSObject {
         
         //return the CarShare pin if it's a zipcar
         if self.carSharingType == .Zipcar {
-            return CarShare.mapPinImageAndReuseIdentifier(selected, carSharingType: self.carSharingType, electric: false, identifier: self.identifier)
+            return CarShare.mapPinImageAndReuseIdentifier(selected, carSharingType: self.carSharingType, electric: false, quantity: self.carsCapacity, identifier: self.identifier)
         }
         
         let roundPImage = UIImage(named: "carsharing_lot_pin_P")! //14pts by 14pts

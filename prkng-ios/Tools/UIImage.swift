@@ -214,5 +214,21 @@ extension UIImage {
         return image
     }
 
+    private func convertToGrayScaleNoAlpha() -> CGImageRef {
+        let colorSpace = CGColorSpaceCreateDeviceGray();
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.None.rawValue)
+        let context = CGBitmapContextCreate(nil, Int(size.width*scale), Int(size.height*scale), 8, 0, colorSpace, bitmapInfo.rawValue)
+        CGContextDrawImage(context, CGRectMake(0, 0, size.width*scale, size.height*scale), self.CGImage)
+        return CGBitmapContextCreateImage(context)!
+    }
+    
+    func convertToGrayScale() -> UIImage {
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.Only.rawValue)
+        let context = CGBitmapContextCreate(nil, Int(size.width*scale), Int(size.height*scale), 8, 0, nil, bitmapInfo.rawValue)
+        CGContextDrawImage(context, CGRectMake(0, 0, size.width*scale, size.height*scale), self.CGImage);
+        let mask = CGBitmapContextCreateImage(context)
+        return UIImage(CGImage: CGImageCreateWithMask(convertToGrayScaleNoAlpha(), mask)!, scale: scale, orientation:imageOrientation)
+    }
+
 }
 

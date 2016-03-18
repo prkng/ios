@@ -123,10 +123,10 @@ class CarShare: NSObject {
     }
     
     func mapPinImageAndReuseIdentifier(selected: Bool) -> (UIImage, String) {
-        return CarShare.mapPinImageAndReuseIdentifier(selected, carSharingType: self.carSharingType, electric: self.electric, identifier: self.identifier)
+        return CarShare.mapPinImageAndReuseIdentifier(selected, carSharingType: self.carSharingType, electric: self.electric, quantity: self.quantity, identifier: self.identifier)
     }
     
-    static func mapPinImageAndReuseIdentifier(selected: Bool, carSharingType: CarSharingType, electric: Bool, identifier: String) -> (UIImage, String) {
+    static func mapPinImageAndReuseIdentifier(selected: Bool, carSharingType: CarSharingType, electric: Bool, quantity: Int, identifier: String) -> (UIImage, String) {
         var reuseIdentifier = "carsharing_pin"
         switch carSharingType {
         case .Car2Go:
@@ -148,6 +148,12 @@ class CarShare: NSObject {
         }
         
         var image = UIImage(named: reuseIdentifier)!
+        
+        if carSharingType == .Zipcar && quantity == 0 {
+            //make it grey, add it to the reuse id
+            reuseIdentifier += String(quantity)
+            image = image.convertToGrayScale()
+        }
         
         if let reservedCarShare = Settings.getReservedCarShare() {
             if reservedCarShare.identifier == identifier {
