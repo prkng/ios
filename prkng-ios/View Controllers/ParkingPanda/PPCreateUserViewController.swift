@@ -98,9 +98,8 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         statusView.backgroundColor = Styles.Colors.transparentBlack
         self.view.addSubview(statusView)
         
-        //TODO: Localize me
         headerView.delegate = self
-        headerView.headerText = "CREATE A PARKING PANDA ACCOUNT"
+        headerView.headerText = "create_pp_account".localizedString.uppercaseString
         view.addSubview(headerView)
         
         view.addSubview(tableView)
@@ -139,7 +138,6 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     //MARK: UITableViewDataSource
     
-    //TODO: All these strings need to be localized
     var tableSource: [(String, [SettingsCell])] {
         
         //first up: information section
@@ -224,8 +222,8 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
 
         switch(step) {
         case .PersonalInformation: return [("enter_your_information".localizedString, formSection)]
-        case .CreditCard: return [("payment_method", paymentMethodSection)]
-        case .VehicleDescription: return [("vehicle_description", vehicleDescriptionSection),vehicleDescriptionSection2]
+        case .CreditCard: return [("payment_method".localizedString, paymentMethodSection)]
+        case .VehicleDescription: return [("vehicle_description".localizedString, vehicleDescriptionSection),vehicleDescriptionSection2]
         }
         
     }
@@ -242,7 +240,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         
         let section = self.tableSource[indexPath.section]
-        if section.0 == "payment_method" {
+        if section.0 == "payment_method".localizedString {
             
             //the last row in this section should be to add a credit card
             if indexPath.row == section.1.count - 1 {
@@ -465,8 +463,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
             let failedValidation = firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty
             
             if failedValidation {
-                //TODO: Localize these strings
-                GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out your information.")
+                GeneralHelper.warnUserWithErrorMessage("info_warning".localizedString)
                 
                 if shouldColorCells {
                     redCells = []
@@ -483,16 +480,14 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
             let failedValidation = creditCards.count < 1
             
             if failedValidation {
-                //TODO: Localize these strings
-                GeneralHelper.warnUserWithErrorMessage("Please add at least one credit card to continue.")
+                GeneralHelper.warnUserWithErrorMessage("cc_warning".localizedString)
                 return false
             }
         case .VehicleDescription:
             let failedValidation = brand.isEmpty || plate.isEmpty || model.isEmpty || color.isEmpty || phone.isEmpty
             
             if failedValidation {
-                //TODO: Localize these strings
-                GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out the vehicle description.")
+                GeneralHelper.warnUserWithErrorMessage("vehicle_description_warning".localizedString)
                 
                 if shouldColorCells {
                     redCells = []
@@ -585,11 +580,10 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                                         self.dismiss()
                                         self.delegate?.didCreateAccount()
                                         SVProgressHUD.dismiss()
-                                        //TODO: Localize
                                         if creditCard != nil {
-                                            GeneralHelper.warnUserWithSucceedMessage("Registration complete, you can now reserve a parking lot or garage in-app thanks to our partner, Parking Panda.")
+                                            GeneralHelper.warnUserWithSucceedMessage("pp_registration_complete".localizedString)
                                         } else {
-                                            GeneralHelper.warnUserWithSucceedMessage("Registration complete, but please try adding a credit card through Parking Panda Settings.")
+                                            GeneralHelper.warnUserWithSucceedMessage("pp_registration_complete_cc_warning".localizedString)
                                         }
                                     })
                                 }

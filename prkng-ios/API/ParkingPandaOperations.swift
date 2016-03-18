@@ -79,12 +79,11 @@ class ParkingPandaOperations {
         }
 
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            //TODO: Localize these strings
             switch (returnedError.errorType) {
             case .API, .Internal:
                 GeneralHelper.warnUserWithErrorMessage(returnedError.errorDescription ?? "")
             case .Network:
-                GeneralHelper.warnUserWithErrorMessage("Bad network connection, please try again later.")
+                GeneralHelper.warnUserWithErrorMessage("connection_error".localizedString)
             case .NoError:
                 break
             }
@@ -318,8 +317,7 @@ class ParkingPandaOperations {
                 
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    //TODO: Localize
-                    GeneralHelper.warnUserWithErrorMessage("Please add a credit card in Parking Panda Settings before paying.")
+                    GeneralHelper.warnUserWithErrorMessage("parking_panda_cc_error".localizedString)
                 })
                 completion(transaction: nil, error: error)
             }

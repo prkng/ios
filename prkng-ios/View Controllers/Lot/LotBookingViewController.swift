@@ -43,7 +43,6 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     private var payContainerView = UIView()
     private var payLabel = UILabel()
-    //TODO: Localize
     private var payButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: String(format: "pay_with_x".localizedString.uppercaseString, "parking_panda".localizedString.uppercaseString))
 
     private static let HEADER_HEIGHT: CGFloat = 70
@@ -329,7 +328,6 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     func setSliderLabelText(sliderHours: Int, parkUntil: NSDate?) {
         
-        //TODO: Localize
         let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(25), NSForegroundColorAttributeName: Styles.Colors.midnight1]
         let hourString = sliderHours == 1 ? "hour".localizedString : "hours".localizedString
         let textLine1 = NSMutableAttributedString(string: String(format: "%d %@\n", sliderHours, hourString), attributes: line1Attributes)
@@ -344,10 +342,10 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
             }
             let dateString = dateFormatter.stringFromDate(parkUntil!)
             
-            let textLine2 = NSAttributedString(string: "Park until " + dateString, attributes: line2Attributes)
+            let textLine2 = NSAttributedString(string: "park_until_".localizedString + dateString, attributes: line2Attributes)
             textLine1.appendAttributedString(textLine2)
         } else {
-            let textLine2 = NSAttributedString(string: "Release slider to check availability", attributes: line2Attributes)
+            let textLine2 = NSAttributedString(string: "release_slider_text".localizedString, attributes: line2Attributes)
             textLine1.appendAttributedString(textLine2)
         }
         
@@ -368,7 +366,6 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         }
         
         let totalTextAttributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.midnight1, NSBaselineOffsetAttributeName: 7]
-        //TODO: Localize
         let attributedText = NSMutableAttributedString(string: "total".localizedString.uppercaseString, attributes: totalTextAttributes)
         
         let priceAttributes = [NSFontAttributeName: Styles.FontFaces.bold(25), NSForegroundColorAttributeName: Styles.Colors.midnight1]
@@ -434,7 +431,6 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
                     SVProgressHUD.dismiss()
                 })
                 if transaction != nil {
-                    //TODO: Localize
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.delegate?.hideModalView()
                         let transactionVC = PPTransactionViewController(transaction: transaction!, lot: self.lot)
@@ -443,8 +439,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
                 }
             })
         } else {
-            //TODO: Localize
-            GeneralHelper.warnUserWithErrorMessage("Check availability first using the slider before trying to pay!")
+            GeneralHelper.warnUserWithErrorMessage("slider_error_message".localizedString)
         }
     }
     

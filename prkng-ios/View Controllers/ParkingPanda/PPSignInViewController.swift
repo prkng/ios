@@ -74,9 +74,8 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         statusView.backgroundColor = Styles.Colors.transparentBlack
         self.view.addSubview(statusView)
         
-        //TODO: Localize me
         headerView.delegate = self
-        headerView.headerText = "SIGN IN TO PARKING PANDA"
+        headerView.headerText = "pp_sign_in".localizedString.uppercaseString
         headerView.rightButtonText = "sign_in".localizedString.uppercaseString
         view.addSubview(headerView)
         
@@ -116,7 +115,6 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
     //MARK: UITableViewDataSource
     
-    //TODO: All these strings need to be localized
     var tableSource: [(String, [SettingsCell])] {
         let emailCell = SettingsCell(placeholderText: "email".localizedString, titleText: username, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
@@ -137,7 +135,7 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
                 "returnCallback": "cellReturnCallback:"])
         let formSection = [emailCell, passwordCell]
         
-        return [("enter_your_credentials", formSection)]
+        return [("enter_your_information".localizedString, formSection)]
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -229,8 +227,7 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         let failedValidation = username.isEmpty || password.isEmpty
         
         if failedValidation {
-            //TODO: Localize these strings
-            GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out your email and password.")
+            GeneralHelper.warnUserWithErrorMessage("pp_credentials_error".localizedString)
             
             if shouldColorCells {
                 redCells = []

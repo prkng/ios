@@ -8,7 +8,8 @@
 
 "park_now" = "PARK NOW";
 "take_the_tour" = "start";
-
+"error" = "Error";
+"success" = "Success";
 "back" = "Back";
 "sign_in" = "Sign In";
 "sign_out" = "Sign Out";
@@ -200,6 +201,7 @@
 "all" = "all";
 "24 hour" = "24 hour";
 "hour" = "hour";
+"hours" = "hours";
 "hourly" = "hourly";
 "daily" = "Daily";
 "metered" = "metered";
@@ -279,6 +281,56 @@
 "could_not_reserve_not_logged_in" = "Your reservation could not be completed because you aren't logged in. Log in, then try again.";
 
 //parking panda
+"parking_panda_intro_text" = "Garage reservation is finally here!";
+"parking_panda_intro_body_text" = "Prkng is pleased to announce our parternship with Parking Panda. Can't find a spot on-street? \nBook a parking lot with a few simple touches!";
+"parking_panda_intro_body_sub_text" = "This service requires a credit card, \nknow more about our terms here.";
+"parking_panda_upgrade_text" = "Upgrade my account";
+"parking_panda_login_text" = "or login with Parking Panda here";
+
+"parking_panda_upgrade_title" = "Let’s get started";
+"enter_your_information" = "Enter your information!";
+"first_name" = "First name";
+"last_name" = "Last name";
+"password" = "Password";
+
+"vehicle_title" = "The best at the door.";
+"brand" = "Brand";
+"license_plate" = "License plate";
+"model" = "Model";
+"color" = "Color";
+"phone_number" = "Phone #";
+
+"payment_method" = "Payment method";
+"add_payment_method" = "Add payment method";
+"vehicle_description" = "Vehicle description";
+
+"parking_panda" = "Parking Panda";
+"reserve_now" = "Reserve now";
+"park_until_" = "Park until ";
+"release_slider_text" = "Release slider to check availability";
+"slider_error_message" = "Check availability first using the slider before trying to pay!";
+"parking_panda_cc_error" = "Please add a credit card in Parking Panda Settings before paying.";
+"create_pp_account" = "CREATE A PARKING PANDA ACCOUNT";
+
+"total" = "Total";
+"connection_error" = "Bad network connection, please try again later.";
+"info_warning" = "Please make sure you have filled out your information.";
+"cc_warning" = "Please add at least one credit card to continue.";
+"vehicle_description_warning" = "Please make sure you have filled out the vehicle description.";
+"pp_registration_complete" = "Registration complete, you can now reserve a parking lot or garage in-app thanks to our partner, Parking Panda.";
+"pp_registration_complete_cc_warning" = "Registration complete, but please try adding a credit card through Parking Panda Settings.";
+"pp_cell_text" = "Use ParkingPanda to reserve and pay for a parking spot in a garage or lot.";
+"pp_settings" = "PARKING PANDA SETTINGS";
+"pp_disclaimer" = "Information used and collected solely by Parking Panda.";
+"pp_learn_more" = "Learn more about Parking Panda";
+"pp_sign_in" = "SIGN IN TO PARKING PANDA";
+"pp_credentials_error" = "Please make sure you have filled out your email and password.";
+"parking_lots_price" = "Parking lots price";
+"pp_sign_out" = "Sign Out of Parking Panda";
+"upcoming_reservations" = "Upcoming Reservations";
+"past_reservations" = "Past Reservations";
+"paid_with_parking_panda" = "Paid with Parking Panda";
+"pp_payment_success" = "Successfully paid with Parking Panda!";
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_en";
@@ -290,4 +342,4 @@
 "availability_x_places" = "Available now: %d spaces";
 "up_to_x_cars_available" = "Up to %d cars available";
 "up_to_x_spaces_available" = "Up to %d spaces available";
-"pay_with_x" = "Pay with %d";
+"pay_with_x" = "Pay with %@";

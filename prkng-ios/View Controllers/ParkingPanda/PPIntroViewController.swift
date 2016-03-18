@@ -77,11 +77,11 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
         headerView.enableRipple = false
         view.addSubview(headerView)
 
-        //TODO: localize all these strings including create_my_account above
         titleLabel.text = "parking_panda_intro_text".localizedString
         titleLabel.font = Styles.FontFaces.bold(25)
         titleLabel.textColor = FOREGROUND_TEXT_COLOR_EMPHASIZED
         titleLabel.textAlignment = .Center
+        titleLabel.numberOfLines = 0
         view.addSubview(titleLabel)
         
         logoView.image = UIImage(named: "logo_opening")
@@ -91,6 +91,7 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
         bodyLabel.font = Styles.FontFaces.regular(16)
         bodyLabel.textColor = FOREGROUND_TEXT_COLOR
         bodyLabel.textAlignment = .Center
+        bodyLabel.numberOfLines = 0
         view.addSubview(bodyLabel)
         
         subBodyButton.setTitle("parking_panda_intro_body_sub_text".localizedString, forState: .Normal)
@@ -130,11 +131,13 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
         titleLabel.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.headerView.snp_bottom)
             make.centerX.equalTo(self.view)
+            make.left.equalTo(self.view).offset(50)
+            make.right.equalTo(self.view).offset(-50)
         }
         
         logoView.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.centerY.equalTo(self.view).multipliedBy(0.5)
+            make.top.equalTo(self.titleLabel.snp_bottom)
         }
         
         bodyLabel.snp_makeConstraints { (make) -> Void in

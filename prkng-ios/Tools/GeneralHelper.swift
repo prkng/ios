@@ -20,7 +20,6 @@ class GeneralHelper {
     static func warnUserWithErrorMessage(message: String) {
         let alert = UIAlertView()
         alert.message = message
-        //TODO: Localize string below
         alert.title = "error".localizedString
         alert.addButtonWithTitle("OK".localizedString)
         alert.show()
@@ -29,7 +28,6 @@ class GeneralHelper {
     static func warnUserWithSucceedMessage(message: String) {
         let alert = UIAlertView()
         alert.message = message
-        //TODO: Localize string below
         alert.title = "success".localizedString
         alert.addButtonWithTitle("OK".localizedString)
         alert.show()

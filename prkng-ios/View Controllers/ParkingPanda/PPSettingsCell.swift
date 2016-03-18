@@ -23,8 +23,7 @@ class PPSettingsCell: SettingsCell {
     }
     
     init() {
-        //TODO: the text below should be localized
-        super.init(cellType: .Switch, switchValue: false, titleText: "Parking Panda", subtitleText: "Use ParkingPanda to reserve and pay for a parking spot in a garage or lot.")
+        super.init(cellType: .Switch, switchValue: false, titleText: "parking_panda".localizedString, subtitleText: "pp_cell_text".localizedString)
         self.selectorsTarget = self
         self.canSelect = true
         self.cellSelector = "wasSelected"

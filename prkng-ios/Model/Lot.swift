@@ -271,7 +271,6 @@ class Lot: NSObject, DetailObject {
     var doesHeaderIconWiggle: Bool { get { return self.isParkingPanda } }
     var headerIconSubtitle: String { get {
         if self.isParkingPanda {
-            //TODO: LOCALIZE
             return "reserve_now".localizedString
         }
         return "info"

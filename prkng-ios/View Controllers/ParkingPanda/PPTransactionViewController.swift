@@ -206,7 +206,6 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
         payContainerView.addSubview(creditCardImageView)
         
-        //TODO: LOCALIZE
         payTitleLabel.text = "paid_with_parking_panda".localizedString
         payTitleLabel.textColor = Styles.Colors.red2
         payTitleLabel.font = Styles.FontFaces.regular(14)
@@ -572,8 +571,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     func showPopupForReportSuccess() {
         
-        //TODO: LOCALIZE
-        popupVC = PRKPopupViewController(titleIconName: "icon_checkmark", titleText: "", subTitleText: "success".localizedString, messageText: "Successfully paid with Parking Panda!")
+        popupVC = PRKPopupViewController(titleIconName: "icon_checkmark", titleText: "", subTitleText: "success".localizedString, messageText: "pp_payment_success".localizedString)
         
         self.addChildViewController(popupVC!)
         self.view.addSubview(popupVC!.view)

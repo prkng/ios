@@ -82,9 +82,8 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         statusView.backgroundColor = Styles.Colors.transparentBlack
         self.view.addSubview(statusView)
         
-        //TODO: Localize me
         headerView.delegate = self
-        headerView.headerText = "PARKING PANDA SETTINGS"
+        headerView.headerText = "pp_settings".localizedString.uppercaseString
         headerView.showsRightButton = false
         view.addSubview(headerView)
         
@@ -168,12 +167,11 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let tableFooterViewLabel = UILabel(frame: frame)
         tableFooterView.addSubview(tableFooterViewLabel)
         
-        //TODO: TEXT NEEDS TO BE LOCALIZED
         let line1Attributes = [NSFontAttributeName: self.FOOTER_FONT, NSForegroundColorAttributeName: self.BACKGROUND_TEXT_COLOR]
-        let textLine1 = NSMutableAttributedString(string: "Information used and collected solely by Parking Panda.", attributes: line1Attributes)
+        let textLine1 = NSMutableAttributedString(string: "pp_disclaimer".localizedString, attributes: line1Attributes)
         
         let line2Attributes = [NSFontAttributeName: self.FOOTER_FONT, NSForegroundColorAttributeName: self.BACKGROUND_TEXT_COLOR, NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue]
-        let textLine2 = NSAttributedString(string: "Learn more about Parking Panda", attributes: line2Attributes)
+        let textLine2 = NSAttributedString(string: "pp_learn_more".localizedString, attributes: line2Attributes)
         
         textLine1.appendAttributedString(NSAttributedString(string: "\n"))
         textLine1.appendAttributedString(textLine2)
@@ -196,10 +194,9 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
 
     //MARK: UITableViewDataSource
     
-    //TODO: All these strings need to be localized
     var tableSource: [(String, [SettingsCell])] {
         
-        let firstSection = ("", [SettingsCell(cellType: .Segmented, titleText: "Parking lots price", segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), selectorsTarget: self, switchSelector: "lotRateDisplayValueChanged")
+        let firstSection = ("", [SettingsCell(cellType: .Segmented, titleText: "parking_lots_price".localizedString, segments: ["hourly".localizedString.uppercaseString , "daily".localizedString.uppercaseString], defaultSegment: (Settings.lotMainRateIsHourly() ? 0 : 1), selectorsTarget: self, switchSelector: "lotRateDisplayValueChanged")
             ])
         
         var paymentMethodSection = [SettingsCell]()
@@ -243,12 +240,12 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let vehicleDescriptionSection2 = ("", [vehicleDescPhone])
 
         let signOutSection = ("", [
-            SettingsCell(cellType: .Basic, titleText: "Sign Out of Parking Panda", selectorsTarget: self, cellSelector: "signOut", canSelect: true, redText: true)
+            SettingsCell(cellType: .Basic, titleText: "pp_sign_out".localizedString, selectorsTarget: self, cellSelector: "signOut", canSelect: true, redText: true)
             ])
 
         return [firstSection,
-            ("payment_method", paymentMethodSection),
-            ("vehicle_description", vehicleDescriptionSection),
+            ("payment_method".localizedString, paymentMethodSection),
+            ("vehicle_description".localizedString, vehicleDescriptionSection),
             vehicleDescriptionSection2,
             signOutSection
         ]
@@ -267,7 +264,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
 
         let section = self.tableSource[indexPath.section]
-        if section.0 == "payment_method" {
+        if section.0 == "payment_method".localizedString {
             
             //the last row in this section should be to add a credit card
             if indexPath.row == section.1.count - 1 {
@@ -500,8 +497,7 @@ class PPSettingsViewController: AbstractViewController, UIGestureRecognizerDeleg
         let failedValidation = brand.isEmpty || plate.isEmpty || model.isEmpty || color.isEmpty || phone.isEmpty
         
         if failedValidation {
-            //TODO: Localize these strings
-            GeneralHelper.warnUserWithErrorMessage("Please make sure you have filled out the vehicle description.")
+            GeneralHelper.warnUserWithErrorMessage("vehicle_description_warning".localizedString)
             
             if shouldColorCells {
                 redCells = []

@@ -203,7 +203,6 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
         var headerText = ""
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.width))
         paddingView.backgroundColor = Styles.Colors.cream1
-        //TODO: Localize
         if section == 0 {
             headerText = "upcoming_reservations".localizedString
         } else if section == 1 {
