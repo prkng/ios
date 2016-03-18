@@ -11,15 +11,18 @@ import UIKit
 class ParkingPandaOperations {
     
     //Development (Sandbox) API (Reservations aren’t real, use Braintree sample card numbers to test https://developers.braintreepayments.com/reference/general/testing/node#credit-card-numbers)
-    static let baseUrlString = "http://dev.parkingpanda.com/api/v2/"
-    static let publicKey = "39b5854211924468af84ad0e1d2edf56"
-    static let privateKey = "8bcdcdfb71dd4c87b9dff6d4b75809b7"
+//    static let baseUrlString = "http://dev.parkingpanda.com/api/v2/"
+//    static let publicKey = "39b5854211924468af84ad0e1d2edf56"
+//    static let privateKey = "8bcdcdfb71dd4c87b9dff6d4b75809b7"
     
-    //TODO: switch to production
 //    //Real API
 //    static let baseUrlString = "https://www.parkingpanda.com/api/v2/"
 //    static let publicKey = "908eb2a1edd3491791da7f8b8e5716ee"
 //    static let privateKey = "f6a1fb203f334dfe9f75a5b58663a209"
+    
+    static let baseUrlString = APIUtility.isUsingTestServer ? "http://dev.parkingpanda.com/api/v2/" : "https://www.parkingpanda.com/api/v2/"
+    static let publicKey = APIUtility.isUsingTestServer ? "39b5854211924468af84ad0e1d2edf56" : "908eb2a1edd3491791da7f8b8e5716ee"
+    static let privateKey = APIUtility.isUsingTestServer ? "8bcdcdfb71dd4c87b9dff6d4b75809b7" : "f6a1fb203f334dfe9f75a5b58663a209"
     
     enum ParkingPandaTransactionTime {
         case All
