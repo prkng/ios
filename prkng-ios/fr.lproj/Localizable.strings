@@ -308,32 +308,32 @@
 "vehicle_description" = "Description du véhicule";
 
 "parking_panda" = "Parking Panda";
-"reserve_now" = "***Reserve now";
-"park_until_" = "***Park until ";
-"release_slider_text" = "***Release slider to check availability";
-"slider_error_message" = "***Check availability first using the slider before trying to pay!";
-"parking_panda_cc_error" = "***Please add a credit card in Parking Panda Settings before paying.";
-"create_pp_account" = "***CREATE A PARKING PANDA ACCOUNT";
+"reserve_now" = “Réserver";
+"park_until_" = “Stationner jusqu'à "; 
+"release_slider_text" = “Lâcher le curseur pour actualiser!"; #ponctuation / curseur?
+"slider_error_message" = “Vérifiez la disponibilité à l’aide du curseur avant de payer"; 
+"parking_panda_cc_error" = “Veuillez entrer une carte de crédit dans les réglages de Parking Panda";
+"create_pp_account" = “CRÉER UN COMPTE PARKING PANDA";
 
 "total" = "Total";
-"connection_error" = "***Bad network connection, please try again later.";
-"info_warning" = "***Please make sure you have filled out your information.";
-"cc_warning" = "***Please add at least one credit card to continue.";
-"vehicle_description_warning" = "***Please make sure you have filled out the vehicle description.";
-"pp_registration_complete" = "***Registration complete, you can now reserve a parking lot or garage in-app thanks to our partner, Parking Panda.";
-"pp_registration_complete_cc_warning" = "***Registration complete, but please try adding a credit card through Parking Panda Settings.";
-"pp_cell_text" = "***Use ParkingPanda to reserve and pay for a parking spot in a garage or lot.";
-"pp_settings" = "***PARKING PANDA SETTINGS";
-"pp_disclaimer" = "***Information used and collected solely by Parking Panda.";
-"pp_learn_more" = "***Learn more about Parking Panda";
-"pp_sign_in" = "***SIGN IN TO PARKING PANDA";
-"pp_credentials_error" = "***Please make sure you have filled out your email and password.";
-"parking_lots_price" = "***Parking lots price";
-"pp_sign_out" = "***Sign Out of Parking Panda";
-"upcoming_reservations" = "***Upcoming Reservations";
-"past_reservations" = "***Past Reservations";
-"paid_with_parking_panda" = "***Paid with Parking Panda";
-"pp_payment_success" = "***Successfully paid with Parking Panda!";
+"connection_error" = "Vérifiez votre connexion internet et réessayez.";
+"info_warning" = "Merci de remplir tous les champs requis.";
+"cc_warning" = “Une carte de crédit est requise pour continuer";
+"vehicle_description_warning" = “Afin de faciliter l’accès au garage, merci de remplir tout les champs.";
+"pp_registration_complete" = “Bravo, vous pouvez maintenant réserver un stationnement pour les emplacements de Parking Panda!";
+"pp_registration_complete_cc_warning" = “Inscription complète, un moyen de paiement est cependant requis pour ce service! Voir Réglages > Parking Panda";
+"pp_cell_text" = “Réservez une place hors-rue";
+"pp_settings" = “Réglages Parking Panda";
+"pp_disclaimer" = “Ces informations sont uniquement collectées par Parking Panda";
+"pp_learn_more" = "En savoir plus";
+"pp_sign_in" = “Connexion à Parking Panda";
+"pp_credentials_error" = "Merci de vérifier votre adresse e-mail et mot de passe, puis essayez à nouveau.";
+"parking_lots_price" = “Prix des lots";
+"pp_sign_out" = “Déconnexion du compte";
+"upcoming_reservations" = “Réservations à venir"; 
+"past_reservations" = “Réservations passées";
+"paid_with_parking_panda" = “Payé avec Parking Panda"; 
+"pp_payment_success" = “Confirmation du paiement via Parking Panda";   
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
