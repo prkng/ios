@@ -308,32 +308,32 @@
 "vehicle_description" = "Description du véhicule";
 
 "parking_panda" = "Parking Panda";
-"reserve_now" = “Réserver";
-"park_until_" = “Stationner jusqu'à "; 
-"release_slider_text" = “Lâcher le curseur pour actualiser!"; #ponctuation / curseur?
-"slider_error_message" = “Vérifiez la disponibilité à l’aide du curseur avant de payer"; 
-"parking_panda_cc_error" = “Veuillez entrer une carte de crédit dans les réglages de Parking Panda";
-"create_pp_account" = “CRÉER UN COMPTE PARKING PANDA";
+"reserve_now" = "Réserver";
+"park_until_" = "Stationner jusqu'à "; 
+"release_slider_text" = "Lâcher le curseur pour actualiser!"; #ponctuation / curseur?
+"slider_error_message" = "Vérifiez la disponibilité à l’aide du curseur avant de payer"; 
+"parking_panda_cc_error" = "Veuillez entrer une carte de crédit dans les réglages de Parking Panda";
+"create_pp_account" = "CRÉER UN COMPTE PARKING PANDA";
 
 "total" = "Total";
 "connection_error" = "Vérifiez votre connexion internet et réessayez.";
 "info_warning" = "Merci de remplir tous les champs requis.";
-"cc_warning" = “Une carte de crédit est requise pour continuer";
-"vehicle_description_warning" = “Afin de faciliter l’accès au garage, merci de remplir tout les champs.";
-"pp_registration_complete" = “Bravo, vous pouvez maintenant réserver un stationnement pour les emplacements de Parking Panda!";
-"pp_registration_complete_cc_warning" = “Inscription complète, un moyen de paiement est cependant requis pour ce service! Voir Réglages > Parking Panda";
-"pp_cell_text" = “Réservez une place hors-rue";
-"pp_settings" = “Réglages Parking Panda";
-"pp_disclaimer" = “Ces informations sont uniquement collectées par Parking Panda";
+"cc_warning" = "Une carte de crédit est requise pour continuer";
+"vehicle_description_warning" = "Afin de faciliter l’accès au garage, merci de remplir tout les champs.";
+"pp_registration_complete" = "Bravo, vous pouvez maintenant réserver un stationnement pour les emplacements de Parking Panda!";
+"pp_registration_complete_cc_warning" = "Inscription complète, un moyen de paiement est cependant requis pour ce service! Voir Réglages > Parking Panda";
+"pp_cell_text" = "Réservez une place hors-rue";
+"pp_settings" = "Réglages Parking Panda";
+"pp_disclaimer" = "Ces informations sont uniquement collectées par Parking Panda";
 "pp_learn_more" = "En savoir plus";
-"pp_sign_in" = “Connexion à Parking Panda";
+"pp_sign_in" = "Connexion à Parking Panda";
 "pp_credentials_error" = "Merci de vérifier votre adresse e-mail et mot de passe, puis essayez à nouveau.";
-"parking_lots_price" = “Prix des lots";
-"pp_sign_out" = “Déconnexion du compte";
-"upcoming_reservations" = “Réservations à venir"; 
-"past_reservations" = “Réservations passées";
-"paid_with_parking_panda" = “Payé avec Parking Panda"; 
-"pp_payment_success" = “Confirmation du paiement via Parking Panda";   
+"parking_lots_price" = "Prix des lots";
+"pp_sign_out" = "Déconnexion du compte";
+"upcoming_reservations" = "Réservations à venir"; 
+"past_reservations" = "Réservations passées";
+"paid_with_parking_panda" = "Payé avec Parking Panda"; 
+"pp_payment_success" = "Confirmation du paiement via Parking Panda";   
 
 //this section is for localized images
 "icon_howto_spots" = "icon_howto_spots_fr";
