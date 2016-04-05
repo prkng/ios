@@ -53,8 +53,8 @@
 "allow" = "Autoriser";
 "check_email_copy" = "Merci d’entrer votre adresse e-mail.";
 "pasword_reset_error" = "Quelque chose a mal tourné, merci de réessayer.";
-"login_edit_message_google" = "Connexion Google réussie";
-"login_edit_message_facebook" = "Connexion Facebook réussie";
+"login_edit_message_google" = "Connecté avec Google";
+"login_edit_message_facebook" = "Connecté avec Facebook";
 "login_error_title_facebook" = "Connexion Facebook échouée";
 "login_error_title_google" = "Connexion Google échouée";
 "login_error_message" = "Veuillez réessayer de vous connecter via un des moyens ci-dessous.";
