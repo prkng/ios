@@ -12,8 +12,8 @@ class PRKCachedTableView: UITableView {
     
     var cachedCells = [UITableViewCell]()
     
-    override func dequeueReusableCellWithIdentifier(identifier: String) -> UITableViewCell? {
-        let cell = super.dequeueReusableCellWithIdentifier(identifier)
+    override func dequeueReusableCell(withIdentifier identifier: String) -> UITableViewCell? {
+        let cell = super.dequeueReusableCell(withIdentifier: identifier)
         //sometimes cells don't dequeue (if we manually reload the table, or reload a section
         if cell == nil {
             for cachedCell in cachedCells {

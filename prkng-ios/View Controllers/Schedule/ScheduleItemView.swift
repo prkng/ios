@@ -10,16 +10,16 @@ import UIKit
 
 class ScheduleItemView : UIView {
     
-    private var containerView : UIView
-    private var imageView : UIImageView
+    fileprivate var containerView : UIView
+    fileprivate var imageView : UIImageView
     
     var rule: ParkingRule
     
-    private var didSetupSubviews : Bool
-    private var didSetupConstraints : Bool
+    fileprivate var didSetupSubviews : Bool
+    fileprivate var didSetupConstraints : Bool
     
     convenience init(model: ScheduleItemModel) {
-        self.init(frame:CGRectZero)
+        self.init(frame:CGRect.zero)
         
         self.rule = model.rule
         
@@ -55,7 +55,7 @@ class ScheduleItemView : UIView {
     }
     
     convenience init() {
-        self.init(frame:CGRectZero)
+        self.init(frame:CGRect.zero)
     }
     
      override init(frame: CGRect) {
@@ -98,7 +98,7 @@ class ScheduleItemView : UIView {
         
         self.addSubview(containerView)
         
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
         containerView.addSubview(imageView)
         
         switch self.rule.ruleType {

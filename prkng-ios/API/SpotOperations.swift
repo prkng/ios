@@ -10,7 +10,7 @@ import UIKit
 
 struct SpotOperations {
     
-    static func getSpotDetails(spotId: String, completion: ((spot:ParkingSpot?) -> Void)) {
+    static func getSpotDetails(_ spotId: String, completion: @escaping ((_ spot:ParkingSpot?) -> Void)) {
         
         let url = APIUtility.rootURL() + "slots/" + spotId
         
@@ -29,7 +29,7 @@ struct SpotOperations {
     }
     
     
-    static func findSpots(compact compact: Bool, location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : NSDate?, carsharing: Bool = false, completion: ((spots: [NSObject], mapMessage: String?) -> Void)) {
+    static func findSpots(compact: Bool, location: CLLocationCoordinate2D, radius : Float, duration : Float?, checkinTime : Date?, carsharing: Bool = false, completion: @escaping ((_ spots: [NSObject], _ mapMessage: String?) -> Void)) {
         
         let url = APIUtility.rootURL() + "slots"
         
@@ -44,7 +44,7 @@ struct SpotOperations {
             "longitude": location.longitude,
             "radius" : radiusStr,
             "carsharing" : carsharingString
-        ]
+        ] as [String : Any]
         
         //commercial and residential permits!
         var permits = [String]()
@@ -53,9 +53,9 @@ struct SpotOperations {
         }
         if Settings.shouldFilterForResidentialPermit() {
             let residentialPermits = Settings.residentialPermits()
-            permits.appendContentsOf(residentialPermits)
+            permits.append(contentsOf: residentialPermits)
         }
-        params["permit"] = permits.joinWithSeparator(",")
+        params["permit"] = permits.joined(separator: ",")
         
         if(duration != nil) {
             let durationStr = NSString(format: "%.1f", duration!)
@@ -63,20 +63,20 @@ struct SpotOperations {
             params["duration"] = durationStr
         }
         
-        var time : NSDate
+        var time : Date
         
         if (checkinTime == nil) {
-            time = NSDate()
+            time = Date()
         } else {
             time = checkinTime!
         }
         
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        formatter.locale = NSLocale(localeIdentifier: "en_US")
-        params["checkin"] = formatter.stringFromDate(time)
+        formatter.locale = Locale(identifier: "en_US")
+        params["checkin"] = formatter.string(from: time)
                 
-        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default), options: JSONSerialization.ReadingOptions.allowFragments) {
             (request, response, json, error) in
 
             DDLoggerWrapper.logVerbose(String(format: "Request: %@", request))
@@ -89,9 +89,9 @@ struct SpotOperations {
                 ParkingSpot(json: spotJson)
             })
             
-            let mapMessage = MapMessageView.createMessage(count: spots.count, response: response, error: error, origin: .Spots)
+            let mapMessage = MapMessageView.createMessage(count: spots.count, response: response, error: error, origin: .spots)
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 () -> Void in
                 completion(spots: spots, mapMessage: mapMessage)
 
@@ -105,7 +105,7 @@ struct SpotOperations {
         }
     }
     
-    static func checkin (spotId : String, completion: ((completed : Bool) -> Void)) {
+    static func checkin (_ spotId : String, completion: @escaping ((_ completed : Bool) -> Void)) {
         
         let url = APIUtility.rootURL() + "checkins"
         let params = ["slot_id" : spotId]
@@ -118,7 +118,7 @@ struct SpotOperations {
         }
     }
 
-    static func checkout (completion: ((completed : Bool) -> Void)) {
+    static func checkout (_ completion: @escaping ((_ completed : Bool) -> Void)) {
         
         let checkinId = Settings.getCheckInId()
         if checkinId != 0 {
@@ -130,11 +130,11 @@ struct SpotOperations {
             }
             
         } else {
-            completion(completed: false)
+            completion(false)
         }
     }
 
-    static func getCheckins(completion : ((checkins : Array<Checkin>?) -> Void)) {
+    static func getCheckins(_ completion : @escaping ((_ checkins : Array<Checkin>?) -> Void)) {
         
         let url = APIUtility.rootURL() + "checkins"
         
@@ -151,7 +151,7 @@ struct SpotOperations {
         
     }
     
-    static func hideCheckin(checkinID: Int, completion: ((success: Bool) -> Void)) {
+    static func hideCheckin(_ checkinID: Int, completion: @escaping ((_ success: Bool) -> Void)) {
         
         let url = APIUtility.rootURL() + "checkins/" + String(checkinID)
         
@@ -164,7 +164,7 @@ struct SpotOperations {
 
     }
     
-    static func reportParkingRule (image : UIImage, location : CLLocationCoordinate2D, notes: String, spotId: String?, completion: ((completed : Bool) -> Void)) {
+    static func reportParkingRule (_ image : UIImage, location : CLLocationCoordinate2D, notes: String, spotId: String?, completion: @escaping ((_ completed : Bool) -> Void)) {
         
         let url = APIUtility.rootURL() + "images"
         let params = ["image_type" : "report",
@@ -180,10 +180,10 @@ struct SpotOperations {
                 
                 let data = UIImageJPEGRepresentation(image, 0.8)!
                 
-                var headers = Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+                var headers = Manager.sharedInstance.session.configuration.httpAdditionalHeaders ?? [:]
                 headers["Content-Type"] = "image/jpeg"
-                let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-                configuration.HTTPAdditionalHeaders = headers
+                let configuration = URLSessionConfiguration.default
+                configuration.httpAdditionalHeaders = headers
                 let manager = Manager(configuration: configuration)
                 
                 // Step two, PUT the image to the request url

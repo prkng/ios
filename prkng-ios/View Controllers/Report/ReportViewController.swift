@@ -34,7 +34,7 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     
     var spotId : String?
     
-    var timer : NSTimer?
+    var timer : Timer?
     
     var notesVC: NotesModalViewController?
     
@@ -54,7 +54,7 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         captureSession.sessionPreset = AVCaptureSessionPresetPhoto
@@ -62,11 +62,11 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         let devices = AVCaptureDevice.devices()
         
         // Loop through all the capture devices on this phone
-        for device in devices {
+        for device in devices! {
             // Make sure this particular device supports video
-            if (device.hasMediaType(AVMediaTypeVideo)) {
+            if ((device as AnyObject).hasMediaType(AVMediaTypeVideo)) {
                 // Finally check the position and confirm we've got the back camera
-                if(device.position == AVCaptureDevicePosition.Back) {
+                if((device as AnyObject).position == AVCaptureDevicePosition.back) {
                     captureDevice = device as? AVCaptureDevice
                     if captureDevice != nil {
                         print("Capture device found")
@@ -84,29 +84,29 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         view.addSubview(previewView)
         
         previewViewOverlay.backgroundColor = Styles.Colors.transparentBackground
-        previewViewOverlay.hidden = true
+        previewViewOverlay.isHidden = true
         view.addSubview(previewViewOverlay)
         
         view.addSubview(overlayView)
         
-        imageView.hidden = true
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.isHidden = true
+        imageView.contentMode = UIViewContentMode.scaleAspectFill
         view.addSubview(imageView)
         
-        cancelButton.setImage(UIImage(named:"btn_report_cancel"), forState: UIControlState.Normal)
-        cancelButton.addTarget(self, action: "cancelButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        cancelButton.setImage(UIImage(named:"btn_report_cancel"), for: UIControlState())
+        cancelButton.addTarget(self, action: #selector(ReportViewController.cancelButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(cancelButton)
         
-        sendButton.setImage(UIImage(named:"btn_sendreport"), forState: UIControlState.Normal)
-        sendButton.addTarget(self, action: "sendButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        sendButton.setImage(UIImage(named:"btn_sendreport"), for: UIControlState())
+        sendButton.addTarget(self, action: #selector(ReportViewController.sendButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(sendButton)
         
-        backButton.setImage(UIImage(named:"btn_back"), forState: UIControlState.Normal)
-        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        backButton.setImage(UIImage(named:"btn_back"), for: UIControlState())
+        backButton.addTarget(self, action: #selector(ReportViewController.backButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(backButton)
         
-        captureButton.setImage(UIImage(named:"btn_takeashot"), forState: UIControlState.Normal)
-        captureButton.addTarget(self, action: "captureButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        captureButton.setImage(UIImage(named:"btn_takeashot"), for: UIControlState())
+        captureButton.addTarget(self, action: #selector(ReportViewController.captureButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(captureButton)
     }
     
@@ -130,27 +130,27 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         
         cancelButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view).multipliedBy(0.33)
-            make.size.equalTo(CGSizeMake(24, 24))
+            make.size.equalTo(CGSize(width: 24, height: 24))
             make.bottom.equalTo(self.view).offset(-38.5)
         }
         
         
         sendButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(60, 60))
+            make.size.equalTo(CGSize(width: 60, height: 60))
             make.bottom.equalTo(self.view).offset(-20)
         }
         
         
         backButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view).multipliedBy(0.33)
-            make.size.equalTo(CGSizeMake(24, 24))
+            make.size.equalTo(CGSize(width: 24, height: 24))
             make.bottom.equalTo(self.view).offset(-38.5)
         }
         
         captureButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(60, 60))
+            make.size.equalTo(CGSize(width: 60, height: 60))
             make.bottom.equalTo(self.view).offset(-20)
         }
     }
@@ -162,8 +162,8 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
                 try device.lockForConfiguration()
             } catch _ {
             }
-            if (device.isFlashModeSupported(.Auto)) {
-                device.flashMode = .Auto
+            if (device.isFlashModeSupported(.auto)) {
+                device.flashMode = .auto
             }
             device.unlockForConfiguration()
         }
@@ -172,14 +172,14 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     
     func cameraPermissionError() {
         
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
         
-        let authStatus = AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo)
+        let authStatus = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
         switch authStatus {
-        case .Denied:
+        case .denied:
             self.alertToEnableCamera()
             break
-        case .Restricted:
+        case .restricted:
             self.alertToEnableCamera()
             break
             // this case in handled in beginsession since it only happens the first time
@@ -199,13 +199,13 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     
     func alertToEnableCamera() {
         if #available(iOS 8.0, *) {
-            let alert = UIAlertController(title: "camera".localizedString, message: "enable_camera_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Default, handler: nil))
+            let alert = UIAlertController(title: "camera".localizedString, message: "enable_camera_message".localizedString, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .default, handler: nil))
             
-            alert.addAction(UIAlertAction(title: "allow".localizedString, style: .Cancel, handler: { (alert) -> Void in
-                UIApplication.sharedApplication().openURL(NSURL(string: UIApplicationOpenSettingsURLString)!)
+            alert.addAction(UIAlertAction(title: "allow".localizedString, style: .cancel, handler: { (alert) -> Void in
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
             }))
-            self.navigationController?.presentViewController(alert, animated: true, completion: nil)
+            self.navigationController?.present(alert, animated: true, completion: nil)
         } else {
             // Fallback on earlier versions
             //TODO: PUT SOMETHING HERE FOR IOS 7
@@ -220,13 +220,13 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         var err : NSError? = nil
         
         if (captureDevice == nil) {
-            self.navigationController?.popViewControllerAnimated(true)
+            self.navigationController?.popViewController(animated: true)
             return
         }
         
-        AVCaptureDevice.requestAccessForMediaType(AVMediaTypeVideo, completionHandler: { (granted) -> Void in
+        AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted) -> Void in
             
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 
                 do {
                     let input = try AVCaptureDeviceInput(device: self.captureDevice)
@@ -249,7 +249,7 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
                 }
                 
                 let width =  self.view.frame.height * (768.0 / 1024.0)
-                self.previewLayer?.frame = CGRectMake((self.view.frame.width - width) / 2, 0, width, self.view.frame.height)
+                self.previewLayer?.frame = CGRect(x: (self.view.frame.width - width) / 2, y: 0, width: width, height: self.view.frame.height)
                 self.captureSession.startRunning()
                 
                 self.stillImageOutput.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
@@ -264,28 +264,28 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     
     func takePicture() {
         
-        if let _ = stillImageOutput.connectionWithMediaType(AVMediaTypeVideo) {
+        if let _ = stillImageOutput.connection(withMediaType: AVMediaTypeVideo) {
             
-            if !(captureDevice!.adjustingWhiteBalance || captureDevice!.adjustingExposure ) {
+            if !(captureDevice!.isAdjustingWhiteBalance || captureDevice!.isAdjustingExposure ) {
                 
-                stillImageOutput.captureStillImageAsynchronouslyFromConnection(stillImageOutput.connectionWithMediaType(AVMediaTypeVideo))
+                stillImageOutput.captureStillImageAsynchronously(from: stillImageOutput.connection(withMediaType: AVMediaTypeVideo))
                     { (imageDataSampleBuffer, error) -> Void in
                         
                         if error == nil {
                             
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            DispatchQueue.main.async(execute: { () -> Void in
                                 
                                 self.capturedImage = UIImage(data: AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer))
                                 
                                 
                                 self.imageView.image = self.capturedImage
                                 
-                                self.imageView.hidden = false
-                                self.backButton.hidden = true
-                                self.captureButton.hidden = true
+                                self.imageView.isHidden = false
+                                self.backButton.isHidden = true
+                                self.captureButton.isHidden = true
                                 
-                                self.cancelButton.hidden = false
-                                self.sendButton.hidden = false
+                                self.cancelButton.isHidden = false
+                                self.sendButton.isHidden = false
                                 
                                 self.timer = nil
                             })
@@ -295,7 +295,7 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
                 
             } else {
                 timer?.invalidate()
-                timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("takePicture"), userInfo: nil, repeats: false)
+                timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ReportViewController.takePicture), userInfo: nil, repeats: false)
             }
         }
     }
@@ -303,14 +303,14 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     
     //MARK: Button Events
     
-    func captureButtonTapped(sender : UIButton) {
+    func captureButtonTapped(_ sender : UIButton) {
         
-        if !self.overlayView.hidden {
+        if !self.overlayView.isHidden {
             
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
+            UIView.animate(withDuration: 0.15, animations: { () -> Void in
                 self.overlayView.alpha = 0.0
                 }, completion: { (completed) -> Void in
-                    self.overlayView.hidden = true
+                    self.overlayView.isHidden = true
             })
             
             
@@ -323,35 +323,35 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     }
     
     
-    func sendButtonTapped(sender : UIButton?) {
+    func sendButtonTapped(_ sender : UIButton?) {
         
         if notesVC == nil {
             showNotes()
             return
         }
         
-        sendButton.enabled = false
+        sendButton.isEnabled = false
         
-        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.show()
         
-        let resized = capturedImage!.resizeImage(CGSizeMake(1024, 768))
+        let resized = capturedImage!.resizeImage(CGSize(width: 1024, height: 768))
         
         SpotOperations.reportParkingRule(resized, location: location!.coordinate, notes: notesVC?.textField.text ?? "", spotId: spotId, completion: { (completed) -> Void in
             
             if (completed) {
-                self.sendButton.enabled = true
+                self.sendButton.isEnabled = true
                 SVProgressHUD.dismiss()
 //                GiFHUD.dismiss()
                 self.delegate?.reportDidEnd(true)
-                self.navigationController?.popViewControllerAnimated(true)
+                self.navigationController?.popViewController(animated: true)
             } else {
-                self.sendButton.enabled = true
+                self.sendButton.isEnabled = true
                 SVProgressHUD.dismiss()
 //                GiFHUD.dismiss()
                 let alert = UIAlertView()
                 alert.message = "report_error".localizedString
-                alert.addButtonWithTitle("OK")
+                alert.addButton(withTitle: "OK")
                 alert.show()
             }
             
@@ -359,43 +359,43 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         
     }
     
-    func backButtonTapped(sender : UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func backButtonTapped(_ sender : UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     
-    func cancelButtonTapped(sender : UIButton) {
+    func cancelButtonTapped(_ sender : UIButton) {
         
         captureSession.startRunning()
         
         self.capturedImage = nil
-        self.imageView.hidden = true
-        self.backButton.hidden = false
-        self.captureButton.hidden = false
-        self.cancelButton.hidden = true
-        self.sendButton.hidden = true
+        self.imageView.isHidden = true
+        self.backButton.isHidden = false
+        self.captureButton.isHidden = false
+        self.cancelButton.isHidden = true
+        self.sendButton.isHidden = true
         
         dismissNotes()
     }
     
     func showNotes() {
         
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
+        UIView.animate(withDuration: 0.15, animations: { () -> Void in
             self.previewViewOverlay.alpha = 1.0
             }, completion: { (completed) -> Void in
-                self.previewViewOverlay.hidden = false
+                self.previewViewOverlay.isHidden = false
         })
         
-        self.view.bringSubviewToFront(previewViewOverlay)
-        self.view.bringSubviewToFront(cancelButton)
-        self.view.bringSubviewToFront(sendButton)
+        self.view.bringSubview(toFront: previewViewOverlay)
+        self.view.bringSubview(toFront: cancelButton)
+        self.view.bringSubview(toFront: sendButton)
         
         notesVC = NotesModalViewController()
         notesVC!.delegate = self
         
         self.addChildViewController(notesVC!)
         self.view.addSubview(notesVC!.view)
-        notesVC!.didMoveToParentViewController(self)
+        notesVC!.didMove(toParentViewController: self)
         
         notesVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
@@ -403,12 +403,12 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         
         notesVC!.view.alpha = 0.0
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.notesVC!.view.alpha = 1.0
         })
         
-        self.view.bringSubviewToFront(cancelButton)
-        self.view.bringSubviewToFront(sendButton)
+        self.view.bringSubview(toFront: cancelButton)
+        self.view.bringSubview(toFront: sendButton)
                 
     }
     
@@ -416,18 +416,18 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
         
         if let carShareingInfo = self.notesVC {
             
-            UIView.animateWithDuration(0.15, animations: { () -> Void in
+            UIView.animate(withDuration: 0.15, animations: { () -> Void in
                 self.previewViewOverlay.alpha = 0.0
                 }, completion: { (completed) -> Void in
-                    self.previewViewOverlay.hidden = true
+                    self.previewViewOverlay.isHidden = true
             })
 
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 carShareingInfo.view.alpha = 0.0
                 }, completion: { (finished) -> Void in
                     carShareingInfo.removeFromParentViewController()
                     carShareingInfo.view.removeFromSuperview()
-                    carShareingInfo.didMoveToParentViewController(nil)
+                    carShareingInfo.didMove(toParentViewController: nil)
                     self.notesVC = nil
             })
             
@@ -437,7 +437,7 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
     }
 
     //MARK: CLLocationManagerDelegate
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         if streetName == nil && !updatingLocation {
             
@@ -463,5 +463,5 @@ class ReportViewController: AbstractViewController, NotesModalViewControllerDele
 }
 
 protocol ReportViewControllerDelegate {
-    func reportDidEnd(success: Bool)
+    func reportDidEnd(_ success: Bool)
 }

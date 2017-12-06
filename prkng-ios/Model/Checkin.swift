@@ -20,7 +20,7 @@ class Checkin: NSObject {
 //    "id": 104
     
     var checkinId: Int
-    var date: NSDate
+    var date: Date
     var name: String
     var location: CLLocation
     var spotId: String
@@ -34,26 +34,26 @@ class Checkin: NSObject {
         let lat = json["lat"].doubleValue
         let lon = json["long"].doubleValue
         location = CLLocation(latitude: lat, longitude: lon)
-        date = NSDate()
+        date = Date()
         spotId = json["slot_id"].stringValue
         active = json["active"].boolValue
         hidden = json["is_hidden"].boolValue
         
         let checkinTime = json["checkin_time"].stringValue
         
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        formatter.timeZone = NSTimeZone(abbreviation: "UTC")
-        let dateStr = checkinTime.substringToIndex(checkinTime.startIndex.advancedBy(19))
-        if let omgDate = formatter.dateFromString(dateStr) {
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dateStr = checkinTime.substring(to: checkinTime.characters.index(checkinTime.startIndex, offsetBy: 19))
+        if let omgDate = formatter.date(from: dateStr) {
             date = omgDate
         } else {
-            formatter.locale = NSLocale(localeIdentifier: "en_US")
-            if let omgDate2 = formatter.dateFromString(dateStr) {
+            formatter.locale = Locale(identifier: "en_US")
+            if let omgDate2 = formatter.date(from: dateStr) {
                 date = omgDate2
             } else {
                 DDLoggerWrapper.logError("Could not parse a date... needs attention!")
-                date = NSDate()
+                date = Date()
             }
         }
         

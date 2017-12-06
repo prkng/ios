@@ -10,26 +10,26 @@ import UIKit
 
 class GeneralHelper {
 
-    static func warnUser(message: String) {
+    static func warnUser(_ message: String) {
         let alert = UIAlertView()
         alert.message = message
-        alert.addButtonWithTitle("OK".localizedString)
+        alert.addButton(withTitle: "OK".localizedString)
         alert.show()
     }
 
-    static func warnUserWithErrorMessage(message: String) {
+    static func warnUserWithErrorMessage(_ message: String) {
         let alert = UIAlertView()
         alert.message = message
         alert.title = "error".localizedString
-        alert.addButtonWithTitle("OK".localizedString)
+        alert.addButton(withTitle: "OK".localizedString)
         alert.show()
     }
 
-    static func warnUserWithSucceedMessage(message: String) {
+    static func warnUserWithSucceedMessage(_ message: String) {
         let alert = UIAlertView()
         alert.message = message
         alert.title = "success".localizedString
-        alert.addButtonWithTitle("OK".localizedString)
+        alert.addButton(withTitle: "OK".localizedString)
         alert.show()
     }
 

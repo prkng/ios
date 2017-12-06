@@ -64,8 +64,8 @@ struct Styles {
         static let statusBar = UIColor(rgba: "#D1CCC980")
         
         static let transparentBackground = UIColor(red: 48.0/255.0, green: 58/255.0, blue: 66/255.0, alpha: 0.9)
-        static let transparentWhite = UIColor.whiteColor().colorWithAlphaComponent(0.2)
-        static let transparentBlack = UIColor.blackColor().colorWithAlphaComponent(0.1)
+        static let transparentWhite = UIColor.white.withAlphaComponent(0.2)
+        static let transparentBlack = UIColor.black.withAlphaComponent(0.1)
         
     }
     
@@ -75,15 +75,15 @@ struct Styles {
         static let light = "IntroLight"
         static let bold = "IntroSemiBold"
         
-        static func regular (size : CGFloat) -> UIFont {
+        static func regular (_ size : CGFloat) -> UIFont {
             return UIFont(name: regular, size: size)!
         }
         
-        static func light (size : CGFloat) -> UIFont {
+        static func light (_ size : CGFloat) -> UIFont {
             return UIFont(name: light, size: size)!
         }
 
-        static func bold (size : CGFloat) -> UIFont {
+        static func bold (_ size : CGFloat) -> UIFont {
             return UIFont(name: bold, size: size)!
         }
         
@@ -95,7 +95,7 @@ struct Styles {
         static let h2 =  FontFaces.light(25)
         static let h3 =  FontFaces.light(20)
         
-        static let h2Variable = UIScreen.mainScreen().bounds.width == 320 ? h3 : h2
+        static let h2Variable = UIScreen.main.bounds.width == 320 ? h3 : h2
         
         static let s1 =  FontFaces.light(17)
         static let s2 =  FontFaces.regular(14)
@@ -106,8 +106,8 @@ struct Styles {
         static let h2r =  FontFaces.regular(25)
         static let h3r =  FontFaces.regular(20)
         
-        static let h4rVariable = UIScreen.mainScreen().bounds.width == 320 ? FontFaces.regular(12) : FontFaces.regular(16) //used with "$" superscripts
-        static let h2rVariable = UIScreen.mainScreen().bounds.width == 320 ? h3r : h2r
+        static let h4rVariable = UIScreen.main.bounds.width == 320 ? FontFaces.regular(12) : FontFaces.regular(16) //used with "$" superscripts
+        static let h2rVariable = UIScreen.main.bounds.width == 320 ? h3r : h2r
 
         static let s1r =  FontFaces.regular(17)
         static let s2r =  FontFaces.regular(14)
@@ -117,7 +117,7 @@ struct Styles {
         static let h1b =  FontFaces.bold(25)
         static let h2b =  FontFaces.bold(20)
         
-        static let h1bVariable = UIScreen.mainScreen().bounds.width == 320 ? h2b : h1b
+        static let h1bVariable = UIScreen.main.bounds.width == 320 ? h2b : h1b
         
         static let s1b =  FontFaces.bold(17)
         static let s2b =  FontFaces.bold(14)
@@ -128,18 +128,18 @@ struct Styles {
     struct Sizes {
         static let tabbarHeight = 58
         static let bigRoundedButtonHeight = 36
-        static let bigRoundedButtonSideMargin = UIScreen.mainScreen().bounds.width == 320 ? 23 : 50
-        static let hugeButtonHeight = UIScreen.mainScreen().bounds.width == 320 ? 54 : 70
+        static let bigRoundedButtonSideMargin = UIScreen.main.bounds.width == 320 ? 23 : 50
+        static let hugeButtonHeight = UIScreen.main.bounds.width == 320 ? 54 : 70
         static let formTextFieldHeight = 71
         static let formLabelHeight = 17
         static let searchTextFieldHeight = 46
         static let blurRadius = 3
-        static let avatarSize = CGSizeMake(68,68)
+        static let avatarSize = CGSize(width: 68,height: 68)
         static let spotDetailViewHeight = 140
         static let spotDetailViewTopPortionHeight = 70
         static let spotDetailViewBottomPortionHeight = spotDetailViewHeight - spotDetailViewTopPortionHeight
         static let modalViewHeaderHeight : CGFloat = 90
-        static let statusBarHeight = Int(UIApplication.sharedApplication().statusBarFrame.size.height)
+        static let statusBarHeight = Int(UIApplication.shared.statusBarFrame.size.height)
 
     }
     

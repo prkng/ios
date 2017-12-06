@@ -12,24 +12,24 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     
     var delegate: PRKInputFormDelegate?
     
-    private var containerView: UIView
-    private var cells: [PRKTextField]
+    fileprivate var containerView: UIView
+    fileprivate var cells: [PRKTextField]
     
-    private var didsetupSubviews : Bool
-    private var didSetupConstraints : Bool
+    fileprivate var didsetupSubviews : Bool
+    fileprivate var didSetupConstraints : Bool
     
-    private var FIELD_HEIGHT : Int = 50
+    fileprivate var FIELD_HEIGHT : Int = 50
     
-    private var placeholderAttributes = [NSFontAttributeName: Styles.Fonts.h3, NSForegroundColorAttributeName: Styles.Colors.anthracite1]
-    private var textFont = Styles.Fonts.h3
+    fileprivate var placeholderAttributes = [NSFontAttributeName: Styles.Fonts.h3, NSForegroundColorAttributeName: Styles.Colors.anthracite1]
+    fileprivate var textFont = Styles.Fonts.h3
 
     static func inputFormForRegister() -> PRKInputForm {
         
         let list = [
-            ("name".localizedString, PRKTextFieldType.NormalNoAutocorrect),
-            ("email".localizedString, PRKTextFieldType.Email),
-            ("password".localizedString, PRKTextFieldType.Password),
-            ("password_confirm".localizedString, PRKTextFieldType.Password),
+            ("name".localizedString, PRKTextFieldType.normalNoAutocorrect),
+            ("email".localizedString, PRKTextFieldType.email),
+            ("password".localizedString, PRKTextFieldType.password),
+            ("password_confirm".localizedString, PRKTextFieldType.password),
         ]
         
         let inputForm = PRKInputForm(list: list)
@@ -37,13 +37,13 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
         return inputForm
     }
     
-    static func inputFormForEditProfile(nameText: String, emailText: String) -> PRKInputForm {
+    static func inputFormForEditProfile(_ nameText: String, emailText: String) -> PRKInputForm {
         
         let list = [
-            ("name".localizedString, PRKTextFieldType.NormalNoAutocorrect),
-            ("email".localizedString, PRKTextFieldType.Email),
-            ("password".localizedString, PRKTextFieldType.Password),
-            ("password_confirm".localizedString, PRKTextFieldType.Password),
+            ("name".localizedString, PRKTextFieldType.normalNoAutocorrect),
+            ("email".localizedString, PRKTextFieldType.email),
+            ("password".localizedString, PRKTextFieldType.password),
+            ("password_confirm".localizedString, PRKTextFieldType.password),
         ]
         
         let placeholderAttributes = [NSFontAttributeName: Styles.FontFaces.light(17), NSForegroundColorAttributeName: Styles.Colors.petrol1]
@@ -65,14 +65,14 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     
     //NOTE: List of tuples is used instead of dictionary because we need the data structure used to be ordered. An ordered dictionary could be used (not built-in to swift), but would not yield any benefits in this case. 
     convenience init(list: [(String, PRKTextFieldType)], placeholderAttributes: [String: NSObject]?, textFont: UIFont?) {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
         
         self.placeholderAttributes = placeholderAttributes ?? self.placeholderAttributes
         self.textFont = textFont ?? self.textFont
         
         for item in list {
             let cell = PRKTextField(placeHolder: item.0, fieldType: item.1)
-            if item.1 == .PasswordWithForgotButton {
+            if item.1 == .passwordWithForgotButton {
                 cell.delegate = self
             }
             cell.placeholderAttributes = self.placeholderAttributes
@@ -148,7 +148,7 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
 
     }
     
-    func textForFieldNamed(placeholderText: String) -> String {
+    func textForFieldNamed(_ placeholderText: String) -> String {
         
         if let cell = (self.cells.filter { (cell) -> Bool in
             return cell.placeholderText == placeholderText
@@ -170,7 +170,7 @@ class PRKInputForm: UIView, PRKTextFieldDelegate {
     
     //MARK: PRKTextFieldDelegate
     
-    func didTapForgotPasswordButton(field: PRKTextField) {
+    func didTapForgotPasswordButton(_ field: PRKTextField) {
         self.delegate?.didTapForgotPasswordButton()
     }
 

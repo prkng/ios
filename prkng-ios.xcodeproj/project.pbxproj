@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		10CD02B82A2693CE54C5BFA9 /* libPods-prkng-ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */; };
 		3E08E2D41C4453A300135DD7 /* ParkingPandaOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E08E2D31C4453A300135DD7 /* ParkingPandaOperations.swift */; };
 		3E0DAB3D1B6BCF3100567638 /* NotesModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */; };
 		3E0FDAC41B2769FA00872667 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */; };
@@ -117,6 +116,7 @@
 		3EFBB7281C4717F3002D61F8 /* IntroSemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3EFBB7251C4717F3002D61F8 /* IntroSemiBold.otf */; };
 		3EFC34FD1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */; };
 		3EFF0A601BD16BFF00D6DBB8 /* CarSharingOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */; };
+		61B0A3AC0AB402EFAAE4DF66 /* Pods_prkng_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B956ACE2A5A79D45B97D1805 /* Pods_prkng_ios.framework */; };
 		BF1055931ACED4CD00413F16 /* ModalHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */; };
 		BF1055951ACED50500413F16 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055941ACED50500413F16 /* ViewFactory.swift */; };
 		BF1055971ACF100500413F16 /* ScheduleItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF1055961ACF100500413F16 /* ScheduleItemView.swift */; };
@@ -196,9 +196,6 @@
 		BFE956641A8E4B7500C2C117 /* ParkingSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */; };
 		BFE956691A8E59DF00C2C117 /* APIUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE956681A8E59DF00C2C117 /* APIUtility.swift */; };
 		BFE9566B1A8E5C8D00C2C117 /* SpotOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */; };
-		BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */; };
-		BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6A581A9E2E76001F063E /* Alamofire.swift */; };
-		BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */; };
 		BFEE21AC1B1F82940029BA71 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */; };
 		BFF568E71ACC62CA0018F62F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BFF568E91ACC62CA0018F62F /* Localizable.strings */; };
 		BFF568ED1ACDCC1B0018F62F /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF568EC1ACDCC1B0018F62F /* ScheduleViewController.swift */; };
@@ -219,7 +216,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
 		3E08E2D31C4453A300135DD7 /* ParkingPandaOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingPandaOperations.swift; sourceTree = "<group>"; };
 		3E0DAB3C1B6BCF3100567638 /* NotesModalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesModalViewController.swift; sourceTree = "<group>"; };
 		3E0FDAC31B2769FA00872667 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -337,8 +333,8 @@
 		3EFBB7251C4717F3002D61F8 /* IntroSemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = IntroSemiBold.otf; sourceTree = "<group>"; };
 		3EFC34FC1B4B033200C4AE34 /* PRKVerticalGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PRKVerticalGestureRecognizer.swift; sourceTree = "<group>"; };
 		3EFF0A5F1BD16BFF00D6DBB8 /* CarSharingOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarSharingOperations.swift; sourceTree = "<group>"; };
-		A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
-		A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-prkng-ios.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7324C184D1757194CCFEAD2D /* Pods-prkng-ios.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.release.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.release.xcconfig"; sourceTree = "<group>"; };
+		B956ACE2A5A79D45B97D1805 /* Pods_prkng_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prkng_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF1055921ACED4CD00413F16 /* ModalHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalHeaderView.swift; sourceTree = "<group>"; };
 		BF1055941ACED50500413F16 /* ViewFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		BF1055961ACF100500413F16 /* ScheduleItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleItemView.swift; sourceTree = "<group>"; };
@@ -423,9 +419,6 @@
 		BFE956631A8E4B7500C2C117 /* ParkingSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParkingSpot.swift; sourceTree = "<group>"; };
 		BFE956681A8E59DF00C2C117 /* APIUtility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIUtility.swift; sourceTree = "<group>"; };
 		BFE9566A1A8E5C8D00C2C117 /* SpotOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotOperations.swift; sourceTree = "<group>"; };
-		BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire-SwiftyJSON.swift"; sourceTree = "<group>"; };
-		BFEA6A581A9E2E76001F063E /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
-		BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		BFEE21AB1B1F82940029BA71 /* ReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		BFF568E81ACC62CA0018F62F /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BFF568EA1ACC62D40018F62F /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -435,6 +428,7 @@
 		BFFDE4621AFBA4380035DF54 /* LoginEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginEmailViewController.swift; sourceTree = "<group>"; };
 		BFFDE4641AFBA48D0035DF54 /* RegisterEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterEmailViewController.swift; sourceTree = "<group>"; };
 		BFFDE4681AFBA76E0035DF54 /* FirstUseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstUseViewController.swift; sourceTree = "<group>"; };
+		D1240B492F36C867D72D499A /* Pods-prkng-ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prkng-ios.debug.xcconfig"; path = "Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -463,7 +457,7 @@
 				BFDDF10A1B03612600E8C59E /* AddressBook.framework in Frameworks */,
 				BF2891E61AFF9DFD0041B04C /* FBSDKCoreKit.framework in Frameworks */,
 				BF2891E81AFF9ED60041B04C /* FBSDKLoginKit.framework in Frameworks */,
-				10CD02B82A2693CE54C5BFA9 /* libPods-prkng-ios.a in Frameworks */,
+				61B0A3AC0AB402EFAAE4DF66 /* Pods_prkng_ios.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,15 +471,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0FDDAC5FCB8E3989E66A61BF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */,
-				3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		14ED3BF3E75A844F19A53B43 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -512,7 +497,7 @@
 				BFA8D16C1A83D34F005F4054 /* CoreLocation.framework */,
 				BF2891E71AFF9ED60041B04C /* FBSDKLoginKit.framework */,
 				BF2891E51AFF9DFD0041B04C /* FBSDKCoreKit.framework */,
-				A8E53199242452ECB6E79C64 /* libPods-prkng-ios.a */,
+				B956ACE2A5A79D45B97D1805 /* Pods_prkng_ios.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -617,6 +602,15 @@
 				3E2EF21A1C863D6500E3DE78 /* PPTransactionTableViewCell.swift */,
 			);
 			name = ParkingPanda;
+			sourceTree = "<group>";
+		};
+		7AC598A20DD8F5864E6F9AF0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D1240B492F36C867D72D499A /* Pods-prkng-ios.debug.xcconfig */,
+				7324C184D1757194CCFEAD2D /* Pods-prkng-ios.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		BF0B47221A7E903900E94B3C /* Model */ = {
@@ -822,7 +816,7 @@
 				BFC7649F1A7644AC008F2B26 /* prkng-iosTests */,
 				BFC764881A7644AC008F2B26 /* Products */,
 				14ED3BF3E75A844F19A53B43 /* Frameworks */,
-				0FDDAC5FCB8E3989E66A61BF /* Pods */,
+				7AC598A20DD8F5864E6F9AF0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -964,23 +958,12 @@
 		BFEA6A4E1A9E2D10001F063E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */,
 				BF5E84F81B07B3A000EC6AD2 /* AFDateHelper */,
-				BFEA6A561A9E2E76001F063E /* Alamofire */,
 				3E90A92F1BA9C9B200CCEB41 /* GiFHUD */,
 				BF3282641B384732002ED8DF /* MaterialKit */,
 				BFEA6A991A9E2E81001F063E /* Snap */,
 			);
 			path = Libraries;
-			sourceTree = "<group>";
-		};
-		BFEA6A561A9E2E76001F063E /* Alamofire */ = {
-			isa = PBXGroup;
-			children = (
-				BFEA6A571A9E2E76001F063E /* Alamofire-SwiftyJSON.swift */,
-				BFEA6A581A9E2E76001F063E /* Alamofire.swift */,
-			);
-			path = Alamofire;
 			sourceTree = "<group>";
 		};
 		BFEA6A991A9E2E81001F063E /* Snap */ = {
@@ -1002,14 +985,6 @@
 				3E20B3951BB63A450067DA8C /* ViewController+SnapKit.swift */,
 			);
 			path = Snap;
-			sourceTree = "<group>";
-		};
-		BFEA6AAB1A9E2EBB001F063E /* SwiftyJSON */ = {
-			isa = PBXGroup;
-			children = (
-				BFEA6AAC1A9E2EBB001F063E /* SwiftyJSON.swift */,
-			);
-			path = SwiftyJSON;
 			sourceTree = "<group>";
 		};
 		BFEE21AA1B1F82640029BA71 /* Report */ = {
@@ -1042,12 +1017,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BFC764A61A7644AC008F2B26 /* Build configuration list for PBXNativeTarget "prkng-ios" */;
 			buildPhases = (
-				4B548C3C5DA33ADFCBA8DB17 /* Check Pods Manifest.lock */,
+				FDD69B2C8623C993F4597078 /* [CP] Check Pods Manifest.lock */,
 				BFC764831A7644AC008F2B26 /* Sources */,
 				BFC764841A7644AC008F2B26 /* Frameworks */,
 				BFC764851A7644AC008F2B26 /* Resources */,
 				BFDF22BF1A8511E2000380DA /* ShellScript */,
-				98383C3432BC2837D1EEFAA6 /* Copy Pods Resources */,
+				4092DC374571C625B05586C7 /* [CP] Embed Pods Frameworks */,
+				611D5951DE6DCD997A9A8051 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1089,7 +1065,8 @@
 				TargetAttributes = {
 					BFC764861A7644AC008F2B26 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = KURFZF6D8V;
+						DevelopmentTeam = C9GUV8N98P;
+						LastSwiftMigration = 0830;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
 								enabled = 1;
@@ -1098,6 +1075,7 @@
 					};
 					BFC7649B1A7644AC008F2B26 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 0830;
 						TestTargetID = BFC764861A7644AC008F2B26;
 					};
 				};
@@ -1155,30 +1133,71 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4B548C3C5DA33ADFCBA8DB17 /* Check Pods Manifest.lock */ = {
+		4092DC374571C625B05586C7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GZIP/GZIP.framework",
+				"${BUILT_PRODUCTS_DIR}/GeoJSONSerialization/GeoJSONSerialization.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/MarqueeLabel/MarqueeLabel.framework",
+				"${BUILT_PRODUCTS_DIR}/OMGHTTPURLRQ/OMGHTTPURLRQ.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/SevenSwitch/SevenSwitch.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
+				"${BUILT_PRODUCTS_DIR}/TDOAuth/TDOAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/pop/pop.framework",
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GZIP.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GeoJSONSerialization.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManager.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MarqueeLabel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OMGHTTPURLRQ.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SevenSwitch.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TDOAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/pop.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		98383C3432BC2837D1EEFAA6 /* Copy Pods Resources */ = {
+		611D5951DE6DCD997A9A8051 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-prkng-ios/Pods-prkng-ios-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1197,6 +1216,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "./Fabric.framework/run 0a552ed905e273700bb769724c451c706ceb78cb 55ae8884944b326951fc667a5f4d9dbe77103580fc564745f9309f428b2fb29a";
+		};
+		FDD69B2C8623C993F4597078 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-prkng-ios-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1254,7 +1291,6 @@
 				BF1C2B5B1AFCBBBC0070085A /* UserOperations.swift in Sources */,
 				3E20B3971BB63A450067DA8C /* ConstraintAttributes.swift in Sources */,
 				3E20B3A01BB63A450067DA8C /* SnapKit.swift in Sources */,
-				BFEA6A591A9E2E76001F063E /* Alamofire-SwiftyJSON.swift in Sources */,
 				BF6981B41B307DE200E0EF62 /* HistoryTableViewCell.swift in Sources */,
 				3E29EDE21C6A60810050F2C3 /* PPIntroViewController.swift in Sources */,
 				3EC55E681B472195001A1B2B /* SupportedArea.swift in Sources */,
@@ -1281,7 +1317,6 @@
 				3E5C12041BED2C8B0070709F /* CityPickerViewController.swift in Sources */,
 				3E6CC96F1B309A64009EA460 /* KMLParser.m in Sources */,
 				3E530B6E1B7A5BDC00EF3838 /* UITextField.swift in Sources */,
-				BFEA6AAD1A9E2EBB001F063E /* SwiftyJSON.swift in Sources */,
 				BF7170AC1AE3C27500B922CA /* PrkTabBarButton.swift in Sources */,
 				BF324C3F1AFBBD31007450F7 /* IntroViewController.swift in Sources */,
 				3EC96E0D1C63DDFB002D7D86 /* PPSignInViewController.swift in Sources */,
@@ -1329,7 +1364,6 @@
 				3E9509CA1B570A6A0088E336 /* PRKInputForm.swift in Sources */,
 				3E20B39F1BB63A450067DA8C /* LayoutConstraint.swift in Sources */,
 				3E20B39A1BB63A450067DA8C /* ConstraintMaker.swift in Sources */,
-				BFEA6A5A1A9E2E76001F063E /* Alamofire.swift in Sources */,
 				3E3199591B31D4F600CB118D /* TimeFilterView.swift in Sources */,
 				3E7D8ECD1B73CEFC006B9440 /* MGLMapViewController.swift in Sources */,
 				BF3282711B3847AE002ED8DF /* MKTableViewCell.swift in Sources */,
@@ -1445,11 +1479,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1482,16 +1517,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		BFC764A71A7644AC008F2B26 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A2AA5614BB33F9B505FDA7D3 /* Pods-prkng-ios.debug.xcconfig */;
+			baseConfigurationReference = D1240B492F36C867D72D499A /* Pods-prkng-ios.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1500,13 +1536,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = NO;
+				DEVELOPMENT_TEAM = C9GUV8N98P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/**",
@@ -1525,6 +1562,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -1532,7 +1570,7 @@
 		};
 		BFC764A81A7644AC008F2B26 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3303FDCB572176B3A67F71CC /* Pods-prkng-ios.release.xcconfig */;
+			baseConfigurationReference = 7324C184D1757194CCFEAD2D /* Pods-prkng-ios.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1541,13 +1579,14 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEFINES_MODULE = NO;
+				DEVELOPMENT_TEAM = C9GUV8N98P;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "prkng-ios/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/**",
@@ -1562,6 +1601,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "$(PROJECT_DIR)/prkng-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -1583,6 +1623,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ng.prk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/prkng-ios.app/prkng-ios";
 			};
 			name = Debug;
@@ -1599,6 +1640,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ng.prk.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/prkng-ios.app/prkng-ios";
 			};
 			name = Release;

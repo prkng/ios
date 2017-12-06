@@ -26,8 +26,8 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         
         logoView = UIImageView()
         messageLabel = ViewFactory.bigMessageLabel()
-        mapButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "show_the_map".localizedString.uppercaseString)
-        reportButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "report_an_error".localizedString.uppercaseString, textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
+        mapButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "show_the_map".localizedString.uppercased())
+        reportButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "report_an_error".localizedString.uppercased(), textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,14 +41,14 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         setupConstraints()
         
         //add a tap gesture recognizer
-        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
-        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(MyCarNoCheckinViewController.mapButtonTapped))
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(MyCarNoCheckinViewController.mapButtonTapped))
         tapRecognizer1.delegate = self
         tapRecognizer2.delegate = self
         backgroundImageView.addGestureRecognizer(tapRecognizer1)
-        backgroundImageView.userInteractionEnabled = true
+        backgroundImageView.isUserInteractionEnabled = true
         logoView.addGestureRecognizer(tapRecognizer2)
-        logoView.userInteractionEnabled = true
+        logoView.isUserInteractionEnabled = true
     }
     
     
@@ -57,13 +57,13 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         self.screenName = "My Car - Not Checked in"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
     func setupViews () {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
         
         segmentedControl.setPressedHandler(segmentedControlTapped)
@@ -75,10 +75,10 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         messageLabel.text = "no_checkin_message".localizedString
         view.addSubview(messageLabel)
         
-        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        reportButton.addTarget(self, action: #selector(MyCarNoCheckinViewController.reportButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(reportButton)
         
-        mapButton.addTarget(self, action: "mapButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        mapButton.addTarget(self, action: #selector(MyCarNoCheckinViewController.mapButtonTapped), for: UIControlEvents.touchUpInside)
         view.addSubview(mapButton)
     }
     
@@ -95,7 +95,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         logoView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(68, 68))
+            make.size.equalTo(CGSize(width: 68, height: 68))
             make.centerX.equalTo(self.view)
             make.top.equalTo(self.segmentedControl.snp_bottom).offset(40)
         }
@@ -131,7 +131,7 @@ class MyCarNoCheckinViewController: MyCarAbstractViewController, UIGestureRecogn
         self.delegate?.loadSearchInHereTab()
     }
     
-    func reportButtonTapped(sender: UIButton) {
+    func reportButtonTapped(_ sender: UIButton) {
         loadReportScreen(nil)
     }
     

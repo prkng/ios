@@ -25,7 +25,7 @@ class ScheduleDayIndicatorView: UIView {
     var indicatorWidth : CGFloat
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -83,7 +83,7 @@ class ScheduleDayIndicatorView: UIView {
         
         indicator.layer.borderWidth = 1.0
         indicator.layer.cornerRadius = 13.0
-        indicator.layer.borderColor = UIColor.whiteColor().CGColor
+        indicator.layer.borderColor = UIColor.white.cgColor
         indicator.clipsToBounds = true
         addSubview(indicator)
         
@@ -119,7 +119,7 @@ class ScheduleDayIndicatorView: UIView {
         
     }
     
-    func setDays (days : Array<String>) {
+    func setDays (_ days : Array<String>) {
         
         var i : Int = 0
         for day in days {
@@ -131,12 +131,12 @@ class ScheduleDayIndicatorView: UIView {
         let label : UILabel = UILabel()
         label.font = Styles.FontFaces.light(17)
         label.textColor = Styles.Colors.cream1
-        label.textAlignment = NSTextAlignment.Center
+        label.textAlignment = NSTextAlignment.center
         return label
     }
     
     
-    func setPositionRatio (ratio : CGFloat) {
+    func setPositionRatio (_ ratio : CGFloat) {
         
         let offset : CGFloat = ((maxX! - minX!) * ratio) + minX!
 //        self.indicatorXConstraint?.offset(offset)

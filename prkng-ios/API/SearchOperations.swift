@@ -12,7 +12,7 @@ class SearchOperations {
    
     
     
-    class func getStreetName(location : CLLocationCoordinate2D, completion : (result : String) -> Void) {
+    class func getStreetName(_ location : CLLocationCoordinate2D, completion : @escaping (_ result : String) -> Void) {
         
         
         let url = "https://nominatim.openstreetmap.org/reverse"
@@ -25,7 +25,7 @@ class SearchOperations {
             
             let street : String = json["address"]["road"].stringValue
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 () -> Void in
                
                 completion(result:street)
@@ -37,9 +37,9 @@ class SearchOperations {
         
     }
     
-    class func searchWithInput(input : String , forAutocomplete: Bool, completion : (results : Array<SearchResult>) -> Void) {
+    class func searchWithInput(_ input : String , forAutocomplete: Bool, completion : @escaping (_ results : Array<SearchResult>) -> Void) {
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async(execute: {
             () -> Void in
             self.mapboxPlacesSearchWithInput(input, forAutocomplete: forAutocomplete, completion: { (results1) -> Void in
                 self.foursquareSearchWithInput(input, forAutocomplete: forAutocomplete, completion: { (results2) -> Void in
@@ -48,10 +48,10 @@ class SearchOperations {
                         self.nominatimSearchWithStreet(input, completion: { (results3) -> Void in
                             
                             let totalResults = results1 + results2
-                            dispatch_async(dispatch_get_main_queue(), {
+                            DispatchQueue.main.async(execute: {
                                 () -> Void in
                                 AnalyticsOperations.sendSearchQueryToAnalytics(input, navigate: false)
-                                completion(results: totalResults)
+                                completion(totalResults)
                             })
                             
                         })
@@ -59,9 +59,9 @@ class SearchOperations {
                     } else {
                         
                         let totalResults = results1 + results2
-                        dispatch_async(dispatch_get_main_queue(), {
+                        DispatchQueue.main.async(execute: {
                             () -> Void in
-                            completion(results: totalResults)
+                            completion(totalResults)
                         })
                     }
                 })
@@ -70,7 +70,7 @@ class SearchOperations {
     }
     
     
-    private class func nominatimSearchWithStreet(input : String , completion : (results : Array<SearchResult>) -> Void) {
+    fileprivate class func nominatimSearchWithStreet(_ input : String , completion : @escaping (_ results : Array<SearchResult>) -> Void) {
         
         let url = "https://nominatim.openstreetmap.org/search"
         
@@ -84,8 +84,8 @@ class SearchOperations {
             break
         }
         
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: "en_US_POSIX")
 
         request(.GET, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -98,11 +98,11 @@ class SearchOperations {
                 
                 let latStr : String = subJson["lat"].stringValue
                 
-                let lat : Double = numberFormatter.numberFromString(latStr)!.doubleValue
+                let lat : Double = numberFormatter.number(from: latStr)!.doubleValue
                 
                 let lonStr : String = subJson["lon"].stringValue
                 
-                let lon : Double = numberFormatter.numberFromString(lonStr)!.doubleValue
+                let lon : Double = numberFormatter.number(from: lonStr)!.doubleValue
                 
                 let location : CLLocation = CLLocation(latitude: lat, longitude: lon)
                 
@@ -122,16 +122,16 @@ class SearchOperations {
         
     }
 
-    private class func mapboxPlacesSearchWithInput(input : String , forAutocomplete: Bool, completion : (results : Array<SearchResult>) -> Void) {
+    fileprivate class func mapboxPlacesSearchWithInput(_ input : String , forAutocomplete: Bool, completion : @escaping (_ results : Array<SearchResult>) -> Void) {
         
-        let escapedInput = input.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet())
+        let escapedInput = input.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         let lat = String(stringInterpolationSegment: Settings.selectedCity().coordinate.latitude)
         let lon = String(stringInterpolationSegment: Settings.selectedCity().coordinate.longitude)
 
         let url = String(format: "https://api.mapbox.com/geocoding/v5/mapbox.places/%@.json?proximity=%@,%@&access_token=pk.eyJ1IjoiYXJuYXVkc3B1aGxlciIsImEiOiJSaEctSlVnIn0.R8cfngN9KkHYZx54JQdgJA", escapedInput ?? "", lon, lat)
         
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         request(.GET, URLString: url).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -147,7 +147,7 @@ class SearchOperations {
                 var state = ""
                 var country = ""
                 
-                for i in Array((0...(subJson["context"].count)).reverse()) {
+                for i in Array((0...(subJson["context"].count)).reversed()) {
                     if i - 1 >= 0 {
                         let text = subJson["context"][i - 1]["text"].stringValue
                         if country == "" {
@@ -164,21 +164,21 @@ class SearchOperations {
                 
                 var matchesCity = false
                 if Settings.selectedCity().name == "montreal" {
-                    matchesCity = city.lowercaseString.rangeOfString("montreal") != nil
-                        || city.lowercaseString.rangeOfString("montréal") != nil
+                    matchesCity = city.lowercased().range(of: "montreal") != nil
+                        || city.lowercased().range(of: "montréal") != nil
                 } else if Settings.selectedCity().name == "quebec" {
-                    matchesCity = city.lowercaseString.rangeOfString("quebec") != nil
-                        || city.lowercaseString.rangeOfString("québec") != nil
-                } else if Settings.selectedCity().name.containsString("newyork") {
-                    matchesCity = city.lowercaseString.containsString("newyork")
+                    matchesCity = city.lowercased().range(of: "quebec") != nil
+                        || city.lowercased().range(of: "québec") != nil
+                } else if Settings.selectedCity().name.contains("newyork") {
+                    matchesCity = city.lowercased().contains("newyork")
                 } else if Settings.selectedCity().name == "seattle" {
-                    matchesCity = city.lowercaseString == "seattle"
+                    matchesCity = city.lowercased() == "seattle"
                 }
                 
-                let matchesProvince = state.lowercaseString.rangeOfString("quebec") != nil
-                    || state.lowercaseString.rangeOfString("québec") != nil
-                    || state.lowercaseString.containsString("new york")
-                    || state.lowercaseString == "washington"
+                let matchesProvince = state.lowercased().range(of: "quebec") != nil
+                    || state.lowercased().range(of: "québec") != nil
+                    || state.lowercased().contains("new york")
+                    || state.lowercased() == "washington"
                 
                 let isPoint = subJson["geometry"]["type"].stringValue == "Point"
                 
@@ -190,7 +190,7 @@ class SearchOperations {
                     let provinceAndCountry = state + ", " + country
 
                     //if this result is a post code...
-                    if subJson["id"].stringValue.lowercaseString.rangeOfString("postcode") != nil {
+                    if subJson["id"].stringValue.lowercased().range(of: "postcode") != nil {
                         subtitle = provinceAndCountry
                     } else {
                     // regular street or place (even though places aren't supported by mapbox at this time
@@ -202,7 +202,7 @@ class SearchOperations {
                         
                         let morePreciseLocation = cityAndProvince[0] == "," ? provinceAndCountry : cityAndProvince
                         
-                        if address.rangeOfString(name) != nil {
+                        if address.range(of: name) != nil {
                             title = address
                             subtitle = morePreciseLocation
                         } else {
@@ -211,9 +211,9 @@ class SearchOperations {
                     }
                     
                     let latStr = subJson["geometry"]["coordinates"][1].stringValue
-                    let lat = numberFormatter.numberFromString(latStr)!.doubleValue
+                    let lat = numberFormatter.number(from: latStr)!.doubleValue
                     let lonStr = subJson["geometry"]["coordinates"][0].stringValue
-                    let lon = numberFormatter.numberFromString(lonStr)!.doubleValue
+                    let lon = numberFormatter.number(from: lonStr)!.doubleValue
                     let location = CLLocation(latitude: lat, longitude: lon)
                     location.coordinate
                     results.append(SearchResult(title: title, subtitle: subtitle, location: location))
@@ -234,7 +234,7 @@ class SearchOperations {
     }
     
     
-    private class func foursquareSearchWithInput(input : String , forAutocomplete: Bool, completion : (results : Array<SearchResult>) -> Void) {
+    fileprivate class func foursquareSearchWithInput(_ input : String , forAutocomplete: Bool, completion : @escaping (_ results : Array<SearchResult>) -> Void) {
         
         var url = "https://api.foursquare.com/v2/venues/"
         var arrayName = ""
@@ -253,8 +253,8 @@ class SearchOperations {
             "client_id" : "E5BZKWTZRKG2NN0RPC0WFFOYQRNS31PUSL0XCTUFWTCUFF4S",
             "client_secret" : "JM1LAQRGMBBUWP00FM2YQ10WQZRT2OR1SEJLL1DDG1S2VFRB"]
         
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+        let numberFormatter = NumberFormatter()
+        numberFormatter.locale = Locale(identifier: "en_US_POSIX")
         
         request(.GET, URLString: url, parameters: params).responseSwiftyJSON() {
             (request, response, json, error) in
@@ -268,9 +268,9 @@ class SearchOperations {
                 let subtitle = subJson["location"]["address"].stringValue
                 
                 let latStr = subJson["location"]["lat"].stringValue
-                let lat = numberFormatter.numberFromString(latStr)!.doubleValue
+                let lat = numberFormatter.number(from: latStr)!.doubleValue
                 let lonStr = subJson["location"]["lng"].stringValue
-                let lon = numberFormatter.numberFromString(lonStr)!.doubleValue
+                let lon = numberFormatter.number(from: lonStr)!.doubleValue
                 let location = CLLocation(latitude: lat, longitude: lon)
                 location.coordinate
                 results.append(SearchResult(title: title, subtitle: subtitle, location: location))

@@ -40,12 +40,12 @@ class FirstUseViewController: AbstractViewController, TutorialViewControllerDele
         self.screenName = "Intro - First Use View"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         SVProgressHUD.dismiss()
 //        GiFHUD.dismiss()
@@ -57,19 +57,19 @@ class FirstUseViewController: AbstractViewController, TutorialViewControllerDele
         view.backgroundColor = Styles.Colors.petrol1
         
         backgroundImageView.image = UIImage(named: "bg_opening")
-        backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        backgroundImageView.contentMode = UIViewContentMode.scaleAspectFill
         view.addSubview(backgroundImageView)
         
         logoView.image = UIImage(named: "logo_opening")
         view.addSubview(logoView)
         
-        parkNowButton.setTitle(NSLocalizedString("park_now", comment : ""), forState: UIControlState.Normal)
-        parkNowButton.addTarget(self, action: "didFinishTutorial", forControlEvents: UIControlEvents.TouchUpInside)
+        parkNowButton.setTitle(NSLocalizedString("park_now", comment : ""), for: UIControlState())
+        parkNowButton.addTarget(self, action: "didFinishTutorial", for: UIControlEvents.touchUpInside)
         view.addSubview(parkNowButton)
-        parkNowButton.hidden = true
+        parkNowButton.isHidden = true
         
-        tourButton.setTitle("take_the_tour".localizedString.uppercaseString, forState: UIControlState.Normal)
-        tourButton.addTarget(self, action: "tourButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        tourButton.setTitle("take_the_tour".localizedString.uppercased(), for: UIControlState())
+        tourButton.addTarget(self, action: #selector(FirstUseViewController.tourButtonTapped), for: UIControlEvents.touchUpInside)
         view.addSubview(tourButton)
     }
     
@@ -87,7 +87,7 @@ class FirstUseViewController: AbstractViewController, TutorialViewControllerDele
         
         parkNowButton.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(100, 26))
+            make.size.equalTo(CGSize(width: 100, height: 26))
             make.bottom.equalTo(self.tourButton.snp_top).offset(-20)
         }
         
@@ -117,7 +117,7 @@ class FirstUseViewController: AbstractViewController, TutorialViewControllerDele
             let tutorial = TutorialViewController()
             tutorial.delegate = self
             
-            self.presentViewController(tutorial, animated: true) { () -> Void in
+            self.present(tutorial, animated: true) { () -> Void in
             }
         }
         

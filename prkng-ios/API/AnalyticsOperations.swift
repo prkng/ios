@@ -7,30 +7,29 @@
 //
 
 import UIKit
+import Alamofire
 
 class AnalyticsOperations {
    
     static let sharedInstance = AnalyticsOperations()
     
-    private var lastUsedCoordinate: CLLocationCoordinate2D?
+    fileprivate var lastUsedCoordinate: CLLocationCoordinate2D?
     
-    class func sendSearchQueryToAnalytics(query: String, navigate: Bool) {
-        
-        if query == "" {
+    class func sendSearchQueryToAnalytics(_ query: String, navigate: Bool) {
+        guard query.isEmpty == false else {
             return
         }
         
         let url = APIUtility.rootURL() + "analytics/search"
-        let params = ["query": query, "navigate": (navigate ? "true" : "false") ]
+        let params: [String : AnyObject] = ["query": query as AnyObject, "navigate": (navigate ? "true" : "false") as AnyObject ]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
-            
+        APIUtility.authenticatedManager().request(url, method: HTTPMethod.post, parameters: params, encoding: .default, headers: nil).validate().responseJSON { (reseponse) in
+            //NADA
         }
         
     }
 
-    class func sendMapModeChange(mapMode: MapMode) {
+    class func sendMapModeChange(_ mapMode: MapMode) {
 
         var mapModeString = ""
         switch (mapMode.rawValue) {
@@ -48,187 +47,143 @@ class AnalyticsOperations {
             break
         }
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : "map_mode_" + mapModeString]
+        let params: [String : AnyObject] = ["event" : ("map_mode_" + mapModeString) as AnyObject ]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
-            
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
+            //NADA
         }
         
     }
     
-    static func carShareLoginEvent(type: String, completion : (completed : Bool) -> Void) {
+    static func carShareLoginEvent(_ type: String, completion : @escaping (_ completed : Bool) -> Void) {
         
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : ("login_" + type)]
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
-            
-            if (response?.statusCode != 201) {
-                completion(completed: false)
-            } else {
-                completion(completed: true)
-            }
-            
+        let params: [String : AnyObject] = ["event" : ("login_" + type) as AnyObject]
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
+            completion(response?.statusCode != 201 ? false : true)
         }
         
     }
 
-    static func reservedCarShareEvent(carShare: CarShare, completion : (completed : Bool) -> Void) {
+    static func reservedCarShareEvent(_ carShare: CarShare, completion : @escaping (_ completed : Bool) -> Void) {
                 
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : ("reserved_" + carShare.carSharingType.name),
-            "longitude" : String(stringInterpolationSegment: carShare.coordinate.longitude),
-            "latitude" : String(stringInterpolationSegment: carShare.coordinate.latitude)]
+        let params: [String : AnyObject] = ["event" : ("reserved_" + carShare.carSharingType.name) as AnyObject,
+            "longitude" : String(stringInterpolationSegment: carShare.coordinate.longitude) as AnyObject,
+            "latitude" : String(stringInterpolationSegment: carShare.coordinate.latitude) as AnyObject]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
             
-            if (response?.statusCode != 201) {
-                completion(completed: false)
-            } else {
-                completion(completed: true)
-            }
+            completion(response?.statusCode != 201 ? false : true)
             
         }
         
     }
     
-    func geofencingEvent(coordinate: CLLocationCoordinate2D, entering: Bool, completion : (completed : Bool) -> Void) {
+    func geofencingEvent(_ coordinate: CLLocationCoordinate2D, entering: Bool, completion : @escaping (_ completed : Bool) -> Void) {
         
         lastUsedCoordinate = coordinate
         
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : (entering ? "entered_fence" : "left_fence"),
-            "longitude" : String(stringInterpolationSegment: coordinate.longitude),
-            "latitude" : String(stringInterpolationSegment: coordinate.latitude)]
+        let params: [String : AnyObject] = ["event" : (entering ? "entered_fence" : "left_fence") as AnyObject,
+            "longitude" : String(stringInterpolationSegment: coordinate.longitude) as AnyObject,
+            "latitude" : String(stringInterpolationSegment: coordinate.latitude) as AnyObject]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
-            
-            if (response?.statusCode != 201) {
-                completion(completed: false)
-            } else {
-                completion(completed: true)
-            }
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
+            completion(response?.statusCode != 201 ? false : true)
 
         }
         
     }
 
-    func geofencingEventUserResponse(response: Bool, completion : (completed : Bool) -> Void) {
+    func geofencingEventUserResponse(_ response: Bool, completion : @escaping (_ completed : Bool) -> Void) {
         
         let url = APIUtility.rootURL() + "analytics/event"
-        var params = ["event" : (response ? "fence_response_yes" : "fence_response_no")]
+        var params: [String : AnyObject] = ["event" : (response ? "fence_response_yes" : "fence_response_no") as AnyObject]
         
         if let coordinate = self.lastUsedCoordinate {
-            params["longitude"] = String(stringInterpolationSegment: coordinate.longitude)
-            params["latitude"] = String(stringInterpolationSegment: coordinate.latitude)
+            params["longitude"] = String(stringInterpolationSegment: coordinate.longitude) as AnyObject
+            params["latitude"] = String(stringInterpolationSegment: coordinate.latitude) as AnyObject
         }
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
             
-            if (response?.statusCode != 201) {
-                completion(completed: false)
-            } else {
-                completion(completed: true)
-            }
+            completion(response?.statusCode != 201 ? false : true)
             
         }
         
     }
     
-    class func ppUserDidLogin(completion : ((completed : Bool) -> Void)?) {
+    class func ppUserDidLogin(_ completion : ((_ completed : Bool) -> Void)?) {
         
         
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : ("parking_panda_login")]
+        let params: [String : AnyObject] = ["event" : ("parking_panda_login") as AnyObject]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
             
-            if (response?.statusCode != 201) {
-                completion?(completed: false)
-            } else {
-                completion?(completed: true)
-            }
+            completion?(response?.statusCode != 201 ? false : true)
             
         }
         
     }
 
-    class func ppUserDidSignUp(completion : ((completed : Bool) -> Void)?) {
+    class func ppUserDidSignUp(_ completion : ((_ completed : Bool) -> Void)?) {
         
         
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : ("parking_panda_signup")]
+        let params: [String : AnyObject] = ["event" : ("parking_panda_signup") as AnyObject]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
             
-            if (response?.statusCode != 201) {
-                completion?(completed: false)
-            } else {
-                completion?(completed: true)
-            }
+            completion?(response?.statusCode != 201 ? false : true)
             
         }
         
     }
     
-    class func ppUserDidCreateTransaction(completion : ((completed : Bool) -> Void)?) {
+    class func ppUserDidCreateTransaction(_ completion : ((_ completed : Bool) -> Void)?) {
         
         
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : ("parking_panda_transaction_created")]
+        let params: [String : AnyObject] = ["event" : ("parking_panda_transaction_created") as AnyObject]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
             
-            if (response?.statusCode != 201) {
-                completion?(completed: false)
-            } else {
-                completion?(completed: true)
-            }
+            completion?(response?.statusCode != 201 ? false : true)
             
         }
         
     }
 
 
-    class func locationPermission(authorizationStatus: CLAuthorizationStatus, completion : (completed : Bool) -> Void) {
+    class func locationPermission(_ authorizationStatus: CLAuthorizationStatus, completion : @escaping (_ completed : Bool) -> Void) {
         
         var statusString = ""
         switch (authorizationStatus) {
-        case CLAuthorizationStatus.Restricted:
+        case CLAuthorizationStatus.restricted:
             statusString = "Restricted"
             break
-        case CLAuthorizationStatus.Denied:
+        case CLAuthorizationStatus.denied:
             statusString = "Denied"
             break
-        case CLAuthorizationStatus.NotDetermined:
+        case CLAuthorizationStatus.notDetermined:
             statusString = "NotDetermined"
             break
-        case CLAuthorizationStatus.AuthorizedWhenInUse:
+        case CLAuthorizationStatus.authorizedWhenInUse:
             statusString = "AuthorizedWhenInUse"
             break
-        case CLAuthorizationStatus.AuthorizedAlways:
+        case CLAuthorizationStatus.authorizedAlways:
             statusString = "AuthorizedAlways"
             break
         }
         
         let url = APIUtility.rootURL() + "analytics/event"
-        let params = ["event" : "perm_" + statusString]
+        let params = ["event" : ("perm_" + statusString) as AnyObject]
         
-        APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
-            (request, response, json, error) in
+        APIUtility.authenticatedManager().request(.POST, url, parameters: params, encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) in
             
-            if (response?.statusCode != 201) {
-                completion(completed: false)
-            } else {
-                completion(completed: true)
-            }
+            completion(response?.statusCode != 201 ? false : true)
             
         }
         

@@ -8,6 +8,7 @@
 
 import UIKit
 import Foundation
+import Mapbox
 
 //class RMMapViewController: MapViewController {
 //    
@@ -30,7 +31,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     var isSelecting: Bool
     var recoloringLotPins: Bool = false
     
-    private(set) var MOVE_DELTA_PERCENTAGE : Double
+    fileprivate(set) var MOVE_DELTA_PERCENTAGE : Double
     
     let ZOOM_DEFAULT_APP_LAUNCH: Float = 17.0
     let ZOOM_DEFAULT: Float = 16.0
@@ -52,14 +53,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.init(nibName: nil, bundle: nil)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         
         if let source = RMMapboxSource(mapID: mapSource) {
-            mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: source)
+            mapView = RMMapView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), andTilesource: source)
         } else {
-            let offlineSourcePath = NSBundle.mainBundle().pathForResource("OfflineMap", ofType: "json")
-            let offlineSource = RMMapboxSource(tileJSON: try? String(contentsOfFile: offlineSourcePath!, encoding: NSUTF8StringEncoding))
-            mapView = RMMapView(frame: CGRectMake(0, 0, 100, 100), andTilesource: offlineSource)
+            let offlineSourcePath = Bundle.main.path(forResource: "OfflineMap", ofType: "json")
+            let offlineSource = RMMapboxSource(tileJSON: try? String(contentsOfFile: offlineSourcePath!, encoding: String.Encoding.utf8))
+            mapView = RMMapView(frame: CGRect(x: 0, y: 0, width: 100, height: 100), andTilesource: offlineSource)
         }
         
         mapView.tintColor = Styles.Colors.red2
@@ -109,14 +110,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.screenName = "Map - General MapBox View"
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.removeSelectedAnnotationIfExists()
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(1.5 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             self.canShowMapMessage = true
             self.updateAnnotations()
         }
@@ -146,7 +146,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
-    func mapView(mapView: RMMapView!, layerForAnnotation annotation: RMAnnotation!) -> RMMapLayer! {
+    func mapView(_ mapView: RMMapView!, layerForAnnotation annotation: RMAnnotation!) -> RMMapLayer! {
         
         if (annotation.isUserLocationAnnotation) {
             
@@ -361,7 +361,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
     
-    func tapOnCalloutAccessoryControl(control: UIControl!, forAnnotation annotation: RMAnnotation!, onMap map: RMMapView!) {
+    func tapOnCalloutAccessoryControl(_ control: UIControl!, forAnnotation annotation: RMAnnotation!, onMap map: RMMapView!) {
         
         if let userInfo: [String:AnyObject] = annotation.userInfo as? [String:AnyObject] {
             if let annotationType = userInfo["type"] as? String {
@@ -393,24 +393,24 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
     
-    func getTimeSinceLastMapMovement() -> NSTimeInterval {
-        let currentTime = NSDate().timeIntervalSince1970 * 1000
+    func getTimeSinceLastMapMovement() -> TimeInterval {
+        let currentTime = Date().timeIntervalSince1970 * 1000
         let difference = currentTime - userLastChangedMap
         return difference
     }
     
-    func beforeMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
+    func beforeMapZoom(_ map: RMMapView!, byUser wasUserAction: Bool) {
     
         if wasUserAction {
-            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
+            userLastChangedMap = Date().timeIntervalSince1970 * 1000
         }
     
     }
     
-    func beforeMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
+    func beforeMapMove(_ map: RMMapView!, byUser wasUserAction: Bool) {
         
         if wasUserAction {
-            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
+            userLastChangedMap = Date().timeIntervalSince1970 * 1000
         }
         
         if (mapView.userTrackingMode.rawValue == RMUserTrackingModeFollow.rawValue) {
@@ -421,15 +421,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
-    func afterMapMove(map: RMMapView!, byUser wasUserAction: Bool) {
+    func afterMapMove(_ map: RMMapView!, byUser wasUserAction: Bool) {
         
         if wasUserAction {
-            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
+            userLastChangedMap = Date().timeIntervalSince1970 * 1000
         }
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(0.16 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(0.16 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
 
             self.removeSelectedAnnotationIfExists()
             
@@ -450,19 +449,18 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
-    func afterMapZoom(map: RMMapView!, byUser wasUserAction: Bool) {
+    func afterMapZoom(_ map: RMMapView!, byUser wasUserAction: Bool) {
         
 //        if self.mapMode == .Garage {
 //            map.clusteringEnabled = map.zoom <= 12
 //        }
         
         if wasUserAction {
-            userLastChangedMap = NSDate().timeIntervalSince1970 * 1000
+            userLastChangedMap = Date().timeIntervalSince1970 * 1000
         }
 
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-            Int64(0.16 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(0.16 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             
             if (abs(self.lastMapZoom - map.zoom) >= 1) {
                 self.spotIDsDrawnOnMap = []
@@ -478,7 +476,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
-    func mapView(mapView: RMMapView!, didSelectAnnotation annotation: RMAnnotation!) {
+    func mapView(_ mapView: RMMapView!, didSelectAnnotation annotation: RMAnnotation!) {
 
         if (isSelecting || annotation.isUserLocationAnnotation) {
             return
@@ -536,12 +534,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             // do nothing for the time being
 //            var result = userInfo!["spot"] as! ParkingSpot?
         } else if type == "carsharing" {
-            userInfo["selected"] = true
+            userInfo["selected"] = true as AnyObject
             annotation.userInfo = userInfo
             let carShare = userInfo["carshare"] as! CarShare
             (annotation.layer as? RMMarker)?.replaceUIImage(carShare.mapPinImageAndReuseIdentifier(true).0, anchorPoint: CGPoint(x: 0.5, y: 1))
         } else if type == "carsharinglot" {
-            userInfo["selected"] = true
+            userInfo["selected"] = true as AnyObject
             annotation.userInfo = userInfo
             let carShareLot = userInfo["carsharelot"] as! CarShareLot
             (annotation.layer as? RMMarker)?.replaceUIImage(carShareLot.mapPinImageAndReuseIdentifier(true).0, anchorPoint: CGPoint(x: 0.5, y: 1))
@@ -551,7 +549,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
     }
     
-    func mapView(mapView: RMMapView!, didDeselectAnnotation annotation: RMAnnotation!) {
+    func mapView(_ mapView: RMMapView!, didDeselectAnnotation annotation: RMAnnotation!) {
         
         shouldCancelTap = true
         
@@ -567,12 +565,12 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         } else if (type == "searchResult") {
             //then the callout was shown, so do nothing because it will dismiss on automatically
         } else if type == "carsharing" {
-            userInfo["selected"] = false
+            userInfo["selected"] = false as AnyObject
             annotation.userInfo = userInfo
             let carShare = userInfo["carshare"] as! CarShare
             (annotation.layer as? RMMarker)?.replaceUIImage(carShare.mapPinImageAndReuseIdentifier(false).0, anchorPoint: CGPoint(x: 0.5, y: 1))
         } else if type == "carsharinglot" {
-            userInfo["selected"] = false
+            userInfo["selected"] = false as AnyObject
             annotation.userInfo = userInfo
             let carShareLot = userInfo["carsharelot"] as! CarShareLot
             (annotation.layer as? RMMarker)?.replaceUIImage(carShareLot.mapPinImageAndReuseIdentifier(false).0, anchorPoint: CGPoint(x: 0.5, y: 1))
@@ -585,7 +583,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.delegate?.mapDidDismissSelection(byUser: true)
     }
     
-    func mapView(mapView: RMMapView!, didUpdateUserLocation userLocation: RMUserLocation!) {
+    func mapView(_ mapView: RMMapView!, didUpdateUserLocation userLocation: RMUserLocation!) {
         //this will run too often, so only run it if we've changed by any significant amount
         if let userCLLocation = userLocation.location {
             let differenceInMeters = lastUserLocation.distanceFromLocation(userCLLocation)
@@ -598,7 +596,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
     
-    func singleTapOnMap(map: RMMapView!, at point: CGPoint) {
+    func singleTapOnMap(_ map: RMMapView!, at point: CGPoint) {
 
         if shouldCancelTap {
             shouldCancelTap = false
@@ -611,11 +609,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
         }
 
-        let before = NSDate().timeIntervalSince1970
+        let before = Date().timeIntervalSince1970
 
         var minimumDistanceRadius: CGFloat = 40
 
-        if self.mapMode == .Garage {
+        if self.mapMode == .garage {
             minimumDistanceRadius = 40
         }
         
@@ -677,7 +675,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
         }
         
-        NSLog("Took %f ms to find the right annotation", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+        NSLog("Took %f ms to find the right annotation", Float((Date().timeIntervalSince1970 - before) * 1000))
         
         if (closestAnnotation != nil && minimumDistance < minimumDistanceRadius) {
             mapView.selectAnnotation(closestAnnotation, animated: true)
@@ -688,7 +686,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 
     }
     
-    func mapView(mapView: RMMapView!, didFailToLocateUserWithError error: NSError!) {
+    func mapView(_ mapView: RMMapView!, didFailToLocateUserWithError error: NSError!) {
         dontTrackUser()
     }
     
@@ -704,18 +702,18 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func trackUser() {
         if self.mapView.userTrackingMode.rawValue != RMUserTrackingModeFollow.rawValue {
-            self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
+            self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_on"), for: UIControlState())
             self.mapView.setZoom(ZOOM_DEFAULT_APP_LAUNCH, animated: false)
             self.mapView.userTrackingMode = RMUserTrackingModeFollow
         }
     }
     
     override func dontTrackUser() {
-        self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_off"), forState: UIControlState.Normal)
+        self.delegate?.trackUserButton.setImage(UIImage(named:"btn_geo_off"), for: UIControlState())
         self.mapView.userTrackingMode = RMUserTrackingModeNone
     }
     
-    func getAnnotationsInCluster(cluster: RMAnnotation) -> [RMAnnotation] {
+    func getAnnotationsInCluster(_ cluster: RMAnnotation) -> [RMAnnotation] {
         
         var nonClusteredAnnotations = [RMAnnotation]()
         for subAnnotation in cluster.clusteredAnnotations as! [RMAnnotation] {
@@ -728,7 +726,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         return nonClusteredAnnotations
     }
     
-    func getClusterCustomHashValue(cluster: RMAnnotation) -> String {
+    func getClusterCustomHashValue(_ cluster: RMAnnotation) -> String {
         var hash = ""
         var annotations = getAnnotationsInCluster(cluster)
         annotations.sortInPlace { (left, right) -> Bool in
@@ -751,11 +749,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
 //        }
 //    }
     
-    override func updateAnnotations(completion: ((operationCompleted: Bool) -> Void)) {
+    override func updateAnnotations(_ completion: @escaping ((_ operationCompleted: Bool) -> Void)) {
                 
         if (self.updateInProgress) {
             print("Update already in progress, cancelled!")
-            completion(operationCompleted: false)
+            completion(false)
             return
         }
         
@@ -771,7 +769,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             self.updateInProgress = false
-            completion(operationCompleted: true)
+            completion(true)
             
         } else if self.mapView.zoom >= ZOOM_GENERAL_THRESHOLD
             || (self.mapMode == .Garage && self.mapView.zoom >= ZOOM_GARAGE_THRESHOLD)
@@ -783,7 +781,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             var duration = self.searchDuration
             
             if (checkinTime == nil) {
-                checkinTime = NSDate()
+                checkinTime = Date()
             }
             
             if (duration == nil) {
@@ -796,14 +794,14 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 
                 self.returnNearestAnnotations = 0
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     //only show the spinner if this map is active
-                    if let tabController = self.parentViewController as? TabController {
-                        if tabController.activeTab() == PrkTab.Here {
-                            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                    if let tabController = self.parent as? TabController {
+                        if tabController.activeTab() == PrkTab.here {
+                            SVProgressHUD.setBackgroundColor(UIColor.clear)
                             //if after 100 msec we haven't already finished the operation, show the loader
-                            let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(100 * Double(NSEC_PER_MSEC)))
-                            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+                            let delayTime = DispatchTime.now() + Double(Int64(100 * Double(NSEC_PER_MSEC))) / Double(NSEC_PER_SEC)
+                            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: { () -> Void in
                                 if self.updateInProgress {
                                     SVProgressHUD.show()
 //                                    GiFHUD.show()
@@ -821,7 +819,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     }
                 })
                 
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+                DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async(execute: { () -> Void in
                     
                     if let spots = objects as? [ParkingSpot] {
                         //
@@ -859,8 +857,8 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             }
             
             switch(self.mapMode) {
-            case MapMode.CarSharing:
-                if self.delegate?.carSharingMode() == .FindSpot {
+            case MapMode.carSharing:
+                if self.delegate?.carSharingMode() == .findSpot {
                     CarSharingOperations.getCarShareLots(location: self.mapView.centerCoordinate, radius: self.radius, nearest: returnNearestAnnotations, completion: { (carShareLots, mapMessage) -> Void in
 
                         SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: { (spots, mapMessage2) -> Void in
@@ -873,10 +871,10 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                     CarSharingOperations.getCarShares(location: self.mapView.centerCoordinate, radius: self.radius, nearest: returnNearestAnnotations, completion: operationCompletion)
                 }
                 break
-            case MapMode.StreetParking:
+            case MapMode.streetParking:
                 SpotOperations.findSpots(compact: true, location: self.mapView.centerCoordinate, radius: self.radius, duration: duration, checkinTime: checkinTime!, carsharing: carsharing, completion: operationCompletion)
                 break
-            case MapMode.Garage:
+            case MapMode.garage:
 //                self.recolorLotPinsIfNeeded()
 //                if self.annotations.count > 0 {
 //                    self.updateInProgress = false
@@ -904,13 +902,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
             self.delegate?.showMapMessage("map_message_too_zoomed_out".localizedString)
             
-            completion(operationCompleted: true)
+            completion(true)
         }
         
         
     }
     
-    func spotAnnotations(spots: [ParkingSpot]) -> [RMAnnotation] {
+    func spotAnnotations(_ spots: [ParkingSpot]) -> [RMAnnotation] {
         
         var tempAnnotations = [RMAnnotation]()
         
@@ -926,11 +924,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         return tempAnnotations
     }
     
-    func updateSpotAnnotations(spots: [ParkingSpot], completion: ((operationCompleted: Bool) -> Void)) {
+    func updateSpotAnnotations(_ spots: [ParkingSpot], completion: @escaping ((_ operationCompleted: Bool) -> Void)) {
         
         let tempAnnotations = spotAnnotations(spots)
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             
             self.removeLinesAndButtons()
 
@@ -941,13 +939,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
-            completion(operationCompleted: true)
+            completion(true)
 
         })
 
     }
     
-    func addAnnotation(detailObject: DetailObject, selected: Bool, animate: Bool? = nil) {
+    func addAnnotation(_ detailObject: DetailObject, selected: Bool, animate: Bool? = nil) {
         if detailObject is ParkingSpot {
             addSpotAnnotation(detailObject as! ParkingSpot, selected: selected)
         } else if detailObject is Lot {
@@ -955,11 +953,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
     
-    func addSpotAnnotation(spot: ParkingSpot, selected: Bool) {
+    func addSpotAnnotation(_ spot: ParkingSpot, selected: Bool) {
         annotationForSpot(spot, selected: selected, addToMapView: true)
     }
     
-    func annotationForSpot(spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (RMAnnotation, [RMAnnotation]) {
+    func annotationForSpot(_ spot: ParkingSpot, selected: Bool, addToMapView: Bool) -> (RMAnnotation, [RMAnnotation]) {
         
         var annotation: RMAnnotation
         var centerButtons = [RMAnnotation]()
@@ -996,7 +994,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
     }
     
-    func updateLotAnnotations(lots: [Lot], completion: ((operationCompleted: Bool) -> Void)) {
+    func updateLotAnnotations(_ lots: [Lot], completion: @escaping ((_ operationCompleted: Bool) -> Void)) {
         
         var tempAnnotations = [RMAnnotation]()
         
@@ -1007,7 +1005,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             
             self.removeLinesAndButtons()
             
@@ -1022,20 +1020,20 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
-            completion(operationCompleted: true)
+            completion(true)
             
         })
         
     }
 
-    func annotationForCarShare(carShare: CarShare) -> RMAnnotation {
+    func annotationForCarShare(_ carShare: CarShare) -> RMAnnotation {
         let shouldAddAnimation = !self.spotIDsDrawnOnMap.contains(carShare.identifier)
         let annotation = RMAnnotation(mapView: self.mapView, coordinate: carShare.coordinate, andTitle: "")
         annotation.userInfo = ["type": "carsharing", "selected": false, "carshare": carShare, "shouldAddAnimation" : shouldAddAnimation]
         return annotation
     }
     
-    func updateCarShareAnnotations(carShares: [CarShare], completion: ((operationCompleted: Bool) -> Void)) {
+    func updateCarShareAnnotations(_ carShares: [CarShare], completion: @escaping ((_ operationCompleted: Bool) -> Void)) {
         
         var tempAnnotations = [RMAnnotation]()
         
@@ -1044,7 +1042,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             tempAnnotations.append(annotation)
         }
         
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             
             self.removeLinesAndButtons()
             
@@ -1059,13 +1057,13 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
-            completion(operationCompleted: true)
+            completion(true)
             
         })
         
     }
 
-    func updateCarShareLotAnnotations(carShareLots: [CarShareLot], spots: [ParkingSpot], completion: ((operationCompleted: Bool) -> Void)) {
+    func updateCarShareLotAnnotations(_ carShareLots: [CarShareLot], spots: [ParkingSpot], completion: @escaping ((_ operationCompleted: Bool) -> Void)) {
         
         var tempAnnotations = [RMAnnotation]()
         
@@ -1078,7 +1076,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         
         tempAnnotations += spotAnnotations(spots)
             
-        dispatch_async(dispatch_get_main_queue(), {
+        DispatchQueue.main.async(execute: {
             
             self.removeLinesAndButtons()
             
@@ -1093,7 +1091,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             SVProgressHUD.dismiss()
             self.updateInProgress = false
             
-            completion(operationCompleted: true)
+            completion(true)
             
         })
         
@@ -1113,7 +1111,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
     
-    func zoomIntoClosestPins(numberOfPins: Int) {
+    func zoomIntoClosestPins(_ numberOfPins: Int) {
         //order annotations by distance from map center
         let mapCenter = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
         let orderedAnnotations = self.annotations.sort { (first, second) -> Bool in
@@ -1135,7 +1133,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         self.mapView.zoomWithLatitudeLongitudeBoundsSouthWest(southWest, northEast: northEast, animated: true)
     }
     
-    func getSouthWestAndNorthEastFromAnnotations(annots: [RMAnnotation], centerCoordinate: CLLocationCoordinate2D) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
+    func getSouthWestAndNorthEastFromAnnotations(_ annots: [RMAnnotation], centerCoordinate: CLLocationCoordinate2D) -> (CLLocationCoordinate2D, CLLocationCoordinate2D) {
         
         //determine the southwest and northeast coordinates!
         var southWest = centerCoordinate
@@ -1163,7 +1161,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         return (southWest, northEast)
     }
     
-    func annotationForLot(lot: Lot, selected: Bool, addToMapView: Bool, animate: Bool? = nil) -> RMAnnotation {
+    func annotationForLot(_ lot: Lot, selected: Bool, addToMapView: Bool, animate: Bool? = nil) -> RMAnnotation {
         
         let shouldAddAnimation = animate ?? !self.spotIDsDrawnOnMap.contains(lot.identifier)
         let annotation = RMAnnotation(mapView: self.mapView, coordinate: lot.coordinate, andTitle: String(lot.identifier))
@@ -1179,7 +1177,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
 
     
-    func addSearchResultMarker(searchResult: SearchResult) {
+    func addSearchResultMarker(_ searchResult: SearchResult) {
         
         let annotation: RMAnnotation = RMAnnotation(mapView: self.mapView, coordinate: searchResult.location.coordinate, andTitle: "")
         annotation.userInfo = ["type": "searchResult", "searchresult": searchResult]
@@ -1188,7 +1186,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     
-    func findAnnotations(identifier: String) -> Array<RMAnnotation> {
+    func findAnnotations(_ identifier: String) -> Array<RMAnnotation> {
         
         var foundAnnotations = [RMAnnotation]()
         
@@ -1213,7 +1211,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     
-    func removeAnnotations(annotationsToRemove: Array<RMAnnotation>) {
+    func removeAnnotations(_ annotationsToRemove: Array<RMAnnotation>) {
         
         var tempAnnotations = [RMAnnotation]()
         
@@ -1285,20 +1283,19 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     }
     
     func recolorLotPinsIfNeeded() {
-        if self.mapMode == .Garage {
+        if self.mapMode == .garage {
             
             recoloringLotPins = true
             
             //in 150 ms if we haven't finished the operation, show a loader
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-                Int64(150 * Double(NSEC_PER_MSEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+            let delayTime = DispatchTime.now() + Double(Int64(150 * Double(NSEC_PER_MSEC))) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: { () -> Void in
                 if self.recoloringLotPins {
                     SVProgressHUD.show()
                 }
             })
 
-            let before = NSDate().timeIntervalSince1970
+            let before = Date().timeIntervalSince1970
             
             //Only get the *real* visible annotations... mapView.visibleAnnotations gets more than just the ones on screen.
             let visibleLotAnnotations = (self.mapView.visibleAnnotations as! [RMAnnotation]).filter({ (annotation) -> Bool in
@@ -1310,7 +1307,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
                 return false
             })
             
-            NSLog("\n\ngetting proper visible lot annotations took %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+            NSLog("\n\ngetting proper visible lot annotations took %f milliseconds", Float((Date().timeIntervalSince1970 - before) * 1000))
 
             let changedLotAnnotations = LotOperations.processCheapestLots(visibleLotAnnotations)
             self.mapView.removeAnnotations(changedLotAnnotations)
@@ -1318,9 +1315,9 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             self.annotations += changedLotAnnotations
             self.mapView.addAnnotations(changedLotAnnotations)
             
-            NSLog("re-adding changed lots took %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+            NSLog("re-adding changed lots took %f milliseconds", Float((Date().timeIntervalSince1970 - before) * 1000))
 
-            NSLog("Recolor took a total of %f milliseconds", Float((NSDate().timeIntervalSince1970 - before) * 1000))
+            NSLog("Recolor took a total of %f milliseconds", Float((Date().timeIntervalSince1970 - before) * 1000))
             
             SVProgressHUD.dismiss()
             recoloringLotPins = false
@@ -1339,7 +1336,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         return false
     }
     
-    override func addCityOverlaysCallback(polygons: [MKPolygon]) {
+    override func addCityOverlaysCallback(_ polygons: [MKPolygon]) {
         
         let polygonAnnotations = MKPolygon.polygonsToRMPolygonAnnotations(polygons, mapView: mapView)
 
@@ -1364,7 +1361,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     // MARK: SpotDetailViewDelegate
     
-    override func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) {
+    override func displaySearchResults(_ results: Array<SearchResult>, checkinTime : Date?) {
         
         mapView.zoom = ZOOM_DEFAULT_APP_LAUNCH
         
@@ -1372,7 +1369,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             let alert = UIAlertView()
             alert.title = "No results found"
             alert.message = "We couldn't find anything matching the criteria"
-            alert.addButtonWithTitle("Close")
+            alert.addButton(withTitle: "Close")
             alert.show()
             return
         }
@@ -1385,7 +1382,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
             addSearchResultMarker(result)
         }
         
-        self.searchCheckinDate = checkinTime
+        self.searchCheckinDate = checkinTime as! NSDate
         
         updateAnnotations()
         
@@ -1395,11 +1392,11 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         mapView.removeAnnotations(self.searchAnnotations)
     }
     
-    override func showUserLocation(shouldShow: Bool) {
+    override func showUserLocation(_ shouldShow: Bool) {
         self.mapView.showsUserLocation = shouldShow
     }
     
-    override func setMapUserMode(mode: MapUserMode) {
+    override func setMapUserMode(_ mode: MapUserMode) {
         self.mapView.userTrackingMode = mode == MapUserMode.Follow ? RMUserTrackingModeFollow : RMUserTrackingModeNone
         Settings.setMapUserMode(mode)
     }
@@ -1429,7 +1426,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
 
-    override func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
+    override func goToCoordinate(_ coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) {
         let annotation = RMAnnotation(mapView: self.mapView, coordinate: coordinate, andTitle: name)
         annotation.userInfo = ["type": "previousCheckin"]
         mapView.zoom = zoom ?? ZOOM_DEFAULT_APP_LAUNCH
@@ -1449,7 +1446,7 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
         }
     }
 
-    override func mapModeDidChange(completion: (() -> Void)) {
+    override func mapModeDidChange(_ completion: @escaping (() -> Void)) {
         spotIDsDrawnOnMap = []
         lineSpotIDsDrawnOnMap = []
         self.setDefaultMapZoom()
@@ -1465,17 +1462,17 @@ class RMMapViewController: MapViewController, RMMapViewDelegate {
     
     override func setDefaultMapZoom() {
         switch self.mapMode {
-        case .Garage:
+        case .garage:
             self.mapView.setZoom(self.ZOOM_GARAGE_THRESHOLD, animated: true)
-        case .StreetParking:
+        case .streetParking:
             self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
-        case .CarSharing:
+        case .carSharing:
             switch self.delegate!.carSharingMode() {
-            case .FindCar:
+            case .findCar:
                 self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
-            case .FindSpot:
+            case .findSpot:
                 self.mapView.setZoom(self.ZOOM_DEFAULT, animated: true)
-            case .None:
+            case .none:
                 break
             }
 

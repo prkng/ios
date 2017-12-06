@@ -8,29 +8,29 @@
 
 extension Array {
     
-    mutating func remove <U: Equatable> (object: U) {
-        for i in (self.count-1).stride(through: 0, by: -1) {
+    mutating func remove <U: Equatable> (_ object: U) {
+        for i in stride(from: (self.count-1), through: 0, by: -1) {
             if let element = self[i] as? U {
                 if element == object {
-                    self.removeAtIndex(i)
+                    self.remove(at: i)
                 }
             }
         }
     }
 
-    mutating func remove <U: Equatable> (objects: [U]) {
+    mutating func remove <U: Equatable> (_ objects: [U]) {
         for object in objects {
-            for i in (self.count-1).stride(through: 0, by: -1) {
+            for i in stride(from: (self.count-1), through: 0, by: -1) {
                 if let element = self[i] as? U {
                     if element == object {
-                        self.removeAtIndex(i)
+                        self.remove(at: i)
                     }
                 }
             }
         }
     }
     
-    static func filterNils(array: [Element?]) -> [Element] {
+    static func filterNils(_ array: [Element?]) -> [Element] {
         return array.filter { $0 != nil }.map { $0! }
     }
 

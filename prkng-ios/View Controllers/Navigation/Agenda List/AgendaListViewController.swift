@@ -10,9 +10,9 @@ import UIKit
 
 class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSource, UITableViewDelegate {
 
-    private var agendaItems : Array<AgendaItem>
-    private var tableView: UITableView
-    private(set) var HEADER_HEIGHT : CGFloat = Styles.Sizes.modalViewHeaderHeight
+    fileprivate var agendaItems : Array<AgendaItem>
+    fileprivate var tableView: UITableView
+    fileprivate(set) var HEADER_HEIGHT : CGFloat = Styles.Sizes.modalViewHeaderHeight
 
     override init(spot: ParkingSpot, view: UIView) {
         agendaItems = []
@@ -37,12 +37,12 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
         setupConstraints()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     func setupViews() {
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.none
         tableView.backgroundColor = Styles.Colors.cream2
         tableView.delegate = self
         tableView.dataSource = self
@@ -65,22 +65,22 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
     
     //MARK: UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return agendaItems.count
     }
     
     let identifier = "AgendaTableViewCell"
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let agendaItem = agendaItems[indexPath.row]
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? AgendaTableViewCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? AgendaTableViewCell
         
         if cell == nil {
-            cell = AgendaTableViewCell(agendaItem: agendaItem, style: .Default, reuseIdentifier: identifier)
+            cell = AgendaTableViewCell(agendaItem: agendaItem, style: .default, reuseIdentifier: identifier)
         } else {
             cell?.setupSubviews(agendaItem)
         }
@@ -91,17 +91,17 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
     
     //MARK: UITableViewDelegate
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return false
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let useableHeight = UIScreen.mainScreen().bounds.height - Styles.Sizes.modalViewHeaderHeight - CGFloat(Styles.Sizes.tabbarHeight)
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let useableHeight = UIScreen.main.bounds.height - Styles.Sizes.modalViewHeaderHeight - CGFloat(Styles.Sizes.tabbarHeight)
         let height = useableHeight / 7 > 60 ? Int(useableHeight / 7) : 60
         return CGFloat(height)
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 0
     }
     
@@ -110,13 +110,13 @@ class AgendaListViewController: PRKModalViewControllerChild, UITableViewDataSour
 
 class AgendaItem {
     
-    var startTime   : NSTimeInterval
-    var endTime     : NSTimeInterval
+    var startTime   : TimeInterval
+    var endTime     : TimeInterval
     var dayIndex    : Int   //0 means today, 1 means tomorrow, etc
     var timeLimit   : Int
     var rule        : ParkingRule
     
-    init(startTime: NSTimeInterval, endTime: NSTimeInterval, dayIndex: Int, timeLimit: Int, rule: ParkingRule) {
+    init(startTime: TimeInterval, endTime: TimeInterval, dayIndex: Int, timeLimit: Int, rule: ParkingRule) {
         self.startTime = startTime
         self.endTime = endTime
         self.dayIndex = dayIndex
@@ -151,8 +151,8 @@ class AgendaItem {
         let toTime = self.endTime.toAttributedString(condensed: false, firstPartFont: firstPartFont, secondPartFont: secondPartFont)
         
         let attributedString = NSMutableAttributedString(attributedString: fromTime)
-        attributedString.appendAttributedString(NSAttributedString(string: "\n"))
-        attributedString.appendAttributedString(toTime)
+        attributedString.append(NSAttributedString(string: "\n"))
+        attributedString.append(toTime)
         
         return attributedString
     }

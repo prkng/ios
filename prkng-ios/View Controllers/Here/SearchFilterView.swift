@@ -10,13 +10,13 @@ import UIKit
 
 class SearchFilterView: UIView, UITextFieldDelegate {
 
-    private var searchFieldView : UIView
-    private var searchField : UITextField
+    fileprivate var searchFieldView : UIView
+    fileprivate var searchField : UITextField
     
-    private var searchImageView: UIImageView
+    fileprivate var searchImageView: UIImageView
     
-    private var topLine: UIView
-    private var bottomLine: UIView
+    fileprivate var topLine: UIView
+    fileprivate var bottomLine: UIView
     
     var indicatorText: String = "" {
         didSet {
@@ -28,17 +28,17 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     var showingSmall: Bool = true {
         didSet {
             if showingSmall {
-                self.searchFieldView.backgroundColor = UIColor.clearColor()
+                self.searchFieldView.backgroundColor = UIColor.clear
             } else {
                 self.searchFieldView.backgroundColor = Styles.Colors.cream1
             }
         }
     }
 
-    private var shouldCloseFilters: Bool
+    fileprivate var shouldCloseFilters: Bool
     
-    private var didsetupSubviews : Bool
-    private var didSetupConstraints : Bool
+    fileprivate var didsetupSubviews : Bool
+    fileprivate var didSetupConstraints : Bool
 
     static var TOTAL_HEIGHT : CGFloat = 80
     static var FIELD_HEIGHT : CGFloat = 40
@@ -85,28 +85,28 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func setupSubviews () {
         
         self.clipsToBounds = true
-        self.backgroundColor = UIColor.clearColor() //stone if no blur?
+        self.backgroundColor = UIColor.clear //stone if no blur?
         
         self.searchFieldView.layer.borderWidth = 0.5
-        self.searchFieldView.layer.borderColor = Styles.Colors.cream1.CGColor
-        searchFieldView.backgroundColor = UIColor.clearColor() //stone if no blur?
+        self.searchFieldView.layer.borderColor = Styles.Colors.cream1.cgColor
+        searchFieldView.backgroundColor = UIColor.clear //stone if no blur?
         self.addSubview(searchFieldView)
 
         let attributes = [NSFontAttributeName: Styles.FontFaces.light(14), NSForegroundColorAttributeName: Styles.Colors.petrol2]
         
-        searchField.clearButtonMode = UITextFieldViewMode.Never
+        searchField.clearButtonMode = UITextFieldViewMode.never
         searchField.font = Styles.FontFaces.regular(14)
         searchField.textColor = Styles.Colors.petrol2
-        searchField.textAlignment = NSTextAlignment.Natural
+        searchField.textAlignment = NSTextAlignment.natural
         searchField.attributedPlaceholder = NSAttributedString(string: "search_bar_text".localizedString, attributes: attributes)
         searchField.delegate = self
-        searchField.keyboardAppearance = UIKeyboardAppearance.Default
-        searchField.keyboardType = UIKeyboardType.Default
-        searchField.autocorrectionType = UITextAutocorrectionType.No
-        searchField.returnKeyType = UIReturnKeyType.Search
+        searchField.keyboardAppearance = UIKeyboardAppearance.default
+        searchField.keyboardType = UIKeyboardType.default
+        searchField.autocorrectionType = UITextAutocorrectionType.no
+        searchField.returnKeyType = UIReturnKeyType.search
         self.addSubview(searchField)
         
-        searchImageView.contentMode = UIViewContentMode.Center
+        searchImageView.contentMode = UIViewContentMode.center
         self.addSubview(searchImageView)
         
         topLine.backgroundColor = Styles.Colors.transparentWhite
@@ -160,10 +160,10 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     
     // UITextFieldDelegate
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if self.searchFieldView.frame.size.width > 0 {
             //calling this in a dispatch block prevents the
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(10 * NSEC_PER_MSEC)), dispatch_get_main_queue(), {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(10 * NSEC_PER_MSEC)) / Double(NSEC_PER_SEC), execute: {
                 self.searchField.modifyClearButtonWithImageNamed("icon_close", color: Styles.Colors.petrol2)
             })
             self.delegate?.startSearching()
@@ -172,8 +172,8 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         return false
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
-        let resultString = ((textField.text ?? "") as NSString).stringByReplacingCharactersInRange(range, withString: string)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let resultString = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
         if resultString.characters.count >= 2 {
             SearchOperations.searchWithInput(resultString, forAutocomplete: true, completion: { (results) -> Void in
                 self.delegate?.didGetAutocompleteResults(results)
@@ -184,12 +184,12 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         textField.endEditing(true)
         SearchOperations.searchWithInput((textField.text ?? ""), forAutocomplete: false, completion: { (results) -> Void in
             
-            let date : NSDate = NSDate()
+            let date : Date = Date()
             
             self.delegate!.displaySearchResults(results, checkinTime : date)
             
@@ -198,7 +198,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         if (self.searchField.text ?? "").isEmpty {
             endSearch()
         } else {
@@ -206,7 +206,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         }
     }
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         if textField.text == "" {
             if shouldCloseFilters {
                 //this happens the last time you press the x, to close the filters
@@ -232,7 +232,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
     func endSearch() {
         clearSearch()
         self.searchField.endEditing(true)
-        self.searchField.rightViewMode = UITextFieldViewMode.Always
+        self.searchField.rightViewMode = UITextFieldViewMode.always
         shouldCloseFilters = true
     }
 
@@ -242,10 +242,10 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         searchField.becomeFirstResponder()
     }
     
-    func makeInactive(closeFilters closeFilters: Bool) {
+    func makeInactive(closeFilters: Bool) {
         searchField.resignFirstResponder()
         delegate?.didGetAutocompleteResults([])
-        self.searchField.rightViewMode = UITextFieldViewMode.WhileEditing
+        self.searchField.rightViewMode = UITextFieldViewMode.whileEditing
         if closeFilters {
             self.delegate?.endSearchingAndFiltering()
         }
@@ -259,7 +259,7 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         let indicatorButton = ViewFactory.redRoundedButtonWithHeight(20, font: Styles.FontFaces.regular(12), text: "")
         let attrs = [NSFontAttributeName: indicatorButton.titleLabel!.font]
         let maximumLabelSize = CGSize(width: rightViewWidth - locationButtonWidth - 10, height: 20)
-        let labelRect = (indicatorText as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
+        let labelRect = (indicatorText as NSString).boundingRect(with: maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
 
         //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
 //        let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
@@ -274,8 +274,8 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         label.textColor = Styles.Colors.beige1
         indicatorButton.addSubview(label)
         
-        indicatorButton.frame = indicatorText == "" ? CGRectZero : CGRect(x: 10, y: 10, width: 10+labelRect.width+10, height: 20)
-        indicatorButton.addTarget(self, action: "textFieldShouldBeginEditing:", forControlEvents: UIControlEvents.TouchUpInside)
+        indicatorButton.frame = indicatorText == "" ? CGRect.zero : CGRect(x: 10, y: 10, width: 10+labelRect.width+10, height: 20)
+        indicatorButton.addTarget(self, action: "textFieldShouldBeginEditing:", for: UIControlEvents.touchUpInside)
 
         rightViewWidth = 10 + locationButtonWidth + 10 + indicatorButton.frame.width
         
@@ -285,18 +285,18 @@ class SearchFilterView: UIView, UITextFieldDelegate {
         let rightView = UIView()
         rightView.clipsToBounds = false
         rightView.frame = CGRect(x: 0, y: 0, width: rightViewWidth, height: SearchFilterView.FIELD_HEIGHT)
-        rightView.backgroundColor = UIColor.clearColor()
+        rightView.backgroundColor = UIColor.clear
         rightView.addSubview(locationButton)
         rightView.addSubview(indicatorButton)
         searchField.rightView = rightView
-        searchField.rightViewMode = UITextFieldViewMode.Always
+        searchField.rightViewMode = UITextFieldViewMode.always
         
     }
     
-    func setSearchResult(result: SearchResult) {
+    func setSearchResult(_ result: SearchResult) {
         makeInactive(closeFilters: false)
         self.searchField.text = result.title
-        self.delegate!.displaySearchResults([result], checkinTime : NSDate())
+        self.delegate!.displaySearchResults([result], checkinTime : Date())
     }
 
 }

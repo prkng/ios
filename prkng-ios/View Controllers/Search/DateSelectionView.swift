@@ -21,7 +21,7 @@ class DateSelectionView: UIView {
     
     
     convenience init(title: String, icon : UIImage?, selectedIcon : UIImage?) {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -78,42 +78,42 @@ class DateSelectionView: UIView {
         
         
         todayButton.title = NSLocalizedString("today", comment : "" )
-        todayButton.addTarget(self, action: "selectToday", forControlEvents: UIControlEvents.TouchUpInside)
+        todayButton.addTarget(self, action: #selector(DateSelectionView.selectToday), for: UIControlEvents.touchUpInside)
         topContainer.addSubview(todayButton)
         
         tomorrowButton.title = NSLocalizedString("tomorrow", comment : "" )
-        tomorrowButton.addTarget(self, action: "selectTomorrow", forControlEvents: UIControlEvents.TouchUpInside)
+        tomorrowButton.addTarget(self, action: #selector(DateSelectionView.selectTomorrow), for: UIControlEvents.touchUpInside)
         topContainer.addSubview(tomorrowButton)
         
         
         
         let monday = NSLocalizedString("monday", comment:"") as NSString
-        weekButtons[0].title  = monday.substringWithRange(NSRange(location: 0, length: 1))
-        weekButtons[0].addTarget(self, action: "select0", forControlEvents: UIControlEvents.TouchUpInside)
+        weekButtons[0].title  = monday.substring(with: NSRange(location: 0, length: 1))
+        weekButtons[0].addTarget(self, action: #selector(DateSelectionView.select0), for: UIControlEvents.touchUpInside)
         
         let tuesday = NSLocalizedString("tuesday", comment:"") as NSString
-        weekButtons[1].title  = tuesday.substringWithRange(NSRange(location: 0, length: 1))
-        weekButtons[1].addTarget(self, action: "select1", forControlEvents: UIControlEvents.TouchUpInside)
+        weekButtons[1].title  = tuesday.substring(with: NSRange(location: 0, length: 1))
+        weekButtons[1].addTarget(self, action: #selector(DateSelectionView.select1), for: UIControlEvents.touchUpInside)
         
         let wednesday = NSLocalizedString("wednesday", comment:"") as NSString
-        weekButtons[2].title  = wednesday.substringWithRange(NSRange(location: 0, length: 1))
-        weekButtons[2].addTarget(self, action: "select2", forControlEvents: UIControlEvents.TouchUpInside)
+        weekButtons[2].title  = wednesday.substring(with: NSRange(location: 0, length: 1))
+        weekButtons[2].addTarget(self, action: #selector(DateSelectionView.select2), for: UIControlEvents.touchUpInside)
         
         let thursday = NSLocalizedString("thursday", comment:"") as NSString
-        weekButtons[3].title  = thursday.substringWithRange(NSRange(location: 0, length: 1))
-        weekButtons[3].addTarget(self, action: "select3", forControlEvents: UIControlEvents.TouchUpInside)
+        weekButtons[3].title  = thursday.substring(with: NSRange(location: 0, length: 1))
+        weekButtons[3].addTarget(self, action: #selector(DateSelectionView.select3), for: UIControlEvents.touchUpInside)
         
         let friday = NSLocalizedString("friday", comment:"") as NSString
-        weekButtons[4].title = friday.substringWithRange(NSRange(location: 0, length: 1))
-        weekButtons[4].addTarget(self, action: "select4", forControlEvents: UIControlEvents.TouchUpInside)
+        weekButtons[4].title = friday.substring(with: NSRange(location: 0, length: 1))
+        weekButtons[4].addTarget(self, action: #selector(DateSelectionView.select4), for: UIControlEvents.touchUpInside)
         
         let saturday = NSLocalizedString("saturday", comment:"") as NSString
-        weekButtons[5].title  = saturday.substringWithRange(NSRange(location: 0, length: 1))
-        weekButtons[5].addTarget(self, action: "select5", forControlEvents: UIControlEvents.TouchUpInside)
+        weekButtons[5].title  = saturday.substring(with: NSRange(location: 0, length: 1))
+        weekButtons[5].addTarget(self, action: #selector(DateSelectionView.select5), for: UIControlEvents.touchUpInside)
         
         let sunday = NSLocalizedString("sunday", comment:"") as NSString
-        weekButtons[6].title = sunday.substringWithRange(NSRange(location: 0, length: 1))
-        weekButtons[6].addTarget(self, action: "select6", forControlEvents: UIControlEvents.TouchUpInside)
+        weekButtons[6].title = sunday.substring(with: NSRange(location: 0, length: 1))
+        weekButtons[6].addTarget(self, action: #selector(DateSelectionView.select6), for: UIControlEvents.touchUpInside)
     
         
         for b in weekButtons {
@@ -207,11 +207,11 @@ class DateSelectionView: UIView {
     
     func deselectAll () {
         
-        todayButton.selected = false
-        tomorrowButton.selected = false
+        todayButton.isSelected = false
+        tomorrowButton.isSelected = false
         
         for b in weekButtons {
-            b.selected = false
+            b.isSelected = false
         }
         
     }
@@ -227,13 +227,13 @@ class DateSelectionView: UIView {
             let day = DateUtil.dayIndexOfTheWeek()
             
             if (day == selectedDay) {
-                todayButton.selected = true
+                todayButton.isSelected = true
             } else if (day == (selectedDay - 1)
                 || ((day == 6) && selectedDay == 0) ) {
-                    tomorrowButton.selected = true
+                    tomorrowButton.isSelected = true
             }
             
-            weekButtons[selectedDay].selected = true
+            weekButtons[selectedDay].isSelected = true
         }
     }
     

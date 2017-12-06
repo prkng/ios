@@ -33,7 +33,7 @@ class SelectionControl: UIControl {
     var fixedWidth : Int = 0
     
     convenience init(titles : Array<String>) {
-        self.init(frame:CGRectZero)
+        self.init(frame:CGRect.zero)
         self.titles = titles
         
         var i : Int = 0
@@ -49,8 +49,8 @@ class SelectionControl: UIControl {
         buttonContainers = []
         didSetupSubviews = false
         didSetupConstraints = true
-        buttonSize = CGSizeMake(110, 26) // Default
-        selectionIndicatorSize = CGSizeMake(5, 5)
+        buttonSize = CGSize(width: 110, height: 26) // Default
+        selectionIndicatorSize = CGSize(width: 5, height: 5)
         selectedIndex = 0
         selectionIndicator = UIView()
         super.init(frame: frame)
@@ -119,17 +119,17 @@ class SelectionControl: UIControl {
             }
             
             if selectedButtonBackgroundColor != nil {
-                button.selectedButtonBackgroundColor = UIColor.clearColor() //selectedButtonBackgroundColor!
+                button.selectedButtonBackgroundColor = UIColor.clear //selectedButtonBackgroundColor!
             }
             
             button.font = font
             
             button.layer.cornerRadius =  self.buttonSize.height / 2.0
-            button.addTarget(self, action: "selectOption:", forControlEvents: UIControlEvents.TouchUpInside)
-            button.selected = (selectedIndex == index)
+            button.addTarget(self, action: #selector(SelectionControl.selectOption(_:)), for: UIControlEvents.touchUpInside)
+            button.isSelected = (selectedIndex == index)
             buttonContainer.addSubview(button)
             
-            index++
+            index += 1
         }
         
         didSetupSubviews = true
@@ -213,8 +213,8 @@ class SelectionControl: UIControl {
             width += CGFloat(fixedWidth)
             
             let attrs = [NSFontAttributeName: font]
-            let maximumLabelSize = CGSizeMake(310, 9999);
-            let rect = (title as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs , context: nil)
+            let maximumLabelSize = CGSize(width: 310, height: 9999);
+            let rect = (title as NSString).boundingRect(with: maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs , context: nil)
             
             width += rect.width
             
@@ -222,20 +222,20 @@ class SelectionControl: UIControl {
         return width
     }
     
-    private func deselectAll () {
+    fileprivate func deselectAll () {
         
         for button in buttons {
-            button.selected = false
+            button.isSelected = false
         }
         
     }
     
-    func selectOption (sender : SelectionButton) {
+    func selectOption (_ sender : SelectionButton) {
         selectOption(sender, animated: true)
     }
     
     
-    func selectOption (sender : SelectionButton, animated: Bool) {
+    func selectOption (_ sender : SelectionButton, animated: Bool) {
         
         let valueChanged = selectedIndex != sender.index
         
@@ -251,23 +251,23 @@ class SelectionControl: UIControl {
             }
             
             if (animated) {
-                UIView.animateWithDuration(0.15, animations: { () -> Void in
+                UIView.animate(withDuration: 0.15, animations: { () -> Void in
                     self.selectionIndicator.layoutIfNeeded()
                     }, completion: { (completed) -> Void in
-                        sender.selected = true
-                        self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                        sender.isSelected = true
+                        self.sendActions(for: UIControlEvents.valueChanged)
                 })
             } else {
                 self.selectionIndicator.layoutIfNeeded()
                 deselectAll()
-                sender.selected = true
-                self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                sender.isSelected = true
+                self.sendActions(for: UIControlEvents.valueChanged)
             }
             
             
         }  else if !animated {
             deselectAll()
-            sender.selected = true
+            sender.isSelected = true
         }
         
     }
@@ -296,7 +296,7 @@ class SelectionButton: UIControl {
     
     
     convenience init (title : String, index: Int) {
-        self.init(frame:CGRectZero)
+        self.init(frame:CGRect.zero)
         self.title = title
         self.index = index
     }
@@ -307,10 +307,10 @@ class SelectionButton: UIControl {
         font = Styles.FontFaces.regular(12)
         textColor = Styles.Colors.anthracite1
         selectedTextColor = Styles.Colors.red2
-        borderColor = UIColor.clearColor()
-        selectedBorderColor =  UIColor.clearColor()
-        buttonBackgroundColor = UIColor.clearColor()
-        selectedButtonBackgroundColor = UIColor.clearColor()
+        borderColor = UIColor.clear
+        selectedBorderColor =  UIColor.clear
+        buttonBackgroundColor = UIColor.clear
+        selectedButtonBackgroundColor = UIColor.clear
         
         titleLabel = UILabel()
         index = -1
@@ -349,13 +349,13 @@ class SelectionButton: UIControl {
     
     func setupSubviews() {
         
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
         layer.borderWidth = 1
-        layer.borderColor = borderColor.CGColor
+        layer.borderColor = borderColor.cgColor
         
         titleLabel.text = title
         titleLabel.font = font
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.textColor = textColor
         addSubview(titleLabel)
         
@@ -373,17 +373,17 @@ class SelectionButton: UIControl {
     
     
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         
         didSet {
             
-            if(selected) {
+            if(isSelected) {
                 backgroundColor = selectedButtonBackgroundColor
-                layer.borderColor = selectedBorderColor.CGColor
+                layer.borderColor = selectedBorderColor.cgColor
                 titleLabel.textColor = selectedTextColor
             } else {
                 backgroundColor = buttonBackgroundColor
-                layer.borderColor = borderColor.CGColor
+                layer.borderColor = borderColor.cgColor
                 titleLabel.textColor = textColor
             }
             

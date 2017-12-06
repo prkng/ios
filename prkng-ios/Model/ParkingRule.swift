@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 enum ParkingRuleType: String {
     case TimeMax = "TimeMax"
@@ -30,8 +31,8 @@ func ==(lhs: ParkingRule, rhs: ParkingRule) -> Bool {
 
     var restrictionTypesMatch = true
     if lhs.restrictionTypes.count == rhs.restrictionTypes.count {
-        let leftRestrictionTypes = lhs.restrictionTypes.sort()
-        let rightRestrictionTypes = rhs.restrictionTypes.sort()
+        let leftRestrictionTypes = lhs.restrictionTypes.sorted()
+        let rightRestrictionTypes = rhs.restrictionTypes.sorted()
         for i in 0..<leftRestrictionTypes.count {
             if leftRestrictionTypes[i] != rightRestrictionTypes[i] {
                 restrictionTypesMatch = false
@@ -66,7 +67,7 @@ class ParkingRule: NSObject {
         return String(format: "%.2f", hourlyRate)
     }
     
-    private var _ruleType: ParkingRuleType?
+    fileprivate var _ruleType: ParkingRuleType?
     var ruleType: ParkingRuleType {
         
         if _ruleType != nil {
@@ -139,7 +140,7 @@ class ParkingRule: NSObject {
         var monTimePeriod : TimePeriod? = nil
         
         if monStart != nil && monEnd != nil  {
-            monTimePeriod = TimePeriod(startTime: Double(monStart! * 3600), endTime: Double (monEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
+            monTimePeriod = TimePeriod(startTime: Double(monStart! * 3600), endTime: Double (monEnd! * 3600), maxParkingTime : TimeInterval(maxParkingTime * 60) )
             
             bullshitRule = false
         }
@@ -153,7 +154,7 @@ class ParkingRule: NSObject {
         var tueTimePeriod : TimePeriod? = nil
         
         if tueStart != nil && tueEnd != nil  {
-            tueTimePeriod = TimePeriod(startTime: Double(tueStart! * 3600), endTime: Double (tueEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
+            tueTimePeriod = TimePeriod(startTime: Double(tueStart! * 3600), endTime: Double (tueEnd! * 3600), maxParkingTime : TimeInterval(maxParkingTime * 60) )
             
             bullshitRule = false
         }
@@ -167,7 +168,7 @@ class ParkingRule: NSObject {
         var wedTimePeriod : TimePeriod? = nil
         
         if wedStart != nil && wedEnd != nil  {
-            wedTimePeriod = TimePeriod(startTime: Double(wedStart! * 3600), endTime: Double (wedEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
+            wedTimePeriod = TimePeriod(startTime: Double(wedStart! * 3600), endTime: Double (wedEnd! * 3600), maxParkingTime : TimeInterval(maxParkingTime * 60) )
             
             bullshitRule = false
         }
@@ -181,7 +182,7 @@ class ParkingRule: NSObject {
         var thuTimePeriod : TimePeriod? = nil
         
         if thuStart != nil && thuEnd != nil  {
-            thuTimePeriod = TimePeriod(startTime: Double(thuStart! * 3600), endTime: Double (thuEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
+            thuTimePeriod = TimePeriod(startTime: Double(thuStart! * 3600), endTime: Double (thuEnd! * 3600), maxParkingTime : TimeInterval(maxParkingTime * 60) )
             
             bullshitRule = false
         }
@@ -195,7 +196,7 @@ class ParkingRule: NSObject {
         var friTimePeriod : TimePeriod? = nil
         
         if friStart != nil && friEnd != nil  {
-            friTimePeriod = TimePeriod(startTime: Double(friStart! * 3600), endTime: Double (friEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
+            friTimePeriod = TimePeriod(startTime: Double(friStart! * 3600), endTime: Double (friEnd! * 3600), maxParkingTime : TimeInterval(maxParkingTime * 60) )
             
             bullshitRule = false
         }
@@ -210,7 +211,7 @@ class ParkingRule: NSObject {
         var satTimePeriod : TimePeriod? = nil
         
         if satStart != nil && satEnd != nil  {
-            satTimePeriod = TimePeriod(startTime: Double(satStart! * 3600), endTime: Double (satEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
+            satTimePeriod = TimePeriod(startTime: Double(satStart! * 3600), endTime: Double (satEnd! * 3600), maxParkingTime : TimeInterval(maxParkingTime * 60) )
             
             bullshitRule = false
 
@@ -226,7 +227,7 @@ class ParkingRule: NSObject {
         var sunTimePeriod : TimePeriod? = nil
         
         if sunStart != nil && sunEnd != nil  {
-            sunTimePeriod = TimePeriod(startTime: Double(sunStart! * 3600), endTime: Double (sunEnd! * 3600), maxParkingTime : NSTimeInterval(maxParkingTime * 60) )
+            sunTimePeriod = TimePeriod(startTime: Double(sunStart! * 3600), endTime: Double (sunEnd! * 3600), maxParkingTime : TimeInterval(maxParkingTime * 60) )
             
             bullshitRule = false
 
@@ -245,11 +246,11 @@ func ==(lhs: TimePeriod, rhs: TimePeriod) -> Bool {
 }
 
 class TimePeriod : Equatable {
-    var start : NSTimeInterval
-    var end : NSTimeInterval
-    var timeLimit : NSTimeInterval
+    var start : TimeInterval
+    var end : TimeInterval
+    var timeLimit : TimeInterval
     
-    init (startTime : NSTimeInterval, endTime : NSTimeInterval, maxParkingTime : NSTimeInterval) {
+    init (startTime : TimeInterval, endTime : TimeInterval, maxParkingTime : TimeInterval) {
         start = startTime
         end = endTime
         timeLimit = maxParkingTime

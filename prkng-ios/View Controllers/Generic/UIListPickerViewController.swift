@@ -10,16 +10,16 @@ import UIKit
 
 class UIListPickerViewController: AbstractViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
-    private let toolBar = UIToolbar()
-    private let picker = UIPickerView()
+    fileprivate let toolBar = UIToolbar()
+    fileprivate let picker = UIPickerView()
     
-    private var pickerValues: [String]
-    private var completion: (selectedValue: String?) -> Void
+    fileprivate var pickerValues: [String]
+    fileprivate var completion: (_ selectedValue: String?) -> Void
     
-    private var lastSelectedOption: String?
+    fileprivate var lastSelectedOption: String?
     
     //note: this must be added as a subview, otherwise it will crash on dismiss
-    init(pickerValues: [String], completion: (selectedValue: String?) -> Void) {
+    init(pickerValues: [String], completion: @escaping (_ selectedValue: String?) -> Void) {
         self.pickerValues = pickerValues
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
@@ -40,31 +40,31 @@ class UIListPickerViewController: AbstractViewController, UIPickerViewDataSource
         self.screenName = "Other - UI List Picker View Controller"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     
     func setupViews() {
         
-        self.view.backgroundColor = UIColor.clearColor()
+        self.view.backgroundColor = UIColor.clear
 
         picker.delegate = self
         picker.dataSource = self
-        picker.backgroundColor = .whiteColor()
+        picker.backgroundColor = .white
         picker.showsSelectionIndicator = true
         
-        toolBar.barStyle = UIBarStyle.Default
-        toolBar.translucent = true
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
         toolBar.tintColor = Styles.Colors.red2
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Done".localizedString, style: UIBarButtonItemStyle.Bordered, target: self, action: "donePicker")
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Clear".localizedString, style: UIBarButtonItemStyle.Bordered, target: self, action: "cancelPicker")
+        let doneButton = UIBarButtonItem(title: "Done".localizedString, style: UIBarButtonItemStyle.bordered, target: self, action: #selector(UIListPickerViewController.donePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Clear".localizedString, style: UIBarButtonItemStyle.bordered, target: self, action: #selector(UIListPickerViewController.cancelPicker))
 
         toolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
-        toolBar.userInteractionEnabled = true
+        toolBar.isUserInteractionEnabled = true
         
         self.view.addSubview(picker)
         self.view.addSubview(toolBar)
@@ -87,19 +87,19 @@ class UIListPickerViewController: AbstractViewController, UIPickerViewDataSource
     }
     
     // MARK: UIPickerViewDataSource, UIPickerViewDelegate methods
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
     
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return pickerValues.count
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerValues[row]
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         lastSelectedOption = pickerValues[row]
     }
     
@@ -111,12 +111,12 @@ class UIListPickerViewController: AbstractViewController, UIPickerViewDataSource
             self.lastSelectedOption = pickerValues.first
         }
 
-        self.completion(selectedValue: self.lastSelectedOption)
+        self.completion(self.lastSelectedOption)
         self.dismissAsModalWithTransparency(nil)
     }
     
     func cancelPicker() {
-        self.completion(selectedValue: nil)
+        self.completion(nil)
         self.dismissAsModalWithTransparency(nil)
     }
     

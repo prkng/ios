@@ -60,7 +60,7 @@ class DayOfWeekButton: UIControl {
         titleLabel.text = title
         titleLabel.font = Styles.FontFaces.light(17.0)
         titleLabel.textColor = Styles.Colors.anthracite1
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.layer.cornerRadius = 21
         titleLabel.layer.borderWidth = 0.5
         titleLabel.clipsToBounds = true
@@ -74,7 +74,7 @@ class DayOfWeekButton: UIControl {
         
         self.titleLabel.snp_makeConstraints { (make) -> () in
             make.center.equalTo(self)
-            make.size.equalTo(CGSizeMake(42, 42))
+            make.size.equalTo(CGSize(width: 42, height: 42))
         }
         
         didSetupConstraints = true
@@ -82,18 +82,18 @@ class DayOfWeekButton: UIControl {
     
     
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         
         didSet {
             
-            if(selected) {
+            if(isSelected) {
                 titleLabel.textColor = Styles.Colors.cream1
                 titleLabel.backgroundColor = Styles.Colors.red2
-                titleLabel.layer.borderColor = Styles.Colors.berry1.CGColor
+                titleLabel.layer.borderColor = Styles.Colors.berry1.cgColor
             } else {
                 titleLabel.textColor = Styles.Colors.anthracite1
-                titleLabel.backgroundColor = UIColor.clearColor()
-                titleLabel.layer.borderColor = UIColor.clearColor().CGColor
+                titleLabel.backgroundColor = UIColor.clear
+                titleLabel.layer.borderColor = UIColor.clear.cgColor
                 
             }
             

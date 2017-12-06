@@ -10,12 +10,12 @@ import UIKit
 
 class UIDatePickerViewController: AbstractViewController {
     
-    private let toolBar = UIToolbar()
-    private let datePicker = UIDatePicker()
+    fileprivate let toolBar = UIToolbar()
+    fileprivate let datePicker = UIDatePicker()
     
-    private var dateFormatter: NSDateFormatter
+    fileprivate var dateFormatter: DateFormatter
     
-    private var completion: ((date: NSDate, dateString: String) -> Void)?
+    fileprivate var completion: ((_ date: Date, _ dateString: String) -> Void)?
     
     var delegate: UIDatePickerViewControllerDelegate? {
         didSet {
@@ -23,11 +23,11 @@ class UIDatePickerViewController: AbstractViewController {
         }
     }
     
-    var date: NSDate { return datePicker.date }
-    var dateString: String { return dateFormatter.stringFromDate(date) }
+    var date: Date { return datePicker.date }
+    var dateString: String { return dateFormatter.string(from: date) }
     
     //note: this must be added as a subview, otherwise it will crash on dismiss
-    init(datePickerMode: UIDatePickerMode, minuteInterval: Int, minimumDate: NSDate, maximumDate: NSDate, dateFormatter: NSDateFormatter, completion: ((date: NSDate, dateString: String) -> Void)?) {
+    init(datePickerMode: UIDatePickerMode, minuteInterval: Int, minimumDate: Date, maximumDate: Date, dateFormatter: DateFormatter, completion: ((_ date: Date, _ dateString: String) -> Void)?) {
         self.datePicker.minimumDate = minimumDate
         self.datePicker.maximumDate = maximumDate
         self.datePicker.datePickerMode = datePickerMode
@@ -53,24 +53,24 @@ class UIDatePickerViewController: AbstractViewController {
         self.screenName = "Other - UI Date Picker View Controller"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
     func setupViews() {
         
-        datePicker.backgroundColor = UIColor.whiteColor()
+        datePicker.backgroundColor = UIColor.white
         
-        toolBar.barStyle = UIBarStyle.Default
-        toolBar.translucent = true
+        toolBar.barStyle = UIBarStyle.default
+        toolBar.isTranslucent = true
         toolBar.tintColor = Styles.Colors.red2
         toolBar.sizeToFit()
         
-        let doneButton = UIBarButtonItem(title: "Done".localizedString, style: UIBarButtonItemStyle.Bordered, target: self, action: "donePicker")
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.FlexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done".localizedString, style: UIBarButtonItemStyle.bordered, target: self, action: #selector(UIDatePickerViewController.donePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil)
 
         toolBar.setItems([spaceButton, doneButton], animated: false)
-        toolBar.userInteractionEnabled = true
+        toolBar.isUserInteractionEnabled = true
         
         self.view.addSubview(datePicker)
         self.view.addSubview(toolBar)
@@ -94,7 +94,7 @@ class UIDatePickerViewController: AbstractViewController {
     
     // MARK: Helper methods
     func donePicker() {
-        self.completion?(date: date, dateString: dateString)
+        self.completion?(date, dateString)
         self.delegate?.didSelectDate(date, dateString: dateString)
         self.dismissAsModalWithTransparency(nil)
     }
@@ -102,5 +102,5 @@ class UIDatePickerViewController: AbstractViewController {
 }
 
 protocol UIDatePickerViewControllerDelegate {
-    func didSelectDate(date: NSDate, dateString: String)
+    func didSelectDate(_ date: Date, dateString: String)
 }

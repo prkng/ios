@@ -12,7 +12,6 @@
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
 #import <MapKit/MapKit.h>
-#import "Mapbox.h"
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
@@ -26,14 +25,13 @@
 #import "GoogleAnalytics/GAI.h"
 #import "GoogleAnalytics/GAIDictionaryBuilder.h"
 #import "Google/SignIn.h"
-#import "SevenSwitch/SevenSwitch.h"
+//#import "SevenSwitch/SevenSwitch.h"
 #import "DVSwitch.h"
 #import "KMLParser.h"
 #import "GeoJsonParser.h"
 #import "pop/POP.h"
 #import "MarqueeLabel/MarqueeLabel.h"
 #import "UIImage+ImageEffects.h"
-#import "TDOAuth.h"
 #import "CardIO.h"
 
 #endif

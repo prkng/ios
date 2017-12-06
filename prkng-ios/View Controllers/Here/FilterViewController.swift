@@ -9,19 +9,19 @@
 import UIKit
 
 enum CarSharingMode: Int {
-    case None = 0
-    case FindCar
-    case FindSpot
+    case none = 0
+    case findCar
+    case findSpot
 }
 
 class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, SearchResultsTableViewControllerDelegate {
 
-    private var containerView: UIView
-    private var backgroundView: UIView
+    fileprivate var containerView: UIView
+    fileprivate var backgroundView: UIView
     var searchFilterView: SearchFilterView
     var timeFilterView: TimeFilterView
-    private var carSharingFilterView = PRKTopTabBar(titles: ["find_a_car".localizedString, "find_a_spot".localizedString])
-    private var lastCarSharingMode: CarSharingMode = .FindCar
+    fileprivate var carSharingFilterView = PRKTopTabBar(titles: ["find_a_car".localizedString, "find_a_spot".localizedString])
+    fileprivate var lastCarSharingMode: CarSharingMode = .findCar
     
     var trackUserButton = UIButton()
 
@@ -33,7 +33,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             make.right.equalTo(self.view)
             make.height.equalTo(self.shouldShowTimeFilter ? TimeFilterView.TOTAL_HEIGHT : 0)
         }
-        self.timeFilterView.hidden = !self.shouldShowTimeFilter
+        self.timeFilterView.isHidden = !self.shouldShowTimeFilter
     }
     var showingCarSharingTabBar: Bool = false
     func updateCarSharingTabBarDisplay() {
@@ -46,7 +46,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         self.carSharingFilterView.setNeedsLayout()
         self.carSharingFilterView.layoutIfNeeded()
         self.carSharingFilterView.refresh()
-        self.carSharingFilterView.hidden = !self.showingCarSharingTabBar
+        self.carSharingFilterView.isHidden = !self.showingCarSharingTabBar
     }
 
     var autocompleteVC: SearchResultsTableViewController?
@@ -73,7 +73,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         searchFilterView = SearchFilterView()
 
         if #available(iOS 8.0, *) {
-            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
             backgroundView = UIVisualEffectView(effect: blurEffect)
             //            backgroundView.backgroundColor = Styles.Colors.cream1
             //            backgroundView.alpha = 0.9
@@ -107,12 +107,12 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         containerView.addSubview(timeFilterView)
         timeFilterView.clipsToBounds = true
         containerView.addSubview(carSharingFilterView)
-        carSharingFilterView.addTarget(self, action: "didChangeCarSharingMode", forControlEvents: UIControlEvents.ValueChanged)
+        carSharingFilterView.addTarget(self, action: #selector(FilterViewController.didChangeCarSharingMode), for: UIControlEvents.valueChanged)
         carSharingFilterView.clipsToBounds = true
         
         trackUserButton.backgroundColor = Styles.Colors.cream2
-        trackUserButton.setImage(UIImage(named:"btn_geo_on"), forState: UIControlState.Normal)
-        trackUserButton.addTarget(self, action: "didTapTrackUserButton", forControlEvents: UIControlEvents.TouchUpInside)
+        trackUserButton.setImage(UIImage(named:"btn_geo_on"), for: UIControlState())
+        trackUserButton.addTarget(self, action: #selector(FilterViewController.didTapTrackUserButton), for: UIControlEvents.touchUpInside)
         containerView.addSubview(trackUserButton)
 
     }
@@ -171,16 +171,16 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         self.searchFilterView.makeActive()
     }
 
-    func showFilters(resettingTimeFilterValue resettingTimeFilterValue: Bool) {
+    func showFilters(resettingTimeFilterValue: Bool) {
         
         //whenever it's shown, reset the filter
         if resettingTimeFilterValue {
             timeFilterView.resetValue()
         }
         
-        UIView.animateWithDuration(0.2,
+        UIView.animate(withDuration: 0.2,
             delay: 0,
-            options: UIViewAnimationOptions.CurveEaseInOut,
+            options: UIViewAnimationOptions(),
             animations: { () -> Void in
                 self.trackUserButton.alpha = 0
                 self.showBigHeader()
@@ -194,7 +194,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         
     }
     
-    func hideFilters(completely completely: Bool, resettingTimeFilterValue: Bool = false) {
+    func hideFilters(completely: Bool, resettingTimeFilterValue: Bool = false) {
         
         if resettingTimeFilterValue {
             timeFilterView.resetValue()
@@ -205,9 +205,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         self.updateTimeFilterDisplay()
         self.updateCarSharingTabBarDisplay()
 
-        UIView.animateWithDuration(0.2,
+        UIView.animate(withDuration: 0.2,
             delay: 0,
-            options: UIViewAnimationOptions.CurveEaseInOut,
+            options: UIViewAnimationOptions(),
             animations: { () -> Void in
                 self.trackUserButton.alpha = 1
                 self.showSmallHeader(completely)
@@ -221,7 +221,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         
     }
     
-    private func showBigHeader() {
+    fileprivate func showBigHeader() {
        
         var height: CGFloat = shouldShowTimeFilter ? TimeFilterView.TOTAL_HEIGHT : 0
         height += showingCarSharingTabBar ? 45 : 0
@@ -234,7 +234,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         }
     }
 
-    private func showSmallHeader(completely: Bool) {
+    fileprivate func showSmallHeader(_ completely: Bool) {
         
         if showingCarSharingTabBar && !completely {
             showBigHeader()
@@ -261,12 +261,12 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
 
         switch(self.carSharingFilterView.selectedIndex) {
         case 0:
-            lastCarSharingMode = .FindCar
-            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Filter View", action: "Car Sharing Mode Switched", label: "Find Car", value: nil).build() as [NSObject: AnyObject])
+            lastCarSharingMode = .findCar
+            tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Filter View", action: "Car Sharing Mode Switched", label: "Find Car", value: nil).build() as! [AnyHashable: Any])
             break
         default:
-            lastCarSharingMode = .FindSpot
-            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Filter View", action: "Car Sharing Mode Switched", label: "Find Spot", value: nil).build() as [NSObject: AnyObject])
+            lastCarSharingMode = .findSpot
+            tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Filter View", action: "Car Sharing Mode Switched", label: "Find Spot", value: nil).build() as! [AnyHashable: Any])
             break
         }
         self.delegate?.didChangeCarSharingMode(lastCarSharingMode)
@@ -274,7 +274,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     
     // MARK: TimeFilterViewDelegate
     
-    func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
+    func filterValueWasChanged(hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool) {
         self.delegate?.filterValueWasChanged(hours: hours, selectedLabelText: selectedLabelText, permit: permit, fromReset: fromReset)
         self.searchFilterView.indicatorText = selectedLabelText
         if !fromReset {
@@ -282,7 +282,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         }
     }
     
-    func filterLabelUpdate(labelText: String) {
+    func filterLabelUpdate(_ labelText: String) {
         self.searchFilterView.indicatorText = labelText
     }
     
@@ -292,22 +292,22 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
     
     //MARK: Autocomplete methods and SearchResultsTableViewControllerDelegate methods
     
-    func updateAutocompleteWithValues(results: [SearchResult]) {
+    func updateAutocompleteWithValues(_ results: [SearchResult]) {
         
         if results.count == 0 {
             
             if self.autocompleteVC != nil {
                 
-                UIView.animateWithDuration(0.15,
+                UIView.animate(withDuration: 0.15,
                     delay: 0,
-                    options: UIViewAnimationOptions.CurveEaseInOut,
+                    options: UIViewAnimationOptions(),
                     animations: { () -> Void in
                         self.autocompleteVC?.view.alpha = 0
                     },
                     completion: { (completed:Bool) -> Void in
                         
                         self.autocompleteVC?.view.removeFromSuperview()
-                        self.autocompleteVC?.willMoveToParentViewController(nil)
+                        self.autocompleteVC?.willMove(toParentViewController: nil)
                         self.autocompleteVC?.removeFromParentViewController()
                         self.autocompleteVC = nil
                 })
@@ -324,9 +324,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             self.autocompleteVC = SearchResultsTableViewController(searchResultValues: results)
             self.autocompleteVC?.delegate = self
             self.view.addSubview(self.autocompleteVC!.view)
-            self.autocompleteVC?.willMoveToParentViewController(self)
+            self.autocompleteVC?.willMove(toParentViewController: self)
             
-            let lastKeyboardHeight = NSUserDefaults.standardUserDefaults().valueForKey("last_keyboard_height") as? CGFloat ?? 216
+            let lastKeyboardHeight = UserDefaults.standard.value(forKey: "last_keyboard_height") as? CGFloat ?? 216
             let height = lastKeyboardHeight - CGFloat(Styles.Sizes.tabbarHeight)
             
             self.autocompleteVC?.view.snp_makeConstraints { (make) -> () in
@@ -340,9 +340,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
             
             self.autocompleteVC?.view.layoutIfNeeded()
             
-            UIView.animateWithDuration(0.15,
+            UIView.animate(withDuration: 0.15,
                 delay: 0,
-                options: UIViewAnimationOptions.CurveEaseInOut,
+                options: UIViewAnimationOptions(),
                 animations: { () -> Void in
                     self.autocompleteVC?.view.alpha = 1
                 },
@@ -353,7 +353,7 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
         
     }
     
-    func didSelectSearchResult(result: SearchResult) {
+    func didSelectSearchResult(_ result: SearchResult) {
         self.searchFilterView.setSearchResult(result)
     }
 
@@ -364,9 +364,9 @@ class FilterViewController: GAITrackedViewController, TimeFilterViewDelegate, Se
 protocol FilterViewControllerDelegate {
     
     //these functions match TimeViewControllerDelegate
-    func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
+    func filterValueWasChanged(hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
     func showCarSharingInfo()
     func didTapTrackUserButton()
-    func didChangeCarSharingMode(mode: CarSharingMode)
+    func didChangeCarSharingMode(_ mode: CarSharingMode)
 }
 

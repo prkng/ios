@@ -10,21 +10,21 @@ import UIKit
 
 class PPTransactionsViewController: AbstractViewController, UITableViewDataSource, UITableViewDelegate {
     
-    private let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
+    fileprivate let backgroundImageView = UIImageView(image: UIImage(named:"bg_mycar"))
     
-    private let tableView = UITableView()
+    fileprivate let tableView = UITableView()
     
-    private var upcomingTransactions = [ParkingPandaTransaction]()
-    private var pastTransactions = [ParkingPandaTransaction]()
+    fileprivate var upcomingTransactions = [ParkingPandaTransaction]()
+    fileprivate var pastTransactions = [ParkingPandaTransaction]()
     
-    private var didGoToPPIntro = false
-    private var reloadOnNextAppear = true
+    fileprivate var didGoToPPIntro = false
+    fileprivate var reloadOnNextAppear = true
     
-    private let ROW_HEIGHT: CGFloat = 70
-    private let SECTION_HEADER_HEIGHT: CGFloat = 61
+    fileprivate let ROW_HEIGHT: CGFloat = 70
+    fileprivate let SECTION_HEADER_HEIGHT: CGFloat = 61
     
-    private static let VERTICAL_PADDING = 15
-    private static let TOP_VIEW_PADDING = 30 + 24 + VERTICAL_PADDING //from top_layout_guide_bottom: 30 pts of space, 24 pts of segmented control, 15 pts padding
+    fileprivate static let VERTICAL_PADDING = 15
+    fileprivate static let TOP_VIEW_PADDING = 30 + 24 + VERTICAL_PADDING //from top_layout_guide_bottom: 30 pts of space, 24 pts of segmented control, 15 pts padding
     
     override func loadView() {
         view = UIView()
@@ -37,7 +37,7 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
         self.screenName = "My Activity - Reservations View"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if reloadOnNextAppear {
             self.loadTransactions()
@@ -47,44 +47,44 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     
     func loadTransactions() {
 
-        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.show()
 
         ParkingPandaOperations.login(username: nil, password: nil) { (user, error) -> Void in
             if user != nil {
-                ParkingPandaOperations.getTransactions(user!, forTime: ParkingPandaOperations.ParkingPandaTransactionTime.All, completion: { (transactions, error) -> Void in
-                    let currentDate = NSDate()
+                ParkingPandaOperations.getTransactions(user!, forTime: ParkingPandaOperations.ParkingPandaTransactionTime.all, completion: { (transactions, error) -> Void in
+                    let currentDate = Date()
                     self.pastTransactions = transactions.filter({ (transaction) -> Bool in
-                        return transaction.endDateAndTime?.earlierDate(currentDate) == transaction.endDateAndTime
+                        return (transaction.endDateAndTime as NSDate?)?.earlierDate(currentDate) == transaction.endDateAndTime
                     })
-                    self.pastTransactions.sortInPlace({ (left, right) -> Bool in
-                        return left.endDateAndTime?.earlierDate(right.endDateAndTime ?? currentDate) == right.endDateAndTime
+                    self.pastTransactions.sort(by: { (left, right) -> Bool in
+                        return (left.endDateAndTime as NSDate?)?.earlierDate(right.endDateAndTime ?? currentDate) == right.endDateAndTime
                     })
                     self.upcomingTransactions = transactions.filter({ (transaction) -> Bool in
-                        return transaction.endDateAndTime?.earlierDate(currentDate) == currentDate
+                        return (transaction.endDateAndTime as NSDate?)?.earlierDate(currentDate) == currentDate
                     })
-                    self.upcomingTransactions.sortInPlace({ (left, right) -> Bool in
-                        return left.endDateAndTime?.earlierDate(right.endDateAndTime ?? currentDate) == left.endDateAndTime
+                    self.upcomingTransactions.sort(by: { (left, right) -> Bool in
+                        return (left.endDateAndTime as NSDate?)?.earlierDate(right.endDateAndTime ?? currentDate) == left.endDateAndTime
                     })
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         SVProgressHUD.dismiss()
                         self.tableView.reloadData()
                     })
                 })
             } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     SVProgressHUD.dismiss()
                     if let ppError = error {
                         switch (ppError.errorType) {
-                        case .API, .Internal:
+                        case .api, .internal:
                             if !self.didGoToPPIntro {
                                 ParkingPandaOperations.logout()
                                 let ppIntroVC = PPIntroViewController()
                                 ppIntroVC.presentWithVC(nil)
                                 self.didGoToPPIntro = true
                             }
-                        case .NoError, .Network:
+                        case .noError, .network:
                             break
                         }
                     }
@@ -95,12 +95,12 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     
     func setupViews() {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
         
-        tableView.backgroundColor = UIColor.clearColor()
+        tableView.backgroundColor = UIColor.clear
         
-        tableView.separatorStyle = .None
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
         tableView.clipsToBounds = true
@@ -127,11 +127,11 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     
     //MARK: UITableViewDataSource
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
             return upcomingTransactions.count
@@ -142,11 +142,11 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     }
     
     let identifier = "PPTransactionTableViewCell"
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? PPTransactionTableViewCell
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? PPTransactionTableViewCell
         if cell == nil {
-            cell = PPTransactionTableViewCell(style: .Default, reuseIdentifier: identifier)
+            cell = PPTransactionTableViewCell(style: .default, reuseIdentifier: identifier)
         }
         
         let isPastTransaction = indexPath.section == 1
@@ -181,27 +181,27 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
 //        return true
 //    }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let isPastTransaction = indexPath.section == 1
         let transaction = isPastTransaction ? pastTransactions[indexPath.row] : upcomingTransactions[indexPath.row]
         let transactionVC = PPTransactionViewController(transaction: transaction, lot: nil)
-        self.presentViewController(transactionVC, animated: true) { () -> Void in
-            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        self.present(transactionVC, animated: true) { () -> Void in
+            tableView.deselectRow(at: indexPath, animated: true)
             self.reloadOnNextAppear = false
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return ROW_HEIGHT
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return SECTION_HEADER_HEIGHT
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         var headerText = ""
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: UIScreen.mainScreen().bounds.width))
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width))
         paddingView.backgroundColor = Styles.Colors.cream1
         if section == 0 {
             headerText = "upcoming_reservations".localizedString
@@ -217,8 +217,8 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
     
     //MARK: Button Handlers
     
-    func backButtonTapped(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func backButtonTapped(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func headerView() -> UIView {
@@ -233,14 +233,14 @@ class PPTransactionsViewController: AbstractViewController, UITableViewDataSourc
         let iconView = UIImageView(image: UIImage(named: "icon_history"))
         let titleLabel = UILabel()
 
-        headerView.frame = CGRect(x: 0, y: 0, width: Int(UIScreen.mainScreen().bounds.width), height: totalHeight)
+        headerView.frame = CGRect(x: 0, y: 0, width: Int(UIScreen.main.bounds.width), height: totalHeight)
         
         headerView.clipsToBounds = true
         headerView.addSubview(iconView)
         
         titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.cream1
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         titleLabel.text = "reservations".localizedString
         headerView.addSubview(titleLabel)
 

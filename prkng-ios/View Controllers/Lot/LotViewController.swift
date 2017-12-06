@@ -19,31 +19,31 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         }
     }
     
-    private var topImageView = GMSPanoramaView(frame: CGRectZero)
-    private var topGradient = UIImageView()
-    private var directionsButton = ViewFactory.directionsButton()
-    private var topLabel = UILabel()
-    private var headerView: ModalHeaderView
-    private var subHeaderView = UIView()
-    private var subHeaderViewLabel = PRKTimeSpanView()
-    private var todayTimeHeaderView = UIView()
-    private var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
-    private var timeListContentView = UIView()
-    private var timeSpanLabels = [PRKTimeSpanView]()
-    private var attributesView = UIView()
-    private var attributesViewContainers = [UIView]()
-    private var attributesViewLabels = [UILabel]()
-    private var attributesViewImages = [UIImageView]()
-    private var inBookingMode = false {
+    fileprivate var topImageView = GMSPanoramaView(frame: CGRect.zero)
+    fileprivate var topGradient = UIImageView()
+    fileprivate var directionsButton = ViewFactory.directionsButton()
+    fileprivate var topLabel = UILabel()
+    fileprivate var headerView: ModalHeaderView
+    fileprivate var subHeaderView = UIView()
+    fileprivate var subHeaderViewLabel = PRKTimeSpanView()
+    fileprivate var todayTimeHeaderView = UIView()
+    fileprivate var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
+    fileprivate var timeListContentView = UIView()
+    fileprivate var timeSpanLabels = [PRKTimeSpanView]()
+    fileprivate var attributesView = UIView()
+    fileprivate var attributesViewContainers = [UIView]()
+    fileprivate var attributesViewLabels = [UILabel]()
+    fileprivate var attributesViewImages = [UIImageView]()
+    fileprivate var inBookingMode = false {
         didSet {
             didChangeBookingMode()
         }
     }
 
-    private var verticalRec: PRKVerticalGestureRecognizer
-    private static let HEADER_HEIGHT: CGFloat = 70
-    private(set) var LIST_HEIGHT: Int = 185
-    private(set) var SCROLL_HEIGHT: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 185
+    fileprivate var verticalRec: PRKVerticalGestureRecognizer
+    fileprivate static let HEADER_HEIGHT: CGFloat = 70
+    fileprivate(set) var LIST_HEIGHT: Int = 185
+    fileprivate(set) var SCROLL_HEIGHT: Int = UIScreen.main.bounds.width == 320 ? 185 / 2 : 185
     var topOffset: Int = 0 {
         didSet {
             if topOffset > TOP_OFFSET_MAX {
@@ -54,8 +54,8 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             }
         }
     }
-    private(set) var TOP_OFFSET_MAX: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 0
-    private var swipeBeganWithListAt: Int = 0
+    fileprivate(set) var TOP_OFFSET_MAX: Int = UIScreen.main.bounds.width == 320 ? 185 / 2 : 0
+    fileprivate var swipeBeganWithListAt: Int = 0
     
     init(lot: Lot, view: UIView) {
         self.lot = lot
@@ -64,7 +64,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         verticalRec = PRKVerticalGestureRecognizer()
         super.init(nibName: nil, bundle: nil)
 
-        self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotViewController.HEADER_HEIGHT + 30 + 50 + 52) - CGFloat(Styles.Sizes.tabbarHeight)
+        self.TOP_PARALLAX_HEIGHT = UIScreen.main.bounds.height - (LotViewController.HEADER_HEIGHT + 30 + 50 + 52) - CGFloat(Styles.Sizes.tabbarHeight)
         self.TOP_PARALLAX_HEIGHT -= CGFloat(self.SCROLL_HEIGHT)
     }
     
@@ -72,14 +72,14 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         headerView.topText = lot.headerText
-        headerView.rightViewTitleLabel.text = "daily".localizedString.uppercaseString
+        headerView.rightViewTitleLabel.text = "daily".localizedString.uppercased()
         headerView.rightViewPrimaryLabel.attributedText = lot.bottomLeftPrimaryText
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
@@ -104,7 +104,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         if lot.streetViewPanoramaId == nil {
             topImageView.moveNearCoordinate(lot.coordinate)
         } else {
-            topImageView.moveToPanoramaID(lot.streetViewPanoramaId!)
+            topImageView.move(toPanoramaID: lot.streetViewPanoramaId!)
         }
         if let heading = lot.streetViewHeading {
             let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
@@ -115,23 +115,23 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
 
         
         view.addSubview(topGradient)
-        topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
+        topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clear, toColor: UIColor.black.withAlphaComponent(0.9))
         
         if lot.lotOperator != nil {
             let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
             let operatorString = NSMutableAttributedString(string: lot.lotOperator!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-            operatedByString.appendAttributedString(operatorString)
+            operatedByString.append(operatorString)
             topLabel.attributedText = operatedByString
         } else if lot.lotPartner != nil {
             let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
             let partnerString = NSMutableAttributedString(string: lot.lotPartner!, attributes: [NSFontAttributeName: Styles.FontFaces.regular(12)])
-            operatedByString.appendAttributedString(partnerString)
+            operatedByString.append(partnerString)
             topLabel.attributedText = operatedByString
         }
         view.addSubview(topLabel)
         topLabel.textColor = Styles.Colors.cream1
         
-        directionsButton.addTarget(self, action: "directionsButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        directionsButton.addTarget(self, action: #selector(LotViewController.directionsButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(directionsButton)
         
         view.addSubview(headerView)
@@ -157,18 +157,18 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         if let hourly = lot.hourlyRate {
             let currencyString = NSMutableAttributedString(string: String(format: "$%.2f", hourly), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
-            let numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercaseString, attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
-            currencyString.appendAttributedString(numberString)
+            let numberString = NSMutableAttributedString(string: "/" + "hour".localizedString.uppercased(), attributes: [NSFontAttributeName: Styles.FontFaces.regular(11)])
+            currencyString.append(numberString)
             subHeaderViewLabel.rightLabel.attributedText = currencyString
             subHeaderViewLabel.rightLabel.textColor = Styles.Colors.cream1
         } else {
             subHeaderViewLabel.rightLabel.text = ""
         }
         
-        timeIconView.image = timeIconView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        timeIconView.image = timeIconView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         timeIconView.tintColor = Styles.Colors.midnight1
         
-        let todayTimeHeaderTapRec = UITapGestureRecognizer(target: self, action: "timesTapped")
+        let todayTimeHeaderTapRec = UITapGestureRecognizer(target: self, action: #selector(LotViewController.timesTapped))
         todayTimeHeaderView.addGestureRecognizer(todayTimeHeaderTapRec)
         view.addSubview(todayTimeHeaderView)
         todayTimeHeaderView.backgroundColor = Styles.Colors.cream1
@@ -181,7 +181,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         timeSpanLabels.append(todayTimeSpanLabel)
         todayTimeHeaderView.addSubview(todayTimeSpanLabel)
         
-        let timeListTapRec = UITapGestureRecognizer(target: self, action: "timesTapped")
+        let timeListTapRec = UITapGestureRecognizer(target: self, action: #selector(LotViewController.timesTapped))
         timeListContentView.addGestureRecognizer(timeListTapRec)
         timeListContentView.backgroundColor = Styles.Colors.stone
         view.addSubview(timeListContentView)
@@ -197,7 +197,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             let attributesViewContainer = UIView()
             attributesViewContainers.append(attributesViewContainer)
             
-            let caption = attribute.name(false).localizedString.uppercaseString
+            let caption = attribute.name(false).localizedString.uppercased()
             let imageName = "icon_attribute_" + attribute.name(true) + (attribute.enabled ? "_on" : "_off" )
             
             let attributeLabel = UILabel()
@@ -207,7 +207,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
             attributesViewLabels.append(attributeLabel)
             
             let attributeImageView = UIImageView(image: UIImage(named: imageName)!)
-            attributeImageView.contentMode = .Center
+            attributeImageView.contentMode = .center
             attributesViewImages.append(attributeImageView)
             
             attributesViewContainer.addSubview(attributeLabel)
@@ -221,7 +221,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         verticalRec = PRKVerticalGestureRecognizer(view: self.view, superViewOfView: self.parentView)
         verticalRec.delegate = self
         
-        view.bringSubviewToFront(headerView)
+        view.bringSubview(toFront: headerView)
         
     }
     
@@ -352,7 +352,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     
     //MARK: Helper methods
     
-    func directionsButtonTapped(sender: UIButton) {
+    func directionsButtonTapped(_ sender: UIButton) {
         DirectionsAction.perform(onViewController: self, withCoordinate: self.lot.coordinate, shouldCallback: false)
     }
     
@@ -370,7 +370,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
     
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
-    func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
+    func shouldIgnoreSwipe(_ beginTap: CGPoint) -> Bool {
         let yPosition = self.TOP_PARALLAX_HEIGHT - CGFloat(self.topOffset)
         return beginTap.y <= yPosition
     }
@@ -379,7 +379,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         self.swipeBeganWithListAt = self.topOffset
     }
     
-    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
+    func swipeInProgress(_ yDistanceFromBeginTap: CGFloat) {
 //        NSLog("Swipe in progress with distance: %f, list began at: %d, top offset: %d", yDistanceFromBeginTap, self.swipeBeganWithListAt, self.topOffset)
         
         if yDistanceFromBeginTap < 0 {
@@ -431,7 +431,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         self.topParallaxView?.snp_updateConstraints { (make) -> () in
             make.top.equalTo(self.view).offset(-self.topOffset)
         }
-        UIView.animateWithDuration(0.2,
+        UIView.animate(withDuration: 0.2,
             animations: { () -> Void in
                 self.topParallaxView?.updateConstraints()
             },
@@ -454,7 +454,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         adjustTopOffsetForTimeList(true)
     }
     
-    func adjustTopOffsetForTimeList(animate: Bool) {
+    func adjustTopOffsetForTimeList(_ animate: Bool) {
         
         topImageView.snp_updateConstraints { (make) -> () in
             make.top.equalTo(self.view).offset(-self.topOffset)
@@ -466,7 +466,7 @@ class LotViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegat
         
         self.view.setNeedsLayout()
         if animate {
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 self.view.layoutIfNeeded()
             })
         } else {

@@ -20,24 +20,24 @@ class RegisterEmailViewController: AbstractViewController {
     
     var delegate : RegisterEmailViewControllerDelegate?
     
-    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height
+    fileprivate var USABLE_VIEW_HEIGHT = UIScreen.main.bounds.size.height
 
-    private var nameText: String {
+    fileprivate var nameText: String {
         return inputForm.textForFieldNamed("name".localizedString)
     }
-    private var emailText: String {
+    fileprivate var emailText: String {
         return inputForm.textForFieldNamed("email".localizedString)
     }
-    private var passwordText: String {
+    fileprivate var passwordText: String {
         return inputForm.textForFieldNamed("password".localizedString)
     }
     
     init() {
         
         let list = [
-            ("name".localizedString, PRKTextFieldType.NormalNoAutocorrect),
-            ("email".localizedString, PRKTextFieldType.Email),
-            ("password".localizedString, PRKTextFieldType.Password),
+            ("name".localizedString, PRKTextFieldType.normalNoAutocorrect),
+            ("email".localizedString, PRKTextFieldType.email),
+            ("password".localizedString, PRKTextFieldType.password),
         ]
 
         scrollView = UIScrollView()
@@ -63,7 +63,7 @@ class RegisterEmailViewController: AbstractViewController {
         self.screenName = "Login - Register Email"
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         inputForm.makeActive()
     }
@@ -75,24 +75,24 @@ class RegisterEmailViewController: AbstractViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
-        backButton.addTarget(self, action: "back", forControlEvents: .TouchUpInside)
+        backButton.addTarget(self, action: "back", for: .touchUpInside)
         scrollContentView.addSubview(backButton)
         
         topLabel.textColor = Styles.Colors.cream2
         topLabel.font = Styles.FontFaces.regular(12)
-        topLabel.text = "create_an_account".localizedString.uppercaseString
+        topLabel.text = "create_an_account".localizedString.uppercased()
         scrollContentView.addSubview(topLabel)
         
         scrollContentView.addSubview(inputForm)
         
-        registerButton.setTitle("register".localizedString.uppercaseString, forState: UIControlState.Normal)
-        registerButton.addTarget(self, action: "registerButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        registerButton.setTitle("register".localizedString.uppercased(), for: UIControlState())
+        registerButton.addTarget(self, action: #selector(RegisterEmailViewController.registerButtonTapped), for: UIControlEvents.touchUpInside)
         scrollContentView.addSubview(registerButton)
         
         loginButton.titleLabel?.font = Styles.FontFaces.light(12)
         loginButton.titleLabel?.textColor = Styles.Colors.anthracite1
-        loginButton.setTitle("login_with_email_switch".localizedString.uppercaseString, forState: .Normal)
-        loginButton.addTarget(self, action:"loginButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        loginButton.setTitle("login_with_email_switch".localizedString.uppercased(), for: UIControlState())
+        loginButton.addTarget(self, action:#selector(RegisterEmailViewController.loginButtonTapped), for: UIControlEvents.touchUpInside)
         scrollContentView.addSubview(loginButton)
 
     }
@@ -108,7 +108,7 @@ class RegisterEmailViewController: AbstractViewController {
         
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
-            make.size.greaterThanOrEqualTo(CGSizeMake(UIScreen.mainScreen().bounds.size.width, self.USABLE_VIEW_HEIGHT))
+            make.size.greaterThanOrEqualTo(CGSize(width: UIScreen.main.bounds.size.width, height: self.USABLE_VIEW_HEIGHT))
             make.width.equalTo(self.view)
         }
         
@@ -130,7 +130,7 @@ class RegisterEmailViewController: AbstractViewController {
             make.height.greaterThanOrEqualTo(self.inputForm.height())
         }
         
-        let registerButtonTopOffset = UIScreen.mainScreen().bounds.width == 320 ? 20 : 50
+        let registerButtonTopOffset = UIScreen.main.bounds.width == 320 ? 20 : 50
 
         registerButton.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.inputForm.snp_bottom).offset(registerButtonTopOffset)
@@ -153,13 +153,13 @@ class RegisterEmailViewController: AbstractViewController {
             return
         }
         
-        registerButton.enabled = false
+        registerButton.isEnabled = false
         
         UserOperations.register(emailText, name: nameText, password: passwordText, gender: "", birthYear: "") { (user, apiKey, error, errorCode) -> Void in
             
             if user == nil || apiKey == nil {
                 
-                self.registerButton.enabled = true
+                self.registerButton.isEnabled = true
 
                 "account_already_exists"
                 "try_other_login_methods"
@@ -172,7 +172,7 @@ class RegisterEmailViewController: AbstractViewController {
                 } else {
                     alertView = UIAlertView(title: "register_error_title".localizedString , message: "register_error_message_generic".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
                 }
-                alertView.alertViewStyle = .Default
+                alertView.alertViewStyle = .default
                 alertView.show()
                 
                 return

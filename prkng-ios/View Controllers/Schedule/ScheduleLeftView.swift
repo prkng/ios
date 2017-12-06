@@ -10,8 +10,8 @@ import UIKit
 
 class ScheduleLeftView: UIView {
     
-    private var horizontalSeperator : UIView
-    private var scheduleTimes : [ScheduleTimeModel] //time intervals to know when to place the values
+    fileprivate var horizontalSeperator : UIView
+    fileprivate var scheduleTimes : [ScheduleTimeModel] //time intervals to know when to place the values
     var timeLabels : [PRKLabel]
     
     var didSetupSubviews : Bool
@@ -19,7 +19,7 @@ class ScheduleLeftView: UIView {
 
     convenience init(model : [ScheduleTimeModel]) {
         
-        self.init(frame:CGRectZero)
+        self.init(frame:CGRect.zero)
         scheduleTimes = model
 
         setupSubviews()
@@ -52,7 +52,7 @@ class ScheduleLeftView: UIView {
         super.updateConstraints()
     }
     
-    private func setupSubviews() {
+    fileprivate func setupSubviews() {
         
         self.backgroundColor = Styles.Colors.cream2
 
@@ -63,7 +63,7 @@ class ScheduleLeftView: UIView {
             let label = PRKLabel()
             label.text = scheduleTime.timeInterval.toString(condensed: true)
             label.font = Styles.FontFaces.light(12)
-            label.textAlignment = NSTextAlignment.Right
+            label.textAlignment = NSTextAlignment.right
             label.textColor = Styles.Colors.petrol2
             label.scheduleTimeModel = scheduleTime
             
@@ -74,7 +74,7 @@ class ScheduleLeftView: UIView {
         didSetupSubviews = true
     }
     
-    private func setupConstraints () {
+    fileprivate func setupConstraints () {
         
         horizontalSeperator.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self)

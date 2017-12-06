@@ -29,29 +29,29 @@ class User : NSObject {
     }
     
     init(coder : NSCoder ) {
-        fullName = coder.decodeObjectForKey("name") as! String
-        firstName = coder.decodeObjectForKey("first_name") as? String
-        lastName = coder.decodeObjectForKey("last_name") as? String
-        gender = coder.decodeObjectForKey("gender") as! String
-        identifier = coder.decodeObjectForKey("identifier") as! String
-        email = coder.decodeObjectForKey("email") as! String
-        imageUrl = coder.decodeObjectForKey("imageUrl") as? String
+        fullName = coder.decodeObject(forKey: "name") as! String
+        firstName = coder.decodeObject(forKey: "first_name") as? String
+        lastName = coder.decodeObject(forKey: "last_name") as? String
+        gender = coder.decodeObject(forKey: "gender") as! String
+        identifier = coder.decodeObject(forKey: "identifier") as! String
+        email = coder.decodeObject(forKey: "email") as! String
+        imageUrl = coder.decodeObject(forKey: "imageUrl") as? String
     }
     
-    func encodeWithCoder (encoder : NSCoder) {
-        encoder.encodeObject(fullName, forKey: "name")
-        encoder.encodeObject(firstName, forKey: "first_name")
-        encoder.encodeObject(lastName, forKey: "last_name")
-        encoder.encodeObject(gender, forKey: "gender")
-        encoder.encodeObject(identifier, forKey: "identifier")
-        encoder.encodeObject(email, forKey: "email")
+    func encodeWithCoder (_ encoder : NSCoder) {
+        encoder.encode(fullName, forKey: "name")
+        encoder.encode(firstName, forKey: "first_name")
+        encoder.encode(lastName, forKey: "last_name")
+        encoder.encode(gender, forKey: "gender")
+        encoder.encode(identifier, forKey: "identifier")
+        encoder.encode(email, forKey: "email")
         if (imageUrl != nil) {
-            encoder.encodeObject(imageUrl, forKey: "imageUrl")
+            encoder.encode(imageUrl, forKey: "imageUrl")
         }
     }
     
     
-    static func validateInput(nameText: String, emailText: String, passwordText: String, passwordConfirmText: String) -> Bool {
+    static func validateInput(_ nameText: String, emailText: String, passwordText: String, passwordConfirmText: String) -> Bool {
         
         if (nameText.characters.count < 2) {
             GeneralHelper.warnUser("invalid_name".localizedString)

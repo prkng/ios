@@ -8,11 +8,11 @@
 
 extension UITableView {
 
-    func reloadDataAnimated(duration: NSTimeInterval = 0.35,
-        options: UIViewAnimationOptions = UIViewAnimationOptions.TransitionCrossDissolve,
+    func reloadDataAnimated(_ duration: TimeInterval = 0.35,
+        options: UIViewAnimationOptions = UIViewAnimationOptions.transitionCrossDissolve,
         completion: ((Bool) -> Void)? = nil) {
 
-        UIView.transitionWithView(self,
+        UIView.transition(with: self,
             duration: duration,
             options: options,
             animations: { () -> Void in

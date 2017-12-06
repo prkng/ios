@@ -7,6 +7,19 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 struct Settings {
     
@@ -56,12 +69,12 @@ struct Settings {
 
     static let DEFAULT_NOTIFICATION_TIME = 30
     
-    static let iosVersion = NSString(string: UIDevice.currentDevice().systemVersion).doubleValue
-    static let screenScale: CGFloat = UIScreen.mainScreen().scale
+    static let iosVersion = NSString(string: UIDevice.current.systemVersion).doubleValue
+    static let screenScale: CGFloat = UIScreen.main.scale
     
     static func selectedCity() -> City  {
         
-        if let archivedCity = NSUserDefaults.standardUserDefaults().objectForKey(SELECTED_CITY_KEY) as? NSData {
+        if let archivedCity = UserDefaults.standard.object(forKey: SELECTED_CITY_KEY) as? Data {
             let json = JSON(data: archivedCity)
             return City(json: json)
         }
@@ -69,11 +82,11 @@ struct Settings {
         return CityOperations.sharedInstance.montreal!
     }
     
-    static func setSelectedCity (city : City) {
+    static func setSelectedCity (_ city : City) {
         do {
             let rawData = try city.json.rawData()
-            NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: SELECTED_CITY_KEY)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.set(rawData, forKey: SELECTED_CITY_KEY)
+            UserDefaults.standard.synchronize()
         } catch {
             DDLoggerWrapper.logError("Could not save raw spot json data to user defaults. Sad face.")
         }
@@ -84,90 +97,90 @@ struct Settings {
         AuthUtility.saveUser(nil)
         checkOut()
         
-        if UIApplication.sharedApplication().keyWindow!.rootViewController is FirstUseViewController {
+        if UIApplication.shared.keyWindow!.rootViewController is FirstUseViewController {
             return
         } else {
-            UIApplication.sharedApplication().keyWindow!.rootViewController = FirstUseViewController()
+            UIApplication.shared.keyWindow!.rootViewController = FirstUseViewController()
         }
     }
     
     static func tutorialPassed() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(TUTORIAL_PASSED_KEY)
+        return UserDefaults.standard.bool(forKey: TUTORIAL_PASSED_KEY)
     }
     
-    static func setTutorialPassed(tutorialPassed : Bool)  {
-        NSUserDefaults.standardUserDefaults().setBool(tutorialPassed, forKey: TUTORIAL_PASSED_KEY)
+    static func setTutorialPassed(_ tutorialPassed : Bool)  {
+        UserDefaults.standard.set(tutorialPassed, forKey: TUTORIAL_PASSED_KEY)
     }
     
     static func firstUse() -> Bool {
-        return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_USE_PASSED_KEY)
+        return !UserDefaults.standard.bool(forKey: FIRST_USE_PASSED_KEY)
     }
     
-    static func setFirstUsePassed(firstUsePassed : Bool)  {
-        NSUserDefaults.standardUserDefaults().setObject(firstUsePassed, forKey: FIRST_USE_PASSED_KEY)
+    static func setFirstUsePassed(_ firstUsePassed : Bool)  {
+        UserDefaults.standard.set(firstUsePassed, forKey: FIRST_USE_PASSED_KEY)
     }
     
     static func firstCheckin() -> Bool {
-        return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_CHECKIN_PASSED_KEY)
+        return !UserDefaults.standard.bool(forKey: FIRST_CHECKIN_PASSED_KEY)
     }
     
-    static func setFirstCheckinPassed(firstCheckinPassed : Bool)  {
-        NSUserDefaults.standardUserDefaults().setObject(firstCheckinPassed, forKey: FIRST_CHECKIN_PASSED_KEY)
+    static func setFirstCheckinPassed(_ firstCheckinPassed : Bool)  {
+        UserDefaults.standard.set(firstCheckinPassed, forKey: FIRST_CHECKIN_PASSED_KEY)
     }
     
     static func firstMapUse() -> Bool {
-        return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_MAP_USE_PASSED_KEY)
+        return !UserDefaults.standard.bool(forKey: FIRST_MAP_USE_PASSED_KEY)
     }
     
-    static func setFirstMapUsePassed(firstMapUsePassed : Bool)  {
-        NSUserDefaults.standardUserDefaults().setObject(firstMapUsePassed, forKey: FIRST_MAP_USE_PASSED_KEY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    static func setFirstMapUsePassed(_ firstMapUsePassed : Bool)  {
+        UserDefaults.standard.set(firstMapUsePassed, forKey: FIRST_MAP_USE_PASSED_KEY)
+        UserDefaults.standard.synchronize()
     }
 
     static func firstCarSharingUse() -> Bool {
-        return !NSUserDefaults.standardUserDefaults().boolForKey(FIRST_CAR_SHARING_USE_PASSED_KEY)
+        return !UserDefaults.standard.bool(forKey: FIRST_CAR_SHARING_USE_PASSED_KEY)
     }
     
-    static func setFirstCarSharingUsePassed(firstCarSharingUsePassed : Bool)  {
-        NSUserDefaults.standardUserDefaults().setObject(firstCarSharingUsePassed, forKey: FIRST_CAR_SHARING_USE_PASSED_KEY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    static func setFirstCarSharingUsePassed(_ firstCarSharingUsePassed : Bool)  {
+        UserDefaults.standard.set(firstCarSharingUsePassed, forKey: FIRST_CAR_SHARING_USE_PASSED_KEY)
+        UserDefaults.standard.synchronize()
     }
 
     static func notificationTime() -> Int {
 
-        var time = NSUserDefaults.standardUserDefaults().objectForKey(NOTIFICATION_TIME_KEY) as? Int
+        var time = UserDefaults.standard.object(forKey: NOTIFICATION_TIME_KEY) as? Int
         
         if (time == nil) {
             time = DEFAULT_NOTIFICATION_TIME
-            NSUserDefaults.standardUserDefaults().setObject(time, forKey: NOTIFICATION_TIME_KEY)
+            UserDefaults.standard.set(time, forKey: NOTIFICATION_TIME_KEY)
         }
         
         return time!
     }
     
-    static func setNotificationTime(notificationTime : Int) {
+    static func setNotificationTime(_ notificationTime : Int) {
         DDLoggerWrapper.logInfo("Set notification time to " + String(notificationTime))
-        NSUserDefaults.standardUserDefaults().setObject(notificationTime, forKey: NOTIFICATION_TIME_KEY)
+        UserDefaults.standard.set(notificationTime, forKey: NOTIFICATION_TIME_KEY)
     }
     
     
     static func checkedIn() -> Bool {
-        return NSUserDefaults.standardUserDefaults().objectForKey(CHECKED_IN_SPOT_ID_KEY) != nil
+        return UserDefaults.standard.object(forKey: CHECKED_IN_SPOT_ID_KEY) != nil
     }
     
-    static func checkInTimeRemaining() -> NSTimeInterval {
+    static func checkInTimeRemaining() -> TimeInterval {
         
         if (!checkedIn()) {
-            return NSTimeInterval(0)
+            return TimeInterval(0)
         }
         
         
-        let expireInterval = NSTimeInterval(NSUserDefaults.standardUserDefaults().doubleForKey(LAST_CHECKIN_EXPIRE_KEY))
-        let checkInDate = NSUserDefaults.standardUserDefaults().objectForKey(LAST_CHECKIN_TIME_KEY) as! NSDate
-        let now = NSDate()
+        let expireInterval = TimeInterval(UserDefaults.standard.double(forKey: LAST_CHECKIN_EXPIRE_KEY))
+        let checkInDate = UserDefaults.standard.object(forKey: LAST_CHECKIN_TIME_KEY) as! Date
+        let now = Date()
         
         
-        return expireInterval - now.timeIntervalSinceDate(checkInDate)
+        return expireInterval - now.timeIntervalSince(checkInDate)
     }
     
     static func checkOut() {
@@ -177,60 +190,60 @@ struct Settings {
         Settings.clearRegionsMonitored()
     }
     
-    static func setCheckInId(checkinId: Int) {
-        NSUserDefaults.standardUserDefaults().setInteger(checkinId, forKey: CHECK_IN_ID_KEY)
+    static func setCheckInId(_ checkinId: Int) {
+        UserDefaults.standard.set(checkinId, forKey: CHECK_IN_ID_KEY)
     }
     
     static func getCheckInId() -> Int {
-        return NSUserDefaults.standardUserDefaults().integerForKey(CHECK_IN_ID_KEY)
+        return UserDefaults.standard.integer(forKey: CHECK_IN_ID_KEY)
     }
     
-    static func saveCheckInData(spot : ParkingSpot?, time : NSDate?) {
+    static func saveCheckInData(_ spot : ParkingSpot?, time : Date?) {
         
         if (spot != nil && time != nil) {
             Settings.incrementNumberOfCheckins()
             do {
                 let rawData = try spot!.json.rawData()
-                NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: CHECKED_IN_SPOT_KEY)
+                UserDefaults.standard.set(rawData, forKey: CHECKED_IN_SPOT_KEY)
             } catch {
                 DDLoggerWrapper.logError("Could not save raw spot json data to user defaults. Sad face.")
             }
-            NSUserDefaults.standardUserDefaults().setObject(spot!.identifier, forKey: CHECKED_IN_SPOT_ID_KEY)
-            NSUserDefaults.standardUserDefaults().setObject(time!, forKey: LAST_CHECKIN_TIME_KEY)
-            NSUserDefaults.standardUserDefaults().setObject(spot?.availableTimeInterval(), forKey: LAST_CHECKIN_EXPIRE_KEY)
+            UserDefaults.standard.set(spot!.identifier, forKey: CHECKED_IN_SPOT_ID_KEY)
+            UserDefaults.standard.set(time!, forKey: LAST_CHECKIN_TIME_KEY)
+            UserDefaults.standard.set(spot?.availableTimeInterval(), forKey: LAST_CHECKIN_EXPIRE_KEY)
         } else {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(CHECKED_IN_SPOT_KEY)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(CHECKED_IN_SPOT_ID_KEY)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_TIME_KEY)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(LAST_CHECKIN_EXPIRE_KEY)
+            UserDefaults.standard.removeObject(forKey: CHECKED_IN_SPOT_KEY)
+            UserDefaults.standard.removeObject(forKey: CHECKED_IN_SPOT_ID_KEY)
+            UserDefaults.standard.removeObject(forKey: LAST_CHECKIN_TIME_KEY)
+            UserDefaults.standard.removeObject(forKey: LAST_CHECKIN_EXPIRE_KEY)
         }
         
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.synchronize()
     }
     
     static func checkedInSpotId () -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CHECKED_IN_SPOT_ID_KEY)
+        return UserDefaults.standard.string(forKey: CHECKED_IN_SPOT_ID_KEY)
     }
     
     static func checkedInSpot () -> ParkingSpot? {
-        if let archivedSpot = NSUserDefaults.standardUserDefaults().objectForKey(CHECKED_IN_SPOT_KEY) as? NSData {
+        if let archivedSpot = UserDefaults.standard.object(forKey: CHECKED_IN_SPOT_KEY) as? Data {
             let json = JSON(data: archivedSpot)
             return ParkingSpot(json: json)
         }
         return nil
     }
     
-    static func cacheLotsJson(lots: JSON) {
+    static func cacheLotsJson(_ lots: JSON) {
         do {
             let rawData = try lots.rawData()
-            NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: LOCALLY_CACHED_LOTS_KEY)
+            UserDefaults.standard.set(rawData, forKey: LOCALLY_CACHED_LOTS_KEY)
         } catch {
             DDLoggerWrapper.logError("Could not save raw lots json data to user defaults. Sad face.")
         }
     }
     
     static func getCachedLots() -> [Lot] {
-        if let archivedLots = NSUserDefaults.standardUserDefaults().objectForKey(LOCALLY_CACHED_LOTS_KEY) as? NSData {
+        if let archivedLots = UserDefaults.standard.object(forKey: LOCALLY_CACHED_LOTS_KEY) as? Data {
             let json = JSON(data: archivedLots)
             let lotJsons: [JSON] = json["features"].arrayValue
             let lots = lotJsons.map({ (lotJson) -> Lot in
@@ -244,40 +257,40 @@ struct Settings {
     }
     
     static func isCachedLotDataFresh() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(LOCALLY_CACHED_LOTS_FRESH_KEY)
+        return UserDefaults.standard.bool(forKey: LOCALLY_CACHED_LOTS_FRESH_KEY)
     }
     
-    static func setCachedLotDataFresh(fresh: Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(fresh, forKey: LOCALLY_CACHED_LOTS_FRESH_KEY)
+    static func setCachedLotDataFresh(_ fresh: Bool) {
+        UserDefaults.standard.set(fresh, forKey: LOCALLY_CACHED_LOTS_FRESH_KEY)
     }
     
-    static func lastCheckinTime() -> NSDate? {
+    static func lastCheckinTime() -> Date? {
         
         if (checkedIn()) {
-            return NSUserDefaults.standardUserDefaults().objectForKey(LAST_CHECKIN_TIME_KEY) as? NSDate
+            return UserDefaults.standard.object(forKey: LAST_CHECKIN_TIME_KEY) as? Date
         }
         
         return nil
         
     }
     
-    static func saveReservedCarShare(carShare: CarShare?) {
+    static func saveReservedCarShare(_ carShare: CarShare?) {
         if carShare != nil {
             do {
                 let rawData = try carShare!.json.rawData()
-                NSUserDefaults.standardUserDefaults().setObject(rawData, forKey: RESERVED_CARSHARE_KEY)
-                NSUserDefaults.standardUserDefaults().setObject(NSDate().dateByAddingMinutes(30), forKey: RESERVED_CARSHARE_SAVED_TIME_KEY)
+                UserDefaults.standard.set(rawData, forKey: RESERVED_CARSHARE_KEY)
+                UserDefaults.standard.set(Date().dateByAddingMinutes(30), forKey: RESERVED_CARSHARE_SAVED_TIME_KEY)
             } catch {
                 DDLoggerWrapper.logError("Could not save raw car share json data to user defaults. Sad face.")
             }
         } else {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(RESERVED_CARSHARE_KEY)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(RESERVED_CARSHARE_SAVED_TIME_KEY)
+            UserDefaults.standard.removeObject(forKey: RESERVED_CARSHARE_KEY)
+            UserDefaults.standard.removeObject(forKey: RESERVED_CARSHARE_SAVED_TIME_KEY)
         }
     }
     
     static func getReservedCarShare() -> CarShare? {
-        if let archivedCarShare = NSUserDefaults.standardUserDefaults().objectForKey(RESERVED_CARSHARE_KEY) as? NSData,
+        if let archivedCarShare = UserDefaults.standard.object(forKey: RESERVED_CARSHARE_KEY) as? Data,
         let time = getReservedCarShareTime() {
             let minutes = time.timeIntervalSinceNow / 60
             if minutes < 0 {
@@ -291,25 +304,25 @@ struct Settings {
         return nil
     }
 
-    static func getReservedCarShareTime() -> NSDate? {
-        return NSUserDefaults.standardUserDefaults().objectForKey(RESERVED_CARSHARE_SAVED_TIME_KEY) as? NSDate
+    static func getReservedCarShareTime() -> Date? {
+        return UserDefaults.standard.object(forKey: RESERVED_CARSHARE_SAVED_TIME_KEY) as? Date
     }
 
     static func resetPromptConditions() {
-        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: APP_LAUNCH_COUNT_KEY)
-        NSUserDefaults.standardUserDefaults().setInteger(0, forKey: CHECKIN_COUNT_KEY)
-        NSUserDefaults.standardUserDefaults().setBool(false, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
+        UserDefaults.standard.set(0, forKey: APP_LAUNCH_COUNT_KEY)
+        UserDefaults.standard.set(0, forKey: CHECKIN_COUNT_KEY)
+        UserDefaults.standard.set(false, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
     }
     
     static func shouldPromptUserToRateApp() -> Bool {
         
-        let alreadyPromptedUser = NSUserDefaults.standardUserDefaults().boolForKey(DID_PROMPT_USER_TO_RATE_APP_KEY)
-        let appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT_KEY)
-        let numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT_KEY)
+        let alreadyPromptedUser = UserDefaults.standard.bool(forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
+        let appLaunches = UserDefaults.standard.integer(forKey: APP_LAUNCH_COUNT_KEY)
+        let numberOfCheckins = UserDefaults.standard.integer(forKey: CHECKIN_COUNT_KEY)
         
         if !alreadyPromptedUser && (appLaunches > 5 || numberOfCheckins > 2) {
             
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
+            UserDefaults.standard.set(true, forKey: DID_PROMPT_USER_TO_RATE_APP_KEY)
             return true
         }
         
@@ -317,36 +330,36 @@ struct Settings {
     }
     
     static func incrementAppLaunches() {
-        var appLaunches = NSUserDefaults.standardUserDefaults().integerForKey(APP_LAUNCH_COUNT_KEY)
-        NSUserDefaults.standardUserDefaults().setInteger(++appLaunches, forKey: APP_LAUNCH_COUNT_KEY)
+        var appLaunches = UserDefaults.standard.integer(forKey: APP_LAUNCH_COUNT_KEY)
+        UserDefaults.standard.set(++appLaunches, forKey: APP_LAUNCH_COUNT_KEY)
     }
 
     static func incrementNumberOfCheckins() {
-        var numberOfCheckins = NSUserDefaults.standardUserDefaults().integerForKey(CHECKIN_COUNT_KEY)
-        NSUserDefaults.standardUserDefaults().setInteger(++numberOfCheckins, forKey: CHECKIN_COUNT_KEY)
+        var numberOfCheckins = UserDefaults.standard.integer(forKey: CHECKIN_COUNT_KEY)
+        UserDefaults.standard.set(++numberOfCheckins, forKey: CHECKIN_COUNT_KEY)
     }
 
     
     static func shouldFilterForCarSharing() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CAR_SHARING_FILTER_KEY)
+        return UserDefaults.standard.bool(forKey: CAR_SHARING_FILTER_KEY)
         
     }
     
-    static func setShouldFilterForCarSharing(value: Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(value, forKey: CAR_SHARING_FILTER_KEY)
+    static func setShouldFilterForCarSharing(_ value: Bool) {
+        UserDefaults.standard.set(value, forKey: CAR_SHARING_FILTER_KEY)
     }
 
     static func shouldFilterForCommercialPermit() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(COMMERCIAL_PERMIT_FILTER_KEY)
+        return UserDefaults.standard.bool(forKey: COMMERCIAL_PERMIT_FILTER_KEY)
     }
     
-    static func setShouldFilterForCommercialPermit(value: Bool) {
+    static func setShouldFilterForCommercialPermit(_ value: Bool) {
         DDLoggerWrapper.logInfo("Setting commercial permit " + (value ? "ON" : "OFF"))
-        NSUserDefaults.standardUserDefaults().setBool(value, forKey: COMMERCIAL_PERMIT_FILTER_KEY)
+        UserDefaults.standard.set(value, forKey: COMMERCIAL_PERMIT_FILTER_KEY)
     }
     
     static func shouldNotifyTheNightBefore() -> Bool {
-        if let value = NSUserDefaults.standardUserDefaults().objectForKey(NOTIFICATION_NIGHT_BEFORE_KEY) as? Bool {
+        if let value = UserDefaults.standard.object(forKey: NOTIFICATION_NIGHT_BEFORE_KEY) as? Bool {
             return value
         } else {
             setShouldNotifyTheNightBefore(true)
@@ -354,15 +367,15 @@ struct Settings {
         }
     }
     
-    static func setShouldFilterForSnowRemoval(value: Bool) {
+    static func setShouldFilterForSnowRemoval(_ value: Bool) {
         DDLoggerWrapper.logInfo("Setting snow removal value " + (value ? "ON" : "OFF"))
-        NSUserDefaults.standardUserDefaults().setBool(value, forKey: SNOW_REMOVAL_FILTER_KEY)
+        UserDefaults.standard.set(value, forKey: SNOW_REMOVAL_FILTER_KEY)
         UserOperations.sharedInstance.helloItsMe { (completed) -> Void in
         }
     }
 
     static func shouldFilterForSnowRemoval() -> Bool {
-        if let value = NSUserDefaults.standardUserDefaults().objectForKey(SNOW_REMOVAL_FILTER_KEY) as? Bool {
+        if let value = UserDefaults.standard.object(forKey: SNOW_REMOVAL_FILTER_KEY) as? Bool {
             return value
         } else {
             setShouldFilterForSnowRemoval(true)
@@ -370,13 +383,13 @@ struct Settings {
         }
     }
 
-    static func setShouldFilterForResidentialPermit(value: Bool) {
+    static func setShouldFilterForResidentialPermit(_ value: Bool) {
         DDLoggerWrapper.logInfo("Setting residential permit " + (value ? "ON" : "OFF"))
-        NSUserDefaults.standardUserDefaults().setBool(value, forKey: RESIDENTIAL_PERMIT_FILTER_KEY)
+        UserDefaults.standard.set(value, forKey: RESIDENTIAL_PERMIT_FILTER_KEY)
     }
     
     static func shouldFilterForResidentialPermit() -> Bool {
-        if let value = NSUserDefaults.standardUserDefaults().objectForKey(RESIDENTIAL_PERMIT_FILTER_KEY) as? Bool {
+        if let value = UserDefaults.standard.object(forKey: RESIDENTIAL_PERMIT_FILTER_KEY) as? Bool {
             return value
         } else {
             setShouldFilterForResidentialPermit(true)
@@ -384,61 +397,61 @@ struct Settings {
         }
     }
     
-    static func setResidentialPermit(value: String?) {
+    static func setResidentialPermit(_ value: String?) {
         DDLoggerWrapper.logInfo("Setting residential permit: " + (value ?? ""))
-        NSUserDefaults.standardUserDefaults().setObject(value, forKey: RESIDENTIAL_PERMITS_KEY)
+        UserDefaults.standard.set(value, forKey: RESIDENTIAL_PERMITS_KEY)
     }
     
     static func residentialPermit() -> String? {
-        if let value = NSUserDefaults.standardUserDefaults().objectForKey(RESIDENTIAL_PERMITS_KEY) as? String {
+        if let value = UserDefaults.standard.object(forKey: RESIDENTIAL_PERMITS_KEY) as? String {
             return value
         }
         return nil
     }
 
-    static func setResidentialPermits(value: [String]) {
-        let listString = value.joinWithSeparator(",")
+    static func setResidentialPermits(_ value: [String]) {
+        let listString = value.joined(separator: ",")
         DDLoggerWrapper.logInfo("Setting residential permits: " + listString)
-        NSUserDefaults.standardUserDefaults().setObject(listString, forKey: RESIDENTIAL_PERMITS_KEY)
+        UserDefaults.standard.set(listString, forKey: RESIDENTIAL_PERMITS_KEY)
     }
     
     static func residentialPermits() -> [String] {
-        if let value = NSUserDefaults.standardUserDefaults().objectForKey(RESIDENTIAL_PERMITS_KEY) as? String {
+        if let value = UserDefaults.standard.object(forKey: RESIDENTIAL_PERMITS_KEY) as? String {
             let list = value.split(",")
             return list
         }
         return []
     }
 
-    static func setShouldNotifyTheNightBefore(value: Bool) {
-        NSUserDefaults.standardUserDefaults().setBool(value, forKey: NOTIFICATION_NIGHT_BEFORE_KEY)
+    static func setShouldNotifyTheNightBefore(_ value: Bool) {
+        UserDefaults.standard.set(value, forKey: NOTIFICATION_NIGHT_BEFORE_KEY)
     }
     
-    static func scheduleNotification(time : NSDate) {
+    static func scheduleNotification(_ time : Date) {
         
         Settings.cancelScheduledNotifications()
         
-        let alarmTime = time.dateByAddingTimeInterval(NSTimeInterval(-time.seconds()))
+        let alarmTime = time.addingTimeInterval(TimeInterval(-time.seconds()))
         let alarm = UILocalNotification()
         alarm.userInfo = ["identifier": "regular_app_notification"]
         alarm.alertBody = "alarm_text".localizedString
         alarm.soundName = UILocalNotificationDefaultSoundName
         alarm.fireDate = alarmTime
         alarm.applicationIconBadgeNumber = 1
-        UIApplication.sharedApplication().scheduleLocalNotification(alarm)
+        UIApplication.shared.scheduleLocalNotification(alarm)
         
     }
 
-    static func scheduleNotification(spot : ParkingSpot) {
+    static func scheduleNotification(_ spot : ParkingSpot) {
         
         Settings.clearRegionsMonitored()
         
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         
         //first of all, stop monitoring all regions
         for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
-            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
-                delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
+            if monitoredRegion.identifier.range(of: "prkng_check_out_monitor") != nil {
+                delegate.locationManager.stopMonitoring(for: monitoredRegion)
                 DDLoggerWrapper.logWarning("Found a region that should have already been removed... ")
             }
         }
@@ -454,7 +467,7 @@ struct Settings {
         if userLocation != nil {
             for location in locations {
                 //            NSLog("lat: %f, long: %f", location.coordinate.latitude, location.coordinate.longitude)
-                if userLocation?.distanceFromLocation(location) < 10 {
+                if userLocation?.distance(from: location) < 10 {
                     //then use this as the only region
                     useUserLocationAsRegion = true
                 }
@@ -477,14 +490,14 @@ struct Settings {
             for j in 0..<locations.count {
                 let secondLocation = locations[j]
                 if firstLocation != secondLocation {
-                    let distance = firstLocation.distanceFromLocation(secondLocation)
+                    let distance = firstLocation.distance(from: secondLocation)
                     distances.append(distance)
                     minimumDistance = distance < minimumDistance ? distance : minimumDistance
                     maximumDistance = distance > maximumDistance ? distance : maximumDistance
                 }
             }
             
-            distances.sortInPlace({ (one, two) -> Bool in return one < two })
+            distances.sort(by: { (one, two) -> Bool in return one < two })
             
             let isEdgePoint = (spot.line.coordinates.first != nil && spot.line.coordinates.first! == firstLocation)
                 || (spot.line.coordinates.last != nil && spot.line.coordinates.last! == firstLocation)
@@ -504,23 +517,23 @@ struct Settings {
         
         if useUserLocationAsRegion {
             let region = CLCircularRegion(center: userLocation!.coordinate, radius: 5, identifier: "prkng_check_out_monitor")
-            delegate.locationManager.startMonitoringForRegion(region)
+            delegate.locationManager.startMonitoring(for: region)
             DDLoggerWrapper.logVerbose("Started monitoring region from user location with id: " + region.identifier)
         } else {
             for region in regions {
-                delegate.locationManager.startMonitoringForRegion(region)
+                delegate.locationManager.startMonitoring(for: region)
                 DDLoggerWrapper.logVerbose("Started monitoring region with id: " + region.identifier)
             }
         }
         
-        let currentDate = NSDate()
-        NSUserDefaults.standardUserDefaults().setDouble(currentDate.timeIntervalSinceReferenceDate, forKey: GEOFENCE_LAST_SET_DATE_KEY)
+        let currentDate = Date()
+        UserDefaults.standard.set(currentDate.timeIntervalSinceReferenceDate, forKey: GEOFENCE_LAST_SET_DATE_KEY)
         
     }
     
-    static func geofenceLastSetOnInterval() -> NSTimeInterval {
-        let double = NSUserDefaults.standardUserDefaults().doubleForKey(GEOFENCE_LAST_SET_DATE_KEY)
-        return NSTimeInterval(double) ?? NSDate().timeIntervalSinceReferenceDate
+    static func geofenceLastSetOnInterval() -> TimeInterval {
+        let double = UserDefaults.standard.double(forKey: GEOFENCE_LAST_SET_DATE_KEY)
+        return TimeInterval(double) ?? Date().timeIntervalSinceReferenceDate
     }
 
     
@@ -528,26 +541,26 @@ struct Settings {
     Cancels only the scheduled notifications that are used for checkout reminders
     */
     static func cancelScheduledNotifications() {
-        for notification in UIApplication.sharedApplication().scheduledLocalNotifications ?? [] {
-            UIApplication.sharedApplication().cancelLocalNotification(notification)
+        for notification in UIApplication.shared.scheduledLocalNotifications ?? [] {
+            UIApplication.shared.cancelLocalNotification(notification)
         }
         clearNotificationBadgeAndNotificationCenter()
     }
 
     static func clearNotificationBadgeAndNotificationCenter() {
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 1
-        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.shared.applicationIconBadgeNumber = 1
+        UIApplication.shared.applicationIconBadgeNumber = 0
         DDLoggerWrapper.logInfo("Cleared applicaiton icon badge and notification center")
     }
     
     static func clearRegionsMonitored() {
 
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         DDLoggerWrapper.logVerbose(String(format: "Clearing %d monitored regions.", delegate.locationManager.monitoredRegions.count))
 
         for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
-            if monitoredRegion.identifier.rangeOfString("prkng_check_out_monitor") != nil {
-                delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
+            if monitoredRegion.identifier.range(of: "prkng_check_out_monitor") != nil {
+                delegate.locationManager.stopMonitoring(for: monitoredRegion)
                 DDLoggerWrapper.logVerbose("   Stopped monitoring region with id: " + monitoredRegion.identifier)
             }
         }
@@ -555,148 +568,148 @@ struct Settings {
     }
     
     static func hasNotificationBadge() -> Bool {
-        return UIApplication.sharedApplication().applicationIconBadgeNumber != 0
+        return UIApplication.shared.applicationIconBadgeNumber != 0
     }
     
-    static func setLogFilePath(filePath: String) {
-        NSUserDefaults.standardUserDefaults().setObject(filePath, forKey: LOG_FILE_PATH_KEY)
+    static func setLogFilePath(_ filePath: String) {
+        UserDefaults.standard.set(filePath, forKey: LOG_FILE_PATH_KEY)
     }
     
     static func logFilePath() -> String? {
-        if let filePath = NSUserDefaults.standardUserDefaults().objectForKey(LOG_FILE_PATH_KEY) as? String {
+        if let filePath = UserDefaults.standard.object(forKey: LOG_FILE_PATH_KEY) as? String {
             return filePath
         }
         return nil
     }
     
-    static func setMapUserMode(mode: MapUserMode) {
-        NSUserDefaults.standardUserDefaults().setValue(mode.rawValue, forKey: MAP_USER_MODE_KEY)
+    static func setMapUserMode(_ mode: MapUserMode) {
+        UserDefaults.standard.setValue(mode.rawValue, forKey: MAP_USER_MODE_KEY)
     }
     
     static func getMapUserMode() -> MapUserMode {
-        let rawValue = (NSUserDefaults.standardUserDefaults().valueForKey(MAP_USER_MODE_KEY) as? String) ?? "None"
+        let rawValue = (UserDefaults.standard.value(forKey: MAP_USER_MODE_KEY) as? String) ?? "None"
         return MapUserMode(rawValue: rawValue)!
     }
 
-    static func setLastLocationManagerStatus(status: CLAuthorizationStatus) {
-        NSUserDefaults.standardUserDefaults().setInteger(Int(status.rawValue), forKey: LOCATION_MANAGER_LAST_STATUS_KEY)
+    static func setLastLocationManagerStatus(_ status: CLAuthorizationStatus) {
+        UserDefaults.standard.set(Int(status.rawValue), forKey: LOCATION_MANAGER_LAST_STATUS_KEY)
     }
     
     static func getLastLocationManagerStatus() -> CLAuthorizationStatus {
-        let rawValue = Int32(NSUserDefaults.standardUserDefaults().integerForKey(LOCATION_MANAGER_LAST_STATUS_KEY))
+        let rawValue = Int32(UserDefaults.standard.integer(forKey: LOCATION_MANAGER_LAST_STATUS_KEY))
         return CLAuthorizationStatus(rawValue: rawValue)!
     }
     
-    static func setLastAppVersionString(version: String) {
-        return NSUserDefaults.standardUserDefaults().setValue(version, forKey: LAST_APP_VERSION_KEY)
+    static func setLastAppVersionString(_ version: String) {
+        return UserDefaults.standard.setValue(version, forKey: LAST_APP_VERSION_KEY)
     }
 
     static func getLastAppVersionString() -> String {
-        return NSUserDefaults.standardUserDefaults().stringForKey(LAST_APP_VERSION_KEY) ?? ""
+        return UserDefaults.standard.string(forKey: LAST_APP_VERSION_KEY) ?? ""
     }
 
     static func lotMainRateIsHourly() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(PARKING_LOTS_PRICE_DAILY_KEY)
+        return UserDefaults.standard.bool(forKey: PARKING_LOTS_PRICE_DAILY_KEY)
     }
     
-    static func setLotMainRateIsHourly(isHourly : Bool)  {
+    static func setLotMainRateIsHourly(_ isHourly : Bool)  {
         DDLoggerWrapper.logInfo("Set lot main rate to " + (isHourly ? "hourly" : "daily"))
-        NSUserDefaults.standardUserDefaults().setBool(isHourly, forKey: PARKING_LOTS_PRICE_DAILY_KEY)
+        UserDefaults.standard.set(isHourly, forKey: PARKING_LOTS_PRICE_DAILY_KEY)
     }
 
     static func communautoCustomerID() -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(COMMUNAUTO_CUSTOMER_ID_KEY)
+        return UserDefaults.standard.string(forKey: COMMUNAUTO_CUSTOMER_ID_KEY)
     }
 
-    static func setCommunautoCustomerID(customerID: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(customerID, forKey: COMMUNAUTO_CUSTOMER_ID_KEY)
+    static func setCommunautoCustomerID(_ customerID: String?) {
+        UserDefaults.standard.set(customerID, forKey: COMMUNAUTO_CUSTOMER_ID_KEY)
     }
 
     static func automobileProviderNo() -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(AUTOMOBILE_PROVIDER_NO_KEY)
+        return UserDefaults.standard.string(forKey: AUTOMOBILE_PROVIDER_NO_KEY)
     }
 
-    static func setAutomobileProviderNo(providerNo: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(providerNo, forKey: AUTOMOBILE_PROVIDER_NO_KEY)
+    static func setAutomobileProviderNo(_ providerNo: String?) {
+        UserDefaults.standard.set(providerNo, forKey: AUTOMOBILE_PROVIDER_NO_KEY)
     }
 
     static func car2GoBookingID() -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CAR2GO_BOOKING_ID_KEY)
+        return UserDefaults.standard.string(forKey: CAR2GO_BOOKING_ID_KEY)
     }
 
     static func car2GoAccessToken() -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CAR2GO_ACCESS_TOKEN_KEY)
+        return UserDefaults.standard.string(forKey: CAR2GO_ACCESS_TOKEN_KEY)
     }
     
     static func car2GoAccessTokenSecret() -> String? {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CAR2GO_ACCESS_TOKEN_SECRET_KEY)
+        return UserDefaults.standard.string(forKey: CAR2GO_ACCESS_TOKEN_SECRET_KEY)
     }
     
-    static func setCar2GoBookingID(bookingID: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(bookingID, forKey: CAR2GO_BOOKING_ID_KEY)
+    static func setCar2GoBookingID(_ bookingID: String?) {
+        UserDefaults.standard.set(bookingID, forKey: CAR2GO_BOOKING_ID_KEY)
     }
 
-    static func setCar2GoAccessToken(token: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(token, forKey: CAR2GO_ACCESS_TOKEN_KEY)
+    static func setCar2GoAccessToken(_ token: String?) {
+        UserDefaults.standard.set(token, forKey: CAR2GO_ACCESS_TOKEN_KEY)
     }
 
-    static func setCar2GoAccessTokenSecret(tokenSecret: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(tokenSecret, forKey: CAR2GO_ACCESS_TOKEN_SECRET_KEY)
+    static func setCar2GoAccessTokenSecret(_ tokenSecret: String?) {
+        UserDefaults.standard.set(tokenSecret, forKey: CAR2GO_ACCESS_TOKEN_SECRET_KEY)
     }
 
     static func hideCar2Go() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_CAR2GO_KEY)
+        return UserDefaults.standard.bool(forKey: HIDE_CAR2GO_KEY)
     }
     
-    static func setHideCar2Go(hide : Bool)  {
+    static func setHideCar2Go(_ hide : Bool)  {
         DDLoggerWrapper.logInfo("Car2go is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_CAR2GO_KEY)
+        UserDefaults.standard.set(hide, forKey: HIDE_CAR2GO_KEY)
     }
 
     static func hideAutomobile() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_AUTOMOBILE_KEY)
+        return UserDefaults.standard.bool(forKey: HIDE_AUTOMOBILE_KEY)
     }
     
-    static func setHideAutomobile(hide : Bool)  {
+    static func setHideAutomobile(_ hide : Bool)  {
         DDLoggerWrapper.logInfo("Automobile is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_AUTOMOBILE_KEY)
+        UserDefaults.standard.set(hide, forKey: HIDE_AUTOMOBILE_KEY)
     }
 
     static func hideCommunauto() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_COMMUNAUTO_KEY)
+        return UserDefaults.standard.bool(forKey: HIDE_COMMUNAUTO_KEY)
     }
     
-    static func setHideCommunauto(hide : Bool)  {
+    static func setHideCommunauto(_ hide : Bool)  {
         DDLoggerWrapper.logInfo("Communauto is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_COMMUNAUTO_KEY)
+        UserDefaults.standard.set(hide, forKey: HIDE_COMMUNAUTO_KEY)
     }
 
     static func hideZipcar() -> Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey(HIDE_ZIPCAR_KEY)
+        return UserDefaults.standard.bool(forKey: HIDE_ZIPCAR_KEY)
     }
     
-    static func setHideZipcar(hide : Bool)  {
+    static func setHideZipcar(_ hide : Bool)  {
         DDLoggerWrapper.logInfo("Zipcar is now " + (hide ? "hidden" : "shown"))
-        NSUserDefaults.standardUserDefaults().setBool(hide, forKey: HIDE_ZIPCAR_KEY)
+        UserDefaults.standard.set(hide, forKey: HIDE_ZIPCAR_KEY)
     }
     
-    static func setParkingPandaCredentials(username username: String?, password: String?) {
-        NSUserDefaults.standardUserDefaults().setObject(username, forKey: PARKING_PANDA_USERNAME_KEY)
-        NSUserDefaults.standardUserDefaults().setObject(password, forKey: PARKING_PANDA_PASSWORD_KEY)
+    static func setParkingPandaCredentials(username: String?, password: String?) {
+        UserDefaults.standard.set(username, forKey: PARKING_PANDA_USERNAME_KEY)
+        UserDefaults.standard.set(password, forKey: PARKING_PANDA_PASSWORD_KEY)
     }
     
     static func getParkingPandaCredentials() -> (String?, String?) {
-        let username = NSUserDefaults.standardUserDefaults().objectForKey(PARKING_PANDA_USERNAME_KEY) as? String
-        let password = NSUserDefaults.standardUserDefaults().objectForKey(PARKING_PANDA_PASSWORD_KEY) as? String
+        let username = UserDefaults.standard.object(forKey: PARKING_PANDA_USERNAME_KEY) as? String
+        let password = UserDefaults.standard.object(forKey: PARKING_PANDA_PASSWORD_KEY) as? String
         return (username, password)
     }
 
-    static func setCarDescription(description: [String: String]) {
-        NSUserDefaults.standardUserDefaults().setObject(description, forKey: CAR_DESCRIPTION_KEY)
+    static func setCarDescription(_ description: [String: String]) {
+        UserDefaults.standard.set(description, forKey: CAR_DESCRIPTION_KEY)
     }
 
     static func getCarDescription() -> [String: String] {
-        if let description = NSUserDefaults.standardUserDefaults().objectForKey(CAR_DESCRIPTION_KEY) as? [String: String] {
+        if let description = UserDefaults.standard.object(forKey: CAR_DESCRIPTION_KEY) as? [String: String] {
             return description
         }
         return [String: String]()

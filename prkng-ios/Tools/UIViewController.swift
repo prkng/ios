@@ -10,58 +10,58 @@ import UIKit
 
 extension UIViewController {
     
-    func presentViewControllerFromRight(duration: CFTimeInterval = 0.2, viewController: UIViewController, completion: (() -> Void)?) {
+    func presentViewControllerFromRight(_ duration: CFTimeInterval = 0.2, viewController: UIViewController, completion: (() -> Void)?) {
         
         let transition = CATransition()
         transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromRight
-        self.view.window?.layer.addAnimation(transition, forKey: nil)
-        self.presentViewController(viewController, animated: false) { () -> Void in
+        self.view.window?.layer.add(transition, forKey: nil)
+        self.present(viewController, animated: false) { () -> Void in
             completion?()
         }
 
     }
 
-    func dismissViewControllerFromLeft(duration: CFTimeInterval = 0.2, completion: (() -> Void)?) {
+    func dismissViewControllerFromLeft(_ duration: CFTimeInterval = 0.2, completion: (() -> Void)?) {
         
         let transition = CATransition()
         transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromLeft
-        self.view.window?.layer.addAnimation(transition, forKey: nil)
-        self.dismissViewControllerAnimated(false, completion: completion)
+        self.view.window?.layer.add(transition, forKey: nil)
+        self.dismiss(animated: false, completion: completion)
         
     }
 
-    func presentViewControllerWithFade(duration: CFTimeInterval = 0.4, viewController: UIViewController, completion: (() -> Void)?) {
+    func presentViewControllerWithFade(_ duration: CFTimeInterval = 0.4, viewController: UIViewController, completion: (() -> Void)?) {
         
         let transition = CATransition()
         transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionFade
-        self.view.window?.layer.addAnimation(transition, forKey: nil)
-        self.presentViewController(viewController, animated: false) { () -> Void in
+        self.view.window?.layer.add(transition, forKey: nil)
+        self.present(viewController, animated: false) { () -> Void in
             completion?()
         }
         
     }
     
-    func dismissViewControllerWithFade(duration: CFTimeInterval = 0.4, completion: (() -> Void)?) {
+    func dismissViewControllerWithFade(_ duration: CFTimeInterval = 0.4, completion: (() -> Void)?) {
         
         let transition = CATransition()
         transition.duration = duration
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionFade
-        self.view.window?.layer.addAnimation(transition, forKey: nil)
-        self.dismissViewControllerAnimated(false, completion: completion)
+        self.view.window?.layer.add(transition, forKey: nil)
+        self.dismiss(animated: false, completion: completion)
         
     }
     
-    func presentAsModalWithTransparency(viewController: UIViewController, completion: (() -> Void)?) {
-        viewController.willMoveToParentViewController(self)
+    func presentAsModalWithTransparency(_ viewController: UIViewController, completion: (() -> Void)?) {
+        viewController.willMove(toParentViewController: self)
         self.addChildViewController(viewController)
         self.view.addSubview(viewController.view)
         viewController.view.snp_remakeConstraints(closure: { (make) -> () in
@@ -73,31 +73,31 @@ extension UIViewController {
         transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.type = kCATransitionPush
         transition.subtype = kCATransitionFromTop
-        transition.removedOnCompletion = true
-        viewController.view.layer.addAnimation(transition, forKey: nil)
+        transition.isRemovedOnCompletion = true
+        viewController.view.layer.add(transition, forKey: nil)
 
         completion?()
     }
     
-    func dismissAsModalWithTransparency(completion: (() -> Void)?) {
+    func dismissAsModalWithTransparency(_ completion: (() -> Void)?) {
         
         self.view.layer.removeAllAnimations()
-        let height = UIScreen.mainScreen().bounds.height
-        UIView.animateWithDuration(0.4, animations: { () -> Void in
+        let height = UIScreen.main.bounds.height
+        UIView.animate(withDuration: 0.4, animations: { () -> Void in
             self.view.snp_remakeConstraints(closure: { (make) -> () in
-                make.top.equalTo(self.parentViewController!.view.snp_bottom)
+                make.top.equalTo(self.parent!.view.snp_bottom)
                 make.height.equalTo(height)
-                make.left.equalTo(self.parentViewController!.view)
-                make.right.equalTo(self.parentViewController!.view)
+                make.left.equalTo(self.parent!.view)
+                make.right.equalTo(self.parent!.view)
             })
             self.view.layoutIfNeeded()
-            }) { (completed) -> Void in
+            }, completion: { (completed) -> Void in
                 self.removeFromParentViewController()
                 self.view.removeFromSuperview()
-                self.willMoveToParentViewController(nil)
+                self.willMove(toParentViewController: nil)
                 completion?()
 
-        }
+        }) 
         
     }
 

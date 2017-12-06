@@ -16,30 +16,30 @@ class PRKTopTabBar: UIControl {
     let indicatorBottomColor = Styles.Colors.red2
     let font = Styles.FontFaces.regular(16)
     
-    private(set) var titles = [String]()
+    fileprivate(set) var titles = [String]()
     
-    private var backgroundView = UIView()
-    private var labels = [UILabel]()
-    private var indicatorView = PRKTopTabIndicatorView()
+    fileprivate var backgroundView = UIView()
+    fileprivate var labels = [UILabel]()
+    fileprivate var indicatorView = PRKTopTabIndicatorView()
 
     var selectedIndex: Int {
         return Int(self.value)
     }
 
     var indicatorWidth: CGFloat {
-        return UIScreen.mainScreen().bounds.width/CGFloat(self.titles.count)
+        return UIScreen.main.bounds.width/CGFloat(self.titles.count)
     }
     
-    private var minimumValue: Double
-    private var maximumValue: Double
-    private var value: Double {
+    fileprivate var minimumValue: Double
+    fileprivate var maximumValue: Double
+    fileprivate var value: Double {
         didSet {
             //do this to update the frame after an animation, also good for
             updateindicator()
         }
     }
-    private var previousLocation = CGPoint()
-    private var animationInProgress: Bool = false
+    fileprivate var previousLocation = CGPoint()
+    fileprivate var animationInProgress: Bool = false
 
     init(titles: [String]) {
         
@@ -47,12 +47,12 @@ class PRKTopTabBar: UIControl {
         minimumValue = 0
         maximumValue = Double(titles.count - 1)
         
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         
         value = floor(maximumValue/2)
 
-        backgroundView.backgroundColor = Styles.Colors.cream1.colorWithAlphaComponent(0.5)
-        backgroundView.userInteractionEnabled = false
+        backgroundView.backgroundColor = Styles.Colors.cream1.withAlphaComponent(0.5)
+        backgroundView.isUserInteractionEnabled = false
         self.addSubview(backgroundView)
 
         self.titles = titles
@@ -65,18 +65,18 @@ class PRKTopTabBar: UIControl {
             
             let label = UILabel(frame: labelRect)
             label.attributedText = attributedTitle
-            label.textAlignment = NSTextAlignment.Center
+            label.textAlignment = NSTextAlignment.center
             
-            label.userInteractionEnabled = false
+            label.isUserInteractionEnabled = false
             self.addSubview(label)
             labels.append(label)
         }
 
         indicatorView.prkModeSlider = self
-        indicatorView.userInteractionEnabled = false
+        indicatorView.isUserInteractionEnabled = false
         self.addSubview(indicatorView)
         
-        let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(PRKTopTabBar.sliderSelectionTapped(_:)))
         self.addGestureRecognizer(tapRec)
         
         setValue(value, animated: true)
@@ -113,7 +113,7 @@ class PRKTopTabBar: UIControl {
         setValue(self.value, animated: false)
     }
     
-    func setValue(newValue: Double, animated: Bool) {
+    func setValue(_ newValue: Double, animated: Bool) {
 
         if self.animationInProgress {
             return
@@ -121,7 +121,7 @@ class PRKTopTabBar: UIControl {
 
         self.animationInProgress = true
         let animationDuration = animated ? 0.4 : 0
-        UIView.animateWithDuration(animationDuration, delay: 0.0, usingSpringWithDamping: 7, initialSpringVelocity: 15, options: [], animations: { () -> Void in
+        UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: 7, initialSpringVelocity: 15, options: [], animations: { () -> Void in
             let indicatorLeft = CGFloat(newValue) * self.indicatorWidth
             self.indicatorView.frame = CGRect(x: indicatorLeft, y: 0, width: self.indicatorWidth, height: self.bounds.height)
             self.indicatorView.setNeedsLayout()
@@ -130,7 +130,7 @@ class PRKTopTabBar: UIControl {
                 let valueChanged = self.selectedIndex != Int(newValue)
                 self.value = newValue
                 if valueChanged {
-                    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                    self.sendActions(for: UIControlEvents.valueChanged)
                 }
                 self.animationInProgress = false
         }
@@ -144,9 +144,9 @@ class PRKTopTabBar: UIControl {
     }
     
     //MARK: UIGestureRecognizer function
-    func sliderSelectionTapped(tapRec: UITapGestureRecognizer) {
-        if tapRec.state == UIGestureRecognizerState.Ended {
-            let tap = tapRec.locationInView(self)
+    func sliderSelectionTapped(_ tapRec: UITapGestureRecognizer) {
+        if tapRec.state == UIGestureRecognizerState.ended {
+            let tap = tapRec.location(in: self)
             let newValue = (tap.x / self.bounds.width) * CGFloat(self.titles.count)
             setValue(Double(Int(newValue)), animated: true)
         }
@@ -156,7 +156,7 @@ class PRKTopTabBar: UIControl {
 
 class PRKTopTabIndicatorView: UIView {
     
-    private weak var prkModeSlider : PRKTopTabBar? {
+    fileprivate weak var prkModeSlider : PRKTopTabBar? {
         didSet {
             
             if let slider = prkModeSlider {
@@ -169,7 +169,7 @@ class PRKTopTabIndicatorView: UIView {
                     
                     let label = UILabel(frame: labelRect)
                     label.attributedText = attributedTitle
-                    label.textAlignment = NSTextAlignment.Center
+                    label.textAlignment = NSTextAlignment.center
                     self.addSubview(label)
                 }
                 

@@ -10,19 +10,19 @@ import UIKit
 
 class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConnectionDelegate, NSURLConnectionDataDelegate {
     
-    private let backgroundImageView = UIImageView(image: UIImage(named: "bg_login"))
-    private var statusBar = UIView()
-    private let webView = UIWebView()
+    fileprivate let backgroundImageView = UIImageView(image: UIImage(named: "bg_login"))
+    fileprivate var statusBar = UIView()
+    fileprivate let webView = UIWebView()
     
-    private var englishUrl: String
-    private var frenchUrl: String
+    fileprivate var englishUrl: String
+    fileprivate var frenchUrl: String
     
     var didFinishLoadingCallback: ((PRKWebViewController, UIWebView) -> ())?
-    var willLoadRequestCallback: ((PRKWebViewController, NSURLRequest) -> ())?
+    var willLoadRequestCallback: ((PRKWebViewController, URLRequest) -> ())?
     
-    private let backButton = ViewFactory.rectangularBackButton()
-    private let backLabel = UILabel()
-    private let backArrow = UIImageView()
+    fileprivate let backButton = ViewFactory.rectangularBackButton()
+    fileprivate let backLabel = UILabel()
+    fileprivate let backArrow = UIImageView()
 
     init(url: String) {
         self.englishUrl = url
@@ -46,41 +46,41 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
         setupConstraints()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let pre: AnyObject = NSLocale.preferredLanguages()[0]
+        let pre: AnyObject = Locale.preferredLanguages[0] as AnyObject
         let str = "\(pre)"
-        let lang = str.substringToIndex(str.startIndex.advancedBy(2))
+        let lang = str.substring(to: str.characters.index(str.startIndex, offsetBy: 2))
         
-        var url : NSURL
+        var url : URL
         if lang == "fr" {
-            url = NSURL(string : frenchUrl)!
+            url = URL(string : frenchUrl)!
         } else {
-            url = NSURL(string : englishUrl)!
+            url = URL(string : englishUrl)!
         }
         SVProgressHUD.show()
-        webView.loadRequest(NSURLRequest(URL: url))
+        webView.loadRequest(URLRequest(url: url))
         
     }
     
     func setupViews() {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
         
         statusBar.backgroundColor = Styles.Colors.midnight2
         view.addSubview(statusBar)
         
         webView.delegate = self
-        webView.backgroundColor = UIColor.clearColor()
+        webView.backgroundColor = UIColor.clear
         view.addSubview(webView)
         
-        backButton.addTarget(self, action: "backButtonTapped", forControlEvents: .TouchUpInside)
+        backButton.addTarget(self, action: #selector(PRKWebViewController.backButtonTapped), for: .touchUpInside)
         backButton.layer.masksToBounds = false
-        backButton.layer.shadowOffset = CGSizeMake(0, -1.0)
+        backButton.layer.shadowOffset = CGSize(width: 0, height: -1.0)
         backButton.layer.shadowRadius = 5
-        backButton.layer.shadowColor = UIColor.blackColor().CGColor
+        backButton.layer.shadowColor = UIColor.black.cgColor
         backButton.layer.shadowOpacity = 0.1
         view.addSubview(backButton)
         
@@ -138,9 +138,9 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     
     func backButtonTapped() {
         if let navVC = self.navigationController {
-            navVC.popViewControllerAnimated(true)
+            navVC.popViewController(animated: true)
         } else {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -148,12 +148,12 @@ class PRKWebViewController: AbstractViewController, UIWebViewDelegate, NSURLConn
     // MARK: UIWebViewDelegate
     
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         SVProgressHUD.dismiss()
         didFinishLoadingCallback?(self, webView)
     }
     
-    func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
         willLoadRequestCallback?(self, request)
         return true
     }

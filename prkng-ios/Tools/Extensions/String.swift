@@ -8,11 +8,11 @@
 
 extension String {
     var localizedString: String {
-        return NSLocalizedString(self, tableName: nil, bundle: NSBundle.mainBundle(), value: "", comment: "")
+        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
     }
     
     subscript (i: Int) -> Character {
-        return self[self.startIndex.advancedBy(i)]
+        return self[self.characters.index(self.startIndex, offsetBy: i)]
     }
     
     subscript (i: Int) -> String {
@@ -20,20 +20,20 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
+        return substring(with: (characters.index(startIndex, offsetBy: r.lowerBound) ..< characters.index(startIndex, offsetBy: r.upperBound)))
     }
     
     var abbreviatedString: String {
         
         var newString = self
         
-        let path = NSBundle.mainBundle().pathForResource("Abbreviations", ofType: "strings")
+        let path = Bundle.main.path(forResource: "Abbreviations", ofType: "strings")
         let dictionary = NSDictionary(contentsOfFile: path!) as! Dictionary<String, String>
         
         for pair in dictionary {
             let target = pair.0
             let abbreviation = pair.1
-            newString = newString.stringByReplacingOccurrencesOfString(target, withString: abbreviation, options: NSStringCompareOptions.CaseInsensitiveSearch, range: nil)
+            newString = newString.replacingOccurrences(of: target, with: abbreviation, options: NSString.CompareOptions.caseInsensitive, range: nil)
         }
         
         return newString
@@ -47,24 +47,24 @@ extension String {
         var firstString = ""
         var secondString = self.abbreviatedString
         
-        let path = NSBundle.mainBundle().pathForResource("AddressSplitting", ofType: "strings")
+        let path = Bundle.main.path(forResource: "AddressSplitting", ofType: "strings")
         let dictionary = NSDictionary(contentsOfFile: path!) as! Dictionary<String, String>
         
         for pair in dictionary {
             let delimittingString = pair.0
 //            let replaceMentStringForDelimitter = pair.1
-            if let leftRange = myself.rangeOfString(delimittingString, options: NSStringCompareOptions.CaseInsensitiveSearch) {
+            if let leftRange = myself.range(of: delimittingString, options: NSString.CompareOptions.caseInsensitive) {
                 let stringCount = delimittingString.characters.count
                 if stringCount > longestMatchedString {
                     longestMatchedString = stringCount
-                    firstString = myself.substringWithRange(Range(start: myself.startIndex, end: leftRange.endIndex))
-                    secondString = myself.substringWithRange(Range(start: leftRange.endIndex, end: myself.endIndex))
+                    firstString = myself.substring(with: (myself.startIndex ..< leftRange.upperBound))
+                    secondString = myself.substring(with: (leftRange.upperBound ..< myself.endIndex))
                 }
             }
             
         }
         
-        firstString = firstString.uppercaseString
+        firstString = firstString.uppercased()
         
         if secondString.length() <= 6 {
             return ("", myself)
@@ -78,15 +78,15 @@ extension String {
         let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
         
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluateWithObject(self)
+        return emailTest.evaluate(with: self)
     }
     
-    internal func indexOf(sub: String) -> Int? {
+    internal func indexOf(_ sub: String) -> Int? {
         var pos: Int?
         
-        if let range = self.rangeOfString(sub) {
+        if let range = self.range(of: sub) {
             if !range.isEmpty {
-                pos = self.startIndex.distanceTo(range.startIndex)
+                pos = self.characters.distance(from: self.startIndex, to: range.lowerBound)
             }
         }
         
@@ -102,33 +102,33 @@ extension String {
     //        }
     //    }
     
-    func urlEncodedStringWithEncoding(encoding: NSStringEncoding) -> String {
-        let charactersToBeEscaped = ":/?&=;+!@#$()',*" as CFStringRef
-        let charactersToLeaveUnescaped = "[]." as CFStringRef
+    func urlEncodedStringWithEncoding(_ encoding: String.Encoding) -> String {
+        let charactersToBeEscaped = ":/?&=;+!@#$()',*" as CFString
+        let charactersToLeaveUnescaped = "[]." as CFString
         
-        let raw: NSString = self
+        let raw: NSString = self as NSString
         
-        let result = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, raw, charactersToLeaveUnescaped, charactersToBeEscaped, CFStringConvertNSStringEncodingToEncoding(encoding))
+        let result = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, raw, charactersToLeaveUnescaped, charactersToBeEscaped, CFStringConvertNSStringEncodingToEncoding(encoding.rawValue))
         
-        return result as String
+        return result as! String
     }
     
     func parametersFromQueryString() -> Dictionary<String, String> {
         var parameters = Dictionary<String, String>()
         
-        let scanner = NSScanner(string: self)
+        let scanner = Scanner(string: self)
         
         var key: NSString?
         var value: NSString?
         
-        while !scanner.atEnd {
+        while !scanner.isAtEnd {
             key = nil
-            scanner.scanUpToString("=", intoString: &key)
-            scanner.scanString("=", intoString: nil)
+            scanner.scanUpTo("=", into: &key)
+            scanner.scanString("=", into: nil)
             
             value = nil
-            scanner.scanUpToString("&", intoString: &value)
-            scanner.scanString("&", intoString: nil)
+            scanner.scanUpTo("&", into: &value)
+            scanner.scanString("&", into: nil)
             
             if (key != nil && value != nil) {
                 parameters.updateValue(value! as String, forKey: key! as String)
@@ -143,7 +143,7 @@ extension String {
     }
     
     //分割字符
-    func split(s:String) -> [String]{
+    func split(_ s:String) -> [String]{
         if s.isEmpty{
             var x=[String]()
             for y in self.characters{
@@ -151,22 +151,22 @@ extension String {
             }
             return x
         }
-        return self.componentsSeparatedByString(s)
+        return self.components(separatedBy: s)
     }
     //去掉左右空格
     func trim() -> String{
-        return self.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        return self.trimmingCharacters(in: CharacterSet.whitespaces)
     }
     //是否包含字符串
-    func has(s:String) -> Bool{
-        if (self.rangeOfString(s) != nil) {
+    func has(_ s:String) -> Bool{
+        if (self.range(of: s) != nil) {
             return true
         }else{
             return false
         }
     }
     //是否包含前缀
-    func hasBegin(s:String) -> Bool{
+    func hasBegin(_ s:String) -> Bool{
         if self.hasPrefix(s) {
             return true
         }else{
@@ -174,7 +174,7 @@ extension String {
         }
     }
     //是否包含后缀
-    func hasEnd(s:String) -> Bool{
+    func hasEnd(_ s:String) -> Bool{
         if self.hasSuffix(s) {
             return true
         }else{
@@ -190,7 +190,7 @@ extension String {
         return self.utf16.count
     }
     //重复字符串
-    func `repeat`(times: Int) -> String{
+    func `repeat`(_ times: Int) -> String{
         var result = ""
         for _ in 0..<times {
             result += self
@@ -199,7 +199,7 @@ extension String {
     }
     //反转
     func reverse() -> String{
-        let s=Array(self.split("").reverse())
+        let s=Array(self.split("").reversed())
         var x=""
         for y in s{
             x+=y

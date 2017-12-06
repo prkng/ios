@@ -10,54 +10,54 @@ import UIKit
 
 class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
-    private var transaction: ParkingPandaTransaction //customized based on the presence of the lot
-    private var lot: Lot?
-    private var popupVC: PRKPopupViewController?
+    fileprivate var transaction: ParkingPandaTransaction //customized based on the presence of the lot
+    fileprivate var lot: Lot?
+    fileprivate var popupVC: PRKPopupViewController?
 
-    private var scrollView = UIScrollView()
-    private var contentView = UIView()
+    fileprivate var scrollView = UIScrollView()
+    fileprivate var contentView = UIView()
     
-    private var topImageView = GMSPanoramaView(frame: CGRectZero)
-    private var topGradient = UIImageView()
-    private var directionsButton = ViewFactory.directionsButton()
-    private var topLabel = UILabel()
+    fileprivate var topImageView = GMSPanoramaView(frame: CGRect.zero)
+    fileprivate var topGradient = UIImageView()
+    fileprivate var directionsButton = ViewFactory.directionsButton()
+    fileprivate var topLabel = UILabel()
     
-    private var headerView: ModalHeaderView
+    fileprivate var headerView: ModalHeaderView
     
-    private var fromTimeView = UIView()
-    private var fromTimeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
-    private var fromTimeViewLabel = UILabel()
-    private var separator1 = UIView()
-    private var toTimeView = UIView()
-    private var toTimeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
-    private var toTimeViewLabel = UILabel()
+    fileprivate var fromTimeView = UIView()
+    fileprivate var fromTimeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
+    fileprivate var fromTimeViewLabel = UILabel()
+    fileprivate var separator1 = UIView()
+    fileprivate var toTimeView = UIView()
+    fileprivate var toTimeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
+    fileprivate var toTimeViewLabel = UILabel()
     
-    private var separator2 = UIView()
-    private var barcodeImageView = UIImageView()
+    fileprivate var separator2 = UIView()
+    fileprivate var barcodeImageView = UIImageView()
     
-    private var payContainerView = UIView()
-    private var creditCardImageView = ViewFactory.genericImageViewWithImageName("icon_credit_card", andColor: Styles.Colors.red2)
-    private var payTitleLabel = UILabel()
-    private var paySubtitleLabel = UILabel()
-    private var priceLabel = UILabel()
-    private var separator3 = UIView()
+    fileprivate var payContainerView = UIView()
+    fileprivate var creditCardImageView = ViewFactory.genericImageViewWithImageName("icon_credit_card", andColor: Styles.Colors.red2)
+    fileprivate var payTitleLabel = UILabel()
+    fileprivate var paySubtitleLabel = UILabel()
+    fileprivate var priceLabel = UILabel()
+    fileprivate var separator3 = UIView()
 
-    private var separator4 = UIView()
-    private var attributesView = UIView()
-    private var attributesViewContainers = [UIView]()
-    private var attributesViewLabels = [UILabel]()
-    private var attributesViewImages = [UIImageView]()
+    fileprivate var separator4 = UIView()
+    fileprivate var attributesView = UIView()
+    fileprivate var attributesViewContainers = [UIView]()
+    fileprivate var attributesViewLabels = [UILabel]()
+    fileprivate var attributesViewImages = [UIImageView]()
     
     //TODO: Localize
-    private var addToWalletButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: "add_to_wallet".localizedString.uppercaseString)
+    fileprivate var addToWalletButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: "add_to_wallet".localizedString.uppercased())
     
-    private let streetViewHeight: CGFloat = 222
-    private let headerHeight: CGFloat = 70
-    private(set) var gradientHeight: CGFloat = 65
-    private let timeViewHeight: CGFloat = 60
-    private let attributesViewHeight: CGFloat = 52
-    private let payContainerViewHeight: CGFloat = 60
-    private let paddingHeight: CGFloat = 5
+    fileprivate let streetViewHeight: CGFloat = 222
+    fileprivate let headerHeight: CGFloat = 70
+    fileprivate(set) var gradientHeight: CGFloat = 65
+    fileprivate let timeViewHeight: CGFloat = 60
+    fileprivate let attributesViewHeight: CGFloat = 52
+    fileprivate let payContainerViewHeight: CGFloat = 60
+    fileprivate let paddingHeight: CGFloat = 5
     
     init(transaction: ParkingPandaTransaction, lot: Lot?) {
 
@@ -76,9 +76,9 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         fatalError("init(coder:) has not been implemented")
     }
     
-    func presentWithVC(vc: UIViewController?, showingSuccessPopup: Bool) {
+    func presentWithVC(_ vc: UIViewController?, showingSuccessPopup: Bool) {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let rootVC = vc ?? appDelegate.window?.rootViewController {
             if let navVC = rootVC.navigationController {
                 navVC.pushViewController(self, animated: true)
@@ -86,7 +86,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
                     self.showPopupForReportSuccess()
                 }
             } else {
-                rootVC.presentViewController(self, animated: true, completion: { () -> Void in
+                rootVC.present(self, animated: true, completion: { () -> Void in
                     if showingSuccessPopup {
                         self.showPopupForReportSuccess()
                     }
@@ -96,13 +96,13 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupSubviews()
         setupConstraints()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         recalculateScrollView(centerBarcodeImageView: false)
     }
@@ -133,25 +133,25 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         headerView.delegate = self
         headerView.clipsToBounds = true
         
-        directionsButton.addTarget(self, action: "directionsButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        directionsButton.addTarget(self, action: #selector(PPTransactionViewController.directionsButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         scrollView.addSubview(directionsButton)
         
         fromTimeView.backgroundColor = Styles.Colors.cream1
         scrollView.addSubview(fromTimeView)
         
-        fromTimeIconView.image = fromTimeIconView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        fromTimeIconView.image = fromTimeIconView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         fromTimeIconView.tintColor = Styles.Colors.midnight1
         fromTimeView.addSubview(fromTimeIconView)
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMM d, yyyy 'at' HH:mm"
         
         let timeViewLabelTopAttrs = [NSFontAttributeName: Styles.FontFaces.bold(12)]
         let timeViewLabelBottomAttrs = [NSFontAttributeName: Styles.FontFaces.regular(14)]
 
-        let fromTimeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
-        let fromTimeViewLabelBottomText = NSAttributedString(string: dateFormatter.stringFromDate(transaction.startDateAndTime ?? NSDate()), attributes: timeViewLabelBottomAttrs)
-        fromTimeViewLabelTopText.appendAttributedString(fromTimeViewLabelBottomText)
+        let fromTimeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercased() + "\n", attributes: timeViewLabelTopAttrs)
+        let fromTimeViewLabelBottomText = NSAttributedString(string: dateFormatter.string(from: transaction.startDateAndTime ?? Date()), attributes: timeViewLabelBottomAttrs)
+        fromTimeViewLabelTopText.append(fromTimeViewLabelBottomText)
         
         fromTimeViewLabel.attributedText = fromTimeViewLabelTopText
         fromTimeViewLabel.textColor = Styles.Colors.midnight1
@@ -164,13 +164,13 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         toTimeView.backgroundColor = Styles.Colors.cream1
         scrollView.addSubview(toTimeView)
         
-        toTimeIconView.image = toTimeIconView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        toTimeIconView.image = toTimeIconView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         toTimeIconView.tintColor = Styles.Colors.midnight1
         toTimeView.addSubview(toTimeIconView)
         
-        let toTimeViewLabelTopText = NSMutableAttributedString(string: "to".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
-        let toTimeViewLabelBottomText = NSAttributedString(string: dateFormatter.stringFromDate(transaction.endDateAndTime ?? NSDate()), attributes: timeViewLabelBottomAttrs)
-        toTimeViewLabelTopText.appendAttributedString(toTimeViewLabelBottomText)
+        let toTimeViewLabelTopText = NSMutableAttributedString(string: "to".localizedString.uppercased() + "\n", attributes: timeViewLabelTopAttrs)
+        let toTimeViewLabelBottomText = NSAttributedString(string: dateFormatter.string(from: transaction.endDateAndTime ?? Date()), attributes: timeViewLabelBottomAttrs)
+        toTimeViewLabelTopText.append(toTimeViewLabelBottomText)
         
         toTimeViewLabel.attributedText = toTimeViewLabelTopText
         toTimeViewLabel.textColor = Styles.Colors.midnight1
@@ -180,23 +180,23 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         separator2.backgroundColor = Styles.Colors.transparentBlack
         scrollView.addSubview(separator2)
         
-        if let barcodeUrl = NSURL(string: transaction.barcodeUrlString) {
-            barcodeImageView.sd_setImageWithURL(barcodeUrl, completed: { (image, error, cacheType, url) -> Void in
-                self.barcodeImageView.image = image.imageTintedWithColor(Styles.Colors.cream1, blendMode: CGBlendMode.Multiply)
-                let currentDate = NSDate()
-                if self.transaction.endDateAndTime?.earlierDate(currentDate) == self.transaction.endDateAndTime {
+        if let barcodeUrl = URL(string: transaction.barcodeUrlString) {
+            barcodeImageView.sd_setImage(with: barcodeUrl, completed: { (image, error, cacheType, url) -> Void in
+                self.barcodeImageView.image = image?.imageTintedWithColor(Styles.Colors.cream1, blendMode: CGBlendMode.multiply)
+                let currentDate = Date()
+                if (self.transaction.endDateAndTime as NSDate?)?.earlierDate(currentDate) == self.transaction.endDateAndTime {
                     self.barcodeImageView.alpha = 0.2
                 }
             })
         }
-        barcodeImageView.contentMode = .ScaleAspectFit
-        barcodeImageView.userInteractionEnabled = true
-        let tapRec = UITapGestureRecognizer(target: self, action: Selector("didTapBarcodeImage"))
+        barcodeImageView.contentMode = .scaleAspectFit
+        barcodeImageView.isUserInteractionEnabled = true
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(PPTransactionViewController.didTapBarcodeImage))
         tapRec.delegate = self
         barcodeImageView.addGestureRecognizer(tapRec)
         scrollView.addSubview(barcodeImageView)
         
-        contentView.bringSubviewToFront(directionsButton)
+        contentView.bringSubview(toFront: directionsButton)
         
         separator3.backgroundColor = Styles.Colors.transparentBlack
         scrollView.addSubview(separator3)
@@ -227,7 +227,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         priceLabel.textColor = Styles.Colors.midnight1
         priceLabel.font = Styles.FontFaces.bold(14)
         priceLabel.numberOfLines = 1
-        priceLabel.textAlignment = .Right
+        priceLabel.textAlignment = .right
         payContainerView.addSubview(priceLabel)
         
         separator4.backgroundColor = Styles.Colors.transparentBlack
@@ -405,7 +405,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             if lot!.streetViewPanoramaId == nil {
                 topImageView.moveNearCoordinate(lot!.coordinate)
             } else {
-                topImageView.moveToPanoramaID(lot!.streetViewPanoramaId!)
+                topImageView.move(toPanoramaID: lot!.streetViewPanoramaId!)
             }
             if let heading = lot!.streetViewHeading {
                 let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
@@ -414,8 +414,8 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             let cameraUpdate = GMSPanoramaCameraUpdate.setZoom(3)
             topImageView.updateCamera(cameraUpdate, animationDuration: 0.2)
             
-            let screenWidth = UIScreen.mainScreen().bounds.width
-            topGradient.image = UIImage.imageFromGradient(CGSize(width: screenWidth, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
+            let screenWidth = UIScreen.main.bounds.width
+            topGradient.image = UIImage.imageFromGradient(CGSize(width: screenWidth, height: 65.0), fromColor: UIColor.clear, toColor: UIColor.black.withAlphaComponent(0.9))
             
 //            if lot!.lotOperator != nil {
 //                let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
@@ -436,7 +436,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
                 let attributesViewContainer = UIView()
                 attributesViewContainers.append(attributesViewContainer)
                 
-                let caption = attribute.name(false).localizedString.uppercaseString
+                let caption = attribute.name(false).localizedString.uppercased()
                 let imageName = "icon_attribute_" + attribute.name(true) + (attribute.enabled ? "_on" : "_off" )
                 
                 let attributeLabel = UILabel()
@@ -446,7 +446,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
                 attributesViewLabels.append(attributeLabel)
                 
                 let attributeImageView = UIImageView(image: UIImage(named: imageName)!)
-                attributeImageView.contentMode = .Center
+                attributeImageView.contentMode = .center
                 attributesViewImages.append(attributeImageView)
                 
                 attributesViewContainer.addSubview(attributeLabel)
@@ -465,7 +465,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             
             for i in 0..<attributesViewContainers.count {
                 
-                let width = Int(UIScreen.mainScreen().bounds.width)/attributesViewContainers.count
+                let width = Int(UIScreen.main.bounds.width)/attributesViewContainers.count
                 
                 let attributesViewContainer = attributesViewContainers[i]
                 attributesViewContainer.snp_makeConstraints(closure: { (make) -> () in
@@ -497,7 +497,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     //MARK: UIScrollViewDelegate
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let xOffset = 0 - scrollView.contentOffset.y
         if xOffset < 0 {
             topImageView.snp_remakeConstraints { (make) -> () in
@@ -521,7 +521,7 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     //MARK: PPHeaderViewDelegate functions
     
     func tappedBackButton() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func tappedRightButton() {
@@ -530,9 +530,9 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
     
     //MARK: Helper methods
     
-    func recalculateScrollView(centerBarcodeImageView centerBarcodeImageView: Bool) {
+    func recalculateScrollView(centerBarcodeImageView: Bool) {
         let height = topImageView.frame.size.height + headerHeight + (2*timeViewHeight) + barcodeImageView.frame.size.height + payContainerViewHeight + attributesViewHeight + paddingHeight
-        scrollView.contentSize = CGSize(width: UIScreen.mainScreen().bounds.width, height: height)
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: height)
         if centerBarcodeImageView {
             scrollView.scrollRectToVisible(barcodeImageView.frame, animated: true)
         }
@@ -550,20 +550,20 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
             }
         }
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.view.layoutIfNeeded()
             self.view.updateConstraints()
-            }) { (finished) -> Void in
+            }, completion: { (finished) -> Void in
                 self.recalculateScrollView(centerBarcodeImageView: true)
-        }
+        }) 
 
     }
     
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
-    func directionsButtonTapped(sender: UIButton) {
+    func directionsButtonTapped(_ sender: UIButton) {
         if lot?.coordinate != nil {
             DirectionsAction.perform(onViewController: self, withCoordinate: lot!.coordinate, shouldCallback: false)
         }
@@ -575,18 +575,18 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
         self.addChildViewController(popupVC!)
         self.view.addSubview(popupVC!.view)
-        popupVC!.didMoveToParentViewController(self)
+        popupVC!.didMove(toParentViewController: self)
         
         popupVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
         })
         
-        let tap = UITapGestureRecognizer(target: self, action: "dismissPopup")
+        let tap = UITapGestureRecognizer(target: self, action: #selector(PPTransactionViewController.dismissPopup))
         popupVC!.view.addGestureRecognizer(tap)
         
         popupVC!.view.alpha = 0.0
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.popupVC!.view.alpha = 1.0
         })
         
@@ -596,12 +596,12 @@ class PPTransactionViewController: UIViewController, ModalHeaderViewDelegate, UI
         
         if let popup = self.popupVC {
             
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 popup.view.alpha = 0.0
                 }, completion: { (finished) -> Void in
                     popup.removeFromParentViewController()
                     popup.view.removeFromSuperview()
-                    popup.didMoveToParentViewController(nil)
+                    popup.didMove(toParentViewController: nil)
                     self.popupVC = nil
             })
             

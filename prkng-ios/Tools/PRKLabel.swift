@@ -10,6 +10,6 @@ import UIKit
 
 class PRKLabel: UILabel {
     
-    var valueTag: NSTimeInterval?
+    var valueTag: TimeInterval?
     var scheduleTimeModel : ScheduleTimeModel?
 }

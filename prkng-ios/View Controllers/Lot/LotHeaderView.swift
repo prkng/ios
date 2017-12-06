@@ -10,11 +10,11 @@ import UIKit
 
 class LotHeaderView: UIView, UIGestureRecognizerDelegate {
         
-    private var topContainer: UIView
+    fileprivate var topContainer: UIView
     var titleLabel: MarqueeLabel
-    private var leftImageView: UIImageView
-    private var rightView: UIView
-    private var materialDesignButton: UIButton
+    fileprivate var leftImageView: UIImageView
+    fileprivate var rightView: UIView
+    fileprivate var materialDesignButton: UIButton
     
     var delegate: ModalHeaderViewDelegate?
     
@@ -22,7 +22,7 @@ class LotHeaderView: UIView, UIGestureRecognizerDelegate {
     var didSetupConstraints: Bool
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -62,20 +62,20 @@ class LotHeaderView: UIView, UIGestureRecognizerDelegate {
         titleLabel.animationDelay = 2
         titleLabel.font = Styles.Fonts.h3r
         titleLabel.textColor = Styles.Colors.cream1
-        titleLabel.textAlignment = NSTextAlignment.Left
+        titleLabel.textAlignment = NSTextAlignment.left
         topContainer.addSubview(titleLabel)
         
         leftImageView.image = UIImage(named: "btn_back_outline")
-        leftImageView.contentMode = UIViewContentMode.Center
+        leftImageView.contentMode = UIViewContentMode.center
         topContainer.addSubview(leftImageView)
         
-        rightView.contentMode = UIViewContentMode.Center
+        rightView.contentMode = UIViewContentMode.center
         topContainer.addSubview(rightView)
         
         topContainer.addSubview(materialDesignButton)
-        topContainer.sendSubviewToBack(materialDesignButton)
+        topContainer.sendSubview(toBack: materialDesignButton)
         
-        let tapRec = UITapGestureRecognizer(target: self, action: "handleTap:")
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(LotHeaderView.handleTap(_:)))
         tapRec.delegate = self
         materialDesignButton.addGestureRecognizer(tapRec)
         
@@ -98,13 +98,13 @@ class LotHeaderView: UIView, UIGestureRecognizerDelegate {
         }
         
         leftImageView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(20, 20)) //real size is CGSizeMake(11, 9)
+            make.size.equalTo(CGSize(width: 20, height: 20)) //real size is CGSizeMake(11, 9)
             make.left.equalTo(self.topContainer).offset(10)
             make.bottom.equalTo(self.topContainer).offset(-22)
         }
         
         rightView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(17, 15))
+            make.size.equalTo(CGSize(width: 17, height: 15))
             make.right.equalTo(self.topContainer).offset(-33)
             make.bottom.equalTo(self.topContainer).offset(-25)
         }
@@ -116,7 +116,7 @@ class LotHeaderView: UIView, UIGestureRecognizerDelegate {
         didSetupConstraints = true
     }
     
-    func handleTap(tapRec: UITapGestureRecognizer) {
+    func handleTap(_ tapRec: UITapGestureRecognizer) {
 //        let tap = tapRec.locationInView(self)
 //        let point = rightView.convertPoint(rightView.bounds.origin, toView: self)
 //        let distance = tap.distanceToPoint(point)

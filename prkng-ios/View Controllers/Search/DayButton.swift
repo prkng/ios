@@ -57,8 +57,8 @@ class DayButton: UIControl {
         
         titleLabel.text = title
         titleLabel.font = Styles.Fonts.h1
-        titleLabel.textAlignment = NSTextAlignment.Center
-        selected = false
+        titleLabel.textAlignment = NSTextAlignment.center
+        isSelected = false
         addSubview(titleLabel)
         
         didSetupSubviews = true
@@ -75,11 +75,11 @@ class DayButton: UIControl {
     
     
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         
         didSet {
             
-            if(selected) {
+            if(isSelected) {
                 titleLabel.textColor = Styles.Colors.cream1
                 backgroundColor = Styles.Colors.red2
             } else {

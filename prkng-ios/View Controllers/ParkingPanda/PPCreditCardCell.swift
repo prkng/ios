@@ -13,22 +13,22 @@ class PPCreditCardCell: UITableViewCell {
     static let LEFT_IMAGE_OFFSET = 25
     static let IMAGE_TO_TEXT_OFFSET = 10
     
-    private var creditCardType: CardIOCreditCardType
-    private var creditCardTypeImageView = UIImageView()
-    private var creditCardLabel = UILabel()
+    fileprivate var creditCardType: CardIOCreditCardType
+    fileprivate var creditCardTypeImageView = UIImageView()
+    fileprivate var creditCardLabel = UILabel()
     
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     var creditCardNumber: String {
         didSet {
-            let locale = NSLocale.currentLocale().localeIdentifier
-            let cardTypeText = CardIOCreditCardInfo.displayStringForCardType(creditCardType, usingLanguageOrLocale: locale)
+            let locale = Locale.current.identifier
+            let cardTypeText = CardIOCreditCardInfo.displayString(for: creditCardType, usingLanguageOrLocale: locale)
 
             var labelText = cardTypeText ?? ""
 
             if creditCardNumber.length() >= 4 {
-                let lastFourDigits = " **** " + creditCardNumber.substringFromIndex(creditCardNumber.endIndex.advancedBy(-4))
+                let lastFourDigits = " **** " + creditCardNumber.substring(from: creditCardNumber.characters.index(creditCardNumber.endIndex, offsetBy: -4))
                 labelText += lastFourDigits
             }
             
@@ -41,11 +41,11 @@ class PPCreditCardCell: UITableViewCell {
         self.creditCardType = creditCardType
         self.creditCardNumber = ""
         
-        if let creditCardTypeImage = CardIOCreditCardInfo.logoForCardType(creditCardType) {
+        if let creditCardTypeImage = CardIOCreditCardInfo.logo(for: creditCardType) {
             creditCardTypeImageView.image = creditCardTypeImage
         }
         
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
         //enable this once we have an appropriate edit card screen
         if isDefault {

@@ -11,9 +11,9 @@ import UIKit
 class ScheduleColumnView: UIView {
     
     var titleLabel : UILabel
-    private var titleContainerView : UIView
-    private var horizontalSeperator : UIView
-    private var verticalSeperator : UIView
+    fileprivate var titleContainerView : UIView
+    fileprivate var horizontalSeperator : UIView
+    fileprivate var verticalSeperator : UIView
     
     var didSetupSubviews : Bool
     var didSetupConstraints : Bool
@@ -46,7 +46,7 @@ class ScheduleColumnView: UIView {
         super.updateConstraints()
     }
 
-    private func setupSubviews() {
+    fileprivate func setupSubviews() {
         
         addSubview(titleContainerView)
 
@@ -63,7 +63,7 @@ class ScheduleColumnView: UIView {
         didSetupSubviews = true
     }
     
-    private func setupConstraints () {
+    fileprivate func setupConstraints () {
         
         titleContainerView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self)
@@ -93,7 +93,7 @@ class ScheduleColumnView: UIView {
         didSetupConstraints = true
     }
     
-    func setActive (active: Bool) {
+    func setActive (_ active: Bool) {
         
         if(active) {
             self.backgroundColor = Styles.Colors.cream1
@@ -102,7 +102,7 @@ class ScheduleColumnView: UIView {
         }
     }
     
-    func setTitle(title : String) {
+    func setTitle(_ title : String) {
         self.titleLabel.text = title
     }
 }

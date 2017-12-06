@@ -35,7 +35,7 @@ protocol DetailObject {
 
 class DetailObjectLoading: DetailObject {
     
-    private var parent: DetailObject
+    fileprivate var parent: DetailObject
     
     init(parent: DetailObject) {
         self.parent = parent

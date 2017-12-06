@@ -13,7 +13,7 @@ struct UserOperations {
     static var sharedInstance = UserOperations()
     var deviceTokenString: String?
     
-    static func register (email : String, name : String, password : String, gender : String, birthYear : String, completion : (user : User?, apiKey : String?, error: NSError?, returnCode: Int) -> Void) {
+    static func register (_ email : String, name : String, password : String, gender : String, birthYear : String, completion : @escaping (_ user : User?, _ apiKey : String?, _ error: NSError?, _ returnCode: Int) -> Void) {
         
         let url = APIUtility.rootURL() + "login/register"
         
@@ -36,7 +36,7 @@ struct UserOperations {
     }
     
     
-    static func login (email : String, password: String, completion : (user : User?, apiKey : String?) -> Void) {
+    static func login (_ email : String, password: String, completion : @escaping (_ user : User?, _ apiKey : String?) -> Void) {
         
         let url = APIUtility.rootURL() + "login"
         
@@ -59,7 +59,7 @@ struct UserOperations {
     
     
     
-    static func loginWithFacebook (accessToken: String, completion : (user : User, apiKey : String) -> Void) {
+    static func loginWithFacebook (_ accessToken: String, completion : @escaping (_ user : User, _ apiKey : String) -> Void) {
         
         let url = APIUtility.rootURL() + "login"
         
@@ -79,7 +79,7 @@ struct UserOperations {
     }
     
     
-    static func loginWithGoogle(accessToken: String, name: String, email: String, profileImageUrl: String, completion : (user : User, apiKey : String) -> Void) {
+    static func loginWithGoogle(_ accessToken: String, name: String, email: String, profileImageUrl: String, completion : @escaping (_ user : User, _ apiKey : String) -> Void) {
         
         let url = APIUtility.rootURL() + "login"
         
@@ -103,21 +103,21 @@ struct UserOperations {
     }
     
     
-    static func updateUser(user : User, newPassword : String?, imageUrl : String?, completion : (completed : Bool, user : User?, message : String?) -> Void)  {
+    static func updateUser(_ user : User, newPassword : String?, imageUrl : String?, completion : @escaping (_ completed : Bool, _ user : User?, _ message : String?) -> Void)  {
         
         let url = APIUtility.rootURL() + "user/profile"
-        var params : [String : AnyObject] = ["name" : user.fullName,
-            "email" : user.email,
-            "gender" : user.gender
+        var params : [String : AnyObject] = ["name" : user.fullName as AnyObject,
+            "email" : user.email as AnyObject,
+            "gender" : user.gender as AnyObject
         ]
         
         
         if let password = newPassword {
-            params["password"] = password
+            params["password"] = password as AnyObject
         }
         
         if let url = imageUrl {
-            params["image_url"] = url
+            params["image_url"] = url as AnyObject
         }
         
         
@@ -135,7 +135,7 @@ struct UserOperations {
     }
     
     
-    static func getUserDetails(completion : ((user : User?) -> Void)) {
+    static func getUserDetails(_ completion : @escaping ((_ user : User?) -> Void)) {
         
         let url = APIUtility.rootURL() + "user/profile"
         
@@ -155,7 +155,7 @@ struct UserOperations {
     }
     
     
-    static func uploadAvatar (image : UIImage, completion: ((completed : Bool, imageUrl : String?) -> Void)) {
+    static func uploadAvatar (_ image : UIImage, completion: @escaping ((_ completed : Bool, _ imageUrl : String?) -> Void)) {
         
         let url = APIUtility.rootURL() + "images"
         let params = ["image_type" : "avatar",
@@ -171,10 +171,10 @@ struct UserOperations {
                 
                 let data = UIImageJPEGRepresentation(image, 0.8)!
                 
-                var headers = Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+                var headers = Manager.sharedInstance.session.configuration.httpAdditionalHeaders ?? [:]
                 headers["Content-Type"] = "image/jpeg"
-                let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-                configuration.HTTPAdditionalHeaders = headers
+                let configuration = URLSessionConfiguration.default
+                configuration.httpAdditionalHeaders = headers
                 let manager = Manager(configuration: configuration)
                 
                 // Step two, PUT the image to the request url
@@ -200,7 +200,7 @@ struct UserOperations {
         
     }
     
-    static func resetPassword (email : String, completion : ((completed : Bool) -> Void)) {
+    static func resetPassword (_ email : String, completion : @escaping ((_ completed : Bool) -> Void)) {
         
         let url = APIUtility.rootURL() + "login/resetpass"
         let params = ["email" : email]
@@ -212,21 +212,21 @@ struct UserOperations {
         
     }
     
-    static func helloItsMe(deviceTokenString: String?, completion : ((completed : Bool) -> Void)) {
+    static func helloItsMe(_ deviceTokenString: String?, completion : @escaping ((_ completed : Bool) -> Void)) {
         
         UserOperations.sharedInstance.deviceTokenString = deviceTokenString
         
         let url = APIUtility.rootURL() + "hello"
         
-        let locale = NSLocale.currentLocale().objectForKey(NSLocaleLanguageCode) as? String ?? ""
+        let locale = (Locale.current as NSLocale).object(forKey: NSLocale.Key.languageCode) as? String ?? ""
         let deviceType = "ios"
         
         let params: [String : AnyObject] = [
-            "device_type" : deviceType,
-            "device_id" : (deviceTokenString ?? ""),
-            "lang" : locale,
-            "city" : Settings.selectedCity().name,
-            "push_on_temp_restriction" : Settings.shouldFilterForSnowRemoval() ? "true" : "false"
+            "device_type" : deviceType as AnyObject,
+            "device_id" : (deviceTokenString as AnyObject ?? "" as AnyObject),
+            "lang" : locale as AnyObject,
+            "city" : Settings.selectedCity().name as AnyObject,
+            "push_on_temp_restriction" : Settings.shouldFilterForSnowRemoval() ? "true" : "false" as AnyObject
         ]
         
         APIUtility.authenticatedManager().request(.POST, url, parameters: params).responseSwiftyJSON() {
@@ -236,7 +236,7 @@ struct UserOperations {
         }
 
     }
-    func helloItsMe(completion : ((completed : Bool) -> Void)) {
+    func helloItsMe(_ completion : @escaping ((_ completed : Bool) -> Void)) {
         UserOperations.helloItsMe(deviceTokenString, completion: completion)
     }
 

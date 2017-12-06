@@ -11,9 +11,9 @@ import UIKit
 class DateUtil {
    
     class func dayIndexOfTheWeek() -> Int {
-        let todayDate = NSDate()
-        let myCalendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
-        let myComponents = myCalendar?.components(.NSWeekdayCalendarUnit, fromDate: todayDate)
+        let todayDate = Date()
+        let myCalendar = Calendar(identifier: .gregorian)
+        let myComponents = (myCalendar as NSCalendar?)?.components(.NSWeekdayCalendarUnit, from: todayDate)
         let weekDay = myComponents?.weekday
         
         if (weekDay == 1) {
@@ -23,24 +23,24 @@ class DateUtil {
         return (weekDay! - 2)
     }    
     
-    class func timeIntervalSinceDayStart() -> NSTimeInterval {   // Example : 10:30 -> 10.5 * 3600
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        calendar.locale = NSLocale(localeIdentifier: "en_GB")        
-        let components = calendar.components([.Hour, .Minute], fromDate: date)
+    class func timeIntervalSinceDayStart() -> TimeInterval {   // Example : 10:30 -> 10.5 * 3600
+        let date = Date()
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "en_GB")        
+        let components = (calendar as NSCalendar).components([.hour, .minute], from: date)
         let hour = components.hour
         let minutes = components.minute
         
-        return NSTimeInterval((hour * 3600) + (minutes * 60))
+        return TimeInterval((hour! * 3600) + (minutes! * 60))
     }
     
-    class func beginningDay(date: NSDate) -> NSDate {
+    class func beginningDay(_ date: Date) -> Date {
         
-        let calendar = NSCalendar.currentCalendar()
-        calendar.locale = NSLocale(localeIdentifier: "en_GB")
-        let components = calendar.components([.Year, .Month, .Day], fromDate: date)
+        var calendar = Calendar.current
+        calendar.locale = Locale(identifier: "en_GB")
+        let components = (calendar as NSCalendar).components([.year, .month, .day], from: date)
 
-        let day = calendar.dateFromComponents(components)
+        let day = calendar.date(from: components)
 
         return day!
     }
@@ -61,11 +61,11 @@ class DateUtil {
         
         let today = DateUtil.dayIndexOfTheWeek()
         
-        for var i = today; i < 7; ++i {
+        for i in today ..< 7 {
             array.append(days[i])
         }
         
-        for var j = 0; j < today; ++j {
+        for j in 0 ..< today {
             array.append(days[j])
         }
         
@@ -81,25 +81,25 @@ class DateUtil {
         
         var days : Array<String> = []
         
-        days.append("monday".localizedString.uppercaseString[0...2])
-        days.append("tuesday".localizedString.uppercaseString[0...2])
-        days.append("wednesday".localizedString.uppercaseString[0...2])
-        days.append("thursday".localizedString.uppercaseString[0...2])
-        days.append("friday".localizedString.uppercaseString[0...2])
-        days.append("saturday".localizedString.uppercaseString[0...2])
-        days.append("sunday".localizedString.uppercaseString[0...2])
+        days.append("monday".localizedString.uppercased())
+        days.append("tuesday".localizedString.uppercased())
+        days.append("wednesday".localizedString.uppercased())
+        days.append("thursday".localizedString.uppercased())
+        days.append("friday".localizedString.uppercased())
+        days.append("saturday".localizedString.uppercased())
+        days.append("sunday".localizedString.uppercased())
         
         let today = DateUtil.dayIndexOfTheWeek()
         
-        for var i = today; i < 7; ++i {
+        for i in today ..< 7 {
             array.append(days[i])
         }
         
-        for var j = 0; j < today; ++j {
+        for j in 0 ..< today {
             array.append(days[j])
         }
         
-        array[0] = "this_day".localizedString.uppercaseString
+        array[0] = "this_day".localizedString.uppercased()
         
         return array
     }

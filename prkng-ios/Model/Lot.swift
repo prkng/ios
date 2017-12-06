@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 struct LotAttribute {
 
     //the display order of the attributes respects the enum order
     enum LotAttributeType: Int {
-        case Indoor = 0
-        case Card
-        case Handicap
-        case Valet
+        case indoor = 0
+        case card
+        case handicap
+        case valet
     }
     
     var type: LotAttributeType
@@ -23,26 +24,26 @@ struct LotAttribute {
     
     var showAsEnabled: Bool {
         switch (type) {
-        case .Indoor    : return true
+        case .indoor    : return true
         default         : return enabled
         }
     }
     
-    func name(forIcon: Bool) -> String {
+    func name(_ forIcon: Bool) -> String {
         switch (type) {
-        case .Indoor    : return enabled || forIcon ? "indoor" : "outdoor"//.localizedString
-        case .Handicap  : return "handicap"//.localizedString
-        case .Valet     : return "valet"//.localizedString
-        case .Card      : return "card"//.localizedString
+        case .indoor    : return enabled || forIcon ? "indoor" : "outdoor"//.localizedString
+        case .handicap  : return "handicap"//.localizedString
+        case .valet     : return "valet"//.localizedString
+        case .card      : return "card"//.localizedString
         }
     }
     
-    static func typeFromName(name: String) -> LotAttributeType? {
-        switch (name.lowercaseString) {
-        case "indoor"   : return .Indoor
-        case "valet"    : return .Valet
-        case "handicap" : return .Handicap
-        case "card"     : return .Card
+    static func typeFromName(_ name: String) -> LotAttributeType? {
+        switch (name.lowercased()) {
+        case "indoor"   : return .indoor
+        case "valet"    : return .valet
+        case "handicap" : return .handicap
+        case "card"     : return .card
         default         : return nil
         }
     }
@@ -74,7 +75,7 @@ class Lot: NSObject, DetailObject {
     var isCheaper: Bool
     
     var isParkingPanda: Bool {
-        return lotPartner?.lowercaseString == "parking panda"
+        return lotPartner?.lowercased() == "parking panda"
     }
     
     var isCurrentlyOpen: Bool {
@@ -90,9 +91,9 @@ class Lot: NSObject, DetailObject {
     }
     
     //returns the "main" rate ie the one we want to display
-    private var cachedMainRate: Float = -1
+    fileprivate var cachedMainRate: Float = -1
     
-    func mainRate(preferreCached preferreCached: Bool = false) -> Float {
+    func mainRate(preferreCached: Bool = false) -> Float {
                 
         if preferreCached && cachedMainRate > -1 {
             return cachedMainRate
@@ -136,12 +137,12 @@ class Lot: NSObject, DetailObject {
         var agendaSortedByToday = [LotAgendaPeriod]()
         let currentDay = DateUtil.dayIndexOfTheWeek()
         
-        for var i = currentDay; i < 7; ++i {
+        for i in currentDay ..< 7 += 1 {
             let itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(i, agenda: self.agenda)
             agendaSortedByToday += itemsForDay
         }
         
-        for var j = 0; j < currentDay; ++j {
+        for j in 0 ..< currentDay += 1 {
             let itemsForDay = LotAgendaPeriod.getSortedAgendaForDay(j, agenda: self.agenda)
             agendaSortedByToday += itemsForDay
         }
@@ -193,9 +194,9 @@ class Lot: NSObject, DetailObject {
     //aggregates the open times and returns a list of 7 nullable tuples with the total open times
     //optionally sorted
     //assumes there is only one open time
-    func openTimes(sortedByToday: Bool) -> [(NSTimeInterval, NSTimeInterval)] {
+    func openTimes(_ sortedByToday: Bool) -> [(TimeInterval, TimeInterval)] {
         
-        var timeIntervals = [(NSTimeInterval, NSTimeInterval)]()
+        var timeIntervals = [(TimeInterval, TimeInterval)]()
         let chosenAgenda = sortedByToday ? self.sortedAgenda : self.agenda
         var groupedAgenda = LotAgendaPeriod.groupedAgenda(chosenAgenda)
         for i in 0..<groupedAgenda.count {
@@ -238,10 +239,10 @@ class Lot: NSObject, DetailObject {
             
             for item in openTimes {
                 if item.isOpen {
-                    if item.startHour < NSTimeInterval(earliestStartTime) {
+                    if item.startHour < TimeInterval(earliestStartTime) {
                         earliestStartTime = item.startHour
                     }
-                    if item.endHour > NSTimeInterval(latestEndTime) {
+                    if item.endHour > TimeInterval(latestEndTime) {
                         latestEndTime = item.endHour
                     }
                 }
@@ -280,15 +281,15 @@ class Lot: NSObject, DetailObject {
     var bottomLeftIconName: String? { get { return nil } }
     var bottomLeftTitleText: String? { get {
         if Settings.lotMainRateIsHourly() {
-            return "hourly".localizedString.uppercaseString
+            return "hourly".localizedString.uppercased()
         }
-        return "daily".localizedString.uppercaseString
+        return "daily".localizedString.uppercased()
         }
     }
     var bottomLeftPrimaryText: NSAttributedString? { get {
         let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
         let numberString = NSMutableAttributedString(string: String(Int(self.mainRate())), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
-        currencyString.appendAttributedString(numberString)
+        currencyString.append(numberString)
         return currencyString
         }
     }
@@ -296,19 +297,19 @@ class Lot: NSObject, DetailObject {
     
     var bottomRightTitleText: String { get {
         if self.isCurrentlyOpen {
-            return "open".localizedString.uppercaseString
+            return "open".localizedString.uppercased()
         } else {
-            return "closed".localizedString.uppercaseString
+            return "closed".localizedString.uppercased()
         }
         }
     }
     var bottomRightPrimaryText: NSAttributedString { get {
         //this logic should be similar to "timeperiodtext" in time span
-        let filteredAgenda = self.openTimes(false).filter({ (item: (NSTimeInterval, NSTimeInterval)) -> Bool in
+        let filteredAgenda = self.openTimes(false).filter({ (item: (TimeInterval, TimeInterval)) -> Bool in
             item.0 == 0 && item.1 == 24*3600
         })
         if filteredAgenda.count == 7 {
-            return NSAttributedString(string: "24 hour".localizedString.lowercaseString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
+            return NSAttributedString(string: "24 hour".localizedString.lowercased(), attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
         }
 
         var interval = self.openTimes(true).first!.1
@@ -338,24 +339,24 @@ class Lot: NSObject, DetailObject {
     
     //MARK: Other...
     
-    private var currencyString: NSAttributedString {
+    fileprivate var currencyString: NSAttributedString {
         if self.bottomLeftPrimaryText != nil && self.bottomLeftPrimaryText!.string != "$0" {
             let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.FontFaces.regular(9), NSBaselineOffsetAttributeName: 3])
             let numberString = NSMutableAttributedString(string: String(Int(self.mainRate())), attributes: [NSFontAttributeName: Styles.FontFaces.regular(14)])
-            currencyString.appendAttributedString(numberString)
+            currencyString.append(numberString)
             return currencyString
         }
         return NSAttributedString(string: "")
     }
     
-    func markerImageNamed(imageName: String) -> UIImage {
+    func markerImageNamed(_ imageName: String) -> UIImage {
         var markerImage = UIImage(named: imageName)
         markerImage = markerImage!.addText(currencyString, color: Styles.Colors.cream1, bottomOffset: 4.5)
         return markerImage!
     }
     
-    func markerReuseIdentifierWithImageNamed(imageName: String) -> String {
-        return imageName + String(currencyString)
+    func markerReuseIdentifierWithImageNamed(_ imageName: String) -> String {
+        return imageName + String(describing: currencyString)
     }
     
     //MARK- Hashable
@@ -395,7 +396,7 @@ class Lot: NSObject, DetailObject {
             let day = Int(attr.0)! - 1 //this is 1-indexed on the server, convert it to 0-index
             let timesArray = attr.1.arrayValue
             if timesArray.count == 0 {
-                let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: nil, max: nil, daily: nil, start: NSTimeInterval(0), end: NSTimeInterval(24*3600))
+                let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: nil, max: nil, daily: nil, start: TimeInterval(0), end: TimeInterval(24*3600))
                 self.agenda.append(lotAgendaPeriod)
             }
             for item in attr.1.arrayValue {
@@ -407,7 +408,7 @@ class Lot: NSObject, DetailObject {
                 let firstFloat: Float = floatList.first?.floatValue ?? 0
                 let secondFloat: Float = floatList.last?.floatValue ?? 0
                 
-                let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: hourly, max: max, daily: daily, start: NSTimeInterval(firstFloat*60*60), end: NSTimeInterval(secondFloat*60*60))
+                let lotAgendaPeriod = LotAgendaPeriod(day: day, hourly: hourly, max: max, daily: daily, start: TimeInterval(firstFloat*60*60), end: TimeInterval(secondFloat*60*60))
                 self.agenda.append(lotAgendaPeriod)
             }
         }
@@ -422,7 +423,7 @@ class Lot: NSObject, DetailObject {
                 NSLog("Cannot parse lot attribute type: '" + attr.0 + "'")
             }
         }
-        self.attributes.sortInPlace { (left, right) -> Bool in
+        self.attributes.sort { (left, right) -> Bool in
             left.type.rawValue < right.type.rawValue
         }
 
@@ -447,15 +448,15 @@ class LotAgendaPeriod: CustomStringConvertible, CustomDebugStringConvertible {
     var hourlyRate: Float?
     var maxRate: Float?
     var dailyRate: Float?
-    var startHour: NSTimeInterval
-    var endHour: NSTimeInterval
+    var startHour: TimeInterval
+    var endHour: TimeInterval
     
     var isOpen: Bool { get {
         return hourlyRate != nil || maxRate != nil || dailyRate != nil
         }
     }
     
-    init(day: Int, hourly: Float?, max: Float?, daily: Float?, start: NSTimeInterval, end: NSTimeInterval) {
+    init(day: Int, hourly: Float?, max: Float?, daily: Float?, start: TimeInterval, end: TimeInterval) {
         self.dayIndex = day
         self.hourlyRate = hourly
         self.maxRate = max
@@ -464,13 +465,13 @@ class LotAgendaPeriod: CustomStringConvertible, CustomDebugStringConvertible {
         self.endHour = end
     }
 
-    static func getSortedAgendaForDay(day: Int, agenda: [LotAgendaPeriod]) -> [LotAgendaPeriod] {
+    static func getSortedAgendaForDay(_ day: Int, agenda: [LotAgendaPeriod]) -> [LotAgendaPeriod] {
         
         var agendaForDay = agenda.filter({ (item: LotAgendaPeriod) -> Bool in
             item.dayIndex == day
         })
         
-        agendaForDay.sortInPlace({ (first, second) -> Bool in
+        agendaForDay.sort(by: { (first, second) -> Bool in
             if first.dayIndex == second.dayIndex {
                 return first.startHour < second.startHour
             } else {
@@ -484,10 +485,10 @@ class LotAgendaPeriod: CustomStringConvertible, CustomDebugStringConvertible {
     
     //returns the sorted agenda as an array of arrays
     //ex: [day 0: [LotAgendaPeriod], day 1: [LotAgendaPeriod], etc by day number
-    static func groupedAgenda(agenda: [LotAgendaPeriod]) -> [[LotAgendaPeriod]] {
+    static func groupedAgenda(_ agenda: [LotAgendaPeriod]) -> [[LotAgendaPeriod]] {
         var groupedAgenda = [[LotAgendaPeriod]]()
         let startIndex = agenda[0].dayIndex
-        for i in Range(start: startIndex, end: (7+startIndex)) {
+        for i in (startIndex ..< (7+startIndex)) {
             let index = i % 7
             let agendaForDay = LotAgendaPeriod.getSortedAgendaForDay(index, agenda: agenda)
             groupedAgenda.append(agendaForDay)

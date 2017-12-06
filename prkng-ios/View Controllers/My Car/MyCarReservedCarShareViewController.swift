@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import pop
 
 class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate, POPAnimationDelegate {
     
@@ -31,16 +32,16 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
     
     var delegate: MyCarAbstractViewControllerDelegate?
     
-    private var timer: NSTimer?
+    fileprivate var timer: Timer?
     
-    private let SMALL_VERTICAL_MARGIN = 5
-    private let MEDIUM_VERTICAL_MARGIN = 10
-    private let LARGE_VERTICAL_MARGIN = 20
+    fileprivate let SMALL_VERTICAL_MARGIN = 5
+    fileprivate let MEDIUM_VERTICAL_MARGIN = 10
+    fileprivate let LARGE_VERTICAL_MARGIN = 20
     
-    private var smallerVerticalMargin: Int = 0
-    private var largerVerticalMargin: Int = 0
+    fileprivate var smallerVerticalMargin: Int = 0
+    fileprivate var largerVerticalMargin: Int = 0
 
-    private let BUTTONS_TRANSLATION_X = CGFloat(2*36 + 20 + 14)
+    fileprivate let BUTTONS_TRANSLATION_X = CGFloat(2*36 + 20 + 14)
     
     let BOTTOM_BUTTON_HEIGHT: CGFloat = 36
 
@@ -61,8 +62,8 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         availableTimeLabel = UILabel()
         
         bigButtonContainer = UIView()
-        mapButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "show_on_map".localizedString.uppercaseString, textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
-        leaveButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "cancel".localizedString.uppercaseString)
+        mapButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "show_on_map".localizedString.uppercased(), textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
+        leaveButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "cancel".localizedString.uppercased())
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -77,17 +78,17 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         setupConstraints()
         
         //add a tap gesture recognizer
-        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
-        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
-        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("mapButtonTapped"))
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(MyCarReservedCarShareViewController.mapButtonTapped))
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(MyCarReservedCarShareViewController.mapButtonTapped))
+        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(MyCarReservedCarShareViewController.mapButtonTapped))
         tapRecognizer1.delegate = self
         tapRecognizer2.delegate = self
         tapRecognizer3.delegate = self
         containerView.addGestureRecognizer(tapRecognizer1)
         backgroundImageView.addGestureRecognizer(tapRecognizer2)
-        backgroundImageView.userInteractionEnabled = true
+        backgroundImageView.isUserInteractionEnabled = true
         logoView.addGestureRecognizer(tapRecognizer3)
-        logoView.userInteractionEnabled = true
+        logoView.isUserInteractionEnabled = true
     }
     
     
@@ -96,7 +97,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         self.screenName = "My Car - Reserved Car Share"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if (carShare == nil) {
@@ -109,12 +110,12 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.timer?.invalidate()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         
@@ -147,7 +148,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
     
     func setupViews () {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
         
         segmentedControl.setPressedHandler(segmentedControlTapped)
@@ -161,7 +162,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         
         view.addSubview(containerView)
         
-        locationTitleLabel.text = "reserved_car_share_message".localizedString.uppercaseString
+        locationTitleLabel.text = "reserved_car_share_message".localizedString.uppercased()
         containerView.addSubview(locationTitleLabel)
         
         locationLabel.text = "PRKNG"
@@ -171,15 +172,15 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         
         availableTimeLabel.textColor = Styles.Colors.red2
         availableTimeLabel.text = "0:00"
-        availableTimeLabel.textAlignment = NSTextAlignment.Center
+        availableTimeLabel.textAlignment = NSTextAlignment.center
         containerView.addSubview(availableTimeLabel)
         
         view.addSubview(bigButtonContainer)
         
-        mapButton.addTarget(self, action: "mapButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        mapButton.addTarget(self, action: #selector(MyCarReservedCarShareViewController.mapButtonTapped), for: UIControlEvents.touchUpInside)
         bigButtonContainer.addSubview(mapButton)
 
-        leaveButton.addTarget(self, action: "leaveButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        leaveButton.addTarget(self, action: #selector(MyCarReservedCarShareViewController.leaveButtonTapped), for: UIControlEvents.touchUpInside)
         bigButtonContainer.addSubview(leaveButton)
         
     }
@@ -189,7 +190,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         smallerVerticalMargin = MEDIUM_VERTICAL_MARGIN
         largerVerticalMargin = LARGE_VERTICAL_MARGIN
         
-        if UIScreen.mainScreen().bounds.size.height == 480 {
+        if UIScreen.main.bounds.size.height == 480 {
             smallerVerticalMargin = SMALL_VERTICAL_MARGIN
             largerVerticalMargin = MEDIUM_VERTICAL_MARGIN
         }
@@ -211,7 +212,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
 //        }
         
         logoView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(68, 68))
+            make.size.equalTo(CGSize(width: 68, height: 68))
             make.centerX.equalTo(self.view)
             make.top.equalTo(self.segmentedControl.snp_bottom).offset(40)
         }
@@ -282,7 +283,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         
         //update the values every 2 seconds
         if self.timer == nil {
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "updateValues", userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(MyCarReservedCarShareViewController.updateValues), userInfo: nil, repeats: true)
         }
         
     }
@@ -296,7 +297,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
     func leaveButtonTapped() {
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Reserved Car Share", action: "Cancel Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Reserved Car Share", action: "Cancel Button Tapped", label: nil, value: nil).build() as! [AnyHashable: Any])
 
         CarSharingOperations.cancelCarShare(self.carShare!, fromVC: self, completion: { (completed) -> Void in
             if completed {
@@ -305,14 +306,14 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         })
     }
     
-    func reportButtonTapped(sender: UIButton) {
+    func reportButtonTapped(_ sender: UIButton) {
         
     }
     
     func setDefaultTimeDisplay() {
         
         if self.carShare != nil {
-            availableTitleLabel.text = "available_for".localizedString.uppercaseString
+            availableTitleLabel.text = "available_for".localizedString.uppercased()
         }
         updateValues()
     }
@@ -323,8 +324,8 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
         fadeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         fadeAnimation.type = kCATransitionFade
         fadeAnimation.duration = 0.4
-        availableTitleLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
-        availableTimeLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
+        availableTitleLabel.layer.add(fadeAnimation, forKey: "fade")
+        availableTimeLabel.layer.add(fadeAnimation, forKey: "fade")
         
         //update values just in case we've run out of time since the last tap...
         updateValues()
@@ -332,31 +333,31 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
     }
     
     //MARK- gesture recognizer delegate
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
     func animateAndShow() {
         
         let logoFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
-        logoFadeInAnimation.fromValue = NSNumber(int: 0)
-        logoFadeInAnimation.toValue = NSNumber(int: 1)
-        logoFadeInAnimation.duration = 0.3
-        logoView.layer.pop_addAnimation(logoFadeInAnimation, forKey: "logoFadeInAnimation")
+        logoFadeInAnimation?.fromValue = NSNumber(value: 0 as Int32)
+        logoFadeInAnimation?.toValue = NSNumber(value: 1 as Int32)
+        logoFadeInAnimation?.duration = 0.3
+        logoView.layer.pop_add(logoFadeInAnimation, forKey: "logoFadeInAnimation")
 
         
         let logoSpringAnimation = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY)
-        logoSpringAnimation.fromValue = NSValue(CGPoint: CGPoint(x: 0.5, y: 0.5))
-        logoSpringAnimation.toValue = NSValue(CGPoint: CGPoint(x: 1, y: 1))
-        logoSpringAnimation.springBounciness = 20
-        logoView.layer.pop_addAnimation(logoSpringAnimation, forKey: "logoSpringAnimation")
+        logoSpringAnimation?.fromValue = NSValue(cgPoint: CGPoint(x: 0.5, y: 0.5))
+        logoSpringAnimation?.toValue = NSValue(cgPoint: CGPoint(x: 1, y: 1))
+        logoSpringAnimation?.springBounciness = 20
+        logoView.layer.pop_add(logoSpringAnimation, forKey: "logoSpringAnimation")
         
         let containerFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
-        containerFadeInAnimation.fromValue = NSNumber(int: 0)
-        containerFadeInAnimation.toValue = NSNumber(int: 1)
-        containerFadeInAnimation.duration = 0.6
-        containerFadeInAnimation.beginTime = CACurrentMediaTime() + 0.15
-        containerFadeInAnimation.completionBlock = {(anim, finished) in
+        containerFadeInAnimation?.fromValue = NSNumber(value: 0 as Int32)
+        containerFadeInAnimation?.toValue = NSNumber(value: 1 as Int32)
+        containerFadeInAnimation?.duration = 0.6
+        containerFadeInAnimation?.beginTime = CACurrentMediaTime() + 0.15
+        containerFadeInAnimation?.completionBlock = {(anim, finished) in
 //            // Slide in buttons once container fully visible
 //            let buttonSlideAnimation = POPBasicAnimation(propertyNamed: kPOPLayerTranslationY)
 //            buttonSlideAnimation.fromValue = NSNumber(float: Float(self.BUTTONS_TRANSLATION_X))
@@ -364,7 +365,7 @@ class MyCarReservedCarShareViewController: MyCarAbstractViewController, UIGestur
 //            buttonSlideAnimation.duration = 0.2
 //            self.bigButtonContainer.layer.pop_addAnimation(buttonSlideAnimation, forKey: "buttonSlideAnimation")
         }
-        self.containerView.layer.pop_addAnimation(containerFadeInAnimation, forKey: "containerFadeInAnimation")
+        self.containerView.layer.pop_add(containerFadeInAnimation, forKey: "containerFadeInAnimation")
 
     }
     

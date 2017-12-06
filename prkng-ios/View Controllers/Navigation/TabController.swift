@@ -32,11 +32,11 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     var locationFixAchieved : Bool = false
 
     init () {
-        selectedTab = PrkTab.None
+        selectedTab = PrkTab.none
         tabBar = PrkTabBar()
         containerView = UIView()
         switchingMainView = false
-        let mapType = NSUserDefaults.standardUserDefaults().integerForKey("map_type")
+        let mapType = UserDefaults.standard.integer(forKey: "map_type")
         switch mapType {
 //        case 1:
 //            mapViewController = MKMapViewController()
@@ -46,13 +46,13 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //            break
         default:
             mapViewController = RMMapViewController()
-            Settings.setShouldFilterForCarSharing(mapViewController.mapMode == .CarSharing)
+            Settings.setShouldFilterForCarSharing(mapViewController.mapMode == .carSharing)
             break
         }
         hereViewController = HereViewController()
         activeViewController = hereViewController
         super.init(nibName: nil, bundle: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "goToCoordinateNotificationPosted:", name: "goToCoordinate", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TabController.goToCoordinateNotificationPosted(_:)), name: NSNotification.Name(rawValue: "goToCoordinate"), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,8 +72,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         // Do any additional setup after loading the view.
         self.screenName = "Tab Bar - Controller"
         
-        selectedTab = PrkTab.Here
-        hereViewController.willMoveToParentViewController(self)
+        selectedTab = PrkTab.here
+        hereViewController.willMove(toParentViewController: self)
         addChildViewController(hereViewController)
         containerView.addSubview(hereViewController.view)
         tabBar.updateSelected()
@@ -107,12 +107,12 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
         mapViewController.delegate = self
         addChildViewController(mapViewController)
-        mapViewController.willMoveToParentViewController(self)
+        mapViewController.willMove(toParentViewController: self)
         containerView.addSubview(mapViewController.view)
         
         tabBar.delegate = self
         tabBar.backgroundColor = Styles.Colors.stone
-        tabBar.layer.shadowColor = UIColor.blackColor().CGColor
+        tabBar.layer.shadowColor = UIColor.black.cgColor
         tabBar.layer.shadowOffset = CGSize(width: 0, height: -0.5)
         tabBar.layer.shadowOpacity = 0.2
         tabBar.layer.shadowRadius = 0.5
@@ -147,9 +147,9 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     func handleTabBadge() {
         
         if Settings.hasNotificationBadge() {
-            tabBar.myCarButton.badge.hidden = false
+            tabBar.myCarButton.badge.isHidden = false
         } else {
-            tabBar.myCarButton.badge.hidden = true
+            tabBar.myCarButton.badge.isHidden = true
         }
         
     }
@@ -186,18 +186,18 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 //    }
     
     func loadHereTab() {
-        if (selectedTab == PrkTab.Here || switchingMainView) {
+        if (selectedTab == PrkTab.here || switchingMainView) {
             return;
         }
         
-        UIApplication.sharedApplication().idleTimerDisabled = true
+        UIApplication.shared.isIdleTimerDisabled = true
         
         mapViewController.removeSelectedAnnotationIfExists()
         mapViewController.clearSearchResults()
         mapViewController.showUserLocation(true)
         
         switchActiveViewController(hereViewController, completion: { (finished) -> Void in
-            self.selectedTab = PrkTab.Here
+            self.selectedTab = PrkTab.here
             self.tabBar.updateSelected()
         })
         
@@ -210,17 +210,17 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         hereViewController.showFiltersOnAppear = true
     }
     
-    func loadHereTabWithSliderValue(sliderValue: Int) {
+    func loadHereTabWithSliderValue(_ sliderValue: Int) {
         loadHereTab()
         hereViewController.modeSelection.setValue(Double(sliderValue), animated: true)
     }
     
     func loadMyCarTab() {
-        if (selectedTab == PrkTab.MyCar || switchingMainView) {
+        if (selectedTab == PrkTab.myCar || switchingMainView) {
             return;
         }
         
-        UIApplication.sharedApplication().idleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = false
 
         var myCarViewController : AbstractViewController?
         
@@ -236,21 +236,21 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         }
 
         let navigationController = UINavigationController(rootViewController: myCarViewController!)
-        navigationController.navigationBarHidden = true        
+        navigationController.isNavigationBarHidden = true        
 
         switchActiveViewController(navigationController, completion: { (finished) -> Void in
-            self.selectedTab = PrkTab.MyCar
+            self.selectedTab = PrkTab.myCar
             self.tabBar.updateSelected()
         })
         
     }
     
     func loadSettingsTab() {
-        if (selectedTab == PrkTab.Settings || switchingMainView) {
+        if (selectedTab == PrkTab.settings || switchingMainView) {
             return;
         }
         
-        UIApplication.sharedApplication().idleTimerDisabled = false
+        UIApplication.shared.isIdleTimerDisabled = false
 
         if(settingsViewController == nil) {
             settingsViewController = SettingsViewController()
@@ -262,17 +262,17 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         mapViewController.setMapUserMode(MapUserMode.None)
 
         let navigationController = UINavigationController(rootViewController: settingsViewController!)
-        navigationController.navigationBarHidden = true
+        navigationController.isNavigationBarHidden = true
         
         switchActiveViewController(navigationController, completion: { (finished) -> Void in
-            self.selectedTab = PrkTab.Settings
+            self.selectedTab = PrkTab.settings
             self.tabBar.updateSelected()
         })
         
     }
     
     
-    func updateMapAnnotations(returnNearestAnnotations: Int? = nil) {
+    func updateMapAnnotations(_ returnNearestAnnotations: Int? = nil) {
         if returnNearestAnnotations != nil {
             mapViewController.returnNearestAnnotations = returnNearestAnnotations!
         }
@@ -283,13 +283,13 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         mapViewController.setDefaultMapZoom()
     }
     
-    func didSelectMapMode(mapMode: MapMode) {
+    func didSelectMapMode(_ mapMode: MapMode) {
         if mapMode != mapViewController.mapMode {
             mapViewController.mapMode = mapMode
             switch (mapMode) {
-            case .Garage, .CarSharing:
+            case .garage, .carSharing:
                 self.mapViewController.returnNearestAnnotations = 3
-            case .StreetParking:
+            case .streetParking:
                 break
             }
         }
@@ -299,7 +299,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         self.mapViewController.didTapTrackUserButton()
     }
 
-    func switchActiveViewController  (newViewController : UIViewController, completion : ((finished:Bool) -> Void)) {
+    func switchActiveViewController  (_ newViewController : UIViewController, completion : @escaping ((_ finished:Bool) -> Void)) {
         
         if switchingMainView {
             return
@@ -310,7 +310,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             abstractVC.addTransitionView()
         }
         newViewController.view.alpha = 0.0;
-        newViewController.willMoveToParentViewController(self)
+        newViewController.willMove(toParentViewController: self)
         addChildViewController(newViewController)
         containerView.addSubview(newViewController.view)
         
@@ -318,21 +318,21 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
             make.edges.equalTo(self.containerView)
         })
         
-        UIView.animateWithDuration(0.1, animations: { () -> Void in
+        UIView.animate(withDuration: 0.1, animations: { () -> Void in
             self.activeViewController.view.alpha = 0.0
             newViewController.view.alpha = 1.0
             
-            }) { (finished) -> Void in
+            }, completion: { (finished) -> Void in
                 self.activeViewController.removeFromParentViewController()
                 self.activeViewController.view.removeFromSuperview()
-                self.activeViewController.willMoveToParentViewController(nil)
+                self.activeViewController.willMove(toParentViewController: nil)
                 self.activeViewController = newViewController
                 if let abstractVC = self.activeViewController as? AbstractViewController {
                     abstractVC.removeTransitionView()
                 }
                 self.switchingMainView = false
-                completion(finished: finished)
-        }
+                completion(finished)
+        }) 
         
         updateTabBar()
         
@@ -340,7 +340,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func updateTabBar() {
         
-        if selectedTab == PrkTab.MyCar {
+        if selectedTab == PrkTab.myCar {
             reloadMyCarTab()
         }
         handleTabBadge()
@@ -348,7 +348,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     func showLoginViewController ()  {
         let loginViewController = LoginViewController()
-        presentViewController(loginViewController, animated: true) { () -> Void in
+        present(loginViewController, animated: true) { () -> Void in
             
         }
     }
@@ -374,7 +374,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
         if hereViewController.activeDetailObject == nil {
             
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 
                 if self.hereViewController.showModeSelection  {
                     self.hereViewController.modeSelection.snp_remakeConstraints { (make) -> () in
@@ -403,20 +403,19 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
     }
     
-    func didSelectObject (detailsObject : DetailObject) {
+    func didSelectObject (_ detailsObject : DetailObject) {
         
         loadHereTab()
         if detailsObject.compact && detailsObject is ParkingSpot {
             //if after 500 msec we haven't already set a new object (or the object is still nil) then show "loading..."
-            let delayTime = dispatch_time(DISPATCH_TIME_NOW,
-                Int64(500 * Double(NSEC_PER_MSEC)))
-            dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+            let delayTime = DispatchTime.now() + Double(Int64(500 * Double(NSEC_PER_MSEC))) / Double(NSEC_PER_SEC)
+            DispatchQueue.main.asyncAfter(deadline: delayTime, execute: { () -> Void in
                 if self.hereViewController.activeDetailObject?.identifier != detailsObject.identifier {
                     self.hereViewController.updateDetails(DetailObjectLoading(parent: detailsObject))
                 }
             })
             SpotOperations.getSpotDetails(detailsObject.identifier, completion: { (spot) -> Void in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.hereViewController.updateDetails(spot)
                 })
             })
@@ -426,11 +425,11 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         
     }
         
-    func showMapMessage(message: String?) {
+    func showMapMessage(_ message: String?) {
         showMapMessage(message, onlyIfPreviouslyShown: false, showCityPicker: false)
     }
     
-    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool, showCityPicker: Bool) {
+    func showMapMessage(_ message: String?, onlyIfPreviouslyShown: Bool, showCityPicker: Bool) {
 
         if message != nil {
             hereViewController.mapMessageView.mapMessageLabel.text = message
@@ -443,7 +442,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
                 cityPickerVC.showOnViewController(self)
             }
             
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 self.hereViewController.view.layoutIfNeeded()
                 self.mapViewController.view.layoutIfNeeded()
                 
@@ -500,13 +499,13 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     // MARK: SearchViewControllerDelegate
     
-    func setSearchParameters(time : NSDate?, duration : Float?) {
-        mapViewController.searchCheckinDate = time
+    func setSearchParameters(_ time : Date?, duration : Float?) {
+        mapViewController.searchCheckinDate = time as! NSDate
         mapViewController.searchDuration = duration
     }
 
     
-    func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?) {
+    func displaySearchResults(_ results : Array<SearchResult>, checkinTime : Date?) {
         mapViewController.setMapUserMode(MapUserMode.None)
         mapViewController.displaySearchResults(results, checkinTime: checkinTime)
         self.hereViewController.filterVC.hideFilters(completely: false)
@@ -516,7 +515,7 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         mapViewController.clearSearchResults()
     }
     
-    func didGetAutocompleteResults(results: [SearchResult]) {
+    func didGetAutocompleteResults(_ results: [SearchResult]) {
         hereViewController.filterVC.updateAutocompleteWithValues(results)
     }
 
@@ -553,16 +552,16 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         }
         
         let navigationController = UINavigationController(rootViewController: myCarViewController!)
-        navigationController.navigationBarHidden = true
+        navigationController.isNavigationBarHidden = true
         
         switchActiveViewController(navigationController, completion: { (finished) -> Void in
-            self.selectedTab = PrkTab.MyCar
+            self.selectedTab = PrkTab.myCar
             self.tabBar.updateSelected()
         })
         
     }
     
-    func goToCoordinateNotificationPosted(notification: NSNotification) {
+    func goToCoordinateNotificationPosted(_ notification: Notification) {
         if let userInfo = notification.userInfo as? [String: AnyObject] {
             if let location = userInfo["location"] as? CLLocation, let name = userInfo["name"] as? String {
                 goToCoordinate(location.coordinate, named: name)
@@ -572,14 +571,14 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
     // MARK: SettingsViewControllerDelegate
     
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, showing: Bool = true) {
+    func goToCoordinate(_ coordinate: CLLocationCoordinate2D, named name: String, showing: Bool = true) {
         loadHereTab()
         self.mapViewController.setMapUserMode(MapUserMode.None)
         self.mapViewController.goToCoordinate(coordinate, named: name, withZoom: nil, showing: showing)
     }
     
     
-    func cityDidChange(fromCity fromCity: City, toCity: City) {
+    func cityDidChange(fromCity: City, toCity: City) {
         hereViewController.showModeSelection(true)
         Settings.setSelectedCity(toCity)
         let coordinate = Settings.selectedCity().coordinate
@@ -588,18 +587,18 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
     
     // MARK: Location Manager Delegate stuff
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         locationManager.stopUpdatingLocation()
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if (locationFixAchieved == false) {
             locationFixAchieved = true
             let location = locations.last as CLLocation!
-            let coord = location.coordinate
+            let coord = location?.coordinate
             
-            print(coord.latitude)
-            print(coord.longitude)
+            print(coord?.latitude)
+            print(coord?.longitude)
             
             manager.stopUpdatingLocation()
             
@@ -607,25 +606,25 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
         }
     }
     
-    func locationManager(manager: CLLocationManager,
-        didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager,
+        didChangeAuthorization status: CLAuthorizationStatus) {
             
             var locationStatus : NSString = "Not Started"
             
             var shouldIAllow = false
             
             switch status {
-            case CLAuthorizationStatus.Restricted:
+            case CLAuthorizationStatus.restricted:
                 locationStatus = "Restricted Access to location"
-            case CLAuthorizationStatus.Denied:
+            case CLAuthorizationStatus.denied:
                 locationStatus = "User denied access to location"
-            case CLAuthorizationStatus.NotDetermined:
+            case CLAuthorizationStatus.notDetermined:
                 locationStatus = "Status not determined"
             default:
                 locationStatus = "Allowed to location Access"
                 shouldIAllow = true
             }
-            NSNotificationCenter.defaultCenter().postNotificationName("LabelHasbeenUpdated", object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "LabelHasbeenUpdated"), object: nil)
             if (shouldIAllow == true) {
                 NSLog("Location to Allowed")
                 // Start location services
@@ -641,8 +640,8 @@ class TabController: GAITrackedViewController, PrkTabBarDelegate, MapViewControl
 
 enum PrkTab {
 //    case Search
-    case MyCar
-    case Here
-    case Settings
-    case None
+    case myCar
+    case here
+    case settings
+    case none
 }

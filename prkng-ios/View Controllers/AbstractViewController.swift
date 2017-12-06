@@ -12,7 +12,7 @@ class AbstractViewController: GAITrackedViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.edgesForExtendedLayout = UIRectEdge.None
+        self.edgesForExtendedLayout = UIRectEdge()
     }
 
     override func didReceiveMemoryWarning() {
@@ -20,7 +20,7 @@ class AbstractViewController: GAITrackedViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    private var transitionView: UIView?
+    fileprivate var transitionView: UIView?
     func removeTransitionView() {
         //remove the transition view if it exists
         transitionView?.removeFromSuperview()
@@ -30,7 +30,7 @@ class AbstractViewController: GAITrackedViewController {
     func addTransitionView() {
         //create and add the transition view: A screenshot of the current UIScreen
         removeTransitionView()
-        transitionView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(true)
+        transitionView = UIScreen.main.snapshotView(afterScreenUpdates: true)
         self.view.addSubview(transitionView!)
     }
 

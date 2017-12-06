@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import pop
+import SVProgressHUD
 
 class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecognizerDelegate, POPAnimationDelegate {
     
@@ -38,17 +40,17 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     
     var delegate: MyCarAbstractViewControllerDelegate?
     
-    private var timer: NSTimer?
-    private var didAnimate = false
+    fileprivate var timer: Timer?
+    fileprivate var didAnimate = false
     
-    private let SMALL_VERTICAL_MARGIN = 5
-    private let MEDIUM_VERTICAL_MARGIN = 10
-    private let LARGE_VERTICAL_MARGIN = 20
+    fileprivate let SMALL_VERTICAL_MARGIN = 5
+    fileprivate let MEDIUM_VERTICAL_MARGIN = 10
+    fileprivate let LARGE_VERTICAL_MARGIN = 20
     
-    private var smallerVerticalMargin: Int = 0
-    private var largerVerticalMargin: Int = 0
+    fileprivate var smallerVerticalMargin: Int = 0
+    fileprivate var largerVerticalMargin: Int = 0
 
-    private let BUTTONS_TRANSLATION_X = CGFloat(2*36 + 20 + 14)
+    fileprivate let BUTTONS_TRANSLATION_X = CGFloat(2*36 + 20 + 14)
     
     let BOTTOM_BUTTON_HEIGHT: CGFloat = 36
 
@@ -71,12 +73,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         bottomButtonContainer = UIView()
         bottomButtonLabel = UILabel()
         bottomPillButton = UIButton()
-        bottomSelectionControl = SelectionControl(titles: ["yes".localizedString.uppercaseString, "no".localizedString.uppercaseString])
+        bottomSelectionControl = SelectionControl(titles: ["yes".localizedString.uppercased(), "no".localizedString.uppercased()])
 
         bigButtonContainer = UIView()
-        leaveButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "cancel".localizedString.uppercaseString)
+        leaveButton = ViewFactory.redRoundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, font: Styles.FontFaces.regular(12), text: "cancel".localizedString.uppercased())
         
-        reportButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "report_an_error".localizedString.uppercaseString, textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
+        reportButton = ViewFactory.roundedButtonWithHeight(BOTTOM_BUTTON_HEIGHT, backgroundColor: Styles.Colors.stone, font: Styles.FontFaces.regular(12), text: "report_an_error".localizedString.uppercased(), textColor: Styles.Colors.petrol2, highlightedTextColor: Styles.Colors.petrol1)
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -91,17 +93,17 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         setupConstraints()
         
         //add a tap gesture recognizer
-        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
-        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: Selector("handleSingleTap:"))
-        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: Selector("showSpotOnMap"))
+        let tapRecognizer1 = UITapGestureRecognizer(target: self, action: #selector(MyCarCheckedInViewController.handleSingleTap(_:)))
+        let tapRecognizer2 = UITapGestureRecognizer(target: self, action: #selector(MyCarCheckedInViewController.handleSingleTap(_:)))
+        let tapRecognizer3 = UITapGestureRecognizer(target: self, action: #selector(MyCarCheckedInViewController.showSpotOnMap))
         tapRecognizer1.delegate = self
         tapRecognizer2.delegate = self
         tapRecognizer3.delegate = self
         containerView.addGestureRecognizer(tapRecognizer1)
         backgroundImageView.addGestureRecognizer(tapRecognizer2)
-        backgroundImageView.userInteractionEnabled = true
+        backgroundImageView.isUserInteractionEnabled = true
         logoView.addGestureRecognizer(tapRecognizer3)
-        logoView.userInteractionEnabled = true
+        logoView.isUserInteractionEnabled = true
     }
     
     
@@ -110,7 +112,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         self.screenName = "My Car - Checked in"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if (spot == nil) {
@@ -123,19 +125,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
     }
     
-    override func viewDidDisappear(animated: Bool) {
+    override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.timer?.invalidate()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         
         if (spot == nil) {
             
             if (!Settings.firstCheckin()) {
-                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                SVProgressHUD.setBackgroundColor(UIColor.clear)
                 SVProgressHUD.show()
             }
             
@@ -150,7 +152,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                     }
                     
                     if(Settings.firstCheckin()) {
-                        NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("showFirstCheckinMessage"), userInfo: nil, repeats: false)
+                        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(MyCarCheckedInViewController.showFirstCheckinMessage), userInfo: nil, repeats: false)
                     }
                 }
             }
@@ -190,13 +192,13 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
 //        let blur = screenshot.applyBlurWithRadius(3, tintColor: UIColor.blackColor().colorWithAlphaComponent(0.85), saturationDeltaFactor: 1, maskImage: UIImage(named:"bg_mycar"))
 //        
 //        backgroundImageView.image = blur
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
         
         segmentedControl.setPressedHandler(segmentedControlTapped)
         self.view.addSubview(segmentedControl)
         
-        shareButton.addTarget(self, action: "shareButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        shareButton.addTarget(self, action: #selector(MyCarCheckedInViewController.shareButtonTapped), for: UIControlEvents.touchUpInside)
         self.view.addSubview(shareButton)
 
         logoView.image = UIImage(named: "icon_checkin")
@@ -204,7 +206,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         view.addSubview(containerView)
         
-        locationTitleLabel.text = "checked_in_message".localizedString.uppercaseString
+        locationTitleLabel.text = "checked_in_message".localizedString.uppercased()
         containerView.addSubview(locationTitleLabel)
         
         locationLabel.text = "PRKNG"
@@ -214,7 +216,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         availableTimeLabel.textColor = Styles.Colors.red2
         availableTimeLabel.text = "0:00"
-        availableTimeLabel.textAlignment = NSTextAlignment.Center
+        availableTimeLabel.textAlignment = NSTextAlignment.center
         containerView.addSubview(availableTimeLabel)
         
         view.addSubview(bigButtonContainer)
@@ -230,19 +232,19 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         bottomPillButton.layer.cornerRadius = 12
         bottomPillButton.layer.borderWidth = 1
         bottomPillButton.titleLabel?.font = Styles.FontFaces.regular(12)
-        bottomPillButton.setTitle("pay".localizedString.uppercaseString, forState: UIControlState.Normal)
-        bottomPillButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
-        bottomPillButton.layer.borderColor = Styles.Colors.stone.CGColor
-        bottomPillButton.addTarget(self, action: "payButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        bottomPillButton.setTitle("pay".localizedString.uppercased(), for: UIControlState())
+        bottomPillButton.setTitleColor(Styles.Colors.stone, for: UIControlState())
+        bottomPillButton.layer.borderColor = Styles.Colors.stone.cgColor
+        bottomPillButton.addTarget(self, action: #selector(MyCarCheckedInViewController.payButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         bottomButtonContainer.addSubview(bottomPillButton)
 
-        bottomSelectionControl.addTarget(self, action: "nightBeforeSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        bottomSelectionControl.addTarget(self, action: #selector(MyCarCheckedInViewController.nightBeforeSelectionValueChanged), for: UIControlEvents.valueChanged)
         bottomButtonContainer.addSubview(bottomSelectionControl)
         
-        reportButton.addTarget(self, action: "reportButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        reportButton.addTarget(self, action: #selector(MyCarCheckedInViewController.reportButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         bigButtonContainer.addSubview(reportButton)
 
-        leaveButton.addTarget(self, action: "leaveButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        leaveButton.addTarget(self, action: #selector(MyCarCheckedInViewController.leaveButtonTapped), for: UIControlEvents.touchUpInside)
         bigButtonContainer.addSubview(leaveButton)
         
     }
@@ -252,7 +254,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         smallerVerticalMargin = MEDIUM_VERTICAL_MARGIN
         largerVerticalMargin = LARGE_VERTICAL_MARGIN
         
-        if UIScreen.mainScreen().bounds.size.height == 480 {
+        if UIScreen.main.bounds.size.height == 480 {
             smallerVerticalMargin = SMALL_VERTICAL_MARGIN
             largerVerticalMargin = MEDIUM_VERTICAL_MARGIN
         }
@@ -274,7 +276,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         logoView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(68, 68))
+            make.size.equalTo(CGSize(width: 68, height: 68))
             make.centerX.equalTo(self.view)
             make.top.equalTo(self.segmentedControl.snp_bottom).offset(40)
         }
@@ -370,7 +372,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             case .Paid:
                 let interval = self.spot!.currentlyActiveRuleEndTime
                 logoView.image = UIImage(named: "icon_checkin_metered")
-                availableTitleLabel.text = "pay_reminder".localizedString.uppercaseString
+                availableTitleLabel.text = "pay_reminder".localizedString.uppercased()
                 
                 let smallFont = Styles.FontFaces.regular(16)
                 let bigFont = Styles.Fonts.h2r
@@ -381,28 +383,28 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 let space = NSMutableAttributedString(string: " • ", attributes: [NSFontAttributeName: bigFont])
                 let until = interval.untilAttributedString(bigFont, secondPartFont: smallFont)
                 
-                attributedString.appendAttributedString(number)
-                attributedString.appendAttributedString(perHour)
-                attributedString.appendAttributedString(space)
-                attributedString.appendAttributedString(until)
+                attributedString.append(number)
+                attributedString.append(perHour)
+                attributedString.append(space)
+                attributedString.append(until)
                 
                 availableTimeLabel.attributedText = attributedString
                 
-                bottomButtonContainer.hidden = false
-                bottomSelectionControl.hidden = true
+                bottomButtonContainer.isHidden = false
+                bottomSelectionControl.isHidden = true
                 
                 let coordinate = spot!.selectedButtonLocation ?? spot!.buttonLocations.first!
                 if let closestCity = CityOperations.sharedInstance.closestCityToCoordinate(coordinate) {
                     switch closestCity.name {
                     case "montreal":
-                        bottomButtonLabel.text = "p_service_mobile_user".localizedString.uppercaseString
+                        bottomButtonLabel.text = "p_service_mobile_user".localizedString.uppercased()
                     case "quebec":
-                        bottomButtonLabel.text = "copilote_mobile_user".localizedString.uppercaseString
+                        bottomButtonLabel.text = "copilote_mobile_user".localizedString.uppercased()
                     default:
-                        bottomButtonContainer.hidden = true
+                        bottomButtonContainer.isHidden = true
                     }
                 } else {
-                    bottomButtonContainer.hidden = true
+                    bottomButtonContainer.isHidden = true
                 }
 
                 
@@ -415,7 +417,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                     availableTimeLabel.attributedText = spot!.bottomRightPrimaryText
                 } else {
                     if (interval > 59) {
-                        if availableTitleLabel.text == "available_until".localizedString.uppercaseString {
+                        if availableTitleLabel.text == "available_until".localizedString.uppercased() {
                             availableTimeLabel.attributedText = ParkingSpot.availableUntilAttributed(interval, firstPartFont: Styles.Fonts.h1r, secondPartFont: Styles.Fonts.h3r)
                         } else {
                             availableTimeLabel.attributedText = NSAttributedString(string: ParkingSpot.availableHourString(interval, limited: false))
@@ -427,15 +429,15 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                     }
                 }
                 
-                bottomButtonContainer.hidden = true
-                bottomSelectionControl.hidden = false
-                bottomPillButton.hidden = true
+                bottomButtonContainer.isHidden = true
+                bottomSelectionControl.isHidden = false
+                bottomPillButton.isHidden = true
 
-                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval) % (24*3600)
+                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval).truncatingRemainder(dividingBy: (24*3600))
                 let isDayBefore = interval <= 24*3600
                 if intervalInEndDay < 12*3600 && (DateUtil.timeIntervalSinceDayStart() <= 16*3600 || !isDayBefore) {
-                    bottomButtonContainer.hidden = false
-                    bottomButtonLabel.text = "notified_night_before".localizedString.uppercaseString
+                    bottomButtonContainer.isHidden = false
+                    bottomButtonLabel.text = "notified_night_before".localizedString.uppercased()
                     let i = Settings.shouldNotifyTheNightBefore() ? 0 : 1
                     bottomSelectionControl.selectOption(bottomSelectionControl.buttons[i], animated: false)
                 }
@@ -452,7 +454,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         //update the values every 2 seconds
         if self.timer == nil {
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: "updateValues", userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(MyCarCheckedInViewController.updateValues), userInfo: nil, repeats: true)
 
         }
         
@@ -466,18 +468,18 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             
             self.addChildViewController(checkinMessageVC!)
             self.view.addSubview(checkinMessageVC!.view)
-            checkinMessageVC!.didMoveToParentViewController(self)
+            checkinMessageVC!.didMove(toParentViewController: self)
             
             checkinMessageVC!.view.snp_makeConstraints(closure: { (make) -> () in
                 make.edges.equalTo(self.view)
             })
             
-            let tap = UITapGestureRecognizer(target: self, action: "hideFirstCheckinMessage")
+            let tap = UITapGestureRecognizer(target: self, action: #selector(MyCarCheckedInViewController.hideFirstCheckinMessage))
             checkinMessageVC!.view.addGestureRecognizer(tap)
             
             checkinMessageVC!.view.alpha = 0.0
             
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 self.checkinMessageVC!.view.alpha = 1.0
             })
             
@@ -490,12 +492,12 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         
         if let checkinMessageVC = self.checkinMessageVC {
             
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 checkinMessageVC.view.alpha = 0.0
                 }, completion: { (finished) -> Void in
                     checkinMessageVC.removeFromParentViewController()
                     checkinMessageVC.view.removeFromSuperview()
-                    checkinMessageVC.didMoveToParentViewController(nil)
+                    checkinMessageVC.didMove(toParentViewController: nil)
                     self.checkinMessageVC = nil
             })
             
@@ -507,17 +509,17 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     func shareButtonTapped() {
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Share Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Checked In", action: "Share Button Tapped", label: nil, value: nil).build() as! [AnyHashable: Any])
 
         createGoogleMapsLink(spot!.selectedButtonLocation ?? spot!.buttonLocations.first!)
     }
     
-    func createGoogleMapsLink(coordinate: CLLocationCoordinate2D) {
+    func createGoogleMapsLink(_ coordinate: CLLocationCoordinate2D) {
         let latitude = "\(coordinate.latitude)"
         let longitude = "\(coordinate.longitude)"
         let longUrlString = "http://maps.google.com/maps?q=" + latitude + "," + longitude + "&ll=" + latitude + "," + longitude + "&z=17"
 
-        request(Method.POST, URLString: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBVSdiMcYO1qpJIMbcOV9ATgWpSxsGvc1M", parameters: ["longUrl": longUrlString], encoding: ParameterEncoding.JSON).responseSwiftyJSON { (request, response, json, error) -> Void in
+        request(Method.POST, URLString: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBVSdiMcYO1qpJIMbcOV9ATgWpSxsGvc1M", parameters: ["longUrl": longUrlString], encoding: ParameterEncoding.json).responseSwiftyJSON { (request, response, json, error) -> Void in
             if error == nil && response?.statusCode == 200 {
                 if let shortUrlString = json["id"].string {
                     self.shareButtonTappedCompletion(shortUrlString)
@@ -528,18 +530,18 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
     }
     
-    func shareButtonTappedCompletion(url: String) {
+    func shareButtonTappedCompletion(_ url: String) {
         var text: String = "share_location_copy".localizedString
-        text = text.stringByReplacingOccurrencesOfString("[street_name]", withString: spot!.name)
+        text = text.replacingOccurrences(of: "[street_name]", with: spot!.name)
         text += "\n--\n" + url
         let activityViewController = UIActivityViewController( activityItems: [text], applicationActivities: nil)
-        self.presentViewController(activityViewController, animated: true, completion: nil)
+        self.present(activityViewController, animated: true, completion: nil)
     }
     
     func leaveButtonTapped() {
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Check Out Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Checked In", action: "Check Out Button Tapped", label: nil, value: nil).build() as! [AnyHashable: Any])
 
 //        SpotOperations.checkout({ (completed) -> Void in
             Settings.checkOut()
@@ -547,37 +549,37 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
 //        })
     }
     
-    func reportButtonTapped(sender: UIButton) {
+    func reportButtonTapped(_ sender: UIButton) {
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Report Button Tapped", label: nil, value: nil).build() as [NSObject: AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Checked In", action: "Report Button Tapped", label: nil, value: nil).build() as! [AnyHashable: Any])
 
         loadReportScreen(self.spot?.identifier)
     }
     
-    func payButtonTapped(sender: UIButton) {
+    func payButtonTapped(_ sender: UIButton) {
 
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Pay Button Tapped", label: bottomButtonLabel.text, value: nil).build() as [NSObject: AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Checked In", action: "Pay Button Tapped", label: bottomButtonLabel.text, value: nil).build() as! [AnyHashable: Any])
 
-        var url = NSURL(string: "")
+        var url = URL(string: "")
 
         let coordinate = spot!.selectedButtonLocation ?? spot!.buttonLocations.first!
         if let closestCity = CityOperations.sharedInstance.closestCityToCoordinate(coordinate) {
             switch closestCity.name {
             case "montreal":
-                url = NSURL(string: "https://itunes.apple.com/ca/app/p-service-mobile/id535957293")
+                url = URL(string: "https://itunes.apple.com/ca/app/p-service-mobile/id535957293")
             case "quebec":
-                url = NSURL(string: "copilote://")
-                if !UIApplication.sharedApplication().canOpenURL(url!) {
-                    url = NSURL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
+                url = URL(string: "copilote://")
+                if !UIApplication.shared.canOpenURL(url!) {
+                    url = URL(string: "https://itunes.apple.com/ca/app/copilote/id936501366")
                 }
             default:
                 break
             }
         }
 
-        UIApplication.sharedApplication().openURL(url!)
+        UIApplication.shared.openURL(url!)
     }
     
     func nightBeforeSelectionValueChanged() {
@@ -589,9 +591,9 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
                 Settings.setShouldNotifyTheNightBefore(true)
                 
                 let interval = Settings.checkInTimeRemaining()
-                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval) % (24*60*60)
+                let intervalInEndDay = (DateUtil.timeIntervalSinceDayStart() + interval).truncatingRemainder(dividingBy: (24*60*60))
                 
-                var date8pmBefore = NSDate(timeIntervalSinceNow:interval - intervalInEndDay - (4*60*60))
+                var date8pmBefore = Date(timeIntervalSinceNow:interval - intervalInEndDay - (4*60*60))
                 date8pmBefore = date8pmBefore.dateBySubtractingMinutes(date8pmBefore.minute())
 
                 Settings.scheduleNotification(date8pmBefore)
@@ -600,7 +602,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
             case 1:
                 //no you stupid iphone, stop trying to make early reminders happen. they're not going to happen.
                 Settings.setShouldNotifyTheNightBefore(false)
-                Settings.scheduleNotification(NSDate(timeIntervalSinceNow: Settings.checkInTimeRemaining() - NSTimeInterval(Settings.notificationTime() * 60)))
+                Settings.scheduleNotification(Date(timeIntervalSinceNow: Settings.checkInTimeRemaining() - TimeInterval(Settings.notificationTime() * 60)))
                 
                 break
             default:break
@@ -615,15 +617,15 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         if self.spot != nil {
             switch self.spot!.currentlyActiveRuleType {
             case .Paid:
-                availableTitleLabel.text = "pay_reminder".localizedString.uppercaseString
+                availableTitleLabel.text = "pay_reminder".localizedString.uppercased()
                 break
             default:
                 let interval = Settings.checkInTimeRemaining()
                 
                 if (interval > 2*3600) { // greater than 2 hours = show available until... by default
-                    availableTitleLabel.text = "available_until".localizedString.uppercaseString
+                    availableTitleLabel.text = "available_until".localizedString.uppercased()
                 } else {
-                    availableTitleLabel.text = "available_for".localizedString.uppercaseString
+                    availableTitleLabel.text = "available_for".localizedString.uppercased()
                 }
                 break
             }
@@ -637,18 +639,18 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         fadeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         fadeAnimation.type = kCATransitionFade
         fadeAnimation.duration = 0.4
-        availableTitleLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
-        availableTimeLabel.layer.addAnimation(fadeAnimation, forKey: "fade")
+        availableTitleLabel.layer.add(fadeAnimation, forKey: "fade")
+        availableTimeLabel.layer.add(fadeAnimation, forKey: "fade")
         
         //update values just in case we've run out of time since the last tap...
         updateValues()
         
         if availableTimeLabel.text != "time_up".localizedString
-            && availableTimeLabel.text != "pay_reminder".localizedString.uppercaseString {
-            if availableTitleLabel.text == "available_for".localizedString.uppercaseString {
-                availableTitleLabel.text = "available_until".localizedString.uppercaseString
+            && availableTimeLabel.text != "pay_reminder".localizedString.uppercased() {
+            if availableTitleLabel.text == "available_for".localizedString.uppercased() {
+                availableTitleLabel.text = "available_until".localizedString.uppercased()
             } else {
-                availableTitleLabel.text = "available_for".localizedString.uppercaseString
+                availableTitleLabel.text = "available_for".localizedString.uppercased()
             }
             updateValues()
         }
@@ -664,10 +666,10 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
     }
     
-    func handleSingleTap(recognizer: UITapGestureRecognizer) {
+    func handleSingleTap(_ recognizer: UITapGestureRecognizer) {
         
-        let tap = recognizer.locationInView(self.view)
-        let point = availableTitleLabel.convertPoint(availableTitleLabel.bounds.origin, toView: self.view)
+        let tap = recognizer.location(in: self.view)
+        let point = availableTitleLabel.convert(availableTitleLabel.bounds.origin, to: self.view)
         let pointY = point.y - CGFloat(largerVerticalMargin)/2
         
         if tap.y > pointY {
@@ -678,7 +680,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
     }
     
     //MARK- gesture recognizer delegate
-    func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
@@ -690,23 +692,23 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
         }
         
         let logoFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
-        logoFadeInAnimation.fromValue = NSNumber(int: 0)
-        logoFadeInAnimation.toValue = NSNumber(int: 1)
-        logoFadeInAnimation.duration = 0.3
-        logoView.layer.pop_addAnimation(logoFadeInAnimation, forKey: "logoFadeInAnimation")
+        logoFadeInAnimation?.fromValue = NSNumber(value: 0 as Int32)
+        logoFadeInAnimation?.toValue = NSNumber(value: 1 as Int32)
+        logoFadeInAnimation?.duration = 0.3
+        logoView.layer.pop_add(logoFadeInAnimation, forKey: "logoFadeInAnimation")
         
         let logoSpringAnimation = POPSpringAnimation(propertyNamed: kPOPLayerScaleXY)
-        logoSpringAnimation.fromValue = NSValue(CGPoint: CGPoint(x: 0.5, y: 0.5))
-        logoSpringAnimation.toValue = NSValue(CGPoint: CGPoint(x: 1, y: 1))
-        logoSpringAnimation.springBounciness = 20
-        logoView.layer.pop_addAnimation(logoSpringAnimation, forKey: "logoSpringAnimation")
+        logoSpringAnimation?.fromValue = NSValue(cgPoint: CGPoint(x: 0.5, y: 0.5))
+        logoSpringAnimation?.toValue = NSValue(cgPoint: CGPoint(x: 1, y: 1))
+        logoSpringAnimation?.springBounciness = 20
+        logoView.layer.pop_add(logoSpringAnimation, forKey: "logoSpringAnimation")
         
         let containerFadeInAnimation = POPBasicAnimation(propertyNamed: kPOPLayerOpacity)
-        containerFadeInAnimation.fromValue = NSNumber(int: 0)
-        containerFadeInAnimation.toValue = NSNumber(int: 1)
-        containerFadeInAnimation.duration = 0.6
-        containerFadeInAnimation.beginTime = CACurrentMediaTime() + 0.15
-        containerFadeInAnimation.completionBlock = {(anim, finished) in
+        containerFadeInAnimation?.fromValue = NSNumber(value: 0 as Int32)
+        containerFadeInAnimation?.toValue = NSNumber(value: 1 as Int32)
+        containerFadeInAnimation?.duration = 0.6
+        containerFadeInAnimation?.beginTime = CACurrentMediaTime() + 0.15
+        containerFadeInAnimation?.completionBlock = {(anim, finished) in
 //            // Slide in buttons once container fully visible
 //            let buttonSlideAnimation = POPBasicAnimation(propertyNamed: kPOPLayerTranslationY)
 //            buttonSlideAnimation.fromValue = NSNumber(float: Float(self.BUTTONS_TRANSLATION_X))
@@ -714,7 +716,7 @@ class MyCarCheckedInViewController: MyCarAbstractViewController, UIGestureRecogn
 //            buttonSlideAnimation.duration = 0.2
 //            self.bigButtonContainer.layer.pop_addAnimation(buttonSlideAnimation, forKey: "buttonSlideAnimation")
         }
-        self.containerView.layer.pop_addAnimation(containerFadeInAnimation, forKey: "containerFadeInAnimation")
+        self.containerView.layer.pop_add(containerFadeInAnimation, forKey: "containerFadeInAnimation")
 
         self.didAnimate = true
     }

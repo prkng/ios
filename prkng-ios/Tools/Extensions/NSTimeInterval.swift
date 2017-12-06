@@ -8,16 +8,16 @@
 
 import UIKit
 
-extension NSTimeInterval {
+extension TimeInterval {
     
-    func toString(condensed condensed: Bool) -> String {
+    func toString(condensed: Bool) -> String {
         
-        let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
-        let is24Hour = testFormat?.rangeOfString("a") == nil
+        let testFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)
+        let is24Hour = testFormat?.range(of: "a") == nil
         
         if is24Hour {
             let hours = Int((self / 3600))
-            let minutes  = Int((self / 60) % 60)
+            let minutes  = Int((self / 60).truncatingRemainder(dividingBy: 60))
             
             if (minutes != 0) {
                 return String(format: "%ldh%02ld", hours, minutes)
@@ -41,7 +41,7 @@ extension NSTimeInterval {
             var hours = Int((self / 3600))
             hours = hours >= 13 ? hours - 12 : hours
             hours = hours == 0 ? 12 : hours
-            let minutes  = Int((self / 60) % 60)
+            let minutes  = Int((self / 60).truncatingRemainder(dividingBy: 60))
             
             if (minutes != 0) {
                 return String(format: "%ld:%02ld%@", hours, minutes, amPm)
@@ -52,17 +52,17 @@ extension NSTimeInterval {
         
     }
     
-    func toAttributedString(condensed condensed: Bool, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+    func toAttributedString(condensed: Bool, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         
         let attrs = [NSFontAttributeName: firstPartFont]
         
-        let testFormat = NSDateFormatter.dateFormatFromTemplate("j", options: 0, locale: NSLocale.currentLocale())
-        let is24Hour = testFormat?.rangeOfString("a") == nil
+        let testFormat = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: Locale.current)
+        let is24Hour = testFormat?.range(of: "a") == nil
         
         if is24Hour {
             var text = ""
             let hours = Int((self / 3600))
-            let minutes  = Int((self / 60) % 60)
+            let minutes  = Int((self / 60).truncatingRemainder(dividingBy: 60))
             
             if (minutes != 0) {
                 text = String(format: "%ldh%02ld", hours, minutes)
@@ -93,7 +93,7 @@ extension NSTimeInterval {
             var hours = Int((self / 3600))
             hours = hours >= 13 ? hours - 12 : hours
             hours = hours == 0 ? 12 : hours
-            let minutes  = Int((self / 60) % 60)
+            let minutes  = Int((self / 60).truncatingRemainder(dividingBy: 60))
             
             if (minutes != 0) {
                 text = String(format: "%ld:%02ld", hours, minutes)
@@ -102,17 +102,17 @@ extension NSTimeInterval {
             }
             
             let attrText = NSMutableAttributedString(string: text, attributes: attrs)
-            attrText.appendAttributedString(amPmAttributed)
+            attrText.append(amPmAttributed)
             return attrText
             
         }
         
     }
     
-    func untilAttributedString(firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+    func untilAttributedString(_ firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         
         let attributedString = NSMutableAttributedString(string: "until".localizedString + " ", attributes: [NSFontAttributeName: firstPartFont])
-        attributedString.appendAttributedString(self.toAttributedString(condensed: true, firstPartFont: firstPartFont, secondPartFont: secondPartFont))
+        attributedString.append(self.toAttributedString(condensed: true, firstPartFont: firstPartFont, secondPartFont: secondPartFont))
         return attributedString
     }
     

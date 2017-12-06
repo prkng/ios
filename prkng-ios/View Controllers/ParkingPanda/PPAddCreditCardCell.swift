@@ -10,15 +10,15 @@ import Foundation
 
 class PPAddCreditCardCell: UITableViewCell {
     
-    private var addCreditCardImageView = UIImageView()
-    private var centeredLabel = UILabel()
+    fileprivate var addCreditCardImageView = UIImageView()
+    fileprivate var centeredLabel = UILabel()
     
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     init(reuseIdentifier: String?) {
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
-        self.accessoryType = .DisclosureIndicator
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        self.accessoryType = .disclosureIndicator
         self.setupSubviews()
         self.setNeedsUpdateConstraints()
     }
@@ -37,7 +37,7 @@ class PPAddCreditCardCell: UITableViewCell {
     func setupSubviews() {
         
         //this image should be 36x25 to match CardIO's CardIOCreditCardInfo.logoForCardType(cardType: CardIOCreditCardType) method
-        addCreditCardImageView.contentMode = .Center
+        addCreditCardImageView.contentMode = .center
         addCreditCardImageView.image = UIImage(named: "btn_accessory_plus")
         self.contentView.addSubview(addCreditCardImageView)
         

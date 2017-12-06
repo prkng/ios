@@ -12,7 +12,7 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
 
     var popupVC: PRKPopupViewController?
 
-    func loadReportScreen(spotId : String?) {
+    func loadReportScreen(_ spotId : String?) {
         
         let reportViewController = ReportViewController()
         reportViewController.spotId = spotId
@@ -21,7 +21,7 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
         
     }
     
-    func reportDidEnd(success: Bool) {
+    func reportDidEnd(_ success: Bool) {
         if success {
             showPopupForReportSuccess()
         }
@@ -33,18 +33,18 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
         
         self.addChildViewController(popupVC!)
         self.view.addSubview(popupVC!.view)
-        popupVC!.didMoveToParentViewController(self)
+        popupVC!.didMove(toParentViewController: self)
         
         popupVC!.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(self.view)
         })
         
-        let tap = UITapGestureRecognizer(target: self, action: "dismissPopup")
+        let tap = UITapGestureRecognizer(target: self, action: #selector(MyCarAbstractViewController.dismissPopup))
         popupVC!.view.addGestureRecognizer(tap)
         
         popupVC!.view.alpha = 0.0
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.popupVC!.view.alpha = 1.0
         })
         
@@ -54,12 +54,12 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
         
         if let popup = self.popupVC {
             
-            UIView.animateWithDuration(0.2, animations: { () -> Void in
+            UIView.animate(withDuration: 0.2, animations: { () -> Void in
                 popup.view.alpha = 0.0
                 }, completion: { (finished) -> Void in
                     popup.removeFromParentViewController()
                     popup.view.removeFromSuperview()
-                    popup.didMoveToParentViewController(nil)
+                    popup.didMove(toParentViewController: nil)
                     self.popupVC = nil
             })
             
@@ -74,16 +74,16 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
     var historyVC = HistoryViewController()
     var ppTransactionsVC = PPTransactionsViewController()
     
-    func segmentedControlTapped(index: UInt) {
+    func segmentedControlTapped(_ index: UInt) {
         
         let removeActiveVC = {
             if self.activeVC != nil {
-                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
                     self.activeVC!.view.alpha = 0.0
                     }, completion: { (completed) -> Void in
                         self.activeVC!.removeFromParentViewController()
                         self.activeVC!.view.removeFromSuperview()
-                        self.activeVC!.willMoveToParentViewController(nil)
+                        self.activeVC!.willMove(toParentViewController: nil)
                         self.activeVC = nil
                 })
             }
@@ -92,7 +92,7 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
         let switchActiveVC = { (newViewController: UIViewController) -> Void in
             
             newViewController.view.alpha = 0.0;
-            newViewController.willMoveToParentViewController(self)
+            newViewController.willMove(toParentViewController: self)
             self.addChildViewController(newViewController)
             self.view.addSubview(newViewController.view)
             
@@ -100,21 +100,21 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
                 make.edges.equalTo(self.view)
             })
             
-            self.view.bringSubviewToFront(self.segmentedControl)
+            self.view.bringSubview(toFront: self.segmentedControl)
 
-            UIView.animateWithDuration(0.1, animations: { () -> Void in
+            UIView.animate(withDuration: 0.1, animations: { () -> Void in
                 
                 newViewController.view.alpha = 1.0
 
-                }) { (finished) -> Void in
+                }, completion: { (finished) -> Void in
                     if self.activeVC != nil {
                         self.activeVC?.view.alpha = 0.0
                         self.activeVC!.removeFromParentViewController()
                         self.activeVC!.view.removeFromSuperview()
-                        self.activeVC!.willMoveToParentViewController(nil)
+                        self.activeVC!.willMove(toParentViewController: nil)
                     }
                     self.activeVC = newViewController
-            }
+            }) 
 
         }
         
@@ -123,14 +123,14 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
             if activeVC != nil {
                 removeActiveVC()
                 let tracker = GAI.sharedInstance().defaultTracker
-                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "Now", value: nil).build() as [NSObject: AnyObject])
+                tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Checked In", action: "Top Slider Value Changed", label: "Now", value: nil).build() as! [AnyHashable: Any])
             }
         } else if index == 1 {
             //transition to HISTORY
             if activeVC != historyVC {
                 switchActiveVC(historyVC)
                 let tracker = GAI.sharedInstance().defaultTracker
-                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "History", value: nil).build() as [NSObject: AnyObject])
+                tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Checked In", action: "Top Slider Value Changed", label: "History", value: nil).build() as! [AnyHashable: Any])
 
             }
         } else if index == 2 {
@@ -139,7 +139,7 @@ class MyCarAbstractViewController: AbstractViewController, ReportViewControllerD
                 ppTransactionsVC = PPTransactionsViewController()
                 switchActiveVC(ppTransactionsVC)
                 let tracker = GAI.sharedInstance().defaultTracker
-                tracker.send(GAIDictionaryBuilder.createEventWithCategory("My Car - Checked In", action: "Top Slider Value Changed", label: "Reservations", value: nil).build() as [NSObject: AnyObject])
+                tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "My Car - Checked In", action: "Top Slider Value Changed", label: "Reservations", value: nil).build() as! [AnyHashable: Any])
                 
             }
         }
@@ -151,5 +151,5 @@ protocol MyCarAbstractViewControllerDelegate {
     func loadHereTab()
     func loadSearchInHereTab()
     func reloadMyCarTab()
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, showing: Bool)
+    func goToCoordinate(_ coordinate: CLLocationCoordinate2D, named name: String, showing: Bool)
 }

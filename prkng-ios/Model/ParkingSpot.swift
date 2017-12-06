@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 func ==(lhs: ParkingSpot, rhs: ParkingSpot) -> Bool {
     return lhs.hashValue == rhs.hashValue
@@ -26,7 +27,7 @@ class ParkingSpot: NSObject, DetailObject {
     var buttonLocations: [CLLocationCoordinate2D]
     var rules: Array<ParkingRule>
     var line: Shape
-    private var parkingRuleType: ParkingRuleType
+    fileprivate var parkingRuleType: ParkingRuleType
     
     var userInfo: [String:AnyObject] //to maintain backwards compatibility with mapbox
         
@@ -78,7 +79,7 @@ class ParkingSpot: NSObject, DetailObject {
                 }
             }
         }
-        return "hourly".localizedString.uppercaseString
+        return "hourly".localizedString.uppercased()
         }
     }
     var bottomLeftPrimaryText: NSAttributedString? { get {
@@ -87,7 +88,7 @@ class ParkingSpot: NSObject, DetailObject {
         case .Paid, .PaidTimeMax:
             let currencyString = NSMutableAttributedString(string: "$", attributes: [NSFontAttributeName: Styles.Fonts.h4rVariable, NSBaselineOffsetAttributeName: 5])
             let numberString = NSMutableAttributedString(string: self.currentlyActiveRule.paidHourlyRateString, attributes: [NSFontAttributeName: Styles.Fonts.h2rVariable])
-            currencyString.appendAttributedString(numberString)
+            currencyString.append(numberString)
             return currencyString
         default:
             return nil
@@ -104,7 +105,7 @@ class ParkingSpot: NSObject, DetailObject {
                 }
             }
         }
-        return UIScreen.mainScreen().bounds.width == 320 ? 100 : 110
+        return UIScreen.main.bounds.width == 320 ? 100 : 110
         }
     }
     
@@ -112,25 +113,25 @@ class ParkingSpot: NSObject, DetailObject {
         if self.currentlyActiveRule.ruleType == .Free {
             if let next = self.nextRule {
                 if next.ruleType == .SnowRestriction {
-                    return "snow_removal_planned".localizedString.uppercaseString
+                    return "snow_removal_planned".localizedString.uppercased()
                 }
             }
         }
         switch self.currentlyActiveRuleType {
         case .Paid:
-            return "metered".localizedString.uppercaseString
+            return "metered".localizedString.uppercased()
         default:
             
             if self.isAlwaysAuthorized() {
-                return "spot_allowed".localizedString.uppercaseString
+                return "spot_allowed".localizedString.uppercased()
             }
 
             let interval = self.availableTimeInterval()
             
             if (interval > 2*3600) { // greater than 2 hours = show available until... by default
-                return "until".localizedString.uppercaseString
+                return "until".localizedString.uppercased()
             } else {
-                return "for".localizedString.uppercaseString
+                return "for".localizedString.uppercased()
             }
 
         }
@@ -259,29 +260,29 @@ class ParkingSpot: NSObject, DetailObject {
     }
     
     //returns something like 29:12
-    func availableHourString(limited: Bool) -> String {
+    func availableHourString(_ limited: Bool) -> String {
         let interval = availableTimeInterval()
         return ParkingSpot.availableHourString(interval, limited: limited)
     }
     
-    static func availableHourString(interval: NSTimeInterval, limited: Bool) -> String {
+    static func availableHourString(_ interval: TimeInterval, limited: Bool) -> String {
         
         if (limited && interval >= 24 * 3600) {
             return "24:00+"
         }
         
-        let minutes  = Int((interval / 60) % 60)
+        let minutes  = Int((interval / 60).truncatingRemainder(dividingBy: 60))
         let hours = Int((interval / 3600))
         return String(format: "%02ld:%02ld", hours, minutes)
     }
 
     //returns "30 minutes" or "2 hours" or similar
-    func availableMinutesOrHoursStringAttributed(font: UIFont) -> NSAttributedString {
+    func availableMinutesOrHoursStringAttributed(_ font: UIFont) -> NSAttributedString {
         let interval = availableTimeInterval()
         return ParkingSpot.availableMinutesOrHoursStringAttributed(interval, font: font)
     }
     
-    static func availableMinutesOrHoursStringAttributed(interval: NSTimeInterval, font: UIFont) -> NSAttributedString {
+    static func availableMinutesOrHoursStringAttributed(_ interval: TimeInterval, font: UIFont) -> NSAttributedString {
         let minutes  = Int(interval / 60)
         
         var timeString = String(format: "%ld minutes", minutes)
@@ -304,60 +305,60 @@ class ParkingSpot: NSObject, DetailObject {
         return ParkingSpot.availableUntil(interval)
     }
     
-    static func availableUntil(availableTimeInterval: NSTimeInterval) -> String {
+    static func availableUntil(_ availableTimeInterval: TimeInterval) -> String {
         
-        let dateAtStartOfNextRule = NSDate(timeIntervalSinceNow: availableTimeInterval)
+        let dateAtStartOfNextRule = Date(timeIntervalSinceNow: availableTimeInterval)
         
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         
         formatter.dateFormat = getDateFormatString(dateAtStartOfNextRule)
         
-        var availableUntil = formatter.stringFromDate(dateAtStartOfNextRule)
+        var availableUntil = formatter.string(from: dateAtStartOfNextRule)
         
         //this line is to convert aujourd hui back into aujourd'hui
-        availableUntil = availableUntil.stringByReplacingOccurrencesOfString("d h", withString: "d'h", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        availableUntil = availableUntil.replacingOccurrences(of: "d h", with: "d'h", options: NSString.CompareOptions.literal, range: nil)
 
         return availableUntil
     }
     
-    private static func getDateFormatString(date: NSDate) -> String {
+    fileprivate static func getDateFormatString(_ date: Date) -> String {
         
         var dateFormatString = "EEEE, " //ex: Wednesday,
-        dateFormatString += "'" + date.timeIntervalSinceDate(DateUtil.beginningDay(date)).toString(condensed: false) + "'"
+        dateFormatString += "'" + date.timeIntervalSince(DateUtil.beginningDay(date)).toString(condensed: false) + "'"
         
         //now make today be 'today' and tomorrow be 'tomorrow' 
         
         if date.isToday() {
             let today = "'" + "today".localizedString + "'"
-            dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("EEEE", withString: today, options: NSStringCompareOptions.LiteralSearch, range: nil)
-            dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("d'h", withString: "d h", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            dateFormatString = dateFormatString.replacingOccurrences(of: "EEEE", with: today, options: NSString.CompareOptions.literal, range: nil)
+            dateFormatString = dateFormatString.replacingOccurrences(of: "d'h", with: "d h", options: NSString.CompareOptions.literal, range: nil)
         } else if date.isTomorrow() {
             let tomorrow = "'" + "tomorrow".localizedString + "'"
-            dateFormatString = dateFormatString.stringByReplacingOccurrencesOfString("EEEE", withString: tomorrow, options: NSStringCompareOptions.LiteralSearch, range: nil)
+            dateFormatString = dateFormatString.replacingOccurrences(of: "EEEE", with: tomorrow, options: NSString.CompareOptions.literal, range: nil)
         }
 
         return dateFormatString
         
     }
     
-    func availableUntilAttributed(firstPartFont firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+    func availableUntilAttributed(firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         let availableTimeInterval = self.availableTimeInterval()
         return ParkingSpot.availableUntilAttributed(availableTimeInterval, firstPartFont: firstPartFont, secondPartFont: secondPartFont)
     }
     
-    static func availableUntilAttributed(availableTimeInterval: NSTimeInterval, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
+    static func availableUntilAttributed(_ availableTimeInterval: TimeInterval, firstPartFont: UIFont, secondPartFont: UIFont) -> NSAttributedString {
         
-        let dateAtStartOfNextRule = NSDate(timeIntervalSinceNow: availableTimeInterval)
+        let dateAtStartOfNextRule = Date(timeIntervalSinceNow: availableTimeInterval)
         
-        let formatter = NSDateFormatter()
+        let formatter = DateFormatter()
         
         let dateFormatString = getDateFormatString(dateAtStartOfNextRule)
         
         formatter.dateFormat = dateFormatString
-        var formattedDate = formatter.stringFromDate(dateAtStartOfNextRule)
+        var formattedDate = formatter.string(from: dateAtStartOfNextRule)
         
         //this line is to convert aujourd hui back into aujourd'hui
-        formattedDate = formattedDate.stringByReplacingOccurrencesOfString("d h", withString: "d'h", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        formattedDate = formattedDate.replacingOccurrences(of: "d h", with: "d'h", options: NSString.CompareOptions.literal, range: nil)
 
         //now we split the AM/PM part out to the second part
         var firstPart = formattedDate
@@ -371,23 +372,23 @@ class ParkingSpot: NSObject, DetailObject {
         let attributedString = NSMutableAttributedString(string: firstPart, attributes: firstPartAttrs)
         
         let secondPartAttrs = [NSFontAttributeName: secondPartFont]
-        attributedString.appendAttributedString(NSMutableAttributedString(string: secondPart, attributes: secondPartAttrs))
+        attributedString.append(NSMutableAttributedString(string: secondPart, attributes: secondPartAttrs))
 
         return attributedString
     }
 
     
-    func availableTimeInterval() -> NSTimeInterval {
+    func availableTimeInterval() -> TimeInterval {
         let currentSecondsSinceDayStart = DateUtil.timeIntervalSinceDayStart()
         return availableTimeInterval(currentSecondsSinceDayStart)
     }
 
-    private static let alwaysAuthorizedInterval = 3600*24*7
+    fileprivate static let alwaysAuthorizedInterval = 3600*24*7
 
     //returns the closest future time that this parking spot is available until
     //returns -1 if we are in a restriction
     //returns 1 week from now if there are no restrictions whatsoever
-    func availableTimeInterval(currentSecondsSinceDayStart: NSTimeInterval) -> NSTimeInterval {
+    func availableTimeInterval(_ currentSecondsSinceDayStart: TimeInterval) -> TimeInterval {
         let secondsPerDay = 24 * 60 * 60
 
         var potentialNearestRules:[SimplifiedParkingRule] = []
@@ -396,7 +397,7 @@ class ParkingSpot: NSObject, DetailObject {
         //find the closest time period per rule, then pick whichever computes to the lesser amount of time
         for dayAgenda in sortedTimePeriods() {
             
-            for var i = 0; i < 7; i++ {
+            for i in 0 ..< 7 {
                 if let period = dayAgenda.timePeriods[i] {
                     /*the first day is special because you could be in the middle of a time max, 
                     or there could be something in the past that needs to be taken into consideration 
@@ -453,11 +454,11 @@ class ParkingSpot: NSObject, DetailObject {
         
         smallestTime = smallestTime == Int.max ? ParkingSpot.alwaysAuthorizedInterval : smallestTime
         
-        return NSTimeInterval(smallestTime)   
+        return TimeInterval(smallestTime)   
     }
     
     func isAlwaysAuthorized() -> Bool {
-        return availableTimeInterval() == NSTimeInterval(ParkingSpot.alwaysAuthorizedInterval)
+        return availableTimeInterval() == TimeInterval(ParkingSpot.alwaysAuthorizedInterval)
     }
     
     // returns an structure that looks like...
@@ -477,11 +478,11 @@ class ParkingSpot: NSObject, DetailObject {
             
             var timePeriods : Array<TimePeriod?> = []
             
-            for var i = today; i < 7; ++i {
+            for i in today ..< 7 += 1 {
                 timePeriods.append(self.rules[r].agenda[i])
             }
             
-            for var j = 0; j < today; ++j {
+            for j in 0 ..< today += 1 {
                 timePeriods.append(self.rules[r].agenda[j])
             }
             
@@ -511,7 +512,7 @@ class ParkingSpot: NSObject, DetailObject {
             }
         }
         
-        activeRules.sortInPlace(ParkingSpot.parkingRulesSorter)
+        activeRules.sort(by: ParkingSpot.parkingRulesSorter)
         
         return activeRules.first ?? ParkingRule(ruleType: ParkingRuleType.Free)
     }
@@ -525,8 +526,8 @@ class ParkingSpot: NSObject, DetailObject {
         }
     }
     
-    var currentlyActiveRuleEndTime: NSTimeInterval {
-        var endTime: NSTimeInterval = 0
+    var currentlyActiveRuleEndTime: TimeInterval {
+        var endTime: TimeInterval = 0
         let now = CGFloat(DateUtil.timeIntervalSinceDayStart())
 
         var scheduleItems = ScheduleHelper.getScheduleItems(self)
@@ -536,7 +537,7 @@ class ParkingSpot: NSObject, DetailObject {
             if scheduleItem.columnIndex == 0 //since these are sorted, 0 means today!
                 && scheduleItem.startInterval <= now
                 && scheduleItem.endInterval >= now {
-                    endTime = NSTimeInterval(scheduleItem.endInterval)
+                    endTime = TimeInterval(scheduleItem.endInterval)
             }
         }
         
@@ -703,19 +704,19 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
     @objc var title: String? { get { return _title } }
     @objc var subtitle: String? { get { return _subtitle } }
     
-    private var _coordinate: CLLocationCoordinate2D
-    private var _title: String?
-    private var _subtitle: String?
+    fileprivate var _coordinate: CLLocationCoordinate2D
+    fileprivate var _title: String?
+    fileprivate var _subtitle: String?
     
     var userInfo = [String:AnyObject]()
     
-    private var annotationImage: UIImage?
-    func annotationImageWithZoom(zoom: Double) -> UIImage {
+    fileprivate var annotationImage: UIImage?
+    func annotationImageWithZoom(_ zoom: Double) -> UIImage {
         setupWithZoom(zoom)
         return annotationImage!
     }
-    private var reuseIdentifier: String = ""
-    func reuseIdentifierWithZoom(zoom: Double) -> String {
+    fileprivate var reuseIdentifier: String = ""
+    func reuseIdentifierWithZoom(_ zoom: Double) -> String {
         setupWithZoom(zoom)
         return reuseIdentifier
     }
@@ -743,7 +744,7 @@ class GenericMGLAnnotation: NSObject, MGLAnnotation, UserInfo {
         self._subtitle = subtitle
     }
     
-    func setupWithZoom(zoom: Double) {
+    func setupWithZoom(_ zoom: Double) {
         
         let annotationType = userInfo["type"] as! String
 

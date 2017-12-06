@@ -16,11 +16,11 @@ class PPTransactionTableViewCell: UITableViewCell {
         }
     }
     
-    private let topLabel = UILabel()
-    private let bottomLabel = UILabel()
+    fileprivate let topLabel = UILabel()
+    fileprivate let bottomLabel = UILabel()
 
-    private var didSetupSubviews : Bool = false
-    private var didSetupConstraints : Bool = true
+    fileprivate var didSetupSubviews : Bool = false
+    fileprivate var didSetupConstraints : Bool = true
     
     override func layoutSubviews() {
         if (!didSetupSubviews) {
@@ -67,18 +67,18 @@ class PPTransactionTableViewCell: UITableViewCell {
         
     }
     
-    private func setupTransaction() {
+    fileprivate func setupTransaction() {
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMM d, yyyy 'at' HH:mm"
 
-        let currentDate = NSDate()
-        let fromDateString = dateFormatter.stringFromDate(transaction?.startDateAndTime ?? currentDate)
-        let toDateString = NSDateFormatter.localizedStringFromDate(transaction?.endDateAndTime ?? currentDate, dateStyle: .NoStyle, timeStyle: .ShortStyle)
+        let currentDate = Date()
+        let fromDateString = dateFormatter.string(from: transaction?.startDateAndTime as! Date ?? currentDate)
+        let toDateString = DateFormatter.localizedString(from: transaction?.endDateAndTime as! Date ?? currentDate, dateStyle: .none, timeStyle: .short)
         topLabel.text = fromDateString + " - " + toDateString
         bottomLabel.text = transaction?.location.address
         
-        if transaction?.endDateAndTime?.earlierDate(currentDate) == currentDate {
+        if (transaction?.endDateAndTime as NSDate?)?.earlierDate(currentDate) == currentDate {
             //then the transaction is in the future
             topLabel.textColor = Styles.Colors.red2
             bottomLabel.textColor = Styles.Colors.midnight2

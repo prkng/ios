@@ -10,28 +10,28 @@ import UIKit
 
 class LoginPermissionsViewController: AbstractViewController {
     
-    private var backgroundImageView = UIImageView()
-    private var centerImageView = UIImageView()
-    private var bottomLabel = UILabel()
-    private var bottomLabelBackgroundView = UIView()
-    private var arrow = UIImageView(image: UIImage(named: "icon_arrow_up")!)
-    private var notificationFrame = UIView()
+    fileprivate var backgroundImageView = UIImageView()
+    fileprivate var centerImageView = UIImageView()
+    fileprivate var bottomLabel = UILabel()
+    fileprivate var bottomLabelBackgroundView = UIView()
+    fileprivate var arrow = UIImageView(image: UIImage(named: "icon_arrow_up")!)
+    fileprivate var notificationFrame = UIView()
     
-    private var work: () -> Void
-    private var completion: () -> Void
+    fileprivate var work: () -> Void
+    fileprivate var completion: () -> Void
     
-    private var passedPermissions = [String]()
+    fileprivate var passedPermissions = [String]()
     
-    init(work: () -> Void, completion: () -> Void) {
+    init(work: @escaping () -> Void, completion: @escaping () -> Void) {
         self.work = work
         self.completion = completion
         super.init(nibName: nil, bundle: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetPermission:", name: "registeredUserNotificationSettings", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "didGetPermission:", name: "changedLocationPermissions", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginPermissionsViewController.didGetPermission(_:)), name: NSNotification.Name(rawValue: "registeredUserNotificationSettings"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(LoginPermissionsViewController.didGetPermission(_:)), name: NSNotification.Name(rawValue: "changedLocationPermissions"), object: nil)
     }
 
-    func didGetPermission(notification: NSNotification) {
-        passedPermissions.append(notification.name)
+    func didGetPermission(_ notification: Notification) {
+        passedPermissions.append(notification.name.rawValue)
         
         if notification.name == "registeredUserNotificationSettings" {
             centerImageView.image = UIImage(named: "img_permissions_location")
@@ -39,14 +39,14 @@ class LoginPermissionsViewController: AbstractViewController {
             transition.duration = 0.7
             transition.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
             transition.type = kCATransitionFade
-            centerImageView.layer.addAnimation(transition, forKey: nil)
+            centerImageView.layer.add(transition, forKey: nil)
             bottomLabel.text = "location_permissions_bottom_text".localizedString
         }
         
         if passedPermissions.count >= 2 {
-            self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: "registeredUserNotificationSettings", object: nil)
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: "changedLocationPermissions", object: nil)
+            self.dismiss(animated: true, completion: { () -> Void in
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "registeredUserNotificationSettings"), object: nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "changedLocationPermissions"), object: nil)
                 self.completion()
             })
         }
@@ -68,7 +68,7 @@ class LoginPermissionsViewController: AbstractViewController {
         self.screenName = "Permissions View"
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.work()
     }
@@ -89,8 +89,8 @@ class LoginPermissionsViewController: AbstractViewController {
         centerImageView.image = UIImage(named: "img_permissions_notifications")
         view.addSubview(centerImageView)
         
-        if UIScreen.mainScreen().bounds.width == 320 {
-            bottomLabelBackgroundView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.3)
+        if UIScreen.main.bounds.width == 320 {
+            bottomLabelBackgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.3)
         }
         view.addSubview(bottomLabelBackgroundView)
         
@@ -99,7 +99,7 @@ class LoginPermissionsViewController: AbstractViewController {
         bottomLabel.shadowOffset = CGSize(width: 1, height: 1)
         bottomLabel.font = Styles.FontFaces.regular(17)
         bottomLabel.textColor = Styles.Colors.cream1
-        bottomLabel.textAlignment = .Center
+        bottomLabel.textAlignment = .center
         bottomLabel.text = "login_permissions_bottom_text".localizedString
         view.addSubview(bottomLabel)
         

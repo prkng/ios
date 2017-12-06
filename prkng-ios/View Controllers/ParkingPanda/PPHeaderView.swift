@@ -8,43 +8,67 @@
 
 import UIKit
 import MessageUI
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 class PPHeaderView: UIView, UIGestureRecognizerDelegate {
     
     var delegate: PPHeaderViewDelegate?
     
-    private var container = UIView()
-    private var backButtonImageView: UIButton
-    private var nextButtonLabel = UILabel()
-    private var headerButton = MKButton()
-    private var headerLabel = UILabel()
+    fileprivate var container = UIView()
+    fileprivate var backButtonImageView: UIButton
+    fileprivate var nextButtonLabel = UILabel()
+    fileprivate var headerButton = MKButton()
+    fileprivate var headerLabel = UILabel()
     
-    private(set) var BACKGROUND_COLOR = Styles.Colors.stone
-    private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
-    private(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.petrol2
-    private(set) var FOREGROUND_COLOR = Styles.Colors.cream1
-    private(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.anthracite1
-    private(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
+    fileprivate(set) var BACKGROUND_COLOR = Styles.Colors.stone
+    fileprivate(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
+    fileprivate(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.petrol2
+    fileprivate(set) var FOREGROUND_COLOR = Styles.Colors.cream1
+    fileprivate(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.anthracite1
+    fileprivate(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
     
-    private(set) var HEADER_HEIGHT = 80
-    private(set) var HEADER_FONT = Styles.FontFaces.regular(12)
+    fileprivate(set) var HEADER_HEIGHT = 80
+    fileprivate(set) var HEADER_FONT = Styles.FontFaces.regular(12)
     
-    private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
-    private(set) var BIG_CELL_HEIGHT: CGFloat = 61
+    fileprivate(set) var SMALL_CELL_HEIGHT: CGFloat = 48
+    fileprivate(set) var BIG_CELL_HEIGHT: CGFloat = 61
     
     var showsLeftButton: Bool {
         didSet {
-            backButtonImageView.hidden = !showsLeftButton
+            backButtonImageView.isHidden = !showsLeftButton
         }
     }
 
     var showsRightButton: Bool {
         didSet {
-            nextButtonLabel.hidden = !showsRightButton
+            nextButtonLabel.isHidden = !showsRightButton
         }
     }
     
-    var rightButtonText: String = "next".localizedString.uppercaseString {
+    var rightButtonText: String = "next".localizedString.uppercased() {
         didSet {
             nextButtonLabel.text = rightButtonText
         }
@@ -68,7 +92,7 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         showsLeftButton = true
         showsRightButton = true
         backButtonImageView = ViewFactory.outlineBackButton(BACKGROUND_TEXT_COLOR_EMPHASIZED)
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         
         setupViews()
     }
@@ -87,19 +111,19 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         headerLabel.numberOfLines = 0
         headerLabel.font = HEADER_FONT
         headerLabel.textColor = BACKGROUND_TEXT_COLOR_EMPHASIZED
-        headerLabel.textAlignment = .Center
+        headerLabel.textAlignment = .center
         
         nextButtonLabel.text = rightButtonText
         nextButtonLabel.font = HEADER_FONT
         nextButtonLabel.textColor = FOREGROUND_TEXT_COLOR_EMPHASIZED //red2
-        nextButtonLabel.textAlignment = .Right
+        nextButtonLabel.textAlignment = .right
         
         container.addSubview(headerLabel)
         container.addSubview(backButtonImageView)
         container.addSubview(nextButtonLabel)
         container.addSubview(headerButton)
         
-        let tapRec = UITapGestureRecognizer(target: self, action: "handleTap:")
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(PPHeaderView.handleTap(_:)))
         tapRec.delegate = self
         headerButton.addGestureRecognizer(tapRec)
         
@@ -122,8 +146,8 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         }
         
         headerLabel.snp_makeConstraints { (make) -> Void in
-            make.left.equalTo(container).offset(25 + backButtonImageView.intrinsicContentSize().width + 10)
-            make.right.equalTo(container).offset(-(10 + nextButtonLabel.intrinsicContentSize().width + 25))
+            make.left.equalTo(container).offset(25 + backButtonImageView.intrinsicContentSize.width + 10)
+            make.right.equalTo(container).offset(-(10 + nextButtonLabel.intrinsicContentSize.width + 25))
             make.top.equalTo(container).offset(10)
             make.bottom.equalTo(container).offset(-10)
         }
@@ -135,7 +159,7 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         super.updateConstraints()
     }
     
-    private func configureRipple() {
+    fileprivate func configureRipple() {
         if enableRipple {
             headerButton.rippleLayerColor = FOREGROUND_COLOR
             headerButton.rippleAniDuration = 0.35
@@ -146,7 +170,7 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
             headerButton.backgroundAniEnabled = true
             headerButton.shadowAniEnabled = true
 
-            headerButton.layer.shadowColor = UIColor.blackColor().CGColor
+            headerButton.layer.shadowColor = UIColor.black.cgColor
             headerButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
             headerButton.layer.shadowOpacity = 0.1
             headerButton.layer.shadowRadius = 0.5
@@ -160,10 +184,10 @@ class PPHeaderView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
-    func handleTap(tapRec: UITapGestureRecognizer) {
-        let tap = tapRec.locationInView(self)
-        let backCenterPoint = backButtonImageView.convertPoint(backButtonImageView.bounds.origin, toView: self)
-        let nextCenterPoint = nextButtonLabel.convertPoint(nextButtonLabel.bounds.origin, toView: self)
+    func handleTap(_ tapRec: UITapGestureRecognizer) {
+        let tap = tapRec.location(in: self)
+        let backCenterPoint = backButtonImageView.convert(backButtonImageView.bounds.origin, to: self)
+        let nextCenterPoint = nextButtonLabel.convert(nextButtonLabel.bounds.origin, to: self)
         
         let backDistance = tap.distanceToPoint(backCenterPoint)
         let nextDistance = tap.distanceToPoint(nextCenterPoint)

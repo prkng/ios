@@ -15,7 +15,7 @@ class TutorialContentViewController: GAITrackedViewController {
     var textLabel : UILabel
     var pageIndex : Int
     
-    private var SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE = UIScreen.mainScreen().bounds.height == 480 ? 30 : 0
+    fileprivate var SMALL_SCREEN_IMAGE_HEIGHT_DIFFERENCE = UIScreen.main.bounds.height == 480 ? 30 : 0
     
     init(backgroundImage : UIImage, image : UIImage, text : String, index : Int) {
         backgroundImageView = UIImageView()
@@ -63,13 +63,13 @@ class TutorialContentViewController: GAITrackedViewController {
         
         imageView.clipsToBounds = true
         imageView.alpha = 0
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
         view.addSubview(imageView)
         
         textLabel.textColor = Styles.Colors.cream1
         textLabel.font = Styles.FontFaces.light(17)
         textLabel.numberOfLines = 0
-        textLabel.textAlignment = NSTextAlignment.Center
+        textLabel.textAlignment = NSTextAlignment.center
         view.addSubview(textLabel)
     }
     

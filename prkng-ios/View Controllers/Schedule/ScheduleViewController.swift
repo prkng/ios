@@ -7,22 +7,35 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate {
     
-    private var scheduleItems : Array<ScheduleItemModel>
+    fileprivate var scheduleItems : Array<ScheduleItemModel>
 
-    private var scrollView : UIScrollView
-    private var contentView : UIView
-    private var leftView : ScheduleLeftView
-    private var columnViews : Array<ScheduleColumnView>
-    private var scheduleItemViews : Array<ScheduleItemView>
+    fileprivate var scrollView : UIScrollView
+    fileprivate var contentView : UIView
+    fileprivate var leftView : ScheduleLeftView
+    fileprivate var columnViews : Array<ScheduleColumnView>
+    fileprivate var scheduleItemViews : Array<ScheduleItemView>
     
-    private(set) var LEFT_VIEW_WIDTH : CGFloat
-    private(set) var COLUMN_SIZE : CGFloat
-    private(set) var COLUMN_HEADER_HEIGHT : CGFloat
-    private(set) var CONTENTVIEW_HEIGHT : CGFloat
-    private(set) var ITEM_HOUR_HEIGHT : CGFloat
+    fileprivate(set) var LEFT_VIEW_WIDTH : CGFloat
+    fileprivate(set) var COLUMN_SIZE : CGFloat
+    fileprivate(set) var COLUMN_HEADER_HEIGHT : CGFloat
+    fileprivate(set) var CONTENTVIEW_HEIGHT : CGFloat
+    fileprivate(set) var ITEM_HOUR_HEIGHT : CGFloat
     
     override init(spot: ParkingSpot, view: UIView) {
         scrollView = UIScrollView()
@@ -32,9 +45,9 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         columnViews = []
         scheduleItemViews = []
         
-        LEFT_VIEW_WIDTH = UIScreen.mainScreen().bounds.size.width * 0.18
-        COLUMN_SIZE = UIScreen.mainScreen().bounds.size.width * 0.28
-        CONTENTVIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height - Styles.Sizes.modalViewHeaderHeight - 71.0
+        LEFT_VIEW_WIDTH = UIScreen.main.bounds.size.width * 0.18
+        COLUMN_SIZE = UIScreen.main.bounds.size.width * 0.28
+        CONTENTVIEW_HEIGHT = UIScreen.main.bounds.size.height - Styles.Sizes.modalViewHeaderHeight - 71.0
         COLUMN_HEADER_HEIGHT = 45.0
         ITEM_HOUR_HEIGHT = (CONTENTVIEW_HEIGHT - COLUMN_HEADER_HEIGHT) / 24.0
         
@@ -61,7 +74,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
         self.screenName = "Schedule (Agenda) View"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateValues()
     }
@@ -73,7 +86,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
             for view in column.subviews {
                 if let subview =  view as? ScheduleItemView {
                     if(subview.rule.ruleType == ParkingRuleType.TimeMax) {
-                        column.bringSubviewToFront(subview)
+                        column.bringSubview(toFront: subview)
                     }
                 }
             }
@@ -83,7 +96,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
             for view in column.subviews {
                 if let subview =  view as? ScheduleItemView {
                     if(subview.rule.ruleType == ParkingRuleType.SnowRestriction) {
-                        column.bringSubviewToFront(subview)
+                        column.bringSubview(toFront: subview)
                     }
                 }
             }
@@ -164,7 +177,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
                 make.width.equalTo(self.COLUMN_SIZE)
                 make.left.equalTo(self.contentView).offset(self.COLUMN_SIZE * CGFloat(columnIndex))
             });
-            columnIndex++;
+            columnIndex += 1;
         }
         
         var itemIndex = 0
@@ -182,7 +195,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
                 make.right.equalTo(columnView)
             })
             
-            itemIndex++;
+            itemIndex += 1;
         }
         
     }
@@ -198,7 +211,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
     
     // UIScrollViewDelegate
     
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
         let kMaxIndex : CGFloat  = 7
         
@@ -211,7 +224,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
             targetIndex = kMaxIndex;
         }
         
-        targetContentOffset.memory.x = targetIndex * (self.COLUMN_SIZE)
+        targetContentOffset.pointee.x = targetIndex * (self.COLUMN_SIZE)
     }
     
 //    func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -228,11 +241,11 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
     
     //MARK: Helper functions directly related to this view controller
     
-    func scheduleItemViewOverlapsInColumn(itemView: ScheduleItemView, columnView:ScheduleColumnView) -> Bool {
+    func scheduleItemViewOverlapsInColumn(_ itemView: ScheduleItemView, columnView:ScheduleColumnView) -> Bool {
         
         var scheduleItemViewsInColumn: [ScheduleItemView] = []
         for view in columnView.subviews {
-            if view.isKindOfClass(ScheduleItemView) {
+            if view.isKind(of: ScheduleItemView.self) {
                 scheduleItemViewsInColumn.append(view as! ScheduleItemView)
             }
         }
@@ -248,7 +261,7 @@ class ScheduleViewController: PRKModalViewControllerChild, UIScrollViewDelegate 
 
 class ScheduleHelper {
         
-    static func getAgendaItems(spot: ParkingSpot, respectDoNotProcess: Bool) -> [AgendaItem] {
+    static func getAgendaItems(_ spot: ParkingSpot, respectDoNotProcess: Bool) -> [AgendaItem] {
         
         var agendaItems = [AgendaItem]()
         var dayIndexes = Set<Int>()
@@ -258,19 +271,19 @@ class ScheduleHelper {
         
         //convert schedule items into agenda items
         for scheduleItem in scheduleItems {
-            let agendaItem = AgendaItem(startTime: NSTimeInterval(scheduleItem.startInterval), endTime: NSTimeInterval(scheduleItem.endInterval), dayIndex: scheduleItem.columnIndex!, timeLimit: Int(scheduleItem.limit), rule: scheduleItem.rule)
+            let agendaItem = AgendaItem(startTime: TimeInterval(scheduleItem.startInterval), endTime: TimeInterval(scheduleItem.endInterval), dayIndex: scheduleItem.columnIndex!, timeLimit: Int(scheduleItem.limit), rule: scheduleItem.rule)
             agendaItems.append(agendaItem)
             dayIndexes.insert(scheduleItem.columnIndex!)
 
         }
         
-        let notPresentDayIndexes = Set(0...6).subtract(dayIndexes)
+        let notPresentDayIndexes = Set(0...6).subtracting(dayIndexes)
         for dayIndex in notPresentDayIndexes {
             let agendaItem = AgendaItem(startTime: 0, endTime: 24*3600, dayIndex: dayIndex, timeLimit: 0, rule: ParkingRule(ruleType: .Free))
             agendaItems.append(agendaItem)
         }
         
-        agendaItems.sortInPlace { (first, second) -> Bool in
+        agendaItems.sort { (first, second) -> Bool in
             if first.dayIndex == second.dayIndex {
                 return first.startTime < second.startTime
             } else {
@@ -281,7 +294,7 @@ class ScheduleHelper {
         return agendaItems
     }
 
-    static func getScheduleItems(spot: ParkingSpot) -> [ScheduleItemModel] {
+    static func getScheduleItems(_ spot: ParkingSpot) -> [ScheduleItemModel] {
 
         var scheduleItems = [ScheduleItemModel]()
         let agenda = spot.sortedTimePeriods()
@@ -296,12 +309,12 @@ class ScheduleHelper {
                     let scheduleItem = ScheduleItemModel(startF: startF, endF: endF, column : column, limitInterval: period!.timeLimit, rule: dayAgenda.rule)
                     scheduleItems.append(scheduleItem)
                 }
-                ++column
+                column += 1
             }
         }
         
         //the sorted time periods above are not enough to created a sorted schedule items list
-        scheduleItems.sortInPlace { (left, right) -> Bool in
+        scheduleItems.sort { (left, right) -> Bool in
             if left.columnIndex == right.columnIndex {
                 if left.startInterval == right.startInterval {
                     return ParkingSpot.parkingRulesSorter(left.rule, right.rule)
@@ -315,13 +328,13 @@ class ScheduleHelper {
         return scheduleItems
     }
     
-    static func processScheduleItems(scheduleItems: [ScheduleItemModel], respectDoNotProcess: Bool) -> [ScheduleItemModel] {
+    static func processScheduleItems(_ scheduleItems: [ScheduleItemModel], respectDoNotProcess: Bool) -> [ScheduleItemModel] {
         var newScheduleItems = [ScheduleItemModel]()
         
         for i in 0...6 {
             let tempScheduleItems = scheduleItems.filter({ (scheduleItem: ScheduleItemModel) -> Bool in
                 return scheduleItem.columnIndex! == i && (!respectDoNotProcess || !scheduleItem.shouldNotProcess)
-            }).sort({ (left: ScheduleItemModel, right: ScheduleItemModel) -> Bool in
+            }).sorted(by: { (left: ScheduleItemModel, right: ScheduleItemModel) -> Bool in
                 left.columnIndex! <= right.columnIndex!
                     && left.startInterval <= right.startInterval
                     && left.endInterval <= right.endInterval
@@ -423,7 +436,7 @@ class ScheduleItemModel {
     
     var startInterval: CGFloat
     var endInterval: CGFloat
-    var limit: NSTimeInterval
+    var limit: TimeInterval
     
     var heightMultiplier: CGFloat?
     var yIndexMultiplier: CGFloat?
@@ -445,7 +458,7 @@ class ScheduleItemModel {
         rule = ParkingRule(ruleType: ParkingRuleType.Free)
     }
     
-    init (startF : CGFloat, endF : CGFloat, column : Int, limitInterval: NSTimeInterval, rule: ParkingRule) {
+    init (startF : CGFloat, endF : CGFloat, column : Int, limitInterval: TimeInterval, rule: ParkingRule) {
         
         self.rule = rule
         startInterval = startF
@@ -479,7 +492,7 @@ class ScheduleItemModel {
 
     }
     
-    func isLongerThan(otherScheduleItem: ScheduleItemModel) -> Bool {
+    func isLongerThan(_ otherScheduleItem: ScheduleItemModel) -> Bool {
         let myInterval = endInterval - startInterval
         let otherInterval = otherScheduleItem.endInterval - otherScheduleItem.startInterval
         
@@ -500,7 +513,7 @@ class ScheduleItemModel {
         return offset
     }
     
-    private func offset() -> CGFloat {
+    fileprivate func offset() -> CGFloat {
         return 0
     }
     
@@ -515,7 +528,7 @@ class ScheduleItemModel {
     */
     let SIX_HOUR_BLOCK: CGFloat = 6*60*60
 
-    private func correctStartTimeToSixHourBlock(startF : CGFloat) -> CGFloat {
+    fileprivate func correctStartTimeToSixHourBlock(_ startF : CGFloat) -> CGFloat {
         
         var correctedStart: CGFloat = startF
 
@@ -533,7 +546,7 @@ class ScheduleItemModel {
 
     }
 
-    private func correctEndTimeToSixHourBlock(endF : CGFloat) -> CGFloat {
+    fileprivate func correctEndTimeToSixHourBlock(_ endF : CGFloat) -> CGFloat {
         
         var correctedEnd: CGFloat = endF
 
@@ -555,21 +568,21 @@ class ScheduleItemModel {
 
 class ScheduleTimeModel {
     
-    var timeInterval: NSTimeInterval
+    var timeInterval: TimeInterval
     var heightOffsetInHours : CGFloat
     var yIndexMultiplier : CGFloat { get { return CGFloat(timeInterval / 3600) } }
     
-    init(interval: NSTimeInterval, heightOff: CGFloat) {
+    init(interval: TimeInterval, heightOff: CGFloat) {
         timeInterval = interval
         self.heightOffsetInHours = heightOff
     }
 
     init(interval: CGFloat, heightOff: CGFloat) {
-        timeInterval = NSTimeInterval(interval)
+        timeInterval = TimeInterval(interval)
         self.heightOffsetInHours = heightOff
     }
 
-    static func getScheduleTimesFromItems(scheduleItems: [ScheduleItemModel]) -> [ScheduleTimeModel] {
+    static func getScheduleTimesFromItems(_ scheduleItems: [ScheduleItemModel]) -> [ScheduleTimeModel] {
         //maintain a list of the start and end values
         var allTimeValues = Set<CGFloat>()
         var startTimeValues = [CGFloat]()
@@ -585,7 +598,7 @@ class ScheduleTimeModel {
         }
         
         return Array(allTimeValues).map { (interval: CGFloat) -> ScheduleTimeModel in
-            if let index = endTimeValues.indexOf(interval) {
+            if let index = endTimeValues.index(of: interval) {
                 let heightOffsetInHours = endTimeHeightMultipliers[index] - ((endTimeValues[index] - startTimeValues[index]) / 3600)
                 return ScheduleTimeModel(interval: interval, heightOff: heightOffsetInHours)
             }

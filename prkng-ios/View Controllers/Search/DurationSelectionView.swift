@@ -23,7 +23,7 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     var amPm : Array<String>
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -69,8 +69,8 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     
     func setupSubviews() {
         
-        backgroundColor = UIColor.clearColor()
-        topContainer.backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.clear
+        topContainer.backgroundColor = UIColor.clear
         addSubview(topContainer)
         
         bottomContainer.backgroundColor = Styles.Colors.stone
@@ -120,12 +120,12 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     // UIPickerViewDataSource
     
     // returns the number of 'columns' to display.
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 3
     }
     
     // returns the # of rows in each component..
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if (component == 0) {
             return hours.count
         } else if (component == 1){
@@ -139,14 +139,14 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     
     // returns width of column and height of row for each component.
     
-    func pickerView(pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
         return 38
     }
     //    optional func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat
     
     
     
-    func pickerView(pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusingView view: UIView?) -> UIView {
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
         
         var pView = view as? UILabel
         
@@ -171,7 +171,7 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
         return pView!
     }
     
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         
     }
     
@@ -190,8 +190,8 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     
     
     func getHour() -> Int {
-        var hour : Int = pickerView.selectedRowInComponent(0)
-        let am : Bool = (pickerView.selectedRowInComponent(0) == 0)
+        var hour : Int = pickerView.selectedRow(inComponent: 0)
+        let am : Bool = (pickerView.selectedRow(inComponent: 0) == 0)
         
         if (!am) {
             hour += 12
@@ -202,7 +202,7 @@ class DurationSelectionView: UIView, UIPickerViewDataSource, UIPickerViewDelegat
     }
     
     func getMinutes() -> Int {
-        return (pickerView.selectedRowInComponent(0) * 10)
+        return (pickerView.selectedRow(inComponent: 0) * 10)
     }
     
 }

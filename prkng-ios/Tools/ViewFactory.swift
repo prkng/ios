@@ -15,22 +15,22 @@ struct ViewFactory {
 
     static func shareButton() -> UIButton {
         let button = UIButton()
-        let buttonImage = UIImage(named: "btn_share")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        button.setImage(buttonImage, forState: .Normal)
-        button.tintColor = Styles.Colors.stone.colorWithAlphaComponent(0.5)
+        let buttonImage = UIImage(named: "btn_share")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        button.setImage(buttonImage, for: UIControlState())
+        button.tintColor = Styles.Colors.stone.withAlphaComponent(0.5)
         return button
     }
     
     static func scheduleButton() -> UIButton {
         let scheduleButton : UIButton =  UIButton()
-        scheduleButton.setImage(UIImage(named: "btn_schedule_active"), forState: UIControlState.Normal)
-        scheduleButton.setImage(UIImage(named: "btn_schedule"), forState: UIControlState.Highlighted)
+        scheduleButton.setImage(UIImage(named: "btn_schedule_active"), for: UIControlState())
+        scheduleButton.setImage(UIImage(named: "btn_schedule"), for: UIControlState.highlighted)
         return scheduleButton
     }
     
     static func mapReturnButton() -> UIButton {
         let scheduleButton : UIButton =  UIButton()
-        scheduleButton.setImage(UIImage(named: "btn_map_return"), forState: UIControlState.Normal)
+        scheduleButton.setImage(UIImage(named: "btn_map_return"), for: UIControlState())
         return scheduleButton
     }
     
@@ -44,19 +44,19 @@ struct ViewFactory {
         return redRoundedButtonWithHeight(28, font: Styles.FontFaces.light(12), text: "")
     }
 
-    static func redRoundedButtonWithHeight(height: CGFloat, font: UIFont, text: String) -> UIButton {
+    static func redRoundedButtonWithHeight(_ height: CGFloat, font: UIFont, text: String) -> UIButton {
         
         let button = roundedButtonWithHeight(height, backgroundColor: Styles.Colors.red2, font: font, text: text, textColor: Styles.Colors.beige1, highlightedTextColor: Styles.Colors.beige2)
         return button
     }
 
-    static func roundedButtonWithHeight(height: CGFloat, backgroundColor: UIColor, font: UIFont, text: String, textColor: UIColor, highlightedTextColor: UIColor) -> UIButton {
+    static func roundedButtonWithHeight(_ height: CGFloat, backgroundColor: UIColor, font: UIFont, text: String, textColor: UIColor, highlightedTextColor: UIColor) -> UIButton {
         
         let button = UIButton()
         button.titleLabel?.font = font
-        button.setTitle(text, forState: UIControlState.Normal)
-        button.setTitleColor(textColor, forState: UIControlState.Normal)
-        button.setTitleColor(highlightedTextColor, forState: UIControlState.Highlighted)
+        button.setTitle(text, for: UIControlState())
+        button.setTitleColor(textColor, for: UIControlState())
+        button.setTitleColor(highlightedTextColor, for: UIControlState.highlighted)
         button.layer.cornerRadius = height/2
         button.backgroundColor = backgroundColor
         button.clipsToBounds = true
@@ -68,7 +68,7 @@ struct ViewFactory {
         
         let hugeButton = MKButton()
         hugeButton.titleLabel?.font = Styles.Fonts.h1
-        hugeButton.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
+        hugeButton.setTitleColor(Styles.Colors.red2, for: UIControlState())
         hugeButton.backgroundColor = Styles.Colors.stone
         hugeButton.backgroundLayerColor = Styles.Colors.stone
         hugeButton.rippleLayerColor = Styles.Colors.cream1
@@ -76,7 +76,7 @@ struct ViewFactory {
         hugeButton.cornerRadius = 0
         hugeButton.shadowAniEnabled = false
         
-        hugeButton.layer.shadowColor = UIColor.blackColor().CGColor
+        hugeButton.layer.shadowColor = UIColor.black.cgColor
         hugeButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         hugeButton.layer.shadowOpacity = 0.1
         hugeButton.layer.shadowRadius = 0.5
@@ -97,7 +97,7 @@ struct ViewFactory {
         
         let button = MKButton()
         button.titleLabel?.font = Styles.FontFaces.regular(15)
-        button.setTitleColor(Styles.Colors.petrol2, forState: UIControlState.Normal)
+        button.setTitleColor(Styles.Colors.petrol2, for: UIControlState())
         button.backgroundColor = Styles.Colors.cream2
         button.backgroundLayerColor = Styles.Colors.cream2
         button.rippleLayerColor = Styles.Colors.cream1
@@ -105,7 +105,7 @@ struct ViewFactory {
         button.cornerRadius = 0
         button.shadowAniEnabled = false
         
-        button.layer.shadowColor = UIColor.blackColor().CGColor
+        button.layer.shadowColor = UIColor.black.cgColor
         button.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         button.layer.shadowOpacity = 0.1
         button.layer.shadowRadius = 0.5
@@ -130,62 +130,62 @@ struct ViewFactory {
     
     static func smallAccessoryPlusButton() -> UIButton {
         let button = UIButton()
-        button.setImage(UIImage(named: "btn_accessory_plus"), forState: UIControlState.Normal)
+        button.setImage(UIImage(named: "btn_accessory_plus"), for: UIControlState())
         return button
     }
 
     static func smallAccessoryCloseButton() -> UIButton {
         let button = UIButton()
-        button.setImage(UIImage(named: "btn_accessory_close"), forState: UIControlState.Normal)
+        button.setImage(UIImage(named: "btn_accessory_close"), for: UIControlState())
         return button
     }
 
     static func transparentRoundedButton() -> UIButton {
         let button = UIButton()
         button.titleLabel?.font = Styles.FontFaces.light(12)
-        button.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
-        button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Highlighted)
+        button.setTitleColor(Styles.Colors.stone, for: UIControlState())
+        button.setTitleColor(Styles.Colors.anthracite1, for: UIControlState.highlighted)
         button.layer.cornerRadius = 13
-        button.layer.borderColor = Styles.Colors.beige1.CGColor
+        button.layer.borderColor = Styles.Colors.beige1.cgColor
         button.layer.borderWidth = 1
-        button.backgroundColor = UIColor.clearColor()
+        button.backgroundColor = UIColor.clear
         button.clipsToBounds = true
         return button
     }
     
     static func exclamationButton() -> UIButton {
         let button = UIButton()
-        button.setImage(UIImage(named: "btn_report"), forState: .Normal)
+        button.setImage(UIImage(named: "btn_report"), for: UIControlState())
         return button
     }
 
     static func infoButton() -> UIButton {
         let button = UIButton()
-        button.setImage(UIImage(named: "btn_info_outline"), forState: .Normal)
+        button.setImage(UIImage(named: "btn_info_outline"), for: UIControlState())
         return button
     }
     
     static func directionsButton() -> UIButton {
         let button = UIButton()
-        button.setImage(UIImage(named:"btn_directions"), forState: .Normal)
+        button.setImage(UIImage(named:"btn_directions"), for: UIControlState())
         return button
     }
 
     static func bigTransparentButton() -> UIButton {
         let button = UIButton()
         button.titleLabel?.font = Styles.Fonts.h1
-        button.setTitleColor(Styles.Colors.cream1, forState: .Normal)
-        button.setTitleColor(Styles.Colors.anthracite1, forState: .Highlighted)
+        button.setTitleColor(Styles.Colors.cream1, for: UIControlState())
+        button.setTitleColor(Styles.Colors.anthracite1, for: .highlighted)
         return button
     }
     
-    static func outlineBackButton(color: UIColor) -> UIButton {
+    static func outlineBackButton(_ color: UIColor) -> UIButton {
         var image = UIImage(named: "btn_back_outline")
-        image = image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        image = image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
 
         let button = UIButton()
         button.clipsToBounds = true
-        button.setImage(image, forState: .Normal)
+        button.setImage(image, for: UIControlState())
         button.tintColor = color
         return button
     }
@@ -196,9 +196,9 @@ struct ViewFactory {
         button.layer.cornerRadius = 13
         button.clipsToBounds = true
         button.titleLabel?.font = Styles.FontFaces.light(12)
-        button.setTitleColor(Styles.Colors.cream1, forState: .Normal)
-        button.setTitleColor(Styles.Colors.anthracite1, forState: .Highlighted)
-        button.setTitle("<  " + "back".localizedString.uppercaseString, forState: .Normal)
+        button.setTitleColor(Styles.Colors.cream1, for: UIControlState())
+        button.setTitleColor(Styles.Colors.anthracite1, for: .highlighted)
+        button.setTitle("<  " + "back".localizedString.uppercased(), for: UIControlState())
         return button
     }
     
@@ -206,7 +206,7 @@ struct ViewFactory {
         
         let hugeButton = MKButton()
         hugeButton.titleLabel?.font = Styles.Fonts.h1
-        hugeButton.setTitleColor(Styles.Colors.stone, forState: UIControlState.Normal)
+        hugeButton.setTitleColor(Styles.Colors.stone, for: UIControlState())
         hugeButton.backgroundColor = Styles.Colors.red2
         hugeButton.backgroundLayerColor = Styles.Colors.red2
         hugeButton.rippleLayerColor = Styles.Colors.red1
@@ -214,7 +214,7 @@ struct ViewFactory {
         hugeButton.cornerRadius = 0
         hugeButton.shadowAniEnabled = false
         
-        hugeButton.layer.shadowColor = UIColor.blackColor().CGColor
+        hugeButton.layer.shadowColor = UIColor.black.cgColor
         hugeButton.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         hugeButton.layer.shadowOpacity = 0.1
         hugeButton.layer.shadowRadius = 0.5
@@ -226,21 +226,21 @@ struct ViewFactory {
     // MARK: Segmented Controls
     
     static func nowOrHistorySwitch() -> DVSwitch {
-        var segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString, "reservations".localizedString.uppercaseString])
+        var segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercased(), "history".localizedString.uppercased(), "reservations".localizedString.uppercased()])
         
         if (Settings.selectedCity().name == "montreal" || Settings.selectedCity().name == "quebec") && Settings.getParkingPandaCredentials().0 == nil {
-            segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercaseString, "history".localizedString.uppercaseString])
+            segmentedControl = DVSwitch(stringsArray: ["now".localizedString.uppercased(), "history".localizedString.uppercased()])
         }
         
-        segmentedControl.backgroundView.layer.borderWidth = 1
-        segmentedControl.backgroundView.layer.borderColor = Styles.Colors.stone.colorWithAlphaComponent(0.5).CGColor
-        segmentedControl.sliderColor = Styles.Colors.red2
-        segmentedControl.backgroundColor = UIColor.clearColor()
-        segmentedControl.labelTextColorInsideSlider = Styles.Colors.white
-        segmentedControl.labelTextColorOutsideSlider = Styles.Colors.stone
-        segmentedControl.font = Styles.FontFaces.regular(9)
-        segmentedControl.cornerRadius = 12
-        return segmentedControl
+        segmentedControl?.backgroundView.layer.borderWidth = 1
+        segmentedControl?.backgroundView.layer.borderColor = Styles.Colors.stone.withAlphaComponent(0.5).cgColor
+        segmentedControl?.sliderColor = Styles.Colors.red2
+        segmentedControl?.backgroundColor = UIColor.clear
+        segmentedControl?.labelTextColorInsideSlider = Styles.Colors.white
+        segmentedControl?.labelTextColorOutsideSlider = Styles.Colors.stone
+        segmentedControl?.font = Styles.FontFaces.regular(9)
+        segmentedControl?.cornerRadius = 12
+        return segmentedControl!
     }
     
     // MARK: Labels
@@ -249,7 +249,7 @@ struct ViewFactory {
         let label = UILabel()
         label.font = Styles.FontFaces.light(12)
         label.textColor = Styles.Colors.stone
-        label.textAlignment = NSTextAlignment.Center
+        label.textAlignment = NSTextAlignment.center
         return label
     }
     
@@ -257,7 +257,7 @@ struct ViewFactory {
         let label = UILabel()
         label.font = Styles.Fonts.h3
         label.textColor = Styles.Colors.cream1
-        label.textAlignment = NSTextAlignment.Center
+        label.textAlignment = NSTextAlignment.center
         label.numberOfLines = 0
         return label
     }
@@ -267,52 +267,52 @@ struct ViewFactory {
     static func formTextField() -> UITextField {
         let textField = UITextField()
         textField.font = Styles.Fonts.h3
-        textField.backgroundColor = UIColor.clearColor()
+        textField.backgroundColor = UIColor.clear
         textField.textColor = Styles.Colors.anthracite1
-        textField.textAlignment = NSTextAlignment.Center
-        textField.autocorrectionType = UITextAutocorrectionType.No
+        textField.textAlignment = NSTextAlignment.center
+        textField.autocorrectionType = UITextAutocorrectionType.no
         return textField
     }
     
     // MARK: Icons
     
-    static func genericImageViewWithImageName(name:String, andColor color: UIColor?) -> UIImageView {
+    static func genericImageViewWithImageName(_ name:String, andColor color: UIColor?) -> UIImageView {
         let image = UIImage(named: name)
         let imageView = UIImageView(image: image)
         if color != nil {
-            imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            imageView.image = imageView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             imageView.tintColor = color!
         }
         return imageView
     }
     
-    static func authorizedIcon(color: UIColor) -> UIImageView {
+    static func authorizedIcon(_ color: UIColor) -> UIImageView {
         let image = UIImage(named: "icon_authorized")
         let imageView = UIImageView(image: image)
-        imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.image = imageView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         imageView.tintColor = color
         return imageView
     }
     
-    static func forbiddenIcon(color: UIColor) -> UIImageView {
+    static func forbiddenIcon(_ color: UIColor) -> UIImageView {
         let image = UIImage(named: "icon_forbidden")
         let imageView = UIImageView(image: image)
-        imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.image = imageView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         imageView.tintColor = color
         return imageView
     }
 
-    static func snowflakeIcon(color: UIColor? = nil) -> UIImageView {
+    static func snowflakeIcon(_ color: UIColor? = nil) -> UIImageView {
         let image = UIImage(named: "icon_snowflake")
         let imageView = UIImageView(image: image)
         if color != nil {
-            imageView.image = imageView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            imageView.image = imageView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             imageView.tintColor = color
         }
         return imageView
     }
 
-    static func timeMaxIcon(minutes: Int, addMaxLabel: Bool, color: UIColor, secondLineString: String? = nil) -> UIImageView {
+    static func timeMaxIcon(_ minutes: Int, addMaxLabel: Bool, color: UIColor, secondLineString: String? = nil) -> UIImageView {
         
         let imageView = UIImageView()
         let timeLimitLabel = UILabel()
@@ -350,17 +350,17 @@ struct ViewFactory {
                 break
             default:
                 timeLimitLabel.text = String(minutes)
-                timeLimitLabel.hidden = false
+                timeLimitLabel.isHidden = false
             }
         } else {
-            timeLimitLabel.hidden = true
+            timeLimitLabel.isHidden = true
         }
         
-        imageView.image = image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.image = image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         imageView.tintColor = color
         
         timeLimitLabel.font = Styles.FontFaces.regular(17)
-        timeLimitLabel.textAlignment = NSTextAlignment.Center
+        timeLimitLabel.textAlignment = NSTextAlignment.center
         timeLimitLabel.textColor = color
         timeLimitLabel.adjustsFontSizeToFitWidth = true
         timeLimitLabel.numberOfLines = 1
@@ -368,14 +368,14 @@ struct ViewFactory {
         imageView.addSubview(timeLimitLabel)
 
         if secondLineString != nil {
-            maxLabel.text = "max".localizedString.uppercaseString + "\n" + secondLineString!
+            maxLabel.text = "max".localizedString.uppercased() + "\n" + secondLineString!
             maxLabel.numberOfLines = 2
         } else {
-            maxLabel.text = "max".localizedString.uppercaseString
+            maxLabel.text = "max".localizedString.uppercased()
             maxLabel.numberOfLines = 1
         }
         maxLabel.font = Styles.FontFaces.regular(12)
-        maxLabel.textAlignment = NSTextAlignment.Center
+        maxLabel.textAlignment = NSTextAlignment.center
         maxLabel.textColor = color
         maxLabel.adjustsFontSizeToFitWidth = true
         maxLabel.sizeToFit()
@@ -399,18 +399,18 @@ struct ViewFactory {
         return imageView
     }
 
-    static func paidIcon(hourlyRateString: String, color: UIColor) -> UIImageView {
+    static func paidIcon(_ hourlyRateString: String, color: UIColor) -> UIImageView {
         
         let imageView = UIImageView()
         let maxLabel = UILabel()
         let image = UIImage(named: "icon_paid")
         
-        imageView.image = image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        imageView.image = image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         imageView.tintColor = color
         
         maxLabel.text = hourlyRateString == "" ? "" : hourlyRateString + "/H"
         maxLabel.font = Styles.FontFaces.regular(12)
-        maxLabel.textAlignment = NSTextAlignment.Center
+        maxLabel.textAlignment = NSTextAlignment.center
         maxLabel.textColor = color
         maxLabel.adjustsFontSizeToFitWidth = true
         maxLabel.numberOfLines = 1

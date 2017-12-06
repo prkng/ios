@@ -11,31 +11,31 @@ import MessageUI
 
 class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate, PPHeaderViewDelegate {
     
-    private var redCells = [String]()
+    fileprivate var redCells = [String]()
 
     var delegate: PPSignInViewControllerDelegate?
     
-    private var statusView = UIView()
-    private var headerView = PPHeaderView()
-    private let tableView = PRKCachedTableView()
+    fileprivate var statusView = UIView()
+    fileprivate var headerView = PPHeaderView()
+    fileprivate let tableView = PRKCachedTableView()
     
-    private var username: String = ""
-    private var password: String = ""
+    fileprivate var username: String = ""
+    fileprivate var password: String = ""
     
-    private(set) var BACKGROUND_COLOR = Styles.Colors.stone
-    private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
-    private(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.petrol2
-    private(set) var FOREGROUND_COLOR = Styles.Colors.cream1
-    private(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.anthracite1
-    private(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
+    fileprivate(set) var BACKGROUND_COLOR = Styles.Colors.stone
+    fileprivate(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
+    fileprivate(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.petrol2
+    fileprivate(set) var FOREGROUND_COLOR = Styles.Colors.cream1
+    fileprivate(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.anthracite1
+    fileprivate(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
     
-    private(set) var HEADER_HEIGHT = 80
-    private(set) var HEADER_FONT = Styles.FontFaces.regular(12)
-    private(set) var MIN_FOOTER_HEIGHT = 65
-    private(set) var FOOTER_FONT = Styles.FontFaces.regular(12)
+    fileprivate(set) var HEADER_HEIGHT = 80
+    fileprivate(set) var HEADER_FONT = Styles.FontFaces.regular(12)
+    fileprivate(set) var MIN_FOOTER_HEIGHT = 65
+    fileprivate(set) var FOOTER_FONT = Styles.FontFaces.regular(12)
     
-    private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
-    private(set) var BIG_CELL_HEIGHT: CGFloat = 61
+    fileprivate(set) var SMALL_CELL_HEIGHT: CGFloat = 48
+    fileprivate(set) var BIG_CELL_HEIGHT: CGFloat = 61
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -56,11 +56,11 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         self.screenName = "Parking Panda Sign In View"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let nextTextField = tableView.viewWithTag(1) as? UITextField {
             nextTextField.becomeFirstResponder()
@@ -75,13 +75,13 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         self.view.addSubview(statusView)
         
         headerView.delegate = self
-        headerView.headerText = "pp_sign_in".localizedString.uppercaseString
-        headerView.rightButtonText = "sign_in".localizedString.uppercaseString
+        headerView.headerText = "pp_sign_in".localizedString.uppercased()
+        headerView.rightButtonText = "sign_in".localizedString.uppercased()
         view.addSubview(headerView)
         
         view.addSubview(tableView)
-        tableView.backgroundColor = UIColor.clearColor()
-        tableView.separatorStyle = .None
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
         tableView.clipsToBounds = true
@@ -119,17 +119,17 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         let emailCell = SettingsCell(placeholderText: "email".localizedString, titleText: username, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 1,
-                "keyboardType": UIKeyboardType.EmailAddress.rawValue,
-                "returnKeyType": UIReturnKeyType.Next.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.emailAddress.rawValue,
+                "returnKeyType": UIReturnKeyType.next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("username")],
                 "returnCallback": "cellReturnCallback:"])
         let passwordCell = SettingsCell(placeholderText: "password".localizedString, titleText: password, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 2,
-                "keyboardType": UIKeyboardType.Default.rawValue,
-                "returnKeyType": UIReturnKeyType.Done.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.default.rawValue,
+                "returnKeyType": UIReturnKeyType.done.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("password")],
                 "secureTextEntry": true,
                 "returnCallback": "cellReturnCallback:"])
@@ -138,15 +138,15 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         return [("enter_your_information".localizedString, formSection)]
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return tableSource.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableSource[section].1.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         let cell = settingsCell.tableViewCell(tableView)
         self.tableView.cachedCells.append(cell)
@@ -156,28 +156,28 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     
     //MARK: UITableViewDelegate
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         return settingsCell.canSelect
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         if settingsCell.selectorsTarget != nil && settingsCell.cellSelector != nil {
-            settingsCell.selectorsTarget!.performSelector(Selector(settingsCell.cellSelector!))
+            settingsCell.selectorsTarget!.perform(Selector(settingsCell.cellSelector!))
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return SMALL_CELL_HEIGHT
     }
     
     
     //MARK: selector functions
     
-    func formCallback(sender: AnyObject?) {
-        if let timer = sender as? NSTimer {
+    func formCallback(_ sender: AnyObject?) {
+        if let timer = sender as? Timer {
             if let dict = timer.userInfo as? [String: String] {
                 username = dict["email".localizedString] ?? username
                 password = dict["password".localizedString] ?? password
@@ -186,8 +186,8 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         }
     }
     
-    func cellReturnCallback(sender: AnyObject?) {
-        if let timer = sender as? NSTimer {
+    func cellReturnCallback(_ sender: AnyObject?) {
+        if let timer = sender as? Timer {
             if let dict = timer.userInfo as? [String: Int] {
                 let nextTag = (dict["textFieldTag"] ?? 0) + 1
                 if let nextTextField = tableView.viewWithTag(nextTag) as? UITextField {
@@ -200,9 +200,9 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
         }
     }
 
-    func presentWithVC(vc: UIViewController?) {
+    func presentWithVC(_ vc: UIViewController?) {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let rootVC = vc ?? appDelegate.window?.rootViewController {
             if let navVC = rootVC.navigationController {
                 navVC.pushViewController(self, animated: true)
@@ -216,14 +216,14 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     func dismiss() {
         
         if let navVC = self.navigationController {
-            navVC.popViewControllerAnimated(true)
+            navVC.popViewController(animated: true)
         } else {
             self.dismissViewControllerFromLeft(0.3, completion: nil)
         }
         
     }
     
-    func passesValidation(shouldColorCells shouldColorCells: Bool = true) -> Bool {
+    func passesValidation(shouldColorCells: Bool = true) -> Bool {
         let failedValidation = username.isEmpty || password.isEmpty
         
         if failedValidation {
@@ -250,19 +250,19 @@ class PPSignInViewController: AbstractViewController, UIGestureRecognizerDelegat
     func tappedNextButton() {
         
         if passesValidation() {
-            SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+            SVProgressHUD.setBackgroundColor(UIColor.clear)
             SVProgressHUD.show()
             ParkingPandaOperations.login(username: username, password: password, completion: { (user, error) -> Void in
                 if user != nil {
                     //we have logged in!
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         //these two actions will basically happen at the same time, which, really, is what we want!
                         self.dismiss()
                         self.delegate?.didSignIn()
                         SVProgressHUD.dismiss()
                     })
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         SVProgressHUD.dismiss()
                     })
                 }

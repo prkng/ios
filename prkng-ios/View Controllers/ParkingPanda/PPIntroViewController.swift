@@ -10,29 +10,29 @@ import UIKit
 
 class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSignInViewControllerDelegate, PPCreateUserViewControllerDelegate {
     
-    private var statusView = UIView()
-    private var headerView = PPHeaderView()
-    private var titleLabel = UILabel()
-    private var logoView = UIImageView()
-    private var bodyLabel = UILabel()
-    private var subBodyButton = UIButton()
-    private var createAccountButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: "create_my_account".localizedString.uppercaseString)
-    private var signInButton = UIButton()
+    fileprivate var statusView = UIView()
+    fileprivate var headerView = PPHeaderView()
+    fileprivate var titleLabel = UILabel()
+    fileprivate var logoView = UIImageView()
+    fileprivate var bodyLabel = UILabel()
+    fileprivate var subBodyButton = UIButton()
+    fileprivate var createAccountButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: "create_my_account".localizedString.uppercased())
+    fileprivate var signInButton = UIButton()
     
-    private(set) var BACKGROUND_COLOR = Styles.Colors.stone
-    private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
-    private(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
-    private(set) var FOREGROUND_COLOR = Styles.Colors.cream1
-    private(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.petrol2
-    private(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
+    fileprivate(set) var BACKGROUND_COLOR = Styles.Colors.stone
+    fileprivate(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
+    fileprivate(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
+    fileprivate(set) var FOREGROUND_COLOR = Styles.Colors.cream1
+    fileprivate(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.petrol2
+    fileprivate(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
     
-    private(set) var HEADER_HEIGHT = 80
-    private(set) var HEADER_FONT = Styles.FontFaces.regular(12)
-    private(set) var MIN_FOOTER_HEIGHT = 65
-    private(set) var FOOTER_FONT = Styles.FontFaces.regular(12)
+    fileprivate(set) var HEADER_HEIGHT = 80
+    fileprivate(set) var HEADER_FONT = Styles.FontFaces.regular(12)
+    fileprivate(set) var MIN_FOOTER_HEIGHT = 65
+    fileprivate(set) var FOOTER_FONT = Styles.FontFaces.regular(12)
     
-    private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
-    private(set) var BIG_CELL_HEIGHT: CGFloat = 61
+    fileprivate(set) var SMALL_CELL_HEIGHT: CGFloat = 48
+    fileprivate(set) var BIG_CELL_HEIGHT: CGFloat = 61
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -54,12 +54,12 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
         self.screenName = "Parking Panda - Intro View"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         SVProgressHUD.dismiss()
     }
@@ -80,7 +80,7 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
         titleLabel.text = "parking_panda_intro_text".localizedString
         titleLabel.font = Styles.FontFaces.bold(25)
         titleLabel.textColor = FOREGROUND_TEXT_COLOR_EMPHASIZED
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
         view.addSubview(titleLabel)
         
@@ -90,24 +90,24 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
         bodyLabel.text = "parking_panda_intro_body_text".localizedString
         bodyLabel.font = Styles.FontFaces.regular(16)
         bodyLabel.textColor = FOREGROUND_TEXT_COLOR
-        bodyLabel.textAlignment = .Center
+        bodyLabel.textAlignment = .center
         bodyLabel.numberOfLines = 0
         view.addSubview(bodyLabel)
         
-        subBodyButton.setTitle("parking_panda_intro_body_sub_text".localizedString, forState: .Normal)
-        subBodyButton.setTitleColor(BACKGROUND_TEXT_COLOR, forState: .Normal)
+        subBodyButton.setTitle("parking_panda_intro_body_sub_text".localizedString, for: UIControlState())
+        subBodyButton.setTitleColor(BACKGROUND_TEXT_COLOR, for: UIControlState())
         subBodyButton.titleLabel?.font = Styles.FontFaces.regular(12)
-        subBodyButton.addTarget(self, action: "subBodyButtonTapped", forControlEvents: .TouchUpInside)
+        subBodyButton.addTarget(self, action: #selector(PPIntroViewController.subBodyButtonTapped), for: .touchUpInside)
         view.addSubview(subBodyButton)
 
-        createAccountButton.setTitle("register".localizedString.uppercaseString, forState: .Normal)
-        createAccountButton.addTarget(self, action: "createAccountButtonTapped", forControlEvents: .TouchUpInside)
+        createAccountButton.setTitle("register".localizedString.uppercased(), for: UIControlState())
+        createAccountButton.addTarget(self, action: "createAccountButtonTapped", for: .touchUpInside)
         view.addSubview(createAccountButton)
         
-        signInButton.setTitle("parking_panda_login_text".localizedString.uppercaseString, forState: .Normal)
-        signInButton.setTitleColor(BACKGROUND_TEXT_COLOR, forState: .Normal)
+        signInButton.setTitle("parking_panda_login_text".localizedString.uppercased(), for: UIControlState())
+        signInButton.setTitleColor(BACKGROUND_TEXT_COLOR, for: UIControlState())
         signInButton.titleLabel?.font = Styles.FontFaces.bold(12)
-        signInButton.addTarget(self, action: "signInButtonTapped", forControlEvents: .TouchUpInside)
+        signInButton.addTarget(self, action: #selector(PPIntroViewController.signInButtonTapped), for: .touchUpInside)
         view.addSubview(signInButton)
 
     }
@@ -185,9 +185,9 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
         signInVC.presentWithVC(self)
     }
     
-    func presentWithVC(vc: UIViewController?) {
+    func presentWithVC(_ vc: UIViewController?) {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let rootVC = vc ?? appDelegate.window?.rootViewController {
             if let navVC = rootVC.navigationController {
                 navVC.pushViewController(self, animated: true)
@@ -201,7 +201,7 @@ class PPIntroViewController: AbstractViewController, PPHeaderViewDelegate, PPSig
     func dismiss() {
         
         if let navVC = self.navigationController {
-            navVC.popViewControllerAnimated(true)
+            navVC.popViewController(animated: true)
         } else {
             self.dismissViewControllerFromLeft(0.3, completion: nil)
         }

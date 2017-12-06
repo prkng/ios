@@ -66,18 +66,18 @@ class LoginMethodSelectionView: UIView {
         containerView.addSubview(loginTitleLabel)
         
         facebookButton.backgroundColor = Styles.Colors.facebookBlue
-        facebookButton.setTitle("login_with_facebook".localizedString, forState: .Normal)
-        facebookButton.addTarget(self, action: "facebookButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        facebookButton.setTitle("login_with_facebook".localizedString, for: UIControlState())
+        facebookButton.addTarget(self, action: #selector(LoginMethodSelectionView.facebookButtonTapped), for: UIControlEvents.touchUpInside)
         containerView.addSubview(facebookButton)
         
-        googleButton.setTitle("login_with_google".localizedString, forState: .Normal)
-        googleButton.addTarget(self, action: "googleButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        googleButton.setTitle("login_with_google".localizedString, for: UIControlState())
+        googleButton.addTarget(self, action: #selector(LoginMethodSelectionView.googleButtonTapped), for: UIControlEvents.touchUpInside)
         containerView.addSubview(googleButton)
         
         emailButton.titleLabel?.font = Styles.FontFaces.regular(12)
         emailButton.titleLabel?.textColor = Styles.Colors.anthracite1
-        emailButton.setTitle("login_with_email".localizedString, forState: .Normal)
-        emailButton.addTarget(self, action: "emailButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        emailButton.setTitle("login_with_email".localizedString, for: UIControlState())
+        emailButton.addTarget(self, action: #selector(LoginMethodSelectionView.emailButtonTapped), for: UIControlEvents.touchUpInside)
         containerView.addSubview(emailButton)
         
         didSetupSubviews = true
@@ -124,12 +124,12 @@ class LoginMethodSelectionView: UIView {
     
     func facebookButtonTapped () {
         
-        if(selectedMethod == LoginMethod.Facebook) {
+        if(selectedMethod == LoginMethod.facebook) {
             return
         }
         
         deselectAll()
-        selectedMethod = LoginMethod.Facebook
+        selectedMethod = LoginMethod.facebook
         
         if (delegate != nil) {
             delegate!.loginFacebookSelected()
@@ -140,12 +140,12 @@ class LoginMethodSelectionView: UIView {
     
     func googleButtonTapped () {
         
-        if(selectedMethod == LoginMethod.Google) {
+        if(selectedMethod == LoginMethod.google) {
             return
         }
         
         deselectAll()
-        selectedMethod = LoginMethod.Google
+        selectedMethod = LoginMethod.google
         
         if (delegate != nil) {
             delegate!.loginGoogleSelected()
@@ -155,12 +155,12 @@ class LoginMethodSelectionView: UIView {
     
     func emailButtonTapped () {
         
-        if(selectedMethod == LoginMethod.Email) {
+        if(selectedMethod == LoginMethod.email) {
             return
         }
         
         deselectAll()
-        selectedMethod = LoginMethod.Email
+        selectedMethod = LoginMethod.email
         
         if (delegate != nil) {
             delegate!.loginEmailSelected()
@@ -186,7 +186,7 @@ protocol LoginMethodSelectionViewDelegate {
 
 
 enum LoginMethod {
-    case Facebook
-    case Google
-    case Email
+    case facebook
+    case google
+    case email
 }

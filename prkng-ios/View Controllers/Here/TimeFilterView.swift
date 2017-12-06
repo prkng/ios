@@ -7,6 +7,19 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate {
     
@@ -22,8 +35,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
     var times: [TimeFilter]
     var selectedPermitValue: Bool
-    var selectedValue: NSTimeInterval?
-    var lastSelectedValue: NSTimeInterval?
+    var selectedValue: TimeInterval?
+    var lastSelectedValue: TimeInterval?
     
     var topLine: UIView
     var bottomLine: UIView
@@ -32,8 +45,8 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     
     var enableSnapping : Bool
     
-    private var didsetupSubviews : Bool
-    private var didSetupConstraints : Bool
+    fileprivate var didsetupSubviews : Bool
+    fileprivate var didSetupConstraints : Bool
 
     static var TOTAL_HEIGHT : CGFloat = 46
     static var SCROLL_HEIGHT: CGFloat = 46
@@ -50,7 +63,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
         selectedPermitValue = false
         times = [
-            TimeFilter(interval: -1, labelText: "all".localizedString.uppercaseString),
+            TimeFilter(interval: -1, labelText: "all".localizedString.uppercased()),
             TimeFilter(interval: 30 * TimeFilter.SECONDS_PER_MINUTE),
             TimeFilter(interval: 1 * TimeFilter.SECONDS_PER_HOUR),
             TimeFilter(interval: 2 * TimeFilter.SECONDS_PER_HOUR),
@@ -98,7 +111,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     func setupSubviews () {
         
         self.clipsToBounds = true
-        let tapRec = UITapGestureRecognizer(target: self, action: Selector("toggleSelectFromTap:"))
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(TimeFilterView.toggleSelectFromTap(_:)))
         tapRec.delegate = self
         self.addGestureRecognizer(tapRec)
 
@@ -116,15 +129,15 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             contentView.addSubview(time.label)
         }
         
-        timeImageView.userInteractionEnabled = false
-        timeImageView.contentMode = UIViewContentMode.Left
+        timeImageView.isUserInteractionEnabled = false
+        timeImageView.contentMode = UIViewContentMode.left
         containerView.addSubview(timeImageView)
 
         messageLabel.textColor = Styles.Colors.petrol2
         messageLabel.font = Styles.FontFaces.light(14)
         containerView.addSubview(messageLabel)
         
-        infoButton.addTarget(self, action: "infoButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        infoButton.addTarget(self, action: #selector(TimeFilterView.infoButtonTapped), for: UIControlEvents.touchUpInside)
         containerView.addSubview(infoButton)
 
         topLine.backgroundColor = Styles.Colors.transparentWhite
@@ -227,16 +240,16 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     func update() {
         
         if Settings.shouldFilterForCarSharing() {
-            timeImageView.image = UIImage(named: "icon_exclamation")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            timeImageView.image = UIImage(named: "icon_exclamation")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             messageLabel.text = "car_sharing_enabled_text".localizedString
-            infoButton.hidden = false
-            contentView.hidden = true
+            infoButton.isHidden = false
+            contentView.isHidden = true
             self.delegate?.filterLabelUpdate("")
         } else {
-            timeImageView.image = UIImage(named: "icon_time")!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            timeImageView.image = UIImage(named: "icon_time")!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
             messageLabel.text = ""
-            infoButton.hidden = true
-            contentView.hidden = false
+            infoButton.isHidden = true
+            contentView.isHidden = false
         }
         
         timeImageView.tintColor = Styles.Colors.petrol2
@@ -248,19 +261,19 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     //MARK- UIScrollViewDelegate
     var alreadySelected = false
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         recolorLabels()
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollToNearestLabel()
     }
     
-    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         scrollToNearestLabel()
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             scrollToNearestLabel()
         }
@@ -277,11 +290,11 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         }
     }
     
-    func scrollToNearestLabel(centerPoint: CGPoint) -> PRKLabel {
+    func scrollToNearestLabel(_ centerPoint: CGPoint) -> PRKLabel {
         
         //get the label nearest to the centerPoint
-        var nearestLabelDistanceFromPoint = CGFloat.max
-        var nearestLabelDistanceFromCenter = CGFloat.max
+        var nearestLabelDistanceFromPoint = CGFloat.greatestFiniteMagnitude
+        var nearestLabelDistanceFromCenter = CGFloat.greatestFiniteMagnitude
 
         let nearestLabel: PRKLabel = getNearestLabel(centerPoint, nearestLabelDistanceFromPoint: &nearestLabelDistanceFromPoint, nearestLabelDistanceFromCenter: &nearestLabelDistanceFromCenter)
         
@@ -298,21 +311,21 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         return nearestLabel
     }
     
-    func getNearestLabel(fromPoint: CGPoint) -> PRKLabel  {
+    func getNearestLabel(_ fromPoint: CGPoint) -> PRKLabel  {
         
-        var nearestLabelDistanceFromPoint = CGFloat.max
-        var nearestLabelDistanceFromCenter = CGFloat.max
+        var nearestLabelDistanceFromPoint = CGFloat.greatestFiniteMagnitude
+        var nearestLabelDistanceFromCenter = CGFloat.greatestFiniteMagnitude
         
         return getNearestLabel(fromPoint, nearestLabelDistanceFromPoint: &nearestLabelDistanceFromPoint, nearestLabelDistanceFromCenter: &nearestLabelDistanceFromCenter)
     }
     
-    func getNearestLabel(fromPoint: CGPoint, inout nearestLabelDistanceFromPoint: CGFloat, inout nearestLabelDistanceFromCenter: CGFloat) -> PRKLabel  {
+    func getNearestLabel(_ fromPoint: CGPoint, nearestLabelDistanceFromPoint: inout CGFloat, nearestLabelDistanceFromCenter: inout CGFloat) -> PRKLabel  {
         
         let contentViewCurrentCenterPoint = getScrollViewCenter()
         
         //get the label nearest to the centerPoint
-        nearestLabelDistanceFromPoint = CGFloat.max
-        nearestLabelDistanceFromCenter = CGFloat.max
+        nearestLabelDistanceFromPoint = CGFloat.greatestFiniteMagnitude
+        nearestLabelDistanceFromCenter = CGFloat.greatestFiniteMagnitude
         var nearestLabel = PRKLabel()
         
         for time in times {
@@ -331,10 +344,10 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     
     //select or deselect a label and change the UI accordingly
     //gesture recognizer tap
-    func toggleSelectFromTap(recognizer: UITapGestureRecognizer) {
+    func toggleSelectFromTap(_ recognizer: UITapGestureRecognizer) {
         
         if !Settings.shouldFilterForCarSharing() {
-            let tap = recognizer.locationInView(self.contentView)
+            let tap = recognizer.location(in: self.contentView)
             toggleSelectFromPoint(tap)
         }
     }
@@ -350,7 +363,7 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
         update()
     }
     
-    func toggleSelectFromPoint(point: CGPoint) {
+    func toggleSelectFromPoint(_ point: CGPoint) {
         
         let label = scrollToNearestLabel(point)
         
@@ -366,14 +379,14 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
     }
     
     func getScrollViewCenter() -> CGPoint {
-        let visibleRect = CGRectMake(scrollView.contentOffset.x, scrollView.contentOffset.y, scrollView.bounds.size.width, scrollView.bounds.size.height)
-        let contentViewCurrentCenterPoint = CGPointMake(visibleRect.size.width/2 + scrollView.contentOffset.x, visibleRect.size.height/2 + scrollView.contentOffset.y);
+        let visibleRect = CGRect(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y, width: scrollView.bounds.size.width, height: scrollView.bounds.size.height)
+        let contentViewCurrentCenterPoint = CGPoint(x: visibleRect.size.width/2 + scrollView.contentOffset.x, y: visibleRect.size.height/2 + scrollView.contentOffset.y);
 
         return contentViewCurrentCenterPoint
     }
 
     func getScrollViewLeft() -> CGPoint {
-        let contentViewCurrentLeftPoint = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y);
+        let contentViewCurrentLeftPoint = CGPoint(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y);
         return contentViewCurrentLeftPoint
     }
 
@@ -390,14 +403,14 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
             label.tag = Int(distance)
         }
 
-        timeLabels.sortInPlace { (left: PRKLabel, right: PRKLabel) -> Bool in
+        timeLabels.sort { (left: PRKLabel, right: PRKLabel) -> Bool in
             left.tag > right.tag
         }
         
         let maxDistance = timeLabels.first?.tag
         for i in 0..<timeLabels.count {
             let alpha = 1.1 - Float(timeLabels[i].tag) / Float(maxDistance!)
-            timeLabels[i].textColor = Styles.Colors.petrol2.colorWithAlphaComponent(CGFloat(alpha))
+            timeLabels[i].textColor = Styles.Colors.petrol2.withAlphaComponent(CGFloat(alpha))
         }
     }
     
@@ -422,31 +435,31 @@ class TimeFilterView: UIView, UIScrollViewDelegate, UIGestureRecognizerDelegate 
 
 protocol TimeFilterViewDelegate {
     
-    func filterValueWasChanged(hours hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
-    func filterLabelUpdate(labelText: String)
+    func filterValueWasChanged(hours:Float?, selectedLabelText: String, permit: Bool, fromReset: Bool)
+    func filterLabelUpdate(_ labelText: String)
     func showCarSharingInfo()
 }
 
 class TimeFilter {
     
-    var interval: NSTimeInterval
+    var interval: TimeInterval
     var label: PRKLabel
     var permit: Bool
-    private var overriddenLabelText: String?
+    fileprivate var overriddenLabelText: String?
     
-    static var SECONDS_PER_MINUTE : NSTimeInterval = 60
-    static var SECONDS_PER_HOUR : NSTimeInterval = 3600
+    static var SECONDS_PER_MINUTE : TimeInterval = 60
+    static var SECONDS_PER_HOUR : TimeInterval = 3600
     static var FONT : UIFont = Styles.FontFaces.light(14)
 
-    convenience init(interval: NSTimeInterval) {
+    convenience init(interval: TimeInterval) {
         self.init(interval: interval, labelText: nil)
     }
 
-    convenience init(interval: NSTimeInterval, labelText: String?) {
+    convenience init(interval: TimeInterval, labelText: String?) {
         self.init(interval: interval, labelText: nil, permit: nil)
     }
 
-    init(interval: NSTimeInterval, labelText: String?, permit: Bool?) {
+    init(interval: TimeInterval, labelText: String?, permit: Bool?) {
         
         self.interval = interval
         self.label = PRKLabel()

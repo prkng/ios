@@ -21,7 +21,7 @@ class ReportOverlayView: UIView {
     var delegate : SpotDetailViewDelegate?
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -59,24 +59,24 @@ class ReportOverlayView: UIView {
         
         reportTitleLabel.font = Styles.FontFaces.light(12)
         reportTitleLabel.textColor = Styles.Colors.stone
-        reportTitleLabel.textAlignment = NSTextAlignment.Center
+        reportTitleLabel.textAlignment = NSTextAlignment.center
         reportTitleLabel.text = "report_title".localizedString
         addSubview(reportTitleLabel)
         
         streetNameLabel.font = Styles.Fonts.h1
         streetNameLabel.textColor = Styles.Colors.cream1
-        streetNameLabel.textAlignment = NSTextAlignment.Center
+        streetNameLabel.textAlignment = NSTextAlignment.center
         addSubview(streetNameLabel)
         
         textLabel.font = Styles.Fonts.h3
         textLabel.textColor = Styles.Colors.red2
-        textLabel.textAlignment = NSTextAlignment.Center
+        textLabel.textAlignment = NSTextAlignment.center
         textLabel.numberOfLines = 0
         textLabel.text = "report_text".localizedString
         addSubview(textLabel)
         
         thanksLabel.font = Styles.FontFaces.light(12)
-        thanksLabel.textAlignment = NSTextAlignment.Center
+        thanksLabel.textAlignment = NSTextAlignment.center
         thanksLabel.textColor = Styles.Colors.stone
         thanksLabel.text = "report_thanks".localizedString
         addSubview(thanksLabel)

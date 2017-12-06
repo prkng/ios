@@ -10,14 +10,14 @@ import UIKit
 
 extension CGPoint {
 
-    func distanceToPoint(otherPoint: CGPoint) -> CGFloat {
+    func distanceToPoint(_ otherPoint: CGPoint) -> CGFloat {
         let xDist: CGFloat = (otherPoint.x - self.x);
         let yDist: CGFloat = (otherPoint.y - self.y);
         let distance: CGFloat = sqrt((xDist * xDist) + (yDist * yDist));
         return distance
     }
     
-    func yDistanceToPointWithDirection(otherPoint: CGPoint) -> CGFloat {
+    func yDistanceToPointWithDirection(_ otherPoint: CGPoint) -> CGFloat {
         let yDist: CGFloat = (otherPoint.y - self.y);
         return yDist
     }

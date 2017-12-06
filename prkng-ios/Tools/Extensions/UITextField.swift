@@ -8,20 +8,20 @@
 
 extension UITextField {
 
-    func modifyClearButtonWithImageNamed(imageName: String, color: UIColor) {
-        let image = UIImage(named: imageName)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        let button = UIButton(type: UIButtonType.Custom)
-        button.setImage(image, forState: UIControlState.Normal)
+    func modifyClearButtonWithImageNamed(_ imageName: String, color: UIColor) {
+        let image = UIImage(named: imageName)?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        let button = UIButton(type: UIButtonType.custom)
+        button.setImage(image, for: UIControlState())
         button.tintColor = color
         button.frame = CGRect(x: 0, y: 0, width: 35, height: SearchFilterView.FIELD_HEIGHT)
-        button.contentMode = UIViewContentMode.Left
-        button.addTarget(self, action: "textFieldClear:", forControlEvents: UIControlEvents.TouchUpInside)
+        button.contentMode = UIViewContentMode.left
+        button.addTarget(self, action: #selector(UITextField.textFieldClear(_:)), for: UIControlEvents.touchUpInside)
         button.backgroundColor = Styles.Colors.cream1
         self.rightView = button
-        self.rightViewMode = UITextFieldViewMode.Always
+        self.rightViewMode = UITextFieldViewMode.always
     }
     
-    func textFieldClear(sender: AnyObject) {
+    func textFieldClear(_ sender: AnyObject) {
         self.delegate?.textFieldShouldClear!(self)
     }
     

@@ -8,7 +8,7 @@
 
 class GeneralTableHelperViews {
     
-    static func sectionHeaderView(headerText: String) -> UIView? {
+    static func sectionHeaderView(_ headerText: String) -> UIView? {
         
         if headerText == "" {
             return nil

@@ -38,7 +38,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         dateSelectionView = DateSelectionView()
         durationSelectionView = DurationSelectionView()
         searchButton = ViewFactory.hugeButton()
-        searchStep = SearchStep.ONE
+        searchStep = SearchStep.one
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -60,7 +60,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     }
     
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.dateSelectionView.selectToday()
     }
@@ -69,7 +69,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     
     func setupViews () {
         
-        view.backgroundColor = UIColor.clearColor()
+        view.backgroundColor = UIColor.clear
         
 //        effectView.userInteractionEnabled = false
 //        view.addSubview(effectView)
@@ -78,45 +78,45 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         let midnight1 = UIColor(rgba: "#435059E6")
         containerColorView.backgroundColor = midnight1
-        containerColorView.userInteractionEnabled = false
+        containerColorView.isUserInteractionEnabled = false
         containerView.addSubview(containerColorView)
         
         markerIcon.image = UIImage(named: "btn_pin_search")
-        markerIcon.contentMode = UIViewContentMode.Center
-        markerIcon.userInteractionEnabled = false
+        markerIcon.contentMode = UIViewContentMode.center
+        markerIcon.isUserInteractionEnabled = false
         containerView.addSubview(markerIcon)
         
         textLabel.font = Styles.Fonts.h1
         textLabel.textColor = Styles.Colors.anthracite1
         textLabel.numberOfLines = 0
         textLabel.text = NSLocalizedString("search_step1_copy",comment:"")
-        textLabel.textAlignment = NSTextAlignment.Center
+        textLabel.textAlignment = NSTextAlignment.center
         containerView.addSubview(textLabel)
         
         searchField.backgroundColor = Styles.Colors.cream2
         searchField.layer.borderWidth = 1
-        searchField.layer.borderColor = Styles.Colors.beige1.CGColor
+        searchField.layer.borderColor = Styles.Colors.beige1.cgColor
         searchField.font = Styles.Fonts.h3
         searchField.textColor = Styles.Colors.midnight2
-        searchField.textAlignment = NSTextAlignment.Center
+        searchField.textAlignment = NSTextAlignment.center
         searchField.delegate = self
-        searchField.keyboardAppearance = UIKeyboardAppearance.Dark
-        searchField.keyboardType = UIKeyboardType.WebSearch
+        searchField.keyboardAppearance = UIKeyboardAppearance.dark
+        searchField.keyboardType = UIKeyboardType.webSearch
         containerView.addSubview(searchField)
         
-        dateSelectionView.hidden = true
+        dateSelectionView.isHidden = true
         containerView.addSubview(dateSelectionView)
         
-        durationSelectionView.hidden = true
+        durationSelectionView.isHidden = true
         containerView.addSubview(durationSelectionView)
         
-        searchButton.addTarget(self, action: "searchButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
-        searchButton.setTitle(NSLocalizedString("search", comment : ""), forState: UIControlState.Normal)
-        searchButton.hidden = true
+        searchButton.addTarget(self, action: #selector(SearchViewController.searchButtonTapped), for: UIControlEvents.touchUpInside)
+        searchButton.setTitle(NSLocalizedString("search", comment : ""), for: UIControlState())
+        searchButton.isHidden = true
         containerView.addSubview(searchButton)
         
-        downButton.setImage(UIImage(named: "btn_next"), forState: UIControlState.Normal)
-        downButton.addTarget(self, action: "nextStep", forControlEvents: UIControlEvents.TouchUpInside)
+        downButton.setImage(UIImage(named: "btn_next"), for: UIControlState())
+        downButton.addTarget(self, action: #selector(SearchViewController.nextStep), for: UIControlEvents.touchUpInside)
         containerView.addSubview(downButton)
     }
     
@@ -135,7 +135,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         }
         
         markerIcon.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(49, 60))
+            make.size.equalTo(CGSize(width: 49, height: 60))
             make.bottom.equalTo(self.containerView).offset(-357)
             make.centerX.equalTo(self.containerView)
         }
@@ -167,7 +167,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         }
         
         downButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(60, 60))
+            make.size.equalTo(CGSize(width: 60, height: 60))
             make.bottom.equalTo(self.containerView).offset(-20)
             make.centerX.equalTo(self.containerView)
 
@@ -183,7 +183,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     }
     
     
-    func showStreetName (streetName : String) {
+    func showStreetName (_ streetName : String) {
         searchField.text = streetName
     }
     
@@ -197,22 +197,22 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 //    }
     
 
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         
-        if (self.searchStep == SearchStep.ONE) {
+        if (self.searchStep == SearchStep.one) {
             transformToStepTwo()
         }
         return true
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         textField.endEditing(false)
         SearchOperations.searchWithInput(textField.text ?? "", forAutocomplete: false, completion: { (results) -> Void in
             
-            self.markerIcon.hidden = true
+            self.markerIcon.isHidden = true
             
-            let date : NSDate = NSDate()
+            let date : Date = Date()
             
             self.delegate!.displaySearchResults(results, checkinTime : date)
             
@@ -225,7 +225,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     
     func transformToStepTwo () {
         
-        if (searchStep == SearchStep.TWO) {
+        if (searchStep == SearchStep.two) {
             return
         }
         
@@ -238,11 +238,11 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         markerIcon.snp_remakeConstraints { (make) -> () in
             make.center.equalTo(self.containerView)
-            make.size.equalTo(CGSizeMake(49, 60))
+            make.size.equalTo(CGSize(width: 49, height: 60))
         }
         
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.searchField.layoutIfNeeded()
             self.markerIcon.layoutIfNeeded()
             self.textLabel.alpha = 0
@@ -250,21 +250,21 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
             self.containerColorView.alpha = 1.0
             self.downButton.alpha = 1.0
             
-            }) { (complete) -> Void in
-                self.searchStep = SearchStep.TWO
-                self.dateSelectionView.hidden = true
-                self.durationSelectionView.hidden = true
-                self.searchButton.hidden = true
-                self.containerColorView.hidden = true
-                self.downButton.hidden = false
-                self.textLabel.hidden = true
-        }
+            }, completion: { (complete) -> Void in
+                self.searchStep = SearchStep.two
+                self.dateSelectionView.isHidden = true
+                self.durationSelectionView.isHidden = true
+                self.searchButton.isHidden = true
+                self.containerColorView.isHidden = true
+                self.downButton.isHidden = false
+                self.textLabel.isHidden = true
+        }) 
         
     }
     
     func transformToStepThree () {
      
-        if (searchStep == SearchStep.THREE) {
+        if (searchStep == SearchStep.three) {
             return
         }
         
@@ -290,23 +290,23 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         
         dateSelectionView.alpha = 0.0
-        dateSelectionView.hidden = false
-        self.containerColorView.hidden = false
+        dateSelectionView.isHidden = false
+        self.containerColorView.isHidden = false
 
         
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
+        UIView.animate(withDuration: 0.15, animations: { () -> Void in
             self.searchField.layoutIfNeeded()
             self.markerIcon.layoutIfNeeded()
             self.dateSelectionView.layoutIfNeeded()
             self.dateSelectionView.alpha = 1.0
             self.containerColorView.alpha = 1.0
             
-            }) { (complete) -> Void in
-                self.searchStep = SearchStep.THREE
-                self.textLabel.hidden = true
-                self.downButton.hidden = false
+            }, completion: { (complete) -> Void in
+                self.searchStep = SearchStep.three
+                self.textLabel.isHidden = true
+                self.downButton.isHidden = false
 
-        }
+        }) 
         
         
     }
@@ -314,7 +314,7 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
     
     func transformToStepFour () {
         
-        if (searchStep == SearchStep.FOUR) {
+        if (searchStep == SearchStep.four) {
             return
         }
     
@@ -341,19 +341,19 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         self.durationSelectionView.alpha = 0.0
         self.searchButton.alpha = 0.0
         
-        UIView.animateWithDuration(0.15, animations: { () -> Void in
+        UIView.animate(withDuration: 0.15, animations: { () -> Void in
            
             self.containerView.layoutIfNeeded()
             self.durationSelectionView.alpha = 1.0
             self.downButton.alpha = 0.0
             self.searchButton.alpha = 1.0
             
-            }) { (complete) -> Void in
-                self.searchStep = SearchStep.FOUR
-                self.downButton.hidden = true
-                self.searchButton.hidden = false
-                self.durationSelectionView.hidden = false
-        }
+            }, completion: { (complete) -> Void in
+                self.searchStep = SearchStep.four
+                self.downButton.isHidden = true
+                self.searchButton.isHidden = false
+                self.durationSelectionView.isHidden = false
+        }) 
         
         
         
@@ -364,12 +364,12 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         switch(searchStep) {
             
-        case SearchStep.ONE, SearchStep.TWO:
+        case SearchStep.one, SearchStep.two:
             transformToStepThree()
             break
             
             
-        case SearchStep.THREE:
+        case SearchStep.three:
             transformToStepFour()
             break
             
@@ -385,31 +385,31 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
         
         transformToStepTwo()
         
-        delegate?.setSearchParameters(NSDate(), duration: 1)
+        delegate?.setSearchParameters(Date(), duration: 1)
         searchField.endEditing(false)
         
         SearchOperations.searchWithInput(searchField.text ?? "", forAutocomplete: false, completion: { (results) -> Void in
             
-            self.markerIcon.hidden = true
+            self.markerIcon.isHidden = true
             
-            var date : NSDate = NSDate()
+            var date : Date = Date()
             
-            let gregorian:NSCalendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)!;
-            let unit : NSCalendarUnit = ([NSCalendarUnit.NSYearCalendarUnit, NSCalendarUnit.NSMonthCalendarUnit, NSCalendarUnit.NSDayCalendarUnit, NSCalendarUnit.NSHourCalendarUnit, NSCalendarUnit.NSMinuteCalendarUnit]);
+            let gregorian:Calendar = Calendar(identifier: .gregorian)
+            let unit : NSCalendar.Unit = ([NSCalendar.Unit.NSYearCalendarUnit, NSCalendar.Unit.NSMonthCalendarUnit, NSCalendar.Unit.NSDayCalendarUnit, NSCalendar.Unit.NSHourCalendarUnit, NSCalendar.Unit.NSMinuteCalendarUnit]);
             
-            let comps:NSDateComponents = gregorian.components(unit, fromDate: date);
+            var comps:DateComponents = (gregorian as NSCalendar).components(unit, from: date);
             
             if #available(iOS 8.0, *) {
-                comps.setValue(self.durationSelectionView.getHour(), forComponent: NSCalendarUnit.NSHourCalendarUnit)
-                comps.setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendarUnit.NSMinuteCalendarUnit);
-                comps.setValue(self.dateSelectionView.selectedDay, forComponent: NSCalendarUnit.NSWeekdayCalendarUnit)
+                (comps as NSDateComponents).setValue(self.durationSelectionView.getHour(), forComponent: NSCalendar.Unit.NSHourCalendarUnit)
+                (comps as NSDateComponents).setValue(self.durationSelectionView.getMinutes(), forComponent: NSCalendar.Unit.NSMinuteCalendarUnit);
+                (comps as NSDateComponents).setValue(self.dateSelectionView.selectedDay, forComponent: NSCalendar.Unit.NSWeekdayCalendarUnit)
             } else {
                 comps.hour = self.durationSelectionView.getHour()
                 comps.minute = self.durationSelectionView.getMinutes()
                 comps.day = self.dateSelectionView.selectedDay
             };
             
-            date = gregorian.dateFromComponents(comps)!;
+            date = gregorian.date(from: comps)!;
                         
             self.delegate!.displaySearchResults(results, checkinTime : date)
             
@@ -421,10 +421,10 @@ class SearchViewController: AbstractViewController, UITextFieldDelegate {
 
 protocol SearchViewControllerDelegate {
     
-    func setSearchParameters(time : NSDate?, duration : Float?)
-    func displaySearchResults(results : Array<SearchResult>, checkinTime : NSDate?)
+    func setSearchParameters(_ time : Date?, duration : Float?)
+    func displaySearchResults(_ results : Array<SearchResult>, checkinTime : Date?)
     func clearSearchResults()
-    func didGetAutocompleteResults(results: [SearchResult])
+    func didGetAutocompleteResults(_ results: [SearchResult])
     func startSearching()
     func endSearchingAndFiltering()
 
@@ -432,8 +432,8 @@ protocol SearchViewControllerDelegate {
 
 
 enum SearchStep {
-    case ONE
-    case TWO
-    case THREE
-    case FOUR
+    case one
+    case two
+    case three
+    case four
 }

@@ -19,49 +19,49 @@ struct AuthUtility {
     }
     
     static func authToken() -> String? {
-        return NSUserDefaults.standardUserDefaults().objectForKey(AUTH_TOKEN_KEY) as? String
+        return UserDefaults.standard.object(forKey: AUTH_TOKEN_KEY) as? String
     }
     
-    static func saveAuthToken(token : String?) {
+    static func saveAuthToken(_ token : String?) {
         if (token != nil) {
-            NSUserDefaults.standardUserDefaults().setObject(token, forKey: AUTH_TOKEN_KEY)
+            UserDefaults.standard.set(token, forKey: AUTH_TOKEN_KEY)
             if #available(iOS 8.0, *) {
-                UIApplication.sharedApplication().registerForRemoteNotifications()
+                UIApplication.shared.registerForRemoteNotifications()
             } else {
-                UIApplication.sharedApplication().registerForRemoteNotificationTypes([.Badge, .Sound, .Badge, .Alert])
+                UIApplication.shared.registerForRemoteNotifications(matching: [.badge, .sound, .badge, .alert])
             }
         } else {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(AUTH_TOKEN_KEY)
+            UserDefaults.standard.removeObject(forKey: AUTH_TOKEN_KEY)
         }
     }
     
     
     static func getUser() -> User? {
-        if let encodedUser : NSData = NSUserDefaults.standardUserDefaults().objectForKey(USER_KEY) as? NSData  {
-            return NSKeyedUnarchiver.unarchiveObjectWithData(encodedUser) as? User
+        if let encodedUser : Data = UserDefaults.standard.object(forKey: USER_KEY) as? Data  {
+            return NSKeyedUnarchiver.unarchiveObject(with: encodedUser) as? User
         }
         
         return nil
     }
     
-    static func saveUser(user : User?) {
+    static func saveUser(_ user : User?) {
         
         if (user != nil) {
-            let encodedUser = NSKeyedArchiver.archivedDataWithRootObject(user!)
-            NSUserDefaults.standardUserDefaults().setObject(encodedUser, forKey: USER_KEY)
+            let encodedUser = NSKeyedArchiver.archivedData(withRootObject: user!)
+            UserDefaults.standard.set(encodedUser, forKey: USER_KEY)
         } else {
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(USER_KEY)
+            UserDefaults.standard.removeObject(forKey: USER_KEY)
         }
         
     }
     
-    static func saveLoginType(loginType: LoginType) {
-        NSUserDefaults.standardUserDefaults().setObject(loginType.rawValue, forKey: LOGIN_TYPE)
+    static func saveLoginType(_ loginType: LoginType) {
+        UserDefaults.standard.set(loginType.rawValue, forKey: LOGIN_TYPE)
     }
     
     
     static func loginType() -> LoginType? {
-        if let type =  NSUserDefaults.standardUserDefaults().stringForKey(LOGIN_TYPE) {
+        if let type =  UserDefaults.standard.string(forKey: LOGIN_TYPE) {
             return LoginType(rawValue: type)
         }
         

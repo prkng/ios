@@ -13,53 +13,53 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     var delegate: PPCreateUserViewControllerDelegate?
     
-    private enum PPCreateUserStep: Int {
-        case PersonalInformation = 0
-        case CreditCard
-        case VehicleDescription
+    fileprivate enum PPCreateUserStep: Int {
+        case personalInformation = 0
+        case creditCard
+        case vehicleDescription
     }
     
-    private var step: PPCreateUserStep = .PersonalInformation
+    fileprivate var step: PPCreateUserStep = .personalInformation
     
-    private var statusView = UIView()
-    private var headerView = PPHeaderView()
-    private let tableView = PRKCachedTableView()
+    fileprivate var statusView = UIView()
+    fileprivate var headerView = PPHeaderView()
+    fileprivate let tableView = PRKCachedTableView()
     
-    private var firstName: String = ""
-    private var lastName: String = ""
-    private var email: String = ""
-    private var password: String = ""
+    fileprivate var firstName: String = ""
+    fileprivate var lastName: String = ""
+    fileprivate var email: String = ""
+    fileprivate var password: String = ""
     
-    private var creditCards = [CardIOCreditCardInfo]()
-    private var redCells = [String]()
+    fileprivate var creditCards = [CardIOCreditCardInfo]()
+    fileprivate var redCells = [String]()
 
-    private var brand: String = Settings.getCarDescription()["brand"] ?? ""
-    private var plate: String = Settings.getCarDescription()["plate"] ?? ""
-    private var model: String = Settings.getCarDescription()["model"] ?? ""
-    private var color: String = Settings.getCarDescription()["color"] ?? ""
-    private var phone: String = Settings.getCarDescription()["phone"] ?? ""
+    fileprivate var brand: String = Settings.getCarDescription()["brand"] ?? ""
+    fileprivate var plate: String = Settings.getCarDescription()["plate"] ?? ""
+    fileprivate var model: String = Settings.getCarDescription()["model"] ?? ""
+    fileprivate var color: String = Settings.getCarDescription()["color"] ?? ""
+    fileprivate var phone: String = Settings.getCarDescription()["phone"] ?? ""
     
     var onlyShowVehicleDescription: Bool = false {
         didSet {
-            step = .VehicleDescription
+            step = .vehicleDescription
             headerView.showsLeftButton = false
         }
     }
     
-    private(set) var BACKGROUND_COLOR = Styles.Colors.stone
-    private(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
-    private(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.petrol2
-    private(set) var FOREGROUND_COLOR = Styles.Colors.cream1
-    private(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.anthracite1
-    private(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
+    fileprivate(set) var BACKGROUND_COLOR = Styles.Colors.stone
+    fileprivate(set) var BACKGROUND_TEXT_COLOR = Styles.Colors.anthracite1
+    fileprivate(set) var BACKGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.petrol2
+    fileprivate(set) var FOREGROUND_COLOR = Styles.Colors.cream1
+    fileprivate(set) var FOREGROUND_TEXT_COLOR = Styles.Colors.anthracite1
+    fileprivate(set) var FOREGROUND_TEXT_COLOR_EMPHASIZED = Styles.Colors.red2
     
-    private(set) var HEADER_HEIGHT = 80
-    private(set) var HEADER_FONT = Styles.FontFaces.regular(12)
-    private(set) var MIN_FOOTER_HEIGHT = 65
-    private(set) var FOOTER_FONT = Styles.FontFaces.regular(12)
+    fileprivate(set) var HEADER_HEIGHT = 80
+    fileprivate(set) var HEADER_FONT = Styles.FontFaces.regular(12)
+    fileprivate(set) var MIN_FOOTER_HEIGHT = 65
+    fileprivate(set) var FOOTER_FONT = Styles.FontFaces.regular(12)
     
-    private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
-    private(set) var BIG_CELL_HEIGHT: CGFloat = 61
+    fileprivate(set) var SMALL_CELL_HEIGHT: CGFloat = 48
+    fileprivate(set) var BIG_CELL_HEIGHT: CGFloat = 61
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -80,11 +80,11 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         self.screenName = "Parking Panda Create User View"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let nextTextField = tableView.viewWithTag(1) as? UITextField {
             nextTextField.becomeFirstResponder()
@@ -99,12 +99,12 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         self.view.addSubview(statusView)
         
         headerView.delegate = self
-        headerView.headerText = "create_pp_account".localizedString.uppercaseString
+        headerView.headerText = "create_pp_account".localizedString.uppercased()
         view.addSubview(headerView)
         
         view.addSubview(tableView)
-        tableView.backgroundColor = UIColor.clearColor()
-        tableView.separatorStyle = .None
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
         tableView.clipsToBounds = true
@@ -144,33 +144,33 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         let firstNameCell = SettingsCell(placeholderText: "first_name".localizedString, titleText: firstName, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 1,
-                "keyboardType": UIKeyboardType.NamePhonePad.rawValue,
-                "returnKeyType": UIReturnKeyType.Next.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.namePhonePad.rawValue,
+                "returnKeyType": UIReturnKeyType.next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("firstName")],
                 "returnCallback": "cellReturnCallback:"])
         let lastNameCell = SettingsCell(placeholderText: "last_name".localizedString, titleText: lastName, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 2,
-                "keyboardType": UIKeyboardType.NamePhonePad.rawValue,
-                "returnKeyType": UIReturnKeyType.Next.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.namePhonePad.rawValue,
+                "returnKeyType": UIReturnKeyType.next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("lastName")],
                 "returnCallback": "cellReturnCallback:"])
         let emailCell = SettingsCell(placeholderText: "email".localizedString, titleText: email, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 3,
-                "keyboardType": UIKeyboardType.EmailAddress.rawValue,
-                "returnKeyType": UIReturnKeyType.Next.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.emailAddress.rawValue,
+                "returnKeyType": UIReturnKeyType.next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("email")],
                 "returnCallback": "cellReturnCallback:"])
         let passwordCell = SettingsCell(placeholderText: "password".localizedString, titleText: password, cellType: .TextEntry, selectorsTarget: self, callback: "formCallback:",
             userInfo: [
                 "textFieldTag": 4,
-                "keyboardType": UIKeyboardType.Default.rawValue,
-                "returnKeyType": UIReturnKeyType.Done.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.default.rawValue,
+                "returnKeyType": UIReturnKeyType.done.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("password")],
                 "secureTextEntry": true,
                 "returnCallback": "cellReturnCallback:"])
@@ -191,27 +191,27 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         let vehicleDescBrandAndPlate = SettingsCell(placeholderTexts: ["brand".localizedString, "license_plate".localizedString], titleTexts: [brand, plate], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 5,
-                "keyboardType": UIKeyboardType.Default.rawValue,
-                "returnKeyType": UIReturnKeyType.Next.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.default.rawValue,
+                "returnKeyType": UIReturnKeyType.next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("brand"), redCells.contains("plate")],
                 "returnCallback": "cellReturnCallback:"])
         
         let vehicleDescModelAndColor = SettingsCell(placeholderTexts: ["model".localizedString, "color".localizedString], titleTexts: [model, color], cellType: .DoubleTextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 7,
-                "keyboardType": UIKeyboardType.Default.rawValue,
-                "returnKeyType": UIReturnKeyType.Next.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.default.rawValue,
+                "returnKeyType": UIReturnKeyType.next.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("model"), redCells.contains("color")],
                 "returnCallback": "cellReturnCallback:"])
         
         let vehicleDescPhone = SettingsCell(placeholderText: "phone_number".localizedString, titleText: phone, cellType: .TextEntry, selectorsTarget: self, callback: "vehicleDescriptionCallback:",
             userInfo: [
                 "textFieldTag": 9,
-                "keyboardType": UIKeyboardType.NumberPad.rawValue,
-                "returnKeyType": UIReturnKeyType.Done.rawValue,
-                "autocorrectionType": UITextAutocorrectionType.No.rawValue,
+                "keyboardType": UIKeyboardType.numberPad.rawValue,
+                "returnKeyType": UIReturnKeyType.done.rawValue,
+                "autocorrectionType": UITextAutocorrectionType.no.rawValue,
                 "redTintOnOrderedCells": [redCells.contains("phone")],
                 "returnCallback": "cellReturnCallback:"])
 
@@ -221,22 +221,22 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         let vehicleDescriptionSection2 = ("", [vehicleDescPhone])
 
         switch(step) {
-        case .PersonalInformation: return [("enter_your_information".localizedString, formSection)]
-        case .CreditCard: return [("payment_method".localizedString, paymentMethodSection)]
-        case .VehicleDescription: return [("vehicle_description".localizedString, vehicleDescriptionSection),vehicleDescriptionSection2]
+        case .personalInformation: return [("enter_your_information".localizedString, formSection)]
+        case .creditCard: return [("payment_method".localizedString, paymentMethodSection)]
+        case .vehicleDescription: return [("vehicle_description".localizedString, vehicleDescriptionSection),vehicleDescriptionSection2]
         }
         
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return tableSource.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableSource[section].1.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         
         let section = self.tableSource[indexPath.section]
@@ -245,7 +245,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
             //the last row in this section should be to add a credit card
             if indexPath.row == section.1.count - 1 {
                 
-                var addCreditCardCell = tableView.dequeueReusableCellWithIdentifier("add_credit_card") as? PPAddCreditCardCell
+                var addCreditCardCell = tableView.dequeueReusableCell(withIdentifier: "add_credit_card") as? PPAddCreditCardCell
                 if addCreditCardCell == nil {
                     addCreditCardCell = PPAddCreditCardCell(reuseIdentifier: "add_credit_card")
                 }
@@ -255,12 +255,12 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
             } else {
                 
                 let rawCardIOCardType = settingsCell.userInfo["card_io_payment_type"] as? Int ?? 0
-                let cardIOCardType = CardIOCreditCardType(rawValue: rawCardIOCardType) ?? .Unrecognized
+                let cardIOCardType = CardIOCreditCardType(rawValue: rawCardIOCardType) ?? .unrecognized
                 let cardToken = settingsCell.userInfo["token"] as? String ?? ""
                 
                 let reuse = "cc_" + String(rawCardIOCardType) + "_" + cardToken
                 
-                var cell = tableView.dequeueReusableCellWithIdentifier(reuse) as? PPCreditCardCell
+                var cell = tableView.dequeueReusableCell(withIdentifier: reuse) as? PPCreditCardCell
                 if cell == nil {
                     cell = PPCreditCardCell(creditCardType: cardIOCardType, isDefault: false, reuseIdentifier: reuse)
                 }
@@ -279,24 +279,24 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     //MARK: UITableViewDelegate
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         switch(editingStyle) {
-        case .Delete:
+        case .delete:
             let settingsCell = self.tableSource[indexPath.section].1[indexPath.row]
             if let cardInfo = settingsCell.userInfo["card_io_credit_card_info"] as? CardIOCreditCardInfo {
                 self.creditCards.remove(cardInfo)
                 self.tableView.reloadData()
             }
-        case .Insert, .None:
+        case .insert, .none:
             break
         }
     }
     
     @available(iOS 8.0, *)
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         if settingsCell.canDelete {
-            let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.Destructive, title: "delete".localizedString, handler: { (action: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+            let deleteAction = UITableViewRowAction(style: .destructive, title: "delete".localizedString, handler: { (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
                 let settingsCell = self.tableSource[indexPath.section].1[indexPath.row]
                 if let cardInfo = settingsCell.userInfo["card_io_credit_card_info"] as? CardIOCreditCardInfo {
                     self.creditCards.remove(cardInfo)
@@ -308,44 +308,44 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         return []
     }
     
-    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         if settingsCell.canDelete {
-            return UITableViewCellEditingStyle.Delete
+            return UITableViewCellEditingStyle.delete
         }
-        return UITableViewCellEditingStyle.None
+        return UITableViewCellEditingStyle.none
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         return settingsCell.canDelete
     }
 
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         return settingsCell.canSelect
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         if settingsCell.selectorsTarget != nil && settingsCell.cellSelector != nil {
-            settingsCell.selectorsTarget!.performSelector(Selector(settingsCell.cellSelector!))
+            settingsCell.selectorsTarget!.perform(Selector(settingsCell.cellSelector!))
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return SMALL_CELL_HEIGHT
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if step == .VehicleDescription && section == 1 {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if step == .vehicleDescription && section == 1 {
             return 4 //second vehicle description cell
         }
         return BIG_CELL_HEIGHT
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         let headerText = tableSource[section].0
         
@@ -372,8 +372,8 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     //MARK: selector functions
     
-    func formCallback(sender: AnyObject?) {
-        if let timer = sender as? NSTimer {
+    func formCallback(_ sender: AnyObject?) {
+        if let timer = sender as? Timer {
             if let dict = timer.userInfo as? [String: String] {
                 firstName = dict["first_name".localizedString] ?? firstName
                 lastName = dict["last_name".localizedString] ?? lastName
@@ -384,8 +384,8 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         }
     }
     
-    func cellReturnCallback(sender: AnyObject?) {
-        if let timer = sender as? NSTimer {
+    func cellReturnCallback(_ sender: AnyObject?) {
+        if let timer = sender as? Timer {
             if let dict = timer.userInfo as? [String: Int] {
                 let nextTag = (dict["textFieldTag"] ?? 0) + 1
                 if let nextTextField = tableView.viewWithTag(nextTag) as? UITextField {
@@ -398,8 +398,8 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
         }
     }
     
-    func vehicleDescriptionCallback(sender: AnyObject?) {
-        if let timer = sender as? NSTimer {
+    func vehicleDescriptionCallback(_ sender: AnyObject?) {
+        if let timer = sender as? Timer {
             if let dict = timer.userInfo as? [String: String] {
                 brand = dict["brand".localizedString] ?? brand
                 plate = dict["license_plate".localizedString] ?? plate
@@ -413,29 +413,29 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     
     func addPaymentMethod() {
         let paymentVC = CardIOPaymentViewController(paymentDelegate: self)
-        paymentVC.hideCardIOLogo = true
-        paymentVC.keepStatusBarStyle = true
-        paymentVC.guideColor = Styles.Colors.red2
-        paymentVC.navigationBarStyle = .Black
-        paymentVC.navigationBar.translucent = false
+        paymentVC?.hideCardIOLogo = true
+        paymentVC?.keepStatusBarStyle = true
+        paymentVC?.guideColor = Styles.Colors.red2
+        paymentVC?.navigationBarStyle = .black
+        paymentVC?.navigationBar.isTranslucent = false
         //dark style:
-        paymentVC.navigationBarTintColor = Styles.Colors.midnight1
-        paymentVC.navigationBar.tintColor = Styles.Colors.stone
+        paymentVC?.navigationBarTintColor = Styles.Colors.midnight1
+        paymentVC?.navigationBar.tintColor = Styles.Colors.stone
         
-        paymentVC.collectPostalCode = true
+        paymentVC?.collectPostalCode = true
         
         if let navVC = self.navigationController {
-            navVC.pushViewController(paymentVC, animated: true)
+            navVC.pushViewController(paymentVC!, animated: true)
         } else {
-            self.presentViewController(paymentVC, animated: true, completion: nil)
+            self.present(paymentVC!, animated: true, completion: nil)
         }
         
     }
 
     
-    func presentWithVC(vc: UIViewController?) {
+    func presentWithVC(_ vc: UIViewController?) {
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let rootVC = vc ?? appDelegate.window?.rootViewController {
             if let navVC = rootVC.navigationController {
                 navVC.pushViewController(self, animated: true)
@@ -449,17 +449,17 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     func dismiss() {
         
         if let navVC = self.navigationController {
-            navVC.popViewControllerAnimated(true)
+            navVC.popViewController(animated: true)
         } else {
             self.dismissViewControllerFromLeft(0.3, completion: nil)
         }
         
     }
     
-    func passesValidation(shouldColorCells shouldColorCells: Bool = true) -> Bool {
+    func passesValidation(shouldColorCells: Bool = true) -> Bool {
         
         switch step {
-        case .PersonalInformation:
+        case .personalInformation:
             let failedValidation = firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty
             
             if failedValidation {
@@ -476,14 +476,14 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                 
                 return false
             }
-        case .CreditCard:
+        case .creditCard:
             let failedValidation = creditCards.count < 1
             
             if failedValidation {
                 GeneralHelper.warnUserWithErrorMessage("cc_warning".localizedString)
                 return false
             }
-        case .VehicleDescription:
+        case .vehicleDescription:
             let failedValidation = brand.isEmpty || plate.isEmpty || model.isEmpty || color.isEmpty || phone.isEmpty
             
             if failedValidation {
@@ -507,30 +507,30 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     }
     
     //MARK: CardIOPaymentViewControllerDelegate functions
-    func userDidCancelPaymentViewController(paymentViewController: CardIOPaymentViewController!) {
-        paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+    func userDidCancel(_ paymentViewController: CardIOPaymentViewController!) {
+        paymentViewController.dismiss(animated: true, completion: nil)
     }
     
-    func userDidProvideCreditCardInfo(cardInfo: CardIOCreditCardInfo!, inPaymentViewController paymentViewController: CardIOPaymentViewController!) {
+    func userDidProvide(_ cardInfo: CardIOCreditCardInfo!, in paymentViewController: CardIOPaymentViewController!) {
         creditCards.append(cardInfo)
         self.tableView.reloadData()
-        paymentViewController.dismissViewControllerAnimated(true, completion: nil)
+        paymentViewController.dismiss(animated: true, completion: nil)
     }
 
     //MARK: PPHeaderViewDelegate
     func tappedBackButton() {
 
-        headerView.rightButtonText = "next".localizedString.uppercaseString
+        headerView.rightButtonText = "next".localizedString.uppercased()
 
         switch step {
-        case .PersonalInformation:
+        case .personalInformation:
             dismiss()
-        case .CreditCard, .VehicleDescription:
+        case .creditCard, .vehicleDescription:
             if onlyShowVehicleDescription {
                 //then the purpose of this was to just show the vehicle description, so just dismiss this (since we know we've passed validation)
                 return
             }
-            step = PPCreateUserStep(rawValue: step.rawValue - 1) ?? .PersonalInformation
+            step = PPCreateUserStep(rawValue: step.rawValue - 1) ?? .personalInformation
             self.tableView.reloadDataAnimated()
         }
 
@@ -539,19 +539,19 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
     func tappedNextButton() {
         
         switch step {
-        case .PersonalInformation:
+        case .personalInformation:
             if passesValidation() {
-                step = PPCreateUserStep(rawValue: step.rawValue + 1) ?? .PersonalInformation
-                headerView.rightButtonText = "next".localizedString.uppercaseString
+                step = PPCreateUserStep(rawValue: step.rawValue + 1) ?? .personalInformation
+                headerView.rightButtonText = "next".localizedString.uppercased()
             }
             self.tableView.reloadDataAnimated()
-        case .CreditCard:
+        case .creditCard:
             if passesValidation() {
-                step = PPCreateUserStep(rawValue: step.rawValue + 1) ?? .PersonalInformation
-                headerView.rightButtonText = "done".localizedString.uppercaseString
+                step = PPCreateUserStep(rawValue: step.rawValue + 1) ?? .personalInformation
+                headerView.rightButtonText = "done".localizedString.uppercased()
             }
             self.tableView.reloadDataAnimated()
-        case .VehicleDescription:
+        case .vehicleDescription:
             if passesValidation() {
                 let description = [
                     "brand" : brand ?? "",
@@ -567,7 +567,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                     self.dismiss()
                     return
                 }
-                SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                SVProgressHUD.setBackgroundColor(UIColor.clear)
                 SVProgressHUD.show()
                 ParkingPandaOperations.createUser(email ?? "", password: password ?? "", firstName: firstName ?? "", lastName: lastName ?? "", phone: phone ?? "", completion: { (user, error) -> Void in
                     if user != nil {
@@ -575,7 +575,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                         for cardInfo in self.creditCards {
                             ParkingPandaOperations.addCreditCard(user!, cardInfo: cardInfo) { (creditCard, error) -> Void in
                                 if cardInfo == self.creditCards.last {
-                                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    DispatchQueue.main.async(execute: { () -> Void in
                                         //these two actions will basically happen at the same time, which, really, is what we want!
                                         self.dismiss()
                                         self.delegate?.didCreateAccount()
@@ -590,7 +590,7 @@ class PPCreateUserViewController: AbstractViewController, UIGestureRecognizerDel
                             }
                         }
                     } else {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        DispatchQueue.main.async(execute: { () -> Void in
                             SVProgressHUD.dismiss()
                         })
                     }

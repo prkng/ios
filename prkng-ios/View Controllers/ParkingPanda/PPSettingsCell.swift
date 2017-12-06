@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SVProgressHUD
 
 //MARK: This class is THE instantiation of the ParkingPanda settings cell, so that we can change it independently of the SettingsViewController.
 
@@ -23,7 +24,10 @@ class PPSettingsCell: SettingsCell {
     }
     
     init() {
-        super.init(cellType: .Switch, switchValue: false, titleText: "parking_panda".localizedString, subtitleText: "pp_cell_text".localizedString)
+        super.init()
+        self.switchValue = false
+        self.titleTexts.append("parking_panda".localizedString)
+        self.subtitleText.append("pp_cell_text".localizedString)
         self.selectorsTarget = self
         self.canSelect = true
         self.cellSelector = "wasSelected"
@@ -39,7 +43,7 @@ class PPSettingsCell: SettingsCell {
         cell.switchOn = self.switchValue ?? false
         
         //add a right accessory
-        cell.accessoryType = .DisclosureIndicator
+        cell.accessoryType = .disclosureIndicator
 
         return cell
     }
@@ -56,7 +60,7 @@ class PPSettingsCell: SettingsCell {
         
     func wasSelected() {
         
-        SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.show()
         
         ParkingPandaOperations.login(username: nil, password: nil, includeCreditCards: true) { (user, error) -> Void in
@@ -65,7 +69,7 @@ class PPSettingsCell: SettingsCell {
               
                 ParkingPandaOperations.getCreditCards(user!) { (creditCards, error) -> Void in
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         SVProgressHUD.dismiss()
                         let ppSettingsVC = PPSettingsViewController(user: user!, creditCards: creditCards)
                         ppSettingsVC.presentWithVC(nil)
@@ -74,17 +78,17 @@ class PPSettingsCell: SettingsCell {
                 
             } else {
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     SVProgressHUD.dismiss()
                 })
 
                 if let ppError = error {
                     switch (ppError.errorType) {
-                    case .API, .Internal:
+                    case .api, .internal:
                         ParkingPandaOperations.logout()
                         let ppIntroVC = PPIntroViewController()
                         ppIntroVC.presentWithVC(nil)
-                    case .NoError, .Network:
+                    case .noError, .network:
                         break
                     }
                 }

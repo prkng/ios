@@ -22,7 +22,7 @@ enum SettingsTableViewCellType: String {
 class SettingsCell: NSObject {
     
     var id: String {
-        return self.cellType.rawValue + self.titleText + (self.rightSideText ?? "") + placeholderTexts.joinWithSeparator("")
+        return self.cellType.rawValue + self.titleText + (self.rightSideText ?? "") + placeholderTexts.joined(separator: "")
     }
 
     var placeholderText: String {
@@ -119,8 +119,18 @@ class SettingsCell: NSObject {
         self.titleTexts = [titleText]
         self.switchValue = switchValue
     }
-
-    func tableViewCell(tableView: UITableView) -> UITableViewCell {
+    
+    convenience init(placeholderText: String, titleText: String, cellType: SettingsTableViewCellType, selectorsTarget: AnyObject, callback: String, userInfo: [String: AnyObject]) {
+        self.init()
+        if let text = placeholderText { self.placeholderTexts.append(text) }
+        if let text = titleText { self.titleTexts.append(text) }
+        self.cellType = cellType
+        self.selectorsTarget = selectorsTarget
+        self.callback = callback
+        self.userInfo = userInfo
+    }
+    
+    func tableViewCell(_ tableView: UITableView) -> UITableViewCell {
         
         if let ppSettingsCell = self as? PPSettingsCell {
             return ppSettingsCell.tableViewCell
@@ -129,7 +139,7 @@ class SettingsCell: NSObject {
         switch self.cellType {
             
         case .Switch, .PermitSwitch:
-            var cell = tableView.dequeueReusableCellWithIdentifier(self.id) as? SettingsSwitchCell
+            var cell = tableView.dequeueReusableCell(withIdentifier: self.id) as? SettingsSwitchCell
             if cell == nil {
                 cell = SettingsSwitchCell(rightSideText: self.rightSideText, selectorsTarget: self.selectorsTarget, selector: self.switchSelector, buttonSelector: self.buttonSelector, reuseIdentifier: self.id)
             }
@@ -139,7 +149,7 @@ class SettingsCell: NSObject {
             return cell!
             
         case .Segmented:
-            var cell = tableView.dequeueReusableCellWithIdentifier(self.id) as? SettingsSegmentedCell
+            var cell = tableView.dequeueReusableCell(withIdentifier: self.id) as? SettingsSegmentedCell
             if cell == nil {
                 cell = SettingsSegmentedCell(segments: self.segments, reuseIdentifier: self.id, selectorsTarget: self.selectorsTarget, selector: self.switchSelector)
             }
@@ -148,9 +158,9 @@ class SettingsCell: NSObject {
             return cell!
             
         case .Service, .ServiceSwitch:
-            var cell = tableView.dequeueReusableCellWithIdentifier(self.id) as? SettingsServiceSwitchCell
+            var cell = tableView.dequeueReusableCell(withIdentifier: self.id) as? SettingsServiceSwitchCell
             if cell == nil {
-                cell = SettingsServiceSwitchCell(style: .Default, reuseIdentifier: self.id)
+                cell = SettingsServiceSwitchCell(style: .default, reuseIdentifier: self.id)
             }
             cell!.titleText = self.titleText
             cell!.signedIn = self.signedIn
@@ -167,9 +177,9 @@ class SettingsCell: NSObject {
             return cell!
             
         case .Basic:
-            var cell = tableView.dequeueReusableCellWithIdentifier(self.id) as? SettingsBasicCell
+            var cell = tableView.dequeueReusableCell(withIdentifier: self.id) as? SettingsBasicCell
             if cell == nil {
-                cell = SettingsBasicCell(style: .Default, reuseIdentifier: self.id)
+                cell = SettingsBasicCell(style: .default, reuseIdentifier: self.id)
             }
             cell!.titleText = self.titleText
             cell!.bold = self.bold
@@ -177,27 +187,27 @@ class SettingsCell: NSObject {
             return cell!
             
         case .TextEntry:
-            var cell = tableView.dequeueReusableCellWithIdentifier(self.id) as? SettingsTextEntryCell
+            var cell = tableView.dequeueReusableCell(withIdentifier: self.id) as? SettingsTextEntryCell
             if cell == nil {
-                cell = SettingsTextEntryCell(style: .Default, reuseIdentifier: self.id)
+                cell = SettingsTextEntryCell(style: .default, reuseIdentifier: self.id)
             }
             cell!.placeholderText = self.placeholderText
             cell!.mainText = self.titleText
             cell!.selectorsTarget = self.selectorsTarget
             cell!.editCallback = self.callback
             cell!.returnCallback = self.userInfo["returnCallback"] as? String
-            cell!.keyboardType = UIKeyboardType(rawValue: self.userInfo["keyboardType"] as? Int ?? 0) ?? .Default
-            cell!.returnKeyType = UIReturnKeyType(rawValue: self.userInfo["returnKeyType"] as? Int ?? 0) ?? .Default
-            cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .Default
+            cell!.keyboardType = UIKeyboardType(rawValue: self.userInfo["keyboardType"] as? Int ?? 0) ?? .default
+            cell!.returnKeyType = UIReturnKeyType(rawValue: self.userInfo["returnKeyType"] as? Int ?? 0) ?? .default
+            cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .default
             cell!.secureTextEntry = self.userInfo["secureTextEntry"] as? Bool ?? false
             cell!.textFieldTag = self.userInfo["textFieldTag"] as? Int
             cell!.hasRedTint = (self.userInfo["redTintOnOrderedCells"] as? [Bool])?.first ?? false
             return cell!
             
         case .DoubleTextEntry:
-            var cell = tableView.dequeueReusableCellWithIdentifier(self.id) as? SettingsDoubleTextEntryCell
+            var cell = tableView.dequeueReusableCell(withIdentifier: self.id) as? SettingsDoubleTextEntryCell
             if cell == nil {
-                cell = SettingsDoubleTextEntryCell(style: .Default, reuseIdentifier: self.id)
+                cell = SettingsDoubleTextEntryCell(style: .default, reuseIdentifier: self.id)
             }
             cell!.placeholderTextLeft = self.placeholderTexts.first ?? ""
             cell!.mainTextLeft = self.titleTexts.first ?? ""
@@ -206,9 +216,9 @@ class SettingsCell: NSObject {
             cell!.selectorsTarget = self.selectorsTarget
             cell!.editCallback = self.callback
             cell!.returnCallback = self.userInfo["returnCallback"] as? String
-            cell!.keyboardType = UIKeyboardType(rawValue: self.userInfo["keyboardType"] as? Int ?? 0) ?? .Default
-            cell!.returnKeyType = UIReturnKeyType(rawValue: self.userInfo["returnKeyType"] as? Int ?? 0) ?? .Default
-            cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .Default
+            cell!.keyboardType = UIKeyboardType(rawValue: self.userInfo["keyboardType"] as? Int ?? 0) ?? .default
+            cell!.returnKeyType = UIReturnKeyType(rawValue: self.userInfo["returnKeyType"] as? Int ?? 0) ?? .default
+            cell!.autocorrectionType = UITextAutocorrectionType(rawValue: self.userInfo["autocorrectionType"] as? Int ?? 0) ?? .default
             cell!.secureTextEntry = self.userInfo["secureTextEntry"] as? Bool ?? false
             cell!.textFieldTag = self.userInfo["textFieldTag"] as? Int
             cell!.leftHasRedTint = (self.userInfo["redTintOnOrderedCells"] as? [Bool])?.first ?? false
@@ -222,9 +232,9 @@ class SettingsCell: NSObject {
 
 class SettingsBasicCell: UITableViewCell {
 
-    private let title = UILabel()
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate let title = UILabel()
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     var redText: Bool {
         get { return title.textColor == Styles.Colors.red2 }
@@ -241,7 +251,7 @@ class SettingsBasicCell: UITableViewCell {
         set(value) { self.title.text = value }
     }
     
-    private func setFont(bold bold: Bool) {
+    fileprivate func setFont(bold: Bool) {
         if bold {
             title.font = Styles.FontFaces.bold(14)
         } else {
@@ -264,7 +274,7 @@ class SettingsBasicCell: UITableViewCell {
         self.backgroundColor = Styles.Colors.cream1
         
         self.setFont(bold: bold)
-        title.textAlignment = .Left
+        title.textAlignment = .left
         contentView.addSubview(title)
         
         didSetupSubviews = true
@@ -291,11 +301,11 @@ class SettingsBasicCell: UITableViewCell {
 
 class SettingsSwitchCell: UITableViewCell {
     
-    private let enabledSwitch = SevenSwitch()
-    private let title = UILabel()
-    private let subtitle = UILabel()
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate let enabledSwitch = SevenSwitch()
+    fileprivate let title = UILabel()
+    fileprivate let subtitle = UILabel()
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     var titleText: String {
         get { return self.title.text ?? "" }
@@ -314,22 +324,22 @@ class SettingsSwitchCell: UITableViewCell {
         }
     }
     
-    private var indicatorButton: UIButton?
-    private var rightSideText: String?
+    fileprivate var indicatorButton: UIButton?
+    fileprivate var rightSideText: String?
     
     func indicatorButtonTapped() {
         if (selectorsTarget != nil && buttonSelector != nil) {
-            selectorsTarget!.performSelector(Selector(buttonSelector!))
+            selectorsTarget!.perform(Selector(buttonSelector!))
         }
     }
 
-    private var buttonSelector: String?
+    fileprivate var buttonSelector: String?
     
-    private var addButton: UIButton?
-    private var selectorsTarget: AnyObject?
-    private var selector: String?
+    fileprivate var addButton: UIButton?
+    fileprivate var selectorsTarget: AnyObject?
+    fileprivate var selector: String?
     
-    private var cellBackgroundColor: UIColor {
+    fileprivate var cellBackgroundColor: UIColor {
         return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
     }
 
@@ -337,20 +347,20 @@ class SettingsSwitchCell: UITableViewCell {
         enabledSwitchValueChanged(animated: true)
     }
     
-    func enabledSwitchValueChanged(animated animated: Bool) {
-        UIView.animateWithDuration(animated ? 0.2 : 0) { () -> Void in
+    func enabledSwitchValueChanged(animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.2 : 0, animations: { () -> Void in
             self.backgroundColor = self.cellBackgroundColor
-        }
+        }) 
     }
     
     func resetSelector() {
-        enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+        enabledSwitch.removeTarget(nil, action: nil, for: .allEvents)
         if (selectorsTarget != nil && selector != nil) {
-            enabledSwitch.addTarget(selectorsTarget!, action: Selector(selector!), forControlEvents: .ValueChanged)
-            enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
+            enabledSwitch.addTarget(selectorsTarget!, action: Selector(selector!), for: .valueChanged)
+            enabledSwitch.addTarget(self, action: #selector(SettingsSwitchCell.enabledSwitchValueChanged as (SettingsSwitchCell) -> () -> ()), for: .valueChanged)
         }
         if (selectorsTarget != nil && buttonSelector != nil) {
-            addButton?.addTarget(selectorsTarget!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
+            addButton?.addTarget(selectorsTarget!, action: Selector(buttonSelector!), for: .touchUpInside)
         }
     }
 
@@ -359,7 +369,7 @@ class SettingsSwitchCell: UITableViewCell {
         self.selectorsTarget = selectorsTarget
         self.selector = selector
         self.buttonSelector = buttonSelector
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupSubviews()
         self.setNeedsUpdateConstraints()
     }
@@ -386,12 +396,12 @@ class SettingsSwitchCell: UITableViewCell {
         
         title.font = Styles.FontFaces.regular(14)
         title.textColor = Styles.Colors.red2
-        title.textAlignment = .Left
+        title.textAlignment = .left
         contentView.addSubview(title)
         
         subtitle.font = Styles.FontFaces.light(12)
         subtitle.textColor = Styles.Colors.anthracite1
-        subtitle.textAlignment = .Left
+        subtitle.textAlignment = .left
         contentView.addSubview(subtitle)
         
         if buttonSelector != nil {
@@ -408,11 +418,11 @@ class SettingsSwitchCell: UITableViewCell {
             indicatorButton = ViewFactory.redRoundedButtonWithHeight(22, font: Styles.FontFaces.regular(14), text: "")
             let attrs = [NSFontAttributeName: indicatorButton!.titleLabel!.font]
             let maximumLabelSize = CGSize(width: 200, height: 22)
-            let labelRect = (rightSideText! as NSString).boundingRectWithSize(maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
+            let labelRect = (rightSideText! as NSString).boundingRect(with: maximumLabelSize, options: NSStringDrawingOptions(), attributes: attrs, context: nil)
             
             //add the close icon --> if we ever wish to re-add this, just add (5+closeImageView.frame.width) to the width of indicatorButton.frame
             let closeImageView = UIImageView(image: UIImage(named:"icon_close"))
-            closeImageView.contentMode = .ScaleAspectFit
+            closeImageView.contentMode = .scaleAspectFit
             closeImageView.frame = CGRect(x: 10+labelRect.width+5, y: 6, width: 11, height: 11)
             indicatorButton!.addSubview(closeImageView)
             
@@ -423,8 +433,8 @@ class SettingsSwitchCell: UITableViewCell {
             label.textColor = Styles.Colors.beige1
             indicatorButton!.addSubview(label)
             
-            indicatorButton!.frame = rightSideText! == "" ? CGRectZero : CGRect(x: 0, y: 0, width: 10+labelRect.width+10 + 5+closeImageView.frame.width, height: 22)
-            indicatorButton!.addTarget(self, action: "indicatorButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+            indicatorButton!.frame = rightSideText! == "" ? CGRect.zero : CGRect(x: 0, y: 0, width: 10+labelRect.width+10 + 5+closeImageView.frame.width, height: 22)
+            indicatorButton!.addTarget(self, action: #selector(SettingsSwitchCell.indicatorButtonTapped), for: UIControlEvents.touchUpInside)
         }
         
         if addButton != nil {
@@ -489,11 +499,11 @@ class SettingsSegmentedCell: UITableViewCell {
     
     init(segments: [String], reuseIdentifier: String?, selectorsTarget: AnyObject?, selector: String?) {
         segmentedControl = DVSwitch(stringsArray: segments)
-        super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         if (selectorsTarget != nil && selector != nil) {
             self.segmentedControl.setPressedHandler { (index) -> Void in
                 if Int(index) != self.lastIndex {
-                    selectorsTarget!.performSelector(Selector(selector!))
+                    selectorsTarget!.perform(Selector(selector!))
                     self.lastIndex =  Int(index)
                 }
             }
@@ -502,11 +512,11 @@ class SettingsSegmentedCell: UITableViewCell {
         self.setNeedsUpdateConstraints()
     }
     
-    private let title = UILabel()
-    private var segmentedControl: DVSwitch
-    private var lastIndex: Int = 0
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate let title = UILabel()
+    fileprivate var segmentedControl: DVSwitch
+    fileprivate var lastIndex: Int = 0
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     var titleText: String {
         get { return self.title.text ?? "" }
@@ -515,7 +525,7 @@ class SettingsSegmentedCell: UITableViewCell {
     
     var selectedSegment: Int = 0 {
         didSet {
-            segmentedControl.selectIndex(selectedSegment, animated: false)
+            segmentedControl.select(selectedSegment, animated: false)
             lastIndex = selectedSegment
         }
     }
@@ -535,7 +545,7 @@ class SettingsSegmentedCell: UITableViewCell {
         self.backgroundColor = Styles.Colors.cream1
         
         segmentedControl.backgroundView.layer.borderWidth = 0.8
-        segmentedControl.backgroundView.layer.borderColor = Styles.Colors.anthracite1.CGColor
+        segmentedControl.backgroundView.layer.borderColor = Styles.Colors.anthracite1.cgColor
         segmentedControl.sliderColor = Styles.Colors.red2
         segmentedControl.backgroundColor = Styles.Colors.cream1
         segmentedControl.labelTextColorInsideSlider = Styles.Colors.cream1
@@ -546,7 +556,7 @@ class SettingsSegmentedCell: UITableViewCell {
         
         title.font = Styles.FontFaces.regular(14)
         title.textColor = Styles.Colors.midnight2
-        title.textAlignment = .Left
+        title.textAlignment = .left
         contentView.addSubview(title)
         
         didSetupSubviews = true
@@ -581,11 +591,11 @@ class SettingsSegmentedCell: UITableViewCell {
 
 class SettingsServiceSwitchCell: UITableViewCell {
     
-    private let enabledSwitch = SevenSwitch()
-    private let title = UILabel()
-    private let button = ViewFactory.transparentRoundedButton()
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate let enabledSwitch = SevenSwitch()
+    fileprivate let title = UILabel()
+    fileprivate let button = ViewFactory.transparentRoundedButton()
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     var selectorsTarget: AnyObject? {
         didSet {
@@ -606,7 +616,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
 
     var shouldShowSwitch: Bool = false {
         didSet {
-            enabledSwitch.hidden = !shouldShowSwitch
+            enabledSwitch.isHidden = !shouldShowSwitch
         }
     }
     
@@ -618,17 +628,17 @@ class SettingsServiceSwitchCell: UITableViewCell {
     var signedIn: Bool? {
         didSet {
             if signedIn == nil {
-                button.hidden = true
+                button.isHidden = true
             } else {
-                button.hidden = false
+                button.isHidden = false
                 if signedIn! {
-                    button.setTitleColor(Styles.Colors.anthracite1, forState: UIControlState.Normal)
-                    button.layer.borderColor = Styles.Colors.anthracite1.CGColor
-                    button.setTitle("sign_out".localizedString.uppercaseString, forState: .Normal)
+                    button.setTitleColor(Styles.Colors.anthracite1, for: UIControlState())
+                    button.layer.borderColor = Styles.Colors.anthracite1.cgColor
+                    button.setTitle("sign_out".localizedString.uppercased(), for: UIControlState())
                 } else {
-                    button.setTitleColor(Styles.Colors.red2, forState: UIControlState.Normal)
-                    button.layer.borderColor = Styles.Colors.red2.CGColor
-                    button.setTitle("sign_in".localizedString.uppercaseString, forState: .Normal)
+                    button.setTitleColor(Styles.Colors.red2, for: UIControlState())
+                    button.layer.borderColor = Styles.Colors.red2.cgColor
+                    button.setTitle("sign_in".localizedString.uppercased(), for: UIControlState())
                 }
             }
         }
@@ -641,11 +651,11 @@ class SettingsServiceSwitchCell: UITableViewCell {
         }
     }
 
-    private var titleTextColor: UIColor {
+    fileprivate var titleTextColor: UIColor {
         return enabledSwitch.isOn() ? Styles.Colors.red2 : Styles.Colors.midnight2
     }
     
-    private var cellBackgroundColor: UIColor {
+    fileprivate var cellBackgroundColor: UIColor {
         return enabledSwitch.isOn() ? Styles.Colors.white : Styles.Colors.cream1
     }
     
@@ -653,23 +663,23 @@ class SettingsServiceSwitchCell: UITableViewCell {
         enabledSwitchValueChanged(animated: true)
     }
     
-    func enabledSwitchValueChanged(animated animated: Bool) {
-        UIView.animateWithDuration(animated ? 0.2 : 0) { () -> Void in
+    func enabledSwitchValueChanged(animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.2 : 0, animations: { () -> Void in
             self.backgroundColor = self.cellBackgroundColor
-        }
-        UIView.transitionWithView(self.title, duration: (animated ? 0.2 : 0), options: UIViewAnimationOptions.TransitionCrossDissolve, animations: { () -> Void in
+        }) 
+        UIView.transition(with: self.title, duration: (animated ? 0.2 : 0), options: UIViewAnimationOptions.transitionCrossDissolve, animations: { () -> Void in
             self.title.textColor = self.titleTextColor
             }, completion: nil)
     }
     
     func resetSelector() {
-        enabledSwitch.removeTarget(nil, action: nil, forControlEvents: .AllEvents)
+        enabledSwitch.removeTarget(nil, action: nil, for: .allEvents)
         if (selectorsTarget != nil && switchSelector != nil) {
-            enabledSwitch.addTarget(selectorsTarget!, action: Selector(switchSelector!), forControlEvents: .ValueChanged)
-            enabledSwitch.addTarget(self, action: "enabledSwitchValueChanged", forControlEvents: .ValueChanged)
+            enabledSwitch.addTarget(selectorsTarget!, action: Selector(switchSelector!), for: .valueChanged)
+            enabledSwitch.addTarget(self, action: #selector(SettingsSwitchCell.enabledSwitchValueChanged as (SettingsSwitchCell) -> () -> ()), for: .valueChanged)
         }
         if (selectorsTarget != nil && buttonSelector != nil) {
-            button.addTarget(selectorsTarget!, action: Selector(buttonSelector!), forControlEvents: .TouchUpInside)
+            button.addTarget(selectorsTarget!, action: Selector(buttonSelector!), for: .touchUpInside)
         }
 
     }
@@ -701,7 +711,7 @@ class SettingsServiceSwitchCell: UITableViewCell {
         
         title.font = Styles.FontFaces.regular(14)
         title.textColor = titleTextColor
-        title.textAlignment = .Left
+        title.textAlignment = .left
         contentView.addSubview(title)
         
         didSetupSubviews = true
@@ -748,9 +758,9 @@ class SettingsServiceSwitchCell: UITableViewCell {
 
 class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
     
-    private let textField = UITextField()
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate let textField = UITextField()
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     var INDENT = 25
     var BACKGROUND_COLOR = Styles.Colors.cream1
@@ -768,19 +778,19 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
         }
     }
 
-    var keyboardType: UIKeyboardType = .Default {
+    var keyboardType: UIKeyboardType = .default {
         didSet {
             textField.keyboardType = keyboardType
         }
     }
     
-    var returnKeyType: UIReturnKeyType = .Default {
+    var returnKeyType: UIReturnKeyType = .default {
         didSet {
             textField.returnKeyType = returnKeyType
         }
     }
     
-    var autocorrectionType: UITextAutocorrectionType = .Default {
+    var autocorrectionType: UITextAutocorrectionType = .default {
         didSet {
             textField.autocorrectionType = autocorrectionType
         }
@@ -788,7 +798,7 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
 
     var secureTextEntry: Bool = false {
         didSet {
-            textField.secureTextEntry = secureTextEntry
+            textField.isSecureTextEntry = secureTextEntry
         }
     }
 
@@ -823,12 +833,12 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
         
         self.backgroundColor = BACKGROUND_COLOR
         
-        textField.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+        textField.addTarget(self, action: #selector(SettingsTextEntryCell.textFieldUpdated), for: .editingChanged)
         textField.delegate = self
-        textField.clearButtonMode = UITextFieldViewMode.WhileEditing
+        textField.clearButtonMode = UITextFieldViewMode.whileEditing
         textField.font = Styles.FontFaces.light(12)
         setPlaceholderText()
-        textField.textAlignment = NSTextAlignment.Natural
+        textField.textAlignment = NSTextAlignment.natural
         contentView.addSubview(textField)
         
         didSetupSubviews = true
@@ -852,7 +862,7 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
         super.updateConstraints()
     }
     
-    private func setPlaceholderText() {
+    fileprivate func setPlaceholderText() {
         let attributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: hasRedTint ? TEXT_COLOR_RED : PLACEHOLDER_TEXT_COLOR]
         self.textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
     }
@@ -860,14 +870,14 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
     func textFieldUpdated() {
         if selectorsTarget != nil && editCallback != nil {
             let userInfo = [self.placeholderText : self.mainText]
-            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(editCallback!), userInfo: userInfo, repeats: false)
+            Timer.scheduledTimer(timeInterval: 0, target: selectorsTarget!, selector: Selector(editCallback!), userInfo: userInfo, repeats: false)
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if selectorsTarget != nil && returnCallback != nil {
             let userInfo = ["textFieldTag" : textField.tag]
-            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(returnCallback!), userInfo: userInfo, repeats: false)
+            Timer.scheduledTimer(timeInterval: 0, target: selectorsTarget!, selector: Selector(returnCallback!), userInfo: userInfo, repeats: false)
         }
         textField.resignFirstResponder()
         return true
@@ -877,11 +887,11 @@ class SettingsTextEntryCell: UITableViewCell, UITextFieldDelegate {
 
 class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
     
-    private let separator = UIView()
-    private let textFieldLeft = UITextField()
-    private let textFieldRight = UITextField()
-    private var didSetupSubviews: Bool = false
-    private var didSetupConstraints: Bool = false
+    fileprivate let separator = UIView()
+    fileprivate let textFieldLeft = UITextField()
+    fileprivate let textFieldRight = UITextField()
+    fileprivate var didSetupSubviews: Bool = false
+    fileprivate var didSetupConstraints: Bool = false
     
     var INDENT = 25
     var BACKGROUND_COLOR = Styles.Colors.cream1
@@ -901,21 +911,21 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         }
     }
     
-    var keyboardType: UIKeyboardType = .Default {
+    var keyboardType: UIKeyboardType = .default {
         didSet {
             textFieldLeft.keyboardType = keyboardType
             textFieldRight.keyboardType = keyboardType
         }
     }
     
-    var returnKeyType: UIReturnKeyType = .Default {
+    var returnKeyType: UIReturnKeyType = .default {
         didSet {
             textFieldLeft.returnKeyType = returnKeyType
             textFieldRight.returnKeyType = returnKeyType
         }
     }
     
-    var autocorrectionType: UITextAutocorrectionType = .Default {
+    var autocorrectionType: UITextAutocorrectionType = .default {
         didSet {
             textFieldLeft.autocorrectionType = autocorrectionType
             textFieldRight.autocorrectionType = autocorrectionType
@@ -924,8 +934,8 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
     
     var secureTextEntry: Bool = false {
         didSet {
-            textFieldLeft.secureTextEntry = secureTextEntry
-            textFieldRight.secureTextEntry = secureTextEntry
+            textFieldLeft.isSecureTextEntry = secureTextEntry
+            textFieldRight.isSecureTextEntry = secureTextEntry
         }
     }
 
@@ -977,14 +987,14 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         
         self.backgroundColor = BACKGROUND_COLOR
         
-        textFieldLeft.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+        textFieldLeft.addTarget(self, action: #selector(SettingsTextEntryCell.textFieldUpdated), for: .editingChanged)
         textFieldLeft.delegate = self
-        textFieldLeft.clearButtonMode = UITextFieldViewMode.WhileEditing
+        textFieldLeft.clearButtonMode = UITextFieldViewMode.whileEditing
         textFieldLeft.font = Styles.FontFaces.light(12)
-        textFieldLeft.textAlignment = NSTextAlignment.Natural
+        textFieldLeft.textAlignment = NSTextAlignment.natural
         contentView.addSubview(textFieldLeft)
         
-        textFieldRight.addTarget(self, action: "textFieldUpdated", forControlEvents: .EditingChanged)
+        textFieldRight.addTarget(self, action: #selector(SettingsTextEntryCell.textFieldUpdated), for: .editingChanged)
         textFieldRight.delegate = self
         textFieldRight.clearButtonMode = textFieldLeft.clearButtonMode
         textFieldRight.font = textFieldLeft.font
@@ -993,7 +1003,7 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         
         setPlaceholderText()
         
-        separator.userInteractionEnabled = false
+        separator.isUserInteractionEnabled = false
         separator.backgroundColor = SEPARATOR_COLOR
         contentView.addSubview(separator)
         
@@ -1030,7 +1040,7 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         super.updateConstraints()
     }
     
-    private func setPlaceholderText() {
+    fileprivate func setPlaceholderText() {
         
         let leftAttributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: leftHasRedTint ? TEXT_COLOR_RED : PLACEHOLDER_TEXT_COLOR]
         self.textFieldLeft.attributedPlaceholder = NSAttributedString(string: placeholderTextLeft, attributes: leftAttributes)
@@ -1043,17 +1053,17 @@ class SettingsDoubleTextEntryCell: UITableViewCell, UITextFieldDelegate {
         if selectorsTarget != nil && editCallback != nil {
             let userInfo = [self.placeholderTextLeft : self.mainTextLeft,
                 self.placeholderTextRight : self.mainTextRight]
-            NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(editCallback!), userInfo: userInfo, repeats: false)
+            Timer.scheduledTimer(timeInterval: 0, target: selectorsTarget!, selector: Selector(editCallback!), userInfo: userInfo, repeats: false)
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == textFieldLeft {
             textFieldRight.becomeFirstResponder()
         } else {
             if selectorsTarget != nil && returnCallback != nil {
                 let userInfo = ["textFieldTag" : textField.tag]
-                NSTimer.scheduledTimerWithTimeInterval(0, target: selectorsTarget!, selector: Selector(returnCallback!), userInfo: userInfo, repeats: false)
+                Timer.scheduledTimer(timeInterval: 0, target: selectorsTarget!, selector: Selector(returnCallback!), userInfo: userInfo, repeats: false)
             }
         }
         textField.resignFirstResponder()

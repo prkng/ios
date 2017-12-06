@@ -26,18 +26,18 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     var selectedImage : UIImage?
     
     //2 bottom buttons, tabbar
-    private var BOTTOM_VIEW_HEIGHT = 2*Styles.Sizes.hugeButtonHeight //+ Styles.Sizes.tabbarHeight - Styles.Sizes.statusBarHeight
+    fileprivate var BOTTOM_VIEW_HEIGHT = 2*Styles.Sizes.hugeButtonHeight //+ Styles.Sizes.tabbarHeight - Styles.Sizes.statusBarHeight
 
-    private var nameText: String {
+    fileprivate var nameText: String {
         return inputForm.textForFieldNamed("name".localizedString)
     }
-    private var emailText: String {
+    fileprivate var emailText: String {
         return inputForm.textForFieldNamed("email".localizedString)
     }
-    private var passwordText: String {
+    fileprivate var passwordText: String {
         return inputForm.textForFieldNamed("password".localizedString)
     }
-    private var passwordConfirmText: String {
+    fileprivate var passwordConfirmText: String {
         return inputForm.textForFieldNamed("password_confirm".localizedString)
     }
 
@@ -69,18 +69,18 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         self.screenName = "User - Edit Profile View"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if (AuthUtility.loginType()! == LoginType.Email) {
-            loginMessageLabel.hidden = true
-            nameTextField.hidden = true
+            loginMessageLabel.isHidden = true
+            nameTextField.isHidden = true
         } else {
             
-            avatarButton.hidden = true
-            editProfileLabel.hidden = true
-            nameTextField.enabled = false
-            inputForm.hidden = true
+            avatarButton.isHidden = true
+            editProfileLabel.isHidden = true
+            nameTextField.isEnabled = false
+            inputForm.isHidden = true
         }
     }
     
@@ -94,11 +94,11 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         avatarImageView.layer.cornerRadius = Styles.Sizes.avatarSize.height / 2.0
         profileContainer.addSubview(avatarImageView)
         
-        avatarButton.setImage(UIImage(named:"btn_upload_profile_on_top"), forState: .Normal)
-        avatarButton.addTarget(self, action: "avatarButtonTapped:", forControlEvents: .TouchUpInside)
+        avatarButton.setImage(UIImage(named:"btn_upload_profile_on_top"), for: UIControlState())
+        avatarButton.addTarget(self, action: #selector(EditProfileViewController.avatarButtonTapped(_:)), for: .touchUpInside)
         profileContainer.addSubview(avatarButton)
         
-        editProfileLabel.text = "edit_profile".localizedString.uppercaseString
+        editProfileLabel.text = "edit_profile".localizedString.uppercased()
         profileContainer.addSubview(editProfileLabel)
         profileContainer.addSubview(nameTextField)
 
@@ -111,17 +111,17 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         }
         loginMessageLabel.font = Styles.FontFaces.light(17)
         loginMessageLabel.textColor = Styles.Colors.anthracite1
-        loginMessageLabel.textAlignment = .Center
+        loginMessageLabel.textAlignment = .center
         profileContainer.addSubview(loginMessageLabel)
         
-        saveButton.setTitle("save".localizedString, forState: .Normal)
-        saveButton.addTarget(self, action: "saveButtonTapped:", forControlEvents: .TouchUpInside)
+        saveButton.setTitle("save".localizedString, for: UIControlState())
+        saveButton.addTarget(self, action: #selector(EditProfileViewController.saveButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(saveButton)
         
-        backButton.setTitle("back".localizedString, forState: .Normal)
+        backButton.setTitle("back".localizedString, for: UIControlState())
         backButton.backgroundColor = Styles.Colors.stone
-        backButton.setTitleColor(Styles.Colors.anthracite1, forState: .Normal)
-        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
+        backButton.setTitleColor(Styles.Colors.anthracite1, for: UIControlState())
+        backButton.addTarget(self, action: #selector(EditProfileViewController.backButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(backButton)
     }
     
@@ -199,7 +199,7 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         if let user = AuthUtility.getUser() {
             
             if let imageUrl = user.imageUrl {
-                self.avatarImageView.sd_setImageWithURL(NSURL(string: imageUrl))
+                self.avatarImageView.sd_setImage(with: URL(string: imageUrl))
             }
             
             self.nameTextField.text = user.fullName
@@ -208,25 +208,25 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         
     }
     
-    func avatarButtonTapped(sender : UIButton) {
+    func avatarButtonTapped(_ sender : UIButton) {
         
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.savedPhotosAlbum){
             print("Button capture")
             
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.SavedPhotosAlbum;
+            imagePicker.sourceType = UIImagePickerControllerSourceType.savedPhotosAlbum;
             imagePicker.allowsEditing = false
             
-            self.presentViewController(imagePicker, animated: true, completion: { () -> Void in
+            self.present(imagePicker, animated: true, completion: { () -> Void in
             })
         }
         
     }
     
-    func saveButtonTapped(sender : UIButton) {
+    func saveButtonTapped(_ sender : UIButton) {
         
         if (AuthUtility.loginType()! != LoginType.Email) {
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
             return
         }
         
@@ -258,19 +258,19 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
         
     }
     
-    func backButtonTapped(sender : UIButton) {
-        navigationController?.popViewControllerAnimated(true)
+    func backButtonTapped(_ sender : UIButton) {
+        navigationController?.popViewController(animated: true)
     }
     
     
-    func updateUserAndGoBack(user : User, password: String?, imageUrl : String?) {
+    func updateUserAndGoBack(_ user : User, password: String?, imageUrl : String?) {
         
         UserOperations.updateUser(user, newPassword: password, imageUrl: imageUrl, completion: { (completed, user, message) -> Void in
             if (completed) {
                 AuthUtility.saveUser(user)
                 SVProgressHUD.setBackgroundColor(Styles.Colors.stone)
-                SVProgressHUD.showSuccessWithStatus("profile_updated_message".localizedString)
-                self.navigationController?.popViewControllerAnimated(true)
+                SVProgressHUD.showSuccess(withStatus: "profile_updated_message".localizedString)
+                self.navigationController?.popViewController(animated: true)
             }
             else {
                 SVProgressHUD.dismiss()
@@ -283,19 +283,19 @@ class EditProfileViewController: AbstractViewController, UINavigationControllerD
     
     // MARK: UIImagePickerControllerDelegate
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [AnyHashable: Any]!) {
         
-        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+        self.dismiss(animated: true, completion: { () -> Void in
         })
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
         selectedImage = image
         self.avatarImageView.image = image
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: { () -> Void in
         })
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+        UIApplication.shared.setStatusBarStyle(UIStatusBarStyle.lightContent, animated: false)
     }
     
     

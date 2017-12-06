@@ -27,7 +27,7 @@ class TheProjectViewController: AbstractViewController {
     
     func setupViews() {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
         view.addSubview(logoView)
         view.addSubview(scrollView)
@@ -37,25 +37,25 @@ class TheProjectViewController: AbstractViewController {
         
         titleLabel.font = Styles.FontFaces.light(12)
         titleLabel.textColor = Styles.Colors.midnight1
-        titleLabel.textAlignment = .Center
-        titleLabel.text = "the_project".localizedString.uppercaseString
+        titleLabel.textAlignment = .center
+        titleLabel.text = "the_project".localizedString.uppercased()
         container.addSubview(titleLabel)
         
         textLabel1.font = Styles.FontFaces.light(17)
         textLabel1.textColor = Styles.Colors.red2
-        textLabel1.textAlignment = .Justified
+        textLabel1.textAlignment = .justified
         textLabel1.text = "the_project_part_one".localizedString
         textLabel1.numberOfLines = 0
         container.addSubview(textLabel1)
         
         textLabel2.font = Styles.FontFaces.light(14)
         textLabel2.textColor = Styles.Colors.midnight2
-        textLabel2.textAlignment = .Justified
+        textLabel2.textAlignment = .justified
         textLabel2.text = "the_project_part_two".localizedString
         textLabel2.numberOfLines = 0
         container.addSubview(textLabel2)
         
-        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
+        backButton.addTarget(self, action: #selector(TheProjectViewController.backButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(backButton)
     }
     
@@ -77,7 +77,7 @@ class TheProjectViewController: AbstractViewController {
         
         container.snp_makeConstraints { (make) -> () in
              make.edges.equalTo(self.scrollView)
-             make.width.equalTo(UIScreen.mainScreen().bounds.size.width)
+             make.width.equalTo(UIScreen.main.bounds.size.width)
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
@@ -108,8 +108,8 @@ class TheProjectViewController: AbstractViewController {
         
     }
     
-    func backButtonTapped(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func backButtonTapped(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

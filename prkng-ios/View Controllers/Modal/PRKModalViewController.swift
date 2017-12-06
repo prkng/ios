@@ -10,7 +10,7 @@ import UIKit
 
 class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDelegate, PRKVerticalGestureRecognizerDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
-    private var _delegate : PRKModalViewControllerDelegate?
+    fileprivate var _delegate : PRKModalViewControllerDelegate?
     override var delegate : PRKModalViewControllerDelegate? {
         set(value) {
             _delegate = value
@@ -26,18 +26,18 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     var spot : ParkingSpot
     var parentView: UIView
     
-    private var pageViewController : UIPageViewController
-    private var viewControllers: [PRKModalViewControllerChild]
-    private var verticalRec: PRKVerticalGestureRecognizer
-    private var topView : UIView
-    private var headerView : ModalHeaderView
+    fileprivate var pageViewController : UIPageViewController
+    fileprivate var viewControllers: [PRKModalViewControllerChild]
+    fileprivate var verticalRec: PRKVerticalGestureRecognizer
+    fileprivate var topView : UIView
+    fileprivate var headerView : ModalHeaderView
     
-    private var currentViewController: PRKModalViewControllerChild? {
+    fileprivate var currentViewController: PRKModalViewControllerChild? {
         get {
             return self.pageViewController.viewControllers?.first as? PRKModalViewControllerChild
         }
     }
-    private(set) var HEADER_HEIGHT = Int(Styles.Sizes.modalViewHeaderHeight)
+    fileprivate(set) var HEADER_HEIGHT = Int(Styles.Sizes.modalViewHeaderHeight)
 
     
     init(spot: ParkingSpot, view: UIView) {
@@ -55,18 +55,18 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         fatalError("init(coder:) has not been implemented")
     }
    
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         headerView.topText = spot.name
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         if currentViewController is ScheduleViewController {
-            NSUserDefaults.standardUserDefaults().setValue(0, forKey: "DEFAULT_MODAL_VIEW")
+            UserDefaults.standard.setValue(0, forKey: "DEFAULT_MODAL_VIEW")
         } else {
-            NSUserDefaults.standardUserDefaults().setValue(1, forKey: "DEFAULT_MODAL_VIEW")
+            UserDefaults.standard.setValue(1, forKey: "DEFAULT_MODAL_VIEW")
         }
 
     }
@@ -93,7 +93,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         
         view.addSubview(headerView)
         headerView.delegate = self
-        headerView.layer.shadowColor = UIColor.blackColor().CGColor
+        headerView.layer.shadowColor = UIColor.black.cgColor
         headerView.layer.shadowOffset = CGSize(width: 0, height: 0.5)
         headerView.layer.shadowOpacity = 0.2
         headerView.layer.shadowRadius = 0.5
@@ -101,9 +101,9 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         let scheduleVC = ScheduleViewController(spot: spot, view: view)
         let agendaListVC = AgendaListViewController(spot: spot, view: view)
         
-        pageViewController = UIPageViewController(transitionStyle: UIPageViewControllerTransitionStyle.Scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.Horizontal, options: nil)
+        pageViewController = UIPageViewController(transitionStyle: UIPageViewControllerTransitionStyle.scroll, navigationOrientation: UIPageViewControllerNavigationOrientation.horizontal, options: nil)
         viewControllers = [scheduleVC, agendaListVC]
-        pageViewController.willMoveToParentViewController(self)
+        pageViewController.willMove(toParentViewController: self)
         addChildViewController(pageViewController)
         pageViewController.dataSource = self
         pageViewController.delegate = self
@@ -112,15 +112,15 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         verticalRec = PRKVerticalGestureRecognizer(view: self.view, superViewOfView: self.parentView)
         verticalRec.delegate = self
         
-        view.bringSubviewToFront(headerView)
-        view.bringSubviewToFront(topView)
+        view.bringSubview(toFront: headerView)
+        view.bringSubview(toFront: topView)
         
         if shouldShowSchedule() {
             headerView.makeRightButtonList(false)
-            pageViewController.setViewControllers([viewControllers[0]], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+            pageViewController.setViewControllers([viewControllers[0]], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
         } else {
             headerView.makeRightButtonColumns(false)
-            pageViewController.setViewControllers([viewControllers[1]], direction: UIPageViewControllerNavigationDirection.Reverse, animated: true, completion: nil)
+            pageViewController.setViewControllers([viewControllers[1]], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
         }
         
     }
@@ -151,7 +151,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     func shouldShowSchedule() -> Bool {
         
-        let defaultModalView = (NSUserDefaults.standardUserDefaults().valueForKey("DEFAULT_MODAL_VIEW") as? Int) ?? 0
+        let defaultModalView = (UserDefaults.standard.value(forKey: "DEFAULT_MODAL_VIEW") as? Int) ?? 0
         
         switch defaultModalView {
         case 0:
@@ -165,7 +165,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     }
     
     //swaps viewcontroller and updates the button in the header
-    func getOtherViewController(viewController: PRKModalViewControllerChild?) -> PRKModalViewControllerChild? {
+    func getOtherViewController(_ viewController: PRKModalViewControllerChild?) -> PRKModalViewControllerChild? {
         
         if let currentVC = viewController ?? currentViewController {
             let isSchedule = currentVC is ScheduleViewController
@@ -179,22 +179,22 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
 
     }
     
-    func showViewController(viewController: PRKModalViewControllerChild) {
+    func showViewController(_ viewController: PRKModalViewControllerChild) {
         
         let tracker = GAI.sharedInstance().defaultTracker
         
         if viewController is ScheduleViewController {
-            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Schedule/Agenda View", action: "Column/List Mode Changed", label: "Columns", value: nil).build() as [NSObject: AnyObject])
-            self.pageViewController.setViewControllers([viewController], direction: UIPageViewControllerNavigationDirection.Reverse, animated: true, completion: nil)
+            tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Schedule/Agenda View", action: "Column/List Mode Changed", label: "Columns", value: nil).build() as! [AnyHashable: Any])
+            self.pageViewController.setViewControllers([viewController], direction: UIPageViewControllerNavigationDirection.reverse, animated: true, completion: nil)
         } else {
-            tracker.send(GAIDictionaryBuilder.createEventWithCategory("Schedule/Agenda View", action: "Column/List Mode Changed", label: "List", value: nil).build() as [NSObject: AnyObject])
-            self.pageViewController.setViewControllers([viewController], direction: UIPageViewControllerNavigationDirection.Forward, animated: true, completion: nil)
+            tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Schedule/Agenda View", action: "Column/List Mode Changed", label: "List", value: nil).build() as! [AnyHashable: Any])
+            self.pageViewController.setViewControllers([viewController], direction: UIPageViewControllerNavigationDirection.forward, animated: true, completion: nil)
         }
         updateHeader(viewController)
 
     }
     
-    func updateHeader(viewController: PRKModalViewControllerChild) {
+    func updateHeader(_ viewController: PRKModalViewControllerChild) {
         let isSchedule = viewController is ScheduleViewController
         if isSchedule {
             headerView.makeRightButtonList(true)
@@ -219,7 +219,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     //MARK: PRKVerticalGestureRecognizerDelegate methods
     
-    func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool {
+    func shouldIgnoreSwipe(_ beginTap: CGPoint) -> Bool {
         return false
     }
     
@@ -227,7 +227,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         
     }
     
-    func swipeInProgress(yDistanceFromBeginTap: CGFloat) {
+    func swipeInProgress(_ yDistanceFromBeginTap: CGFloat) {
         if yDistanceFromBeginTap < 0 {
             self.delegate?.shouldAdjustTopConstraintWithOffset(-yDistanceFromBeginTap, animated: false)
         }
@@ -244,9 +244,9 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     
     //MARK: PageViewController dataSource and delegate methods
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
-        if let index = (viewControllers as [UIViewController]).indexOf(viewController) {
+        if let index = (viewControllers as [UIViewController]).index(of: viewController) {
             if index <= 0 {
                 return nil
             }
@@ -257,9 +257,9 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         return nil
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
-        if let index = (viewControllers as [UIViewController]).indexOf(viewController) {
+        if let index = (viewControllers as [UIViewController]).index(of: viewController) {
             if index >= viewControllers.count - 1 {
                 return nil
             }
@@ -270,7 +270,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
         return nil
     }
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
 
         if let viewController = pendingViewControllers[0] as? PRKModalViewControllerChild {
             updateHeader(viewController)
@@ -279,7 +279,7 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
     }
 
     //NOTE: we use this to flip the icon between transitions. the method above will ensure we always end up with the right header icon
-    func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
 
         if let fromViewController = previousViewControllers[0] as? PRKModalViewControllerChild {
             if !completed {
@@ -294,8 +294,8 @@ class PRKModalViewController: PRKModalDelegatedViewController, ModalHeaderViewDe
 class PRKModalDelegatedViewController: AbstractViewController {
     
     var TOP_PARALLAX_HEIGHT: CGFloat = 0
-    var FULL_HEIGHT: CGFloat = UIScreen.mainScreen().bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
-    var FULL_WIDTH: CGFloat = UIScreen.mainScreen().bounds.width
+    var FULL_HEIGHT: CGFloat = UIScreen.main.bounds.height - CGFloat(Styles.Sizes.tabbarHeight)
+    var FULL_WIDTH: CGFloat = UIScreen.main.bounds.width
 
     var delegate: PRKModalViewControllerDelegate?
     var topParallaxView: UIView? { get { return nil } }
@@ -304,7 +304,7 @@ class PRKModalDelegatedViewController: AbstractViewController {
 protocol PRKModalViewControllerDelegate {
     
     func hideModalView()
-    func shouldAdjustTopConstraintWithOffset(distanceFromTop: CGFloat, animated: Bool)
+    func shouldAdjustTopConstraintWithOffset(_ distanceFromTop: CGFloat, animated: Bool)
 }
 
 class PRKModalViewControllerChild: AbstractViewController {

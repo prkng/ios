@@ -23,19 +23,19 @@ extension CALayer {
         }
         
         animation.timingFunctions = timingFunctions
-        animation.removedOnCompletion = true
+        animation.isRemovedOnCompletion = true
         
-        self.addAnimation(animation, forKey: "scale")
+        self.add(animation, forKey: "scale")
         
         //        NSLog("Added a scale animation")
     }
 
-    func addCrossFadeAnimationFromImage(fromImage: UIImage, toImage: UIImage) {
+    func addCrossFadeAnimationFromImage(_ fromImage: UIImage, toImage: UIImage) {
         let crossFade = CABasicAnimation(keyPath: "contents")
         crossFade.duration = 0.3
-        crossFade.fromValue = fromImage.CGImage!
-        crossFade.toValue = toImage.CGImage
-        self.addAnimation(crossFade, forKey: "animateContents")
+        crossFade.fromValue = fromImage.cgImage!
+        crossFade.toValue = toImage.cgImage
+        self.add(crossFade, forKey: "animateContents")
     }
     
     func addFadeAnimation() {
@@ -51,9 +51,9 @@ extension CALayer {
         }
         
         animation.timingFunctions = timingFunctions
-        animation.removedOnCompletion = true
+        animation.isRemovedOnCompletion = true
         
-        self.addAnimation(animation, forKey: "opacity")
+        self.add(animation, forKey: "opacity")
     }
 
     func addRightSlideAnimation() {
@@ -69,9 +69,9 @@ extension CALayer {
         }
         
         animation.timingFunctions = timingFunctions
-        animation.removedOnCompletion = true
+        animation.isRemovedOnCompletion = true
         
-        self.addAnimation(animation, forKey: "slidein")
+        self.add(animation, forKey: "slidein")
     }
     
     func addLeftSlideAnimation() {
@@ -87,15 +87,15 @@ extension CALayer {
         }
         
         animation.timingFunctions = timingFunctions
-        animation.removedOnCompletion = true
+        animation.isRemovedOnCompletion = true
         
-        self.addAnimation(animation, forKey: "slidein")
+        self.add(animation, forKey: "slidein")
     }
     
     func wigglewigglewiggle() {
         
-        if let _ = self.animationForKey("wigglewigglewiggle") {
-            self.removeAnimationForKey("wigglewigglewiggle")
+        if let _ = self.animation(forKey: "wigglewigglewiggle") {
+            self.removeAnimation(forKey: "wigglewigglewiggle")
         }
         
         let animation = CABasicAnimation(keyPath: "transform.rotation")
@@ -104,14 +104,14 @@ extension CALayer {
         animation.duration = 0.2
         animation.autoreverses = true
         animation.repeatCount = MAXFLOAT
-        self.addAnimation(animation, forKey: "wigglewigglewiggle")
+        self.add(animation, forKey: "wigglewigglewiggle")
         
     }
     
-    func addTopBorder(width: CGFloat, color: UIColor) {
+    func addTopBorder(_ width: CGFloat, color: UIColor) {
         
         let border = CALayer()
-        border.borderColor = color.CGColor
+        border.borderColor = color.cgColor
         
         border.frame = CGRect(x: 0, y: 1, width:  self.frame.size.width, height: self.frame.size.height)
         
@@ -120,10 +120,10 @@ extension CALayer {
         
     }
 
-    func addBottomBorder(width: CGFloat, color: UIColor) {
+    func addBottomBorder(_ width: CGFloat, color: UIColor) {
         
         let border = CALayer()
-        border.borderColor = color.CGColor
+        border.borderColor = color.cgColor
         
         border.frame = CGRect(x: 0, y: self.frame.size.height - width, width:  self.frame.size.width, height: self.frame.size.height)
         

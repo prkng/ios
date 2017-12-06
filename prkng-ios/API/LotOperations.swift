@@ -13,14 +13,14 @@ import UIKit
     static let sharedInstance = LotOperations()
     static let threshholdCheaperLotPercentage = 0.3 //20% of lots should be marked cheaper
     
-    private var sema = dispatch_semaphore_create(0)
-    private var inProgress = false
-    private var lots = [Lot]()
+    fileprivate var sema = DispatchSemaphore(value: 0)
+    fileprivate var inProgress = false
+    fileprivate var lots = [Lot]()
     
-    func findLots(coordinate: CLLocationCoordinate2D, radius : Float, nearest: Int, completion: ((lots: [NSObject], mapMessage: String?) -> Void)) {
+    func findLots(_ coordinate: CLLocationCoordinate2D, radius : Float, nearest: Int, completion: @escaping ((_ lots: [NSObject], _ mapMessage: String?) -> Void)) {
         
         if inProgress {
-            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER)
+            sema.wait(timeout: DispatchTime.distantFuture)
         }
         
         inProgress = true
@@ -43,9 +43,9 @@ import UIKit
             "longitude": coordinate.longitude,
             "radius": radiusStr,
             "nearest": nearest
-        ]
+        ] as [String : Any]
         
-        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default), options: JSONSerialization.ReadingOptions.allowFragments) {
             (request, response, json, error) in
 
             DDLoggerWrapper.logVerbose(String(format: "Request: %@", request))
@@ -60,7 +60,7 @@ import UIKit
             tempLots = LotOperations.processCheapestLots(tempLots)
             self.lots = tempLots
             
-            let mapMessage = MapMessageView.createMessage(count: tempLots.count, response: response, error: error, origin: .Lots)
+            let mapMessage = MapMessageView.createMessage(count: tempLots.count, response: response, error: error, origin: .lots)
 
 //            if error == nil && self.lots.count > 0 {
 //                Settings.cacheLotsJson(json)
@@ -68,9 +68,9 @@ import UIKit
 //            }
 
             self.inProgress = false
-            dispatch_semaphore_signal(self.sema)
+            self.sema.signal()
 
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 () -> Void in
                 completion(lots: self.lots, mapMessage: mapMessage)
 
@@ -84,7 +84,7 @@ import UIKit
         }
     }
     
-    func findLot(partnerId: String, partnerName: String, completion: ((lot: Lot?) -> Void)) {
+    func findLot(_ partnerId: String, partnerName: String, completion: @escaping ((_ lot: Lot?) -> Void)) {
         
         let url = APIUtility.rootURL() + "lots"
         
@@ -93,7 +93,7 @@ import UIKit
             "partner_id": partnerId
         ]
         
-        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default), options: JSONSerialization.ReadingOptions.allowFragments) {
             (request, response, json, error) in
             
             let lotJsons: [JSON] = json["features"].arrayValue
@@ -101,7 +101,7 @@ import UIKit
                 Lot(json: lotJson)
             })
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 () -> Void in
                 completion(lot: tempLots.first)
                 
@@ -115,7 +115,7 @@ import UIKit
         }
     }
     
-    static func processCheapestLots(givenLots: [Lot]) -> [Lot] {
+    static func processCheapestLots(_ givenLots: [Lot]) -> [Lot] {
         
         let totalCount = givenLots.count
         let threshholdLotCount = Int(LotOperations.threshholdCheaperLotPercentage * Double(totalCount))
@@ -123,7 +123,7 @@ import UIKit
             return givenLots
         }
         
-        var sortedLots = givenLots.sort { (left, right) -> Bool in
+        var sortedLots = givenLots.sorted { (left, right) -> Bool in
             return left.mainRate(preferreCached: true) < right.mainRate(preferreCached: true)
         }
         for i in 0...threshholdLotCount {
@@ -139,7 +139,7 @@ import UIKit
     
     //if these rmannotations do not contain lots, you're in for a bad time.
     //this only returns annotations whose values have changed
-    static func processCheapestLots(givenLotAnnotations: [RMAnnotation]) -> [RMAnnotation] {
+    static func processCheapestLots(_ givenLotAnnotations: [RMAnnotation]) -> [RMAnnotation] {
         
         let totalCount = givenLotAnnotations.count
         let threshholdLotCount = Int(LotOperations.threshholdCheaperLotPercentage * Double(totalCount))

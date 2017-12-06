@@ -10,13 +10,13 @@ import UIKit
 
 class PRKTextField: UIView, UITextFieldDelegate {
 
-    private var containerView: UIView
-    private var topLine: UIView
-    private var bottomLine: UIView
-    private var textField: UITextField
-    private var forgotButton: UIButton
+    fileprivate var containerView: UIView
+    fileprivate var topLine: UIView
+    fileprivate var bottomLine: UIView
+    fileprivate var textField: UITextField
+    fileprivate var forgotButton: UIButton
     
-    private var fieldType: PRKTextFieldType
+    fileprivate var fieldType: PRKTextFieldType
     var delegate: PRKTextFieldDelegate?
     
     var placeholderText: String {
@@ -31,8 +31,8 @@ class PRKTextField: UIView, UITextFieldDelegate {
         }
     }
     
-    private var didsetupSubviews : Bool
-    private var didSetupConstraints : Bool
+    fileprivate var didsetupSubviews : Bool
+    fileprivate var didSetupConstraints : Bool
 
     internal let background_color = Styles.Colors.midnight2
     internal let text_color = Styles.Colors.cream2
@@ -44,31 +44,31 @@ class PRKTextField: UIView, UITextFieldDelegate {
         self.init()
         self.fieldType = fieldType
         
-        self.textField.textAlignment = NSTextAlignment.Natural
-        self.textField.clearButtonMode = UITextFieldViewMode.Always
-        self.textField.keyboardType = UIKeyboardType.Default
+        self.textField.textAlignment = NSTextAlignment.natural
+        self.textField.clearButtonMode = UITextFieldViewMode.always
+        self.textField.keyboardType = UIKeyboardType.default
 
         switch fieldType {
-        case .Normal:
+        case .normal:
             break
-        case .NormalNoAutocorrect:
-            textField.autocorrectionType = UITextAutocorrectionType.No
+        case .normalNoAutocorrect:
+            textField.autocorrectionType = UITextAutocorrectionType.no
             break
-        case .Email:
-            textField.autocorrectionType = UITextAutocorrectionType.No
-            self.textField.keyboardType = UIKeyboardType.EmailAddress
+        case .email:
+            textField.autocorrectionType = UITextAutocorrectionType.no
+            self.textField.keyboardType = UIKeyboardType.emailAddress
             break
-        case .Password:
-            self.textField.secureTextEntry = true
+        case .password:
+            self.textField.isSecureTextEntry = true
             break
-        case .PasswordWithForgotButton:
-            self.textField.secureTextEntry = true
-            self.forgotButton.hidden = false
+        case .passwordWithForgotButton:
+            self.textField.isSecureTextEntry = true
+            self.forgotButton.isHidden = false
             break
-        case .NotEditable:
-            self.textField.enabled = false
-            self.textField.textAlignment = NSTextAlignment.Center
-            textField.clearButtonMode = UITextFieldViewMode.Never
+        case .notEditable:
+            self.textField.isEnabled = false
+            self.textField.textAlignment = NSTextAlignment.center
+            textField.clearButtonMode = UITextFieldViewMode.never
             break
         }
 
@@ -83,7 +83,7 @@ class PRKTextField: UIView, UITextFieldDelegate {
         textField = UITextField()
         forgotButton = ViewFactory.redRoundedButton()
         
-        fieldType = .Normal
+        fieldType = .normal
         
         didsetupSubviews = false
         didSetupConstraints = true
@@ -121,11 +121,11 @@ class PRKTextField: UIView, UITextFieldDelegate {
         textField.delegate = self
         textField.font = textFont
         textField.textColor = Styles.Colors.cream1
-        textField.keyboardAppearance = UIKeyboardAppearance.Default
+        textField.keyboardAppearance = UIKeyboardAppearance.default
 
-        forgotButton.setTitle("forgot_password_text".localizedString, forState: UIControlState.Normal)
-        forgotButton.hidden = fieldType != .PasswordWithForgotButton
-        forgotButton.addTarget(self, action: "forgotButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        forgotButton.setTitle("forgot_password_text".localizedString, for: UIControlState())
+        forgotButton.isHidden = fieldType != .passwordWithForgotButton
+        forgotButton.addTarget(self, action: #selector(PRKTextField.forgotButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         
         topLine.backgroundColor = Styles.Colors.transparentWhite
         bottomLine.backgroundColor = Styles.Colors.transparentBlack
@@ -147,7 +147,7 @@ class PRKTextField: UIView, UITextFieldDelegate {
         }
 
         
-        if fieldType != .PasswordWithForgotButton {
+        if fieldType != .passwordWithForgotButton {
             
             textField.snp_makeConstraints { (make) -> () in
                 make.left.equalTo(self.containerView).offset(40)
@@ -186,7 +186,7 @@ class PRKTextField: UIView, UITextFieldDelegate {
         }
     }
     
-    func forgotButtonTapped(sender: UIButton) {
+    func forgotButtonTapped(_ sender: UIButton) {
         self.delegate?.didTapForgotPasswordButton(self)
     }
     
@@ -197,14 +197,14 @@ class PRKTextField: UIView, UITextFieldDelegate {
 }
 
 protocol PRKTextFieldDelegate {
-    func didTapForgotPasswordButton(field: PRKTextField)
+    func didTapForgotPasswordButton(_ field: PRKTextField)
 }
 
 enum PRKTextFieldType {
-    case Normal
-    case NormalNoAutocorrect
-    case Email
-    case Password
-    case PasswordWithForgotButton
-    case NotEditable
+    case normal
+    case normalNoAutocorrect
+    case email
+    case password
+    case passwordWithForgotButton
+    case notEditable
 }

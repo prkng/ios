@@ -36,16 +36,16 @@ class ISO8610DateFormatter {
     
     static let sharedInstance = ISO8610DateFormatter()
     
-    var dateFormatter: NSDateFormatter {
+    var dateFormatter: DateFormatter {
         if _dateFormatter == nil {
             generateDateFormatter()
         }
         return _dateFormatter!
     }
-    private var _dateFormatter: NSDateFormatter?
-    private func generateDateFormatter() {
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+    fileprivate var _dateFormatter: DateFormatter?
+    fileprivate func generateDateFormatter() {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
         _dateFormatter = formatter
     }
@@ -55,29 +55,29 @@ class WeekDayAndTimeDateFormatter {
     
     static let sharedInstance = WeekDayAndTimeDateFormatter()
     
-    var dateFormatter: NSDateFormatter {
+    var dateFormatter: DateFormatter {
         if _dateFormatter == nil {
             generateDateFormatter()
         }
         return _dateFormatter!
     }
-    private var _dateFormatter: NSDateFormatter?
-    private func generateDateFormatter() {
-        let formatter = NSDateFormatter()
+    fileprivate var _dateFormatter: DateFormatter?
+    fileprivate func generateDateFormatter() {
+        let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
         _dateFormatter = formatter
     }
 
-    var timeFormatter: NSDateFormatter {
+    var timeFormatter: DateFormatter {
         if _timeFormatter == nil {
             generateTimeFormatter()
         }
         return _timeFormatter!
     }
-    private var _timeFormatter: NSDateFormatter?
-    private func generateTimeFormatter() {
-        let formatter = NSDateFormatter()
-        formatter.timeStyle = .ShortStyle
+    fileprivate var _timeFormatter: DateFormatter?
+    fileprivate func generateTimeFormatter() {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
         _timeFormatter = formatter
     }
 }
@@ -89,14 +89,14 @@ class CarShare: NSObject {
     var fuelPercentage: Int?
     var electric: Bool
     var name: String //sometimes car model, sometimes license plate
-    var availableUntil: NSDate?
+    var availableUntil: Date?
     var carSharingType: CarSharingType
     var partnerId: String?
     var vin: String?
     var quantity: Int
     var json: JSON
     
-    private var fuelPercentageText: String {
+    fileprivate var fuelPercentageText: String {
         if fuelPercentage != nil {
             return String(format: "%d%%", fuelPercentage!)
         }
@@ -116,17 +116,17 @@ class CarShare: NSObject {
             return String(format: "up_to_x_cars_available".localizedString, self.quantity)
         case .Communauto:
             //format something like "name - Until (available Until date pretty printed)
-            return self.name + " - " + "until".localizedString + " " + WeekDayAndTimeDateFormatter.sharedInstance.dateFormatter.stringFromDate(self.availableUntil ?? NSDate()) + " " + WeekDayAndTimeDateFormatter.sharedInstance.timeFormatter.stringFromDate(self.availableUntil ?? NSDate())
+            return self.name + " - " + "until".localizedString + " " + WeekDayAndTimeDateFormatter.sharedInstance.dateFormatter.string(from: self.availableUntil ?? Date()) + " " + WeekDayAndTimeDateFormatter.sharedInstance.timeFormatter.string(from: self.availableUntil ?? Date())
         case .Car2Go, .CommunautoAutomobile, .Generic:
             return self.name
         }
     }
     
-    func mapPinImageAndReuseIdentifier(selected: Bool) -> (UIImage, String) {
+    func mapPinImageAndReuseIdentifier(_ selected: Bool) -> (UIImage, String) {
         return CarShare.mapPinImageAndReuseIdentifier(selected, carSharingType: self.carSharingType, electric: self.electric, quantity: self.quantity, identifier: self.identifier)
     }
     
-    static func mapPinImageAndReuseIdentifier(selected: Bool, carSharingType: CarSharingType, electric: Bool, quantity: Int, identifier: String) -> (UIImage, String) {
+    static func mapPinImageAndReuseIdentifier(_ selected: Bool, carSharingType: CarSharingType, electric: Bool, quantity: Int, identifier: String) -> (UIImage, String) {
         var reuseIdentifier = "carsharing_pin"
         switch carSharingType {
         case .Car2Go:
@@ -180,39 +180,39 @@ class CarShare: NSObject {
         self.fuelPercentage = json["properties"]["fuel"].int
         self.electric = json["properties"]["electric"].boolValue
         self.quantity = json["properties"]["quantity"].intValue
-        self.availableUntil = ISO8610DateFormatter.sharedInstance.dateFormatter.dateFromString(json["properties"]["until"].stringValue)
+        self.availableUntil = ISO8610DateFormatter.sharedInstance.dateFormatter.date(from: json["properties"]["until"].stringValue)
     }
      
     func calloutView() -> (UIView, UIView?) {
 
-        let maximumTotalWidth = UIScreen.mainScreen().bounds.width - 40
+        let maximumTotalWidth = UIScreen.main.bounds.width - 40
         
         let rightViewWidth: CGFloat = 55
         var shouldShowRightView = true
         let rightView = UIButton()
-        rightView.setImage(UIImage(named:"btn_reserve".localizedString), forState: .Normal)
+        rightView.setImage(UIImage(named:"btn_reserve".localizedString), for: UIControlState())
         rightView.tag = 100
         if let reservedCarShare = Settings.getReservedCarShare() {
             if self.identifier == reservedCarShare.identifier {
-                rightView.setImage(UIImage(named:"btn_cancel".localizedString), forState: .Normal)
+                rightView.setImage(UIImage(named:"btn_cancel".localizedString), for: UIControlState())
                 rightView.tag = 200
             } else {
                 shouldShowRightView = false
             }
         }
         rightView.bounds = CGRect(x: 0, y: 0, width: rightViewWidth, height: 44) //actual width of image is 53.5 points
-        rightView.imageView?.contentMode = .Left
+        rightView.imageView?.contentMode = .left
         
         let leftView = UIView()
 
         let percentageLabel = UILabel()
-        percentageLabel.textAlignment = .Left
+        percentageLabel.textAlignment = .left
         percentageLabel.font = Styles.Fonts.h1r
         percentageLabel.textColor = Styles.Colors.red2
         percentageLabel.text = self.fuelPercentageText
         leftView.addSubview(percentageLabel)
         
-        let percentageLabelWidth = percentageLabel.intrinsicContentSize().width
+        let percentageLabelWidth = percentageLabel.intrinsicContentSize.width
         percentageLabel.frame = CGRect(x: 10, y: 0, width: percentageLabelWidth, height: 44)
         
         let leftViewLabelBuffer = self.fuelPercentage == nil ? 10 : 10 + percentageLabelWidth + 10 //this is the size of the left view minus the percentage label and 10 points on either side of it.
@@ -220,20 +220,20 @@ class CarShare: NSObject {
         let minTitleWidth = 135 - leftViewLabelBuffer - (self.fuelPercentage == nil ? 52 : 0)
 
         let titleLabel = UILabel()
-        titleLabel.textAlignment = .Left
+        titleLabel.textAlignment = .left
         titleLabel.font = Styles.FontFaces.regular(14)
         titleLabel.textColor = Styles.Colors.red2
         titleLabel.text = self.carSharingType.name
         leftView.addSubview(titleLabel)
 
         let subtitleLabel = UILabel()
-        subtitleLabel.textAlignment = .Left
+        subtitleLabel.textAlignment = .left
         subtitleLabel.font = Styles.FontFaces.light(12)
         subtitleLabel.textColor = Styles.Colors.red2
         subtitleLabel.text = self.subtitle
         leftView.addSubview(subtitleLabel)
         
-        let minLabelWidth = max(subtitleLabel.intrinsicContentSize().width, titleLabel.intrinsicContentSize().width, CGFloat(minTitleWidth))
+        let minLabelWidth = max(subtitleLabel.intrinsicContentSize.width, titleLabel.intrinsicContentSize.width, CGFloat(minTitleWidth))
         let labelWidth = min(minLabelWidth, CGFloat(maxTitleWidth))
         leftView.frame = CGRect(x: 0, y: 0, width: (labelWidth + CGFloat(leftViewLabelBuffer)), height: 44)
         titleLabel.frame = CGRect(x: CGFloat(leftViewLabelBuffer), y: 0, width: labelWidth, height: 30)

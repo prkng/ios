@@ -10,17 +10,17 @@ import UIKit
 
 class PRKTextButton: UIView {
 
-    private var imageSize: CGSize
-    private var labelText: String
-    private var labelFont: UIFont
-    private var image: UIImage?
+    fileprivate var imageSize: CGSize
+    fileprivate var labelText: String
+    fileprivate var labelFont: UIFont
+    fileprivate var image: UIImage?
     
-    private var button: UIButton
-    private var imageView: UIImageView
-    private var label: UILabel
+    fileprivate var button: UIButton
+    fileprivate var imageView: UIImageView
+    fileprivate var label: UILabel
     
-    private var didsetupSubviews : Bool
-    private var didSetupConstraints : Bool
+    fileprivate var didsetupSubviews : Bool
+    fileprivate var didSetupConstraints : Bool
 
 
     init(image: UIImage?, imageSize: CGSize, labelText: String, labelFont: UIFont) {
@@ -37,7 +37,7 @@ class PRKTextButton: UIView {
         didsetupSubviews = false
         didSetupConstraints = true
         
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
     }
     
@@ -47,14 +47,14 @@ class PRKTextButton: UIView {
         imageView = UIImageView()
         label = UILabel()
         
-        imageSize = CGSizeZero
+        imageSize = CGSize.zero
         labelText = ""
         labelFont = Styles.FontFaces.regular(17)
 
         didsetupSubviews = false
         didSetupConstraints = true
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -86,7 +86,7 @@ class PRKTextButton: UIView {
         
         self.addSubview(imageView)
         imageView.image = image
-        imageView.contentMode = UIViewContentMode.Center
+        imageView.contentMode = UIViewContentMode.center
         
         label.text = labelText
         label.font = labelFont
@@ -116,32 +116,32 @@ class PRKTextButton: UIView {
         
     }
     
-    func setImage(image: UIImage?) {
+    func setImage(_ image: UIImage?) {
         if self.image != image {
             self.image = image
             animateChangeImageTo()
         }
     }
     
-    private func animateChangeImageTo() {
+    fileprivate func animateChangeImageTo() {
         
         let fadeAnimation = CATransition()
         fadeAnimation.duration = 0.2
         fadeAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         fadeAnimation.type = kCATransitionFade
-        self.imageView.layer.addAnimation(fadeAnimation, forKey: "fade")
+        self.imageView.layer.add(fadeAnimation, forKey: "fade")
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
-            self.imageView.transform = CGAffineTransformRotate(self.imageView.transform, CGFloat(M_PI))
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
+            self.imageView.transform = self.imageView.transform.rotated(by: CGFloat(M_PI))
             self.imageView.image = self.image
         })
     }
     
-    func addTarget(target: AnyObject?, action: Selector, forControlEvents controlEvents: UIControlEvents) {
-        self.button.addTarget(target, action: action, forControlEvents: controlEvents)
+    func addTarget(_ target: AnyObject?, action: Selector, forControlEvents controlEvents: UIControlEvents) {
+        self.button.addTarget(target, action: action, for: controlEvents)
     }
     
-    func setLabelText(text: String) {
+    func setLabelText(_ text: String) {
         if text == "" {
             label.snp_remakeConstraints { (make) -> () in
                 make.left.equalTo(self)
@@ -158,7 +158,7 @@ class PRKTextButton: UIView {
         
         self.setNeedsLayout()
 
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.layoutIfNeeded()
         })
         
@@ -166,7 +166,7 @@ class PRKTextButton: UIView {
         self.label.text = text
     }
     
-    func setLabelFont(labelFont: UIFont) {
+    func setLabelFont(_ labelFont: UIFont) {
         self.labelFont = labelFont
         self.label.font = labelFont
     }

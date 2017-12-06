@@ -21,11 +21,11 @@ class PrkTabBarButton: UIControl {
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
     
-    private var BADGE_WIDTH: CGFloat = 8
+    fileprivate var BADGE_WIDTH: CGFloat = 8
     
     convenience init(title: String, icon : UIImage?, selectedIcon : UIImage?) {
         
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
         
         self.title = title
         self.defaultIcon = icon
@@ -79,10 +79,10 @@ class PrkTabBarButton: UIControl {
         titleLabel.text = title
         titleLabel.font = Styles.FontFaces.regular(9)
         titleLabel.textColor = Styles.Colors.anthracite1
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         addSubview(titleLabel)
         
-        badge.hidden = true
+        badge.isHidden = true
         badge.backgroundColor = Styles.Colors.red2
         badge.layer.cornerRadius = BADGE_WIDTH / 2.0
         addSubview(badge)
@@ -93,7 +93,7 @@ class PrkTabBarButton: UIControl {
     func setupConstraints() {
         
         self.iconView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(30, 30))
+            make.size.equalTo(CGSize(width: 30, height: 30))
             make.centerX.equalTo(self)
             make.top.equalTo(self).offset(7)
         }
@@ -104,7 +104,7 @@ class PrkTabBarButton: UIControl {
         }        
         
         self.badge.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(self.BADGE_WIDTH, self.BADGE_WIDTH))
+            make.size.equalTo(CGSize(width: self.BADGE_WIDTH, height: self.BADGE_WIDTH))
             make.centerX.equalTo(self)
             make.centerY.equalTo(self.snp_bottom)
         }
@@ -114,11 +114,11 @@ class PrkTabBarButton: UIControl {
     
     
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         
         didSet {
             
-            if(selected) {
+            if(isSelected) {
                 iconView.image  = self.selectedIcon
                 titleLabel.textColor = Styles.Colors.red2
             } else {

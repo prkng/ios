@@ -7,11 +7,24 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
 
 enum MapMode: Int {
-    case Garage = 0
-    case StreetParking
-    case CarSharing
+    case garage = 0
+    case streetParking
+    case carSharing
 }
 
 enum MapUserMode: String {
@@ -23,16 +36,16 @@ enum MapUserMode: String {
 class MapViewController: AbstractViewController {
 
     var mapModeImageView: UIView?
-    var mapMode: MapMode = .StreetParking {
+    var mapMode: MapMode = .streetParking {
         didSet {
             
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), { () -> Void in
+            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async(execute: { () -> Void in
                 
                 if self.updateInProgress {
-                    dispatch_semaphore_wait(self.sema, DISPATCH_TIME_FOREVER)
+                    self.sema.wait(timeout: DispatchTime.distantFuture)
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     self.didSetMapMode()
                     
@@ -44,18 +57,18 @@ class MapViewController: AbstractViewController {
 //                    self.mapModeImageView?.userInteractionEnabled = false
 //                    self.view.addSubview(self.mapModeImageView!)
                     
-                    SVProgressHUD.setBackgroundColor(UIColor.clearColor())
+                    SVProgressHUD.setBackgroundColor(UIColor.clear)
                     SVProgressHUD.show()
                     
                     self.removeRegularAnnotations()
                     
                     self.mapModeDidChange { () -> Void in
-                        UIView.animateWithDuration(0.2, animations: { () -> Void in
+                        UIView.animate(withDuration: 0.2, animations: { () -> Void in
                             self.mapModeImageView?.alpha = 0
-                            }) { (completed) -> Void in
+                            }, completion: { (completed) -> Void in
                                 SVProgressHUD.dismiss()
                                 self.removeSnapshot()
-                        }
+                        }) 
                     }
                 })
             })
@@ -72,15 +85,15 @@ class MapViewController: AbstractViewController {
     var updateInProgress: Bool = false {
         didSet {
             if updateInProgress {
-                sema = dispatch_semaphore_create(0)
+                sema = DispatchSemaphore(value: 0)
             } else {
-                dispatch_semaphore_signal(self.sema)
+                self.sema.signal()
             }
         }
     }
-    var sema = dispatch_semaphore_create(0)
+    var sema = DispatchSemaphore(value: 0)
     var myCarAnnotation: NSObject?
-    var searchCheckinDate : NSDate?
+    var searchCheckinDate : Date?
     var searchDuration : Float?
     var wasShown : Bool = false
     var shouldCancelTap = false
@@ -99,10 +112,10 @@ class MapViewController: AbstractViewController {
     
     func didSetMapMode() { }
     func setDefaultMapZoom() { }
-    func displaySearchResults(results: Array<SearchResult>, checkinTime : NSDate?) { }
+    func displaySearchResults(_ results: Array<SearchResult>, checkinTime : Date?) { }
     func clearSearchResults() { }
-    func showUserLocation(shouldShow: Bool) { }
-    func setMapUserMode(mode: MapUserMode) { }
+    func showUserLocation(_ shouldShow: Bool) { }
+    func setMapUserMode(_ mode: MapUserMode) { }
     
     func updateAnnotations() {
         if self.updateInProgress {
@@ -113,9 +126,9 @@ class MapViewController: AbstractViewController {
             self.removeSnapshot()
         }
     }
-    func updateAnnotations(completion: ((operationCompleted: Bool) -> Void)) { }
+    func updateAnnotations(_ completion: ((_ operationCompleted: Bool) -> Void)) { }
 
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) { }
+    func goToCoordinate(_ coordinate: CLLocationCoordinate2D, named name: String, withZoom zoom:Float? = nil, showing: Bool = true) { }
     
     func showForFirstTime() { }
 
@@ -128,18 +141,18 @@ class MapViewController: AbstractViewController {
         getCityOverlays()
     }
     
-    func addCityOverlaysCallback(polygons: [MKPolygon]) { }
+    func addCityOverlaysCallback(_ polygons: [MKPolygon]) { }
 
-    private func getCityOverlays() {
+    fileprivate func getCityOverlays() {
         
         let url = APIUtility.rootURL() + "areas"
         
-        let currentVersion = NSUserDefaults.standardUserDefaults().integerForKey("city_overlays_version")
+        let currentVersion = UserDefaults.standard.integer(forKey: "city_overlays_version")
         
         if currentVersion == 0 {
-            let offlineUrl = NSBundle.mainBundle().URLForResource("AvailabilityMap", withExtension: "json")
-            let data = NSData(contentsOfURL: offlineUrl!)
-            NSUserDefaults.standardUserDefaults().setValue(data!, forKey: "city_overlays")
+            let offlineUrl = Bundle.main.url(forResource: "AvailabilityMap", withExtension: "json")
+            let data = try? Data(contentsOf: offlineUrl!)
+            UserDefaults.standard.setValue(data!, forKey: "city_overlays")
         }
         
         request(.GET, URLString: url, parameters: nil).responseSwiftyJSON { (request, response, json, error) -> Void in
@@ -158,25 +171,25 @@ class MapViewController: AbstractViewController {
         }
     }
     
-    private func downloadCityOverlays(supportedArea: SupportedArea) {
+    fileprivate func downloadCityOverlays(_ supportedArea: SupportedArea) {
         
         if supportedArea.versions.count > 0 {
             let url = supportedArea.versions[supportedArea.latestVersion]!["geojson_addr"]
             request(.GET, URLString: url!, parameters: nil).response { (request, response, object, error) -> Void in
                 
-                let data = object as! NSData
+                let data = object as! Data
                 if response?.statusCode < 400 && error == nil {
                     
-                    NSUserDefaults.standardUserDefaults().setValue(supportedArea.latestVersion, forKey: "city_overlays_version")
+                    UserDefaults.standard.setValue(supportedArea.latestVersion, forKey: "city_overlays_version")
                     
                     //if data is zipped... unzip it
-                    let jsonData: AnyObject? = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)
+                    let jsonData: AnyObject? = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)
                     if jsonData != nil {
-                        NSUserDefaults.standardUserDefaults().setValue(data, forKey: "city_overlays")
+                        UserDefaults.standard.setValue(data, forKey: "city_overlays")
                     } else {
                         //the data needs to be unzipped
-                        let uncompressedData = data.gunzippedData()!
-                        NSUserDefaults.standardUserDefaults().setValue(uncompressedData, forKey: "city_overlays")
+                        let uncompressedData = (data as NSData).gunzipped()!
+                        UserDefaults.standard.setValue(uncompressedData, forKey: "city_overlays")
                     }
                     
                 }
@@ -192,12 +205,12 @@ class MapViewController: AbstractViewController {
 
     }
     
-    private func returnCityOverlays() -> [MKPolygon] {
+    fileprivate func returnCityOverlays() -> [MKPolygon] {
         
-        if let data = NSUserDefaults.standardUserDefaults().dataForKey("city_overlays") {
-            let json = (try! NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments)) as! [NSObject : AnyObject]
+        if let data = UserDefaults.standard.data(forKey: "city_overlays") {
+            let json = (try! JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments)) as! [AnyHashable: Any]
             
-            if let overlays = (try? GeoJSONSerialization.shapesFromGeoJSONFeatureCollection(json)) as? [MKPolygon] {
+            if let overlays = (try? GeoJSONSerialization.shapes(fromGeoJSONFeatureCollection: json)) as? [MKPolygon] {
                 return overlays
             }
         }
@@ -205,14 +218,14 @@ class MapViewController: AbstractViewController {
         return []
     }
     
-    func isFarAwayFromAvailableCities(centerCoordinate: CLLocationCoordinate2D) -> Bool {
+    func isFarAwayFromAvailableCities(_ centerCoordinate: CLLocationCoordinate2D) -> Bool {
         
         var inAnAvailableCity = false
         
         let centerLocation = CLLocation(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
         
         for location in CityOperations.sharedInstance.availableCityLocations() {
-            let distanceInKm = centerLocation.distanceFromLocation(location) as Double / 1000
+            let distanceInKm = centerLocation.distance(from: location) as Double / 1000
             if distanceInKm < 40 {
                 inAnAvailableCity = true
             }
@@ -222,7 +235,7 @@ class MapViewController: AbstractViewController {
 
     }
 
-    func mapModeDidChange(completion: (() -> Void)) {
+    func mapModeDidChange(_ completion: (() -> Void)) {
         completion()
     }
     
@@ -243,10 +256,10 @@ protocol MapViewControllerDelegate {
     func mapDidDismissSelection(byUser wasUserAction: Bool)
     func mapDidTapIdly()
     
-    func didSelectObject (detailsObject : DetailObject)
+    func didSelectObject (_ detailsObject : DetailObject)
         
-    func showMapMessage(message: String?)
-    func showMapMessage(message: String?, onlyIfPreviouslyShown: Bool, showCityPicker: Bool)
+    func showMapMessage(_ message: String?)
+    func showMapMessage(_ message: String?, onlyIfPreviouslyShown: Bool, showCityPicker: Bool)
     
     func mapDidMoveFarAwayFromAvailableCities()
     

@@ -16,14 +16,14 @@ will have nothing to call and an error about the
 */
 class PRKVerticalGestureRecognizer: NSObject {
    
-    private var panRec: UIPanGestureRecognizer
-    private var appliedToView: UIView
-    private var superView: UIView
-    private var beginTap: CGPoint?
-    private var lastPanTap: CGPoint?
-    private var panDirectionIsUp: Bool
+    fileprivate var panRec: UIPanGestureRecognizer
+    fileprivate var appliedToView: UIView
+    fileprivate var superView: UIView
+    fileprivate var beginTap: CGPoint?
+    fileprivate var lastPanTap: CGPoint?
+    fileprivate var panDirectionIsUp: Bool
 
-    private var _delegate: PRKVerticalGestureRecognizerDelegate?
+    fileprivate var _delegate: PRKVerticalGestureRecognizerDelegate?
     var delegate: PRKVerticalGestureRecognizerDelegate? {
         get {
             return _delegate
@@ -49,16 +49,16 @@ class PRKVerticalGestureRecognizer: NSObject {
         self.init()
         appliedToView = view
         superView = superViewOfView
-        panRec = UIPanGestureRecognizer(target: self, action: "handleVerticalGestureRecongizerSwipe:")
+        panRec = UIPanGestureRecognizer(target: self, action: #selector(PRKVerticalGestureRecognizer.handleVerticalGestureRecongizerSwipe(_:)))
         appliedToView.addGestureRecognizer(panRec)
 
     }
 
-    func handleVerticalGestureRecongizerSwipe(panRec: UIPanGestureRecognizer) {
+    func handleVerticalGestureRecongizerSwipe(_ panRec: UIPanGestureRecognizer) {
         
-        let tap = panRec.locationInView(self.superView)
+        let tap = panRec.location(in: self.superView)
         
-        if panRec.state == UIGestureRecognizerState.Began {
+        if panRec.state == UIGestureRecognizerState.began {
             
             if self.delegate != nil && !self.delegate!.shouldIgnoreSwipe(tap) {
                 beginTap = tap
@@ -67,7 +67,7 @@ class PRKVerticalGestureRecognizer: NSObject {
                 beginTap = nil
             }
             
-        } else if panRec.state == UIGestureRecognizerState.Changed {
+        } else if panRec.state == UIGestureRecognizerState.changed {
             
             if beginTap != nil {
                 let distance = tap.yDistanceToPointWithDirection(beginTap!)
@@ -85,7 +85,7 @@ class PRKVerticalGestureRecognizer: NSObject {
                 }
             }
             
-        } else if panRec.state == UIGestureRecognizerState.Ended {
+        } else if panRec.state == UIGestureRecognizerState.ended {
             
             if beginTap != nil {
                 
@@ -107,9 +107,9 @@ class PRKVerticalGestureRecognizer: NSObject {
 
 protocol PRKVerticalGestureRecognizerDelegate: UIGestureRecognizerDelegate {
     
-    func shouldIgnoreSwipe(beginTap: CGPoint) -> Bool
+    func shouldIgnoreSwipe(_ beginTap: CGPoint) -> Bool
     func swipeDidBegin()
-    func swipeInProgress(yDistanceFromBeginTap: CGFloat)
+    func swipeInProgress(_ yDistanceFromBeginTap: CGFloat)
     func swipeDidEndUp()
     func swipeDidEndDown()
 }

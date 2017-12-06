@@ -10,16 +10,16 @@ import UIKit
 
 class PRKTimeSpanView: UIView {
 
-    private var containerView = UIView()
+    fileprivate var containerView = UIView()
     var leftLabel = UILabel()
     var rightLabel = UILabel()
     
-    private var dayString: String = "" //0 means today, 1 = tomorrow, etc
-    private var startTime: NSTimeInterval = 0
-    private var endTime: NSTimeInterval = 0
-    private var leftSideFont: UIFont = Styles.FontFaces.regular(15)
-    private var rightSideFont: UIFont = Styles.FontFaces.regular(14)
-    private var textColor: UIColor = Styles.Colors.midnight1
+    fileprivate var dayString: String = "" //0 means today, 1 = tomorrow, etc
+    fileprivate var startTime: TimeInterval = 0
+    fileprivate var endTime: TimeInterval = 0
+    fileprivate var leftSideFont: UIFont = Styles.FontFaces.regular(15)
+    fileprivate var rightSideFont: UIFont = Styles.FontFaces.regular(14)
+    fileprivate var textColor: UIColor = Styles.Colors.midnight1
     
     var didSetupSubviews: Bool
     var didSetupConstraints: Bool
@@ -27,7 +27,7 @@ class PRKTimeSpanView: UIView {
     var timePeriodText: String {
         get {
             if startTime == 0 && endTime == 0 {
-                return "closed".localizedString.uppercaseString
+                return "closed".localizedString.uppercased()
             } else if startTime == 0 && endTime == 24*3600 {
                 return "24H"
             } else {
@@ -38,14 +38,14 @@ class PRKTimeSpanView: UIView {
         }
     }
     
-    convenience init(dayString: String, startTime: NSTimeInterval, endTime: NSTimeInterval) {
+    convenience init(dayString: String, startTime: TimeInterval, endTime: TimeInterval) {
         self.init(dayString: dayString, startTime: startTime, endTime: endTime, leftSideFont: nil, rightSideFont: nil, textColor: nil)
     }
 
     //this initializer returns the format we use in the lot view controller to list times:
     //  today               3:30 PM - 11:45 PM
     //  aujourd'hui            15:30h - 23:45h
-    init(dayString: String, startTime: NSTimeInterval, endTime: NSTimeInterval, leftSideFont: UIFont?, rightSideFont: UIFont?, textColor: UIColor?) {
+    init(dayString: String, startTime: TimeInterval, endTime: TimeInterval, leftSideFont: UIFont?, rightSideFont: UIFont?, textColor: UIColor?) {
         
         self.dayString = dayString
         self.startTime = startTime
@@ -63,7 +63,7 @@ class PRKTimeSpanView: UIView {
         didSetupSubviews = false
         didSetupConstraints = false
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         
         setupSubviews()
         self.setNeedsUpdateConstraints()
@@ -100,13 +100,13 @@ class PRKTimeSpanView: UIView {
         containerView.addSubview(leftLabel)
         leftLabel.font = leftSideFont
         leftLabel.text = dayString
-        leftLabel.textAlignment = .Left
+        leftLabel.textAlignment = .left
         leftLabel.textColor = textColor
         
         containerView.addSubview(rightLabel)
         rightLabel.font = rightSideFont
         rightLabel.text = timePeriodText
-        rightLabel.textAlignment = .Right
+        rightLabel.textAlignment = .right
         rightLabel.textColor = textColor
         
         didSetupSubviews = true

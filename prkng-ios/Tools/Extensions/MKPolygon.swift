@@ -5,10 +5,12 @@
 //  Created by Antonino Urbano on 2015-07-02.
 //  Copyright (c) 2015 PRKNG. All rights reserved.
 //
+import MapKit
+import Mapbox
 
 extension MKPolygon {
    
-    static func polygonsToRMPolygonAnnotations(polygons: [MKPolygon], mapView: RMMapView) -> [RMPolygonAnnotation] {
+    static func polygonsToRMPolygonAnnotations(_ polygons: [MKPolygon], mapView: RMMapView) -> [RMPolygonAnnotation] {
 
         var polygonAnnotations = [RMPolygonAnnotation]()
         for polygon in polygons {
@@ -18,9 +20,9 @@ extension MKPolygon {
         return polygonAnnotations
     }
 
-    func polygonToRMPolygonAnnotation(mapView: RMMapView) -> RMPolygonAnnotation {
+    func polygonToRMPolygonAnnotation(_ mapView: RMMapView) -> RMPolygonAnnotation {
         
-        let coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.alloc(self.pointCount)
+        let coordsPointer = UnsafeMutablePointer<CLLocationCoordinate2D>.allocate(capacity: self.pointCount)
         self.getCoordinates(coordsPointer, range: NSMakeRange(0, self.pointCount))
         var locations: [CLLocation] = []
         for i in 0..<self.pointCount {
@@ -60,7 +62,7 @@ extension MKPolygon {
 //        return mglPolygons
 //    }
     
-    static func invertPolygons(polygons: [MKPolygon]) -> MKPolygon {
+    static func invertPolygons(_ polygons: [MKPolygon]) -> MKPolygon {
         
         var worldCorners: [MKMapPoint] = [
             MKMapPoint(x: 0, y: 0),
@@ -68,7 +70,7 @@ extension MKPolygon {
             MKMapPoint(x: MKMapSizeWorld.width, y: MKMapSizeWorld.height),
             MKMapPoint(x: 0, y: MKMapSizeWorld.height),
             MKMapPoint(x: 0, y: 0)]
-        let worldCornersPointer = UnsafeMutablePointer<MKMapPoint>.alloc(worldCorners.count)
+        let worldCornersPointer = UnsafeMutablePointer<MKMapPoint>.allocate(capacity: worldCorners.count)
         for i in 0..<worldCorners.count {
             worldCornersPointer[i] = worldCorners[i]
         }
@@ -78,7 +80,7 @@ extension MKPolygon {
         return polygon
     }
     
-    static func interiorPolygons(polygons: [MKPolygon]) -> [MKPolygon] {
+    static func interiorPolygons(_ polygons: [MKPolygon]) -> [MKPolygon] {
 
         var interiorPolygons = [MKPolygon]()
         for polygon in polygons {

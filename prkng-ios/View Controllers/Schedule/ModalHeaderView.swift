@@ -10,20 +10,20 @@ import UIKit
 
 class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     
-    private var topContainer = UIView()
-    private var headerTitleLabel = MarqueeLabel()
-    private var titleLabel = MarqueeLabel()
-    private var titleLabelCentered = MarqueeLabel()
-    private var leftImageView = UIImageView()
-    private var rightImageView = UIImageView()
-    private var rightView = UIView()
+    fileprivate var topContainer = UIView()
+    fileprivate var headerTitleLabel = MarqueeLabel()
+    fileprivate var titleLabel = MarqueeLabel()
+    fileprivate var titleLabelCentered = MarqueeLabel()
+    fileprivate var leftImageView = UIImageView()
+    fileprivate var rightImageView = UIImageView()
+    fileprivate var rightView = UIView()
     var rightViewTitleLabel = UILabel()
     var rightViewPrimaryLabel = UILabel()
-    private var rightViewContainer = UIView()
+    fileprivate var rightViewContainer = UIView()
     var rightImageViewWithLabel = UIImageView()
     var rightImageViewLabel = UILabel()
-    private var materialDesignButton = ViewFactory.checkInButton()
-    private var isRightImageViewRotated: Bool = false
+    fileprivate var materialDesignButton = ViewFactory.checkInButton()
+    fileprivate var isRightImageViewRotated: Bool = false
     
     var delegate: ModalHeaderViewDelegate?
     
@@ -47,12 +47,12 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
     
     var showsRightButton: Bool {
         didSet {
-            rightImageView.hidden = !showsRightButton
+            rightImageView.isHidden = !showsRightButton
         }
     }
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
     
     override init(frame: CGRect) {
@@ -88,54 +88,54 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         headerTitleLabel.animationDelay = 2
         headerTitleLabel.font = Styles.FontFaces.light(11)
         headerTitleLabel.textColor = Styles.Colors.cream2
-        headerTitleLabel.textAlignment = NSTextAlignment.Left
+        headerTitleLabel.textAlignment = NSTextAlignment.left
         topContainer.addSubview(headerTitleLabel)
         
         titleLabel.font = Styles.Fonts.h2Variable
         titleLabel.textColor = Styles.Colors.cream2
-        titleLabel.textAlignment = NSTextAlignment.Left
+        titleLabel.textAlignment = NSTextAlignment.left
         topContainer.addSubview(titleLabel)
 
         titleLabelCentered.font = Styles.Fonts.h2Variable
         titleLabelCentered.textColor = Styles.Colors.cream2
-        titleLabelCentered.textAlignment = NSTextAlignment.Left
+        titleLabelCentered.textAlignment = NSTextAlignment.left
         topContainer.addSubview(titleLabelCentered)
 
         leftImageView.image = UIImage(named: "btn_back_outline")
-        leftImageView.contentMode = UIViewContentMode.Center
+        leftImageView.contentMode = UIViewContentMode.center
         topContainer.addSubview(leftImageView)
 
         rightImageView.image = UIImage(named: "btn_menu")
-        rightImageView.contentMode = UIViewContentMode.Center
+        rightImageView.contentMode = UIViewContentMode.center
         topContainer.addSubview(rightImageView)
 
         topContainer.addSubview(rightView)
         
         rightViewTitleLabel.font = Styles.FontFaces.light(11)
         rightViewTitleLabel.textColor = Styles.Colors.cream1
-        rightViewTitleLabel.textAlignment = NSTextAlignment.Center
+        rightViewTitleLabel.textAlignment = NSTextAlignment.center
         rightView.addSubview(rightViewTitleLabel)
         
         rightViewPrimaryLabel.textColor = Styles.Colors.cream1
-        rightViewPrimaryLabel.textAlignment = NSTextAlignment.Center
+        rightViewPrimaryLabel.textAlignment = NSTextAlignment.center
         rightView.addSubview(rightViewPrimaryLabel)
         
         topContainer.addSubview(rightViewContainer)
 
-        rightImageViewWithLabel.contentMode = UIViewContentMode.ScaleAspectFit
+        rightImageViewWithLabel.contentMode = UIViewContentMode.scaleAspectFit
         rightViewContainer.addSubview(rightImageViewWithLabel)
 //        rightImageViewWithLabel.layer.anchorPoint = CGPointMake(0.5,1.0);
 //        rightImageViewWithLabel.layer.wigglewigglewiggle()
         
         rightImageViewLabel.font = Styles.FontFaces.bold(10)
         rightImageViewLabel.textColor = Styles.Colors.cream1
-        rightImageViewLabel.textAlignment = NSTextAlignment.Center
+        rightImageViewLabel.textAlignment = NSTextAlignment.center
         rightViewContainer.addSubview(rightImageViewLabel)
 
         topContainer.addSubview(materialDesignButton)
-        topContainer.sendSubviewToBack(materialDesignButton)
+        topContainer.sendSubview(toBack: materialDesignButton)
 
-        let tapRec = UITapGestureRecognizer(target: self, action: "handleTap:")
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(ModalHeaderView.handleTap(_:)))
         tapRec.delegate = self
         materialDesignButton.addGestureRecognizer(tapRec)
 
@@ -173,13 +173,13 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         }
 
         leftImageView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(20, 20)) //real size is CGSizeMake(11, 9)
+            make.size.equalTo(CGSize(width: 20, height: 20)) //real size is CGSizeMake(11, 9)
             make.left.equalTo(self.topContainer).offset(10)
             make.centerY.equalTo(self.topContainer)
         }
 
         rightImageView.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(17, 15))
+            make.size.equalTo(CGSize(width: 17, height: 15))
             make.right.equalTo(self.topContainer).offset(-33)
             make.bottom.equalTo(self.topContainer).offset(-25)
         }
@@ -225,9 +225,9 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         didSetupConstraints = true
     }
     
-    func handleTap(tapRec: UITapGestureRecognizer) {
-        let tap = tapRec.locationInView(self)
-        let point = rightImageView.convertPoint(rightImageView.bounds.origin, toView: self)
+    func handleTap(_ tapRec: UITapGestureRecognizer) {
+        let tap = tapRec.location(in: self)
+        let point = rightImageView.convert(rightImageView.bounds.origin, to: self)
         let distance = tap.distanceToPoint(point)
         if distance < 40 {
             self.delegate?.tappedRightButton()
@@ -236,21 +236,21 @@ class ModalHeaderView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
-    func makeRightButtonList(animated: Bool) {
+    func makeRightButtonList(_ animated: Bool) {
 
         let duration = animated ? 0.2 : 0
-        UIView.animateWithDuration(duration, animations: {
-            self.rightImageView.transform = CGAffineTransformMakeRotation((0.0 * CGFloat(M_PI)) / 180.0)
+        UIView.animate(withDuration: duration, animations: {
+            self.rightImageView.transform = CGAffineTransform(rotationAngle: (0.0 * CGFloat(M_PI)) / 180.0)
         })
         
         isRightImageViewRotated = false
     }
 
-    func makeRightButtonColumns(animated: Bool) {
+    func makeRightButtonColumns(_ animated: Bool) {
         
         let duration = animated ? 0.2 : 0
-        UIView.animateWithDuration(duration, animations: {
-            self.rightImageView.transform = CGAffineTransformMakeRotation((-90.0 * CGFloat(M_PI)) / 180.0)
+        UIView.animate(withDuration: duration, animations: {
+            self.rightImageView.transform = CGAffineTransform(rotationAngle: (-90.0 * CGFloat(M_PI)) / 180.0)
         })
 
         isRightImageViewRotated = true

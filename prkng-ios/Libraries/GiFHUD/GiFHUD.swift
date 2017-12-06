@@ -36,10 +36,10 @@ extension UIImageView {
     
     // MARK: Method Overrides
     
-    override public func displayLayer(layer: CALayer) {
+    override open func display(_ layer: CALayer) {
         if let image = animatableImage {
             if let frame = image.currentFrame {
-                layer.contents = frame.CGImage
+                layer.contents = frame.cgImage
             }
         }
     }
@@ -52,7 +52,7 @@ extension UIImageView {
         layer.setNeedsDisplay()
     }
     
-    func setAnimatableImage(data data: NSData) {
+    func setAnimatableImage(data: Data) {
         image = AnimatedImage.imageWithData(data, delegate: self)
         layer.setNeedsDisplay()
     }
@@ -65,7 +65,7 @@ extension UIImageView {
             animatableImage!.resetAnimation()
             if let image = animatableImage {
                 if let frame = image.currentFrame {
-                    layer.contents = frame.CGImage
+                    layer.contents = frame.cgImage
                 }
             }
 
@@ -79,7 +79,7 @@ extension UIImageView {
             animatableImage!.resetAnimation()
             if let image = animatableImage {
                 if let frame = image.currentFrame {
-                    layer.contents = frame.CGImage
+                    layer.contents = frame.cgImage
                 }
             }
 
@@ -93,19 +93,19 @@ extension UIImageView {
 
 class AnimatedImage: UIImage {
     
-    func CGImageSourceContainsAnimatedGIF(imageSource: CGImageSource) -> Bool {
-        let isTypeGIF = UTTypeConformsTo(CGImageSourceGetType(imageSource) ?? "", kUTTypeGIF)
+    func CGImageSourceContainsAnimatedGIF(_ imageSource: CGImageSource) -> Bool {
+        let isTypeGIF = UTTypeConformsTo(CGImageSourceGetType(imageSource) ?? "" as CFString, kUTTypeGIF)
         let imageCount = CGImageSourceGetCount(imageSource)
         return isTypeGIF == true && imageCount > 1
     }
     
-    func CGImageSourceGIFFrameDuration(imageSource: CGImageSource, index: Int) -> NSTimeInterval {
+    func CGImageSourceGIFFrameDuration(_ imageSource: CGImageSource, index: Int) -> TimeInterval {
         let containsAnimatedGIF = CGImageSourceContainsAnimatedGIF(imageSource)
         if !containsAnimatedGIF { return 0.0 }
         
         var duration = 0.0
         let imageProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, Int(index), nil) as NSDictionary!
-        let GIFProperties: NSDictionary? = imageProperties[String(kCGImagePropertyGIFDictionary)] as? NSDictionary
+        let GIFProperties: NSDictionary? = imageProperties?[String(kCGImagePropertyGIFDictionary)] as? NSDictionary
         
         if let properties = GIFProperties {
             duration = properties[String(kCGImagePropertyGIFUnclampedDelayTime)] as! Double
@@ -134,18 +134,18 @@ class AnimatedImage: UIImage {
     // MARK: Public Properties
     
     var delegate: UIImageView?
-    var frameDurations = [NSTimeInterval]()
+    var frameDurations = [TimeInterval]()
     var frames = [UIImage?]()
-    var totalDuration: NSTimeInterval = 0.0
+    var totalDuration: TimeInterval = 0.0
     
     
     // MARK: Private Properties
     
-    private lazy var displayLink: CADisplayLink = CADisplayLink(target: self, selector: "updateCurrentFrame")
-    private lazy var preloadFrameQueue: dispatch_queue_t = dispatch_queue_create("co.kaishin.GIFPreloadImages", DISPATCH_QUEUE_SERIAL)
-    private var currentFrameIndex = 0
-    private var imageSource: CGImageSource?
-    private var timeSinceLastFrameChange: NSTimeInterval = 0.0
+    fileprivate lazy var displayLink: CADisplayLink = CADisplayLink(target: self, selector: #selector(AnimatedImage.updateCurrentFrame))
+    fileprivate lazy var preloadFrameQueue: DispatchQueue = DispatchQueue(label: "co.kaishin.GIFPreloadImages", attributes: [])
+    fileprivate var currentFrameIndex = 0
+    fileprivate var imageSource: CGImageSource?
+    fileprivate var timeSinceLastFrameChange: TimeInterval = 0.0
     
     
     // MARK: Computed Properties
@@ -154,7 +154,7 @@ class AnimatedImage: UIImage {
         return frameAtIndex(currentFrameIndex)
     }
     
-    private var isAnimated: Bool {
+    fileprivate var isAnimated: Bool {
         return imageSource != nil
     }
     
@@ -165,8 +165,8 @@ class AnimatedImage: UIImage {
         super.init(coder: aDecoder)
     }
     
-    required init(data: NSData, delegate: UIImageView?) {
-        let imageSource = CGImageSourceCreateWithData(data, nil)
+    required init(data: Data, delegate: UIImageView?) {
+        let imageSource = CGImageSourceCreateWithData(data as CFData, nil)
         self.delegate = delegate
         
         super.init()
@@ -178,17 +178,21 @@ class AnimatedImage: UIImage {
     required convenience init(imageLiteral name: String) {
         fatalError("init(imageLiteral:) has not been implemented")
     }
+
+    required convenience init(imageLiteralResourceName name: String) {
+        fatalError("init(imageLiteralResourceName:) has not been implemented")
+    }
     
     
     // MARK: Factories
     
-    class func imageWithName(name: String, delegate: UIImageView?) -> Self? {
-        let path = NSBundle.mainBundle().bundleURL.URLByAppendingPathComponent(name)
-        let data = NSData(contentsOfURL: path)
+    class func imageWithName(_ name: String, delegate: UIImageView?) -> Self? {
+        let path = Bundle.main.bundleURL.appendingPathComponent(name)
+        let data = Data(contentsOfURL: path)
         return (data != nil) ? imageWithData(data!, delegate: delegate) : nil
     }
     
-    class func imageWithData(data: NSData, delegate: UIImageView?) -> Self? {
+    class func imageWithData(_ data: Data, delegate: UIImageView?) -> Self? {
         return self.init(data: data, delegate: delegate)
     }
     
@@ -196,13 +200,13 @@ class AnimatedImage: UIImage {
     // MARK: Display Link Helpers
     
     func attachDisplayLink() {
-        displayLink.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
+        displayLink.add(to: RunLoop.main, forMode: RunLoopMode.commonModes)
     }
     
     
     // MARK: Frame Methods
     
-    private func prepareFrames(source: CGImageSource!) {
+    fileprivate func prepareFrames(_ source: CGImageSource!) {
         imageSource = source
         
         let numberOfFrames = Int(CGImageSourceGetCount(self.imageSource!))
@@ -216,7 +220,7 @@ class AnimatedImage: UIImage {
             
             if index < framesToPreload {
                 let frameImageRef = CGImageSourceCreateImageAtIndex(self.imageSource!, Int(index), nil)
-                let frame = UIImage(CGImage: frameImageRef!, scale: 0.0, orientation: UIImageOrientation.Up)
+                let frame = UIImage(cgImage: frameImageRef!, scale: 0.0, orientation: UIImageOrientation.up)
                 frames.append(frame)
             } else {
                 frames.append(nil)
@@ -224,7 +228,7 @@ class AnimatedImage: UIImage {
         }
     }
     
-    func frameAtIndex(index: Int) -> UIImage? {
+    func frameAtIndex(_ index: Int) -> UIImage? {
         if Int(index) >= self.frames.count { return nil }
         
         let image: UIImage? = self.frames[Int(index)]
@@ -233,7 +237,7 @@ class AnimatedImage: UIImage {
         return image
     }
     
-    private func updatePreloadedFramesAtIndex(index: Int) {
+    fileprivate func updatePreloadedFramesAtIndex(_ index: Int) {
         if frames.count <= framesToPreload { return }
         
         if index != 0 {
@@ -244,9 +248,9 @@ class AnimatedImage: UIImage {
             let adjustedIndex = internalIndex % frames.count
             
             if frames[adjustedIndex] == nil {
-                dispatch_async(preloadFrameQueue) {
+                preloadFrameQueue.async {
                     let frameImageRef = CGImageSourceCreateImageAtIndex(self.imageSource!, Int(adjustedIndex), nil)
-                    self.frames[adjustedIndex] = UIImage(CGImage: frameImageRef!)
+                    self.frames[adjustedIndex] = UIImage(cgImage: frameImageRef!)
                 }
             }
         }
@@ -260,7 +264,7 @@ class AnimatedImage: UIImage {
         
         while timeSinceLastFrameChange >= frameDuration {
             timeSinceLastFrameChange -= frameDuration
-            currentFrameIndex++
+            currentFrameIndex += 1
             
             if currentFrameIndex >= frames.count {
                 currentFrameIndex = 0
@@ -274,15 +278,15 @@ class AnimatedImage: UIImage {
     // MARK: Animation
     
     func pauseAnimation() {
-        displayLink.paused = true
+        displayLink.isPaused = true
     }
     
     func resumeAnimation() {
-        displayLink.paused = false
+        displayLink.isPaused = false
     }
     
     func isAnimating() -> Bool {
-        return !displayLink.paused
+        return !displayLink.isPaused
     }
     
     func resetAnimation() {
@@ -298,10 +302,10 @@ class GiFHUD: UIView {
     // MARK: Constants
     
     let Size            : CGFloat           = 150
-    let FadeDuration    : NSTimeInterval    = 0.2//0.3
+    let FadeDuration    : TimeInterval    = 0.2//0.3
     let GifSpeed        : CGFloat           = 0.3
     let OverlayAlpha    : CGFloat           = 0.3
-    let Window          : UIWindow = (UIApplication.sharedApplication().delegate as! AppDelegate).window!
+    let Window          : UIWindow = (UIApplication.shared.delegate as! AppDelegate).window!
     
     
     // MARK: Variables
@@ -309,8 +313,8 @@ class GiFHUD: UIView {
     var overlayView     : UIView?
     var imageView       : UIImageView?
     var shown           : Bool
-    private var tapGesture: UITapGestureRecognizer?
-    private var didTapClosure: (() -> Void)?
+    fileprivate var tapGesture: UITapGestureRecognizer?
+    fileprivate var didTapClosure: (() -> Void)?
 
     
     // MARK: Singleton
@@ -332,11 +336,11 @@ class GiFHUD: UIView {
         alpha = 0
         center = Window.center
         clipsToBounds = false
-        layer.backgroundColor = UIColor (white: 0, alpha: 0).CGColor
+        layer.backgroundColor = UIColor (white: 0, alpha: 0).cgColor
         layer.cornerRadius = 10
         layer.masksToBounds = true
         
-        imageView = UIImageView (frame: CGRectInset(bounds, 20, 20))
+        imageView = UIImageView (frame: bounds.insetBy(dx: 20, dy: 20))
         addSubview(imageView!)
         
         Window.addSubview(self)
@@ -365,28 +369,28 @@ class GiFHUD: UIView {
                 self.instance.imageView?.startAnimatingGif()
             }
             
-            self.instance.Window.bringSubviewToFront(self.instance)
+            self.instance.Window.bringSubview(toFront: self.instance)
             self.instance.shown = true
             self.instance.fadeIn({ () -> Void in
             })
 //        })
     }
 
-    class func showForSeconds (seconds: Double) {
+    class func showForSeconds (_ seconds: Double) {
         show()
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(seconds * Double(NSEC_PER_SEC)))
-        dispatch_after(time, dispatch_get_main_queue(), {
+        let time = DispatchTime.now() + Double(Int64(seconds * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: time, execute: {
             SVProgressHUD.dismiss()
         })
     }
     
-    class func dismissOnTap (didTap: (() -> Void)? = nil) {
-        self.instance.tapGesture = UITapGestureRecognizer(target: self, action: "userTapped")
+    class func dismissOnTap (_ didTap: (() -> Void)? = nil) {
+        self.instance.tapGesture = UITapGestureRecognizer(target: self, action: #selector(GiFHUD.userTapped))
         self.instance.addGestureRecognizer(self.instance.tapGesture!)
         self.instance.didTapClosure = didTap
     }
 
-    @objc private class func userTapped () {
+    @objc fileprivate class func userTapped () {
         SVProgressHUD.dismiss()
         self.instance.tapGesture = nil
         self.instance.didTapClosure?()
@@ -409,7 +413,7 @@ class GiFHUD: UIView {
         }
     }
     
-    class func dismiss (complete: () -> Void) {
+    class func dismiss (_ complete: @escaping () -> Void) {
         if (!self.instance.shown) {
             return complete()
         }
@@ -429,21 +433,21 @@ class GiFHUD: UIView {
     
     // MARK: Effects
     
-    func fadeIn (completed: () -> Void) {
+    func fadeIn (_ completed: () -> Void) {
         imageView?.startAnimatingGif()
-        UIView.animateWithDuration(FadeDuration, animations: {
+        UIView.animate(withDuration: FadeDuration, animations: {
             self.alpha = 1
         })
     }
     
-    func fadeOut (completed: () -> Void) {
-        UIView.animateWithDuration(FadeDuration, animations: {
+    func fadeOut (_ completed: @escaping () -> Void) {
+        UIView.animate(withDuration: FadeDuration, animations: {
             self.alpha = 0
             }, completion: { (complate) in
                 self.shown = false
                 self.imageView?.stopAnimatingGif()
                 //custom fix!
-                self.Window.sendSubviewToBack(self)
+                self.Window.sendSubview(toBack: self)
                 completed()
         })
     }
@@ -451,10 +455,10 @@ class GiFHUD: UIView {
     func overlay () -> UIView {
         if (overlayView == nil) {
             overlayView = UIView (frame: Window.frame)
-            overlayView?.backgroundColor = UIColor.blackColor()
+            overlayView?.backgroundColor = UIColor.black
             overlayView?.alpha = 0
             
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
+            UIView.animate(withDuration: 0.3, animations: { () -> Void in
                 self.overlayView!.alpha = self.OverlayAlpha
             })
         }
@@ -465,24 +469,24 @@ class GiFHUD: UIView {
     
     // MARK: Gif
     
-    class func setGif (name: String) {
+    class func setGif (_ name: String) {
         self.instance.imageView?.animationImages = nil
         self.instance.imageView?.stopAnimating()
         
         self.instance.imageView?.image = AnimatedImage.imageWithName(name, delegate: self.instance.imageView)
     }
     
-    class func setGifBundle (bundle: NSBundle) {
+    class func setGifBundle (_ bundle: Bundle) {
         self.instance.imageView?.animationImages = nil
         self.instance.imageView?.stopAnimating()
         
-        self.instance.imageView?.image = AnimatedImage (data: NSData(contentsOfURL: bundle.resourceURL!)!, delegate: nil)
+        self.instance.imageView?.image = AnimatedImage (data: try! Data(contentsOf: bundle.resourceURL!), delegate: nil)
     }
     
-    class func setGifImages (images: [UIImage]) {
+    class func setGifImages (_ images: [UIImage]) {
         self.instance.imageView?.stopAnimatingGif()
         
         self.instance.imageView?.animationImages = images
-        self.instance.imageView?.animationDuration = NSTimeInterval(self.instance.GifSpeed)
+        self.instance.imageView?.animationDuration = TimeInterval(self.instance.GifSpeed)
     }
 }

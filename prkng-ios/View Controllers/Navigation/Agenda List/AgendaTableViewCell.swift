@@ -46,7 +46,7 @@ class AgendaTableViewCell: UITableViewCell {
         super.updateConstraints()
     }
     
-    func setupSubviews(agendaItem: AgendaItem) {
+    func setupSubviews(_ agendaItem: AgendaItem) {
         
         var hoursTextColor = Styles.Colors.petrol1
         
@@ -89,17 +89,17 @@ class AgendaTableViewCell: UITableViewCell {
         
         icon.image = imageView.image
         icon.tintColor = imageView.tintColor
-        icon.contentMode = .ScaleAspectFit
+        icon.contentMode = .scaleAspectFit
 
         dayLabel.font = Styles.Fonts.h3
         dayLabel.textColor = Styles.Colors.midnight1
-        dayLabel.textAlignment = .Left
+        dayLabel.textAlignment = .left
         dayLabel.text = agendaItem.dayText()
         
         hoursText.font = Styles.FontFaces.light(14)
         hoursText.numberOfLines = 2
         hoursText.textColor = hoursTextColor
-        hoursText.textAlignment = .Right
+        hoursText.textAlignment = .right
         hoursText.attributedText = agendaItem.timeText()
         
         topLine.backgroundColor = Styles.Colors.transparentWhite
@@ -136,7 +136,7 @@ class AgendaTableViewCell: UITableViewCell {
             make.left.equalTo(self.dayLabel.snp_right).offset(10)
             make.right.equalTo(self.contentView).offset(-114)
             make.centerY.equalTo(self.contentView)
-            make.size.equalTo(CGSizeMake(25, 25))
+            make.size.equalTo(CGSize(width: 25, height: 25))
         }
         
         hoursText.snp_makeConstraints { (make) -> () in
@@ -161,7 +161,7 @@ class AgendaTableViewCell: UITableViewCell {
         
     }
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state

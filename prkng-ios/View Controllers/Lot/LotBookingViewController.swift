@@ -14,41 +14,41 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     var user: ParkingPandaUser
     var parentView: UIView
     
-    private var location: ParkingPandaLocation?
+    fileprivate var location: ParkingPandaLocation?
     
-    private var dateFormatter: NSDateFormatter
-    private var pickerVC: UIDatePickerViewController
+    fileprivate var dateFormatter: DateFormatter
+    fileprivate var pickerVC: UIDatePickerViewController
     
     override var topParallaxView: UIView? { get {
         return topImageView
         }
     }
     
-    private var topImageView = GMSPanoramaView(frame: CGRectZero)
-    private var topGradient = UIImageView()
-    private var topLabel = UILabel()
+    fileprivate var topImageView = GMSPanoramaView(frame: CGRect.zero)
+    fileprivate var topGradient = UIImageView()
+    fileprivate var topLabel = UILabel()
     
-    private var headerView: ModalHeaderView
+    fileprivate var headerView: ModalHeaderView
     
-    private var timeViewButton = ViewFactory.openScheduleButton()
-    private var timeView = UIView()
-    private var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
-    private var timeViewLabel = UILabel()
-    private var timeViewRightArrow = UIImageView(image: UIImage(named: "btn_arrow_departure_1"))
+    fileprivate var timeViewButton = ViewFactory.openScheduleButton()
+    fileprivate var timeView = UIView()
+    fileprivate var timeIconView = UIImageView(image: UIImage(named: "icon_time_thin"))
+    fileprivate var timeViewLabel = UILabel()
+    fileprivate var timeViewRightArrow = UIImageView(image: UIImage(named: "btn_arrow_departure_1"))
     
-    private var sliderContainerView = UIView()
-    private var sliderLabel = UILabel()
-    private var sliderForLabel = UILabel()
-    private var slider = UISlider()
+    fileprivate var sliderContainerView = UIView()
+    fileprivate var sliderLabel = UILabel()
+    fileprivate var sliderForLabel = UILabel()
+    fileprivate var slider = UISlider()
     
-    private var payContainerView = UIView()
-    private var payLabel = UILabel()
-    private var payButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: String(format: "pay_with_x".localizedString.uppercaseString, "parking_panda".localizedString.uppercaseString))
+    fileprivate var payContainerView = UIView()
+    fileprivate var payLabel = UILabel()
+    fileprivate var payButton = ViewFactory.redRoundedButtonWithHeight(36, font: Styles.FontFaces.bold(12), text: String(format: "pay_with_x".localizedString.uppercased(), "parking_panda".localizedString.uppercased()))
 
-    private static let HEADER_HEIGHT: CGFloat = 70
-    private static let TIME_VIEW_HEIGHT: CGFloat = 60
-    private static let SLIDER_VIEW_HEIGHT: CGFloat = 120
-    private static let BOTTOM_VIEW_HEIGHT: CGFloat = 140
+    fileprivate static let HEADER_HEIGHT: CGFloat = 70
+    fileprivate static let TIME_VIEW_HEIGHT: CGFloat = 60
+    fileprivate static let SLIDER_VIEW_HEIGHT: CGFloat = 120
+    fileprivate static let BOTTOM_VIEW_HEIGHT: CGFloat = 140
     
     var topOffset: Int = 0 {
         didSet {
@@ -60,8 +60,8 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
             }
         }
     }
-    private(set) var TOP_OFFSET_MAX: Int = UIScreen.mainScreen().bounds.width == 320 ? 185 / 2 : 0
-    private var swipeBeganWithListAt: Int = 0
+    fileprivate(set) var TOP_OFFSET_MAX: Int = UIScreen.main.bounds.width == 320 ? 185 / 2 : 0
+    fileprivate var swipeBeganWithListAt: Int = 0
     
     init(lot: Lot, user: ParkingPandaUser, view: UIView) {
         self.lot = lot
@@ -69,12 +69,12 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         self.parentView = view
         headerView = ModalHeaderView()
         
-        self.dateFormatter = NSDateFormatter()
+        self.dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, MMM d, yyyy 'at' HH:mm"
         
         //the minimum date is the nearest 30 minute
-        let minimumDate = NSDate().skipToNextEvenMinuteInterval(30)
-        self.pickerVC = UIDatePickerViewController(datePickerMode: .DateAndTime, minuteInterval: 30, minimumDate: minimumDate, maximumDate: minimumDate.dateByAddingDays(30), dateFormatter: dateFormatter, completion: nil)
+        let minimumDate = Date().skipToNextEvenMinuteInterval(30)
+        self.pickerVC = UIDatePickerViewController(datePickerMode: .dateAndTime, minuteInterval: 30, minimumDate: minimumDate, maximumDate: minimumDate.dateByAddingDays(30), dateFormatter: dateFormatter, completion: nil)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -82,7 +82,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         
         self.pickerVC.delegate = self
 
-        self.TOP_PARALLAX_HEIGHT = UIScreen.mainScreen().bounds.height - (LotBookingViewController.HEADER_HEIGHT + LotBookingViewController.TIME_VIEW_HEIGHT + LotBookingViewController.SLIDER_VIEW_HEIGHT + LotBookingViewController.BOTTOM_VIEW_HEIGHT) - CGFloat(Styles.Sizes.tabbarHeight)
+        self.TOP_PARALLAX_HEIGHT = UIScreen.main.bounds.height - (LotBookingViewController.HEADER_HEIGHT + LotBookingViewController.TIME_VIEW_HEIGHT + LotBookingViewController.SLIDER_VIEW_HEIGHT + LotBookingViewController.BOTTOM_VIEW_HEIGHT) - CGFloat(Styles.Sizes.tabbarHeight)
 
     }
     
@@ -90,12 +90,12 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         headerView.topText = lot.headerText
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
@@ -118,11 +118,11 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         view.addSubview(topImageView)
         topImageView.navigationLinksHidden = true
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) { () -> Void in
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async { () -> Void in
             if self.lot.streetViewPanoramaId == nil {
                 self.topImageView.moveNearCoordinate(self.lot.coordinate)
             } else {
-                self.topImageView.moveToPanoramaID(self.lot.streetViewPanoramaId!)
+                self.topImageView.move(toPanoramaID: self.lot.streetViewPanoramaId!)
             }
             if let heading = self.lot.streetViewHeading {
                 let cameraUpdate = GMSPanoramaCameraUpdate.setHeading(CGFloat(heading))
@@ -133,7 +133,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         }
         
         view.addSubview(topGradient)
-        topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clearColor(), toColor: UIColor.blackColor().colorWithAlphaComponent(0.9))
+        topGradient.image = UIImage.imageFromGradient(CGSize(width: self.FULL_WIDTH, height: 65.0), fromColor: UIColor.clear, toColor: UIColor.black.withAlphaComponent(0.9))
         
 //        if lot.lotOperator != nil {
 //            let operatedByString = NSMutableAttributedString(string: "operated_by".localizedString + " ", attributes: [NSFontAttributeName: Styles.FontFaces.light(12)])
@@ -159,16 +159,16 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         timeView.backgroundColor = Styles.Colors.cream1
         view.addSubview(timeView)
 
-        timeIconView.image = timeIconView.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        timeIconView.image = timeIconView.image!.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
         timeIconView.tintColor = Styles.Colors.midnight1
         timeView.addSubview(timeIconView)
 
         let timeViewLabelTopAttrs = [NSFontAttributeName: Styles.FontFaces.bold(12)]
         let timeViewLabelBottomAttrs = [NSFontAttributeName: Styles.FontFaces.regular(14)]
         
-        let timeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
+        let timeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercased() + "\n", attributes: timeViewLabelTopAttrs)
         let timeViewLabelBottomText = NSAttributedString(string: pickerVC.dateString, attributes: timeViewLabelBottomAttrs)
-        timeViewLabelTopText.appendAttributedString(timeViewLabelBottomText)
+        timeViewLabelTopText.append(timeViewLabelBottomText)
 
         timeViewLabel.attributedText = timeViewLabelTopText
         timeViewLabel.textColor = Styles.Colors.midnight1
@@ -177,20 +177,20 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         
         timeView.addSubview(timeViewRightArrow)
         
-        timeViewButton.addTarget(self, action: "timeViewTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        timeViewButton.addTarget(self, action: #selector(LotBookingViewController.timeViewTapped), for: UIControlEvents.touchUpInside)
         timeView.addSubview(timeViewButton)
-        timeView.sendSubviewToBack(timeViewButton)
+        timeView.sendSubview(toBack: timeViewButton)
         
         sliderContainerView.backgroundColor = Styles.Colors.cream1
         view.addSubview(sliderContainerView)
         
         sliderLabel.text = ""
-        sliderLabel.textAlignment = .Center
+        sliderLabel.textAlignment = .center
         sliderLabel.textColor = Styles.Colors.midnight1
         sliderLabel.numberOfLines = 0
         sliderContainerView.addSubview(sliderLabel)
 
-        sliderForLabel.text = "for".localizedString.uppercaseString
+        sliderForLabel.text = "for".localizedString.uppercased()
         sliderForLabel.textColor = Styles.Colors.midnight1
         sliderForLabel.font = Styles.FontFaces.bold(12)
         sliderContainerView.addSubview(sliderForLabel)
@@ -198,26 +198,26 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         slider.maximumTrackTintColor = Styles.Colors.red2
         slider.minimumTrackTintColor = Styles.Colors.red2
         slider.thumbTintColor = Styles.Colors.stone
-        slider.continuous = true
+        slider.isContinuous = true
         slider.minimumValue = 1
         slider.maximumValue = 24
-        slider.addTarget(self, action: "sliderValueChanged", forControlEvents: UIControlEvents.TouchUpInside)
-        slider.addTarget(self, action: "sliderValueChanging", forControlEvents: UIControlEvents.ValueChanged)
+        slider.addTarget(self, action: #selector(LotBookingViewController.sliderValueChanged), for: UIControlEvents.touchUpInside)
+        slider.addTarget(self, action: #selector(LotBookingViewController.sliderValueChanging), for: UIControlEvents.valueChanged)
         sliderContainerView.addSubview(slider)
         
         payContainerView.backgroundColor = Styles.Colors.stone
         view.addSubview(payContainerView)
         
         payLabel.text = ""
-        payLabel.textAlignment = .Center
+        payLabel.textAlignment = .center
         payLabel.textColor = Styles.Colors.midnight1
         payContainerView.addSubview(payLabel)
         
-        payButton.addTarget(self, action: "payButtonTapped", forControlEvents: .TouchUpInside)
-        payButton.enabled = false
+        payButton.addTarget(self, action: "payButtonTapped", for: .touchUpInside)
+        payButton.isEnabled = false
         payContainerView.addSubview(payButton)
 
-        view.bringSubviewToFront(headerView)
+        view.bringSubview(toFront: headerView)
         
     }
     
@@ -326,7 +326,7 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     //MARK: Helper and selector functions
     
-    func setSliderLabelText(sliderHours: Int, parkUntil: NSDate?) {
+    func setSliderLabelText(_ sliderHours: Int, parkUntil: Date?) {
         
         let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(25), NSForegroundColorAttributeName: Styles.Colors.midnight1]
         let hourString = sliderHours == 1 ? "hour".localizedString : "hours".localizedString
@@ -334,25 +334,25 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         
         let line2Attributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.red2]
         if parkUntil != nil {
-            let dateFormatter = NSDateFormatter()
+            let dateFormatter = DateFormatter()
             if parkUntil!.isToday() {
                 dateFormatter.dateFormat = "h:mm a"
             } else {
                 dateFormatter.dateFormat = "h:mm a, MMM dd"
             }
-            let dateString = dateFormatter.stringFromDate(parkUntil!)
+            let dateString = dateFormatter.string(from: parkUntil!)
             
             let textLine2 = NSAttributedString(string: "park_until_".localizedString + dateString, attributes: line2Attributes)
-            textLine1.appendAttributedString(textLine2)
+            textLine1.append(textLine2)
         } else {
             let textLine2 = NSAttributedString(string: "release_slider_text".localizedString, attributes: line2Attributes)
-            textLine1.appendAttributedString(textLine2)
+            textLine1.append(textLine2)
         }
         
         sliderLabel.attributedText = textLine1
     }
 
-    func setPayLabelText(price: Float?) {
+    func setPayLabelText(_ price: Float?) {
         
         if price == nil {
             payLabel.attributedText = nil
@@ -366,11 +366,11 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         }
         
         let totalTextAttributes = [NSFontAttributeName: Styles.FontFaces.regular(12), NSForegroundColorAttributeName: Styles.Colors.midnight1, NSBaselineOffsetAttributeName: 7]
-        let attributedText = NSMutableAttributedString(string: "total".localizedString.uppercaseString, attributes: totalTextAttributes)
+        let attributedText = NSMutableAttributedString(string: "total".localizedString.uppercased(), attributes: totalTextAttributes)
         
         let priceAttributes = [NSFontAttributeName: Styles.FontFaces.bold(25), NSForegroundColorAttributeName: Styles.Colors.midnight1]
         let priceText = NSAttributedString(string: priceString, attributes: priceAttributes)
-        attributedText.appendAttributedString(priceText)
+        attributedText.append(priceText)
         
         payLabel.attributedText = attributedText
     }
@@ -398,21 +398,21 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
             startDate: startDate,
             endDate: endDate) { (location, error) -> Void in
 
-                let success = (location?.isAvailable ?? false) && error?.errorType == .NoError
+                let success = (location?.isAvailable ?? false) && error?.errorType == .noError
                 
                 self.location = location
                 
                 if success {
                     //plus update the label
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.payButton.enabled = true
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        self.payButton.isEnabled = true
                         self.payButton.backgroundColor = Styles.Colors.red2
                         self.setSliderLabelText(Int(self.slider.value), parkUntil: location!.endDateAndTime)
                         self.setPayLabelText(location!.price)
                     })
                 } else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.payButton.enabled = false
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        self.payButton.isEnabled = false
                         self.payButton.backgroundColor = Styles.Colors.pinGrey
                         self.setSliderLabelText(0, parkUntil: nil)
                         self.setPayLabelText(nil)
@@ -427,11 +427,11 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
         if self.location != nil {
             SVProgressHUD.show()
             ParkingPandaOperations.createTransaction(self.user, location: self.location!, completion: { (transaction, error) -> Void in
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     SVProgressHUD.dismiss()
                 })
                 if transaction != nil {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.delegate?.hideModalView()
                         let transactionVC = PPTransactionViewController(transaction: transaction!, lot: self.lot)
                         transactionVC.presentWithVC(nil, showingSuccessPopup: true)
@@ -445,15 +445,15 @@ class LotBookingViewController: PRKModalDelegatedViewController, ModalHeaderView
     
     //MARK: UIDatePickerViewControllerDelegate
     
-    func didSelectDate(date: NSDate, dateString: String) {
+    func didSelectDate(_ date: Date, dateString: String) {
         print("selected the formatted date: " + dateString)
         
         let timeViewLabelTopAttrs = [NSFontAttributeName: Styles.FontFaces.bold(12)]
         let timeViewLabelBottomAttrs = [NSFontAttributeName: Styles.FontFaces.regular(14)]
         
-        let timeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercaseString + "\n", attributes: timeViewLabelTopAttrs)
+        let timeViewLabelTopText = NSMutableAttributedString(string: "from".localizedString.uppercased() + "\n", attributes: timeViewLabelTopAttrs)
         let timeViewLabelBottomText = NSAttributedString(string: pickerVC.dateString, attributes: timeViewLabelBottomAttrs)
-        timeViewLabelTopText.appendAttributedString(timeViewLabelBottomText)
+        timeViewLabelTopText.append(timeViewLabelBottomText)
         
         timeViewLabel.attributedText = timeViewLabelTopText
 

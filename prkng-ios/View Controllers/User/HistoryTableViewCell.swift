@@ -40,7 +40,7 @@ class HistoryTableViewCell: UITableViewCell {
         dayLabel.backgroundColor = Styles.Colors.cream1
         dayLabel.font = Styles.Fonts.h1
         dayLabel.textColor = Styles.Colors.red2
-        dayLabel.textAlignment = .Center
+        dayLabel.textAlignment = .center
         contentView.addSubview(dayLabel)
     
         dateLabel.font = Styles.FontFaces.regular(12)
@@ -52,7 +52,7 @@ class HistoryTableViewCell: UITableViewCell {
         contentView.addSubview(addressLabel)
         
         seperator.backgroundColor = UIColor(white: 0, alpha: 0.05)
-        seperator.layer.shadowColor = UIColor(white: 1.0, alpha: 1).CGColor
+        seperator.layer.shadowColor = UIColor(white: 1.0, alpha: 1).cgColor
         seperator.layer.shadowOpacity = 0.05
         seperator.layer.shadowRadius = 1
         seperator.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -95,7 +95,7 @@ class HistoryTableViewCell: UITableViewCell {
     
     
     
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

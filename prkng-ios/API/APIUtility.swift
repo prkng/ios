@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import Alamofire
 
 class APIUtility: NSObject {
 
     static var isUsingTestServer: Bool {
-        return NSUserDefaults.standardUserDefaults().boolForKey("use_test_server")
+        return UserDefaults.standard.bool(forKey: "use_test_server")
     }
     
-    private struct APIConstants {
+    fileprivate struct APIConstants {
         static let rootURLString = isUsingTestServer ? "https://test.prk.ng/v1/" : "https://api.prk.ng/v1/"
         static let rootTestURLString = "https://test.prk.ng/v1/"
     }
@@ -26,16 +27,15 @@ class APIUtility: NSObject {
         return urlString
     }
     
-    class func authenticatedManager () -> Manager {
+    class func authenticatedManager() -> SessionManager {
         
-        var headers = Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders ?? [:]
+        var headers = SessionManager.defaultHTTPHeaders
         headers["X-API-KEY"] = AuthUtility.authToken()
         
-        let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        configuration.HTTPAdditionalHeaders = headers
+        let configuration = URLSessionConfiguration.default
+        configuration.httpAdditionalHeaders = headers
         
-        
-        return Manager(configuration: configuration)        
+        return Alamofire.SessionManager(configuration: configuration)
     }
     
     

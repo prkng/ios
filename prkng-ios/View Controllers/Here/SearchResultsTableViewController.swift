@@ -12,17 +12,17 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
 
     var delegate: SearchResultsTableViewControllerDelegate?
     
-    private var searchResultValues: [SearchResult] = []
-    private var tableView: UITableView
-    private var blurView = UIImageView()
+    fileprivate var searchResultValues: [SearchResult] = []
+    fileprivate var tableView: UITableView
+    fileprivate var blurView = UIImageView()
     
-    func updateSearchResultValues(searchResultValues: [SearchResult]) {
+    func updateSearchResultValues(_ searchResultValues: [SearchResult]) {
         self.searchResultValues = searchResultValues
         self.tableView.reloadData()
     }
     
     func customSeparator() -> UIView {
-        let screenWidth = UIScreen.mainScreen().bounds.width
+        let screenWidth = UIScreen.main.bounds.width
         let view = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 0.5))
         view.backgroundColor = Styles.Colors.transparentWhite
         return view
@@ -40,33 +40,33 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
 
     func updateBlur() {
         
-        let screenHeight = UIScreen.mainScreen().bounds.height
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let screenHeight = UIScreen.main.bounds.height
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         let root = delegate.window?.rootViewController
         let bounds = CGRect(x: 0, y: -SearchFilterView.TOTAL_HEIGHT, width: root!.view.bounds.width, height: screenHeight)
         
         UIGraphicsBeginImageContextWithOptions(CGSize(width: root!.view.bounds.width, height: screenHeight - SearchFilterView.TOTAL_HEIGHT),
             true, Settings.screenScale)
-        root!.view.drawViewHierarchyInRect(bounds,
+        root!.view.drawHierarchy(in: bounds,
             afterScreenUpdates: true)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        let blur = screenshot.applyBlurWithRadius(10, tintColor: Styles.Colors.beige1.colorWithAlphaComponent(0.3), saturationDeltaFactor: 1.8, maskImage: nil)
+        let blur = screenshot?.applyBlur(withRadius: 10, tintColor: Styles.Colors.beige1.withAlphaComponent(0.3), saturationDeltaFactor: 1.8, maskImage: nil)
         
         let screenview = UIImageView(image: screenshot)
-        screenview.contentMode = UIViewContentMode.Center
+        screenview.contentMode = UIViewContentMode.center
         
         blurView.frame = self.view.bounds
         blurView.image = blur
-        blurView.contentMode = .Top
+        blurView.contentMode = .top
         
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView = UITableView(frame: self.view.frame, style: UITableViewStyle.Plain)
+        self.tableView = UITableView(frame: self.view.frame, style: UITableViewStyle.plain)
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.tableView.delegate = self
         self.tableView.dataSource = self
@@ -86,19 +86,19 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
 //        }
         
         updateBlur()
-        self.view.insertSubview(blurView, atIndex: 0)
+        self.view.insertSubview(blurView, at: 0)
         
-        self.tableView.backgroundColor = UIColor.clearColor()
-        self.tableView.separatorStyle = .None
+        self.tableView.backgroundColor = UIColor.clear
+        self.tableView.separatorStyle = .none
         
-        let screenWidth = UIScreen.mainScreen().bounds.width
+        let screenWidth = UIScreen.main.bounds.width
         let footer = UIView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 40))
         footer.addSubview(customSeparator())
         let label = UILabel(frame: CGRect(x: 0, y: 0.5, width: screenWidth, height: 39.5))
         label.text = "provided_by_foursquare".localizedString
         label.textColor = Styles.Colors.anthracite1
         label.font = Styles.FontFaces.regular(14)
-        label.textAlignment = .Center
+        label.textAlignment = .center
         footer.addSubview(label)
         self.tableView.tableFooterView = footer
         // Uncomment the following line to preserve selection between presentations
@@ -115,30 +115,30 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
 
     // MARK: - Table view data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
         // Return the number of sections.
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         return searchResultValues.count
     }
 
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60.0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        var cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as? UITableViewCell
 //
 //        if cell == nil {
-           let cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "reuseIdentifier")
+           let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "reuseIdentifier")
 //        }
         // Configure the cell...
-        cell.backgroundColor = UIColor.clearColor()//Styles.Colors.midnight2
+        cell.backgroundColor = UIColor.clear//Styles.Colors.midnight2
         cell.indentationWidth = 48
         cell.indentationLevel = 1
         cell.textLabel?.text = searchResultValues[indexPath.row].title
@@ -151,7 +151,7 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         AnalyticsOperations.sendSearchQueryToAnalytics(searchResultValues[indexPath.row].title!, navigate: false)
         delegate?.didSelectSearchResult(searchResultValues[indexPath.row])
     }
@@ -159,5 +159,5 @@ class SearchResultsTableViewController: UIViewController, UITableViewDelegate, U
 }
 
 protocol SearchResultsTableViewControllerDelegate {
-    func didSelectSearchResult(result: SearchResult)
+    func didSelectSearchResult(_ result: SearchResult)
 }

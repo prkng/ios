@@ -12,8 +12,8 @@ class SpotDetailView: UIView {
 
     var topContainer: UIView
     var topContainerButton: UIButton
-    private var headerTitleLabel: MarqueeLabel
-    private var titleLabel: MarqueeLabel
+    fileprivate var headerTitleLabel: MarqueeLabel
+    fileprivate var titleLabel: MarqueeLabel
     var topContainerRightView: UIView
     var checkinImageView: UIImageView
     var checkinImageLabel: UILabel
@@ -60,11 +60,11 @@ class SpotDetailView: UIView {
     
     var delegate : SpotDetailViewDelegate?
     
-    let VERTICAL_LABEL_SPACING = UIScreen.mainScreen().bounds.width == 320 ? 18 : 14
-    private(set) var TITLE_LABEL_BOTTOM_OFFSET = UIScreen.mainScreen().bounds.width == 320 ? -15 : -13
+    let VERTICAL_LABEL_SPACING = UIScreen.main.bounds.width == 320 ? 18 : 14
+    fileprivate(set) var TITLE_LABEL_BOTTOM_OFFSET = UIScreen.main.bounds.width == 320 ? -15 : -13
 
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: CGRect.zero)
     }
 
     override init(frame: CGRect) {
@@ -114,37 +114,37 @@ class SpotDetailView: UIView {
 
     func setupSubviews() {
         
-        topContainer.userInteractionEnabled = false
+        topContainer.isUserInteractionEnabled = false
         addSubview(topContainer)
 
-        topContainerButton.addTarget(self, action: "topContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        topContainerButton.addTarget(self, action: #selector(SpotDetailView.topContainerTapped(_:)), for: UIControlEvents.touchUpInside)
         self.addSubview(topContainerButton)
 
         headerTitleLabel.animationDelay = 2
         headerTitleLabel.font = Styles.FontFaces.light(11)
         headerTitleLabel.textColor = Styles.Colors.cream2
-        headerTitleLabel.textAlignment = NSTextAlignment.Left
+        headerTitleLabel.textAlignment = NSTextAlignment.left
         topContainer.addSubview(headerTitleLabel)
         
         titleLabel.animationDelay = 2
         titleLabel.font = Styles.Fonts.h2Variable
         titleLabel.textColor = Styles.Colors.cream2
-        titleLabel.textAlignment = NSTextAlignment.Left
+        titleLabel.textAlignment = NSTextAlignment.left
         topContainer.addSubview(titleLabel)
         
         topContainer.addSubview(topContainerRightView)
 
-        checkinImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        checkinImageView.contentMode = UIViewContentMode.scaleAspectFit
         topContainerRightView.addSubview(checkinImageView)
-        checkinImageView.layer.anchorPoint = CGPointMake(0.5,1.0);
+        checkinImageView.layer.anchorPoint = CGPoint(x: 0.5,y: 1.0);
         checkinImageView.layer.wigglewigglewiggle()
         
         checkinImageLabel.font = Styles.FontFaces.bold(10)
         checkinImageLabel.textColor = Styles.Colors.cream1
-        checkinImageLabel.textAlignment = NSTextAlignment.Center
+        checkinImageLabel.textAlignment = NSTextAlignment.center
         topContainerRightView.addSubview(checkinImageLabel)
         
-        bottomContainer.userInteractionEnabled = false
+        bottomContainer.isUserInteractionEnabled = false
         addSubview(bottomContainer)
 
         bottomLeftContainer.backgroundColor = Styles.Colors.cream1
@@ -152,43 +152,43 @@ class SpotDetailView: UIView {
         bottomContainer.addSubview(bottomLeftContainer)
         bottomContainer.addSubview(bottomRightContainer)
         
-        bottomContainerButton.addTarget(self, action: "bottomContainerTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        bottomContainerButton.addTarget(self, action: #selector(SpotDetailView.bottomContainerTapped(_:)), for: UIControlEvents.touchUpInside)
         self.addSubview(bottomContainerButton)
         
         leftTopLabel.font = Styles.FontFaces.light(11)
         leftTopLabel.textColor = Styles.Colors.petrol2
-        leftTopLabel.textAlignment = NSTextAlignment.Left
+        leftTopLabel.textAlignment = NSTextAlignment.left
         leftTopLabel.numberOfLines = 1
         bottomLeftContainer.addSubview(leftTopLabel)
         
         leftBottomLabel.font = Styles.Fonts.h2rVariable
         leftBottomLabel.adjustsFontSizeToFitWidth = true
         leftBottomLabel.textColor = Styles.Colors.red2
-        leftBottomLabel.textAlignment = NSTextAlignment.Left
+        leftBottomLabel.textAlignment = NSTextAlignment.left
         leftBottomLabel.text = "$"
         bottomLeftContainer.addSubview(leftBottomLabel)
 
         rightTopLabel.font = Styles.FontFaces.light(11)
         rightTopLabel.textColor = Styles.Colors.petrol2
-        rightTopLabel.textAlignment = NSTextAlignment.Left
+        rightTopLabel.textAlignment = NSTextAlignment.left
         rightTopLabel.numberOfLines = 1
         bottomRightContainer.addSubview(rightTopLabel)
 
         rightBottomLabel.font = Styles.Fonts.h2rVariable
         rightBottomLabel.adjustsFontSizeToFitWidth = true
         rightBottomLabel.textColor = Styles.Colors.petrol2
-        rightBottomLabel.textAlignment = NSTextAlignment.Left
+        rightBottomLabel.textAlignment = NSTextAlignment.left
         rightBottomLabel.text = "00:00"
         bottomRightContainer.addSubview(rightBottomLabel)
         
-        scheduleImageView.contentMode = UIViewContentMode.Center
+        scheduleImageView.contentMode = UIViewContentMode.center
         bottomRightContainer.addSubview(scheduleImageView)
 
-        bottomLeftImageView.contentMode = UIViewContentMode.Center
+        bottomLeftImageView.contentMode = UIViewContentMode.center
         bottomLeftContainer.addSubview(bottomLeftImageView)
 
-        self.sendSubviewToBack(topContainerButton)
-        self.sendSubviewToBack(bottomContainerButton)
+        self.sendSubview(toBack: topContainerButton)
+        self.sendSubview(toBack: bottomContainerButton)
         
         didSetupSubviews = true
     }
@@ -296,20 +296,20 @@ class SpotDetailView: UIView {
     }
     
     
-    func topContainerTapped (sender : AnyObject?) {
+    func topContainerTapped (_ sender : AnyObject?) {
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Spot Details", action: "Check In Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Spot Details", action: "Check In Button Tapped", label: nil, value: nil).build() as! [AnyHashable: Any])
 
         if(delegate != nil) {
             delegate!.topContainerTapped()
         }
     }
 
-    func bottomContainerTapped (sender : AnyObject?) {
+    func bottomContainerTapped (_ sender : AnyObject?) {
 
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Spot Details", action: "Agenda/Schedule Button Tapped", label: nil, value: nil).build() as [NSObject : AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Spot Details", action: "Agenda/Schedule Button Tapped", label: nil, value: nil).build() as! [AnyHashable: Any])
 
         if(delegate != nil) {
             delegate!.bottomContainerTapped()

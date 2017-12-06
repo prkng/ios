@@ -8,31 +8,31 @@
 
 import UIKit
 
-public class MKTableViewCell : UITableViewCell {
-    @IBInspectable public var rippleLocation: MKRippleLocation = .TapLocation {
+open class MKTableViewCell : UITableViewCell {
+    @IBInspectable open var rippleLocation: MKRippleLocation = .tapLocation {
         didSet {
             mkLayer.rippleLocation = rippleLocation
         }
     }
-    @IBInspectable public var rippleAniDuration: Float = 0.75
-    @IBInspectable public var backgroundAniDuration: Float = 1.0
-    @IBInspectable public var rippleAniTimingFunction: MKTimingFunction = .Linear
-    @IBInspectable public var shadowAniEnabled: Bool = true
+    @IBInspectable open var rippleAniDuration: Float = 0.75
+    @IBInspectable open var backgroundAniDuration: Float = 1.0
+    @IBInspectable open var rippleAniTimingFunction: MKTimingFunction = .linear
+    @IBInspectable open var shadowAniEnabled: Bool = true
 
     // color
-    @IBInspectable public var rippleLayerColor: UIColor = UIColor(white: 0.45, alpha: 0.5) {
+    @IBInspectable open var rippleLayerColor: UIColor = UIColor(white: 0.45, alpha: 0.5) {
         didSet {
             mkLayer.setCircleLayerColor(rippleLayerColor)
         }
     }
-    @IBInspectable public var backgroundLayerColor: UIColor = UIColor(white: 0.75, alpha: 0.25) {
+    @IBInspectable open var backgroundLayerColor: UIColor = UIColor(white: 0.75, alpha: 0.25) {
         didSet {
             mkLayer.setBackgroundLayerColor(backgroundLayerColor)
         }
     }
 
-    private lazy var mkLayer: MKLayer = MKLayer(superLayer: self.contentView.layer)
-    private var contentViewResized = false
+    fileprivate lazy var mkLayer: MKLayer = MKLayer(superLayer: self.contentView.layer)
+    fileprivate var contentViewResized = false
 
     override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -43,29 +43,29 @@ public class MKTableViewCell : UITableViewCell {
         setupLayer()
     }
 
-    private func setupLayer() {
-        selectionStyle = .None
+    fileprivate func setupLayer() {
+        selectionStyle = .none
         mkLayer.setBackgroundLayerColor(backgroundLayerColor)
         mkLayer.setCircleLayerColor(rippleLayerColor)
         mkLayer.ripplePercent = 1.2
     }
 
-    public override func prepareForReuse() {
+    open override func prepareForReuse() {
         super.prepareForReuse()
         self.mkLayer.removeAllAnimations()
     }
     
-    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
         if let firstTouch = touches.first {
             if !contentViewResized {
                 mkLayer.superLayerDidResize()
                 contentViewResized = true
             }
-            mkLayer.didChangeTapLocation(firstTouch.locationInView(contentView))
+            mkLayer.didChangeTapLocation(firstTouch.location(in: contentView))
 
             mkLayer.animateScaleForCircleLayer(0.65, toScale: 1.0, timingFunction: rippleAniTimingFunction, duration: CFTimeInterval(rippleAniDuration))
-            mkLayer.animateAlphaForBackgroundLayer(MKTimingFunction.Linear, duration: CFTimeInterval(backgroundAniDuration))
+            mkLayer.animateAlphaForBackgroundLayer(MKTimingFunction.linear, duration: CFTimeInterval(backgroundAniDuration))
         }
     }
 }

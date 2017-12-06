@@ -26,17 +26,17 @@ class CityPickerViewController: AbstractViewController {
         super.init(nibName: nil, bundle: nil)
 
         var cities = CityOperations.sharedInstance.availableCities
-        cities.sortInPlace { (left, right) -> Bool in
+        cities.sort { (left, right) -> Bool in
             left.displayName < right.displayName
         }
         for city in cities {
             let cityButton = ViewFactory.roundedButtonWithHeight(36,
-                backgroundColor: Styles.Colors.white.colorWithAlphaComponent(0.95),
+                backgroundColor: Styles.Colors.white.withAlphaComponent(0.95),
                 font: Styles.FontFaces.regular(14),
                 text: city.displayName,
                 textColor: Styles.Colors.red2,
                 highlightedTextColor: Styles.Colors.red1)
-            cityButton.addTarget(self, action: "didTapCityButton:", forControlEvents: .TouchUpInside)
+            cityButton.addTarget(self, action: "didTapCityButton:", for: .touchUpInside)
             cityButtons.append(cityButton)
         }
         
@@ -59,7 +59,7 @@ class CityPickerViewController: AbstractViewController {
     
     func setupSubviews() {
         
-        self.view.backgroundColor = Styles.Colors.lightGrey.colorWithAlphaComponent(0.9)
+        self.view.backgroundColor = Styles.Colors.lightGrey.withAlphaComponent(0.9)
         
         self.view.addSubview(containerView)
         
@@ -69,13 +69,13 @@ class CityPickerViewController: AbstractViewController {
         
         titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.petrol2
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         titleLabel.text = "city_picker_title".localizedString
         scrollView.addSubview(titleLabel)
         
         subtitleLabel.font = Styles.FontFaces.regular(15)
         subtitleLabel.textColor = Styles.Colors.petrol2
-        subtitleLabel.textAlignment = .Center
+        subtitleLabel.textAlignment = .center
         subtitleLabel.text = "city_picker_subtitle".localizedString
         scrollView.addSubview(subtitleLabel)
         
@@ -96,7 +96,7 @@ class CityPickerViewController: AbstractViewController {
             make.edges.equalTo(self.containerView)
         }
         
-        let topIconTopMargin = UIScreen.mainScreen().bounds.height * 0.18
+        let topIconTopMargin = UIScreen.main.bounds.height * 0.18
         topIcon.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(topIconTopMargin)
             make.height.equalTo(36)
@@ -134,7 +134,7 @@ class CityPickerViewController: AbstractViewController {
         didSetupConstraints = true
     }
     
-    func showOnViewController(viewController: UIViewController) {
+    func showOnViewController(_ viewController: UIViewController) {
         
         let existingCityPickerVCs = viewController.childViewControllers.filter { (vc) -> Bool in
             return vc is CityPickerViewController
@@ -146,7 +146,7 @@ class CityPickerViewController: AbstractViewController {
         
         viewController.addChildViewController(self)
         viewController.view.addSubview(self.view)
-        self.didMoveToParentViewController(viewController)
+        self.didMove(toParentViewController: viewController)
         
         self.view.snp_makeConstraints(closure: { (make) -> () in
             make.edges.equalTo(viewController.view)
@@ -154,23 +154,23 @@ class CityPickerViewController: AbstractViewController {
         
         self.view.alpha = 0.0
         
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.view.alpha = 1.0
         })
         
     }
 
     func dismissMeOKIJustCantTakeItAndIWannaStayRightWhereIAm() {
-        UIView.animateWithDuration(0.2, animations: { () -> Void in
+        UIView.animate(withDuration: 0.2, animations: { () -> Void in
             self.view.alpha = 0.0
             }, completion: { (finished) -> Void in
                 self.removeFromParentViewController()
                 self.view.removeFromSuperview()
-                self.didMoveToParentViewController(nil)
+                self.didMove(toParentViewController: nil)
         })
     }
 
-    func didTapCityButton(sender: UIButton) {
+    func didTapCityButton(_ sender: UIButton) {
         parent.mapViewController.dontTrackUser()
         let cities = CityOperations.sharedInstance.availableCities
         let city = cities.filter { (city) -> Bool in

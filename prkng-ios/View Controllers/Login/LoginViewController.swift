@@ -44,7 +44,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         self.screenName = "Login - First Screen"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
@@ -55,11 +55,11 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         view.backgroundColor = Styles.Colors.petrol1
         
         backgroundImageView.image = UIImage(named: "bg_login")
-        backgroundImageView.contentMode = UIViewContentMode.ScaleAspectFill
+        backgroundImageView.contentMode = UIViewContentMode.scaleAspectFill
         view.addSubview(backgroundImageView)
         
         logoView.image = UIImage(named: "logo_opening")
-        logoView.contentMode = UIViewContentMode.Bottom
+        logoView.contentMode = UIViewContentMode.bottom
         view.addSubview(logoView)
         
         methodSelectionView.delegate = self
@@ -89,32 +89,32 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     // MARK: LoginMethodSelectionViewDelegate
     
     func loginFacebookSelected() {
-        if (selectedMethod == LoginMethod.Facebook) {
+        if (selectedMethod == LoginMethod.facebook) {
             return
         }
         
-        self.methodSelectionView.userInteractionEnabled = false
+        self.methodSelectionView.isUserInteractionEnabled = false
         
         let login = FBSDKLoginManager()
         login.logOut()
         
         let permissions = ["email", "public_profile"]
-        login.logInWithReadPermissions(permissions) { (result, error) -> Void in
+        login.logIn(withReadPermissions: permissions) { (result, error) -> Void in
             
-            if (error != nil || result.isCancelled) {
+            if (error != nil || (result?.isCancelled)!) {
                 // Handle errors and cancellations
                 
                 self.deselectMethod()
                 
                 let alertView = UIAlertView(title: "login_error_title_facebook".localizedString , message: "login_error_message".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
-                alertView.alertViewStyle = .Default
+                alertView.alertViewStyle = .default
                 alertView.show()
                 
             } else {
                 
-                self.methodSelectionView.userInteractionEnabled = false
+                self.methodSelectionView.isUserInteractionEnabled = false
                 
-                UserOperations.loginWithFacebook(FBSDKAccessToken.currentAccessToken().tokenString, completion: { (user, apiKey) -> Void in
+                UserOperations.loginWithFacebook(FBSDKAccessToken.current().tokenString, completion: { (user, apiKey) -> Void in
                     AuthUtility.saveUser(user)
                     AuthUtility.saveAuthToken(apiKey)
 //                    self.displayExternalInfo(user, loginType: .Facebook)
@@ -124,13 +124,13 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             
         }
         
-        selectedMethod = LoginMethod.Facebook
+        selectedMethod = LoginMethod.facebook
         
     }
     
     func loginGoogleSelected() {
         
-        if (selectedMethod == LoginMethod.Google) {
+        if (selectedMethod == LoginMethod.google) {
             return
         }
         
@@ -144,19 +144,19 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         GIDSignIn.sharedInstance().signIn()
         
         
-        selectedMethod = LoginMethod.Google
+        selectedMethod = LoginMethod.google
         
     }
     
     func loginEmailSelected() {
         
-        if (selectedMethod == LoginMethod.Email) {
+        if (selectedMethod == LoginMethod.email) {
             return
         }
         
         signUp()
         
-        selectedMethod = LoginMethod.Email
+        selectedMethod = LoginMethod.email
     }
     
     //used to show a view controller, now we just log in right away
@@ -194,14 +194,14 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
 //    }
     
     // MARK: GIDSignInDelegate
-    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!, withError error: NSError!) {
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: NSError!) {
         
         if error != nil {
             //error!
             deselectMethod()
             
             let alertView = UIAlertView(title: "login_error_title_google".localizedString , message: "login_error_message".localizedString, delegate: nil, cancelButtonTitle: nil, otherButtonTitles: "OK")
-            alertView.alertViewStyle = .Default
+            alertView.alertViewStyle = .default
             alertView.show()
             
         } else {
@@ -211,9 +211,9 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
             let idToken = user.authentication.idToken // Safe to send to the server
             let name = user.profile.name
             let email = user.profile.email
-            let profileImageUrl = user.profile.imageURLWithDimension(600).absoluteString
+            let profileImageUrl = user.profile.imageURL(withDimension: 600).absoluteString
 
-            self.methodSelectionView.userInteractionEnabled = false
+            self.methodSelectionView.isUserInteractionEnabled = false
             
             UserOperations.loginWithGoogle(idToken, name: name, email: email, profileImageUrl: profileImageUrl, completion: { (user, apiKey) -> Void in
                 AuthUtility.saveUser(user)
@@ -224,7 +224,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         }
     }
     
-    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user: GIDGoogleUser!, withError error: NSError!) {
+    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!, withError error: NSError!) {
     }
     
     // MARK: GIDSignInUIDelegate
@@ -254,7 +254,7 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     }
     
     // MARK: LoginExternalViewControllerDelegate
-    func didLoginExternal(loginType : LoginType) {
+    func didLoginExternal(_ loginType : LoginType) {
         AuthUtility.saveLoginType(loginType)
         askForPermissions()
     }
@@ -268,15 +268,15 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
     func askForPermissions() {
         //shows the permissions view controller
         let permissionsVC = LoginPermissionsViewController(work: { () -> Void in
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.loggedInOperations()
             }) { () -> Void in
                 self.dismiss()
         }
 
-        let hasLocationPermission = CLLocationManager.authorizationStatus() != .NotDetermined
+        let hasLocationPermission = CLLocationManager.authorizationStatus() != .notDetermined
         if !hasLocationPermission {
-            self.presentViewController(permissionsVC, animated: true, completion: nil)
+            self.present(permissionsVC, animated: true, completion: nil)
         } else {
             self.dismiss()
         }
@@ -332,18 +332,18 @@ class LoginViewController: AbstractViewController, LoginMethodSelectionViewDeleg
         
         self.dismissViewControllerWithFade { () -> Void in
             
-            let window: UIWindow = (UIApplication.sharedApplication().delegate as! AppDelegate).window!
+            let window: UIWindow = (UIApplication.shared.delegate as! AppDelegate).window!
             let tabController = TabController()
             
             window.rootViewController = tabController
-            window.makeKeyWindow()
+            window.makeKey()
             
         }
     }
     
     func deselectMethod() {
         selectedMethod = nil
-        self.methodSelectionView.userInteractionEnabled = true
+        self.methodSelectionView.isUserInteractionEnabled = true
         self.methodSelectionView.deselectAll()
 
     }

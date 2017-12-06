@@ -29,37 +29,37 @@ class AboutViewController: AbstractViewController {
         
     func setupViews() {
         
-        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.contentMode = .scaleAspectFill
         view.addSubview(backgroundImageView)
         
         view.addSubview(iconView)
         
         titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.cream1
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         titleLabel.text = "about".localizedString
         view.addSubview(titleLabel)
         
-        faqButton.setTitle("faq".localizedString, forState: .Normal)
-        faqButton.addTarget(self, action: "faqButtonTapped:", forControlEvents: .TouchUpInside)
+        faqButton.setTitle("faq".localizedString, for: UIControlState())
+        faqButton.addTarget(self, action: #selector(AboutViewController.faqButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(faqButton)
 
-        termsButton.setTitle("terms_conditions".localizedString, forState: .Normal)
-        termsButton.addTarget(self, action: "termsButtonTapped:", forControlEvents: .TouchUpInside)
+        termsButton.setTitle("terms_conditions".localizedString, for: UIControlState())
+        termsButton.addTarget(self, action: #selector(AboutViewController.termsButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(termsButton)
 
-        shareButton.setTitle("share".localizedString, forState: .Normal)
-        shareButton.addTarget(self, action: "shareButtonTapped:", forControlEvents: .TouchUpInside)
+        shareButton.setTitle("share".localizedString, for: UIControlState())
+        shareButton.addTarget(self, action: #selector(AboutViewController.shareButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(shareButton)
 
-        backButton.addTarget(self, action: "backButtonTapped:", forControlEvents: .TouchUpInside)
+        backButton.addTarget(self, action: #selector(AboutViewController.backButtonTapped(_:)), for: .touchUpInside)
         view.addSubview(backButton)
     }
     
     
     func setupConstraints() {
         
-        let viewHeight = UIScreen.mainScreen().bounds.size.height - CGFloat(Styles.Sizes.tabbarHeight)
+        let viewHeight = UIScreen.main.bounds.size.height - CGFloat(Styles.Sizes.tabbarHeight)
         
         backgroundImageView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.view)
@@ -68,7 +68,7 @@ class AboutViewController: AbstractViewController {
         iconView.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.view).offset(viewHeight * 0.14)
             make.centerX.equalTo(self.view)
-            make.size.equalTo(CGSizeMake(68, 68))
+            make.size.equalTo(CGSize(width: 68, height: 68))
         }
         
         titleLabel.snp_makeConstraints { (make) -> () in
@@ -109,34 +109,34 @@ class AboutViewController: AbstractViewController {
     
     
     //MARK: Button Handlers
-    func faqButtonTapped(sender: UIButton) {
+    func faqButtonTapped(_ sender: UIButton) {
         let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/faq/", frenchUrl: "https://prk.ng/fr/faq/")
         self.navigationController?.pushViewController(webViewController, animated: true)
         
     }
     
-    func termsButtonTapped(sender: UIButton) {
+    func termsButtonTapped(_ sender: UIButton) {
         let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/terms/", frenchUrl: "https://prk.ng/fr/conditions/")
         self.navigationController?.pushViewController(webViewController, animated: true)
         
     }
     
-    func privacyButtonTapped(sender: UIButton) {
+    func privacyButtonTapped(_ sender: UIButton) {
         let webViewController = PRKWebViewController(englishUrl: "https://prk.ng/privacypolicy", frenchUrl: "https://prk.ng/fr/politique")
         self.navigationController?.pushViewController(webViewController, animated: true)
     }
     
-    func shareButtonTapped(sender: UIButton) {
+    func shareButtonTapped(_ sender: UIButton) {
         
         let text = "prkng_share_copy".localizedString
-        let url = NSURL(string:"https://prk.ng/")!
+        let url = URL(string:"https://prk.ng/")!
         
         let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
-        self.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
+        self.navigationController?.present(activityViewController, animated: true, completion: nil)
     }
     
-    func backButtonTapped(sender: UIButton) {
-        self.navigationController?.popViewControllerAnimated(true)
+    func backButtonTapped(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

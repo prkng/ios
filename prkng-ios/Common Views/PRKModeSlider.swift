@@ -16,30 +16,30 @@ class PRKModeSlider: UIControl {
     let thumbBackgroundColor = Styles.Colors.red2
     let font = Styles.FontFaces.regular(14)
     
-    private(set) var titles = [String]()
+    fileprivate(set) var titles = [String]()
     
-    private var backgroundView = UIView()
-    private var labels = [UILabel]()
-    private var thumbView = PRKModeSliderThumbView()
+    fileprivate var backgroundView = UIView()
+    fileprivate var labels = [UILabel]()
+    fileprivate var thumbView = PRKModeSliderThumbView()
 
     var selectedIndex: Int {
         return Int(self.value)
     }
 
     var thumbWidth: CGFloat {
-        return UIScreen.mainScreen().bounds.width/CGFloat(self.titles.count)
+        return UIScreen.main.bounds.width/CGFloat(self.titles.count)
     }
     
-    private var minimumValue: Double
-    private var maximumValue: Double
-    private var value: Double {
+    fileprivate var minimumValue: Double
+    fileprivate var maximumValue: Double
+    fileprivate var value: Double {
         didSet {
             //do this to update the frame after an animation, also good for
             updateThumb()
         }
     }
-    private var previousLocation = CGPoint()
-    private var animationInProgress: Bool = false
+    fileprivate var previousLocation = CGPoint()
+    fileprivate var animationInProgress: Bool = false
     
     init(titles: [String]) {
         
@@ -47,17 +47,17 @@ class PRKModeSlider: UIControl {
         minimumValue = 0
         maximumValue = Double(titles.count - 1)
         
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
         
         value = floor(maximumValue/2)
         
         if #available(iOS 8.0, *) {
-            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.Light)
+            let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
             backgroundView = UIVisualEffectView(effect: blurEffect)
         } else {
             backgroundView.backgroundColor = Styles.Colors.cream1
         }
-        backgroundView.userInteractionEnabled = false
+        backgroundView.isUserInteractionEnabled = false
         self.addSubview(backgroundView)
 
         self.titles = titles
@@ -70,18 +70,18 @@ class PRKModeSlider: UIControl {
             
             let label = UILabel(frame: labelRect)
             label.attributedText = attributedTitle
-            label.textAlignment = NSTextAlignment.Center
+            label.textAlignment = NSTextAlignment.center
             
-            label.userInteractionEnabled = false
+            label.isUserInteractionEnabled = false
             self.addSubview(label)
             labels.append(label)
         }
 
         thumbView.prkModeSlider = self
-        thumbView.userInteractionEnabled = false
+        thumbView.isUserInteractionEnabled = false
         self.addSubview(thumbView)
         
-        let tapRec = UITapGestureRecognizer(target: self, action: "sliderSelectionTapped:")
+        let tapRec = UITapGestureRecognizer(target: self, action: #selector(PRKModeSlider.sliderSelectionTapped(_:)))
         self.addGestureRecognizer(tapRec)
         
         setValue(value, animated: true)
@@ -114,7 +114,7 @@ class PRKModeSlider: UIControl {
     
     //MARK: Helper functions
     
-    func setValue(newValue: Double, animated: Bool) {
+    func setValue(_ newValue: Double, animated: Bool) {
 
         if self.animationInProgress {
             return
@@ -122,7 +122,7 @@ class PRKModeSlider: UIControl {
         
         self.animationInProgress = true
         let animationDuration = animated ? 0.4 : 0
-        UIView.animateWithDuration(animationDuration, delay: 0.0, usingSpringWithDamping: 7, initialSpringVelocity: 15, options: [], animations: { () -> Void in
+        UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: 7, initialSpringVelocity: 15, options: [], animations: { () -> Void in
             let thumbLeft = CGFloat(newValue) * self.thumbWidth
             self.thumbView.frame = CGRect(x: thumbLeft, y: 0, width: self.thumbWidth, height: self.bounds.height)
             self.thumbView.setNeedsLayout()
@@ -131,7 +131,7 @@ class PRKModeSlider: UIControl {
                 let valueChanged = self.selectedIndex != Int(newValue)
                 self.value = newValue
                 if valueChanged {
-                    self.sendActionsForControlEvents(UIControlEvents.ValueChanged)
+                    self.sendActions(for: UIControlEvents.valueChanged)
                 }
                 self.animationInProgress = false
         }
@@ -145,8 +145,8 @@ class PRKModeSlider: UIControl {
     }
     
     //MARK: UIControl functions
-    override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        previousLocation = touch.locationInView(self)
+    override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        previousLocation = touch.location(in: self)
         
         if thumbView.frame.contains(previousLocation) {
             thumbView.touching = true
@@ -155,8 +155,8 @@ class PRKModeSlider: UIControl {
         return thumbView.touching
     }
     
-    override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
-        let location = touch.locationInView(self)
+    override func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+        let location = touch.location(in: self)
         
         // Track how much user has dragged
         let deltaLocation = Double(location.x - previousLocation.x)
@@ -173,19 +173,19 @@ class PRKModeSlider: UIControl {
         return thumbView.touching
     }
     
-    override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
+    override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
         thumbView.touching = false
         self.setValue(round(self.value), animated: true)
     }
     
-    func clipValue(value: Double) -> Double {
+    func clipValue(_ value: Double) -> Double {
         return min(max(value, minimumValue ), maximumValue)
     }
     
     //MARK: UIGestureRecognizer function
-    func sliderSelectionTapped(tapRec: UITapGestureRecognizer) {
-        if tapRec.state == UIGestureRecognizerState.Ended {
-            let tap = tapRec.locationInView(self)
+    func sliderSelectionTapped(_ tapRec: UITapGestureRecognizer) {
+        if tapRec.state == UIGestureRecognizerState.ended {
+            let tap = tapRec.location(in: self)
             let newValue = (tap.x / self.bounds.width) * CGFloat(self.titles.count)
             setValue(Double(Int(newValue)), animated: true)
         }
@@ -195,7 +195,7 @@ class PRKModeSlider: UIControl {
 
 class PRKModeSliderThumbView: UIView {
     
-    private weak var prkModeSlider : PRKModeSlider? {
+    fileprivate weak var prkModeSlider : PRKModeSlider? {
         didSet {
             
             if let slider = prkModeSlider {
@@ -210,7 +210,7 @@ class PRKModeSliderThumbView: UIView {
                     
                     let label = UILabel(frame: labelRect)
                     label.attributedText = attributedTitle
-                    label.textAlignment = NSTextAlignment.Center
+                    label.textAlignment = NSTextAlignment.center
                     self.addSubview(label)
                 }
             }

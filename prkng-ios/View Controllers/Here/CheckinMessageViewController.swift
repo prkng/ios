@@ -20,7 +20,7 @@ class CheckinMessageViewController: GAITrackedViewController {
     var textLabel : UILabel
     
     let X_TRANSFORM = CGFloat(100)
-    let Y_TRANSFORM = UIScreen.mainScreen().bounds.size.height
+    let Y_TRANSFORM = UIScreen.main.bounds.size.height
     
     let cornerRadius: CGFloat = 9
 
@@ -60,7 +60,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if #available(iOS 8.0, *) {
             animate()
@@ -76,7 +76,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         view.addSubview(containerView)
         
         imageView.image =  UIImage(named:"first_checkin_header")
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
         containerView.addSubview(imageView)
         
         iconView.image = UIImage(named: "icon_howto_checkin")
@@ -88,18 +88,18 @@ class CheckinMessageViewController: GAITrackedViewController {
         
         titleLabel.font = Styles.Fonts.h1
         titleLabel.textColor = Styles.Colors.petrol2
-        titleLabel.textAlignment = NSTextAlignment.Center
+        titleLabel.textAlignment = NSTextAlignment.center
         titleLabel.text = "first_checkin_title".localizedString
         containerView.addSubview(titleLabel)
         
         subtitleLabel.font = Styles.FontFaces.regular(17)
         subtitleLabel.textColor = Styles.Colors.red2
-        subtitleLabel.textAlignment = NSTextAlignment.Center
+        subtitleLabel.textAlignment = NSTextAlignment.center
         subtitleLabel.text = "first_checkin_subtitle".localizedString
         containerView.addSubview(subtitleLabel)
         
         textContainer.backgroundColor = Styles.Colors.cream2
-        textContainer.layer.borderColor = Styles.Colors.beige1.CGColor
+        textContainer.layer.borderColor = Styles.Colors.beige1.cgColor
         textContainer.layer.borderWidth = 0.5
         textContainer.layer.cornerRadius = cornerRadius
         containerView.addSubview(textContainer)
@@ -107,7 +107,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         textLabel.font = Styles.FontFaces.light(17)
         textLabel.textColor = Styles.Colors.petrol2
         textLabel.numberOfLines = 0
-        textLabel.textAlignment = NSTextAlignment.Center
+        textLabel.textAlignment = NSTextAlignment.center
         textLabel.text = "first_checkin_text".localizedString
         containerView.addSubview(textLabel)
         
@@ -124,7 +124,7 @@ class CheckinMessageViewController: GAITrackedViewController {
         iconView.snp_makeConstraints { (make) -> () in
             make.centerX.equalTo(self.containerView)
             make.centerY.equalTo(self.containerView.snp_top)
-            make.size.equalTo(CGSizeMake(36, 36))
+            make.size.equalTo(CGSize(width: 36, height: 36))
         }
         
         titleContainer.snp_makeConstraints { (make) -> () in
@@ -173,25 +173,25 @@ class CheckinMessageViewController: GAITrackedViewController {
     func animate() {
     
         let translateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerTranslationXY)
-        translateAnimation.fromValue = NSValue(CGPoint: CGPoint(x: X_TRANSFORM, y: Y_TRANSFORM))
-        translateAnimation.toValue = NSValue(CGPoint: CGPoint(x: 0, y: 0))
-        translateAnimation.springBounciness = 10
-        translateAnimation.springSpeed = 12
+        translateAnimation?.fromValue = NSValue(cgPoint: CGPoint(x: X_TRANSFORM, y: Y_TRANSFORM))
+        translateAnimation?.toValue = NSValue(cgPoint: CGPoint(x: 0, y: 0))
+        translateAnimation?.springBounciness = 10
+        translateAnimation?.springSpeed = 12
         
         let rotateAnimation = POPSpringAnimation(propertyNamed: kPOPLayerRotation)
-        rotateAnimation.fromValue = NSNumber(double: -M_PI_4)
-        rotateAnimation.toValue = NSNumber(float: 0)
-        rotateAnimation.springBounciness = 10
-        rotateAnimation.springSpeed = 3
+        rotateAnimation?.fromValue = NSNumber(value: -M_PI_4 as Double)
+        rotateAnimation?.toValue = NSNumber(value: 0 as Float)
+        rotateAnimation?.springBounciness = 10
+        rotateAnimation?.springSpeed = 3
         
         let scaleAnimation = POPBasicAnimation(propertyNamed: kPOPLayerScaleXY)
-        scaleAnimation.fromValue = NSValue(CGSize: CGSize(width: 0.5, height: 0.5))
-        scaleAnimation.toValue =  NSValue(CGSize: CGSize(width: 1, height: 1))
-        scaleAnimation.duration = 0.5
+        scaleAnimation?.fromValue = NSValue(cgSize: CGSize(width: 0.5, height: 0.5))
+        scaleAnimation?.toValue =  NSValue(cgSize: CGSize(width: 1, height: 1))
+        scaleAnimation?.duration = 0.5
         
-        containerView.layer.pop_addAnimation(translateAnimation, forKey: "translateAnimation")
-        containerView.layer.pop_addAnimation(rotateAnimation, forKey: "rotateAnimation")
-        containerView.layer.pop_addAnimation(scaleAnimation, forKey: "scaleAnimation")
+        containerView.layer.pop_add(translateAnimation, forKey: "translateAnimation")
+        containerView.layer.pop_add(rotateAnimation, forKey: "rotateAnimation")
+        containerView.layer.pop_add(scaleAnimation, forKey: "scaleAnimation")
         
     }
     

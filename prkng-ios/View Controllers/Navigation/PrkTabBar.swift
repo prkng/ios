@@ -47,16 +47,16 @@ class PrkTabBar: UIView {
     
     func setupSubviews() {
         
-        myCarButton.addTarget(self, action: "myCarButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        myCarButton.selected = false
+        myCarButton.addTarget(self, action: #selector(PrkTabBar.myCarButtonTapped(_:)), for: UIControlEvents.touchUpInside)
+        myCarButton.isSelected = false
         addSubview(myCarButton)
         
-        hereButton.addTarget(self, action: "hereButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        hereButton.selected = false
+        hereButton.addTarget(self, action: #selector(PrkTabBar.hereButtonTapped(_:)), for: UIControlEvents.touchUpInside)
+        hereButton.isSelected = false
         addSubview(hereButton)
         
-        settingsButton.addTarget(self, action: "settingsButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
-        settingsButton.selected = false
+        settingsButton.addTarget(self, action: #selector(PrkTabBar.settingsButtonTapped(_:)), for: UIControlEvents.touchUpInside)
+        settingsButton.isSelected = false
         addSubview(settingsButton)
         
         didSetupSubviews = true
@@ -91,9 +91,9 @@ class PrkTabBar: UIView {
     
     
     func deselectAll() {
-        hereButton.selected = false
-        myCarButton.selected = false
-        settingsButton.selected = false
+        hereButton.isSelected = false
+        myCarButton.isSelected = false
+        settingsButton.isSelected = false
     }
     
     func updateSelected () {
@@ -102,16 +102,16 @@ class PrkTabBar: UIView {
         
         switch(self.delegate!.activeTab()) {
             
-        case PrkTab.MyCar :
-            myCarButton.selected = true
+        case PrkTab.myCar :
+            myCarButton.isSelected = true
             break
             
-        case PrkTab.Here :
-            hereButton.selected = true
+        case PrkTab.here :
+            hereButton.isSelected = true
             break
             
-        case PrkTab.Settings :
-            settingsButton.selected = true
+        case PrkTab.settings :
+            settingsButton.isSelected = true
             break
             
         default:
@@ -121,7 +121,7 @@ class PrkTabBar: UIView {
         
     }
     
-    func myCarButtonTapped(button : PrkTabBarButton) {
+    func myCarButtonTapped(_ button : PrkTabBarButton) {
         
         if(self.delegate != nil) {
             self.delegate!.loadMyCarTab()
@@ -129,7 +129,7 @@ class PrkTabBar: UIView {
     }
     
     
-    func hereButtonTapped(button : PrkTabBarButton) {
+    func hereButtonTapped(_ button : PrkTabBarButton) {
         
         if(self.delegate != nil) {
             self.delegate!.loadHereTab()
@@ -137,7 +137,7 @@ class PrkTabBar: UIView {
     }
     
 
-    func settingsButtonTapped(button : PrkTabBarButton) {
+    func settingsButtonTapped(_ button : PrkTabBarButton) {
         
         if(self.delegate != nil) {
             self.delegate!.loadSettingsTab()

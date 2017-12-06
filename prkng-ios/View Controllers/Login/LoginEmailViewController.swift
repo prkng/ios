@@ -10,25 +10,25 @@ import UIKit
 
 class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
 
-    private var scrollView : UIScrollView
-    private var scrollContentView : UIView
-    private var backButton = ViewFactory.outlineBackButton(Styles.Colors.cream2)
-    private var topLabel : UILabel
-    private var inputForm : PRKInputForm
-    private var forgotPasswordButton: UIButton
-    private var signupButton : UIButton
-    private var loginButton : UIButton
+    fileprivate var scrollView : UIScrollView
+    fileprivate var scrollContentView : UIView
+    fileprivate var backButton = ViewFactory.outlineBackButton(Styles.Colors.cream2)
+    fileprivate var topLabel : UILabel
+    fileprivate var inputForm : PRKInputForm
+    fileprivate var forgotPasswordButton: UIButton
+    fileprivate var signupButton : UIButton
+    fileprivate var loginButton : UIButton
     
     var delegate : LoginEmailViewControllerDelegate?
     
-    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height
-    private var MAIN_BUTTON_OFFSET = UIScreen.mainScreen().bounds.width == 320 ? 70 : 100
+    fileprivate var USABLE_VIEW_HEIGHT = UIScreen.main.bounds.size.height
+    fileprivate var MAIN_BUTTON_OFFSET = UIScreen.main.bounds.width == 320 ? 70 : 100
 
     init() {
         
         let list = [
-            ("email".localizedString, PRKTextFieldType.Email),
-            ("password".localizedString, PRKTextFieldType.Password)
+            ("email".localizedString, PRKTextFieldType.email),
+            ("password".localizedString, PRKTextFieldType.password)
         ]
         
         topLabel = UILabel()
@@ -58,7 +58,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
         self.screenName = "Login - Enter Email Credentials"
     }
         
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         inputForm.makeActive()
     }
@@ -74,10 +74,10 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
         view.addSubview(scrollView)
         scrollView.addSubview(scrollContentView)
         
-        backButton.addTarget(self, action: "back", forControlEvents: .TouchUpInside)
+        backButton.addTarget(self, action: "back", for: .touchUpInside)
         scrollContentView.addSubview(backButton)
 
-        topLabel.text = "login".localizedString.uppercaseString
+        topLabel.text = "login".localizedString.uppercased()
         topLabel.font = Styles.FontFaces.regular(12)
         topLabel.textColor = Styles.Colors.stone
         scrollContentView.addSubview(topLabel)
@@ -86,18 +86,18 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
 
         forgotPasswordButton.titleLabel?.font = Styles.FontFaces.light(12)
         forgotPasswordButton.titleLabel?.textColor = Styles.Colors.anthracite1
-        forgotPasswordButton.setTitle("forgot_password_text".localizedString.uppercaseString, forState: .Normal)
-        forgotPasswordButton.addTarget(self, action:"didTapForgotPasswordButton", forControlEvents: UIControlEvents.TouchUpInside)
+        forgotPasswordButton.setTitle("forgot_password_text".localizedString.uppercased(), for: UIControlState())
+        forgotPasswordButton.addTarget(self, action:#selector(LoginEmailViewController.didTapForgotPasswordButton), for: UIControlEvents.touchUpInside)
         scrollContentView.addSubview(forgotPasswordButton)
         
-        loginButton.setTitle("login".localizedString.uppercaseString, forState: UIControlState.Normal)
-        loginButton.addTarget(self, action: "loginButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        loginButton.setTitle("login".localizedString.uppercased(), for: UIControlState())
+        loginButton.addTarget(self, action: #selector(LoginEmailViewController.loginButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         scrollContentView.addSubview(loginButton)
 
         signupButton.titleLabel?.font = Styles.FontFaces.light(12)
         signupButton.titleLabel?.textColor = Styles.Colors.anthracite1
-        signupButton.setTitle("register_with_email_switch".localizedString.uppercaseString, forState: .Normal)
-        signupButton.addTarget(self, action:"signUpButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        signupButton.setTitle("register_with_email_switch".localizedString.uppercased(), for: UIControlState())
+        signupButton.addTarget(self, action:#selector(LoginEmailViewController.signUpButtonTapped), for: UIControlEvents.touchUpInside)
         scrollContentView.addSubview(signupButton)
     }
     
@@ -112,7 +112,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
         
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
-            make.size.greaterThanOrEqualTo(CGSizeMake(UIScreen.mainScreen().bounds.size.width, self.USABLE_VIEW_HEIGHT))
+            make.size.greaterThanOrEqualTo(CGSize(width: UIScreen.main.bounds.size.width, height: self.USABLE_VIEW_HEIGHT))
             make.width.equalTo(self.view)
         }
         
@@ -157,7 +157,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
         self.delegate!.signUp()
     }
     
-    func loginButtonTapped(sender : UIButton) {
+    func loginButtonTapped(_ sender : UIButton) {
         
         UserOperations.login(inputForm.textForFieldNamed("email".localizedString), password: inputForm.textForFieldNamed("password".localizedString)) { (user, apiKey) -> Void in
             
@@ -172,18 +172,18 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
             } else {
                 let alert = UIAlertView()
                 alert.message = "login_error".localizedString
-                alert.addButtonWithTitle("OK")
+                alert.addButton(withTitle: "OK")
                 alert.show()
             }
         }
         
     }
     
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         
         if (buttonIndex == 0) {
             
-            if let email = alertView.textFieldAtIndex(0)?.text {
+            if let email = alertView.textField(at: 0)?.text {
                 
                 if Int(email.characters.count) > 4 {
                     
@@ -195,7 +195,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
                         
                         let alert = UIAlertView()
                         alert.message = completed ? "check_email_copy".localizedString : "pasword_reset_error".localizedString
-                        alert.addButtonWithTitle("ok".localizedString.uppercaseString)
+                        alert.addButton(withTitle: "ok".localizedString.uppercased())
                         alert.show()
                         
                     })
@@ -204,7 +204,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
                     
                     let alert = UIAlertView()
                     alert.message = "invalid_email".localizedString
-                    alert.addButtonWithTitle("ok".localizedString.uppercaseString)
+                    alert.addButton(withTitle: "ok".localizedString.uppercased())
                     alert.show()
                     
                 }
@@ -212,7 +212,7 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
             } else {
                 let alert = UIAlertView()
                 alert.message = "invalid_email".localizedString
-                alert.addButtonWithTitle("ok".localizedString.uppercaseString)
+                alert.addButton(withTitle: "ok".localizedString.uppercased())
                 alert.show()
             }
             
@@ -227,9 +227,9 @@ class LoginEmailViewController: AbstractViewController, UIAlertViewDelegate {
     func didTapForgotPasswordButton() {
         let alert = UIAlertView()
         alert.title = "reset_email_copy".localizedString
-        alert.addButtonWithTitle("reset_password".localizedString)
-        alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
-        alert.addButtonWithTitle("cancel".localizedString)
+        alert.addButton(withTitle: "reset_password".localizedString)
+        alert.alertViewStyle = UIAlertViewStyle.plainTextInput
+        alert.addButton(withTitle: "cancel".localizedString)
         alert.delegate = self
         alert.show()
     }

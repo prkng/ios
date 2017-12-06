@@ -41,8 +41,8 @@ class LoginExternalViewController: AbstractViewController {
     
     var logintype : LoginType
     
-    private var BOTTOM_VIEW_HEIGHT = Styles.Sizes.hugeButtonHeight + 60 + 84
-    private var USABLE_VIEW_HEIGHT = UIScreen.mainScreen().bounds.size.height
+    fileprivate var BOTTOM_VIEW_HEIGHT = Styles.Sizes.hugeButtonHeight + 60 + 84
+    fileprivate var USABLE_VIEW_HEIGHT = UIScreen.main.bounds.size.height
     
     init(usr : User, loginType : LoginType) {
         
@@ -67,9 +67,9 @@ class LoginExternalViewController: AbstractViewController {
         
         notificationsContainer = UIView()
         notificationsLabel = UILabel()
-        notificationSelection = SelectionControl(titles: ["15 " + "minutes_short".localizedString.uppercaseString,
-            "30 " + "minutes_short".localizedString.uppercaseString,
-            "off".localizedString.uppercaseString])
+        notificationSelection = SelectionControl(titles: ["15 " + "minutes_short".localizedString.uppercased(),
+            "30 " + "minutes_short".localizedString.uppercased(),
+            "off".localizedString.uppercased()])
         
         separator1 = UIView()
         separator2 = UIView()
@@ -97,12 +97,12 @@ class LoginExternalViewController: AbstractViewController {
         self.screenName = "Login - Enter FB/G Credentials"
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         self.notificationSelection.selectOption(self.notificationSelection.buttons[0], animated: false)
@@ -120,30 +120,30 @@ class LoginExternalViewController: AbstractViewController {
         scrollContentView.addSubview(profileContainer)
         
         if (user.imageUrl != nil) {
-            let url = NSURL(string: user.imageUrl!)
-            avatarButton.sd_setImageWithURL(url, forState: UIControlState.Normal, placeholderImage: UIImage(named: "btn_upload_profile")!)
+            let url = URL(string: user.imageUrl!)
+            avatarButton.sd_setImage(with: url, for: UIControlState(), placeholderImage: UIImage(named: "btn_upload_profile")!)
         }
         avatarButton.clipsToBounds = true
         avatarButton.layer.cornerRadius = 25.5
         profileContainer.addSubview(avatarButton)
         
-        editProfileLabel.text = "edit_profile".localizedString.uppercaseString
+        editProfileLabel.text = "edit_profile".localizedString.uppercased()
         profileContainer.addSubview(editProfileLabel)
         
         nameLabel.font = Styles.Fonts.h1
         nameLabel.textColor = Styles.Colors.cream1
-        nameLabel.textAlignment = NSTextAlignment.Center
+        nameLabel.textAlignment = NSTextAlignment.center
         nameLabel.text = user.fullName
         profileContainer.addSubview(nameLabel)
         
         emailLabel.font = Styles.FontFaces.light(17)
         emailLabel.textColor = Styles.Colors.anthracite1
-        emailLabel.textAlignment = NSTextAlignment.Center
+        emailLabel.textAlignment = NSTextAlignment.center
         emailLabel.text = user.email
         profileContainer.addSubview(emailLabel)
         
-        changeCityLabel.text = "change_my_city".localizedString.uppercaseString
-        changeCityLabel.textAlignment = NSTextAlignment.Center
+        changeCityLabel.text = "change_my_city".localizedString.uppercased()
+        changeCityLabel.textAlignment = NSTextAlignment.center
         scrollContentView.addSubview(changeCityLabel)
         
         cityContainer.backgroundColor = Styles.Colors.red2
@@ -154,12 +154,12 @@ class LoginExternalViewController: AbstractViewController {
         cityLabel.text = Settings.selectedCity().displayName
         cityContainer.addSubview(cityLabel)
         
-        prevCityButton.setImage(UIImage(named: "btn_left"), forState: UIControlState.Normal)
-        prevCityButton.addTarget(self, action: "prevCityButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        prevCityButton.setImage(UIImage(named: "btn_left"), for: UIControlState())
+        prevCityButton.addTarget(self, action: #selector(LoginExternalViewController.prevCityButtonTapped), for: UIControlEvents.touchUpInside)
         cityContainer.addSubview(prevCityButton)
         
-        nextCityButton.setImage(UIImage(named: "btn_right"), forState: UIControlState.Normal)
-        nextCityButton.addTarget(self, action: "nextCityButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        nextCityButton.setImage(UIImage(named: "btn_right"), for: UIControlState())
+        nextCityButton.addTarget(self, action: #selector(LoginExternalViewController.nextCityButtonTapped), for: UIControlEvents.touchUpInside)
         cityContainer.addSubview(nextCityButton)
         
         notificationsContainer.backgroundColor = Styles.Colors.stone
@@ -167,17 +167,17 @@ class LoginExternalViewController: AbstractViewController {
         
         notificationsLabel.textColor = Styles.Colors.midnight2
         notificationsLabel.font = Styles.FontFaces.light(12)
-        notificationsLabel.text = "notifications".localizedString.uppercaseString
-        notificationsLabel.textAlignment = NSTextAlignment.Left
+        notificationsLabel.text = "notifications".localizedString.uppercased()
+        notificationsLabel.textAlignment = NSTextAlignment.left
         notificationsContainer.addSubview(notificationsLabel)
         
-        notificationSelection.buttonSize = CGSizeMake(90, 28)
-        notificationSelection.addTarget(self, action: "notificationSelectionValueChanged", forControlEvents: UIControlEvents.ValueChanged)
+        notificationSelection.buttonSize = CGSize(width: 90, height: 28)
+        notificationSelection.addTarget(self, action: #selector(LoginExternalViewController.notificationSelectionValueChanged), for: UIControlEvents.valueChanged)
         notificationSelection.fixedWidth = 20
         notificationsContainer.addSubview(notificationSelection)
         
-        loginButton.setTitle("login".localizedString, forState: UIControlState.Normal)
-        loginButton.addTarget(self, action: "loginButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        loginButton.setTitle("login".localizedString, for: UIControlState())
+        loginButton.addTarget(self, action: #selector(LoginExternalViewController.loginButtonTapped), for: UIControlEvents.touchUpInside)
         scrollContentView.addSubview(loginButton)
     
         separator1.backgroundColor = Styles.Colors.transparentBlack
@@ -200,7 +200,7 @@ class LoginExternalViewController: AbstractViewController {
         
         scrollContentView.snp_makeConstraints { (make) -> () in
             make.edges.equalTo(self.scrollView)
-            make.size.equalTo(CGSizeMake(UIScreen.mainScreen().bounds.width, self.USABLE_VIEW_HEIGHT))
+            make.size.equalTo(CGSize(width: UIScreen.main.bounds.width, height: self.USABLE_VIEW_HEIGHT))
         }
         
         
@@ -212,7 +212,7 @@ class LoginExternalViewController: AbstractViewController {
         avatarButton.snp_makeConstraints { (make) -> () in
             make.top.equalTo(self.profileContainer)
             make.centerX.equalTo(self.profileContainer)
-            make.size.equalTo(CGSizeMake(55, 55))
+            make.size.equalTo(CGSize(width: 55, height: 55))
         }
         
         editProfileLabel.snp_makeConstraints { (make) -> () in
@@ -328,7 +328,7 @@ class LoginExternalViewController: AbstractViewController {
             if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
-            index++
+            index += 1
         }
         
         index -= 1 // previous
@@ -353,10 +353,10 @@ class LoginExternalViewController: AbstractViewController {
             if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
-            index++
+            index += 1
         }
         
-        index++ // get next
+        index += 1 // get next
         
         if (index > CityOperations.sharedInstance.availableCities.count - 1) {
             index = 0
@@ -388,5 +388,5 @@ class LoginExternalViewController: AbstractViewController {
 
 
 protocol LoginExternalViewControllerDelegate {
-    func didLoginExternal(loginType : LoginType)
+    func didLoginExternal(_ loginType : LoginType)
 }

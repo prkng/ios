@@ -20,28 +20,28 @@ class DirectionsAction {
         
         let googleMapsURLString = "comgooglemaps-x-callback://?saddr=&daddr=" + coordinateString + "&x-success=ng.prk.prkng-ios://?returningFromGoogleMaps=true&x-source=Prkng"
         
-        let supportsGoogleMaps = UIApplication.sharedApplication().canOpenURL(NSURL(string: "comgooglemaps://")!)
+        let supportsGoogleMaps = UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!)
         
         if shouldCallback {
             //set up a region monitored
             self.removeDirectionRegionMonitoring()
-            let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let delegate = UIApplication.shared.delegate as! AppDelegate
             let region = CLCircularRegion(center: coordinate, radius: 100, identifier: self.prkng_directions_monitor)
-            delegate.locationManager.startMonitoringForRegion(region)
+            delegate.locationManager.startMonitoring(for: region)
         }
 
         if supportsGoogleMaps {
             
             if #available(iOS 8.0, *) {
-                let alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.addAction(UIAlertAction(title: "directions_google_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
-                    UIApplication.sharedApplication().openURL(NSURL(string: googleMapsURLString)!)
+                let alert = UIAlertController(title: "directions".localizedString, message: "directions_app_message".localizedString, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "directions_google_maps_message".localizedString, style: .default, handler: { (alert) -> Void in
+                    UIApplication.shared.openURL(URL(string: googleMapsURLString)!)
                 }))
-                alert.addAction(UIAlertAction(title: "directions_apple_maps_message".localizedString, style: .Default, handler: { (alert) -> Void in
-                    UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
+                alert.addAction(UIAlertAction(title: "directions_apple_maps_message".localizedString, style: .default, handler: { (alert) -> Void in
+                    UIApplication.shared.openURL(URL(string: appleMapsURLString)!)
                 }))
-                alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .Cancel, handler: nil))
-                viewController.presentViewController(alert, animated: true, completion: nil)
+                alert.addAction(UIAlertAction(title: "cancel".localizedString, style: .cancel, handler: nil))
+                viewController.present(alert, animated: true, completion: nil)
             } else {
                 // Fallback on earlier versions
                 //TODO: PUT SOMETHING HERE FOR IOS 7
@@ -49,7 +49,7 @@ class DirectionsAction {
             
         } else {
             
-            UIApplication.sharedApplication().openURL(NSURL(string: appleMapsURLString)!)
+            UIApplication.shared.openURL(URL(string: appleMapsURLString)!)
             
         }
 
@@ -57,10 +57,10 @@ class DirectionsAction {
     
     static func removeDirectionRegionMonitoring() {
         
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
-            if monitoredRegion.identifier.rangeOfString(self.prkng_directions_monitor) != nil {
-                delegate.locationManager.stopMonitoringForRegion(monitoredRegion)
+            if monitoredRegion.identifier.range(of: self.prkng_directions_monitor) != nil {
+                delegate.locationManager.stopMonitoring(for: monitoredRegion)
             }
         }
 
@@ -68,9 +68,9 @@ class DirectionsAction {
     
     static func isDirectionRegionMonitoring() -> Bool {
         
-        let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let delegate = UIApplication.shared.delegate as! AppDelegate
         for monitoredRegion in delegate.locationManager.monitoredRegions as! Set<CLCircularRegion> {
-            if monitoredRegion.identifier.rangeOfString(self.prkng_directions_monitor) != nil {
+            if monitoredRegion.identifier.range(of: self.prkng_directions_monitor) != nil {
                 return true
             }
         }
@@ -85,6 +85,6 @@ class DirectionsAction {
         let alert = UILocalNotification()
         alert.alertBody = "return_to_app".localizedString
         alert.soundName = UILocalNotificationDefaultSoundName
-        UIApplication.sharedApplication().presentLocalNotificationNow(alert)
+        UIApplication.shared.presentLocalNotificationNow(alert)
     }
 }

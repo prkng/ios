@@ -10,7 +10,7 @@ import Foundation
 
 class CarSharingOperations {
     
-    static func getCarShares(location location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: ((carShares: [NSObject], mapMessage: String?) -> Void)) {
+    static func getCarShares(location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: @escaping ((_ carShares: [NSObject], _ mapMessage: String?) -> Void)) {
         
         let url = APIUtility.rootURL() + "carshares"
         
@@ -22,10 +22,10 @@ class CarSharingOperations {
             !Settings.hideAutomobile() ? "auto-mobile" : nil,
             !Settings.hideZipcar() ? "zipcar" : nil,
         ]
-        let companiesString = Array.filterNils(companies).joinWithSeparator(",")
+        let companiesString = Array.filterNils(companies).joined(separator: ",")
         
         if companiesString == "" {
-            let mapMessage = MapMessageView.createMessage(count: 0, response: nil, error: nil, origin: .Cars)
+            let mapMessage = MapMessageView.createMessage(count: 0, response: nil, error: nil, origin: .cars)
             completion(carShares: [], mapMessage: mapMessage)
             return
         }
@@ -39,7 +39,7 @@ class CarSharingOperations {
             "nearest": nearest
         ]
         
-        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default), options: JSONSerialization.ReadingOptions.allowFragments) {
             (request, response, json, error) in
             
             DDLoggerWrapper.logVerbose(String(format: "Request: %@", request))
@@ -52,9 +52,9 @@ class CarSharingOperations {
                 CarShare(json: carShareJson)
             })
             
-            let mapMessage = MapMessageView.createMessage(count: carShares.count, response: response, error: error, origin: .Cars)
+            let mapMessage = MapMessageView.createMessage(count: carShares.count, response: response, error: error, origin: .cars)
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 () -> Void in
                 completion(carShares: carShares, mapMessage: mapMessage)
                 
@@ -68,7 +68,7 @@ class CarSharingOperations {
         }
     }
 
-    static func getCarShareLots(location location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: ((carShareLots: [NSObject], mapMessage: String?) -> Void)) {
+    static func getCarShareLots(location: CLLocationCoordinate2D, radius: Float, nearest: Int, completion: @escaping ((_ carShareLots: [NSObject], _ mapMessage: String?) -> Void)) {
         
         let url = APIUtility.rootURL() + "carshare_lots"
         
@@ -80,7 +80,7 @@ class CarSharingOperations {
             !Settings.hideAutomobile() ? "auto-mobile" : nil,
             !Settings.hideZipcar() ? "zipcar" : nil,
         ]
-        let companiesString = Array.filterNils(companies).joinWithSeparator(",")
+        let companiesString = Array.filterNils(companies).joined(separator: ",")
 
         let params = [
             "latitude": location.latitude,
@@ -91,7 +91,7 @@ class CarSharingOperations {
             "nearest": nearest
         ]
         
-        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), options: NSJSONReadingOptions.AllowFragments) {
+        APIUtility.authenticatedManager().request(.GET, url, parameters: params).responseSwiftyJSONAsync(DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default), options: JSONSerialization.ReadingOptions.allowFragments) {
             (request, response, json, error) in
             
             DDLoggerWrapper.logVerbose(String(format: "Request: %@", request))
@@ -104,9 +104,9 @@ class CarSharingOperations {
                 CarShareLot(json: carShareLotJson)
             })
             
-            let mapMessage = MapMessageView.createMessage(count: carShareLots.count, response: response, error: error, origin: .Spots)
+            let mapMessage = MapMessageView.createMessage(count: carShareLots.count, response: response, error: error, origin: .spots)
             
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 () -> Void in
                 completion(carShareLots: carShareLots, mapMessage: mapMessage)
                 
@@ -120,13 +120,13 @@ class CarSharingOperations {
         }
     }
     
-    static func login(carSharingType: CarSharingType) {
+    static func login(_ carSharingType: CarSharingType) {
         
         switch carSharingType {
         case .CommunautoAutomobile, .Communauto:
             //open the web view
             let vc = CarSharingOperations.CommunautoAutomobile.loginVC
-            (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController?.presentViewController(vc, animated: true, completion: { () -> Void in
+            (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController?.present(vc, animated: true, completion: { () -> Void in
             })
         case .Car2Go:
             CarSharingOperations.Car2Go.getAndSaveCar2GoToken({ (token, tokenSecret) -> Void in
@@ -137,27 +137,27 @@ class CarSharingOperations {
 
     }
     
-    static func reserveCarShare(carShare: CarShare, fromVC: UIViewController, completion: (Bool) -> Void) {
+    static func reserveCarShare(_ carShare: CarShare, fromVC: UIViewController, completion: @escaping (Bool) -> Void) {
         
         let reservationCompletion = { (reserveResult: ReturnStatus) -> Void in
             switch reserveResult {
-            case .Success:
+            case .success:
                 Settings.saveReservedCarShare(carShare)
                 SpotOperations.checkout({ (completed) -> Void in
                     Settings.checkOut()
                 })
                 AnalyticsOperations.reservedCarShareEvent(carShare, completion: { (completed) -> Void in })
                 completion(true)
-            case .FailedError:
+            case .failedError:
                 let alert = UIAlertView()
                 alert.message = "could_not_reserve".localizedString
-                alert.addButtonWithTitle("OK")
+                alert.addButton(withTitle: "OK")
                 alert.show()
                 completion(false)
-            case .FailedNotLoggedIn:
+            case .failedNotLoggedIn:
                 let alert = UIAlertView()
                 alert.message = "could_not_reserve_not_logged_in".localizedString
-                alert.addButtonWithTitle("OK")
+                alert.addButton(withTitle: "OK")
                 alert.show()
                 CarSharingOperations.login(carShare.carSharingType)
                 completion(false)
@@ -173,7 +173,7 @@ class CarSharingOperations {
             //open the web view
             let carID = carShare.partnerId ?? ""
             let vc = PRKWebViewController(englishUrl: CommunautoAutomobile.communautoReserveUrlEnglish + carID, frenchUrl: CommunautoAutomobile.communautoReserveUrlFrench + carID)
-            fromVC.presentViewController(vc, animated: true, completion: nil)
+            fromVC.present(vc, animated: true, completion: nil)
             completion(false)
         case .Zipcar:
             //open the zip car app if applicable
@@ -190,30 +190,30 @@ class CarSharingOperations {
         
     }
 
-    static func cancelCarShare(carShare: CarShare, fromVC: UIViewController, completion: (Bool) -> Void) {
+    static func cancelCarShare(_ carShare: CarShare, fromVC: UIViewController, completion: @escaping (Bool) -> Void) {
         
         let cancelationCompletion = { (cancelResult: ReturnStatus) -> Void in
             switch cancelResult {
-            case .Success:
+            case .success:
                 let alert = UIAlertView()
                 alert.message = "cancelled_reservation".localizedString
-                alert.addButtonWithTitle("OK")
+                alert.addButton(withTitle: "OK")
                 alert.show()
                 Settings.saveReservedCarShare(nil)
                 completion(true)
-            case .FailedError:
+            case .failedError:
                 let alert = UIAlertView()
                 alert.message = "could_not_cancel_reservation".localizedString
-                alert.addButtonWithTitle("OK")
+                alert.addButton(withTitle: "OK")
                 alert.show()
                 completion(false)
-            case .FailedNotLoggedIn:
+            case .failedNotLoggedIn:
                 let alert = UIAlertView()
                 alert.message = "could_not_cancel_not_logged_in".localizedString
-                alert.addButtonWithTitle("OK")
+                alert.addButton(withTitle: "OK")
                 alert.show()
                 let vc = CarSharingOperations.CommunautoAutomobile.loginVC
-                fromVC.presentViewController(vc, animated: true, completion: nil)
+                fromVC.present(vc, animated: true, completion: nil)
                 completion(false)
             }
             SVProgressHUD.dismiss()
@@ -241,12 +241,12 @@ class CarSharingOperations {
         static let endpointsHostUrlString = "www.car2go.com/api/v2.1"
         
         static func goToAppOrAppStore() {
-            let url = NSURL(string: "car2go://")!
-            let isUrlSupported = UIApplication.sharedApplication().canOpenURL(url)
+            let url = URL(string: "car2go://")!
+            let isUrlSupported = UIApplication.shared.canOpenURL(url)
             if isUrlSupported {
-                UIApplication.sharedApplication().openURL(url)
+                UIApplication.shared.openURL(url)
             } else {
-                UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id514921710")!)
+                UIApplication.shared.openURL(URL(string: "itms-apps://itunes.apple.com/app/id514921710")!)
             }
         }
         
@@ -258,11 +258,11 @@ class CarSharingOperations {
             if token != nil && tokenSecret != nil {
                 if validateToken {
                     //just a test to see if we're logged in... note: ulm is NOT a valid location
-                    let testLoginRequest = TDOAuth.URLRequestForPath("/accounts", GETParameters: ["format": "json", "loc": "ulm"], scheme: "https", host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret)
-                    var response: NSURLResponse?
+                    let testLoginRequest = TDOAuth.urlRequest(forPath: "/accounts", getParameters: ["format": "json", "loc": "ulm"], scheme: "https", host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret)
+                    var response: URLResponse?
                     do {
-                        let _ = try NSURLConnection.sendSynchronousRequest(testLoginRequest, returningResponse: &response)
-                        let success = (response as! NSHTTPURLResponse).statusCode < 400
+                        let _ = try NSURLConnection.sendSynchronousRequest(testLoginRequest!, returning: &response)
+                        let success = (response as! HTTPURLResponse).statusCode < 400
                         return success
                     } catch {
                         return false
@@ -273,7 +273,7 @@ class CarSharingOperations {
             return false
         }
 
-        static func isLoggedInAsynchronous(shouldValidateToken validateToken: Bool, completion: ((loggedIn: Bool) -> Void)) {
+        static func isLoggedInAsynchronous(shouldValidateToken validateToken: Bool, completion: @escaping ((_ loggedIn: Bool) -> Void)) {
             
             let token = Settings.car2GoAccessToken()
             let tokenSecret = Settings.car2GoAccessTokenSecret()
@@ -281,17 +281,17 @@ class CarSharingOperations {
             if token != nil && tokenSecret != nil {
                 if validateToken {
                     //just a test to see if we're logged in... note: ulm is NOT a valid location
-                    let testLoginRequest = TDOAuth.URLRequestForPath("/accounts", GETParameters: ["format": "json", "loc": "ulm"], scheme: "https", host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret)
-                    NSURLConnection.sendAsynchronousRequest(testLoginRequest, queue: NSOperationQueue.mainQueue(), completionHandler: { (response, data, error) -> Void in
-                        let success = error == nil || (response as! NSHTTPURLResponse).statusCode < 400
-                        completion(loggedIn: success)
+                    let testLoginRequest = TDOAuth.urlRequest(forPath: "/accounts", getParameters: ["format": "json", "loc": "ulm"], scheme: "https", host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret)
+                    NSURLConnection.sendAsynchronousRequest(testLoginRequest!, queue: OperationQueue.main, completionHandler: { (response, data, error) -> Void in
+                        let success = error == nil || (response as! HTTPURLResponse).statusCode < 400
+                        completion(success)
                     })
                     
                 } else {
-                    completion(loggedIn: true)
+                    completion(true)
                 }
             } else {
-                completion(loggedIn: false)
+                completion(false)
             }
         }
 
@@ -301,7 +301,7 @@ class CarSharingOperations {
             Settings.setCar2GoAccessTokenSecret(nil)
         }
         
-        static func getAccountID(completion: (accountID: String?) -> Void) {
+        static func getAccountID(_ completion: @escaping (_ accountID: String?) -> Void) {
             let token = Settings.car2GoAccessToken()
             let tokenSecret = Settings.car2GoAccessTokenSecret()
 
@@ -313,30 +313,30 @@ class CarSharingOperations {
                 cityName = Settings.selectedCity().name
             }
             
-            let testLoginRequest = TDOAuth.URLRequestForPath("/accounts", GETParameters: ["format": "json", "loc": cityName], scheme: "https", host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret)
-            NSURLConnection.sendAsynchronousRequest(testLoginRequest, queue: NSOperationQueue.mainQueue(), completionHandler: { (response, data, error) -> Void in
-                let success = error == nil || (response as! NSHTTPURLResponse).statusCode < 400
+            let testLoginRequest = TDOAuth.urlRequest(forPath: "/accounts", getParameters: ["format": "json", "loc": cityName], scheme: "https", host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret)
+            NSURLConnection.sendAsynchronousRequest(testLoginRequest!, queue: OperationQueue.main, completionHandler: { (response, data, error) -> Void in
+                let success = error == nil || (response as! HTTPURLResponse).statusCode < 400
                 if success && data != nil {
                     let json = JSON(data: data!)
                     let accountID = json["account"][0]["accountId"].rawString()
                     completion(accountID: accountID == "null" ? nil : accountID)
                     return
                 }
-                completion(accountID: nil)
+                completion(nil)
             })
         }
         
-        static func getAndSaveCar2GoToken(completion: (token: String?, tokenSecret: String?) -> Void) {
+        static func getAndSaveCar2GoToken(_ completion: @escaping (_ token: String?, _ tokenSecret: String?) -> Void) {
             
             let tokenDict = ["oauth_callback": "oob"] //type is [NSObject : AnyObject]()
-            let tokenRequest = TDOAuth.URLRequestForPath("/reqtoken", POSTParameters: tokenDict, host: "www.car2go.com/api", consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: nil, tokenSecret: nil)
-            NSURLConnection.sendAsynchronousRequest(tokenRequest, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+            let tokenRequest = TDOAuth.urlRequest(forPath: "/reqtoken", postParameters: tokenDict, host: "www.car2go.com/api", consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: nil, tokenSecret: nil)
+            NSURLConnection.sendAsynchronousRequest(tokenRequest!, queue: OperationQueue.main) { (response, data, error) -> Void in
                 if data != nil {
-                    var params = [NSObject : AnyObject]()
-                    let stringData = String(data: data!, encoding: NSUTF8StringEncoding)
-                    let stringArray = stringData?.componentsSeparatedByString("&") ?? []
+                    var params = [AnyHashable: Any]()
+                    let stringData = String(data: data!, encoding: String.Encoding.utf8)
+                    let stringArray = stringData?.components(separatedBy: "&") ?? []
                     for substring in stringArray {
-                        let secondArray = substring.componentsSeparatedByString("=")
+                        let secondArray = substring.components(separatedBy: "=")
                         params[secondArray[0]] = secondArray[1]
                     }
                     let token1 = params["oauth_token"] as? String ?? ""
@@ -348,27 +348,27 @@ class CarSharingOperations {
                     let authVC = PRKWebViewController(url: authUrlString)
                     authVC.willLoadRequestCallback = { (vc, request) -> () in
                         
-                        if (request.URL?.relativeString ?? "").containsString(callbackURLString + "?") {
+                        if (request.url?.relativeString ?? "").contains(callbackURLString + "?") {
                             vc.backButtonTapped()
-                            var params = [NSObject : AnyObject]()
-                            let paramsString = (request.URL?.relativeString ?? "").stringByReplacingOccurrencesOfString(callbackURLString + "?", withString: "")
-                            let stringArray = paramsString.componentsSeparatedByString("&") ?? []
+                            var params = [AnyHashable: Any]()
+                            let paramsString = (request.url?.relativeString ?? "").replacingOccurrences(of: callbackURLString + "?", with: "")
+                            let stringArray = paramsString.components(separatedBy: "&") ?? []
                             for substring in stringArray {
-                                let secondArray = substring.componentsSeparatedByString("=")
+                                let secondArray = substring.components(separatedBy: "=")
                                 params[secondArray[0]] = secondArray[1]
                             }
                             let token2 = params["oauth_token"] as? String ?? ""
                             let verifier = params["oauth_verifier"] as? String ?? ""
                             
                             let accessTokenDict = ["oauth_verifier": verifier] //type is [NSObject : AnyObject]()
-                            let accessTokenRequest = TDOAuth.URLRequestForPath("/accesstoken", POSTParameters: accessTokenDict, host: "www.car2go.com/api", consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token2, tokenSecret: tokenSecret)
-                            NSURLConnection.sendAsynchronousRequest(accessTokenRequest, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+                            let accessTokenRequest = TDOAuth.urlRequest(forPath: "/accesstoken", postParameters: accessTokenDict, host: "www.car2go.com/api", consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token2, tokenSecret: tokenSecret)
+                            NSURLConnection.sendAsynchronousRequest(accessTokenRequest!, queue: OperationQueue.main) { (response, data, error) -> Void in
                                 if data != nil {
-                                    var params = [NSObject : AnyObject]()
-                                    let stringData = String(data: data!, encoding: NSUTF8StringEncoding)
-                                    let stringArray = stringData?.componentsSeparatedByString("&") ?? []
+                                    var params = [AnyHashable: Any]()
+                                    let stringData = String(data: data!, encoding: String.Encoding.utf8)
+                                    let stringArray = stringData?.components(separatedBy: "&") ?? []
                                     for substring in stringArray {
-                                        let secondArray = substring.componentsSeparatedByString("=")
+                                        let secondArray = substring.components(separatedBy: "=")
                                         params[secondArray[0]] = secondArray[1]
                                     }
                                     //save these two!
@@ -380,25 +380,25 @@ class CarSharingOperations {
                                     
                                     AnalyticsOperations.carShareLoginEvent("car2go", completion: { (completed) -> Void in })
                                     
-                                    completion(token: finalToken, tokenSecret: finalTokenSecret)
+                                    completion(finalToken, finalTokenSecret)
                                 }
                                 if error != nil {
-                                    completion(token: nil, tokenSecret: nil)
+                                    completion(nil, nil)
                                 }
                             }
                         }
                     }
-                    (UIApplication.sharedApplication().delegate as! AppDelegate).window?.rootViewController?.presentViewController(authVC, animated: true, completion: { () -> Void in
+                    (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController?.present(authVC, animated: true, completion: { () -> Void in
                     })
                 }
                 if error != nil {
                     DDLoggerWrapper.logError(error!.description)
-                    completion(token: nil, tokenSecret: nil)
+                    completion(nil, nil)
                 }
             }
         }
      
-        static func reserveCar(carShare: CarShare, completion: (ReturnStatus) -> Void) {
+        static func reserveCar(_ carShare: CarShare, completion: @escaping (ReturnStatus) -> Void) {
 
             getAccountID { (accountID) -> Void in
                 if accountID != nil {
@@ -409,51 +409,51 @@ class CarSharingOperations {
                         "vin": carShare.vin! ?? "",
                         "account": accountID!,
                     ]
-                    let testLoginRequest = TDOAuth.URLRequestForPath("/bookings", parameters: params, host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret, scheme: "https", requestMethod: "POST", dataEncoding: TDOAuthContentType.UrlEncodedForm, headerValues: nil, signatureMethod: TDOAuthSignatureMethod.HmacSha1)
-                    NSURLConnection.sendAsynchronousRequest(testLoginRequest, queue: NSOperationQueue.mainQueue(), completionHandler: { (response, data, error) -> Void in
-                        let success = error == nil || (response as! NSHTTPURLResponse).statusCode < 400
+                    let testLoginRequest = TDOAuth.urlRequest(forPath: "/bookings", parameters: params, host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret, scheme: "https", requestMethod: "POST", dataEncoding: TDOAuthContentType.urlEncodedForm, headerValues: nil, signatureMethod: TDOAuthSignatureMethod.hmacSha1)
+                    NSURLConnection.sendAsynchronousRequest(testLoginRequest!, queue: OperationQueue.main, completionHandler: { (response, data, error) -> Void in
+                        let success = error == nil || (response as! HTTPURLResponse).statusCode < 400
                         if success && data != nil {
                             let json = JSON(data: data!)
                             let returnCode = json["returnValue"]["code"].intValue
                             let bookingID = json["booking"][0]["bookingId"].rawString()
                             if returnCode == 0 {
                                 Settings.setCar2GoBookingID(bookingID)
-                                completion(ReturnStatus.Success)
+                                completion(ReturnStatus.success)
                             } else {
-                                completion(ReturnStatus.FailedError)
+                                completion(ReturnStatus.failedError)
                             }
                         } else {
-                            completion(ReturnStatus.FailedError)
+                            completion(ReturnStatus.failedError)
                         }
                     })
                     
                 } else {
-                    completion(ReturnStatus.FailedNotLoggedIn)
+                    completion(ReturnStatus.failedNotLoggedIn)
                 }
             }
         }
 
-        static func cancelCar(carShare: CarShare, completion: (ReturnStatus) -> Void) {
+        static func cancelCar(_ carShare: CarShare, completion: @escaping (ReturnStatus) -> Void) {
             
             let token = Settings.car2GoAccessToken()
             let tokenSecret = Settings.car2GoAccessTokenSecret()
             let bookingID = Settings.car2GoBookingID() ?? ""
             
             let params = ["format": "json", "bookingId": bookingID]
-            let testLoginRequest = TDOAuth.URLRequestForPath("/booking/"+bookingID, parameters: params, host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret, scheme: "https", requestMethod: "DELETE", dataEncoding: TDOAuthContentType.UrlEncodedForm, headerValues: nil, signatureMethod: TDOAuthSignatureMethod.HmacSha1)
-            NSURLConnection.sendAsynchronousRequest(testLoginRequest, queue: NSOperationQueue.mainQueue(), completionHandler: { (response, data, error) -> Void in
-                let success = error == nil || (response as! NSHTTPURLResponse).statusCode < 400
+            let testLoginRequest = TDOAuth.urlRequest(forPath: "/booking/"+bookingID, parameters: params, host: endpointsHostUrlString, consumerKey: consumerKey, consumerSecret: consumerSecret, accessToken: token, tokenSecret: tokenSecret, scheme: "https", requestMethod: "DELETE", dataEncoding: TDOAuthContentType.urlEncodedForm, headerValues: nil, signatureMethod: TDOAuthSignatureMethod.hmacSha1)
+            NSURLConnection.sendAsynchronousRequest(testLoginRequest!, queue: OperationQueue.main, completionHandler: { (response, data, error) -> Void in
+                let success = error == nil || (response as! HTTPURLResponse).statusCode < 400
                 if success && data != nil {
                     let json = JSON(data: data!)
                     let returnCode = json["returnValue"]["code"].intValue
                     if returnCode == 0 {
-                        completion(ReturnStatus.Success)
+                        completion(ReturnStatus.success)
                         Settings.setCar2GoBookingID(nil)
                     } else {
-                        completion(ReturnStatus.FailedError)
+                        completion(ReturnStatus.failedError)
                     }
                 } else {
-                    completion(ReturnStatus.FailedError)
+                    completion(ReturnStatus.failedError)
                 }
             })
             
@@ -464,12 +464,12 @@ class CarSharingOperations {
     struct Zipcar {
         
         static func goToAppOrAppStore() {
-            let url = NSURL(string: "zipcar://")!
-            let isUrlSupported = UIApplication.sharedApplication().canOpenURL(url)
+            let url = URL(string: "zipcar://")!
+            let isUrlSupported = UIApplication.shared.canOpenURL(url)
             if isUrlSupported {
-                UIApplication.sharedApplication().openURL(url)
+                UIApplication.shared.openURL(url)
             } else {
-                UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id329384702")!)
+                UIApplication.shared.openURL(URL(string: "itms-apps://itunes.apple.com/app/id329384702")!)
             }
         }
     }
@@ -497,7 +497,7 @@ class CarSharingOperations {
         static var loginVC: PRKWebViewController {
             let vc = PRKWebViewController(englishUrl: loginWebUrlEnglish, frenchUrl: loginWebUrlFrench)
             vc.didFinishLoadingCallback = { (vc, webView) -> () in
-                webView.stringByEvaluatingJavaScriptFromString("document.getElementById(\"RememberMe\").checked = true; document.getElementById(\"RememberMe\").parentElement.hidden = true;")
+                webView.stringByEvaluatingJavaScript(from: "document.getElementById(\"RememberMe\").checked = true; document.getElementById(\"RememberMe\").parentElement.hidden = true;")
                 self.getAndSaveCommunautoCustomerID({ (id) -> Void in
                     if id != nil {
                         vc.backButtonTapped()
@@ -507,12 +507,12 @@ class CarSharingOperations {
             return vc
         }
         
-        static func getAndSaveCommunautoCustomerID(completion: (String?) -> Void) {
+        static func getAndSaveCommunautoCustomerID(_ completion: @escaping (String?) -> Void) {
             
-            let url = NSURL(string: loginApiUrl)
-            let request = NSURLRequest(URL: url!)
+            let url = URL(string: loginApiUrl)
+            let request = URLRequest(url: url!)
             
-            NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+            NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
                 
                 if error != nil || data == nil {
                     DDLoggerWrapper.logError("Either there was an error with the request or there was no data returned")
@@ -524,9 +524,9 @@ class CarSharingOperations {
                 if data != nil {
                     var json = JSON(data: data!)
                     if json == JSON.null {
-                        var stringData = String(data: data!, encoding: NSUTF8StringEncoding) ?? "  "
+                        var stringData = String(data: data!, encoding: String.Encoding.utf8) ?? "  "
                         stringData = stringData[1..<stringData.length()-1]
-                        if let properData = stringData.dataUsingEncoding(NSUTF8StringEncoding) {
+                        if let properData = stringData.data(using: String.Encoding.utf8) {
                             json = JSON(data: properData)
                         }
                     }
@@ -571,22 +571,22 @@ class CarSharingOperations {
             deleteCommunautoCookies()
         }
         
-        private static func saveCommunautoCookies() {
+        fileprivate static func saveCommunautoCookies() {
             //this part is to save cookies, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
-            let capturedCookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string: loginWebUrl)!) ?? []
+            let capturedCookies = HTTPCookieStorage.shared.cookies(for: URL(string: loginWebUrl)!) ?? []
             for i in 0..<capturedCookies.count {
                 let cookie = capturedCookies[i]
-                NSUserDefaults.standardUserDefaults().setObject(cookie.properties, forKey: "prkng_communauto_cookie_"+String(i))
+                UserDefaults.standard.set(cookie.properties, forKey: "prkng_communauto_cookie_"+String(i))
             }
-            NSUserDefaults.standardUserDefaults().setInteger(capturedCookies.count, forKey: "prkng_communauto_cookie_count")
+            UserDefaults.standard.set(capturedCookies.count, forKey: "prkng_communauto_cookie_count")
             
         }
         
-        private static func deleteCommunautoCookies() {
+        fileprivate static func deleteCommunautoCookies() {
             
-            let capturedCookies = NSHTTPCookieStorage.sharedHTTPCookieStorage().cookiesForURL(NSURL(string: loginWebUrl)!) ?? []
+            let capturedCookies = HTTPCookieStorage.shared.cookies(for: URL(string: loginWebUrl)!) ?? []
             for cookie in capturedCookies {
-                NSHTTPCookieStorage.sharedHTTPCookieStorage().deleteCookie(cookie)
+                HTTPCookieStorage.shared.deleteCookie(cookie)
             }
             
             //this commented out part is to put saved cookies back into the cookie jar, but because we set our cache policy properly any UIWebView and NSURLConnection will use the cookie jar!
@@ -618,40 +618,40 @@ class CarSharingOperations {
         //            return .FailedError
         //        }
 
-        static func reserveAutomobile(carShare: CarShare, completion: (ReturnStatus) -> Void) {
+        static func reserveAutomobile(_ carShare: CarShare, completion: @escaping (ReturnStatus) -> Void) {
             automobileCustomerIDVehicleIDOperation(automobileCreateBookingUrl, carShare: carShare, completion: completion)
         }
 
-        static func cancelAutomobile(carShare: CarShare, completion: (ReturnStatus) -> Void) {
+        static func cancelAutomobile(_ carShare: CarShare, completion: @escaping (ReturnStatus) -> Void) {
             automobileCustomerIDVehicleIDOperation(automobileCancelBookingUrl, carShare: carShare, completion: completion)
         }
         
-        private static func automobileCustomerIDVehicleIDOperation(urlString: String, carShare: CarShare, completion: (ReturnStatus) -> Void) {
+        fileprivate static func automobileCustomerIDVehicleIDOperation(_ urlString: String, carShare: CarShare, completion: @escaping (ReturnStatus) -> Void) {
             
             getAndSaveCommunautoCustomerID { (providerNo) -> Void in
                 if providerNo != nil {
                     //we are logged in, let's goooo
                     //this is where we do the actual reservation
                     
-                    let url = NSURL(string: String(format: urlString))//, providerNo, carShare.vin ?? ""))
-                    let request = NSMutableURLRequest(URL: url!)
-                    request.HTTPMethod = "POST"
-                    request.HTTPBody = String(format:"CustomerID=%@&VehicleID=%@", providerNo!, carShare.vin ?? "").dataUsingEncoding(NSUTF8StringEncoding)
+                    let url = URL(string: String(format: urlString))//, providerNo, carShare.vin ?? ""))
+                    let request = NSMutableURLRequest(url: url!)
+                    request.httpMethod = "POST"
+                    request.httpBody = String(format:"CustomerID=%@&VehicleID=%@", providerNo!, carShare.vin ?? "").data(using: String.Encoding.utf8)
                     
-                    NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue(), completionHandler: { (response, data, error) -> Void in
+                    NSURLConnection.sendAsynchronousRequest(request as URLRequest, queue: OperationQueue.main, completionHandler: { (response, data, error) -> Void in
                         
                         if error != nil || data == nil {
                             DDLoggerWrapper.logError("Either there was an error with the request or there was no data returned")
-                            completion(.FailedError)
+                            completion(.failedError)
                         }
                         
                         if data != nil {
-                            let stringData = (String(data: data!, encoding: NSUTF8StringEncoding) ?? "  ").lowercaseString
-                            if !stringData.containsString("true") {
+                            let stringData = (String(data: data!, encoding: String.Encoding.utf8) ?? "  ").lowercased()
+                            if !stringData.contains("true") {
                                 DDLoggerWrapper.logError(stringData)
-                                completion(.FailedError)
+                                completion(.failedError)
                             } else {
-                                completion(.Success)
+                                completion(.success)
                             }
                         }
                         
@@ -659,7 +659,7 @@ class CarSharingOperations {
 
                 } else {
                     //we are not logged in, present a login screen to the user
-                    completion(.FailedNotLoggedIn)
+                    completion(.failedNotLoggedIn)
                 }
             }
         }
@@ -667,9 +667,9 @@ class CarSharingOperations {
     
     
     enum ReturnStatus {
-        case FailedNotLoggedIn
-        case FailedError
-        case Success
+        case failedNotLoggedIn
+        case failedError
+        case success
     }
 
 }

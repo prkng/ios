@@ -9,14 +9,14 @@
 import UIKit
 
 enum MapMessageOrigin {
-    case Lots
-    case Spots
-    case Cars
+    case lots
+    case spots
+    case cars
 }
 
 class MapMessageView: UIView {
     
-    static func createMessage(count count: Int, response: NSHTTPURLResponse?, error: NSError?, origin: MapMessageOrigin) -> String? {
+    static func createMessage(count: Int, response: HTTPURLResponse?, error: NSError?, origin: MapMessageOrigin) -> String? {
         
         let underMaintenance = response != nil && response!.statusCode == 503
         let outsideServiceArea = response != nil && response!.statusCode == 404
@@ -28,7 +28,7 @@ class MapMessageView: UIView {
         
         var message: String? = nil
         
-        if origin == .Cars && noCarsharingServicesEnabled {
+        if origin == .cars && noCarsharingServicesEnabled {
             message = "map_message_no_carsharing".localizedString
         } else if underMaintenance {
             message = "map_message_under_maintenance".localizedString
@@ -37,11 +37,11 @@ class MapMessageView: UIView {
         } else if outsideServiceArea {
             message = "map_message_outside_service_area".localizedString
         } else if count == 0 {
-            if origin == .Spots {
+            if origin == .spots {
                 message = "map_message_no_spots".localizedString
-            } else if origin == .Lots {
+            } else if origin == .lots {
                 message = "map_message_no_parking".localizedString
-            } else if origin == .Cars {
+            } else if origin == .cars {
                 message = "map_message_no_cars".localizedString
             }
         }
@@ -50,11 +50,11 @@ class MapMessageView: UIView {
     }
     
     var messageContainer: UIView
-    private var mapMessageViewImage: UIImageView
+    fileprivate var mapMessageViewImage: UIImageView
     var mapMessageLabel: UILabel
     
-    private var didsetupSubviews : Bool
-    private var didSetupConstraints : Bool
+    fileprivate var didsetupSubviews : Bool
+    fileprivate var didSetupConstraints : Bool
     
     override init(frame: CGRect) {
         
@@ -93,12 +93,12 @@ class MapMessageView: UIView {
         
         self.addSubview(messageContainer)
         
-        messageContainer.backgroundColor = Styles.Colors.red2.colorWithAlphaComponent(0.8)
+        messageContainer.backgroundColor = Styles.Colors.red2.withAlphaComponent(0.8)
         messageContainer.addSubview(mapMessageViewImage)
         mapMessageLabel.textColor = Styles.Colors.cream1
         mapMessageLabel.font = Styles.Fonts.s2r
         mapMessageLabel.numberOfLines = 0
-        mapMessageLabel.textAlignment = .Left
+        mapMessageLabel.textAlignment = .left
         messageContainer.addSubview(mapMessageLabel)
         
         didsetupSubviews = true

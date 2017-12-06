@@ -30,10 +30,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     var delegate: SettingsViewControllerDelegate?
     
-    private(set) var PROFILE_CONTAINER_HEIGHT = 120
-    private(set) var CITY_CONTAINER_HEIGHT = 48
-    private(set) var SMALL_CELL_HEIGHT: CGFloat = 48
-    private(set) var BIG_CELL_HEIGHT: CGFloat = 61
+    fileprivate(set) var PROFILE_CONTAINER_HEIGHT = 120
+    fileprivate(set) var CITY_CONTAINER_HEIGHT = 48
+    fileprivate(set) var SMALL_CELL_HEIGHT: CGFloat = 48
+    fileprivate(set) var BIG_CELL_HEIGHT: CGFloat = 61
     
     init() {
         
@@ -71,31 +71,31 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         self.screenName = "Settings View"
         
         if (AuthUtility.loginType() == .Facebook){
-            profileTitleLabel.text = "login_edit_message_facebook".localizedString.uppercaseString
+            profileTitleLabel.text = "login_edit_message_facebook".localizedString.uppercased()
         } else if (AuthUtility.loginType() == .Google){
-            profileTitleLabel.text = "login_edit_message_google".localizedString.uppercaseString
+            profileTitleLabel.text = "login_edit_message_google".localizedString.uppercased()
         } else {
-            profileTitleLabel.text = "edit_profile".localizedString.uppercaseString
+            profileTitleLabel.text = "edit_profile".localizedString.uppercased()
         }
 
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         self.cityLabel.text = Settings.selectedCity().displayName
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let debugFeaturesOn = NSUserDefaults.standardUserDefaults().boolForKey("enable_debug_features")
-        sendLogButton.hidden = !debugFeaturesOn
+        let debugFeaturesOn = UserDefaults.standard.bool(forKey: "enable_debug_features")
+        sendLogButton.isHidden = !debugFeaturesOn
         
         if let user = AuthUtility.getUser() {
             self.profileNameLabel.text = user.fullName
             if let imageUrl = user.imageUrl {
-                self.profileImageView.sd_setImageWithURL(NSURL(string: imageUrl))
+                self.profileImageView.sd_setImage(with: URL(string: imageUrl))
             }
             
         }
@@ -108,10 +108,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         view.backgroundColor = Styles.Colors.stone
         
         view.addSubview(tableView)
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + self.PROFILE_CONTAINER_HEIGHT + 20)))
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: CGFloat(self.CITY_CONTAINER_HEIGHT + self.PROFILE_CONTAINER_HEIGHT + 20)))
         tableView.tableFooterView = self.tableFooterView()
-        tableView.backgroundColor = UIColor.clearColor()
-        tableView.separatorStyle = .None
+        tableView.backgroundColor = UIColor.clear
+        tableView.separatorStyle = .none
         tableView.dataSource = self
         tableView.delegate = self
         tableView.clipsToBounds = true
@@ -127,15 +127,15 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         
         profileTitleLabel.font = Styles.FontFaces.regular(10)
         profileTitleLabel.textColor = Styles.Colors.anthracite1
-        profileTitleLabel.textAlignment = .Left
+        profileTitleLabel.textAlignment = .left
         profileContainer.addSubview(profileTitleLabel)
         
         profileNameLabel.font = Styles.Fonts.h3
         profileNameLabel.textColor = Styles.Colors.cream1
-        profileNameLabel.textAlignment = .Left
+        profileNameLabel.textAlignment = .left
         profileContainer.addSubview(profileNameLabel)
         
-        profileButton.addTarget(self, action: "profileButtonTapped:", forControlEvents: .TouchUpInside)
+        profileButton.addTarget(self, action: #selector(SettingsViewController.profileButtonTapped(_:)), for: .touchUpInside)
         topContainer.addSubview(profileButton)
         
         cityContainer.backgroundColor = Styles.Colors.red2
@@ -145,15 +145,15 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         cityLabel.textColor = Styles.Colors.cream1
         cityContainer.addSubview(cityLabel)
         
-        prevCityButton.setImage(UIImage(named: "btn_left"), forState: UIControlState.Normal)
-        prevCityButton.addTarget(self, action: "prevCityButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        prevCityButton.setImage(UIImage(named: "btn_left"), for: UIControlState())
+        prevCityButton.addTarget(self, action: #selector(SettingsViewController.prevCityButtonTapped), for: UIControlEvents.touchUpInside)
         cityContainer.addSubview(prevCityButton)
         
-        nextCityButton.setImage(UIImage(named: "btn_right"), forState: UIControlState.Normal)
-        nextCityButton.addTarget(self, action: "nextCityButtonTapped", forControlEvents: UIControlEvents.TouchUpInside)
+        nextCityButton.setImage(UIImage(named: "btn_right"), for: UIControlState())
+        nextCityButton.addTarget(self, action: #selector(SettingsViewController.nextCityButtonTapped), for: UIControlEvents.touchUpInside)
         cityContainer.addSubview(nextCityButton)
         
-        sendLogButton.addTarget(self, action: "sendLogButtonTapped:", forControlEvents: UIControlEvents.TouchUpInside)
+        sendLogButton.addTarget(self, action: #selector(SettingsViewController.sendLogButtonTapped(_:)), for: UIControlEvents.touchUpInside)
         view.addSubview(sendLogButton)
         
     }
@@ -184,7 +184,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         profileImageView.snp_makeConstraints { (make) -> () in
             make.left.equalTo(self.view).offset(34)
             make.centerY.equalTo(self.profileContainer)
-            make.size.equalTo(CGSizeMake(36, 36))
+            make.size.equalTo(CGSize(width: 36, height: 36))
         }
         
         profileTitleLabel.snp_makeConstraints { (make) -> () in
@@ -227,29 +227,29 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         sendLogButton.snp_makeConstraints { (make) -> () in
-            make.size.equalTo(CGSizeMake(24, 24))
+            make.size.equalTo(CGSize(width: 24, height: 24))
             make.top.equalTo(self.view).offset(14+20)
             make.right.equalTo(self.view).offset(-20)
         }
 
     }
     
-    func sendLogButtonTapped(sender: UIButton) {
+    func sendLogButtonTapped(_ sender: UIButton) {
         let mailVC = MFMailComposeViewController()
         mailVC.mailComposeDelegate = self
-        let udid = NSUUID().UUIDString
+        let udid = UUID().uuidString
         mailVC.setSubject("Support Ticket - " + udid)
         mailVC.setToRecipients(["ant@prk.ng"])
         if let filePath = Settings.logFilePath() {
-            if let fileData = NSData(contentsOfFile: filePath) {
+            if let fileData = try? Data(contentsOf: URL(fileURLWithPath: filePath)) {
                 mailVC.addAttachmentData(fileData, mimeType: "text", fileName: udid + ".log")
-                self.presentViewController(mailVC, animated: true, completion: nil)
+                self.present(mailVC, animated: true, completion: nil)
             }
         }
     }
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     //MARK: UITableView cells and button selectors
@@ -260,12 +260,12 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             mailVC.mailComposeDelegate = self
             mailVC.setSubject("Support")
             mailVC.setToRecipients(["support@prk.ng"])
-            self.presentViewController(mailVC, animated: true, completion: nil)
+            self.present(mailVC, animated: true, completion: nil)
         } else {
             let alert = UIAlertView()
             alert.title = "no_mail_accounts_title".localizedString
             alert.message = "no_mail_accounts_body".localizedString
-            alert.addButtonWithTitle("OK")
+            alert.addButton(withTitle: "OK")
             alert.show()
         }
     }
@@ -276,11 +276,11 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     func showGettingStarted() {
         let tutorialVC = TutorialViewController()
-        self.presentViewController(tutorialVC, animated: true, completion: nil)
+        self.present(tutorialVC, animated: true, completion: nil)
     }
     
     func sendToAppStore() {
-        UIApplication.sharedApplication().openURL(NSURL(string: "itms-apps://itunes.apple.com/app/id999834216")!)
+        UIApplication.shared.openURL(URL(string: "itms-apps://itunes.apple.com/app/id999834216")!)
     }
     
     func showFaq() {
@@ -301,10 +301,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     func showShareSheet() {
         
         let text = "prkng_share_copy".localizedString
-        let url = NSURL(string:"https://prk.ng/")!
+        let url = URL(string:"https://prk.ng/")!
         
         let activityViewController = UIActivityViewController( activityItems: [text, url], applicationActivities: nil)
-        self.navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
+        self.navigationController?.present(activityViewController, animated: true, completion: nil)
     }
 
     func signOut() {
@@ -321,7 +321,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
-            index++
+            index += 1
         }
         
         index -= 1 // previous
@@ -351,10 +351,10 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
             if (Settings.selectedCity().name == city.name) {
                 break; //found
             }
-            index++
+            index += 1
         }
         
-        index++ // get next
+        index += 1 // get next
         
         if (index > CityOperations.sharedInstance.availableCities.count - 1) {
             index = 0
@@ -395,7 +395,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings View", action: "Residential Permit Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as [NSObject: AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Settings View", action: "Residential Permit Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as! [AnyHashable: Any])
     }
     
     func residentialPermitFilterValueNeedsAddition() {
@@ -408,7 +408,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         }
     }
     
-    private func showResidentialPermitPicker() {
+    fileprivate func showResidentialPermitPicker() {
         //bring up the rolly thingy
         CityOperations.getSupportedResidentialPermits(Settings.selectedCity()) { (completed, permits) -> Void in
             if completed {
@@ -427,7 +427,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         Settings.setShouldFilterForSnowRemoval(!currentValue)
         
         let tracker = GAI.sharedInstance().defaultTracker
-        tracker.send(GAIDictionaryBuilder.createEventWithCategory("Settings View", action: "Snow Removal Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as [NSObject: AnyObject])
+        tracker?.send(GAIDictionaryBuilder.createEvent(withCategory: "Settings View", action: "Snow Removal Slider Value Changed", label: currentValue == false ? "On" : "Off", value: nil).build() as! [AnyHashable: Any])
     }
 
     func hideCar2GoValueChanged() {
@@ -450,7 +450,7 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         Settings.setHideZipcar(!currentValue)
     }
     
-    func profileButtonTapped(sender: UIButton) {
+    func profileButtonTapped(_ sender: UIButton) {
         if AuthUtility.loginType()! == LoginType.Email {
             self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
         }
@@ -488,12 +488,12 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 
     func tableFooterView() -> UIView {
         
-        let versionString = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-        let frame = CGRect(x: 0, y: 0, width: UIScreen.mainScreen().bounds.width, height: CGFloat(BIG_CELL_HEIGHT))
+        let versionString = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+        let frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: CGFloat(BIG_CELL_HEIGHT))
         let tableFooterView = UIView(frame: frame)
         tableFooterView.backgroundColor = Styles.Colors.stone
 
-        let labelFrame = CGRect(x: 20, y: 0, width: UIScreen.mainScreen().bounds.width-40, height: CGFloat(BIG_CELL_HEIGHT)-10)
+        let labelFrame = CGRect(x: 20, y: 0, width: UIScreen.main.bounds.width-40, height: CGFloat(BIG_CELL_HEIGHT)-10)
         let tableFooterViewLabel = UILabel(frame: labelFrame)
         
         let line1Attributes = [NSFontAttributeName: Styles.FontFaces.bold(12), NSForegroundColorAttributeName: Styles.Colors.petrol2]
@@ -503,8 +503,8 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         let textLine2 = NSAttributedString(string: "Using test server", attributes: line2Attributes)
         
         if APIUtility.isUsingTestServer {
-            textLine1.appendAttributedString(NSAttributedString(string: "\n"))
-            textLine1.appendAttributedString(textLine2)
+            textLine1.append(NSAttributedString(string: "\n"))
+            textLine1.append(textLine2)
         }
         
         tableFooterViewLabel.numberOfLines = 0
@@ -578,15 +578,15 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
         ]
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return tableSource.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableSource[section].1.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         let cell = settingsCell.tableViewCell(tableView)
         self.tableView.cachedCells.append(cell)
@@ -596,27 +596,27 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
     
     //MARK: UITableViewDelegate
     
-    func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         return settingsCell.canSelect
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let settingsCell = tableSource[indexPath.section].1[indexPath.row]
         if settingsCell.selectorsTarget != nil && settingsCell.cellSelector != nil {
-            settingsCell.selectorsTarget!.performSelector(Selector(settingsCell.cellSelector!))
+            settingsCell.selectorsTarget!.perform(Selector(settingsCell.cellSelector!))
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
         case 0: return BIG_CELL_HEIGHT
         default: return SMALL_CELL_HEIGHT
         }
     }
     
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
         case 0: return 0
         default: return BIG_CELL_HEIGHT
@@ -624,13 +624,13 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerText = tableSource[section].0
         return GeneralTableHelperViews.sectionHeaderView(headerText)
     }
     
     //MARK: scroll view delegate for the tableview
-    func scrollViewDidScroll(scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
 //        NSLog("scroll view content offset is (%f,%f)", scrollView.contentOffset.x, scrollView.contentOffset.y)
         let yOffset = scrollView.contentOffset.y
         topContainer.snp_remakeConstraints { (make) -> () in
@@ -654,6 +654,6 @@ class SettingsViewController: AbstractViewController, MFMailComposeViewControlle
 }
 
 protocol SettingsViewControllerDelegate {
-    func goToCoordinate(coordinate: CLLocationCoordinate2D, named name: String, showing: Bool)
-    func cityDidChange(fromCity fromCity: City, toCity: City)
+    func goToCoordinate(_ coordinate: CLLocationCoordinate2D, named name: String, showing: Bool)
+    func cityDidChange(fromCity: City, toCity: City)
 }
